@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,7 +19,7 @@ namespace Dev2.Intellisense.Provider
     {
         #region Class Members
 
-        private List<IntellisenseProviderResult> _intellisenseResults;
+        List<IntellisenseProviderResult> _intellisenseResults;
 
         #endregion Class Members
 
@@ -44,8 +44,8 @@ namespace Dev2.Intellisense.Provider
         {
             VerifyArgument.IsNotNull("Context",context);
            
-            string inputText = context.InputText ?? string.Empty;
-            int caretPosition = context.CaretPosition;  
+            var inputText = context.InputText ?? string.Empty;
+            var caretPosition = context.CaretPosition;
 
             if (caretPosition < 0 || caretPosition>inputText.Length)
             {
@@ -55,7 +55,7 @@ namespace Dev2.Intellisense.Provider
             var regions = inputText.Split(' '); // we can safely do this because the default provider handles the language features
 
             var sum = 0;
-            int items = 0;
+            var items = 0;
             var regionsText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
             {
                 sum = sum + a.Length;
@@ -67,7 +67,7 @@ namespace Dev2.Intellisense.Provider
             var prefix = regionsText.Aggregate("", (a, b) => a + " " + b).TrimStart(' '); // fold back together
             context.CaretPositionOnPopup = prefix.Length;
             context.CaretPosition = prefix.Length;
-            int i = 0;
+            var i = 0;
             var inner = regions.SkipWhile(a =>
                 {
                     i = i + 1;
@@ -99,7 +99,7 @@ namespace Dev2.Intellisense.Provider
                     IntellisenseResults.Clear();
                     var regions = context.InputText.Split(' ');
                     var sum = 0;
-                    string searchText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
+                    var searchText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
                         {
                             sum = sum + context.CaretPosition;
                             return sum >= context.CaretPosition;
@@ -126,9 +126,9 @@ namespace Dev2.Intellisense.Provider
         /// </summary>
         bool InLiteralRegion(string inputText, int caretPosition)
         {
-            bool inLiteralResionRegion = false;
+            var inLiteralResionRegion = false;
 
-            if(caretPosition <= inputText.Length)
+            if (caretPosition <= inputText.Length)
             {
                 inputText = inputText.Replace("\\\\", "##");
                 inputText = inputText.Replace("\\'", "##");

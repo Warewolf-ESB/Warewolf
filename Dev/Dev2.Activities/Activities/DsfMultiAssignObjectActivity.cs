@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,10 +25,10 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Comparer;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
-using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -36,7 +36,6 @@ using WarewolfParserInterop;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("AssignObject", "Assign Object", ToolType.Native, "A86C4D10-B4D0-4775-AF4D-C66D5A6CE76F", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign_Object")]
     public class DsfMultiAssignObjectActivity : DsfActivityAbstract<string>
     {
         #region Constants
@@ -49,15 +48,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Fields
 
-        private IList<AssignObjectDTO> _fieldsCollection;
+        IList<AssignObjectDTO> _fieldsCollection;
 
         #endregion Fields
 
         #region Properties
 
-        
+
         public IList<AssignObjectDTO> FieldsCollection
-        
+
         {
             get
             {
@@ -95,17 +94,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
-        
+
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
 
-        
+
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -115,14 +114,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs.Clear();
 
             InitializeDebug(dataObject);
-            ErrorResultTO errors = new ErrorResultTO();
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
             try
             {
                 if (!errors.HasErrors())
                 {
-                    int innerCount = 1;
+                    var innerCount = 1;
                     foreach (AssignObjectDTO t in FieldsCollection)
                     {
                         try
@@ -197,7 +196,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void DoCalculation(IExecutionEnvironment environment, string fieldName, string cleanExpression, int update)
+        void DoCalculation(IExecutionEnvironment environment, string fieldName, string cleanExpression, int update)
         {
             var functionEvaluator = new FunctionEvaluator();
             var warewolfEvalResult = environment.Eval(cleanExpression, update);
@@ -227,7 +226,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private static string PerformCalcForAtom(DataStorage.WarewolfAtom warewolfAtom, FunctionEvaluator functionEvaluator)
+        static string PerformCalcForAtom(DataStorage.WarewolfAtom warewolfAtom, FunctionEvaluator functionEvaluator)
         {
             var calcExpression = ExecutionEnvironment.WarewolfAtomToString(warewolfAtom);
             DataListUtil.IsCalcEvaluation(calcExpression, out string exp);
@@ -254,7 +253,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return eval;
         }
 
-        private DebugItem AddSingleInputDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
+        DebugItem AddSingleInputDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
         {
             var debugItem = new DebugItem();
             const string VariableLabelText = "Variable";
@@ -268,7 +267,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         throw new Exception("Append data to array");
                     }
-                    CommonFunctions.WarewolfEvalResult evalResult = environment.Eval(assignValue.Name, update);
+                    var evalResult = environment.Eval(assignValue.Name, update);
                     AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
                     if (evalResult.IsWarewolfAtomResult)
                     {
@@ -371,7 +370,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return debugItem;
         }
 
-        private void AddSingleDebugOutputItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
+        void AddSingleDebugOutputItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
         {
             const string VariableLabelText = "";
             const string NewFieldLabelText = "";
@@ -443,7 +442,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach (Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains(t1.Item1));
 
                 // issues updates
@@ -459,7 +458,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach (Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldName.Contains(t1.Item1));
 
                 // issues updates
@@ -503,5 +502,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion GetForEachInputs/Outputs
+
+        public bool Equals(DsfMultiAssignObjectActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && FieldsCollection.SequenceEqual(other.FieldsCollection, new ActivityDtoObjectComparer())
+                && UpdateAllOccurrences == other.UpdateAllOccurrences
+                && CreateBookmark == other.CreateBookmark
+                && string.Equals(ServiceHost, other.ServiceHost)
+                && string.Equals(DisplayName, other.DisplayName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfMultiAssignObjectActivity)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FieldsCollection != null ? FieldsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ UpdateAllOccurrences.GetHashCode();
+                hashCode = (hashCode * 397) ^ CreateBookmark.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServiceHost != null ? ServiceHost.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

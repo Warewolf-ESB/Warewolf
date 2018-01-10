@@ -20,18 +20,17 @@ namespace Dev2.Activities.Specs.Sources
     [Binding]
     public sealed class ServerSourceSteps : RecordSetBases
     {
-
         public ServerSourceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            AppSettings.LocalHost = "http://localhost:3142";
-            IServer environmentModel = ServerRepository.Instance.Source;
+            AppUsageStats.LocalHost = "http://localhost:3142";
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
         }
+
         [Given(@"I create a server source as")]
         public void GivenICreateAServerSourceAs(Table table)
         {
-
             var address = table.Rows[0]["Address"];
             var authenticationType = table.Rows[0]["AuthenticationType"];
             Enum.TryParse(authenticationType, true, out AuthenticationType result);
@@ -42,7 +41,6 @@ namespace Dev2.Activities.Specs.Sources
                 AuthenticationType = result
             };
             ScenarioContext.Current.Add("serverSource", serverSource);
-
         }
 
         [Given(@"I save as ""(.*)""")]
@@ -53,11 +51,9 @@ namespace Dev2.Activities.Specs.Sources
             var server = buildManageNewServerSourceModel.Item2;
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             serverSource.Name = p0;
-
             try
             {
                 manageNewServerSourceModel.Save(serverSource);
-
             }
             catch (WarewolfSaveException e)
             {
@@ -95,19 +91,18 @@ namespace Dev2.Activities.Specs.Sources
             }
         }
 
-        private static Tuple<ManageNewServerSourceModel, IServer, QueryManagerProxy> BuildManageNewServerSourceModel()
+        static Tuple<ManageNewServerSourceModel, IServer, QueryManagerProxy> BuildManageNewServerSourceModel()
         {
             ICommunicationControllerFactory factory = new CommunicationControllerFactory();
 
-            IServer instanceSource = ServerRepository.Instance.Source;
+            var instanceSource = ServerRepository.Instance.Source;
             var environmentConnection = instanceSource.Connection;
             var studioResourceUpdateManager = new StudioResourceUpdateManager(factory, environmentConnection);
-            QueryManagerProxy queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
-            ManageNewServerSourceModel manageNewServerSourceModel = new ManageNewServerSourceModel(studioResourceUpdateManager, queryManagerProxy, Environment.MachineName);
+            var queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
+            var manageNewServerSourceModel = new ManageNewServerSourceModel(studioResourceUpdateManager, queryManagerProxy, Environment.MachineName);
             var tuple = Tuple.Create(manageNewServerSourceModel, instanceSource, queryManagerProxy);
             return tuple;
         }
-
 
         [Then(@"I delete serversource")]
         public void ThenIDeleteServersource()
@@ -116,8 +111,6 @@ namespace Dev2.Activities.Specs.Sources
             var server = BuildManageNewServerSourceModel().Item2;
             server.ResourceRepository.DeleteResource(resourceModel);
         }
-
-
 
         [Then(@"The result is ""(.*)""")]
         public void ThenTheResultIs(string p0)
@@ -134,8 +127,8 @@ namespace Dev2.Activities.Specs.Sources
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             serverSource.UserName = username;
             serverSource.Password = password;
+            ScenarioContext.Current.Set(serverSource, "serverSource");
         }
-
 
         protected override void BuildDataList()
         {

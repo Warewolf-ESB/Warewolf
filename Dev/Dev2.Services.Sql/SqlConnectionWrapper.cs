@@ -5,10 +5,21 @@ namespace Dev2.Services.Sql
 {
     public class SqlConnectionWrapper : ISqlConnection
     {
-        private readonly SqlConnection _connection;
+        readonly SqlConnection _connection;
         public SqlConnectionWrapper(string connString)
         {
-            _connection = new SqlConnection { ConnectionString = connString };
+            var conStrBuilder = new SqlConnectionStringBuilder(connString)
+            {
+                ConnectTimeout = 20,
+                MaxPoolSize = 100,
+                MultipleActiveResultSets = true,
+                Pooling = true,
+                ApplicationName = "Warewolf Service"
+            };
+
+            var cString = conStrBuilder.ConnectionString;
+
+            _connection = new SqlConnection(cString);
         }
 
         public bool FireInfoMessageEventOnUserErrors

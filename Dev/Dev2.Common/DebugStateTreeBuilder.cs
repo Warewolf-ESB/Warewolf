@@ -31,7 +31,7 @@ namespace Dev2.Common
 
         }
 
-        private static void AddChildren(IDebugState node, IDictionary<Guid, List<IDebugState>> source)
+        static void AddChildren(IDebugState node, IDictionary<Guid, List<IDebugState>> source)
         {
             if (source.ContainsKey(node.ID)
                 && (!node.IsAdded || (node.ActualType?.Contains("DsfForEachActivity") ?? false))

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,21 +26,21 @@ namespace Dev2.Runtime.Configuration.Settings
 
         public new const string SettingName = "Logging";
 
-        private bool _isLoggingEnabled;
-        private bool _isVersionLogged;
-        private bool _isTypeLogged;
-        private bool _isDurationLogged;
-        private bool _isDataAndTimeLogged;
-        private bool _isInputLogged;
-        private bool _isOutputLogged;
-        private int _nestedLevelCount;
-        private string _logFileDirectory;
-        private ObservableCollection<IWorkflowDescriptor> _workflows;
+        bool _isLoggingEnabled;
+        bool _isVersionLogged;
+        bool _isTypeLogged;
+        bool _isDurationLogged;
+        bool _isDataAndTimeLogged;
+        bool _isInputLogged;
+        bool _isOutputLogged;
+        int _nestedLevelCount;
+        string _logFileDirectory;
+        ObservableCollection<IWorkflowDescriptor> _workflows;
 
-        private bool _logAll;
-        private bool _runPostWorkflow;
-        private string _serviceInput;
-        private IWorkflowDescriptor _postWorkflow;
+        bool _logAll;
+        bool _runPostWorkflow;
+        string _serviceInput;
+        IWorkflowDescriptor _postWorkflow;
 
         #endregion
 
@@ -351,7 +351,7 @@ namespace Dev2.Runtime.Configuration.Settings
         /// <author>Jurie.smit</author>
         /// <date>2013/06/17</date>
         /// <exception cref="System.NotImplementedException"></exception>
-        private void WorkflowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void WorkflowsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null && e.NewItems.Count > 0)
             {
@@ -378,7 +378,7 @@ namespace Dev2.Runtime.Configuration.Settings
         /// <author>Jurie.smit</author>
         /// <date>2013/06/17</date>
         /// <exception cref="System.NotImplementedException"></exception>
-        private void WorkflowPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void WorkflowPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             NotifyOfPropertyChange(() => Workflows);
         }

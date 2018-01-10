@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,13 +37,13 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         public IEnumerable<IPath> Map(object data)
         {
-            XDocument document = XDocument.Parse(data.ToString());
+            var document = XDocument.Parse(data.ToString());
             var elementStack = new Stack<Tuple<XElement, bool>>();
 
             //
             // Get all paths
             //
-            IEnumerable<IPath> allPaths = BuildPaths(document.Root, elementStack, document.Root);
+            var allPaths = BuildPaths(document.Root, elementStack, document.Root);
 
             //
             // Find unique paths
@@ -64,7 +64,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         #region Private Methods
 
-        private IEnumerable<IPath> BuildPaths(XElement element, Stack<Tuple<XElement, bool>> elementStack, XElement root)
+        IEnumerable<IPath> BuildPaths(XElement element, Stack<Tuple<XElement, bool>> elementStack, XElement root)
         {
             var paths = new List<IPath>();
 
@@ -76,9 +76,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 paths.Add(BuildPath(elementStack, element, root));
             }
 
-            if(!element.HasElements)
+            if (!element.HasElements)
             {
-                paths.Add(BuildPath(elementStack, element, root)); 
+                paths.Add(BuildPath(elementStack, element, root));
             }
             //
             // Build paths for attributes of current element
@@ -97,9 +97,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             //
             foreach (XElement childElement in element.Elements())
             {
-                IEnumerable<IGrouping<string, string>> cake =
+                var cake =
                     element.Elements().Select(e => e.Name.ToString()).GroupBy(s => s);
-                bool considerEnumerable = cake.First(g => g.Key == childElement.Name.ToString()).Count() > 1;
+                var considerEnumerable = cake.First(g => g.Key == childElement.Name.ToString()).Count() > 1;
 
                 elementStack.Push(new Tuple<XElement, bool>(element, considerEnumerable));
                 paths.AddRange(BuildPaths(childElement, elementStack, root));
@@ -109,22 +109,22 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             return paths;
         }
 
-        private IPath BuildPath(Stack<Tuple<XElement, bool>> elementStack, XElement element, XElement root)
+        IPath BuildPath(Stack<Tuple<XElement, bool>> elementStack, XElement element, XElement root)
         {
             var path = new XmlPath();
 
             path.ActualPath = string.Join(XmlPath.NodeSeperatorSymbol,
                 elementStack.Reverse().Select(e => path.CreatePathSegment(e.Item1).ToString(e.Item2)));
 
-            List<Tuple<IPathSegment, bool>> displayPathSegments =
+            var displayPathSegments =
                 elementStack.Reverse()
                     .Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1), p.Item2))
                     .ToList();
-            bool recordsetEncountered = false;
+            var recordsetEncountered = false;
 
             for (int i = displayPathSegments.Count - 1; i >= 0; i--)
             {
-                Tuple<IPathSegment, bool> pathSegment = displayPathSegments[i];
+                var pathSegment = displayPathSegments[i];
                 if (recordsetEncountered)
                 {
                     pathSegment.Item1.IsEnumarable = false;
@@ -156,22 +156,22 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             return path;
         }
 
-        private IPath BuildPath(Stack<Tuple<XElement, bool>> elementStack, XAttribute attribute, XElement root)
+        IPath BuildPath(Stack<Tuple<XElement, bool>> elementStack, XAttribute attribute, XElement root)
         {
             var path = new XmlPath();
 
             path.ActualPath = string.Join(XmlPath.NodeSeperatorSymbol,
                 elementStack.Reverse().Select(e => path.CreatePathSegment(e.Item1).ToString(e.Item2)));
 
-            List<Tuple<IPathSegment, bool>> displayPathSegments =
+            var displayPathSegments =
                 elementStack.Reverse()
                     .Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1), p.Item2))
                     .ToList();
-            bool recordsetEncountered = false;
+            var recordsetEncountered = false;
 
             for (int i = displayPathSegments.Count - 1; i >= 0; i--)
             {
-                Tuple<IPathSegment, bool> pathSegment = displayPathSegments[i];
+                var pathSegment = displayPathSegments[i];
                 if (recordsetEncountered)
                 {
                     pathSegment.Item1.IsEnumarable = false;
@@ -203,7 +203,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             return path;
         }
 
-        private string GetSampleData(XElement root, IPath path)
+        string GetSampleData(XElement root, IPath path)
         {
             var navigator = new XmlNavigator(root.ToString());
             return string.Join(GlobalConstants.AnythingToXmlPathSeperator,

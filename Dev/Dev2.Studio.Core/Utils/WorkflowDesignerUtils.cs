@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -43,17 +43,17 @@ namespace Dev2.Utils
                 // Sashen: 09-10-2012 : Using the new parser
                 var intellisenseParser = new SyntaxTreeBuilder();
 
-                Node[] nodes = intellisenseParser.Build(region);
+                var nodes = intellisenseParser.Build(region);
 
                 // No point in continuing ;)
-                if(nodes == null)
+                if (nodes == null)
                 {
                     return result;
                 }
 
                 if(intellisenseParser.EventLog.HasEventLogs)
                 {
-                    IDev2StudioDataLanguageParser languageParser = DataListFactory.CreateStudioLanguageParser();
+                    var languageParser = DataListFactory.CreateStudioLanguageParser();
 
                     try
                     {
@@ -82,7 +82,7 @@ namespace Dev2.Utils
                         if (allNodes[i] is DatalistRecordSetNode)
                         {
                             var refNode = allNodes[i] as DatalistRecordSetNode;
-                            string nodeName = refNode.GetRepresentationForEvaluation();
+                            var nodeName = refNode.GetRepresentationForEvaluation();
                             nodeName = nodeName.Substring(2, nodeName.Length - 4);
                             result.Add(nodeName);
                         }
@@ -91,7 +91,7 @@ namespace Dev2.Utils
                             if (allNodes[i] is DatalistReferenceNode)
                             {
                                 var refNode = allNodes[i] as DatalistReferenceNode;
-                                string nodeName = refNode.GetRepresentationForEvaluation();
+                                var nodeName = refNode.GetRepresentationForEvaluation();
                                 nodeName = nodeName.Substring(2, nodeName.Length - 4);
                                 result.Add(nodeName);
                             }

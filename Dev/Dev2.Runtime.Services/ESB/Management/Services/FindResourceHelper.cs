@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,18 +22,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FindResourceHelper
     {
-        private IAuthorizationService _authorizationService;
+        IAuthorizationService _authorizationService;
 
-        /// <summary>
-        /// Strips for ship.
-        /// </summary>
-        /// <param name="resource">The resource.</param>
-        /// <param name="workspaceID"></param>
-        /// <returns></returns>
         public SerializableResource SerializeResourceForStudio(IResource resource,Guid workspaceID)
         {
-
-            // convert the fliping errors due to json issues in c# ;(
             var errors = new List<ErrorInfo>();
             var parseErrors = resource.Errors;
             if(parseErrors != null)
@@ -72,6 +64,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
         }
 
-        private IAuthorizationService AuthorizationService => _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance);
+        IAuthorizationService AuthorizationService => _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance);
     }
 }

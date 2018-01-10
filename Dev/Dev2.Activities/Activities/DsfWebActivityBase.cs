@@ -14,13 +14,14 @@ using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
-    public class DsfWebActivityBase : DsfActivity
+    public class DsfWebActivityBase : DsfActivity,IEquatable<DsfWebActivityBase>
     {
-        private readonly WebRequestMethod _method;
-        private const string UserAgent = "User-Agent";
+        readonly WebRequestMethod _method;
+        const string UserAgent = "User-Agent";
 
         protected DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
         {
@@ -44,9 +45,9 @@ namespace Dev2.Activities
             var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            string headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
+            var headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "URL"), debugItem);
             AddDebugItem(new DebugEvalResult(url.Address, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
@@ -73,7 +74,7 @@ namespace Dev2.Activities
 
             if (head != null)
             {
-                IEnumerable<NameValue> nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
+                var nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
                 foreach (var nameValue in nameValues)
                 {
                     httpClient.DefaultRequestHeaders.Add(nameValue.Name, nameValue.Value);
@@ -127,7 +128,7 @@ namespace Dev2.Activities
                 if (_method == WebRequestMethod.Delete)
                 {
                     taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
-                    bool ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
+                    var ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
                     return ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
                 }
                 if (_method == WebRequestMethod.Post)
@@ -151,6 +152,39 @@ namespace Dev2.Activities
                 return resultAsString;
             }
             return null;
+        }
+
+        public bool Equals(DsfWebActivityBase other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var headersEqual = CommonEqualityOps.CollectionEquals(Headers, other.Headers, new NameValueComparer());
+            return base.Equals(other) 
+                && _method == other._method 
+                && headersEqual
+                && string.Equals(QueryString, other.QueryString) 
+                && Equals(OutputDescription, other.OutputDescription);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfWebActivityBase) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) _method;
+                hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

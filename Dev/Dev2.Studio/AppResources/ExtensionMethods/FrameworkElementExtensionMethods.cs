@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,17 +28,17 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
             return FindNameAcrossNamescopesImpl(frameworkElement, name, partialMatch);
         }
 
-        private static FrameworkElement FindNameAcrossNamescopesImpl(DependencyObject dp, string name, bool partialMatch = false)
+        static FrameworkElement FindNameAcrossNamescopesImpl(DependencyObject dp, string name, bool partialMatch = false)
         {
-            if(dp == null)
+            if (dp == null)
             {
                 return null;
             }
 
-            int childCount = VisualTreeHelper.GetChildrenCount(dp);
-            for(int i = 0; i < childCount; i++)
+            var childCount = VisualTreeHelper.GetChildrenCount(dp);
+            for (int i = 0; i < childCount; i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(dp, i);
+                var child = VisualTreeHelper.GetChild(dp, i);
 
                 if (child is FrameworkElement feChild && (feChild.Name == name || partialMatch && feChild.Name.Contains(name)))
                 {
@@ -46,12 +46,12 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                 }
             }
 
-            for(int i = 0; i < childCount; i++)
+            for (int i = 0; i < childCount; i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(dp, i);
+                var child = VisualTreeHelper.GetChild(dp, i);
 
-                FrameworkElement recursiveResult = FindNameAcrossNamescopesImpl(child, name, partialMatch);
-                if(recursiveResult != null)
+                var recursiveResult = FindNameAcrossNamescopesImpl(child, name, partialMatch);
+                if (recursiveResult != null)
                 {
                     return recursiveResult;
                 }

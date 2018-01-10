@@ -22,24 +22,24 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
     public class DotNetMethodRegion : IMethodToolRegion<IPluginAction>
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IPluginSource> _source;
-        private readonly INamespaceToolRegion<INamespaceItem> _namespace;
-        private bool _isEnabled;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IPluginSource> _source;
+        readonly INamespaceToolRegion<INamespaceItem> _namespace;
+        bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
-        private Action _sourceChangedAction;
-        private RelayCommand _viewObjectResult;
-        private RelayCommand _viewObjectForServiceInputResult;
-        private IPluginAction _selectedMethod;
-        private readonly IPluginServiceModel _model;
-        private ICollection<IPluginAction> _methodsToRun;
-        private bool _isRefreshing;
-        private double _labelWidth;
-        private IList<string> _errors;
-        private bool _isMethodExpanded;
-        private readonly IShellViewModel _shellViewModel;
-        private readonly IActionInputDatatalistMapper _datatalistMapper;
+        Action _sourceChangedAction;
+        RelayCommand _viewObjectResult;
+        RelayCommand _viewObjectForServiceInputResult;
+        IPluginAction _selectedMethod;
+        readonly IPluginServiceModel _model;
+        ICollection<IPluginAction> _methodsToRun;
+        bool _isRefreshing;
+        double _labelWidth;
+        IList<string> _errors;
+        bool _isMethodExpanded;
+        readonly IShellViewModel _shellViewModel;
+        readonly IActionInputDatatalistMapper _datatalistMapper;
 
         public DotNetMethodRegion()
         {
@@ -124,16 +124,16 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                
+
                 UpdateBasedOnNamespace();
                 IsRefreshing = false;
-                
+
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -148,12 +148,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        private void UpdateBasedOnNamespace()
+        void UpdateBasedOnNamespace()
         {
             if (_source?.SelectedSource != null)
             {
@@ -267,17 +267,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private bool CanRunCommand(object obj)
+        bool CanRunCommand(object obj)
         {
             return true;
         }
 
-        private void ViewJsonObjects()
+        void ViewJsonObjects()
         {
             JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
         }
 
-        private void ViewObjectsResultForParameterInput(IServiceInput input)
+        void ViewObjectsResultForParameterInput(IServiceInput input)
         {
             JsonObjectsView?.ShowJsonString(JSONUtils.Format(input.Dev2ReturnType));
         }
@@ -362,7 +362,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void RestoreIfPrevious(IPluginAction value)
+        void RestoreIfPrevious(IPluginAction value)
         {
             if (IsAPreviousValue(value) && _selectedMethod != null)
             {
@@ -372,7 +372,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             else
             {
                 SetSelectedAction(value);
-                SourceChangedAction();
+                SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
             }
             var delegateCommand = RefreshMethodsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
@@ -494,7 +494,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #region Implementation of IActionToolRegion<IPluginAction>
 
-        private void SetSelectedAction(IPluginAction value)
+        void SetSelectedAction(IPluginAction value)
         {
             _selectedMethod = value;
             if (value != null)
@@ -504,7 +504,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             OnPropertyChanged("SelectedMethod");
         }
 
-        private void RestorePreviousValues(IPluginAction value)
+        void RestorePreviousValues(IPluginAction value)
         {
             var toRestore = _previousRegions[value.GetIdentifier()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
@@ -513,7 +513,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private bool IsAPreviousValue(IPluginAction value)
+        bool IsAPreviousValue(IPluginAction value)
         {
             return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
         }

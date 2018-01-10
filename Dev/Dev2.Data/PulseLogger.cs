@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,7 +19,7 @@ namespace Dev2.Data
 {
     public class PulseLogger : IPulseLogger, IDisposable
     {
-        readonly Timer _timer;
+        internal readonly Timer _timer;
 
         public PulseLogger(double intervalMs)
         {
@@ -83,8 +83,7 @@ namespace Dev2.Data
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += _timer_Elapsed;
-       
+            _timer.Elapsed += _timer_Elapsed;       
         }
 
         void _timer_Elapsed(object sender, ElapsedEventArgs e)

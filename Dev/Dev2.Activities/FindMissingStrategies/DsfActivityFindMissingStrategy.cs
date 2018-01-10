@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,7 +38,7 @@ namespace Dev2.FindMissingStrategies
 
         public List<string> GetActivityFields(object activity)
         {
-            List<string> results = new List<string>();
+            var results = new List<string>();
 
             if (activity is DsfActivity act)
             {
@@ -49,18 +49,18 @@ namespace Dev2.FindMissingStrategies
 
                 if (!string.IsNullOrEmpty(act.InputMapping))
                 {
-                    XElement inputMappingElement = XElement.Parse(act.InputMapping);
+                    var inputMappingElement = XElement.Parse(act.InputMapping);
                     const string InputElement = "Input";
-                    IEnumerable<XElement> inputs = inputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(InputElement, StringComparison.InvariantCultureIgnoreCase));
+                    var inputs = inputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(InputElement, StringComparison.InvariantCultureIgnoreCase));
 
                     results.AddRange(inputs.Select(element => element.Attribute("Source").Value).Where(val => !string.IsNullOrEmpty(val)));
                 }
 
                 if (!string.IsNullOrEmpty(act.OutputMapping))
                 {
-                    XElement outputMappingElement = XElement.Parse(act.OutputMapping);
+                    var outputMappingElement = XElement.Parse(act.OutputMapping);
                     const string OutputElement = "Output";
-                    IEnumerable<XElement> inputs = outputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(OutputElement, StringComparison.InvariantCultureIgnoreCase));
+                    var inputs = outputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(OutputElement, StringComparison.InvariantCultureIgnoreCase));
 
                     results.AddRange(inputs.Select(element => element.Attribute("Value").Value).Where(val => !string.IsNullOrEmpty(val)));
                 }

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.Web_Service_Delete
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -21,13 +20,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             SetInitialFocus();
         }
 
-        #region Overrides of ActivityDesignerTemplate
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return MainGrid;
-        }
-
-        #endregion
+        protected override IInputElement GetInitialFocusElement() => MainGrid;
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(0, output.Count);
         }
 
-        private List<IResourceHistory> RunOutput(bool expectCorrectInput)
+        List<IResourceHistory> RunOutput(bool expectCorrectInput)
         {
             var esbMethod = new GetScheduledResourceHistory();
             var security = new Mock<ISecurityWrapper>();
@@ -119,12 +119,12 @@ namespace Dev2.Tests.Runtime.Services
                                               new Dev2TaskService(new TaskServiceConvertorFactory()),
                                               new TaskServiceConvertorFactory());
             var res = new ScheduledResource("a", SchedulerStatus.Enabled, DateTime.Now, trigger, "dave", Guid.NewGuid().ToString());
-            Dictionary<string, StringBuilder> inp = new Dictionary<string, StringBuilder>();
+            var inp = new Dictionary<string, StringBuilder>();
             factory.Setup(
                 a =>
                 a.CreateModel(GlobalConstants.SchedulerFolderId, It.IsAny<ISecurityWrapper>())).Returns(model.Object);
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            if(expectCorrectInput)
+            var serialiser = new Dev2JsonSerializer();
+            if (expectCorrectInput)
             {
 
                 model.Setup(a => a.CreateHistory(It.IsAny<ScheduledResource>())).Returns(history).Verifiable();

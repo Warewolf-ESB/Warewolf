@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
         public IEnumerable<IPath> Map(object data)
         {
-            JToken jToken = JToken.Parse(data.ToString());
+            var jToken = JToken.Parse(data.ToString());
             var propertyStack = new Stack<Tuple<JProperty, bool>>();
 
             return BuildPaths(jToken, propertyStack, jToken);
@@ -40,7 +40,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
         #region Private Methods
 
-        private IEnumerable<IPath> BuildPaths(JToken data, Stack<Tuple<JProperty, bool>> propertyStack, JToken root)
+        IEnumerable<IPath> BuildPaths(JToken data, Stack<Tuple<JProperty, bool>> propertyStack, JToken root)
         {
             var paths = new List<IPath>();
 
@@ -108,7 +108,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                                 if (propertyData is IEnumerable enumerableData)
 
                                 {
-                                    IEnumerator enumerator = enumerableData.GetEnumerator();
+                                    var enumerator = enumerableData.GetEnumerator();
                                     enumerator.Reset();
                                     if (enumerator.MoveNext())
                                     {
@@ -137,22 +137,22 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             return paths;
         }
 
-        private IPath BuildPath(Stack<Tuple<JProperty, bool>> propertyStack, JProperty jProperty, JToken root)
+        IPath BuildPath(Stack<Tuple<JProperty, bool>> propertyStack, JProperty jProperty, JToken root)
         {
             var path = new JsonPath();
 
             path.ActualPath = string.Join(JsonPath.SeperatorSymbol,
                 propertyStack.Reverse().Select(p => path.CreatePathSegment(p.Item1).ToString(p.Item2)));
 
-            List<Tuple<IPathSegment, bool>> displayPathSegments =
+            var displayPathSegments =
                 propertyStack.Reverse()
                     .Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1), p.Item2))
                     .ToList();
-            bool recordsetEncountered = false;
+            var recordsetEncountered = false;
 
             for (int i = displayPathSegments.Count - 1; i >= 0; i--)
             {
-                Tuple<IPathSegment, bool> pathSegment = displayPathSegments[i];
+                var pathSegment = displayPathSegments[i];
                 if (recordsetEncountered)
                 {
                     pathSegment.Item1.IsEnumarable = false;
@@ -184,7 +184,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             return path;
         }
 
-        private string GetSampleData(JToken root, IPath path)
+        string GetSampleData(JToken root, IPath path)
         {
             var navigator = new JsonNavigator(root.ToString());
             return string.Join(GlobalConstants.AnythingToXmlPathSeperator,

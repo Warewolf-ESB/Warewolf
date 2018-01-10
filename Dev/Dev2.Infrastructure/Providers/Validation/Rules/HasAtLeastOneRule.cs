@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,7 +32,7 @@ namespace Dev2.Providers.Validation.Rules
             var values = new List<string> { GetValue() };
             if(_otherValues != null)
             {
-                values.AddRange(_otherValues.Select(otherValue => otherValue()));
+                values.AddRange(_otherValues.Select(otherValue => otherValue?.Invoke()));
             }
 
             return values.Any(value => !string.IsNullOrEmpty(value)) ? null : new ActionableErrorInfo(DoError)

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,7 +32,7 @@ namespace Dev2.Core.Tests.Activities
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
-            Mock<IServer> env = new Mock<IServer>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg);
 
@@ -54,7 +54,7 @@ namespace Dev2.Core.Tests.Activities
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
-            Mock<IServer> env = new Mock<IServer>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<x><HelpLink>a:\\help.txt</HelpLink></x>") };
 
@@ -77,7 +77,7 @@ namespace Dev2.Core.Tests.Activities
         {
             //------------Setup for test--------------------------
             IEventAggregator evtAg = new EventAggregator();
-            Mock<IServer> env = new Mock<IServer>();
+            var env = new Mock<IServer>();
             env.Setup(e => e.Name).Returns("My Env");
             var resource = new ResourceModel(env.Object, evtAg) { WorkflowXaml = new StringBuilder("<x><HelpLink2>a:\\help.txt</HelpLink2></x>") };
 

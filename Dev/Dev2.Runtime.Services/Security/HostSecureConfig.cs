@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -119,11 +119,11 @@ namespace Dev2.Runtime.Security
 
         #region EnsureSecureConfigFileExists
 
-        private void EnsureSecureConfigFileExists()
+        void EnsureSecureConfigFileExists()
         {
             ConfigurationManager.RefreshSection(SectionName);
             // We need to check both the live and development paths ;)
-            if(!File.Exists(FileName))
+            if (!File.Exists(FileName))
             {
                 Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
                 var newSettings = new NameValueCollection();

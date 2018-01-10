@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Core.Tests</RootNamespace>
     <AssemblyName>Dev2.Studio.Core.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SccProjectName>SAK</SccProjectName>
@@ -36,10 +36,14 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>S2757,S1698,S3451,S3447,S3442,S1155,S3397,S2737,S3216,S1210,S3217,S1994,S127,S3234,S2328,S907,S2997,S126,S2692,S3215,S2688,S2995,S3262,S3600,S927,S3597,S3256,S3456,S1301,S1479,S131,S2996,S3005,S1858,S2225,S1109,S1694,S3244,S2330,S1121,S3376,S1940,S1125,S1227,S3236,S3249,S3453,S3776,S1066,S3457,S2275,S2583,S3253,S1699,S134,S121,S1449,S1854,S3257,S3254,S3172,S2761,S3458,S3532,S3655,S1116,S2344,S3264,S3445,S2372,S1163,S1067,S2290,S2357,S2933,S104,S2345,S2346,S1244,S2486,S2955,S3246,S1764,S3251,S1944,S1939,S3218,S2696,S3444,S1313,S3626,S818,S1117,S3604,S3052,S3220,S1006,S1226,S100,S1541,S107,S3241,S3603,S2197,S2681,S3169,S1659,S3261,S108,S2223,S3265,S2259,S3610,S1848,S3598,S3466,S2360,S2291,S1185,S2234,S3450,S1450,S2934,S2339,S1905,S2333,S3235,S3441,S1862,S2184,S2201,S3449,S2219,S125,S2760,S2070,S2178,S1697,S2437,S122,S3263,S3010,S2743,S1643,S105,S2674,S3240,S2758,S1134,S1135,S2292,S1871,S3443,S2551,S101,S3459,S1481,S1172,S1144,S2326,S1145,S1118,S2123,S3440,S1656,S2376,CS0660,CS0067,CS0661,CS0169,CS0414,CS0649,CS0108,CS0168,CS0219,CS3237,AD0001,S3237,CS4014,S2931,CS0618,CC0021</NoWarn>
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
+    </Reference>
     <Reference Include="FontAwesome.WPF, Version=4.5.0.37524, Culture=neutral, PublicKeyToken=0758b07a11a4f466, processorArchitecture=MSIL">
       <HintPath>..\packages\FontAwesome.WPF.4.5.0.8\lib\net40\FontAwesome.WPF.dll</HintPath>
       <Private>True</Private>
@@ -130,9 +134,8 @@
       <HintPath>..\packages\TaskSchedulerEditor.2.5.20\lib\net40\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Moq, Version=4.7.137.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.7.137\lib\net45\Moq.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -191,7 +194,7 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <None Include="..\Run Tests.ps1">
@@ -214,12 +217,16 @@
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
     <Compile Include="Controller\CommunicationControllerTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
+    <Compile Include="DataListViewModelEqualityTests.cs" />
     <Compile Include="DependencyVisualiserViewModelTests.cs" />
     <Compile Include="DependencyGraph\CircularDependencyTests.cs" />
     <Compile Include="DependencyGraph\GraphTests.cs" />
     <Compile Include="DeployDtoTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
     <Compile Include="ExceptionViewModelTest.cs" />
+    <Compile Include="Factories\CustomGitOpsTests.cs" />
+    <Compile Include="Helpers\ResouceModel.cs" />
+    <Compile Include="Helpers\ResourceExtensionHelperTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -253,6 +260,11 @@
     <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
     <Compile Include="MainViewModelBase.cs" />
+    <Compile Include="Merge\ArmConnectorConflictTests.cs" />
+    <Compile Include="Merge\ConflictModelFactoryTests.cs" />
+    <Compile Include="Merge\MergeArmConnectorConflictTests.cs" />
+    <Compile Include="Merge\MergeToolModelTests.cs" />
+    <Compile Include="Merge\ToolConflictTests.cs" />
     <Compile Include="ShellViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="ModelTests\RecordSetItemModelTests.cs" />
@@ -264,7 +276,6 @@
     <Compile Include="PopupControllerTests.cs" />
     <Compile Include="QuickVariableInputModelTests.cs" />
     <Compile Include="Security\ClientSecurityServiceTests.cs" />
-    <Compile Include="Services\HelpConfigurationTests.cs" />
     <Compile Include="Services\ServerServiceConfigurationTest.cs" />
     <Compile Include="Settings\PerfCounterViewModelTests.cs" />
     <Compile Include="Settings\SettingsViewModelTests.cs" />
@@ -283,6 +294,8 @@
     <Compile Include="TestUtil.cs" />
     <Compile Include="ComplexObjectItemModelTests.cs" />
     <Compile Include="StudioTestViewModelTest.cs" />
+    <Compile Include="MergeWorkflowViewModelTests.cs" />
+    <Compile Include="MergeViewModelTest.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="UtilsTests\DataListConversionUtilTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />
@@ -337,6 +350,7 @@
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
     <Compile Include="ViewFactoryTests.cs" />
+    <Compile Include="Workflows\WorkflowDesignerUnitTest.Merge.cs" />
     <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
     <Compile Include="Workflows\WorkflowDesignerViewModelMock.cs" />
@@ -458,6 +472,10 @@
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.MergeParser\Warewolf.MergeParser.csproj">
+      <Project>{01b6f143-3f8c-4545-b06f-57d2c5ae7c9c}</Project>
+      <Name>Warewolf.MergeParser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
@@ -482,8 +500,15 @@
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
       <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Testing\Warewolf.Testing.csproj">
+      <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
+      <Name>Warewolf.Testing</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Utility - Assign.xml" />
+    <EmbeddedResource Include="XML\Utility - Assign_Confilct.xml" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="..\Dev2.Studio\App.config">
       <Link>App.config</Link>
@@ -493,6 +518,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\ResourceWithErrors.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Loop Constructs - For Each.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\AssignOutput.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

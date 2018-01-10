@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Unique
     [Binding]
     public class UniqueSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public UniqueSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -82,15 +82,15 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Unique
 
         void FillDataset(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
-            if(tableRows.Count == 0)
+            if (tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -139,7 +139,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Unique
         public void WhenTheUniqueToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -148,18 +148,18 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Unique
         {
        
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            string resultVariable = scenarioContext.Get<string>("resultVariable");
+            var resultVariable = scenarioContext.Get<string>("resultVariable");
 
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, resultVariable);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, resultVariable);
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, resultVariable);
+            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, resultVariable);
 
             //string error;
 
-            IList<string> recordSetValues = result.Environment.EvalAsListOfStrings(result.Environment.ToStar(resultVariable), 0);
+            var recordSetValues = result.Environment.EvalAsListOfStrings(result.Environment.ToStar(resultVariable), 0);
 
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
             for(int i = 0; i < tableRows.Count; i++)
             {

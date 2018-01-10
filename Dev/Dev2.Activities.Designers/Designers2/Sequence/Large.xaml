@@ -41,7 +41,7 @@
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0">
             <sap:WorkflowItemsPresenter x:Uid="sad:WorkflowItemsPresenter_1"

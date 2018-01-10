@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,42 +17,13 @@ using Dev2.Studio.Interfaces;
 namespace Dev2.Studio.Core.Utils
 {
     public interface IStudioCompileMessageRepo
-    {
-    
+    {    
         CompileMessageList GetCompileMessagesFromServer(IContextualResourceModel resourceModel);
     }
+
     public interface IStudioCompileMessageRepoFactory
     {
     
         IStudioCompileMessageRepo Create();
-    }
-
-    public class StudioCompileMessageRepoFactory : IStudioCompileMessageRepoFactory
-    {
-        #region Implementation of IStudioCompileMessageRepoFactory
-
-        public IStudioCompileMessageRepo Create()
-        {
-            return new StudioCompileMessageRepo();
-        }
-
-        #endregion
-    }
-
-    public class StudioCompileMessageRepo : IStudioCompileMessageRepo
-    {
-        public CompileMessageList GetCompileMessagesFromServer(IContextualResourceModel resourceModel)
-        {
-            var comsController = new CommunicationController { ServiceName = "FetchDependantCompileMessagesService" };
-
-            var workspaceID = GlobalConstants.ServerWorkspaceID;
-
-            comsController.AddPayloadArgument("ServiceID", resourceModel.ID.ToString());
-            comsController.AddPayloadArgument("WorkspaceID", workspaceID.ToString());
-            var con = resourceModel.Environment.Connection;
-            var result = comsController.ExecuteCommand<CompileMessageList>(con, GlobalConstants.ServerWorkspaceID);
-
-            return result;
-        }
     }
 }

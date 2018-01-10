@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -97,9 +97,9 @@ namespace ActivityUnitTests.ActivityTests
             //------------Setup for test--------------------------
             tempFile = Path.GetTempFileName();
             var zipPathName = Path.GetTempPath() + NewFileName + ".zip";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true,""));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true,""));
-            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null, true);
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true,""));
+            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true,""));
+            var zipTO = ActivityIOFactory.CreateZipTO(null, null, null, true);
             File.WriteAllText(zipPathName, "");
             //------------Assert Preconditions-------------------
             Assert.IsTrue(zipTO.Overwrite);
@@ -122,7 +122,7 @@ namespace ActivityUnitTests.ActivityTests
         public void Zip_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
         {
             var fileNames = new List<string>();
-            Guid randomFileName = Guid.NewGuid();
+            var randomFileName = Guid.NewGuid();
             fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName + "Dev2.txt"));
 
 
@@ -135,7 +135,7 @@ namespace ActivityUnitTests.ActivityTests
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
 
-            DsfZip preact = new DsfZip
+            var preact = new DsfZip
             {
                 InputPath = @"c:\OldFile.txt",
                 OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),

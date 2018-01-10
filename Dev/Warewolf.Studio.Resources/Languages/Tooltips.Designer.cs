@@ -789,11 +789,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-        ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
-        ///Leaving this field blank will assume the default date time format.
-        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. 
-        ///e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///   Looks up a localized string similar to Input Date format.
+        ///To exclude use &apos;around escaped text&apos;..
         /// </summary>
         public static string DateTimeToolTipInputformat {
             get {
@@ -802,10 +799,8 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.
-        ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
-        ///To include text or non-date information use &apos;around the text you want to escape&apos;. 
-        ///e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///   Looks up a localized string similar to Return Date format.
+        ///To exclude use &apos;around escaped text&apos;..
         /// </summary>
         public static string DateTimeToolTipOutputformat {
             get {
@@ -2726,6 +2721,105 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MenuWebServiceToolTip {
             get {
                 return ResourceManager.GetString("MenuWebServiceToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Merge the Service.
+        /// </summary>
+        public static string MergeButtonTooltip {
+            get {
+                return ResourceManager.GetString("MergeButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Tool connection conflict.
+        /// </summary>
+        public static string MergeCurrentArmRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Tool conflict.
+        /// </summary>
+        public static string MergeCurrentConflictRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentConflictRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Variable conflict.
+        /// </summary>
+        public static string MergeCurrentVariablesRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentVariablesRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Workflow name conflict.
+        /// </summary>
+        public static string MergeCurrentWorkflowNameRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentWorkflowNameRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Tool connection conflict.
+        /// </summary>
+        public static string MergeDifferenceArmRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Tool conflict.
+        /// </summary>
+        public static string MergeDifferenceConflictRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceConflictRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Variable conflict.
+        /// </summary>
+        public static string MergeDifferenceVariablesRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceVariablesRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Workflow name conflict.
+        /// </summary>
+        public static string MergeDifferenceWorkflowNameRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceWorkflowNameRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No conflicts found.
+        /// </summary>
+        public static string MergeNoConflictTooltip {
+            get {
+                return ResourceManager.GetString("MergeNoConflictTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the version you want to merge with.
+        /// </summary>
+        public static string MergeSelectionViewLabelTooltip {
+            get {
+                return ResourceManager.GetString("MergeSelectionViewLabelTooltip", resourceCulture);
             }
         }
         
@@ -5536,6 +5630,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ViewJsonObjectTooltip {
             get {
                 return ResourceManager.GetString("ViewJsonObjectTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select between two resources to merge.
+        /// </summary>
+        public static string ViewMergeTooltip {
+            get {
+                return ResourceManager.GetString("ViewMergeTooltip", resourceCulture);
             }
         }
         

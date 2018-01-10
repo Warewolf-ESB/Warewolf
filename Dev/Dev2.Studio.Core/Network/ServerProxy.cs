@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -59,18 +59,6 @@ namespace Dev2.Network
             _wrappedConnection = new ServerProxyWithoutChunking(webAddress, userName, password);
             SetupPassthroughEvents();
         }
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            _wrappedConnection.Dispose();
-        }
-
-        #endregion
 
         #region Implementation of IEnvironmentConnection
 

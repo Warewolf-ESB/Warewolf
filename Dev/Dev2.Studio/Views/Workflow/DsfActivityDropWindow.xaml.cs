@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,7 +37,7 @@ namespace Dev2.Studio.Views.Workflow
             PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
 
-        private void DsfActivityDropWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
+        void DsfActivityDropWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
@@ -45,7 +45,7 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void DsfActivityDropWindow_OnKeyUp(object sender, KeyEventArgs e)
+        void DsfActivityDropWindow_OnKeyUp(object sender, KeyEventArgs e)
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {

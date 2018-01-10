@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,7 +19,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
     [Binding]
     public class LoopConstructsCommon
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public LoopConstructsCommon(ScenarioContext scenarioContext)
         {
@@ -34,7 +34,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
         [Given(@"There is a recordset in the datalist with this shape")]
         public void GivenThereIsARecordsetInTheDatalistWithThisShape(Table table)
         {
-            List<TableRow> rows = table.Rows.ToList();
+            var rows = table.Rows.ToList();
 
             if (rows.Count == 0)
             {
@@ -42,7 +42,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
                 var field = table.Header.ToArray()[1];
 
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();

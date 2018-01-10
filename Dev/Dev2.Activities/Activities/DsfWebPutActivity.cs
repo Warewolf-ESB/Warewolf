@@ -19,7 +19,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("WebMethods", "PUT", ToolType.Native, "6C5F6D7E-4B42-4874-8197-DBE86D4A9F2D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Put")]
-    public class DsfWebPutActivity : DsfWebActivityBase
+    public class DsfWebPutActivity : DsfWebActivityBase,IEquatable<DsfWebPutActivity>
     {
         public DsfWebPutActivity()
             : base(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Put, "PUT Web Method", "PUT Web Method"))
@@ -35,7 +35,7 @@ namespace Dev2.Activities
                 return _debugInputs;
             }
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
 
             AddDebugItem(new DebugItemStaticDataParams("", "Put Data"), debugItem);
             AddDebugItem(new DebugEvalResult(PutData, "", env, update), debugItem);
@@ -79,7 +79,7 @@ namespace Dev2.Activities
 
             if (head != null)
             {
-                IEnumerable<NameValue> nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
+                var nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
                 foreach (var nameValue in nameValues)
                 {
                     httpClient.DefaultRequestHeaders.TryAddWithoutValidation(nameValue.Name, nameValue.Value);
@@ -107,5 +107,28 @@ namespace Dev2.Activities
         }
 
 
+        public bool Equals(DsfWebPutActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(PutData, other.PutData);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfWebPutActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode() * 397) ^ (PutData != null ? PutData.GetHashCode() : 0);
+            }
+        }
     }
 }

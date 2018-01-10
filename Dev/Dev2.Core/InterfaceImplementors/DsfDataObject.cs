@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -41,14 +41,14 @@ namespace Dev2.DynamicServices
     {
         #region Class Members
 
-        private readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
-        private string _parentWorkflowInstanceId = string.Empty;
-        private readonly ConcurrentStack<IExecutionEnvironment> _environments;
+        readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
+        string _parentWorkflowInstanceId = string.Empty;
+        readonly ConcurrentStack<IExecutionEnvironment> _environments;
         #endregion Class Members
 
         #region Constructor
 
-        private DsfDataObject()
+        DsfDataObject()
         {
             Environment = new ExecutionEnvironment();
             _environments = new ConcurrentStack<IExecutionEnvironment>();
@@ -85,7 +85,7 @@ namespace Dev2.DynamicServices
                 if (xe != null)
                 {
                     bool isDebug;
-                    string debugString = ExtractValue(xe, "IsDebug");
+                    var debugString = ExtractValue(xe, "IsDebug");
                     if (!string.IsNullOrEmpty(debugString))
                     {
                         bool.TryParse(debugString, out isDebug);
@@ -106,8 +106,8 @@ namespace Dev2.DynamicServices
                         DebugEnvironmentId = environmentId;
                     }
 
-                    bool isOnDemandSimulation = false;
-                    string onDemandSimulationString = ExtractValue(xe, "IsOnDemandSimulation");
+                    var isOnDemandSimulation = false;
+                    var onDemandSimulationString = ExtractValue(xe, "IsOnDemandSimulation");
                     if (!string.IsNullOrEmpty(onDemandSimulationString))
                     {
                         bool.TryParse(onDemandSimulationString, out isOnDemandSimulation);
@@ -173,10 +173,10 @@ namespace Dev2.DynamicServices
 
         public Guid DebugEnvironmentId { get; set; }
 
-        private string ExtractValue(XElement xe, string elementName)
+        string ExtractValue(XElement xe, string elementName)
         {
-            IEnumerable<XElement> tmp = xe.Descendants(elementName);
-            XElement targetElement = tmp.FirstOrDefault();
+            var tmp = xe.Descendants(elementName);
+            var targetElement = tmp.FirstOrDefault();
 
             return targetElement?.Value ?? string.Empty;
         }
@@ -185,7 +185,7 @@ namespace Dev2.DynamicServices
 
         #region Properties
 
-        private StringBuilder _rawPayload;
+        StringBuilder _rawPayload;
         public ServiceAction ExecuteAction { get; set; }
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
@@ -388,7 +388,7 @@ namespace Dev2.DynamicServices
             result.QueryString = QueryString;
             if (ServiceTest != null)
             {
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 var testString = serializer.Serialize(ServiceTest);
                 result.ServiceTest = serializer.Deserialize<IServiceTestModelTO>(testString);
             }
@@ -444,7 +444,7 @@ namespace Dev2.DynamicServices
         {
             foreach (XName key in readWriteValues.Keys)
             {
-                PropertyInfo pi = typeof(IDSFDataObject).GetProperty(key.LocalName);
+                var pi = typeof(IDSFDataObject).GetProperty(key.LocalName);
 
                 if (pi != null)
                 {
@@ -457,7 +457,7 @@ namespace Dev2.DynamicServices
 
         #region Private Methods
 
-        private void ExtractOutMergeDataFromRequest(XElement xe)
+        void ExtractOutMergeDataFromRequest(XElement xe)
         {
             Guid.TryParse(ExtractValue(xe, "DatalistOutMergeID"), out Guid datalistOutMergeId);
             DatalistOutMergeID = datalistOutMergeId;
@@ -476,7 +476,7 @@ namespace Dev2.DynamicServices
                 : DataListMergeFrequency.OnCompletion;
         }
 
-        private void ExtractInMergeDataFromRequest(XElement xe)
+        void ExtractInMergeDataFromRequest(XElement xe)
         {
             Guid.TryParse(ExtractValue(xe, "DatalistInMergeID"), out Guid datalistInMergeId);
             DatalistInMergeID = datalistInMergeId;

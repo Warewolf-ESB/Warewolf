@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -84,9 +84,9 @@ namespace Dev2.Data.Operations
         public void Merge(string value, string mergeType, string at, string padding, string align)
         {
             enMergeType mergingType;
-            enMergeAlignment mergeAlignment = enMergeAlignment.Left;
+            var mergeAlignment = enMergeAlignment.Left;
 
-            switch(mergeType)
+            switch (mergeType)
             {
                 case "Index":
                     switch (align)
@@ -139,12 +139,12 @@ namespace Dev2.Data.Operations
         /// <param name="at">The numeric index that will be used during the merge</param>
         /// <param name="padding">The padding character that will be used</param>
         /// <param name="mergeAlignment">The alignment used for the padding</param>
-        private void IndexMergeOp(string value, string at, string padding, enMergeAlignment mergeAlignment)
+        void IndexMergeOp(string value, string at, string padding, enMergeAlignment mergeAlignment)
         {
             if (Int32.TryParse(at, out int indexToUse))
             {
-                string paddedString = string.Empty;
-                int difference = indexToUse - value.Length;
+                var paddedString = string.Empty;
+                var difference = indexToUse - value.Length;
                 if (difference >= 0)
                 {
                     var padChar = string.IsNullOrEmpty(padding) || padding.Length < 1 ? ' ' : padding[0];
@@ -180,7 +180,7 @@ namespace Dev2.Data.Operations
         /// </summary>
         /// <param name="value">The value that will be merged to the class string</param>
         /// <param name="at">The Charecters that will be used as the merge token</param>
-        private void CharMergeOp(string value, string at)
+        void CharMergeOp(string value, string at)
         {
             MergeData.Append(value).Append(at);
         }
@@ -193,7 +193,7 @@ namespace Dev2.Data.Operations
         /// Merge data to the class string using a NewLine merge, which will merge the data with a new line in between
         /// </summary>
         /// <param name="value">The value that will be merged to the class string</param>
-        private void NewLineMergeOp(string value)
+        void NewLineMergeOp(string value)
         {
             MergeData.Append(value).Append("\r\n");
         }
@@ -206,7 +206,7 @@ namespace Dev2.Data.Operations
         /// Merge data to the class string using a Tab merge, which will merge the data with a Tab inbetween
         /// </summary>
         /// <param name="value">The value that will be merged to the class string</param>
-        private void TabMergeOp(string value)
+        void TabMergeOp(string value)
         {
             MergeData.Append(value).Append("\t");
         }
@@ -219,7 +219,7 @@ namespace Dev2.Data.Operations
         /// Merge data to the class string using a None merge, which will merge the data with nothing inbetween
         /// </summary>
         /// <param name="value">The value that will be merged to the class string</param>
-        private void NoneMergeOp(string value)
+        void NoneMergeOp(string value)
         {
             MergeData.Append(value);
         }

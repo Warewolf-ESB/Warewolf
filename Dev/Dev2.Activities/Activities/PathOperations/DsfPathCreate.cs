@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -36,7 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Purpose : To create an activity to create files on FTP, FTPS and file system
     /// </summary>
     [ToolDescriptorInfo("FileFolder-Create", "Create", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Create")]
-    public class DsfPathCreate : DsfAbstractFileActivity, IPathOutput, IPathOverwrite
+    public class DsfPathCreate : DsfAbstractFileActivity, IPathOutput, IPathOverwrite,IEquatable<DsfPathCreate>
     {
 
         public DsfPathCreate()
@@ -80,17 +80,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             while(colItr.HasMoreData())
             {
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                Dev2CRUDOperationTO opTo = new Dev2CRUDOperationTO(Overwrite);
+                var broker = ActivityIOFactory.CreateOperationsBroker();
+                var opTo = new Dev2CRUDOperationTO(Overwrite);
 
                 try
                 {
-                    IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(outputItr),
+                    var dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(outputItr),
                                                                                 colItr.FetchNextValue(unameItr),
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
-                    IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-                    string result = broker.Create(dstEndPoint, opTo, true);
+                    var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+                    var result = broker.Create(dstEndPoint, opTo, true);
                     outputs.Add(DataListFactory.CreateOutputTO(Result, result));
                 }
                 catch(Exception e)
@@ -159,5 +159,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfPathCreate other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(OutputPath, other.OutputPath) && Overwrite == other.Overwrite;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfPathCreate) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (OutputPath != null ? OutputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

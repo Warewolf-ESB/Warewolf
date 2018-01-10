@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,13 +13,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Security.Cryptography;
 using System.Windows;
-using Dev2.Common.Interfaces.Utils;
 using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Common.Wrappers;
-using Dev2.Helpers;
 using Dev2.Studio.Core.Helpers;
+using Dev2.Common;
 
 namespace Dev2.CustomControls.Progress
 {
@@ -27,46 +24,33 @@ namespace Dev2.CustomControls.Progress
     {
         readonly IDev2WebClient _webClient;
         protected readonly IProgressNotifier ProgressDialog;
-        private readonly IFile _file;
-        private readonly ICryptoProvider _cryptoProvider;
-        private readonly Window _owner;
-        private readonly string _tmpFileName = "";
-
-        #region Properties
+        readonly IFile _file;
+        readonly Window _owner;
+        readonly string _tmpFileName = "";
 
         public bool IsBusyDownloading { get; private set; }
 
-        #endregion
-
         #region CTOR
-        public ProgressFileDownloader(Window owner)
-            : this(new Dev2WebClient(new WebClient()), new FileWrapper(), new CryptoProvider(new SHA256CryptoServiceProvider()))
-        {
-            _owner = owner;
-        }
 
-        private static Func<Window, Action, IProgressNotifier> getProgressDialogViewModel = (owner, cancelAction) => DialogViewModel(owner, cancelAction);
-
-
+        static Func<Window, Action, IProgressNotifier> getProgressDialogViewModel = (owner, cancelAction) => DialogViewModel(owner, cancelAction);
+        
         static IProgressNotifier DialogViewModel(Window owner, Action cancelAction)
         {
             var dialog = new ProgressDialog(owner);
-            dialog.Closed += (sender, args) => cancelAction();
+            dialog.Closed += (sender, args) => cancelAction?.Invoke();
             var dialogViewModel = new ProgressDialogViewModel(cancelAction, dialog.Show, dialog.Close);
             dialog.DataContext = dialogViewModel;
             return dialogViewModel;
         }
 
-        public ProgressFileDownloader(IDev2WebClient webClient, IFile file, ICryptoProvider cryptoProvider)
+        public ProgressFileDownloader(IDev2WebClient webClient, IFile file)
         {
             VerifyArgument.IsNotNull("webClient", webClient);
             VerifyArgument.IsNotNull("file", file);
-            VerifyArgument.IsNotNull("cryptoProvider", cryptoProvider);
             _webClient = webClient;
 
-            ProgressDialog = GetProgressDialogViewModel(_owner, Cancel);
+            ProgressDialog = GetProgressDialogViewModel?.Invoke(_owner, Cancel);
             _file = file;
-            _cryptoProvider = cryptoProvider;
             _webClient.DownloadProgressChanged += OnDownloadProgressChanged;
             ShutDownAction = ShutdownAndInstall;
             if (!Directory.Exists("Installers"))
@@ -83,12 +67,10 @@ namespace Dev2.CustomControls.Progress
                 {
                     file.Delete(v);
                 }
-            }
-            
-            catch
-            
+            }            
+            catch (IOException e)
             {
-                //best effort.
+                Dev2Logger.Info("Unable to delete temp file.\n" + e.Message, GlobalConstants.WarewolfInfo);
             }
 
         }

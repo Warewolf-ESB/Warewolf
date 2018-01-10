@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,8 +18,8 @@ namespace System.Windows.Controls
 {    
     public class SelectorSelectionAdapter : ISelectionAdapter    
     {
-        private Selector _selector;
-        private bool IgnoringSelectionChanged { get; set; }
+        Selector _selector;
+        bool IgnoringSelectionChanged { get; set; }
         public Selector SelectorControl
         {
             get { return _selector; }
@@ -45,10 +45,6 @@ namespace System.Windows.Controls
         public event SelectionChangedEventHandler SelectionChanged;
         public event RoutedEventHandler Commit;
         public event RoutedEventHandler Cancel;
-
-        public SelectorSelectionAdapter()
-        {
-        }
 
         public SelectorSelectionAdapter(Selector selector)
         {
@@ -92,29 +88,29 @@ namespace System.Windows.Controls
                 }
             }
         }
-        
-        private void ResetScrollViewer()
+
+        void ResetScrollViewer()
         {
-            ScrollViewer sv = SelectorControl?.GetLogicalChildrenBreadthFirst().OfType<ScrollViewer>().FirstOrDefault();
+            var sv = SelectorControl?.GetLogicalChildrenBreadthFirst().OfType<ScrollViewer>().FirstOrDefault();
             sv?.ScrollToTop();
         }
-        
-        private void OnSelectorMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+
+        void OnSelectorMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             OnCommit();
         }
-        
-        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(IgnoringSelectionChanged)
+            if (IgnoringSelectionChanged)
             {
                 return;
             }
 
-            SelectionChangedEventHandler handler = SelectionChanged;
+            var handler = SelectionChanged;
             handler?.Invoke(sender, e);
         }
-        
+
         protected void SelectedIndexIncrement()
         {
             if(SelectorControl != null)
@@ -127,7 +123,7 @@ namespace System.Windows.Controls
         {
             if(SelectorControl != null)
             {
-                int index = SelectorControl.SelectedIndex;
+                var index = SelectorControl.SelectedIndex;
                 if (index >= 0)
                 {
                     SelectorControl.SelectedIndex--;
@@ -175,39 +171,39 @@ namespace System.Windows.Controls
         {
             OnCommit(this, new RoutedEventArgs());
         }
-        
-        private void OnCommit(object sender, RoutedEventArgs e)
+
+        void OnCommit(object sender, RoutedEventArgs e)
         {
-            RoutedEventHandler handler = Commit;
+            var handler = Commit;
             handler?.Invoke(sender, e);
 
             AfterAdapterAction();
         }
-        
+
         protected virtual void OnCancel()
         {
             OnCancel(this, new RoutedEventArgs());
         }
-        
-        private void OnCancel(object sender, RoutedEventArgs e)
+
+        void OnCancel(object sender, RoutedEventArgs e)
         {
-            RoutedEventHandler handler = Cancel;
+            var handler = Cancel;
             handler?.Invoke(sender, e);
 
             AfterAdapterAction();
         }
 
-        private void AfterAdapterAction()
+        void AfterAdapterAction()
         {
             IgnoringSelectionChanged = true;
-            if(SelectorControl != null)
+            if (SelectorControl != null)
             {
                 SelectorControl.SelectedItem = null;
                 SelectorControl.SelectedIndex = -1;
             }
             IgnoringSelectionChanged = false;
         }
-        
+
         public AutomationPeer CreateAutomationPeer()
         {
             return _selector != null ? UIElementAutomationPeer.CreatePeerForElement(_selector) : null;

@@ -16,11 +16,11 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class WebGetInputRegion : IWebGetInputArea
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IWebServiceSource> _source;
-        private string _queryString;
-        private string _requestUrl;
-        private ObservableCollection<INameValue> _headers;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IWebServiceSource> _source;
+        string _queryString;
+        string _requestUrl;
+        ObservableCollection<INameValue> _headers;
         bool _isEnabled;
 
         public WebGetInputRegion()
@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core
             ToolRegionName = "GetInputRegion";
         }
 
-        private void SetupHeaders(ModelItem modelItem)
+        void SetupHeaders(ModelItem modelItem)
         {
             var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
             var headerCollection = new ObservableCollection<INameValue>(existing ?? new List<INameValue>());
@@ -57,9 +57,9 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _modelItem.SetProperty("Headers", _headers.Select(a=>new NameValue(a.Name,a.Value) as INameValue).ToList());
+            _modelItem.SetProperty("Headers", _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
         }
 
         public WebGetInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
@@ -77,9 +77,9 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            
+
             if (_source?.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
@@ -92,7 +92,7 @@ namespace Dev2.Activities.Designers2.Core
                 }));
                 IsEnabled = true;
             }
-            
+
             OnPropertyChanged(@"IsEnabled");
         }
 

@@ -10,7 +10,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
     class DebugOutputViewModelUtil : IDebugOutputViewModelUtil
     {
-        private readonly Guid _sessionId;
+        readonly Guid _sessionId;
 
         public DebugOutputViewModelUtil(Guid sessionId)
         {

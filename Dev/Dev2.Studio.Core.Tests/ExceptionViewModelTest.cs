@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Core.Tests.ViewModelTests
     {
         #region Class Members
 
-        private static string _tempTestFolder;
+        static string _tempTestFolder;
 
         #endregion Class Members
 
@@ -49,9 +49,9 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         public void ShowExceptionDialog_Expected_WindowManagerInvokedForViewModel()
         {
-            ExceptionViewModel vm = new ExceptionViewModel(new AsyncWorker());
+            var vm = new ExceptionViewModel(new AsyncWorker());
 
-            Mock<IWindowManager> mockWinManager = new Mock<IWindowManager>();
+            var mockWinManager = new Mock<IWindowManager>();
             mockWinManager.Setup(c => c.ShowDialog(It.IsAny<BaseViewModel>(), null, null)).Verifiable();
 
             vm.WindowNavigation = mockWinManager.Object;
@@ -63,9 +63,9 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         public void SendErrorCommandTest()
         {
-            Mock<IAsyncWorker> asyncWorker = new Mock<IAsyncWorker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
 
-            ExceptionViewModel vm = new ExceptionViewModel(asyncWorker.Object);
+            var vm = new ExceptionViewModel(asyncWorker.Object);
 
             vm.SendErrorCommand.Execute(null);
 
@@ -76,9 +76,9 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         public void CancelCommandTest()
         {
-            Mock<IAsyncWorker> asyncWorker = new Mock<IAsyncWorker>();
+            var asyncWorker = new Mock<IAsyncWorker>();
 
-            ExceptionViewModel vm = new ExceptionViewModel(asyncWorker.Object);
+            var vm = new ExceptionViewModel(asyncWorker.Object);
             vm.Testing = true;
 
             vm.CancelCommand.Execute(null);
@@ -91,7 +91,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             IAsyncWorker asyncWorker = null;
 
-            ExceptionViewModel vm = new ExceptionViewModel(asyncWorker);
+            var vm = new ExceptionViewModel(asyncWorker);
 
             Assert.IsNotNull(vm.AsyncWorker);
         }
@@ -101,7 +101,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             IAsyncWorker asyncWorker = new AsyncWorker();
 
-            ExceptionViewModel vm = new ExceptionViewModel(asyncWorker);
+            var vm = new ExceptionViewModel(asyncWorker);
 
             Assert.IsNotNull(vm.AsyncWorker);
             Assert.AreSame(asyncWorker, vm.AsyncWorker);

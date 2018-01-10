@@ -525,7 +525,7 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert executing agai
 	  And "WorkflowWithAssignAndSQLBulkInsert" contains an Assign "InsertData" as
 	  | variable    | value    |
 	  | [[rec().a]] | Warewolf |
-	  And "WorkflowWithAssignAndSQLBulkInsert" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+	  And "WorkflowWithAssignAndSQLBulkInsert" contains an SQL Bulk Insert "BulkInsert" using database "NewSqlServerSource" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
 	  | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
 	  | Id     |                     | false      | int          |           | true            |
 	  | Name   | [[rec().a]]         | false      | varchar      | 50        | false           |
@@ -552,7 +552,7 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert with negative 
 	  And "WorkflowWithAssignAndSQLBulk" contains an Assign "InsertData" as
 	  | variable    | value |
 	  | [[rec().a]] | Warewolf     |
-	  And "WorkflowWithAssignAndSQLBulk" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+	  And "WorkflowWithAssignAndSQLBulk" contains an SQL Bulk Insert "BulkInsert" using database "NewSqlServerSource" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
 	  | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
 	  | Id     |                     | false      | int          |           | true            |
 	  | Name   | [[rec(-1).a]]       | false      | varchar      | 50        | false           |
@@ -1756,30 +1756,7 @@ Scenario: Workflow Assign and Find Record index
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |	 	 
 	  
-Scenario: Workflow Assign and Find Record index With Multiple Recordsets
-      Given I have a workflow "WFWithAssignandFindRecordindexTool"
-	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
-      | # | variable       | value |
-      | # | [[rec().Name]] | Bob   |
-      | # | [[rec().Age]]  | 30    |
-      | # | [[rec().Name]] | Alice |
-      | # | [[rec().Age]]  | 26    |
-      | # | [[rec().Name]] | Bob   |
-      | # | [[rec().Age]]  | 41    |
-      | # | [[rec().Name]] | Jake  |
-      | # | [[rec().Age]]  | 41    |
-      | # | [[rec().Name]] | Bob   |
-      | # | [[rec().Age]]  | 15    |
-	  And "WFWithAssignandFindRecordindexTool" contains Find Record Index "FindRecord0" into result as "[[Output]]"
-      | # | In Field                       | # | Match Type | Match | Require All Matches To Be True | Require All Fields To Match |
-      | # | [[rec(*).Name]],[[rec(*).Age]] | 1 | =          | Bob   | YES                            | NO                          |
-      | # |                                | 2 | <          | 40    | YES                            | NO                          |
-	  When "WFWithAssignandFindRecordindexTool" is executed
-	  Then the workflow execution has "NO" error
-	  And the "FindRecord0" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
-	  | # |                   |
-	  | 1 | [[Output]] =  1,5 |
-		 
+
 Scenario Outline: Testing Length with two variables in Result field
       Given I have a workflow "WorkflowforLength"
       And "WorkflowforLength" contains an Assign "Rec To Convert" as
@@ -1805,8 +1782,8 @@ Scenario Outline: Testing Length with two variables in Result field
 	  |                |
 	  |                |
 Examples: 
-      | No    | Variable       |
-      | 1     | [[length]][[a]] |
+      | No | Variable               |
+      | 1  | [[length]][[a]]        |
       | 2  | [[a]]*]]               |
       | 3  | [[var@]]               |
       | 4  | [[var]]00]]            |

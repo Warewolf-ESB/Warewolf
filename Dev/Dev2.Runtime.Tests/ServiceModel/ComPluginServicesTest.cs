@@ -28,7 +28,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region DeserializeService
 
-        private class ComPluginServicesMock : ComPluginServices
+        class ComPluginServicesMock : ComPluginServices
         {
             public new Service DeserializeService(string args)
             {
@@ -269,7 +269,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ClsId = clsId
             };
         }
-        private const string clsId = "00000514-0000-0010-8000-00AA006D2EA4";
+        const string clsId = "00000514-0000-0010-8000-00AA006D2EA4";
         #endregion
     }
 }

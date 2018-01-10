@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -64,13 +64,13 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                                         new PropertyMetadata(false));
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        private string Url
+        string Url
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
 
-        private string Headers
+        string Headers
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
@@ -94,20 +94,15 @@ namespace Dev2.Activities.Designers2.GetWebRequest
 
         protected override void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
+            if (e.PropertyName == "Url" || e.PropertyName == "Headers")
             {
-                case "Url":
-                case "Headers":
-                    ExtractVariables();
-                    break;
-                default:
-                    break;
+                ExtractVariables();
             }
         }
 
         #endregion
 
-        private void ExtractVariables()
+        void ExtractVariables()
         {
             PreviewViewModel.Output = string.Empty;
             var urlVariables = DataListCleaningUtils
@@ -136,7 +131,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
 
                 mustRemainKeys.ForEach(k => variableList.Remove(k.Key));
 
-                variableList.ForEach(v => PreviewViewModel.Inputs.Add(new ObservablePair<string, string> {Key = v}));
+                variableList.ForEach(v => PreviewViewModel.Inputs.Add(new ObservablePair<string, string> { Key = v }));
             }
             else
             {
@@ -145,7 +140,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             }
         }
 
-        private void DoPreview(object sender, PreviewRequestedEventArgs args)
+        void DoPreview(object sender, PreviewRequestedEventArgs args)
         {
             Errors = null;
             PreviewViewModel.Output = string.Empty;
@@ -161,7 +156,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             }
         }
 
-        private string GetUrl(ObservableCollection<ObservablePair<string, string>> inputs = null)
+        string GetUrl(ObservableCollection<ObservablePair<string, string>> inputs = null)
         {
             var url = Url;
 
@@ -216,7 +211,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             return url;
         }
 
-        private void ValidateUrl(string urlValue)
+        void ValidateUrl(string urlValue)
         {
             if (string.IsNullOrWhiteSpace(urlValue))
             {
@@ -253,7 +248,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                 return webInvoker.ExecuteRequest(method, url, headers);
             };
 
-        private string GetPreviewOutput(string url)
+        string GetPreviewOutput(string url)
         {
             Errors = null;
             var result = string.Empty;
@@ -261,7 +256,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
             {
                 var headers = string.IsNullOrEmpty(Headers)
                                   ? new string[0]
-                                  : Headers.Split(new[] {'\n', '\r', ';'}, StringSplitOptions.RemoveEmptyEntries);
+                                  : Headers.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
                 var headersEntries = headers.Select(header => header.Split(':')).Select(headerSegments => new Tuple<string, string>(headerSegments[0], headerSegments[1])).ToList();
 

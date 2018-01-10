@@ -20,8 +20,8 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 using Dev2.Threading;
-
-
+using Dev2.ConnectionHelpers;
+using Dev2.Studio.Core;
 
 namespace Warewolf.UIBindingTests.Deploy
 {
@@ -40,8 +40,12 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             Core.Utils.SetupResourceDictionary();
             var serverRepo = new Mock<IServerRepository>();
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            CustomContainer.Register(connectControlSingleton.Object);
 
-            
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+
             var shell = GetMockShellVm(true, localhostString);
             var shellViewModel = GetMockShellVm(false, destinationServerString);
             serverRepo.Setup(repository => repository.ActiveServer).Returns(shellViewModel.ActiveServer);
@@ -116,6 +120,11 @@ namespace Warewolf.UIBindingTests.Deploy
             var shell = new Mock<IShellViewModel>();
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            var env = new Mock<IEnvironmentViewModel>();
+            shell.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                env.Object
+            });
             var containsKey = ScenarioContext.Current.ContainsKey(localhostString);
             if (!containsKey)
             {
@@ -240,30 +249,6 @@ namespace Warewolf.UIBindingTests.Deploy
                 }
             };
         }
-
-        //static IExplorerItemViewModel CreateExplorerVms()
-        //{
-        //    ExplorerItemViewModel ax = null;
-        //    var server = new Mock<IServer>();
-        //    server.SetupGet(server1 => server1.CanDeployFrom).Returns(true);
-        //    ax = new ExplorerItemViewModel(server.Object, null, a => { }, new Mock<IShellViewModel>().Object, new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
-        //    {
-        //        ResourceName = "Examples",
-        //        Children = new ObservableCollection<IExplorerItemViewModel>
-        //        {
-                    
-        //            new ExplorerItemViewModel(server.Object, ax, a => { }
-        //            , new Mock<IShellViewModel>().Object
-        //            , new Mock<Dev2.Common.Interfaces.Studio.Controller.IPopupController>().Object)
-        //            {
-        //                ResourceName = "Utility - Date and Time",
-        //                ResourcePath = "Examples\\Utility - Date and Time",
-        //                ResourceType = "WorkflowService"
-        //            }
-        //        }
-        //    };
-        //    return ax;
-        //}
 
         [Given(@"selected Source Server is ""(.*)""")]
         public void GivenSelectedSourceServerIs(string selectedSourceServer)
@@ -551,7 +536,7 @@ namespace Warewolf.UIBindingTests.Deploy
             SetDestPermisions(deployFrom, deployTo, destinationServer);
         }
 
-        private void SetDestPermisions(bool deployFrom, bool deployTo, Mock<IServer> Mockserver)
+        void SetDestPermisions(bool deployFrom, bool deployTo, Mock<IServer> Mockserver)
         {
             var destinationServer = Mockserver;
             destinationServer.Setup(server => server.CanDeployFrom).Returns(deployFrom);
@@ -658,6 +643,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             var msg = new Mock<IPopupMessage>();
             GetPopup().Object.Show(msg.Object);
+            CustomContainer.Register<IServerRepository>(new ServerRepository());
         }
 
         [Then(@"a warning message appears ""(.*)""")]

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,7 +27,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
     {
         internal PocoTestData GivenPoco()
         {
-            PocoTestData testData = new PocoTestData
+            var testData = new PocoTestData
             {
                 Name = "Brendon",
                 Age = 30,
@@ -38,7 +38,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
                 },
             };
 
-            PocoTestData nestedTestData1 = new PocoTestData
+            var nestedTestData1 = new PocoTestData
             {
                 Name = "Mo",
                 Age = 30,
@@ -49,7 +49,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
                 },
             };
 
-            PocoTestData nestedTestData2 = new PocoTestData
+            var nestedTestData2 = new PocoTestData
             {
                 Name = "Trav",
                 Age = 30,
@@ -67,7 +67,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
 
         internal PocoTestData GivenPocoWithParallelAndNestedEnumerables()
         {
-            PocoTestData testData = new PocoTestData
+            var testData = new PocoTestData
             {
                 Name = "Brendon",
                 Age = 30,
@@ -78,7 +78,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
                 },
             };
 
-            PocoTestData nestedTestData1 = new PocoTestData
+            var nestedTestData1 = new PocoTestData
             {
                 Name = "Mo",
                 Age = 30,
@@ -89,7 +89,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
                 },
             };
 
-            PocoTestData nestedTestData2 = new PocoTestData
+            var nestedTestData2 = new PocoTestData
             {
                 Name = "Trav",
                 Age = 30,
@@ -100,7 +100,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
                 },
             };
 
-            PocoTestData nestedTestData3 = new PocoTestData
+            var nestedTestData3 = new PocoTestData
             {
                 Name = "Jayd",
                 Age = 30,
@@ -111,7 +111,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
                 },
             };
 
-            PocoTestData nestedTestData4 = new PocoTestData
+            var nestedTestData4 = new PocoTestData
             {
                 Name = "Dan",
                 Age = 30,
@@ -122,7 +122,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
                 },
             };
 
-            PocoTestData nestedTestData5 = new PocoTestData
+            var nestedTestData5 = new PocoTestData
             {
                 Name = "Mark",
                 Age = 30,
@@ -133,7 +133,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
                 },
             };
 
-            PocoTestData nestedTestData6 = new PocoTestData
+            var nestedTestData6 = new PocoTestData
             {
                 Name = "Warren",
                 Age = 30,
@@ -144,7 +144,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests
                 },
             };
 
-            PocoTestData nestedTestData7 = new PocoTestData
+            var nestedTestData7 = new PocoTestData
             {
                 Name = "Wallis",
                 Age = 30,
@@ -268,10 +268,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void MapPathsOfUnexpectedType_Expected_PocoPaths()
         {
-            Uri uri = new Uri("/cake", UriKind.Relative);
+            var uri = new Uri("/cake", UriKind.Relative);
 
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            IEnumerable<IPath> paths = dataBrowser.Map(uri);
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var paths = dataBrowser.Map(uri);
 
             Assert.IsTrue(paths.All(p => p.GetType() == typeof(PocoPath)));
         }
@@ -282,10 +282,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void MapPathsOfReferenceType_Expected_PocoPaths()
         {
-            PocoTestData testData = GivenPoco();
+            var testData = GivenPoco();
 
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            IEnumerable<IPath> paths = dataBrowser.Map(testData);
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var paths = dataBrowser.Map(testData);
 
             Assert.IsTrue(paths.All(p => p.GetType() == typeof(PocoPath)));
         }
@@ -296,12 +296,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void SelectScalarValueUsingPocoScalarPathFromReferenceType_Expected_ScalarValue()
         {
-            PocoTestData testData = GivenPoco();
+            var testData = GivenPoco();
 
             IPath namePath = new PocoPath("Name", "Name");
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
 
-            object data = dataBrowser.SelectScalar(namePath, testData);
+            var data = dataBrowser.SelectScalar(namePath, testData);
 
             Assert.AreEqual(data, testData.Name);
         }
@@ -313,15 +313,15 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void SelectEnumerableValueUsingPocoEnumerablePathFromReferenceType_Expected_ValuesFromEachItemInEnumeration()
         {
-            PocoTestData testData = GivenPoco();
+            var testData = GivenPoco();
 
             IPath namePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
 
-            IEnumerable<object> data = dataBrowser.SelectEnumerable(namePath, testData);
+            var data = dataBrowser.SelectEnumerable(namePath, testData);
 
-            string expected = string.Join("|", testData.EnumerableData.Select(e => e.Name));
-            string actual = string.Join("|", data.Select(o => o.ToString()));
+            var expected = string.Join("|", testData.EnumerableData.Select(e => e.Name));
+            var actual = string.Join("|", data.Select(o => o.ToString()));
 
             Assert.AreEqual(expected, actual);
         }
@@ -333,14 +333,14 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingPocoEnumerablePathsFromReferenceType_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
-            PocoTestData testData = GivenPocoWithParallelAndNestedEnumerables();
+            var testData = GivenPocoWithParallelAndNestedEnumerables();
 
-            PocoPath enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
-            PocoPath nestedEnumerableNamePath = new PocoPath("EnumerableData().EnumerableData().Name", "EnumerableData.EnumerableData.Name");
-            List<IPath> paths = new List<IPath> { enumerableNamePath, nestedEnumerableNamePath };
+            var enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
+            var nestedEnumerableNamePath = new PocoPath("EnumerableData().EnumerableData().Name", "EnumerableData.EnumerableData.Name");
+            var paths = new List<IPath> { enumerableNamePath, nestedEnumerableNamePath };
 
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            Dictionary<IPath, IList<object>> data = dataBrowser.SelectEnumerablesAsRelated(paths, testData);
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var data = dataBrowser.SelectEnumerablesAsRelated(paths, testData);
 
             #region Complex Setup for Expected
 
@@ -349,9 +349,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests
             // It can't be reused for other tests and can't be made generic
             // without replicating the funcationality being tested.
             //
-            string tmpExpected = "";
-            string tmpExpected1 = "";
-            string separator = "|";
+            var tmpExpected = "";
+            var tmpExpected1 = "";
+            var separator = "|";
 
             for (int outerCount = 0; outerCount < testData.EnumerableData.Count; outerCount++)
             {
@@ -384,8 +384,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests
 
             #endregion Complex Setup for Expected
 
-            string expected = tmpExpected + "^" + tmpExpected1;
-            string actual = string.Join("|", data[enumerableNamePath]);
+            var expected = tmpExpected + "^" + tmpExpected1;
+            var actual = string.Join("|", data[enumerableNamePath]);
             actual += "^" + string.Join("|", data[nestedEnumerableNamePath]);
 
             Assert.AreEqual(expected, actual);
@@ -397,10 +397,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void MapPathsOfXml_Expected_XmlPaths()
         {
-            string testData = GivenXml();
+            var testData = GivenXml();
 
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            IEnumerable<IPath> paths = dataBrowser.Map(testData);
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var paths = dataBrowser.Map(testData);
 
             Assert.IsTrue(paths.All(p => p.GetType() == typeof(XmlPath)));
         }
@@ -411,12 +411,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void SelectScalarValueUsingPocoScalarPathFromXml_Expected_ScalarValue()
         {
-            string testData = GivenXml();
+            var testData = GivenXml();
 
             IPath namePath = new XmlPath("Company:Name", "Company:Name");
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
 
-            object data = dataBrowser.SelectScalar(namePath, testData);
+            var data = dataBrowser.SelectScalar(namePath, testData);
 
             Assert.AreEqual(data, "Dev2");
         }
@@ -429,17 +429,17 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingPocoEnumerablePathsFromXml_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
-            string testData = GivenXml();
+            var testData = GivenXml();
 
-            XmlPath enumerableNamePath = new XmlPath("Company.Departments().Department:Name", "Company.Departments.Department:Name");
-            XmlPath nestedEnumerableNamePath = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
-            List<IPath> paths = new List<IPath> { enumerableNamePath, nestedEnumerableNamePath };
+            var enumerableNamePath = new XmlPath("Company.Departments().Department:Name", "Company.Departments.Department:Name");
+            var nestedEnumerableNamePath = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
+            var paths = new List<IPath> { enumerableNamePath, nestedEnumerableNamePath };
 
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            Dictionary<IPath, IList<object>> data = dataBrowser.SelectEnumerablesAsRelated(paths, testData);
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var data = dataBrowser.SelectEnumerablesAsRelated(paths, testData);
 
             const string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
-            string actual = string.Join("|", data[enumerableNamePath]);
+            var actual = string.Join("|", data[enumerableNamePath]);
             actual += "^" + string.Join("|", data[nestedEnumerableNamePath]);
 
             Assert.AreEqual(expected, actual);
@@ -451,10 +451,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void MapPathsOfJson_Expected_JsonPaths()
         {
-            string testData = GivenJson();
+            var testData = GivenJson();
 
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            IEnumerable<IPath> paths = dataBrowser.Map(testData);
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var paths = dataBrowser.Map(testData);
 
             Assert.IsTrue(paths.All(p => p.GetType() == typeof(JsonPath)));
         }
@@ -465,12 +465,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void SelectScalarValueUsingJsonScalarPathFromJson_Expected_ScalarValue()
         {
-            string testData = GivenJson();
+            var testData = GivenJson();
 
             IPath namePath = new JsonPath("Name", "Name");
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
 
-            object data = dataBrowser.SelectScalar(namePath, testData);
+            var data = dataBrowser.SelectScalar(namePath, testData);
 
             Assert.AreEqual(data, "Dev2");
         }
@@ -483,17 +483,17 @@ namespace Dev2.Tests.ConverterTests.GraphTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingJsonEnumerablePathsFromJson_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
-            string testData = GivenJson();
+            var testData = GivenJson();
 
             IPath enumerableNamePath = new JsonPath("Departments().Name", "Departments.Name");
             IPath nestedEnumerableNamePath = new JsonPath("Departments().Employees().Name", "Departments.Employees.Name");
-            List<IPath> paths = new List<IPath> { enumerableNamePath, nestedEnumerableNamePath };
+            var paths = new List<IPath> { enumerableNamePath, nestedEnumerableNamePath };
 
-            IDataBrowser dataBrowser = DataBrowserFactory.CreateDataBrowser();
-            Dictionary<IPath, IList<object>> data = dataBrowser.SelectEnumerablesAsRelated(paths, testData);
+            var dataBrowser = DataBrowserFactory.CreateDataBrowser();
+            var data = dataBrowser.SelectEnumerablesAsRelated(paths, testData);
 
             const string expected = "Dev|Dev|Accounts|Accounts^Brendon|Jayd|Bob|Joe";
-            string actual = string.Join("|", data[enumerableNamePath]);
+            var actual = string.Join("|", data[enumerableNamePath]);
             actual += "^" + string.Join("|", data[nestedEnumerableNamePath]);
 
             Assert.AreEqual(expected, actual);

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,7 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             const string DataList = "<ADL><recset1>\r\n\t\t<field1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>";
             SetupArguments("<root>" + DataList + "</root>", DataList, "", "[[recset1().field1]]", "[[OutVar1]]");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
             // remove test datalist ;)
@@ -71,15 +71,15 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]]", "[[recset2().id]]");
-            List<string> expected = new List<string> { "1", "2", "5" };
+            var expected = new List<string> { "1", "2", "5" };
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out IList<string> actual, out string error);
 
             // remove test datalist ;)
 
-            List<string> actualRet = new List<string>();
+            var actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actualRet, comparer);
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]]", "[[OutVar1]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
@@ -148,15 +148,15 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]]", "[[recset2().id]]");
-            List<string> expected = new List<string> { "10", "1", "2", "5" };
+            var expected = new List<string> { "10", "1", "2", "5" };
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out IList<string> actual, out string error);
 
             // remove test datalist ;)
 
-            List<string> actualRet = new List<string>();
+            var actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actualRet, comparer);
@@ -187,13 +187,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2().value]]");
-            List<string> expectedId = new List<string> { "1", "2", "5" };
-            List<string> expectedValue = new List<string> { "Test1", "Test2", "Test5" };
+            var expectedId = new List<string> { "1", "2", "5" };
+            var expectedValue = new List<string> { "Test1", "Test2", "Test5" };
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out IList<string> actual, out string error);
-            List<string> actualRet = new List<string>();
+            var actualRet = new List<string>();
 
             actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
@@ -237,13 +237,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2(*).id]],[[recset2(*).value]]");
-            List<string> expectedId = new List<string> { "1", "2", "5" };
-            List<string> expectedValue = new List<string> { "Test1", "Test2", "Test5" };
+            var expectedId = new List<string> { "1", "2", "5" };
+            var expectedValue = new List<string> { "Test1", "Test2", "Test5" };
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out IList<string> actual, out string error);
-            List<string> actualRet = new List<string>();
+            var actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedId, actualRet, comparer);
@@ -287,13 +287,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2(*).value]]");
-            List<string> expectedId = new List<string> { "99", "1", "2", "5" };
-            List<string> expectedValue = new List<string> { "Test1", "Test2", "Test5", "" };
+            var expectedId = new List<string> { "99", "1", "2", "5" };
+            var expectedValue = new List<string> { "Test1", "Test2", "Test5", "" };
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetRecordSetFieldValueFromDataList(result.Environment, "recset2", "id", out IList<string> actual, out string error);
-            List<string> actualRet = new List<string>();
+            var actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedId, actualRet, comparer);
@@ -472,7 +472,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string inFields, string resultFields, string result)
+        void SetupArguments(string currentDL, string testData, string inFields, string resultFields, string result)
         {
             var unique = new DsfUniqueActivity { InFields = inFields, ResultFields = resultFields, Result = result };
             TestStartNode = new FlowStep

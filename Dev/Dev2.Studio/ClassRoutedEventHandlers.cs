@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,14 +17,11 @@ using Dev2.UI;
 
 namespace Dev2.Studio
 {
-    /// <summary>
-    /// Holds all static routed event handlers
-    /// </summary>
     public static class ClassRoutedEventHandlers
     {
         #region Fields
 
-        private static bool _registered;
+        static bool _registered;
 
         #endregion Fields
 
@@ -49,7 +46,7 @@ namespace Dev2.Studio
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                IPopupController popup = CustomContainer.Get<IPopupController>();
+                var popup = CustomContainer.Get<IPopupController>();
                 popup.Show(Warewolf.Studio.Resources.Languages.Core.IntellisenseTabInserted,
                     Warewolf.Studio.Resources.Languages.Core.IntellisenseTabInsertedHeader, MessageBoxButton.OK, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxDesignSurfaceTabPasteDialog, false, false, true, false, false, false);
             }), null);

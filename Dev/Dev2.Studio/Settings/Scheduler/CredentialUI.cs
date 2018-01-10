@@ -11,21 +11,20 @@ namespace Dev2.Settings.Scheduler
     public static class CredentialUI
     {
         [DllImport("ole32.dll")]
-        private static extern void CoTaskMemFree(IntPtr ptr);
+        static extern void CoTaskMemFree(IntPtr ptr);
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-
-        private struct CREDUI_INFO
+        struct CREDUI_INFO
         {
             public int cbSize;
-            private readonly IntPtr hwndParent;
+            readonly IntPtr hwndParent;
             public string pszMessageText;
             public string pszCaptionText;
-            private readonly IntPtr hbmBanner;
+            readonly IntPtr hbmBanner;
         }
 
         [DllImport("credui.dll", CharSet = CharSet.Auto)]
-        private static extern bool CredUnPackAuthenticationBuffer(int dwFlags,
+        static extern bool CredUnPackAuthenticationBuffer(int dwFlags,
             IntPtr pAuthBuffer,
             uint cbAuthBuffer,
             StringBuilder pszUserName,
@@ -36,7 +35,7 @@ namespace Dev2.Settings.Scheduler
             ref int pcchMaxPassword);
 
         [DllImport("credui.dll", CharSet = CharSet.Auto)]
-        private static extern int CredUIPromptForWindowsCredentials(ref CREDUI_INFO notUsedHere,
+        static extern int CredUIPromptForWindowsCredentials(ref CREDUI_INFO notUsedHere,
             int authError,
             ref uint authPackage,
             IntPtr inAuthBuffer,
@@ -49,15 +48,15 @@ namespace Dev2.Settings.Scheduler
         [ExcludeFromCodeCoverage]
         public static void GetCredentialsVistaAndUp(string taskName, out NetworkCredential networkCredential)
         {
-            CREDUI_INFO credui = new CREDUI_INFO
+            var credui = new CREDUI_INFO
             {
                 pszCaptionText = @"Please enter the credentials to use to schedule",
                 pszMessageText = taskName
             };
             credui.cbSize = Marshal.SizeOf(credui);
             uint authPackage = 0;
-            bool save = false;
-            int result = CredUIPromptForWindowsCredentials(ref credui,
+            var save = false;
+            var result = CredUIPromptForWindowsCredentials(ref credui,
                 0,
                 ref authPackage,
                 IntPtr.Zero,
@@ -71,9 +70,9 @@ namespace Dev2.Settings.Scheduler
             var passwordBuf = new StringBuilder(100);
             var domainBuf = new StringBuilder(100);
 
-            int maxUserName = 100;
-            int maxDomain = 100;
-            int maxPassword = 100;
+            var maxUserName = 100;
+            var maxDomain = 100;
+            var maxPassword = 100;
             if (result == 0)
             {
                 if (CredUnPackAuthenticationBuffer(0, outCredBuffer, outCredSize, usernameBuf, ref maxUserName,

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,7 @@ namespace Dev2.Threading
         public Task Start(Action backgroundAction, Action uiAction)
         {
             var scheduler = GetTaskScheduler();
-            return Task.Run(backgroundAction).ContinueWith(_ => uiAction(), scheduler);
+            return Task.Run(backgroundAction).ContinueWith(_ => uiAction?.Invoke(), scheduler);
         }
 
         /// <summary>
@@ -47,11 +47,11 @@ namespace Dev2.Threading
             {
                 if(_.Exception != null)
                 {
-                    onError(_.Exception.Flatten());
+                    onError?.Invoke(_.Exception.Flatten());
                 }
                 else
                 {
-                    uiAction();
+                    uiAction?.Invoke();
                 }
             }, scheduler);
         }
@@ -76,11 +76,11 @@ namespace Dev2.Threading
                 {
                     if (_.Exception != null)
                     {
-                        onError(_.Exception.Flatten());
+                        onError?.Invoke(_.Exception.Flatten());
                     }
                     else
                     {
-                        uiAction();
+                        uiAction?.Invoke();
                     }
                 }
             }, scheduler);
@@ -116,11 +116,11 @@ namespace Dev2.Threading
             {
                 if (task.Exception != null)
                 {
-                    onError(task.Exception.Flatten());
+                    onError?.Invoke(task.Exception.Flatten());
                 }
                 else
                 {
-                    uiAction(task.Result);
+                    uiAction?.Invoke(task.Result);
                 }
                 
             }, scheduler);
@@ -140,7 +140,7 @@ namespace Dev2.Threading
             var scheduler = GetTaskScheduler();
             return Task.Run(backgroundFunc).ContinueWith(task =>
             {
-                uiAction(task.Result);
+                uiAction?.Invoke(task.Result);
             }, scheduler);
         }
 
@@ -164,11 +164,11 @@ namespace Dev2.Threading
                 {
                     if (task.Exception != null)
                     {
-                        onError(task.Exception.Flatten());
+                        onError?.Invoke(task.Exception.Flatten());
                     }
                     else
                     {
-                        uiAction(task.Result);
+                        uiAction?.Invoke(task.Result);
                     }
                 }
             }, scheduler);

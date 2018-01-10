@@ -11,9 +11,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     {
         #region Private Methods
 
-        private static Isolated<PluginRuntimeHandler> CreateInvokeAppDomain()
+        static Isolated<PluginRuntimeHandler> CreateInvokeAppDomain()
         {
-            Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>();
+            var isolated = new Isolated<PluginRuntimeHandler>();
             return isolated;
         }
 

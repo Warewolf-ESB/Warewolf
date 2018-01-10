@@ -18,18 +18,18 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IManageEmailSourceModel> _updateManagerMock;
-        private Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
-        private Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
-        private Mock<IEmailServiceSource> _emailSource;
-        private Mock<IEventAggregator> _aggregatorMock;
+        Mock<IManageEmailSourceModel> _updateManagerMock;
+        Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
+        Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
+        Mock<IEmailServiceSource> _emailSource;
+        Mock<IEventAggregator> _aggregatorMock;
 
-        private string _emailServiceSourceResourceName;
+        string _emailServiceSourceResourceName;
 
-        private List<string> _changedProperties;
-        private ManageEmailSourceViewModel _target;
-        private List<string> _changedPropertiesSource;
-        private ManageEmailSourceViewModel _targetSource;
+        List<string> _changedProperties;
+        ManageEmailSourceViewModel _target;
+        List<string> _changedPropertiesSource;
+        ManageEmailSourceViewModel _targetSource;
 
         #endregion Fields
 

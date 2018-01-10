@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Common.Annotations;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
@@ -40,13 +39,13 @@ namespace Dev2.Settings
         [JsonIgnore]
         public static readonly DependencyProperty HelpTextProperty = DependencyProperty.Register("HelpText", typeof(string), typeof(SettingsItemViewModel), new PropertyMetadata(null,OnHelpTextChanged));
 
-        
-        private static void OnHelpTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+
+        static void OnHelpTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel?.UpdateHelpText(e.NewValue as string?? "");
+            mainViewModel?.HelpViewModel?.UpdateHelpText(e.NewValue as string ?? "");
         }
-        
+
         public bool IsDirty
         {
             get { return (bool)GetValue(IsDirtyProperty); }
@@ -63,8 +62,7 @@ namespace Dev2.Settings
         protected abstract void CloseHelp();
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
+        
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
@@ -76,7 +74,7 @@ namespace Dev2.Settings
     {
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
-            JsonProperty property = base.CreateProperty(member, memberSerialization);
+            var property = base.CreateProperty(member, memberSerialization);
 
             if (property.PropertyName == "Dispatcher")
             {

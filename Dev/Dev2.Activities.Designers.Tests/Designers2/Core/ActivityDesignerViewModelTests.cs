@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -110,8 +110,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            Mock<IContextualResourceModel> setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock();
-            ErrorInfo errorInfo = new ErrorInfo { InstanceID = new Guid() };
+            var setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock();
+            var errorInfo = new ErrorInfo { InstanceID = new Guid() };
 
             var envRepo = new Mock<IServerRepository>();
             envRepo.Setup(e => e.ActiveServer).Returns(setupResourceModelMock.Object.Environment);
@@ -461,7 +461,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 workflowHelper = wh.Object;
             }
 
-            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, popupController.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, true);
+            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, popupController.Object, new SynchronousAsyncWorker(), createDesigner, true);
 
             return viewModel;
         }

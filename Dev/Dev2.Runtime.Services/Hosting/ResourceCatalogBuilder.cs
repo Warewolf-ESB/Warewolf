@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,26 +32,27 @@ namespace Dev2.Runtime.Hosting
     /// <summary>
     /// Transfer FileStream and ResourcePath together
     /// </summary>
-    
-    internal class ResourceBuilderTO
-    
+
+    class ResourceBuilderTO
+
     {
         internal string FilePath;
         internal FileStream FileStream;
     }
 
-    
+
     /// <summary>
     /// Used to build up the resource catalog ;)
     /// </summary>
     public class ResourceCatalogBuilder
-    {        
+    {
         private readonly List<IResource> _resources = new List<IResource>();
         private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
         private readonly IResourceUpgrader _resourceUpgrader;
         private readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
         private readonly object _addLock = new object();
-        
+        List<string> _convertToBiteExtension = new List<string>();
+
 
         public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)
         {
@@ -64,11 +65,11 @@ namespace Dev2.Runtime.Hosting
 
         public IList<IResource> ResourceList => _resources;
         public List<DuplicateResource> DuplicateResources => _duplicateResources;
-        
+
 
         public void BuildCatalogFromWorkspace(string workspacePath, params string[] folders)
         {
-            if(string.IsNullOrEmpty(workspacePath))
+            if (string.IsNullOrEmpty(workspacePath))
             {
                 throw new ArgumentNullException("workspacePath");
             }
@@ -87,19 +88,18 @@ namespace Dev2.Runtime.Hosting
 
             try
             {
-
-                foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(workspacePath, f)))
+                foreach (var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
                 {
                     if (!Directory.Exists(path))
                     {
                         continue;
                     }
 
-                    var files = Directory.GetFiles(path, "*.xml");
+                    var files = DirectoryHelper.GetFilesByExtensions(path, ".xml", ".bite");
                     foreach (var file in files)
                     {
 
-                        FileAttributes fa = File.GetAttributes(file);
+                        var fa = File.GetAttributes(file);
 
                         if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                         {
@@ -146,15 +146,16 @@ namespace Dev2.Runtime.Hosting
                     {
                         Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
                     }
-                                      
-                    StringBuilder result = xml?.ToStringBuilder();
 
-                    var isValid = result!=null && HostSecurityProvider.Instance.VerifyXml(result);
+                    var result = xml?.ToStringBuilder();
+
+                    var isValid = result != null && HostSecurityProvider.Instance.VerifyXml(result);
+                    var typeName = xml.AttributeSafe("Type");
                     if (isValid)
                     {
                         //TODO: Remove this after V1 is released. All will be updated.
                         #region old typing to be removed after V1
-                        var typeName = xml.AttributeSafe("Type");
+                        if (!IsWarewolfResource(xml)) { return; }
                         if (typeName == "Unknown")
                         {
                             var servertype = xml.AttributeSafe("ResourceType");
@@ -189,8 +190,23 @@ namespace Dev2.Runtime.Hosting
                             type = allTypes.FirstOrDefault(type1 => type1.Name == typeName);
                         }
                         Resource resource;
-                        resource = type != null ? (Resource)Activator.CreateInstance(type, xml) : new Resource(xml);
-                        resource.FilePath = currentItem.FilePath;
+                        if (type != null)
+                        {
+                            resource = (Resource)Activator.CreateInstance(type, xml);
+                        }
+                        else
+                        {
+                            resource = new Resource(xml);
+                        }
+                        if (currentItem.FilePath.EndsWith(".xml"))
+                        {
+                            _convertToBiteExtension.Add(currentItem.FilePath);
+                            resource.FilePath = currentItem.FilePath.Replace(".xml", ".bite");
+                        }
+                        else
+                        {
+                            resource.FilePath = currentItem.FilePath;
+                        }
                         xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, a =>
                         {
 
@@ -200,7 +216,7 @@ namespace Dev2.Runtime.Hosting
                                 try
                                 {
 
-                                    StringBuilder updateXml = a.ToStringBuilder();
+                                    var updateXml = a.ToStringBuilder();
                                     var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
                                     signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
                                     tx.Complete();
@@ -228,7 +244,7 @@ namespace Dev2.Runtime.Hosting
 
                             xml = resource.UpgradeXml(xml, resource);
 
-                            StringBuilder updateXml = xml.ToStringBuilder();
+                            var updateXml = xml.ToStringBuilder();
                             var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
                             var fileManager = new TxFileManager();
                             using (TransactionScope tx = new TransactionScope())
@@ -266,8 +282,44 @@ namespace Dev2.Runtime.Hosting
                 {
                     stream.FileStream.Close();
                 }
+                UpdateExtensions(_convertToBiteExtension);
             }
-        }        
+        }
+
+        private void UpdateExtensions(List<string> extensionsToUpdateToBite)
+        {
+            foreach (var item in extensionsToUpdateToBite)
+            {
+                var updatedFile = String.Empty;
+                updatedFile = Path.ChangeExtension(item, ".bite");
+                if (File.Exists(updatedFile) && File.Exists(item))
+                {
+                    File.Delete(updatedFile);
+                    File.Move(item, updatedFile);
+                }
+                else
+                {
+                    File.Move(item, updatedFile);
+                }
+            }
+        }
+
+        private bool IsWarewolfResource(XElement xml)
+        {
+            var resourceType = xml.AttributeSafe("ResourceType");
+            var type = xml.AttributeSafe("Type");
+            var action = xml.Descendants("Action").FirstOrDefault();
+            var actionResourceType = action?.AttributeSafe("ResourceType");
+            var actionType = action?.AttributeSafe("Type");
+            if (string.IsNullOrEmpty(resourceType)
+                && string.IsNullOrEmpty(type)
+                && string.IsNullOrEmpty(actionResourceType)
+                && string.IsNullOrEmpty(actionType))
+            {
+                return false;
+            }
+            return true;
+        }
 
         /// <summary>
         /// Adds the resource.
@@ -275,32 +327,35 @@ namespace Dev2.Runtime.Hosting
         /// <param name="res">The res.</param>
         /// <param name="filePath">The file path.</param>
         private void AddResource(IResource res, string filePath)
-        {            
-            if (!_addedResources.Contains(res.ResourceID))
+        {
+            if (!filePath.Contains("VersionControl"))
             {
-                _resources.Add(res);
-                _addedResources.Add(res.ResourceID);
-            }
-            else
-            {
-                var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
-                if (dupRes != null)
+                if (!_addedResources.Contains(res.ResourceID))
                 {
-                    CreateDupResource(dupRes,filePath);
-                    Dev2Logger.Debug(
-                        string.Format(ErrorResource.ResourceAlreadyLoaded,
-                            res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
+                    _resources.Add(res);
+                    _addedResources.Add(res.ResourceID);
                 }
                 else
                 {
-                    Dev2Logger.Debug(string.Format(
-                            "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
-                            res.ResourceName, filePath), GlobalConstants.WarewolfDebug);
+                    var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
+                    if (dupRes != null)
+                    {
+                        CreateDupResource(dupRes, filePath);
+                        Dev2Logger.Debug(
+                            string.Format(ErrorResource.ResourceAlreadyLoaded,
+                                res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
+                    }
+                    else
+                    {
+                        Dev2Logger.Debug(string.Format(
+                                "Resource '{0}' from file '{1}' wasn't loaded because a resource with the same name has already been loaded but cannot find its location.",
+                                res.ResourceName, filePath), GlobalConstants.WarewolfDebug);
+                    }
                 }
             }
         }
 
-        private void CreateDupResource(IResource resource, string filePath)
+        void CreateDupResource(IResource resource, string filePath)
         {
 
             {

@@ -20,7 +20,6 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 {
     [TestClass]
-
     public class DropboxFileListViewModelTest
     {
 
@@ -28,10 +27,10 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         [TestInitialize]
         public void DropboxFileList_Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
-        private DropBoxFileListDesignerViewModel CreateMockViewModel()
+        DropBoxFileListDesignerViewModel CreateMockViewModel()
         {
             var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var agg = new Mock<IEventAggregator>();
@@ -39,7 +38,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             return dropBoxDownloadViewModel;
         }
 
-        private ModelItem CreateModelItem()
+        ModelItem CreateModelItem()
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDropboxFileListActivity());
             return modelItem;
@@ -324,7 +323,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //------------Execute Test---------------------------
             boxUploadViewModel.ToPath = "A";
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["ToPath"];
+            var property = model.Properties["ToPath"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -346,7 +345,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IncludeMediaInfo = true;
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["IncludeMediaInfo"];
+            var property = model.Properties["IncludeMediaInfo"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -368,7 +367,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsRecursive = true;
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["IsRecursive"];
+            var property = model.Properties["IsRecursive"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -390,7 +389,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IncludeDeleted = true;
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["IncludeDeleted"];
+            var property = model.Properties["IncludeDeleted"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -412,7 +411,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsFilesSelected = true;
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["IsFilesSelected"];
+            var property = model.Properties["IsFilesSelected"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -433,7 +432,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsFoldersSelected = true;
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["IsFoldersSelected"];
+            var property = model.Properties["IsFoldersSelected"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -454,7 +453,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //------------Execute Test---------------------------
             dropBoxFileListViewModel.IsFilesAndFoldersSelected = true;
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["IsFilesAndFoldersSelected"];
+            var property = model.Properties["IsFilesAndFoldersSelected"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -476,7 +475,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
             //------------Execute Test---------------------------
             boxUploadViewModel.Result = "A";
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["Result"];
+            var property = model.Properties["Result"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");

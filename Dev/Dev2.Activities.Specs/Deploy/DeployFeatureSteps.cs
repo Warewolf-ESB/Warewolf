@@ -3,7 +3,6 @@ using Dev2.Studio.Core;
 using Dev2.Util;
 using System;
 using System.Collections.Generic;
-using Dev2.Common.ExtMethods;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
 using Dev2.Studio.Core.Models;
@@ -11,27 +10,28 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using System.Linq;
+using System.IO;
 
 namespace Dev2.Activities.Specs.Deploy
 {
     [Binding]
     public sealed class DeployFeatureSteps
     {
-        private static ScenarioContext _scenarioContext;
-        private readonly CommonSteps _commonSteps;
-        private Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
+        static ScenarioContext _scenarioContext;
+        readonly CommonSteps _commonSteps;
+        Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
             _commonSteps = new CommonSteps(_scenarioContext);
         }
-
+        
         [BeforeScenario("Deploy")]
         public void RollBack()
         {
             var formattableString = $"http://tst-ci-remote:3142";
-            AppSettings.LocalHost = $"http://{Environment.MachineName}:3142";
+            AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(new Uri(formattableString)))
             {
                 Name = "tst-ci-remote"
@@ -66,7 +66,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void GivenISelectResourceFromSourceServer(string p0)
         {
             var loaclHost = ScenarioContext.Current.Get<IServer>("sourceServer");
-            IContextualResourceModel loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel(_resourceId);
+            var loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel(_resourceId);
             Assert.IsNotNull(loadContextualResourceModel, p0 + "does not exist on the local machine " + Environment.MachineName);
             ScenarioContext.Current.Add("localResource", loadContextualResourceModel);
         }
@@ -113,8 +113,19 @@ namespace Dev2.Activities.Specs.Deploy
         {
             var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
             var loadContextualResourceModel = destinationServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
-            Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Failed to Update DisplayName after deploy");
-            Assert.AreEqual(p0, loadContextualResourceModel.ResourceName, "Failed to Update ResourceName after deploy");
+            Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Failed to Update " + loadContextualResourceModel.DisplayName + " after deploy");
+            Assert.AreEqual(p0, loadContextualResourceModel.ResourceName, "Failed to Update " + loadContextualResourceModel.ResourceName + " after deploy");
+        }
+
+
+        [Given(@"I RollBack Resource")]
+        [When(@"I RollBack Resource")]
+        [Then(@"I RollBack Resource")]
+        public void RollBackResource()
+        {
+            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var previousVersions = destinationServer.ProxyLayer.GetVersions(_resourceId);
+            destinationServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -42,7 +42,7 @@ namespace Dev2
             FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
         }
 
-        private void AddRegionTypes()
+        void AddRegionTypes()
         {
             CustomContainer.AddToLoadedTypes(typeof(ManagePluginServiceModel));
             CustomContainer.AddToLoadedTypes(typeof(ManageComPluginServiceModel));
@@ -53,17 +53,6 @@ namespace Dev2
             CustomContainer.AddToLoadedTypes(typeof(ManageRabbitMQSourceModel));
         }
 
-        protected override IEnumerable<Assembly> SelectAssemblies()
-        {
-            var assemblies = base.SelectAssemblies().ToList();
-            assemblies.AddRange(new[]
-                {
-                    Assembly.GetAssembly(typeof (Bootstrapper)),
-                    Assembly.GetAssembly(typeof (DebugWriter))
-                });
-            return assemblies.Distinct();
-        }
-
         #region Fields
 
         bool _serverServiceStartedFromStudio;
@@ -71,19 +60,19 @@ namespace Dev2
         #endregion
 
         #region Overrides
-
+        ShellViewModel _mainViewModel;
         protected override void Configure()
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<IPopupController>(new PopupController());
-            var mainViewModel = new ShellViewModel();
-            CustomContainer.Register<IShellViewModel>(mainViewModel);
-            CustomContainer.Register<IShellViewModel>(mainViewModel);
+            _mainViewModel = new ShellViewModel();
+            CustomContainer.Register<IShellViewModel>(_mainViewModel);
+            CustomContainer.Register<IShellViewModel>(_mainViewModel);
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
-            var conn = new ServerProxy("http://localHost:3142",CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
+            var conn = new ServerProxy("http://localHost:3142", CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
             conn.Connect(Guid.NewGuid());
             CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Microsoft.Practices.Prism.PubSubEvents.EventAggregator());
-            
+
             ClassRoutedEventHandlers.RegisterEvents();
         }
 
@@ -92,9 +81,10 @@ namespace Dev2
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            if(_serverServiceStartedFromStudio)
+            if (_serverServiceStartedFromStudio)
             {
-                if (Application.Current is IApp app)
+                var app = Application.Current as IApp;
+                if (app != null)
                 {
                     app.ShouldRestart = true;
                 }
@@ -113,7 +103,7 @@ namespace Dev2
             {
                 Application.Shutdown();
             }
-            
+
         }
 
         #region Overrides of BootstrapperBase
@@ -128,8 +118,8 @@ namespace Dev2
         #endregion Public Methods
 
         #region Private Methods
-        
-        private bool CheckWindowsService()
+
+        bool CheckWindowsService()
         {
 #if DEBUG
             return true;
@@ -138,16 +128,16 @@ namespace Dev2
             IPopupController popup = CustomContainer.Get<IPopupController>();
             ServerServiceConfiguration ssc = new ServerServiceConfiguration(windowsServiceManager, popup);
 
-            if(ssc.DoesServiceExist())
+            if (ssc.DoesServiceExist())
             {
-                if(ssc.IsServiceRunning())
+                if (ssc.IsServiceRunning())
                 {
                     return true;
                 }
 
-                if(ssc.PromptUserToStartService())
+                if (ssc.PromptUserToStartService())
                 {
-                    if(ssc.StartService())
+                    if (ssc.StartService())
                     {
                         _serverServiceStartedFromStudio = true;
                         return true;
@@ -159,42 +149,42 @@ namespace Dev2
 #endif
         }
 
-        private void CheckPath()
+        void CheckPath()
         {
             var sysUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
 
-            if(IsLocal(sysUri))
+            if (IsLocal(sysUri))
             {
                 return;
             }
 
             var popup = new PopupController
-                {
-                    Header = "Load Error",
-                    Description = 
+            {
+                Header = "Load Error",
+                Description =
                         $@"The Design Studio could not be launched from a network location.
                         {Environment.NewLine}Please install the application on your local machine",
-                    Buttons = MessageBoxButton.OK
-                };
+                Buttons = MessageBoxButton.OK
+            };
 
             popup.Show();
 
             Application.Current.Shutdown();
         }
 
-        private bool IsLocal(Uri sysUri)
+        bool IsLocal(Uri sysUri)
         {
-            if(IsUnc(sysUri))
+            if (IsUnc(sysUri))
             {
                 return false;
             }
 
-            if(!IsUnc(sysUri))
+            if (!IsUnc(sysUri))
             {
                 var currentLocation = new DriveInfo(sysUri.AbsolutePath);
-                DriveInfo[] drives = DriveInfo.GetDrives();
-                IEnumerable<DriveInfo> info = drives.Where(c => c.DriveType == DriveType.Network);
-                if(info.Any(c => c.RootDirectory.Name == currentLocation.RootDirectory.Name))
+                var drives = DriveInfo.GetDrives();
+                var info = drives.Where(c => c.DriveType == DriveType.Network);
+                if (info.Any(c => c.RootDirectory.Name == currentLocation.RootDirectory.Name))
                 {
                     return false;
                 }
@@ -207,11 +197,11 @@ namespace Dev2
             return true;
         }
 
-        private static bool IsUnc(Uri sysUri)
+        static bool IsUnc(Uri sysUri)
         {
             return sysUri.IsUnc;
         }
 
-#endregion Private Methods
+        #endregion Private Methods
     }
 }

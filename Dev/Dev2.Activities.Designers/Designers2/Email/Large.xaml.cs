@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -22,30 +22,19 @@ namespace Dev2.Activities.Designers2.Email
 
         EmailDesignerViewModel ViewModel => DataContext as EmailDesignerViewModel;
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
 
         public string ThePassword { get => ThePasswordBox.Password; set => ThePasswordBox.Password = value; }
 
-        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            var viewModel = ViewModel;
-            if(viewModel != null)
-            {
-                ThePassword = viewModel.Password;
-            }
-        }
+        void OnLoaded(object sender, RoutedEventArgs routedEventArgs) => OnPasswordChanged(sender, routedEventArgs);
 
         void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
-            if(viewModel != null)
+            if (viewModel != null)
             {
                 viewModel.Password = ThePassword;
             }
         }
-
     }
 }

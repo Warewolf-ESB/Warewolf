@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -89,9 +89,9 @@ namespace Dev2.DynamicServices.Test
         public void VerifyXmlSpeedTest()
         {
 
-            IHostSecurityProvider theHostProvider = HostSecurityProvider.Instance;
+            var theHostProvider = HostSecurityProvider.Instance;
 
-            string xmlToVerify =
+            var xmlToVerify =
                 @" <Source Name=""Anything To Xml Hook Plugin"" Type=""Plugin"" AssemblyName=""Dev2.AnytingToXmlHook.Plugin.AnythignToXmlHookPlugin"" AssemblyLocation=""Plugins/Dev2.AnytingToXmlHook.Plugin.dll"" ServerID=""" +
                 theHostProvider.ServerID + @""">
       <AuthorRoles>Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,</AuthorRoles> 
@@ -120,9 +120,9 @@ namespace Dev2.DynamicServices.Test
       </Signature>
       </Source>";
 
-            DateTime theTime = DateTime.Now;
+            var theTime = DateTime.Now;
             theHostProvider.VerifyXml(new StringBuilder(xmlToVerify));
-            TimeSpan duration = DateTime.Now - theTime;
+            var duration = DateTime.Now - theTime;
             // was 20 moved it to 200
             Assert.IsTrue(duration.TotalMilliseconds < 200, "Duration: " + duration.TotalMilliseconds + "ms");
         }
@@ -162,7 +162,7 @@ namespace Dev2.DynamicServices.Test
         {
             var repositoryInstance = SetupRepo(out Guid workspaceID);
             var expected = repositoryInstance.Count + 1;
-            Guid myGuid = Guid.NewGuid();
+            var myGuid = Guid.NewGuid();
             var workspace = new Workspace(myGuid);
             repositoryInstance.Save(workspace);
             Assert.AreEqual(expected, repositoryInstance.Count);

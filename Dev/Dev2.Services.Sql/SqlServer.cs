@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,7 +32,7 @@ namespace Dev2.Services.Sql
             _connection = null;
         }
 
-        private readonly IConnectionBuilder _connectionBuilder;
+        readonly IConnectionBuilder _connectionBuilder;
         public SqlServer(IConnectionBuilder connectionBuilder)
         {
             _connectionBuilder = connectionBuilder;
@@ -45,9 +45,9 @@ namespace Dev2.Services.Sql
 
         public bool IsConnected { get; }
         public string ConnectionString { get; }
-        private string _connectionString;
-        private ISqlConnection _connection;
-        private IDbTransaction _transaction;
+        string _connectionString;
+        ISqlConnection _connection;
+        IDbTransaction _transaction;
 
 
         public bool Connect(string connectionString)
@@ -188,17 +188,17 @@ namespace Dev2.Services.Sql
 
                         if (IsStoredProcedure(row, procedureTypeColumn))
                         {
-                            procedureProcessor(sqlCommand, parameters, helpText, fullProcedureName);
+                            procedureProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
                         }
                         else if (IsFunction(row, procedureTypeColumn))
                         {
-                            functionProcessor(sqlCommand, parameters, helpText, fullProcedureName);
+                            functionProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
                         }
                         else
                         {
                             if (IsTableValueFunction(row, procedureTypeColumn))
                             {
-                                functionProcessor(sqlCommand, parameters, helpText,
+                                functionProcessor?.Invoke(sqlCommand, parameters, helpText,
                                     CreateTVFCommand(fullProcedureName, parameters));
                             }
                         }
@@ -228,9 +228,9 @@ namespace Dev2.Services.Sql
         {
         }
 
-        private DataTable GetSchema()
+        DataTable GetSchema()
         {
-            string commandText = GlobalConstants.SchemaQuery;
+            var commandText = GlobalConstants.SchemaQuery;
             _connection.TryOpen();
             using (_connection)
             {
@@ -243,7 +243,7 @@ namespace Dev2.Services.Sql
                 }
             }
         }
-        private static DataColumn GetDataColumn(DataTable dataTable, string columnName)
+        static DataColumn GetDataColumn(DataTable dataTable, string columnName)
         {
             var dataColumn = dataTable.Columns[columnName];
             if (dataColumn == null)
@@ -253,7 +253,7 @@ namespace Dev2.Services.Sql
             return dataColumn;
         }
 
-        private static string GetFullProcedureName(DataRow row, DataColumn procedureDataColumn,
+        static string GetFullProcedureName(DataRow row, DataColumn procedureDataColumn,
             DataColumn procedureSchemaColumn)
         {
             var procedureName = row[procedureDataColumn].ToString();
@@ -261,7 +261,7 @@ namespace Dev2.Services.Sql
             return schemaName + "." + procedureName;
         }
 
-        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command)
+        List<IDbDataParameter> GetProcedureParameters(IDbCommand command)
         {
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
             var originalCommandText = command.CommandText;
@@ -279,7 +279,7 @@ namespace Dev2.Services.Sql
                     continue;
                 }
                 Enum.TryParse(row["DATA_TYPE"] as string, true, out SqlDbType sqlType);
-                int maxLength = row["CHARACTER_MAXIMUM_LENGTH"] as int? ?? -1;
+                var maxLength = row["CHARACTER_MAXIMUM_LENGTH"] as int? ?? -1;
                 var sqlParameter = new SqlParameter(parameterName, sqlType, maxLength);
                 command.Parameters.Add(sqlParameter);
                 if (parameterName.ToLower(CultureInfo.InvariantCulture) == "@return_value")
@@ -349,8 +349,8 @@ namespace Dev2.Services.Sql
             return sqlCommand;
         }
 
-        private string _commantText;
-        private CommandType _commandType;
+        string _commantText;
+        CommandType _commandType;
 
 
         public bool Connect(string connectionString, CommandType commandType, string commandText)

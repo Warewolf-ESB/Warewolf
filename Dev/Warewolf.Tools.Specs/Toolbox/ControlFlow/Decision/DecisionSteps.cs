@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -36,7 +36,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
     [Binding]
     public class DecisionSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
         internal static readonly IDictionary<Guid, IExecutionEnvironment> _environments = new ConcurrentDictionary<Guid, IExecutionEnvironment>();
 
         public DecisionSteps(ScenarioContext scenarioContext)
@@ -68,7 +68,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                 dds.AddModelItem(dev2Decision);
             }
 
-            string modelData = dds.ToVBPersistableModel();
+            var modelData = dds.ToVBPersistableModel();
             scenarioContext.Add("modelData", modelData);
 
             decisionActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
@@ -84,13 +84,13 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
 
             var multiAssign = new DsfMultiAssignActivity();
-            int row = 1;
-            foreach(var variable in variableList)
+            var row = 1;
+            foreach (var variable in variableList)
             {
                 multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
                 row++;
             }
-            FlowDecision x = new FlowDecision();
+            var x = new FlowDecision();
             x.Condition=decisionActivity;
             TestStartNode = new FlowStep
                 {
@@ -205,7 +205,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         public void WhenTheDecisionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -220,18 +220,18 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             }
             Dev2DataListDecisionHandler.Instance.AddEnvironment(result.DataListID, result.Environment);
 
-            bool actual = ExecuteDecisionStack(modelData, new List<string>
+            var actual = ExecuteDecisionStack(modelData, new List<string>
             {
                 result.DataListID.ToString()
             }, 0);
-            bool expected = Boolean.Parse(expectedRes);
+            var expected = Boolean.Parse(expectedRes);
             Assert.AreEqual(expected, actual);
         }
 
         public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData, int update)
         {
-            Guid dlId = FetchDataListID(oldAmbientData);
-            string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
+            var dlId = FetchDataListID(oldAmbientData);
+            var newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
             var dds = EvaluateRegion(newDecisionData, dlId, update);
 
             var env = Dev2DataListDecisionHandler._environments[dlId];
@@ -246,8 +246,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
                             for (int i = 0; i < dds.TotalDecisions; i++)
                             {
-                                Dev2Decision dd = dds.GetModelItem(i);
-                                enDecisionType typeOf = dd.EvaluationFn;
+                                var dd = dds.GetModelItem(i);
+                                var typeOf = dd.EvaluationFn;
 
                                 // Treat Errors special
                                 if (typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
@@ -255,12 +255,12 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                                     dd.Col1 = env.FetchErrors();
                                 }
 
-                                IDecisionOperation op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
+                                var op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
                                 if (op != null)
                                 {
                                     try
                                     {
-                                        bool result = op.Invoke(dds.GetModelItem(i).FetchColsAsArray());
+                                        var result = op.Invoke(dds.GetModelItem(i).FetchColsAsArray());
 
                                         if (!result && dds.Mode == Dev2DecisionMode.AND)
                                         {
@@ -312,7 +312,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             throw new InvalidExpressionException(ErrorResource.DataListErrors);
         }
 
-        private Dev2DecisionStack EvaluateRegion(string payload, Guid dlId, int update)
+        Dev2DecisionStack EvaluateRegion(string payload, Guid dlId, int update)
         {
 
             var env = Dev2DataListDecisionHandler._environments[dlId];
@@ -328,7 +328,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                     var invalidDecisions = new List<Dev2Decision>();
                     for (int i = 0; i < dds.TotalDecisions; i++)
                     {
-                        Dev2Decision dd = dds.GetModelItem(i);
+                        var dd = dds.GetModelItem(i);
 
                         if (dd.Col1 != null && DataListUtil.GetRecordsetIndexType(dd.Col1) == enRecordsetIndexType.Star)
                         {
@@ -400,7 +400,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             return warewolfEvalResult;
         }
 
-        private string FetchStackValue(Dev2DecisionStack stack, int stackIndex, int columnIndex)
+        string FetchStackValue(Dev2DecisionStack stack, int stackIndex, int columnIndex)
         {
             // if out of bounds return an empty string ;)
             if (stackIndex >= stack.TheStack.Count)
@@ -426,14 +426,14 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             {
                 throw new ArgumentNullException("effectedCols");
             }
-            int stackIndex = stack.TheStack.IndexOf(decision);
+            var stackIndex = stack.TheStack.IndexOf(decision);
             stack.TheStack.Remove(decision);
             errors = new ErrorResultTO();
             if (effectedCols[0])
             {
                 var data = env.EvalAsListOfStrings(decision.Col1, update);
 
-                int reStackIndex = stackIndex;
+                var reStackIndex = stackIndex;
 
                 foreach (var item in data)
                 {
@@ -446,7 +446,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             if (effectedCols[1])
             {
                 var data = env.EvalAsListOfStrings(decision.Col2, update);
-                int reStackIndex = stackIndex;
+                var reStackIndex = stackIndex;
 
                 foreach (var item in data)
                 {
@@ -472,7 +472,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             if (effectedCols[2])
             {
                 var data = env.EvalAsListOfStrings(decision.Col3, update);
-                int reStackIndex = stackIndex;
+                var reStackIndex = stackIndex;
 
                 foreach (var item in data)
                 {
@@ -500,7 +500,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
         public Guid FetchDataListID(IList<string> oldAmbientData)
         {
-            Guid dlID = GlobalConstants.NullDataListID;
+            var dlID = GlobalConstants.NullDataListID;
             if (oldAmbientData != null && oldAmbientData.Count == 1)
             {
                 Guid.TryParse(oldAmbientData[0], out dlID);

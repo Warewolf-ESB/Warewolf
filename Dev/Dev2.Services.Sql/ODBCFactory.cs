@@ -7,9 +7,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
-{
-    
-    internal class ODBCFactory : IDbFactory
+{    
+    class ODBCFactory : IDbFactory
     {
         #region Implementation of IDbFactory
 
@@ -32,10 +31,7 @@ namespace Dev2.Services.Sql
             };
         }
 
-        public DataTable GetSchema(IDbConnection connection, string collectionName)
-        {
-            return GetOdbcServerSchema(connection);
-        }
+        public DataTable GetSchema(IDbConnection connection, string collectionName) => GetOdbcServerSchema(connection);
 
         DataTable GetOdbcServerSchema(IDbConnection connection)
         {
@@ -49,7 +45,7 @@ namespace Dev2.Services.Sql
 
         public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
         {
-            DataSet ds = new DataSet(); //conn is opened by dataadapter
+            var ds = new DataSet(); //conn is opened by dataadapter
             reader.Fill(ds);
             return ds.Tables[0];
         }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -55,7 +55,7 @@ namespace Dev2.DataList.Contract
             {
                 if(recordset.Contains("[") && recordset.Contains("]"))
                 {
-                    int start = recordset.IndexOf("(", StringComparison.Ordinal);
+                    var start = recordset.IndexOf("(", StringComparison.Ordinal);
                     Recordset = start != -1 ? recordset.Substring(0, start) : recordset.Replace("[", "").Replace("]", "");
                 }
             }
@@ -81,7 +81,7 @@ namespace Dev2.DataList.Contract
                     {
                         if(recordset != null && recordset.Contains("(") && recordset.Contains(")"))
                         {
-                            string tmp = recordset.Substring(0, recordset.IndexOf("(", StringComparison.Ordinal));
+                            var tmp = recordset.Substring(0, recordset.IndexOf("(", StringComparison.Ordinal));
 
                             DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")." + field + "]]";
                         }
@@ -94,7 +94,7 @@ namespace Dev2.DataList.Contract
                     {
                         if(recordset != null && recordset.Contains("(") && recordset.Contains(")"))
                         {
-                            string tmp = recordset.Substring(0, recordset.IndexOf("(", StringComparison.Ordinal));
+                            var tmp = recordset.Substring(0, recordset.IndexOf("(", StringComparison.Ordinal));
                             DisplayValue = "[[" + tmp + "(" + RecordsetIndex + ")]]";
                         }
                         else

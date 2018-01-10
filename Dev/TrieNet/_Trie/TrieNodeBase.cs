@@ -28,7 +28,7 @@ namespace Gma.DataStructures.StringSearch
                 return;
             }
 
-            TrieNodeBase<TValue> child = GetOrCreateChild(key[position]);
+            var child = GetOrCreateChild(key[position]);
             child.Add(key, position + 1, value);
         }
 
@@ -46,7 +46,7 @@ namespace Gma.DataStructures.StringSearch
 
         protected virtual IEnumerable<TValue> SearchDeep(string query, int position)
         {
-            TrieNodeBase<TValue> nextNode = GetChildOrNull(query, position);
+            var nextNode = GetChildOrNull(query, position);
             return nextNode != null
                        ? nextNode.Retrieve(query, position + nextNode.KeyLength)
                        : Enumerable.Empty<TValue>();
@@ -54,14 +54,14 @@ namespace Gma.DataStructures.StringSearch
 
         protected abstract TrieNodeBase<TValue> GetChildOrNull(string query, int position);
 
-        private static bool EndOfString(int position, string text)
+        static bool EndOfString(int position, string text)
         {
             return position >= text.Length;
         }
 
-        private IEnumerable<TValue> ValuesDeep()
+        IEnumerable<TValue> ValuesDeep()
         {
-            return 
+            return
                 Subtree()
                     .SelectMany(node => node.Values());
         }

@@ -58,6 +58,14 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled, "Deploy button is not enabled");
         }
 
+        [Given(@"I Click Close Deploy Tab")]
+        [When(@"I Click Close Deploy Tab")]
+        [Then(@"I Click Close Deploy Tab")]
+        public void Click_Close_Deploy_Tab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton, new Point(16, 11));
+        }
+
         [Then(@"Filtered Resourse Is Checked For Deploy")]
         public void ThenFilteredResourseIsCheckedForDeploy()
         {
@@ -300,7 +308,15 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = true;
         }
-        
+
+        [When(@"I DeSelect Deploy First Source Item")]
+        [Then(@"I DeSelect Deploy First Source Item")]
+        [Given(@"I DeSelect Deploy First Source Item")]
+        public void DeSelect_Deploy_First_Source_Item()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = false;
+        }
+
         [When(@"I Click Deploy Tab Deploy Button")]
         public void Click_Deploy_Tab_Deploy_Button()
         {

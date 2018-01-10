@@ -11,7 +11,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Studio.Core</RootNamespace>
     <AssemblyName>Dev2.Studio.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -31,7 +31,8 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>S2757,S1698,S3451,S3447,S3442,S1155,S3397,S2737,S3216,S1210,S3217,S1994,S127,S3234,S2328,S907,S2997,S126,S2692,S3215,S2688,S2995,S3262,S3600,S927,S3597,S3256,S3456,S1301,S1479,S131,S2996,S3005,S1858,S2225,S1109,S1694,S3244,S2330,S1121,S3376,S1940,S1125,S1227,S3236,S3249,S3453,S3776,S1066,S3457,S2275,S2583,S3253,S1699,S134,S121,S1449,S1854,S3257,S3254,S3172,S2761,S3458,S3532,S3655,S1116,S2344,S3264,S3445,S2372,S1163,S1067,S2290,S2357,S2933,S104,S2345,S2346,S1244,S2486,S2955,S3246,S1764,S3251,S1944,S1939,S3218,S2696,S3444,S1313,S3626,S818,S1117,S3604,S3052,S3220,S1006,S1226,S100,S1541,S107,S3241,S3603,S2197,S2681,S3169,S1659,S3261,S108,S2223,S3265,S2259,S3610,S1848,S3598,S3466,S2360,S2291,S1185,S2234,S3450,S1450,S2934,S2339,S1905,S2333,S3235,S3441,S1862,S2184,S2201,S3449,S2219,S125,S2760,S2070,S2178,S1697,S2437,S122,S3263,S3010,S2743,S1643,S105,S2674,S3240,S2758,S1134,S1135,S2292,S1871,S3443,S2551,S101,S3459,S1481,S1172,S1144,S2326,S1145,S1118,S2123,S3440,S1656,S2376,CS0660,CS0067,CS0661,CS0169,CS0414,CS0649,CS0108,CS0168,CS0219,CS3237,AD0001,S3237,CS4014,S2931,CS0618,CC0021</NoWarn>
     <CodeAnalysisRuleSet>Dev2.Studio.Core.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -43,7 +44,8 @@
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Prefer32Bit>false</Prefer32Bit>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <NoWarn>S2757,S1698,S3451,S3447,S3442,S1155,S3397,S2737,S3216,S1210,S3217,S1994,S127,S3234,S2328,S907,S2997,S126,S2692,S3215,S2688,S2995,S3262,S3600,S927,S3597,S3256,S3456,S1301,S1479,S131,S2996,S3005,S1858,S2225,S1109,S1694,S3244,S2330,S1121,S3376,S1940,S1125,S1227,S3236,S3249,S3453,S3776,S1066,S3457,S2275,S2583,S3253,S1699,S134,S121,S1449,S1854,S3257,S3254,S3172,S2761,S3458,S3532,S3655,S1116,S2344,S3264,S3445,S2372,S1163,S1067,S2290,S2357,S2933,S104,S2345,S2346,S1244,S2486,S2955,S3246,S1764,S3251,S1944,S1939,S3218,S2696,S3444,S1313,S3626,S818,S1117,S3604,S3052,S3220,S1006,S1226,S100,S1541,S107,S3241,S3603,S2197,S2681,S3169,S1659,S3261,S108,S2223,S3265,S2259,S3610,S1848,S3598,S3466,S2360,S2291,S1185,S2234,S3450,S1450,S2934,S2339,S1905,S2333,S3235,S3441,S1862,S2184,S2201,S3449,S2219,S125,S2760,S2070,S2178,S1697,S2437,S122,S3263,S3010,S2743,S1643,S105,S2674,S3240,S2758,S1134,S1135,S2292,S1871,S3443,S2551,S101,S3459,S1481,S1172,S1144,S2326,S1145,S1118,S2123,S3440,S1656,S2376,CS0660,CS0067,CS0661,CS0169,CS0414,CS0649,CS0108,CS0168,CS0219,CS3237,AD0001,S3237,CS4014,S2931,CS0618,CC0021</NoWarn>
     <CodeAnalysisRuleSet>Dev2.Studio.Core.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
@@ -169,6 +171,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TrieNet, Version=1.0.3.26316, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TrieNet.1.0.3.26316\lib\net461\TrieNet.dll</HintPath>
+    </Reference>
     <Reference Include="Vestris.ResourceLib">
       <HintPath>..\Binaries\Vestris.ResourceLib.dll</HintPath>
       <Private>True</Private>
@@ -180,10 +185,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs">
+    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ApplicationAdaptor.cs" />
+    <Compile Include="Equality\ComplexObjectItemModelComparer.cs" />
+    <Compile Include="Equality\DataListItemModelComparer.cs" />
+    <Compile Include="Equality\DataListViewModelComparer.cs" />
+    <Compile Include="Interfaces\IApplicationAdaptor.cs" />
     <Compile Include="IViewFactory.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -201,7 +212,7 @@
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
-    <Compile Include="AppResources\Converters\DataListItemModelToAutomationIdConverter.cs" />
+    <Compile Include="AppResources\Converters\DateTimeFormatConverter.cs" />
     <Compile Include="AppResources\Converters\GridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\PaddingThicknessConverter.cs" />
     <Compile Include="AppResources\Converters\DataGridRowNumberConverter.cs" />
@@ -225,16 +236,11 @@
     <Compile Include="AppResources\Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\NegateVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\NullableBoolToBoolConverter.cs" />
-    <Compile Include="AppResources\Converters\NullToBoolConvert.cs" />
     <Compile Include="AppResources\Converters\NullToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\SplitTypeToEnabledConverter.cs" />
-    <Compile Include="AppResources\Converters\StringToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\StringToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\StringToVisibilityConverterMulti.cs" />
     <Compile Include="AppResources\Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ContextualResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\EnvironmentModelEqualityComparer.cs" />
-    <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
@@ -268,7 +274,6 @@
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="ExplorerDeleteProvider.cs" />
     <Compile Include="ExplorerUpdateManagerProxy.cs" />
-    <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\NewTestFromDebugMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
@@ -310,7 +315,6 @@
     <Compile Include="Messages\FileChooserMessage.cs" />
     <Compile Include="Messages\SaveUnsavedWorkflowMessage.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
-    <Compile Include="Messages\DebugResourceMessage.cs" />
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
     <Compile Include="Messages\DeleteResourcesMessage.cs" />
     <Compile Include="Messages\EditActivityMessage.cs" />
@@ -323,12 +327,10 @@
     <Compile Include="Messages\IResourceMessage.cs" />
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
-    <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
     <Compile Include="Models\Server.cs" />
-    <Compile Include="Models\OperatorType.cs" />
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
     <Compile Include="Models\ResourceModel.cs" />
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
@@ -336,12 +338,12 @@
     <Compile Include="Network\WebServer.cs" />
     <Compile Include="ProxyBase.cs" />
     <Compile Include="QueryManagerProxy.cs" />
+    <Compile Include="Equality\RecordSetItemModelComparer.cs" />
     <Compile Include="Security\ClientAuthorizationService.cs" />
     <Compile Include="Security\ClientSecurityService.cs" />
     <Compile Include="Security\AuthorizeCommand.cs" />
     <Compile Include="Services\Communication\ICommMessage.cs" />
     <Compile Include="Services\Communication\ICommService.cs" />
-    <Compile Include="Services\Configuration\HelpConfiguration.cs" />
     <Compile Include="Services\Events\EventPublishers.cs" />
     <Compile Include="Services\Events\DebugSelectionChangedEventArgs.cs" />
     <Compile Include="Services\Events\StudioSubscriptionService.cs" />
@@ -360,6 +362,7 @@
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="StudioResourceUpdateManager.cs" />
     <Compile Include="StudioServerProxy.cs" />
+    <Compile Include="ToolDescriptionExtentions.cs" />
     <Compile Include="UpdateProxy.cs" />
     <Compile Include="Utils\HelperUtils.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
@@ -371,7 +374,6 @@
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\SimpleBaseViewModel.cs" />
     <Compile Include="Models\DataList\DataListItemModel.cs" />
-    <Compile Include="Diagnostics\DebugWriter.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModelFactory.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
@@ -382,6 +384,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AppResources\XMLFile1.xml" />
+    <None Include="app.config" />
     <None Include="Dev2.Studio.Core.ruleset" />
     <None Include="SignalR.txt" />
   </ItemGroup>
@@ -459,9 +462,9 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TrieNet\TrieNet.csproj">
-      <Project>{17125877-2cf0-42b2-89d3-418e40bde5d0}</Project>
-      <Name>TrieNet</Name>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,6 +27,11 @@ namespace Dev2.Common
 
     public static class GlobalConstants
     {
+        public const string PayloadStart = @"<XamlDefinition>";
+        public const string PayloadEnd = @"</XamlDefinition>";
+        public const string AltPayloadStart = @"<Actions>";
+        public const string AltPayloadEnd = @"</Actions>";
+
         static GlobalConstants()
         {
             SystemEvents.TimeChanged += (sender, args) =>
@@ -370,12 +375,15 @@ where pn.nspname = 'public';
         public static readonly string ShortTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
 
         public static readonly string ShortDateTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
-        public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortDateTimePattern + " " + LongTimePattern;
-        public static readonly string GlobalDefaultNowFormat = CultureInfo.InvariantCulture.DateTimeFormat.SortableDateTimePattern;
-        
+        public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortDateTimePattern + " " + LongTimePattern + ".FFFF";
+        public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
         public static readonly int NetworkComputerNameQueryFreq = 900000;
+        public static readonly string PreviousLongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+        public static readonly string PreviousShortTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+        public static readonly string PreviousDev2DotNetDefaultDateTimeFormat = PreviousShortTimePattern + " " + PreviousLongTimePattern;
+        public const string PreviousGlobalDefaultNowFormat = "yyyy/MM/dd hh:mm:ss.fff tt";
 
-        private static TimeSpan transactionTimeout = new TimeSpan(1, 0, 0, 0);
+        static TimeSpan transactionTimeout = new TimeSpan(1, 0, 0, 0);
 
         public static readonly string AnythingToXmlPathSeperator = ",";
         public static readonly string AnytingToXmlCommaToken = "__COMMA__";
@@ -386,7 +394,8 @@ where pn.nspname = 'public';
         public static readonly string WarewolfInfo = "Warewolf Info";
         public static readonly string WarewolfError = "Warewolf Error";
         public static readonly string WarewolfDebug = "Warewolf Debug";
-        
+        public static readonly string WarewolfWarn = "Warewolf Warn";
+
         public static readonly string ResourcePickerWorkflowString = "DsfWorkflowActivity";
 
         public static readonly string SerializableResourceQuote = "__QUOTE__";
@@ -462,7 +471,7 @@ where pn.nspname = 'public';
         {
             if (Resultscache.ContainsKey(resourceId))
             {
-                bool removed = Resultscache.TryRemove(resourceId, out TextExpressionCompilerResults val);
+                var removed = Resultscache.TryRemove(resourceId, out TextExpressionCompilerResults val);
                 if (!removed)
                 {
                     Resultscache.TryRemove(resourceId, out val);
@@ -471,7 +480,7 @@ where pn.nspname = 'public';
         }
 
         public static readonly int AddPopupTimeDelay = 2000;
-        private static GenericPrincipal _user;
+        static GenericPrincipal _user;
         public static readonly double RowHeight = 30;
         public static readonly double RowHeaderHeight = 30;
 
@@ -551,9 +560,9 @@ where pn.nspname = 'public';
             try
             {
                 var stringParam = (string)paramaTer;
-                if (string.IsNullOrEmpty(stringParam))
+                if (String.IsNullOrEmpty(stringParam))
                 {
-                    throw new ArgumentNullException(name, string.Format(ErrorResource.NoValueProvided, name));
+                    throw new ArgumentNullException(name, String.Format(ErrorResource.NoValueProvided, name));
                 }
             }
             catch (ArgumentNullException)
@@ -564,7 +573,7 @@ where pn.nspname = 'public';
             {
                 if (paramaTer == null)
                 {
-                    throw new ArgumentNullException(name, string.Format(ErrorResource.NoValueProvided, name));
+                    throw new ArgumentNullException(name, String.Format(ErrorResource.NoValueProvided, name));
                 }
             }
         }

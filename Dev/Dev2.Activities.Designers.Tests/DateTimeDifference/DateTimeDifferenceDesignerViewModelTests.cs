@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,7 +17,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Common;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeDifference
 {
@@ -61,25 +60,6 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         }
 
         [TestMethod]
-        public void DateTimeDifferenceDesignerViewModel_ShouldSetInputFormat_WhenNoInputFormat()
-        {
-            var modelItem = CreateModelItem();
-            var viewModel = new TestDateTimeDifferenceDesignerViewModel(modelItem);
-            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            Assert.AreEqual(expectedDefaultFormat, viewModel.InputFormat);
-        }
-
-        [TestMethod]
-        public void DateTimeDifferenceDesignerViewModel_ShouldNotSetInputFormat_WhenInputFormat()
-        {
-            var modelItem = CreateModelItem("yyyy-mm-dd");
-            var viewModel = new TestDateTimeDifferenceDesignerViewModel(modelItem);
-            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            Assert.AreNotEqual(expectedDefaultFormat, viewModel.InputFormat);
-            Assert.AreEqual("yyyy-mm-dd", viewModel.InputFormat);
-        }
-
-        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("DateTimeDifferenceDesignerViewModel_Handle")]
         public void DateTimeDifferenceDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
@@ -100,13 +80,6 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         static ModelItem CreateModelItem()
         {
             return ModelItemUtils.CreateModelItem(new DsfDateTimeDifferenceActivity());
-        }
-        static ModelItem CreateModelItem(string dateTimeFormat)
-        {
-            return ModelItemUtils.CreateModelItem(new DsfDateTimeDifferenceActivity
-            {
-                InputFormat = dateTimeFormat
-            });
         }
     }
 }

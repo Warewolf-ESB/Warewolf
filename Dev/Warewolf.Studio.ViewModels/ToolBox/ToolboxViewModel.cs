@@ -20,9 +20,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         ICollection<IToolDescriptorViewModel> _tools;
         bool _isDesignerFocused;
         IToolDescriptorViewModel _selectedTool;
-        private string _searchTerm;
-        private ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
-        private bool _isVisible;
+        string _searchTerm;
+        ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
+        bool _isVisible;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
@@ -140,7 +140,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
         }
 
-        private void FilterItems(string filterText)
+        void FilterItems(string filterText)
         {
             var searchWords = filterText.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 

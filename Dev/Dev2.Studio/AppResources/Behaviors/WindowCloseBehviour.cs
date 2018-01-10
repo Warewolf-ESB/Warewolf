@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,17 +30,17 @@ namespace Dev2.Studio.AppResources.Behaviors
         public static readonly DependencyProperty CloseIndicatorProperty =
             DependencyProperty.Register("CloseIndicator", typeof(string), typeof(WindowCloseBehviour), new PropertyMetadata(CloseIndicatorChanged));
 
-        private static void CloseIndicatorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        static void CloseIndicatorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            WindowCloseBehviour windowCloseBehviour = d as WindowCloseBehviour;
+            var windowCloseBehviour = d as WindowCloseBehviour;
 
-            if(windowCloseBehviour?.AssociatedObject == null)
+            if (windowCloseBehviour?.AssociatedObject == null)
             {
                 return;
             }
 
-            bool value = Convert.ToBoolean(e.NewValue);
-            if(value)
+            var value = Convert.ToBoolean(e.NewValue);
+            if (value)
             {
                 windowCloseBehviour.AssociatedObject.Close();
             }

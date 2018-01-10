@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,7 +31,7 @@ namespace Dev2.Activities
 {
 
     [ToolDescriptorInfo("RecordSet-UniqueRecords", "Unique Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Unique_Records")]
-    public class DsfUniqueActivity : DsfActivityAbstract<string>
+    public class DsfUniqueActivity : DsfActivityAbstract<string>,IEquatable<DsfUniqueActivity>
     {
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
 
             ExecuteTool(dataObject, 0);
         }
@@ -163,8 +163,8 @@ namespace Dev2.Activities
         {
             if(dataObject.IsDebugMode())
             {
-                int i = 1;
-                foreach(var field in toresultfields)
+                var i = 1;
+                foreach (var field in toresultfields)
                 {
                     
                     if(!string.IsNullOrEmpty(field))
@@ -291,5 +291,34 @@ namespace Dev2.Activities
         #endregion
 
 
+        public bool Equals(DsfUniqueActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(InFields, other.InFields) 
+                && string.Equals(ResultFields, other.ResultFields) 
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfUniqueActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (InFields != null ? InFields.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ResultFields != null ? ResultFields.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

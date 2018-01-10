@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,15 +33,15 @@ namespace Warewolf.Studio.ViewModels
         string _resourceName;
         readonly string _warewolfserverName;
         string _headerText;
-        private bool _isDisposed;
+        bool _isDisposed;
         ObservableCollection<IDllListingModel> _dllListings;
         bool _isLoading;
         string _searchTerm;
         string _assemblyName;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
-        private bool _is32Bit;
-        private string _clsId;
-        private AsyncObservableCollection<IDllListingModel> _originalDllListings;
+        bool _is32Bit;
+        string _clsId;
+        AsyncObservableCollection<IDllListingModel> _originalDllListings;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public ManageComPluginSourceViewModel(IManageComPluginSourceModel updateManager, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IAsyncWorker asyncWorker)
@@ -189,7 +189,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsLoading = true;
                 var comPluginSource = updateManager.FetchSource(pluginSource.Id);
-                List<DllListingModel> names = updateManager.GetComDllListings(null)?.Select(input => new DllListingModel(updateManager, input)).ToList();
+                var names = updateManager.GetComDllListings(null)?.Select(input => new DllListingModel(updateManager, input)).ToList();
                 return new Tuple<IComPluginSource, List<DllListingModel>>(comPluginSource, names);
             }, tuple =>
             {

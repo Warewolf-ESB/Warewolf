@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,7 +33,7 @@ namespace Dev2.Common.Utils
 
                 if (stringToScrub.EndsWith("\""))
                 {
-                    int indexTORemoveFrom = stringToScrub.Length - 1;
+                    var indexTORemoveFrom = stringToScrub.Length - 1;
                     stringToScrub = stringToScrub.Remove(indexTORemoveFrom, 1);
                 }
             }
@@ -47,7 +47,7 @@ namespace Dev2.Common.Utils
                 return String.Empty;
             }
 
-            string cleanText = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
+            var cleanText = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
 
             var offset = 0;
             var output = new StringBuilder();

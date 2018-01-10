@@ -63,7 +63,7 @@ namespace Dev2.Web2.Controllers
 
                     return PartialView("ExecutionList", model.Item1);
                 }
-                catch
+                catch (Exception ex)
                 {
                     return PartialView("ExecutionList", emptyModel);
                 }
@@ -71,7 +71,7 @@ namespace Dev2.Web2.Controllers
             return PartialView("ExecutionList", emptyModel);
         }
 
-        private ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)
+        ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)
         {
             ExecutionLoggingRequestViewModel toReturn;
             if (Request != null)
@@ -104,7 +104,7 @@ namespace Dev2.Web2.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
@@ -126,7 +126,7 @@ namespace Dev2.Web2.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }
@@ -148,7 +148,7 @@ namespace Dev2.Web2.Controllers
 
                 return RedirectToAction("Index");
             }
-            catch
+            catch (Exception ex)
             {
                 return View();
             }

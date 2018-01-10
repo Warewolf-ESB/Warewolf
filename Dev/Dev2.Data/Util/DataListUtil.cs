@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -45,15 +45,15 @@ namespace Dev2.Data.Util
         internal const string RecordsetIndexOpeningBracket = "(";
         internal const string RecordsetIndexClosingBracket = ")";
 
-        private static readonly HashSet<string> SysTags = new HashSet<string>();
-        private static readonly Lazy<ICommon> LazyCommon = new Lazy<ICommon>(()=> new CommonDataUtils(), LazyThreadSafetyMode.ExecutionAndPublication);
-        private static ICommon Common => LazyCommon.Value;
+        static readonly HashSet<string> SysTags = new HashSet<string>();
+        static readonly Lazy<ICommon> LazyCommon = new Lazy<ICommon>(() => new CommonDataUtils(), LazyThreadSafetyMode.ExecutionAndPublication);
+        static ICommon Common => LazyCommon.Value;
 
-        private static readonly Lazy<ICommonRecordSetUtil> LazyRecSetCommon = new Lazy<ICommonRecordSetUtil>(()=>new CommonRecordSetUtil(),LazyThreadSafetyMode.ExecutionAndPublication);
-        private static ICommonRecordSetUtil RecSetCommon => LazyRecSetCommon.Value;
+        static readonly Lazy<ICommonRecordSetUtil> LazyRecSetCommon = new Lazy<ICommonRecordSetUtil>(() => new CommonRecordSetUtil(), LazyThreadSafetyMode.ExecutionAndPublication);
+        static ICommonRecordSetUtil RecSetCommon => LazyRecSetCommon.Value;
 
-        private static readonly Lazy<ICommonScalarUtil> LazyScalarCommon = new Lazy<ICommonScalarUtil>(()=>new CommonScalarUtil(),LazyThreadSafetyMode.ExecutionAndPublication);
-        private static ICommonScalarUtil ScalarCommon => LazyScalarCommon.Value;
+        static readonly Lazy<ICommonScalarUtil> LazyScalarCommon = new Lazy<ICommonScalarUtil>(() => new CommonScalarUtil(), LazyThreadSafetyMode.ExecutionAndPublication);
+        static ICommonScalarUtil ScalarCommon => LazyScalarCommon.Value;
 
         #endregion Class Members
 
@@ -122,7 +122,7 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsCalcEvaluation(string expression, out string newExpression)
         {
-            bool result = false;
+            var result = false;
 
             newExpression = string.Empty;
 
@@ -170,7 +170,7 @@ namespace Dev2.Data.Util
             string[] nastyJunk = { "WebServerUrl", "Dev2WebServer", "PostData", "Service" };
 
             // Transfer System Tags
-            bool result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
+            var result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
 
             if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
             {
@@ -192,9 +192,9 @@ namespace Dev2.Data.Util
             try
             {
                 var inputs = DataListFactory.CreateInputParser().Parse(inputDefs);
-                IRecordSetCollection inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
-                IEnumerable<IDev2Definition> inputScalarList = DataListFactory.CreateScalarList(inputs, false);
-                IEnumerable<IDev2Definition> inputObjectList = DataListFactory.CreateObjectList(inputs);
+                var inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
+                var inputScalarList = DataListFactory.CreateScalarList(inputs, false);
+                var inputObjectList = DataListFactory.CreateObjectList(inputs);
                 Common.CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
                 Common.CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
                 Common.CreateObjectInputs(outerEnvironment, inputObjectList, env, update);
@@ -259,7 +259,7 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string StripBracketsFromValue(string value)
         {
-            string result = string.Empty;
+            var result = string.Empty;
             if (value != null)
             {
                 result = value.Replace(OpeningSquareBrackets, "").Replace(ClosingSquareBrackets, "");
@@ -273,9 +273,9 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns></returns>
-        private static string StripLeadingAndTrailingBracketsFromValue(string value)
+        static string StripLeadingAndTrailingBracketsFromValue(string value)
         {
-            string result = value;
+            var result = value;
 
             if (result.StartsWith(OpeningSquareBrackets))
             {
@@ -289,7 +289,7 @@ namespace Dev2.Data.Util
 
             return result;
         }
-        
+
         public static string AddBracketsToValueIfNotExist(string value)
         {
             string result;
@@ -308,7 +308,7 @@ namespace Dev2.Data.Util
         
         public static bool IsFullyEvaluated(string payload)
         {
-            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
+            var result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
                 && payload.IndexOf(ClosingSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
@@ -345,7 +345,7 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsEvaluated(string payload)
         {
-            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;
+            var result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
         }
@@ -400,26 +400,18 @@ namespace Dev2.Data.Util
             try
             {
                 result = env.EvalAsListOfStrings(expression, update);
-
             }
             catch (Exception err)
             {
                 errors.AddError(err.Message);
-
             }
-
 
             return result;
         }
-
-        /// <summary>
-        /// Adjusts for encoding issues.
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <returns></returns>
+        
         public static string AdjustForEncodingIssues(string payload)
         {
-            string trimedData = payload.Trim();
+            var trimedData = payload.Trim();
             var isXml = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             if (!isXml)
@@ -528,7 +520,7 @@ namespace Dev2.Data.Util
 
         public static string GenerateSerializableDefsFromDataList(string datalist, enDev2ColumnArgumentDirection direction)
         {
-            DefinitionBuilder db = new DefinitionBuilder();
+            var db = new DefinitionBuilder();
 
             if (direction == enDev2ColumnArgumentDirection.Input)
             {
@@ -558,7 +550,7 @@ namespace Dev2.Data.Util
 
         internal static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
         {
-            XmlAttribute ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
+            var ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
 
             enDev2ColumnArgumentDirection ioDirection;
             ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) : enDev2ColumnArgumentDirection.Both;
@@ -577,7 +569,7 @@ namespace Dev2.Data.Util
         public static T ConvertFromJsonToModel<T>(StringBuilder payload)
         {
 
-            T obj = JsonConvert.DeserializeObject<T>(payload.ToString());
+            var obj = JsonConvert.DeserializeObject<T>(payload.ToString());
 
             return obj;
         }

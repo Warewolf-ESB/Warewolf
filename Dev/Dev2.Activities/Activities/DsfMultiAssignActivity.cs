@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,13 +21,13 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.MathOperations;
-using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -35,17 +35,16 @@ using WarewolfParserInterop;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Data-Assign", "Assign", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign")]
     public class DsfMultiAssignActivity : DsfActivityAbstract<string>
-    {        
+    {
         public static readonly string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
         public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public static readonly string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
-        
-        private IList<ActivityDTO> _fieldsCollection;
-        
+
+        IList<ActivityDTO> _fieldsCollection;
+
         public IList<ActivityDTO> FieldsCollection
-        
+
         {
             get
             {
@@ -62,28 +61,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ServiceHost { get; set; }
 
         protected override bool CanInduceIdle => true;
-        
+
         public DsfMultiAssignActivity()
             : base("Assign")
         {
             _fieldsCollection = new List<ActivityDTO>();
         }
-        
+
         public override List<string> GetOutputs()
         {
             return FieldsCollection.Select(dto => dto.FieldName).ToList();
-        }
-
-        
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
+        }          
         
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -93,46 +86,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs.Clear();
 
             InitializeDebug(dataObject);
-            ErrorResultTO errors = new ErrorResultTO();
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
             try
             {
-                if(!errors.HasErrors())
+                if (!errors.HasErrors())
                 {
-                    int innerCount = 1;
-                    foreach(ActivityDTO t in FieldsCollection)
+                    var innerCount = 1;
+                    foreach (ActivityDTO t in FieldsCollection)
                     {
                         try
                         {
-                            if(!string.IsNullOrEmpty(t.FieldName))
+                            if (!string.IsNullOrEmpty(t.FieldName))
                             {
                                 var assignValue = new AssignValue(t.FieldName, t.FieldValue);
                                 var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out string cleanExpression);
-                                if(isCalcEvaluation)
+                                if (isCalcEvaluation)
                                 {
                                     assignValue = new AssignValue(t.FieldName, cleanExpression);
                                 }
                                 DebugItem debugItem = null;
-                                if(dataObject.IsDebugMode())
+                                if (dataObject.IsDebugMode())
                                 {
                                     debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue, update);
                                 }
                                 if (isCalcEvaluation)
                                 {
-                                     DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
+                                    DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
                                 }
                                 else
                                 {
                                     dataObject.Environment.AssignWithFrame(assignValue, update);
                                 }
-                                if(debugItem != null)
+                                if (debugItem != null)
                                 {
                                     _debugInputs.Add(debugItem);
                                 }
-                                if(dataObject.IsDebugMode())
+                                if (dataObject.IsDebugMode())
                                 {
-                                    if(DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
+                                    if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
                                     {
                                         var length = dataObject.Environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(assignValue.Name));
                                         assignValue = new AssignValue(DataListUtil.ReplaceRecordsetBlankWithIndex(assignValue.Name, length), assignValue.Value);
@@ -142,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             innerCount++;
                         }
-                        catch(Exception e)
+                        catch (Exception e)
                         {
                             Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                             allErrors.AddError(e.Message);
@@ -152,7 +145,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.MergeErrors(errors);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
@@ -161,13 +154,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfAssignActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
@@ -175,11 +168,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void DoCalculation(IExecutionEnvironment environment, string fieldName, string cleanExpression, int update)
+        void DoCalculation(IExecutionEnvironment environment, string fieldName, string cleanExpression, int update)
         {
             var functionEvaluator = new FunctionEvaluator();
             var warewolfEvalResult = environment.Eval(cleanExpression, update);
-         
+
             if (warewolfEvalResult.IsWarewolfAtomResult)
             {
                 if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult result)
@@ -205,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private static string PerformCalcForAtom(DataStorage.WarewolfAtom warewolfAtom, FunctionEvaluator functionEvaluator)
+        static string PerformCalcForAtom(DataStorage.WarewolfAtom warewolfAtom, FunctionEvaluator functionEvaluator)
         {
             var calcExpression = ExecutionEnvironment.WarewolfAtomToString(warewolfAtom);
             DataListUtil.IsCalcEvaluation(calcExpression, out string exp);
@@ -220,24 +213,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         eval = eval2;
                     }
                 }
-                catch(Exception err)
+                catch (Exception err)
                 {
                     Dev2Logger.Warn(err, "Warewolf Warn");
                 }
             }
-            if(!res)
+            if (!res)
             {
                 throw new Exception(ErrorResource.InvalidCalculate);
             }
             return eval;
         }
 
-        private DebugItem AddSingleInputDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
+        DebugItem AddSingleInputDebugItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
         {
             var debugItem = new DebugItem();
             const string VariableLabelText = "Variable";
             const string NewFieldLabelText = "New Value";
-            
+
             try
             {
                 if (!DataListUtil.IsEvaluated(assignValue.Value))
@@ -304,11 +297,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (e.Message.Contains("ParseError"))
                 {
-                    AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value,environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
+                    AddDebugItem(new DebugItemWarewolfAtomResult("", assignValue.Value, environment.EvalToExpression(assignValue.Name, update), "", VariableLabelText, NewFieldLabelText, "="), debugItem);
                     return debugItem;
                 }
                 if (!ExecutionEnvironment.IsValidVariableExpression(assignValue.Name, out string errorMessage, update))
@@ -343,12 +336,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return debugItem;
         }
 
-        private void AddSingleDebugOutputItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
+        void AddSingleDebugOutputItem(IExecutionEnvironment environment, int innerCount, IAssignValue assignValue, int update)
         {
             const string VariableLabelText = "";
             const string NewFieldLabelText = "";
             var debugItem = new DebugItem();
-            
+
             try
             {
                 if (!DataListUtil.IsEvaluated(assignValue.Value))
@@ -412,14 +405,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            foreach(Tuple<string, string> t in updates)
+            foreach (Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains(t1.Item1));
 
                 // issues updates
-                foreach(var a in items)
+                foreach (var a in items)
                 {
                     a.FieldValue = a.FieldValue.Replace(t.Item1, t.Item2);
                 }
@@ -428,21 +421,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            foreach(Tuple<string, string> t in updates)
+            foreach (Tuple<string, string> t in updates)
             {
 
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldName.Contains(t1.Item1));
 
                 // issues updates
-                foreach(var a in items)
+                foreach (var a in items)
                 {
                     a.FieldName = a.FieldName.Replace(t.Item1, t.Item2);
                 }
             }
         }
-        
+
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
@@ -453,7 +446,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return _debugOutputs;
         }
-        
+
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return (from item in FieldsCollection
@@ -467,7 +460,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
                     select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
         }
-      
+
+        public bool Equals(DsfMultiAssignActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var sequenceEqual = FieldsCollection.SequenceEqual(other.FieldsCollection, new ActivityDtoComparer());
+            return base.Equals(other) && sequenceEqual
+                && UpdateAllOccurrences == other.UpdateAllOccurrences
+                && CreateBookmark == other.CreateBookmark 
+                && string.Equals(ServiceHost, other.ServiceHost)
+                && string.Equals(DisplayName, other.DisplayName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfMultiAssignActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FieldsCollection != null ? FieldsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ UpdateAllOccurrences.GetHashCode();
+                hashCode = (hashCode * 397) ^ CreateBookmark.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServiceHost != null ? ServiceHost.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 
 }

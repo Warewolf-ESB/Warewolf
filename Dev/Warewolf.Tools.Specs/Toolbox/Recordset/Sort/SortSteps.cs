@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Sort
     [Binding]
     public class SortSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public SortSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -68,15 +68,15 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Sort
         [Given(@"I have the following recordset to sort")]
         public void GivenIHaveTheFollowingRecordsetToSort(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
-            if(tableRows.Count == 0)
+            if (tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -114,14 +114,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.Sort
         public void WhenTheSortRecordsToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the sorted recordset ""(.*)""  will be")]
         public void ThenTheSortedRecordsetWillBe(string variable, Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
             var recordSets = DataObject.Environment.Eval(variable, 0);
             if (recordSets.IsWarewolfAtomListresult)
             {

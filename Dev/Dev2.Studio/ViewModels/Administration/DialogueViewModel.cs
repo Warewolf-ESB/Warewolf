@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,12 +28,12 @@ namespace Dev2.Studio.ViewModels.Administration
         #region Members
 
         readonly ClosedOperationEventHandler OnOkClick;
-        private ICommand _okClicked;
-        private ICommand _hyperLink;
-        private ImageSource _imageSource;
-        private string _description;
-        private string _title;
-        private string _descriptionTitleText;
+        ICommand _okClicked;
+        ICommand _hyperLink;
+        ImageSource _imageSource;
+        string _description;
+        string _title;
+        string _descriptionTitleText;
 
         #endregion Members
 
@@ -98,25 +98,25 @@ namespace Dev2.Studio.ViewModels.Administration
 
         #region Private Methods
 
-        private void SetTitle(string title)
+        void SetTitle(string title)
         {
             _title = string.IsNullOrEmpty(title) ? string.Empty : title;
         }
 
-        private void SetDescription(string description)
+        void SetDescription(string description)
         {
             _description = string.IsNullOrEmpty(description) ? string.Empty : description;
         }
 
-        private void SetImage(string imageSource)
+        void SetImage(string imageSource)
         {
-            if(string.IsNullOrEmpty(imageSource))
+            if (string.IsNullOrEmpty(imageSource))
             {
                 _imageSource = null;
             }
             else
             {
-                bool validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out Uri imageUri);
+                var validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out Uri imageUri);
 
                 if (validUri)
                 {
@@ -139,14 +139,14 @@ namespace Dev2.Studio.ViewModels.Administration
 
 
 
-        private void SetDescriptionTitleText(string text)
+        void SetDescriptionTitleText(string text)
         {
             _descriptionTitleText = string.IsNullOrEmpty(text) ? string.Empty : text;
         }
 
-        private void SetHyperlink(string link, string text)
+        void SetHyperlink(string link, string text)
         {
-            if(!string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(text))
             {
                 Hyperlink = link;
                 HyperlinkText = text;

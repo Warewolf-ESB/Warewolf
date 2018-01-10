@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,22 +30,22 @@ namespace Dev2.Activities
                 return false;
             }
 
-            ModalChecker checker = new ModalChecker(process);
+            var checker = new ModalChecker(process);
             return checker.WaitingForUserInput;
         }
 
         #region Native Windows Stuff
-        
-        private const int WS_EX_DLGMODALFRAME = 0x00000001;
-        private const int GWL_EXSTYLE = -20;
+
+        const int WS_EX_DLGMODALFRAME = 0x00000001;
+        const int GWL_EXSTYLE = -20;
         public delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
-        private delegate int EnumWindowsProc(IntPtr hWnd, int lParam);
+        delegate int EnumWindowsProc(IntPtr hWnd, int lParam);
         [DllImport("user32")]
-        private static extern int EnumWindows(EnumWindowsProc lpEnumFunc, int lParam);
+        static extern int EnumWindows(EnumWindowsProc lpEnumFunc, int lParam);
         [DllImport("user32", CharSet = CharSet.Auto)]
-        private static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
+        static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32")]
-        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out IntPtr lpdwProcessId);
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out IntPtr lpdwProcessId);
         [DllImport("user32")]
         static extern bool EnumThreadWindows(int dwThreadId, EnumThreadDelegate lpfn, IntPtr lParam);
         [DllImport("user32")]
@@ -62,21 +62,21 @@ namespace Dev2.Activities
         static extern int GetWindowTextLength(IntPtr handle);
         #endregion
 
-        private readonly Process _process;
-        private Boolean _waiting;
+        readonly Process _process;
+        Boolean _waiting;
 
-        private ModalChecker(Process process)
+        ModalChecker(Process process)
         {
             _process = process;
             _waiting = false;
         }
-        
-        private Boolean WaitingForUserInput
+
+        Boolean WaitingForUserInput
         {
             get
             {
                 WindowEnum(_process.MainWindowHandle);
-                if(!_waiting)
+                if (!_waiting)
                 {
                     _waiting = ThreadWindows(_process.MainWindowHandle);
                 }
@@ -84,9 +84,9 @@ namespace Dev2.Activities
             }
         }
 
-        private static bool ThreadWindows(IntPtr handle)
+        static bool ThreadWindows(IntPtr handle)
         {
-            if(IsWindowVisible(handle))
+            if (IsWindowVisible(handle))
             {
                 var length = GetWindowTextLength(handle);
                 var caption = new StringBuilder(length + 1);
@@ -94,9 +94,9 @@ namespace Dev2.Activities
                 return true;
             }
             return false;
-        }        
-        
-        private int WindowEnum(IntPtr hWnd)
+        }
+
+        int WindowEnum(IntPtr hWnd)
         {
             GetWindowThreadProcessId(hWnd, out IntPtr processId);
             if (processId.ToInt32() != _process.Id)
@@ -104,8 +104,8 @@ namespace Dev2.Activities
                 return 1;
             }
 
-            uint style = GetWindowLong(hWnd, GWL_EXSTYLE);
-            if((style & WS_EX_DLGMODALFRAME) != 0)
+            var style = GetWindowLong(hWnd, GWL_EXSTYLE);
+            if ((style & WS_EX_DLGMODALFRAME) != 0)
             {
                 _waiting = true;
                 return 0;

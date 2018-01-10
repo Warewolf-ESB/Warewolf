@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -46,9 +46,9 @@ namespace Dev2.Runtime.ESB.Control
         {
             
         }
-        private readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
-        private static WorkspaceRepository wRepository => WorkspaceRepository.Instance;
-        private static ResourceCatalog rCatalog => ResourceCatalog.Instance;
+        readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
+        static WorkspaceRepository wRepository => WorkspaceRepository.Instance;
+        static ResourceCatalog rCatalog => ResourceCatalog.Instance;
         /// <summary>
         /// Executes the request.
         /// </summary>
@@ -114,16 +114,16 @@ namespace Dev2.Runtime.ESB.Control
         }
 
 
-        private static IResource GetResource(Guid workspaceId, Guid resourceId)
+        static IResource GetResource(Guid workspaceId, Guid resourceId)
         {
             var resource = rCatalog.GetResource(workspaceId, resourceId) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
 
             return resource;
         }
 
-        
 
-        private static IResource GetResource(Guid workspaceId, string resourceName)
+
+        static IResource GetResource(Guid workspaceId, string resourceName)
         {
             var resource = rCatalog.GetResource(workspaceId, resourceName) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
             return resource;
@@ -139,7 +139,7 @@ namespace Dev2.Runtime.ESB.Control
             executionContainer.PerformLogExecution(uri, update);
         }
 
-        private RemoteWorkflowExecutionContainer CreateExecutionContainer(IDSFDataObject dataObject, IWorkspace theWorkspace)
+        RemoteWorkflowExecutionContainer CreateExecutionContainer(IDSFDataObject dataObject, IWorkspace theWorkspace)
         {
             return new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
         }
@@ -211,7 +211,7 @@ namespace Dev2.Runtime.ESB.Control
                             var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
 
                             errors.MergeErrors(invokeErrors);
-                            string errorString = dataObject.Environment.FetchErrors();
+                            var errorString = dataObject.Environment.FetchErrors();
                             invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
                             errors.MergeErrors(invokeErrors);
                             dataObject.StartTime = oldStartTime;
@@ -244,7 +244,7 @@ namespace Dev2.Runtime.ESB.Control
             dataObject.PushEnvironment(shapeDefinitionsToEnvironment);
         }
 
-        private static void SetRemoteExecutionDataList(IDSFDataObject dataObject, IEsbExecutionContainer executionContainer, ErrorResultTO errors)
+        static void SetRemoteExecutionDataList(IDSFDataObject dataObject, IEsbExecutionContainer executionContainer, ErrorResultTO errors)
         {
             if (executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
             {
@@ -264,7 +264,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        private void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors, int update)
+        void ExecuteRequestAsync(IDSFDataObject dataObject, string inputDefs, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors, int update)
         {
             var clonedDataObject = dataObject.Clone();
             invokeErrors = new ErrorResultTO();

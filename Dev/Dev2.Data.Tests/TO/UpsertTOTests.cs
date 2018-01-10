@@ -12,7 +12,7 @@ namespace Dev2.Data.Tests.Operations
         {
             const string someexpression = "SomeExpression";
             const string somepayload = "SomePayLoad";
-            UpsertTO upsertTo = new UpsertTO(someexpression, somepayload);
+            var upsertTo = new UpsertTO(someexpression, somepayload);
             Assert.IsNotNull(upsertTo);
             Assert.AreEqual(someexpression, upsertTo.Expression);
             Assert.AreEqual(somepayload, upsertTo.Payload);

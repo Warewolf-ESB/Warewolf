@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,7 +34,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
     [Binding]
     public class RenameSteps : FileToolsBase
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public RenameSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -51,7 +51,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         public void WhenTheRenameFileToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -59,7 +59,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
         {
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
             svc.SetActivity(FlowchartProcess);
-            Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
+            var mockChannel = new Mock<IEsbChannel>();
 
             if (CurrentDl == null)
             {
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
 
             if (errors.HasErrors())
             {
-                string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
+                var errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
 
                 if (throwException)
                 {
@@ -121,7 +121,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
                 esbChannel = channel;
             }
             dataObject.ExecutionToken = new ExecutionToken();
-            WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+            var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
 
             errors.ClearErrors();
             CustomContainer.Register<IActivityParser>(new ActivityParser());
@@ -173,7 +173,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Rename
             scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out string privateKeyFile);
             scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out string destPrivateKeyFile);
 
-            DsfPathRename dsfRename = new DsfPathRename
+            var dsfRename = new DsfPathRename
             {
                 InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
                 Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),

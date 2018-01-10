@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,11 +38,11 @@ namespace Dev2.FindMissingStrategies
         /// <returns>Returns all the fields in a list of strings</returns>
         public List<string> GetActivityFields(object activity)
         {
-            List<string> results = new List<string>();
-            IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(activity);
+            var results = new List<string>();
+            var properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(activity);
             foreach (PropertyInfo propertyInfo in properties)
             {
-                object property = propertyInfo.GetValue(activity, null);
+                var property = propertyInfo.GetValue(activity, null);
                 if (property != null)
                 {
                     results.Add(property.ToString());

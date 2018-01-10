@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,11 +32,11 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 {
     public class QuickVariableInputViewModel : DependencyObject, IClosable, IValidator, IErrorsSource
     {
-        private const string splitTypeIndex = "Index";
-        private const string splitTypeChars = "Chars";
-        private const string splitTypeNewLine = "New Line";
-        private const string splitTypeSpace = "Space";
-        private const string splitTypeTab = "Tab";
+        const string splitTypeIndex = "Index";
+        const string splitTypeChars = "Chars";
+        const string splitTypeNewLine = "New Line";
+        const string splitTypeSpace = "Space";
+        const string splitTypeTab = "Tab";
 
         readonly Action<IEnumerable<string>, bool> _addToCollection;
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -41,7 +41,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
         {
             //------------Setup for test--------------------------
             var dataTableMapper = new DataTableMapper();
-            DataTable obj = new DataTable("Foo");
+            var obj = new DataTable("Foo");
             obj.Columns.Add("Col1");
             obj.Columns.Add("Col2");
 
@@ -78,7 +78,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
 </head>
 </html>";
             var dataTableMapper = new DataTableMapper();
-            DataTable obj = new DataTable("Foo");
+            var obj = new DataTable("Foo");
             obj.Columns.Add("Col1");
             obj.Columns.Add("Col2");
 

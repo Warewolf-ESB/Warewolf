@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.Warewolf.Security.Encryption
     public class DPAPIWrapperTests
     {
 
-        private readonly string message = "This is the secret message to encrypt.";
+        readonly string message = "This is the secret message to encrypt.";
 
         [TestMethod]
         [Owner("Kerneels Roos")]
@@ -34,7 +34,7 @@ namespace Dev2.Warewolf.Security.Encryption
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            string encrypted = DpapiWrapper.Encrypt(message);
+            var encrypted = DpapiWrapper.Encrypt(message);
             encrypted.Should().NotBeNullOrEmpty();
             encrypted.Should().NotBeNullOrWhiteSpace();
             encrypted.Should().NotBeSameAs(message);
@@ -50,13 +50,13 @@ namespace Dev2.Warewolf.Security.Encryption
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            string encrypted = DpapiWrapper.Encrypt(message);
-            char x = encrypted.Where(o => encrypted.Where(u => u == o).Count() > 1).First();  // find first char that appears more than once
-            char y = encrypted.Where(o => o != x).First();  // find the first char not equal to x
-            string tamperedEncrypted = encrypted.Replace(x, y);
+            var encrypted = DpapiWrapper.Encrypt(message);
+            var x = encrypted.Where(o => encrypted.Where(u => u == o).Count() > 1).First();  // find first char that appears more than once
+            var y = encrypted.Where(o => o != x).First();  // find the first char not equal to x
+            var tamperedEncrypted = encrypted.Replace(x, y);
             try
             {
-                string decrypted = DpapiWrapper.Decrypt(tamperedEncrypted);
+                var decrypted = DpapiWrapper.Decrypt(tamperedEncrypted);
             }
             catch (Exception e)
             {

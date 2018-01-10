@@ -9,10 +9,10 @@ namespace WarewolfParserInterop
 {
     public class WarewolfAtomList<T>:IEnumerable<T>
     {
-        private T[] _values;
-        private int _count;
-        private readonly T _defaultValue;
-      IEnumerator<T> _currentEnumerator;
+        T[] _values;
+        int _count;
+        readonly T _defaultValue;
+        IEnumerator<T> _currentEnumerator;
       T _currentValue;
 
       public WarewolfAtomList(T defaultValue)
@@ -100,19 +100,19 @@ namespace WarewolfParserInterop
             return _values[position];
         }
 
-      private void ResizeToCount()
+        void ResizeToCount()
         {
             if (_count >= _values.Length - 1)
             {
                 Array.Resize(ref _values, _values.Length * 2);
-                for (int a = _count+1; a < _values.Length; a++)
+                for (int a = _count + 1; a < _values.Length; a++)
                 {
                     _values[a] = _defaultValue;
                 }
             }
         }
 
-      public T GetNextValue()
+        public T GetNextValue()
       {
           var x = GetCurrentEnumerator();
           if (x.Current != null)
@@ -141,9 +141,9 @@ namespace WarewolfParserInterop
       public bool Apply (Func<T,T> action )
       {
           for(int i = 0; i < _count; i++)
-          {
-              _values[i] = action(_values[i]);
-          }
+            {
+                _values[i] = action(_values[i]);
+            }
           return true;
       }
 
@@ -213,7 +213,7 @@ namespace WarewolfParserInterop
 
           for (int i = 0; i < _count; i++)
           {
-              if (func(_values[i]))
+              if (func?.Invoke(_values[i]) ?? default(bool))
               {
                   yield return i;
 

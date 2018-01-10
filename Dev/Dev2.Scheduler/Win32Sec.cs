@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,10 +25,7 @@ using LSA_HANDLE = System.IntPtr;
 
 
 [StructLayout(LayoutKind.Sequential)]
-
-
-
-internal struct LSA_OBJECT_ATTRIBUTES
+struct LSA_OBJECT_ATTRIBUTES
 {
     internal int Length;
     internal LSA_HANDLE RootDirectory;
@@ -39,7 +36,7 @@ internal struct LSA_OBJECT_ATTRIBUTES
 }
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-internal struct LSA_UNICODE_STRING
+struct LSA_UNICODE_STRING
 {
     internal ushort Length;
     internal ushort MaximumLength;
@@ -48,13 +45,13 @@ internal struct LSA_UNICODE_STRING
 }
 
 [StructLayout(LayoutKind.Sequential)]
-internal struct LSA_ENUMERATION_INFORMATION
+struct LSA_ENUMERATION_INFORMATION
 {
     internal LSA_HANDLE PSid;
 }
 
 
-internal static class Win32Sec
+static class Win32Sec
 {
     [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true), SuppressUnmanagedCodeSecurity]
     internal static extern uint LsaOpenPolicy(
@@ -81,9 +78,9 @@ internal static class Win32Sec
 
 public class SecurityWrapper : ISecurityWrapper
 {
-    private readonly IAuthorizationService _authorizationService;
+    readonly IAuthorizationService _authorizationService;
 
-    private enum Access
+    enum Access
     {
         POLICY_READ = 0x20006,
         POLICY_ALL_ACCESS = 0x00F0FFF,
@@ -92,13 +89,13 @@ public class SecurityWrapper : ISecurityWrapper
         POLICY_WRITE = 0X207F8
     }
 
-    private const uint STATUS_ACCESS_DENIED = 0xc0000022;
-    private const uint STATUS_INSUFFICIENT_RESOURCES = 0xc000009a;
-    private const uint STATUS_NO_MEMORY = 0xc0000017;
-    private const uint ERROR_NO_MORE_ITEMS = 2147483674;
-    private const uint ERROR_PRIVILEGE_DOES_NOT_EXIST = 3221225568;
-    private LSA_HANDLE lsaHandle;
-    
+    const uint STATUS_ACCESS_DENIED = 0xc0000022;
+    const uint STATUS_INSUFFICIENT_RESOURCES = 0xc000009a;
+    const uint STATUS_NO_MEMORY = 0xc0000017;
+    const uint ERROR_NO_MORE_ITEMS = 2147483674;
+    const uint ERROR_PRIVILEGE_DOES_NOT_EXIST = 3221225568;
+    LSA_HANDLE lsaHandle;
+
     public SecurityWrapper(IAuthorizationService authorizationService)
         : this(Environment.MachineName)
     {
@@ -121,27 +118,27 @@ public class SecurityWrapper : ISecurityWrapper
             system = new LSA_UNICODE_STRING[1];
             system[0] = InitLsaString(MachineName);
         }
-        uint ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out lsaHandle);
+        var ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out lsaHandle);
         TestReturnValue(ret);
     }
 
     public bool IsWindowsAuthorised(string privilege, string userName)
     {
-        bool windowsAuthorised = false;
+        var windowsAuthorised = false;
 
         userName = CleanUser(userName);
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString(privilege);
-        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
+        var ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
         var Accounts = new List<String>();
 
         if (ret == 0)
         {
             var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
-            LSA_ENUMERATION_INFORMATION myLsaus = new LSA_ENUMERATION_INFORMATION();
+            var myLsaus = new LSA_ENUMERATION_INFORMATION();
             for (ulong i = 0; i < count; i++)
             {
-                IntPtr itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
+                var itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
 
                 LsaInfo[i] =
                     (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
@@ -178,23 +175,23 @@ public class SecurityWrapper : ISecurityWrapper
     }
 
 
-    private IEnumerable<string> FetchSchedulerGroups()
+    IEnumerable<string> FetchSchedulerGroups()
     {
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString("SeBatchLogonRight");
-        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
+        var ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
         var accounts = new List<String>();
 
         if (ret == 0)
         {
             var LsaInfo = new LSA_ENUMERATION_INFORMATION[count];
-            LSA_ENUMERATION_INFORMATION myLsaus = new LSA_ENUMERATION_INFORMATION();
+            var myLsaus = new LSA_ENUMERATION_INFORMATION();
             for (ulong i = 0; i < count; i++)
             {
-                IntPtr itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
+                var itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
 
                 LsaInfo[i] =
-                    (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());                
+                    (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
                 var SID = new SecurityIdentifier(LsaInfo[i].PSid);
                 accounts.Add(ResolveAccountName(SID));
             }
@@ -204,14 +201,14 @@ public class SecurityWrapper : ISecurityWrapper
     }
 
 
-    private IEnumerable<string> GetLocalUserGroupsForTaskSchedule(string userName)
+    IEnumerable<string> GetLocalUserGroupsForTaskSchedule(string userName)
     {
         var groups = new List<string>();
         using (var pcLocal = new PrincipalContext(ContextType.Machine))
         {
-            
+
             foreach (var grp in FetchSchedulerGroups())
-            
+
             {
                 if (CleanUser(grp).ToLower() == userName.ToLower())
                 {
@@ -243,7 +240,7 @@ public class SecurityWrapper : ISecurityWrapper
         return groups;
     }
 
-    private static string CleanUser(string userName)
+    static string CleanUser(string userName)
     {
         if (userName.Contains("\\"))
         {
@@ -253,7 +250,7 @@ public class SecurityWrapper : ISecurityWrapper
         return userName;
     }
 
-    private String ResolveAccountName(SecurityIdentifier SID)
+    String ResolveAccountName(SecurityIdentifier SID)
     {
         try
         {
@@ -264,8 +261,8 @@ public class SecurityWrapper : ISecurityWrapper
             return SID.ToString();
         }
     }
-    
-    private void TestReturnValue(uint ReturnValue)
+
+    void TestReturnValue(uint ReturnValue)
     {
         if (ReturnValue == 0)
         {
@@ -290,7 +287,7 @@ public class SecurityWrapper : ISecurityWrapper
         }
         throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int)ReturnValue));
     }
-    
+
     public void Dispose()
     {
         if (lsaHandle != IntPtr.Zero)
@@ -305,8 +302,8 @@ public class SecurityWrapper : ISecurityWrapper
     {
         Dispose();
     }
-    
-    private static LSA_UNICODE_STRING InitLsaString(string Value)
+
+    static LSA_UNICODE_STRING InitLsaString(string Value)
     {
         if (Value.Length > 0x7ffe)
         {

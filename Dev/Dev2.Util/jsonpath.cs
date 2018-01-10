@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -85,8 +85,8 @@ namespace Dev2.Util
     [Serializable]
     public sealed class JsonPathNode
     {
-        private readonly string _path;
-        private readonly object _value;
+        readonly string _path;
+        readonly object _value;
 
         public JsonPathNode(object value, string path)
         {
@@ -126,12 +126,12 @@ namespace Dev2.Util
         {
             if (obj == null)
             {
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
             }
 
             if (output == null)
             {
-                throw new ArgumentNullException("output");
+                throw new ArgumentNullException(nameof(output));
             }
 
             var i = new Interpreter(output, ValueSystem, ScriptEvaluator);
@@ -160,12 +160,12 @@ namespace Dev2.Util
             return output;
         }
 
-        private static Regex RegExp(string pattern)
+        static Regex RegExp(string pattern)
         {
             return new Regex(pattern, RegexOptions.ECMAScript);
         }
 
-        private static string Normalize(string expr)
+        static string Normalize(string expr)
         {
             var swap = new NormalizationSwap();
             expr = RegExp(@"[\['](\??\(.*?\))[\]']").Replace(expr, swap.Capture);
@@ -210,7 +210,7 @@ namespace Dev2.Util
             return sb.ToString();
         }
 
-        private static int ParseInt(string str, int defaultValue = 0)
+        static int ParseInt(string str, int defaultValue = 0)
         {
             if (string.IsNullOrEmpty(str))
             {
@@ -227,95 +227,22 @@ namespace Dev2.Util
             }
         }
 
-        private sealed class BasicValueSystem : IJsonPathValueSystem
+        sealed class Interpreter
         {
-            public bool HasMember(object value, string member)
-            {
-                if (IsPrimitive(value))
-                {
-                    return false;
-                }
+            static readonly char[] Colon = { ':' };
+            static readonly char[] Semicolon = { ';' };
+            readonly JsonPathScriptEvaluator _eval;
+            readonly JsonPathResultAccumulator _output;
+            readonly IJsonPathValueSystem _system;
 
-                if (value is IDictionary dict)
-                {
-                    return dict.Contains(member);
-                }
-
-                if (value is IList list)
-                {
-                    int index = ParseInt(member, -1);
-                    return index >= 0 && index < list.Count;
-                }
-
-                return false;
-            }
-
-            public object GetMemberValue(object value, string member)
-            {
-                if (IsPrimitive(value))
-                {
-                    throw new ArgumentException("value");
-                }
-
-                if (value is IDictionary dict)
-                {
-                    return dict[member];
-                }
-
-                var list = (IList) value;
-                int index = ParseInt(member, -1);
-                if (index >= 0 && index < list.Count)
-                {
-                    return list[index];
-                }
-
-                return null;
-            }
-
-            public IEnumerable GetMembers(object value)
-            {
-                return ((IDictionary) value).Keys;
-            }
-
-            public bool IsObject(object value)
-            {
-                return value is IDictionary;
-            }
-
-            public bool IsArray(object value)
-            {
-                return value is IList;
-            }
-
-            public bool IsPrimitive(object value)
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-
-                return Type.GetTypeCode(value.GetType()) != TypeCode.Object;
-            }
-        }
-
-        private sealed class Interpreter
-        {
-            private static readonly IJsonPathValueSystem DefaultValueSystem = new BasicValueSystem();
-
-            private static readonly char[] Colon = {':'};
-            private static readonly char[] Semicolon = {';'};
-            private readonly JsonPathScriptEvaluator _eval;
-            private readonly JsonPathResultAccumulator _output;
-            private readonly IJsonPathValueSystem _system;
-
-            public Interpreter(JsonPathResultAccumulator output, IJsonPathValueSystem valueSystem,
+            public Interpreter(JsonPathResultAccumulator output, IJsonPathValueSystem system,
                 JsonPathScriptEvaluator eval)
             {
                 Debug.Assert(output != null);
 
                 _output = output;
                 _eval = eval;
-                _system = valueSystem ?? DefaultValueSystem;
+                _system = system;
             }
 
             public void Trace(string expr, object value, string path)
@@ -326,9 +253,9 @@ namespace Dev2.Util
                     return;
                 }
 
-                int i = expr.IndexOf(';');
-                string atom = i >= 0 ? expr.Substring(0, i) : expr;
-                string tail = i >= 0 ? expr.Substring(i + 1) : string.Empty;
+                var i = expr.IndexOf(';');
+                var atom = i >= 0 ? expr.Substring(0, i) : expr;
+                var tail = i >= 0 ? expr.Substring(i + 1) : string.Empty;
 
                 if (value != null && _system.HasMember(value, atom))
                 {
@@ -357,7 +284,7 @@ namespace Dev2.Util
                 }
                 else
                 {
-                    if (atom.IndexOf(',') >= 0) 
+                    if (atom.IndexOf(',') >= 0)
                     {
                         foreach (string part in RegExp(@"'?,'?").Split(atom))
                         {
@@ -367,7 +294,7 @@ namespace Dev2.Util
                 }
             }
 
-            private void Store(string path, object value)
+            void Store(string path, object value)
             {
                 if (path != null)
                 {
@@ -375,7 +302,7 @@ namespace Dev2.Util
                 }
             }
 
-            private void Walk(string loc, string expr, object value, string path, WalkCallback callback)
+            void Walk(string loc, string expr, object value, string path, WalkCallback callback)
             {
                 if (_system.IsPrimitive(value))
                 {
@@ -387,7 +314,7 @@ namespace Dev2.Util
                     var list = (IList)value;
                     for (int i = 0; i < list.Count; i++)
                     {
-                        callback(i, loc, expr, value, path);
+                        callback?.Invoke(i, loc, expr, value, path);
                     }
                 }
                 else
@@ -396,29 +323,29 @@ namespace Dev2.Util
                     {
                         foreach (string key in _system.GetMembers(value))
                         {
-                            callback(key, loc, expr, value, path);
+                            callback?.Invoke(key, loc, expr, value, path);
                         }
                     }
                 }
             }
 
-            private void WalkWild(object member, string loc, string expr, object value, string path)
+            void WalkWild(object member, string loc, string expr, object value, string path)
             {
                 Trace(member + ";" + expr, value, path);
             }
 
-            private void WalkTree(object member, string loc, string expr, object value, string path)
+            void WalkTree(object member, string loc, string expr, object value, string path)
             {
-                object result = Index(value, member.ToString());
+                var result = Index(value, member.ToString());
                 if (result != null && !_system.IsPrimitive(result))
                 {
                     Trace("..;" + expr, result, path + ";" + member);
                 }
             }
 
-            private void WalkFiltered(object member, string loc, string expr, object value, string path)
+            void WalkFiltered(object member, string loc, string expr, object value, string path)
             {
-                object result = _eval(RegExp(@"^\?\((.*?)\)$").Replace(loc, "$1"),
+                var result = _eval(RegExp(@"^\?\((.*?)\)$").Replace(loc, "$1"),
                     Index(value, member.ToString()), member.ToString());
 
                 if (Convert.ToBoolean(result, CultureInfo.InvariantCulture))
@@ -427,7 +354,7 @@ namespace Dev2.Util
                 }
             }
 
-            private void Slice(string loc, string expr, object value, string path)
+            void Slice(string loc, string expr, object value, string path)
             {
                 var list = value as IList;
 
@@ -436,11 +363,11 @@ namespace Dev2.Util
                     return;
                 }
 
-                int length = list.Count;
-                string[] parts = loc.Split(Colon);
-                int start = ParseInt(parts[0]);
-                int end = ParseInt(parts[1], list.Count);
-                int step = parts.Length > 2 ? ParseInt(parts[2], 1) : 1;
+                var length = list.Count;
+                var parts = loc.Split(Colon);
+                var start = ParseInt(parts[0]);
+                var end = ParseInt(parts[1], list.Count);
+                var step = parts.Length > 2 ? ParseInt(parts[2], 1) : 1;
                 start = start < 0 ? Math.Max(0, start + length) : Math.Min(length, start);
                 end = end < 0 ? Math.Max(0, end + length) : Math.Min(length, end);
                 for (int i = start; i < end; i += step)
@@ -449,17 +376,17 @@ namespace Dev2.Util
                 }
             }
 
-            private object Index(object obj, string member)
+            object Index(object obj, string member)
             {
                 return _system.GetMemberValue(obj, member);
             }
 
-            private delegate void WalkCallback(object member, string loc, string expr, object value, string path);
+            delegate void WalkCallback(object member, string loc, string expr, object value, string path);
         }
 
-        private sealed class ListAccumulator
+        sealed class ListAccumulator
         {
-            private readonly IList _list;
+            readonly IList _list;
 
             public ListAccumulator(IList list)
             {
@@ -474,15 +401,15 @@ namespace Dev2.Util
             }
         }
 
-        private sealed class NormalizationSwap
+        sealed class NormalizationSwap
         {
-            private readonly ArrayList _subx = new ArrayList(4);
+            readonly ArrayList _subx = new ArrayList(4);
 
             public string Capture(Match match)
             {
                 Debug.Assert(match != null);
 
-                int index = _subx.Add(match.Groups[1].Value);
+                var index = _subx.Add(match.Groups[1].Value);
                 return "[#" + index.ToString(CultureInfo.InvariantCulture) + "]";
             }
 
@@ -490,8 +417,8 @@ namespace Dev2.Util
             {
                 Debug.Assert(match != null);
 
-                int index = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
-                return (string) _subx[index];
+                var index = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                return (string)_subx[index];
             }
         }
     }

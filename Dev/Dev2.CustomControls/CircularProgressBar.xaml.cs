@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,7 +31,7 @@ namespace Dev2.CustomControls
 
         #region Fields
 
-        private readonly DispatcherTimer _animationTimer;
+        readonly DispatcherTimer _animationTimer;
 
         #endregion
 
@@ -95,16 +95,16 @@ namespace Dev2.CustomControls
         /// <param name="offset">The offset.</param>
         /// <param name="posOffSet">The pos off set.</param>
         /// <param name="step">The step to change.</param>
-        private static void SetPosition(DependencyObject ellipse, double offset, double posOffSet, double step)
+        static void SetPosition(DependencyObject ellipse, double offset, double posOffSet, double step)
         {
-            ellipse.SetValue(Canvas.LeftProperty, 50 + Math.Sin(offset + posOffSet*step)*50);
-            ellipse.SetValue(Canvas.TopProperty, 50 + Math.Cos(offset + posOffSet*step)*50);
+            ellipse.SetValue(Canvas.LeftProperty, 50 + Math.Sin(offset + posOffSet * step) * 50);
+            ellipse.SetValue(Canvas.TopProperty, 50 + Math.Cos(offset + posOffSet * step) * 50);
         }
 
         /// <summary>
         ///     Starts this instance.
         /// </summary>
-        private void Start()
+        void Start()
         {
             _animationTimer.Tick += OnAnimationTick;
             _animationTimer.Start();
@@ -113,7 +113,7 @@ namespace Dev2.CustomControls
         /// <summary>
         ///     Stops this instance.
         /// </summary>
-        private void Stop()
+        void Stop()
         {
             _animationTimer.Stop();
             _animationTimer.Tick -= OnAnimationTick;
@@ -124,9 +124,9 @@ namespace Dev2.CustomControls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        private void OnAnimationTick(object sender, EventArgs e)
+        void OnAnimationTick(object sender, EventArgs e)
         {
-            _spinnerRotate.Angle = (_spinnerRotate.Angle + 36)%360;
+            _spinnerRotate.Angle = (_spinnerRotate.Angle + 36) % 360;
         }
 
         /// <summary>
@@ -134,10 +134,10 @@ namespace Dev2.CustomControls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
-        private void OnCanvasLoaded(object sender, RoutedEventArgs e)
+        void OnCanvasLoaded(object sender, RoutedEventArgs e)
         {
             const double offset = Math.PI;
-            const double step = Math.PI*2/10.0;
+            const double step = Math.PI * 2 / 10.0;
 
             SetPosition(_circle0, offset, 0.0, step);
             SetPosition(_circle1, offset, 1.0, step);
@@ -155,7 +155,7 @@ namespace Dev2.CustomControls
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
-        private void OnCanvasUnloaded(object sender, RoutedEventArgs e)
+        void OnCanvasUnloaded(object sender, RoutedEventArgs e)
         {
             Stop();
         }
@@ -168,9 +168,9 @@ namespace Dev2.CustomControls
         ///     The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event
         ///     data.
         /// </param>
-        private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var isVisible = (bool) e.NewValue;
+            var isVisible = (bool)e.NewValue;
 
             if (isVisible)
             {

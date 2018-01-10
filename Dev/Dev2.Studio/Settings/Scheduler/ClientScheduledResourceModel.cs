@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,11 +24,11 @@ namespace Dev2.Settings.Scheduler
 {
     public class ClientScheduledResourceModel : IScheduledResourceModel
     {
-        private readonly IServer _model;
+        readonly IServer _model;
         readonly Action _createNewTask;
         ObservableCollection<IScheduledResource> _scheduledResources;
        
-        public ClientScheduledResourceModel([Common.Annotations.NotNull] IServer model, Action createNewTask)
+        public ClientScheduledResourceModel(IServer model, Action createNewTask)
         {
             _model = model ?? throw new ArgumentNullException("model");
             _createNewTask = createNewTask;
@@ -64,7 +64,7 @@ namespace Dev2.Settings.Scheduler
 
         public void DeleteSchedule(IScheduledResource resource)
         {
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var builder = jsonSerializer.SerializeToBuilder(resource);
             var controller = new CommunicationController { ServiceName = "DeleteScheduledResourceService" };
             controller.AddPayloadArgument("Resource", builder);
@@ -73,7 +73,7 @@ namespace Dev2.Settings.Scheduler
 
         public bool Save(IScheduledResource resource, out string errorMessage)
         {
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var builder = jsonSerializer.SerializeToBuilder(resource);
             var controller = new CommunicationController { ServiceName = "SaveScheduledResourceService" };
             controller.AddPayloadArgument("Resource", builder);
@@ -92,7 +92,7 @@ namespace Dev2.Settings.Scheduler
 
         public void Save(IScheduledResource resource, string userName, string password)
         {
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var builder = jsonSerializer.SerializeToBuilder(resource);
             var controller = new CommunicationController { ServiceName = "SaveScheduledResourceService" };
             controller.AddPayloadArgument("Resource", builder);
@@ -109,14 +109,14 @@ namespace Dev2.Settings.Scheduler
                 return new List<IResourceHistory>();
             }
 
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var builder = jsonSerializer.SerializeToBuilder(resource);
             var controller = new CommunicationController { ServiceName = "GetScheduledResourceHistoryService" };
             controller.AddPayloadArgument("Resource", builder);
             return controller.ExecuteCommand<IList<IResourceHistory>>(_model.Connection, _model.Connection.WorkspaceID);
         }
 
-        private void ShowServerDisconnectedPopup()
+        void ShowServerDisconnectedPopup()
         {
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(Core.ServerDisconnected, _model.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +

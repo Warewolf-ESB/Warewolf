@@ -19,12 +19,6 @@ namespace Warewolf.Studio.CustomControls
                 typeof(Brush),
                 typeof(VariableTextBox));
 
-        private static DependencyProperty addNoteCommandProperty =
-            DependencyProperty.Register(
-                "AddNoteCommand",
-                typeof(ICommand),
-                typeof(VariableTextBox));
-
         private static DependencyProperty deleteCommandProperty =
             DependencyProperty.Register(
                 "DeleteCommand",
@@ -43,6 +37,7 @@ namespace Warewolf.Studio.CustomControls
                 typeof(bool),
                 typeof(VariableTextBox),
                 new PropertyMetadata());
+
         private static DependencyProperty hasTextProperty = HasTextPropertyKey.DependencyProperty;
 
         private static DependencyProperty allowNotesProperty =
@@ -63,7 +58,8 @@ namespace Warewolf.Studio.CustomControls
                 typeof(bool),
                 typeof(VariableTextBox));
 
-        static VariableTextBox() {
+        static VariableTextBox()
+        {
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(VariableTextBox),
                 new FrameworkPropertyMetadata(typeof(VariableTextBox)));
@@ -75,34 +71,21 @@ namespace Warewolf.Studio.CustomControls
             HasText = Text.Length != 0;
         }
 
-        public string LabelText {
-            get { return (string)GetValue(LabelTextProperty); }
-            set { SetValue(LabelTextProperty, value); }
-        }
-
-        public Brush LabelTextColor {
-            get { return (Brush)GetValue(LabelTextColorProperty); }
-            set { SetValue(LabelTextColorProperty, value); }
-        }
-
-        public ICommand AddNoteCommand
+        public string LabelText
         {
-            get
-            {
-                return (ICommand)GetValue(AddNoteCommandProperty);
-            }
-            set
-            {
-                if (AllowNotes)
-                {
-                    SetValue(AddNoteCommandProperty, value);
-                }
-            }
+            get => (string)GetValue(LabelTextProperty);
+            set => SetValue(LabelTextProperty, value);
+        }
+
+        public Brush LabelTextColor
+        {
+            get => (Brush)GetValue(LabelTextColorProperty);
+            set => SetValue(LabelTextColorProperty, value);
         }
 
         public ICommand DeleteCommand
         {
-            get { return (ICommand)GetValue(DeleteCommandProperty); }
+            get => (ICommand)GetValue(DeleteCommandProperty);
             set
             {
                 if (IsUsed)
@@ -114,10 +97,7 @@ namespace Warewolf.Studio.CustomControls
 
         public ICommand ViewComplexObjectsCommand
         {
-            get
-            {
-                return (ICommand)GetValue(ViewComplexObjectsCommandProperty);
-            }
+            get => (ICommand)GetValue(ViewComplexObjectsCommandProperty);
             set
             {
                 if (IsComplexObject)
@@ -127,37 +107,76 @@ namespace Warewolf.Studio.CustomControls
             }
         }
 
-        public bool HasText {
-            get { return (bool)GetValue(HasTextProperty); }
-            private set { SetValue(HasTextPropertyKey, value); }
+        public bool HasText
+        {
+            get => (bool)GetValue(HasTextProperty);
+            private set => SetValue(HasTextPropertyKey, value);
         }
 
         public bool AllowNotes
         {
-            get { return (bool)GetValue(AllowNotesProperty); }
-            set { SetValue(AllowNotesProperty, value); }
+            get => (bool)GetValue(AllowNotesProperty);
+            set => SetValue(AllowNotesProperty, value);
         }
-        
+
         public bool IsUsed
         {
-            get { return (bool)GetValue(IsUsedProperty); }
-            set { SetValue(IsUsedProperty, value); }
+            get => (bool)GetValue(IsUsedProperty);
+            set => SetValue(IsUsedProperty, value);
         }
 
         public bool IsComplexObject
         {
-            get { return (bool)GetValue(IsComplexObjectProperty); }
-            set { SetValue(IsComplexObjectProperty, value); }
+            get => (bool)GetValue(IsComplexObjectProperty);
+            set => SetValue(IsComplexObjectProperty, value);
         }
 
-        public static DependencyProperty IsComplexObjectProperty { get => isComplexObjectProperty; set => isComplexObjectProperty = value; }
-        public static DependencyProperty IsUsedProperty { get => isUsedProperty; set => isUsedProperty = value; }
-        public static DependencyProperty AllowNotesProperty { get => allowNotesProperty; set => allowNotesProperty = value; }
-        public static DependencyProperty HasTextProperty { get => hasTextProperty; set => hasTextProperty = value; }
-        public static DependencyProperty ViewComplexObjectsCommandProperty { get => viewComplexObjectsCommandProperty; set => viewComplexObjectsCommandProperty = value; }
-        public static DependencyProperty DeleteCommandProperty { get => deleteCommandProperty; set => deleteCommandProperty = value; }
-        public static DependencyProperty AddNoteCommandProperty { get => addNoteCommandProperty; set => addNoteCommandProperty = value; }
-        public static DependencyProperty LabelTextColorProperty { get => labelTextColorProperty; set => labelTextColorProperty = value; }
-        public static DependencyProperty LabelTextProperty { get => labelTextProperty; set => labelTextProperty = value; }
+        public static DependencyProperty IsComplexObjectProperty
+        {
+            get => isComplexObjectProperty;
+            set => isComplexObjectProperty = value;
+        }
+
+        public static DependencyProperty IsUsedProperty
+        {
+            get => isUsedProperty;
+            set => isUsedProperty = value;
+        }
+
+        public static DependencyProperty AllowNotesProperty
+        {
+            get => allowNotesProperty;
+            set => allowNotesProperty = value;
+        }
+
+        public static DependencyProperty HasTextProperty
+        {
+            get => hasTextProperty;
+            set => hasTextProperty = value;
+        }
+
+        public static DependencyProperty ViewComplexObjectsCommandProperty
+        {
+            get => viewComplexObjectsCommandProperty;
+            set => viewComplexObjectsCommandProperty = value;
+        }
+
+        public static DependencyProperty DeleteCommandProperty
+        {
+            get => deleteCommandProperty;
+            set => deleteCommandProperty = value;
+        }
+
+        public static DependencyProperty LabelTextColorProperty
+        {
+            get => labelTextColorProperty;
+            set => labelTextColorProperty = value;
+        }
+
+        public static DependencyProperty LabelTextProperty
+        {
+            get => labelTextProperty;
+            set => labelTextProperty = value;
+        }
     }
 }

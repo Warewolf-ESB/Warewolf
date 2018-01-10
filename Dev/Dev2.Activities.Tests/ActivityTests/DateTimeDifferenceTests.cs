@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace ActivityUnitTests.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    
+
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -49,7 +49,7 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[Result]]"
                          );
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "209";
             GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
             // remove test datalist ;)
@@ -70,7 +70,7 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[resCol(*).res]]"
                          );
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out IList<string> results, out string error);
             // remove test datalist ;)
 
@@ -78,27 +78,50 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("9477", results[1]);
             Assert.AreEqual("9090", results[2]);
         }
-        
+
         [TestMethod]
         public void Blank_InputFormat_Expected_Error()
         {
             SetupArguments(
                               "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
                             , ActivityStrings.DateTimeDiff_DataListShape
-                            , DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat)
-                            , DateTime.Now.AddDays(209).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat)
+                            , DateTime.Now.ToString(CultureInfo.InvariantCulture)
+                            , DateTime.Now.AddDays(209).ToString(CultureInfo.InvariantCulture)
                             , ""
                             , "Days"
                             , "[[Result]]"
                             );
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "209";
             GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
-            Assert.AreEqual(expected, actual);
-        }              
+            Assert.AreEqual(expected, actual,error);
+        }
+
+        [TestMethod]
+        [TestCategory("DateTimeDifferenceUnitTest")]
+        [Owner("Massimo Guerrera")]
+
+        public void DateTimeDifference_DateTimeDifferenceUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
+
+        {
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL
+                         , currDL
+                         , ""
+                         , ""
+                         , ""
+                         , "Seconds"
+                         , "[[MyTestResult]]");
+
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
+
+            Assert.AreEqual("0", actual);
+        }
+
         #endregion Positive Test Cases
 
         #region Error Test Cases
@@ -121,7 +144,7 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string input1, string input2, string inputFormat, string outputType, string result)
+        void SetupArguments(string currentDL, string testData, string input1, string input2, string inputFormat, string outputType, string result)
         {
             TestStartNode = new FlowStep
             {

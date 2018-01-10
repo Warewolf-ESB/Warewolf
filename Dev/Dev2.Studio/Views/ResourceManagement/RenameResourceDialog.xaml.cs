@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,8 +21,8 @@ namespace Dev2.Studio.Views.ResourceManagement
     /// </summary>
     public partial class RenameResourceDialog
     {
-        
-        private readonly bool _openDependencyGraph = false;
+
+        readonly bool _openDependencyGraph = false;
 
         public bool OpenDependencyGraph => _openDependencyGraph;
 
@@ -42,7 +42,7 @@ namespace Dev2.Studio.Views.ResourceManagement
             tbDisplay.Text = message;
         }
 
-        private void Button1_OnClick(object sender, RoutedEventArgs e)
+        void Button1_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
         }

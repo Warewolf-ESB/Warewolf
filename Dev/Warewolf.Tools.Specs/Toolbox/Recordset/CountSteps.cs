@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
     [Binding]
     public class CountSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CountSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -91,14 +91,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Given(@"I have a recordset with this shape")]
         public void GivenIHaveARecordsetWithThisShape(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
             if (tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
 
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -124,7 +124,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         public void WhenTheCountToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

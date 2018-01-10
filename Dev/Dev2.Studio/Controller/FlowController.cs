@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -51,8 +51,8 @@ namespace Dev2.Studio.Controller
 
         #region Fields
 
-        private static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
-        private static Dev2DecisionCallbackHandler _callBackHandler;
+        static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
+        static Dev2DecisionCallbackHandler _callBackHandler;
 
         #endregion Fields
 
@@ -74,7 +74,7 @@ namespace Dev2.Studio.Controller
         /// </summary>
         public static string ConfigureDecisionExpression(ConfigureDecisionExpressionMessage args)
         {
-            var condition = ConfigureActivity<DsfFlowDecisionActivity>(args.ModelItem, GlobalConstants.ConditionPropertyText, args.IsNew);
+            var condition = ConfigureActivity<DsfFlowDecisionActivity>(args.ModelItem, GlobalConstants.ConditionPropertyText, args.IsNew, args.IsPaste);
             if (condition == null)
             {
                 return null;
@@ -88,7 +88,7 @@ namespace Dev2.Studio.Controller
             {
                 try
                 {
-                    string tmp = FlowNodeHelper.CleanModelData(_callBackHandler.ModelData);
+                    var tmp = FlowNodeHelper.CleanModelData(_callBackHandler.ModelData);
                     var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
                     if (dds == null)
@@ -113,7 +113,7 @@ namespace Dev2.Studio.Controller
         public static string ConfigureSwitchExpression(ConfigureSwitchExpressionMessage args)
         {
             OldSwitchValue = string.Empty;
-            var expression = ConfigureActivity<DsfFlowSwitchActivity>(args.ModelItem, GlobalConstants.SwitchExpressionPropertyText, args.IsNew);
+            var expression = ConfigureActivity<DsfFlowSwitchActivity>(args.ModelItem, GlobalConstants.SwitchExpressionPropertyText, args.IsNew, args.IsPaste);
             if (expression == null)
             {
                 return null;
@@ -135,7 +135,7 @@ namespace Dev2.Studio.Controller
                     ActivityHelper.SetDisplayName(args.ModelItem, resultSwitch); // MUST use args.ModelItem otherwise it won't be visible!
                     return expr;
                 }
-                catch
+                catch (Exception ex)
                 {
                     PopupController.Show(GlobalConstants.SwitchWizardErrorString,
                                           GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
@@ -145,16 +145,16 @@ namespace Dev2.Studio.Controller
             return null;
         }
 
-        private static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)
+        static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)
         {
             var dataContext = new SwitchDesignerViewModel(modelItem, display);
             return ShowSwitchDialogWindow(modelItem, dataContext);
         }
 
         [ExcludeFromCodeCoverage]
-        private static Dev2DecisionCallbackHandler ShowSwitchDialogWindow(ModelItem modelItem, SwitchDesignerViewModel dataContext)
+        static Dev2DecisionCallbackHandler ShowSwitchDialogWindow(ModelItem modelItem, SwitchDesignerViewModel dataContext)
         {
-            var large = new ConfigureSwitch {DataContext = dataContext};
+            var large = new ConfigureSwitch { DataContext = dataContext };
             var window = new ActivityDefaultWindow();
             if (Application.Current != null)
             {
@@ -165,7 +165,7 @@ namespace Dev2.Studio.Controller
             {
                 contentPresenter.Content = large;
             }
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem?.Parent?.View);
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
@@ -179,7 +179,7 @@ namespace Dev2.Studio.Controller
             window.SetEnableDoneButtonState(true);
             if (showDialog.HasValue && showDialog.Value)
             {
-                var callBack = new Dev2DecisionCallbackHandler {ModelData = JsonConvert.SerializeObject(dataContext.Switch)};
+                var callBack = new Dev2DecisionCallbackHandler { ModelData = JsonConvert.SerializeObject(dataContext.Switch) };
                 return callBack;
             }
             return null;
@@ -200,7 +200,7 @@ namespace Dev2.Studio.Controller
                     var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
                     ActivityHelper.SetSwitchKeyProperty(ds, args.ModelItem);
                 }
-                catch
+                catch (Exception ex)
                 {
                     PopupController.Show(GlobalConstants.SwitchWizardErrorString,
                                           GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
@@ -220,9 +220,9 @@ namespace Dev2.Studio.Controller
         }
 
         [ExcludeFromCodeCoverage]
-        private static Dev2DecisionCallbackHandler ShowSwitchArmDialog(SwitchDesignerViewModel dataContext)
+        static Dev2DecisionCallbackHandler ShowSwitchArmDialog(SwitchDesignerViewModel dataContext)
         {
-            var large = new ConfigureSwitchArm {DataContext = dataContext};
+            var large = new ConfigureSwitchArm { DataContext = dataContext };
             var window = new ActivityDefaultWindow();
             if (Application.Current != null)
             {
@@ -238,7 +238,7 @@ namespace Dev2.Studio.Controller
             var showDialog = window.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
-                var callBack = new Dev2DecisionCallbackHandler {ModelData = JsonConvert.SerializeObject(dataContext.Switch)};
+                var callBack = new Dev2DecisionCallbackHandler { ModelData = JsonConvert.SerializeObject(dataContext.Switch) };
                 return callBack;
             }
             return null;
@@ -248,7 +248,7 @@ namespace Dev2.Studio.Controller
         public static void EditSwitchCaseExpression(EditCaseExpressionMessage args)
         {
             OldSwitchValue = string.Empty;
-            ModelProperty switchCaseValue = args.ModelItem.Properties["Case"];
+            var switchCaseValue = args.ModelItem.Properties["Case"];
             var switchVal = args.ModelItem.Properties["ParentFlowSwitch"];
             if (switchVal != null)
             {
@@ -286,7 +286,7 @@ namespace Dev2.Studio.Controller
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     PopupController.Show(GlobalConstants.SwitchWizardErrorString,
                                           GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
@@ -312,8 +312,8 @@ namespace Dev2.Studio.Controller
                 var tmp = value?.ExpressionText;
                 if (!string.IsNullOrEmpty(tmp))
                 {
-                    int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                    int end = tmp.IndexOf(",", StringComparison.Ordinal);
+                    var start = tmp.IndexOf("(", StringComparison.Ordinal);
+                    var end = tmp.IndexOf(",", StringComparison.Ordinal);
 
                     if (start < end && start >= 0)
                     {
@@ -329,7 +329,7 @@ namespace Dev2.Studio.Controller
 
         #region Protected Methods
 
-        private static Dev2DecisionCallbackHandler StartDecisionWizard(ModelItem mi)
+        static Dev2DecisionCallbackHandler StartDecisionWizard(ModelItem mi)
         {
             var dataContext = new DecisionDesignerViewModel(mi);
 
@@ -337,9 +337,9 @@ namespace Dev2.Studio.Controller
         }
 
         [ExcludeFromCodeCoverage]
-        private static Dev2DecisionCallbackHandler ShowDecisionDialogWindow(ModelItem mi, DecisionDesignerViewModel dataContext)
+        static Dev2DecisionCallbackHandler ShowDecisionDialogWindow(ModelItem mi, DecisionDesignerViewModel dataContext)
         {
-            var large = new Large {DataContext = dataContext};
+            var large = new Large { DataContext = dataContext };
             var window = new ActivityDefaultWindow();
             if (Application.Current != null)
             {
@@ -352,7 +352,7 @@ namespace Dev2.Studio.Controller
             }
 
             window.SetEnableDoneButtonState(true);
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi?.Parent?.View);
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
@@ -402,7 +402,7 @@ namespace Dev2.Studio.Controller
 
         #region ConfigureActivity
 
-        private static ModelItem ConfigureActivity<T>(ModelItem modelItem, string propertyName, bool isNew) where T : class, IFlowNodeActivity, new()
+        static ModelItem ConfigureActivity<T>(ModelItem modelItem, string propertyName, bool isNew,bool isPaste) where T : class, IFlowNodeActivity, new()
         {
             var property = modelItem.Properties[propertyName];
             if (property == null)
@@ -420,11 +420,11 @@ namespace Dev2.Studio.Controller
             else
             {
                 result = property.Value;
-                
+
                 var isCopyPaste = isNew && !string.IsNullOrEmpty(activity.ExpressionText);
                 if (result == null || isCopyPaste)
-                {
-                    if (activity is IDev2Activity act)
+                {                    
+                    if (activity is IDev2Activity act && isPaste)
                     {
                         act.UniqueID = Guid.NewGuid().ToString();
                     }

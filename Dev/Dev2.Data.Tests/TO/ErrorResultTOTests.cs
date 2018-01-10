@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -53,7 +53,7 @@ namespace Dev2.Data.Tests.TO
         [TestMethod]
         public void ErrorResultsTOMakeErrorResultFromDataListStringWithMultipleErrorsExpectedCorrectErrorResultTO()
         {
-            ErrorResultTO makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>First Error</InnerError><InnerError>Second Error</InnerError>");
+            var makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>First Error</InnerError><InnerError>Second Error</InnerError>");
             Assert.IsTrue(makeErrorResultFromDataListString.HasErrors());
             Assert.AreEqual(2, makeErrorResultFromDataListString.FetchErrors().Count);
             Assert.AreEqual("First Error", makeErrorResultFromDataListString.FetchErrors()[0]);
@@ -67,7 +67,7 @@ namespace Dev2.Data.Tests.TO
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            ErrorResultTO makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>Could not insert <> into a field</InnerError>");
+            var makeErrorResultFromDataListString = ErrorResultTO.MakeErrorResultFromDataListString("<InnerError>Could not insert <> into a field</InnerError>");
             //------------Assert Results-------------------------
             Assert.AreEqual(1, makeErrorResultFromDataListString.FetchErrors().Count);
             Assert.AreEqual("<Error><InnerError>Could not insert <> into a field</InnerError></Error>", makeErrorResultFromDataListString.FetchErrors()[0]);
@@ -77,14 +77,14 @@ namespace Dev2.Data.Tests.TO
         [Owner("Hagashen Naidu")]
         public void ErrorResultTO_MergeErrors_ShouldJustRemoveTheErrorInTheCollection()
         {
-            ErrorResultTO errorResultTo = new ErrorResultTO();
+            var errorResultTo = new ErrorResultTO();
             Assert.IsNotNull(errorResultTo);
             var prObj = new PrivateObject(errorResultTo);
-            var errors = prObj.GetField("_errorList") as IList<string>;
+            var errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             Assert.IsNotNull(errors);
             Assert.AreEqual(0, errors.Count);
             errorResultTo.AddError("SomeError");
-            errors = prObj.GetField("_errorList") as IList<string>;
+            errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             if (errors != null)
             {
                 Assert.AreEqual(1, errors.Count);
@@ -103,14 +103,14 @@ namespace Dev2.Data.Tests.TO
         [Owner("Hagashen Naidu")]
         public void ErrorResultTO_Remove_ShouldJustRemoveTheErrorInTheCollection()
         {
-            ErrorResultTO errorResultTo = new ErrorResultTO();
+            var errorResultTo = new ErrorResultTO();
             Assert.IsNotNull(errorResultTo);
             var prObj = new PrivateObject(errorResultTo);
-            var errors = prObj.GetField("_errorList") as IList<string>;
+            var errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             Assert.IsNotNull(errors);
             Assert.AreEqual(0, errors.Count);
             errorResultTo.AddError("SomeError");
-            errors = prObj.GetField("_errorList") as IList<string>;
+            errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             if (errors != null)
             {
                 Assert.AreEqual(1, errors.Count);
@@ -129,12 +129,12 @@ namespace Dev2.Data.Tests.TO
             var errorResultTo = new ErrorResultTO();
             Assert.IsNotNull(errorResultTo);
             var prObj = new PrivateObject(errorResultTo);
-            var errors = prObj.GetField("_errorList") as IList<string>;
+            var errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             Assert.IsNotNull(errors);
             Assert.AreEqual(0, errors.Count);
             errorResultTo.AddError("SomeError");
             errorResultTo.AddError("AnotherError");
-            errors = prObj.GetField("_errorList") as IList<string>;
+            errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             if (errors != null)
             {
                 Assert.AreEqual(2, errors.Count);
@@ -157,12 +157,12 @@ namespace Dev2.Data.Tests.TO
             var errorResultTo = new ErrorResultTO();
             Assert.IsNotNull(errorResultTo);
             var prObj = new PrivateObject(errorResultTo);
-            var errors = prObj.GetField("_errorList") as IList<string>;
+            var errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             Assert.IsNotNull(errors);
             Assert.AreEqual(0, errors.Count);
             errorResultTo.AddError("SomeError");
             errorResultTo.AddError("AnotherError");
-            errors = prObj.GetField("_errorList") as IList<string>;
+            errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             if (errors != null)
             {
                 Assert.AreEqual(2, errors.Count);
@@ -179,12 +179,12 @@ namespace Dev2.Data.Tests.TO
             var errorResultTo = new ErrorResultTO();
             Assert.IsNotNull(errorResultTo);
             var prObj = new PrivateObject(errorResultTo);
-            var errors = prObj.GetField("_errorList") as IList<string>;
+            var errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             Assert.IsNotNull(errors);
             Assert.AreEqual(0, errors.Count);
             errorResultTo.AddError("SomeError");
             errorResultTo.AddError("AnotherError");
-            errors = prObj.GetField("_errorList") as IList<string>;
+            errors = prObj.GetField("_errorList") as IList<StringBuilder>;
             if (errors != null)
             {
                 Assert.AreEqual(2, errors.Count);

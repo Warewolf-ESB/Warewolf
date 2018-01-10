@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
     /// </summary>
     public class ComPluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
-        private readonly INamedPipeClientStreamWrapper _clientStreamWrapper;
+        readonly INamedPipeClientStreamWrapper _clientStreamWrapper;
 
         public ComPluginRuntimeHandler(INamedPipeClientStreamWrapper clientStreamWrapper)
         {
@@ -78,7 +78,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 {
                     if (pluginResult is KeyValuePair<bool, string>)
                     {
-                        KeyValuePair<bool, string> pluginKeyValuePair = (KeyValuePair<bool, string>) pluginResult;
+                        var pluginKeyValuePair = (KeyValuePair<bool, string>) pluginResult;
                         jsonResult = "Exception: " + pluginKeyValuePair.Value;
                     }
                     else
@@ -113,14 +113,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
         }
 
-        private MethodInfo ExecuteComPlugin(ComPluginInvokeArgs setupInfo, out object pluginResult)
+        MethodInfo ExecuteComPlugin(ComPluginInvokeArgs setupInfo, out object pluginResult)
         {
-            
+
             if (!string.IsNullOrEmpty(setupInfo.ClsId))
             {
                 if (setupInfo.Is32Bit)
                 {
-                    ParameterInfoTO[] strings = setupInfo.Parameters.Select(parameter => new ParameterInfoTO {Name = parameter.Name,DefaultValue = parameter.Value,TypeName = parameter.TypeName}).ToArray();
+                    var strings = setupInfo.Parameters.Select(parameter => new ParameterInfoTO { Name = parameter.Name, DefaultValue = parameter.Value, TypeName = parameter.TypeName }).ToArray();
                     pluginResult = IpcClient.GetIPCExecutor(_clientStreamWrapper).Invoke(setupInfo.ClsId.ToGuid(), setupInfo.Method, Execute.ExecuteSpecifiedMethod, strings);
                     return null;
                 }
@@ -156,7 +156,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             return null;
         }
 
-        private static IEnumerable<object> BuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
+        static IEnumerable<object> BuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
         {
             var valuedTypeList = new object[setupInfo.Parameters.Count];
 
@@ -165,7 +165,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 var methodParameter = setupInfo.Parameters[index];
                 try
                 {
-                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value,Type.GetType(methodParameter.TypeName));
+                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
                     if (anonymousType != null)
                     {
                         valuedTypeList[index] = anonymousType;
@@ -207,7 +207,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <param name="classId">The assembly location.</param>
         /// <param name="is32Bit"></param>
         /// <returns></returns>
-        private List<string> ListNamespaces(string classId, bool is32Bit)
+        List<string> ListNamespaces(string classId, bool is32Bit)
         {
             try
             {
@@ -239,7 +239,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
         }
 
-        private Type GetType(string classId, bool is32Bit)
+        Type GetType(string classId, bool is32Bit)
         {
             Guid.TryParse(classId, out Guid clasID);
             var is64BitProcess = Environment.Is64BitProcess;
@@ -257,7 +257,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                     Dev2Logger.Error("GetType", ex, GlobalConstants.WarewolfError);
                     type = Type.GetTypeFromCLSID(clasID, true);
 
-                }                
+                }
             }
             else
             {
@@ -349,9 +349,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// </summary>
         /// <param name="pluginResult">The plugin result.</param>
         /// <returns></returns>
-        private object AdjustPluginResult(object pluginResult)
+        object AdjustPluginResult(object pluginResult)
         {
-            object result = pluginResult;
+            var result = pluginResult;
             var typeConverter = TypeDescriptor.GetConverter(result);
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
 
@@ -371,7 +371,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// <param name="clsId">The assembly location.</param>
         /// <param name="is32Bit"></param>
         /// <returns></returns>
-        private IEnumerable<NamespaceItem> ReadNamespaces(string clsId, bool is32Bit)
+        IEnumerable<NamespaceItem> ReadNamespaces(string clsId, bool is32Bit)
         {
             try
             {
@@ -387,14 +387,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
                 return result;
             }
-            
+
             catch (BadImageFormatException)
             {
                 throw;
             }
         }
 
-        private Type DeriveType(string typename)
+        Type DeriveType(string typename)
         {
             var type = Type.GetType(typename, true);
             return type;
@@ -405,10 +405,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         /// </summary>
         /// <param name="parameters">The parameters.</param>
         /// <returns></returns>
-        private List<Type> BuildTypeList(IEnumerable<MethodParameter> parameters)
+        List<Type> BuildTypeList(IEnumerable<MethodParameter> parameters)
         {
             var typeList = new List<Type>();
-            
+
             foreach (var methodParameter in parameters)
             {
                 var type = DeriveType(methodParameter.TypeName);

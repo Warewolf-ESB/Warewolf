@@ -16,9 +16,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OnCreattion_GivenIsNew_ShouldShouldNotThrowException()
         {
             //---------------Set up test pack-------------------
-            
+
             //---------------Assert Precondition----------------
-            AppSettings.LocalHost = "LocalHost";
+            AppUsageStats.LocalHost = "LocalHost";
             //---------------Execute Test ----------------------
             try
             {

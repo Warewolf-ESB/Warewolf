@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -115,7 +115,7 @@ namespace Dev2.Studio.Core.Helpers
                 var version = await _webClient.DownloadStringAsync(InstallerResources.WarewolfVersion);
                 return new Version(version);
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }
@@ -129,7 +129,7 @@ namespace Dev2.Studio.Core.Helpers
                 var version = _webClient.DownloadString(InstallerResources.WarewolfVersion);
                 return new Version(version);
             }
-            catch
+            catch (Exception ex)
             {
                 return null;
             }
@@ -147,7 +147,7 @@ namespace Dev2.Studio.Core.Helpers
         #endregion
     }
 
-    internal class InstallerResources
+    class InstallerResources
     {
         protected InstallerResources()
         {

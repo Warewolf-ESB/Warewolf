@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -92,15 +92,15 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        private void NewValueOnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        void NewValueOnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             var host = sender as DocumentContentHost;
             var workSurfaceContextViewModel = host?.ActiveDocument?.DataContext as WorkSurfaceContextViewModel;
-            
+
             if (_shellViewModel == null)
             {
                 var mainViewModel = DocumentHost?.DataContext as ShellViewModel;
-                _shellViewModel = mainViewModel;                
+                _shellViewModel = mainViewModel;
             }
             if (_shellViewModel != null)
             {
@@ -113,10 +113,10 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #endregion DocumentHost
 
-        private static List<TabGroupPane> _tabGroupPanes;
-        private ShellViewModel _shellViewModel;
+        static List<TabGroupPane> _tabGroupPanes;
+        ShellViewModel _shellViewModel;
 
-        private void ActiveItemChanged(WorkSurfaceContextViewModel workSurfaceContextViewModel)
+        void ActiveItemChanged(WorkSurfaceContextViewModel workSurfaceContextViewModel)
         {
             if (_tabGroupPanes == null || _tabGroupPanes.Count <= 0)
             {
@@ -125,7 +125,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             SetActivePane(workSurfaceContextViewModel);
         }
-        
+
 
         static void GotFocusHandler(object sender, RoutedEventArgs routedEventArgs)
         {
@@ -164,16 +164,16 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        private static void SetActivePane(WorkSurfaceContextViewModel newValue)
+        static void SetActivePane(WorkSurfaceContextViewModel newValue)
         {
             if (_tabGroupPanes != null && _tabGroupPanes.Count > 0)
             {
                 var tabGroupPane = _tabGroupPanes[0];
 
                 foreach (var item in from object item in tabGroupPane.Items
-                    let frameworkElement = item as FrameworkElement
-                    where frameworkElement != null && frameworkElement.DataContext == newValue
-                    select item)
+                                     let frameworkElement = item as FrameworkElement
+                                     where frameworkElement != null && frameworkElement.DataContext == newValue
+                                     select item)
                 {
                     if (tabGroupPane.SelectedItem != item)
                     {

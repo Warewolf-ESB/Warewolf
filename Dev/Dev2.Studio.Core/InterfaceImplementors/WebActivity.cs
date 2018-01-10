@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -81,7 +81,7 @@ namespace Dev2.Studio.Core
 
         public IContextualResourceModel ResourceModel { get; set; }
 
-        private string GetPropertyValue(object modelItemObject, string propertyName)
+        string GetPropertyValue(object modelItemObject, string propertyName)
         {
             if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {
@@ -92,7 +92,7 @@ namespace Dev2.Studio.Core
             return string.Empty;
         }
 
-        private void SetPropertyValue(object modelItemObject, string propertyName, object value)
+        void SetPropertyValue(object modelItemObject, string propertyName, object value)
         {
             if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {

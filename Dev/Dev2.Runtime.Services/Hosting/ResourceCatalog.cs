@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,7 +32,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
-
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -42,28 +42,32 @@ namespace Dev2.Runtime.Hosting
         readonly object _loadLock = new object();
         ResourceCatalogBuilder Builder { get; set; }
 
-        private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
-        #region Singleton Instance
-        private static readonly Lazy<ResourceCatalog> LazyCat = new Lazy<ResourceCatalog>(() =>
+        readonly ResourceCatalogPluginContainer _catalogPluginContainer;
+        static readonly Lazy<ResourceCatalog> LazyCat = new Lazy<ResourceCatalog>(() =>
         {
             var c = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
             CompileMessageRepo.Instance.Ping();
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
-        
+
         public static ResourceCatalog Instance => LazyCat.Value;
-
-        #endregion
-
-        #region CTOR
 
         [ExcludeFromCodeCoverage]//used by tests for constructor injection
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
         {
             InitializeWorkspaceResources();
-            IServerVersionRepository versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
-            _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, WorkspaceResources, managementServices);
+            _serverVersionRepository = new ServerVersionRepository(new VersionStrategy(), this, _directoryWrapper, EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper());
+            _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
+            
+            
+           
+        }
+        IServerVersionRepository _serverVersionRepository;
+        IDirectory _directoryWrapper = new DirectoryWrapper();
+        public void CleanUpOldVersionControlStructure()
+        {
+            _serverVersionRepository.CleanUpOldVersionControlStructure(_directoryWrapper);
         }
 
         [ExcludeFromCodeCoverage]//used by tests for constructor injection
@@ -75,14 +79,11 @@ namespace Dev2.Runtime.Hosting
             _catalogPluginContainer.Build(this);
         }
 
-        #endregion
-
-        private void InitializeWorkspaceResources()
+        void InitializeWorkspaceResources()
         {
             WorkspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
         }
 
-        #region Properties
 
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices => _catalogPluginContainer.LoadProvider.ManagementServices;
         public ConcurrentDictionary<Guid, object> WorkspaceLocks => _catalogPluginContainer.LoadProvider.WorkspaceLocks;
@@ -98,10 +99,6 @@ namespace Dev2.Runtime.Hosting
             }
         }
         public ConcurrentDictionary<Guid, List<IResource>> WorkspaceResources { get; private set; }
-
-        #endregion
-
-        #region ResourceLoadProvider
 
         public int GetResourceCount(Guid workspaceID) => _catalogPluginContainer.LoadProvider.GetResourceCount(workspaceID);
         public IResource GetResource(Guid workspaceID, string resourceName) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceName, "Unknown", null);
@@ -131,9 +128,6 @@ namespace Dev2.Runtime.Hosting
 
 
         public List<DynamicServiceObjectBase> GetDynamicObjects(IEnumerable<IResource> resources) => _catalogPluginContainer.LoadProvider.GetDynamicObjects(resources);
-        #endregion
-
-        #region LoadWorkspace
 
 
         public void LoadWorkspace(Guid workspaceID)
@@ -165,10 +159,6 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        #endregion
-
-        #region LoadWorkspaceImpl
-
         List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
@@ -194,7 +184,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private void BuildResourceActivityCache(IEnumerable<IResource> userServices)
+        void BuildResourceActivityCache(IEnumerable<IResource> userServices)
         {
             if (_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))
             {
@@ -214,8 +204,7 @@ namespace Dev2.Runtime.Hosting
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.AddOrUpdate(GlobalConstants.ServerWorkspaceID, parser, (key, cache) =>
                 {
-                    IResourceActivityCache existingCache;
-                    if (_parsers.TryGetValue(key, out existingCache))
+                    if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
                     {
                         return existingCache;
                     }
@@ -274,10 +263,7 @@ namespace Dev2.Runtime.Hosting
                 serviceAction.Source = source;
             }
         }
-
-        #endregion
-
-        #region LoadWorkspaceAsync
+        
 
         // Travis.Frisinger - 02.05.2013 
         // 
@@ -309,12 +295,7 @@ namespace Dev2.Runtime.Hosting
         {
 
             return DuplicateResources;
-        }
-
-
-        #endregion
-
-        #region SaveResource
+        }        
 
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, "");
@@ -336,6 +317,7 @@ namespace Dev2.Runtime.Hosting
                 _catalogPluginContainer.SaveProvider.ResourceSaved = value;
             }
         }
+
         public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages
         {
             get
@@ -348,20 +330,15 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true, string savedPath = "", string reason = "") => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, overwriteExisting, savedPath, reason);
-
-        #endregion
-
-        #region DeleteResource
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, "", "");
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, "");
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
 
         public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type) => _catalogPluginContainer.DeleteProvider.DeleteResource(workspaceID, resourceName, type, true);
         public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, bool deleteVersions) => _catalogPluginContainer.DeleteProvider.DeleteResource(workspaceID, resourceName, type, deleteVersions);
         public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type) => _catalogPluginContainer.DeleteProvider.DeleteResource(workspaceID, resourceID, type, true);
         public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions) => _catalogPluginContainer.DeleteProvider.DeleteResource(workspaceID, resourceID, type, deleteVersions);
-
-        #endregion
-
-        #region SyncTo
+        
 
         public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath) =>_catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, true, true, null);
 
@@ -370,10 +347,7 @@ namespace Dev2.Runtime.Hosting
         public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite, bool delete) => _catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, null);
 
         public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite, bool delete, IList<string> filesToIgnore) => _catalogPluginContainer.SyncProvider.SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, filesToIgnore);
-
-        #endregion
-
-        #region Rename Resource
+        
 
         public ResourceCatalogResult RenameResource(Guid workspaceID, Guid? resourceID, string newName, string resourcePath) => _catalogPluginContainer.RenameProvider.RenameResource(workspaceID, resourceID, newName, resourcePath);
 
@@ -381,9 +355,7 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, List<IResource> resourcesToUpdate) => _catalogPluginContainer.RenameProvider.RenameCategory(workspaceID, oldCategory, newCategory, resourcesToUpdate);
 
-        #endregion
-
-
+        
         public StringBuilder ToPayload(IResource resource)
         {
             var result = new StringBuilder();
@@ -429,7 +401,7 @@ namespace Dev2.Runtime.Hosting
             _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
         }
 
-        private static ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
+        static ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
         bool _loading;
 
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID)
@@ -447,10 +419,9 @@ namespace Dev2.Runtime.Hosting
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
                 _parsers.AddOrUpdate(workspaceID, parser,(key,cache)=> 
                 {
-                    IResourceActivityCache existingCache;
-                    if (_parsers.TryGetValue(key,out existingCache))
+                    if (_parsers.TryGetValue(key, out IResourceActivityCache existingCache))
                     {
-                        return existingCache;                        
+                        return existingCache;
                     }
                     return cache;
                 });
@@ -464,30 +435,27 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-            if (workspaceID != Guid.Empty)
+            var resource = GetResource(workspaceID, resourceID);
+            var service = GetService(workspaceID, resourceID, resource.ResourceName);
+            if (service != null)
             {
-                var resource = GetResource(workspaceID, resourceID);
-                var service = GetService(workspaceID, resourceID, resource.ResourceName);
-                if (service != null)
+                var sa = service.Actions.FirstOrDefault();
+                MapServiceActionDependencies(workspaceID, sa);
+                ServiceActionRepo.Instance.AddToCache(resourceID, service);
+                var activity = GetActivity(sa);
+                if (parser != null)
                 {
-                    var sa = service.Actions.FirstOrDefault();
-                    MapServiceActionDependencies(workspaceID, sa);
-                    ServiceActionRepo.Instance.AddToCache(resourceID, service);
-                    var activity = GetActivity(sa);
-                    if (parser != null)
-                    {
-                        return parser.Parse(activity, resourceID);
-                    }
+                    return parser.Parse(activity, resourceID);
                 }
             }
+
             return null;
         }
 
         public void Reload()
         {
             LoadWorkspace(GlobalConstants.ServerWorkspaceID);
-            IResourceActivityCache removedCache;
-            _parsers.TryRemove(GlobalConstants.ServerWorkspaceID,out removedCache);
+            _parsers.TryRemove(GlobalConstants.ServerWorkspaceID, out IResourceActivityCache removedCache);
             LoadServerActivityCache();
         }
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -59,18 +59,18 @@ namespace Dev2.Activities.Designers2.Core
             PreviewKeyDown += OnPreviewKeyDown;
         }
 
-        private void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
+        void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
             if (keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                if (keyEventArgs.OriginalSource.GetType() != typeof (TextBox))
+                if (keyEventArgs.OriginalSource.GetType() != typeof(TextBox))
                 {
                     keyEventArgs.Handled = true;
                 }
             }
 
-            if (keyEventArgs.OriginalSource.GetType() == typeof (ComboBox) ||
-                keyEventArgs.OriginalSource.GetType() == typeof (ComboBoxItem))
+            if (keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) ||
+                keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem))
             {
                 if ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete)
                 {
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core
         /// <param name="menu">The <see cref="T:System.Windows.Controls.ContextMenu"/> that is loaded.</param>
         protected override void OnContextMenuLoaded(ContextMenu menu)
         {
-            int indexOfOpenItem = -1;
+            var indexOfOpenItem = -1;
             foreach (var menuItem in menu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
             {
                 indexOfOpenItem = menu.Items.IndexOf(menuItem);
@@ -120,9 +120,9 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private bool UpdateContentEnabled()
+        bool UpdateContentEnabled()
         {
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
             var dataContext = parentContentPane?.DataContext;
             if (dataContext != null)
             {
@@ -145,7 +145,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             return false;
         }
-        
+
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
             ToggleView(e);
@@ -236,7 +236,7 @@ namespace Dev2.Activities.Designers2.Core
             base.OnMouseEnter(e);
         }
 
-        private void SetInitialiFocus()
+        void SetInitialiFocus()
         {
             if (!_isInitialFocusDone)
             {
@@ -374,11 +374,11 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
             var dataContext = parentContentPane?.DataContext;
             if (dataContext != null)
             {
-                if (dataContext.GetType().Name == "ServiceTestViewModel")
+                if (dataContext.GetType().Name == "ServiceTestViewModel" || dataContext.GetType().Name == "MergeWorkflowViewModel")
                 {
                     e.Handled = true;
                 }
@@ -388,12 +388,12 @@ namespace Dev2.Activities.Designers2.Core
 
                     if (ViewModel != null && ViewModel.HasLargeView)
                     {
-                        if (ViewModel.ShowLarge)
+                        var header = "Collapse Large View";
+                        var fontAwesomeIcon = FontAwesomeIcon.Compress;
+                        if (ViewModel.ShowSmall)
                         {
-                            var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Compress, Brushes.Black);
-                            var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
-                            _showCollapseLargeView.Header = "Collapse Large View";
-                            _showCollapseLargeView.Icon = icon;
+                            fontAwesomeIcon = FontAwesomeIcon.Expand;
+                            header = "Show Large View";
                         }
                         else
                         {

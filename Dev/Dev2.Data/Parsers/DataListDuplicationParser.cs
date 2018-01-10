@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,21 +15,13 @@ namespace Dev2.DataList.Contract
 {
     public class DataListVerifyPartDuplicationParser : EqualityComparer<IDataListVerifyPart>, IDataListVerifyPartDuplicationParser
     {
-        public override bool Equals(IDataListVerifyPart ComparePart, IDataListVerifyPart Comparator)
-        {
-            if(ComparePart.DisplayValue == Comparator.DisplayValue)
-            {
-                    return true;
-                }
-
-                    return false;
-            }
+        public override bool Equals(IDataListVerifyPart ComparePart, IDataListVerifyPart Comparator) => (ComparePart.DisplayValue == Comparator.DisplayValue);
 
         public override int GetHashCode(IDataListVerifyPart PartToVerify)
         {
             if(PartToVerify != null)
             {
-                int hashCode = PartToVerify.DisplayValue.GetHashCode();
+                var hashCode = PartToVerify.DisplayValue.GetHashCode();
                 return hashCode;
             }
 

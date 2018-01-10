@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,7 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[recset1(1).field1]]", "First Occurrence", "ney", "Left To Right", "[[res]]", "0");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "4";
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
@@ -53,9 +53,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.IndexDataListShapeWithThreeRecordsets, ActivityStrings.IndexDataListWithDataAndThreeRecordsets,
                            "[[Customers(*).FirstName]]", "First Occurrence", "[[recset1(*).field1]]", "Left To Right", "[[results(*).resField]]", "0");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "results", "resField", out string error);
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "results", "resField", out string error);
 
             // remove test datalist ;)
 
@@ -76,10 +76,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShapeWithThreeRecordsets, ActivityStrings.IndexDataListWithDataAndThreeRecordsets,
                            "[[Customers(*).FirstName]]", "First Occurrence", "[[recset1(*).field1]]", "Left To Right", "[[results(1).resField]]", "0");
             //Execute Find Index
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             //Get the result from Find Index
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "results", "resField", out string error);
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "results", "resField", out string error);
 
             //Datalist dispose
 
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[recset1().field1]]", "First Occurrence", "f1", "Left To Right", "[[res]]", "0");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string Expected = "1";
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
@@ -108,8 +108,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[recset1(*).field1]]", "First Occurrence", "f1", "Left To Right", "[[Customers(*).FirstName]]", "0");
-            IDSFDataObject result = ExecuteProcess();
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "Customers", "FirstName", out string error);
+            var result = ExecuteProcess();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "Customers", "FirstName", out string error);
 
             // remove test datalist ;)
 
@@ -129,8 +129,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[CompanyName]]", "First Occurrence", "2", "Left To Right", "[[res]]", "0");
             //run the tool
-            IDSFDataObject result = ExecuteProcess();
-            
+            var result = ExecuteProcess();
+
             //get the result
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[CompanyName]]", "First Occurrence", "2", "Right to Left", "[[res]]", "0");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string Expected = "1";
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
@@ -158,7 +158,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[CompanyName]]", "First Occurrence", "zz", "Right to Left", "[[res]]", "0");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string Expected = "-1";
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
@@ -176,7 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListShape,
                            "ABCFDEFGH", "All Occurrences", "F", "Left To Right", "[[res]]", "0");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string Expected = "4,7";
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
@@ -192,8 +192,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,
                            "[[recset1(*).field2]]", "All Occurrences", "2", "Left To Right", "[[Customers(*).FirstName]]", "0");
-            IDSFDataObject result = ExecuteProcess();
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "Customers", "FirstName", out string error);
+            var result = ExecuteProcess();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "Customers", "FirstName", out string error);
 
             // remove test datalist ;)
 
@@ -346,7 +346,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string inField, string index, string characters, string direction, string resultValue, string startIndex)
+        void SetupArguments(string currentDL, string testData, string inField, string index, string characters, string direction, string resultValue, string startIndex)
         {
             TestStartNode = new FlowStep
             {

@@ -11,14 +11,14 @@ namespace Dev2.Common.DependencyVisualization
         #region Class Members
 
 
-        private const string _errorImagePath = "/Images/Close_Box_Red.png";
+        const string _errorImagePath = "/Images/Close_Box_Red.png";
 
         #endregion Class Members
 
         #region Fields
 
-        private double _locationX, _locationY;
-        private readonly bool _isBroken;
+        double _locationX, _locationY;
+        readonly bool _isBroken;
 
         #endregion Fields
 
@@ -99,7 +99,7 @@ namespace Dev2.Common.DependencyVisualization
         /// </returns>
         public new string ToString()
         {
-            StringBuilder result = new StringBuilder(
+            var result = new StringBuilder(
                 $"<node id=\"{ID}\" x=\"{LocationX}\" y=\"{LocationY}\" broken=\"{IsBroken}\">");
 
             foreach (var nodeDependency in NodeDependencies)
@@ -136,7 +136,7 @@ namespace Dev2.Common.DependencyVisualization
                     }
                     else
                     {
-                        bool visited = stack.Any(info => info.Node == current.Node);
+                        var visited = stack.Any(info => info.Node == current.Node);
                         if (!visited)
                         {
                             stack.Push(current);
@@ -152,7 +152,7 @@ namespace Dev2.Common.DependencyVisualization
             return circularDependencies;
         }
 
-        private class NodeInfo
+        class NodeInfo
         {
             public NodeInfo(IDependencyVisualizationNode node)
             {
@@ -173,7 +173,7 @@ namespace Dev2.Common.DependencyVisualization
                 return null;
             }
 
-            private int _index;
+            int _index;
         }
 
         #endregion Methods

@@ -6,9 +6,9 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Common.DateAndTime
 {
-    internal class AssignManager : IAssignManager
+    class AssignManager : IAssignManager
     {
-        private readonly Dictionary<string, ITimeZoneTO> _timeZoneTos;
+        readonly Dictionary<string, ITimeZoneTO> _timeZoneTos;
 
         public AssignManager(Dictionary<string, ITimeZoneTO> timeZoneTos)
         {
@@ -24,18 +24,26 @@ namespace Dev2.Common.DateAndTime
 
         public void AssignTimeZone(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
+            var lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
-            if (_timeZoneTos.TryGetValue(lowerValue, out ITimeZoneTO timeZoneTo))
+            ITimeZoneTO timeZoneTo;
+            if (_timeZoneTos.TryGetValue(lowerValue, out timeZoneTo))
             {
                 dateTimeResultTo.TimeZone = timeZoneTo;
             }
         }
         public void AssignAmPm(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
+            var lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
-            dateTimeResultTo.AmPm = lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m." ? DateTimeAmPm.pm : DateTimeAmPm.am;
+            if (lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m.")
+            {
+                dateTimeResultTo.AmPm = DateTimeAmPm.pm;
+            }
+            else
+            {
+                dateTimeResultTo.AmPm = DateTimeAmPm.am;
+            }
         }
 
         public void AssignMilliseconds(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
@@ -66,7 +74,7 @@ namespace Dev2.Common.DateAndTime
 
         public void AssignYears(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            int years = Convert.ToInt32(value);
+            var years = Convert.ToInt32(value);
 
             if (!assignAsTime && years < 100)
             {

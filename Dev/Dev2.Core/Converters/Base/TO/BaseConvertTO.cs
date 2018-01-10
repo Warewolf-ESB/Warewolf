@@ -1,34 +1,32 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Util;
+using Dev2.Providers.Validation.Rules;
+using Dev2.Validation;
 
 namespace Dev2
 {
-    public class BaseConvertTO : IDev2TOFn, IPerformsValidation
+    public class BaseConvertTO : ValidatableObject,IDev2TOFn,IEquatable<BaseConvertTO>
     {
-        #region Fields
+        string _fromExpression;
+        string _fromType;
+        string _toExpression;
+        string _toType;
+        bool _isFromExpressionFocused;
 
-        private string _fromExpression;
-        private string _fromType;
-        private string _toExpression;
-        private string _toType;
-
-        #endregion
-
-        #region Ctor
 
         public BaseConvertTO()
         {
@@ -50,16 +48,12 @@ namespace Dev2
             IndexNumber = indexNumber;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         ///     Current base type
         /// </summary>
         public string FromType
         {
-            get { return _fromType; }
+            get => _fromType;
             set
             {
                 if (value != null)
@@ -75,7 +69,7 @@ namespace Dev2
         /// </summary>
         public string ToType
         {
-            get { return _toType; }
+            get => _toType;
             set
             {
                 if (value != null)
@@ -92,7 +86,7 @@ namespace Dev2
         [FindMissing]
         public string FromExpression
         {
-            get { return _fromExpression; }
+            get => _fromExpression;
             set
             {
                 _fromExpression = value;
@@ -107,7 +101,7 @@ namespace Dev2
         [FindMissing]
         public string ToExpression
         {
-            get { return _toExpression; }
+            get => _toExpression;
             set
             {
                 _toExpression = value;
@@ -123,10 +117,6 @@ namespace Dev2
         public bool Inserted { get; set; }
 
         public int IndexNumber { get; set; }
-
-        #endregion
-
-        #region Public Methods
 
         public bool CanRemove()
         {
@@ -146,64 +136,67 @@ namespace Dev2
             ToExpression = string.Empty;
         }
 
-        #endregion
-
-        #region PropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-
-        #region Implementation of IDataErrorInfo
-
-        /// <summary>
-        ///     Gets the error message for the property with the given name.
-        /// </summary>
-        /// <returns>
-        ///     The error message for the property. The default is an empty string ("").
-        /// </returns>
-        /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName] => "";
-
-        /// <summary>
-        ///     Gets an error message indicating what is wrong with this object.
-        /// </summary>
-        /// <returns>
-        ///     An error message indicating what is wrong with this object. The default is an empty string ("").
-        /// </returns>
-        
-        
-        public string Error { get; private set; }
-
-        
-
-        #endregion
-
-        private void RaiseCanAddRemoveChanged()
+        void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
         }
-
-        #region Implementation of IPerformsValidation
-
-        public Dictionary<string, List<IActionableErrorInfo>> Errors { get; set; }
-
-        public bool Validate(string propertyName, IRuleSet ruleSet)
+        public bool IsFromExpressionFocused { get => _isFromExpressionFocused; set => OnPropertyChanged(ref _isFromExpressionFocused, value); }
+        public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            return false;
+            var ruleSet = new RuleSet();
+
+            if (propertyName == "FromExpression" && !string.IsNullOrEmpty(FromExpression))
+            {
+                var outputExprRule = new IsValidExpressionRule(() => FromExpression, datalist, "0", new VariableUtils());
+                ruleSet.Add(outputExprRule);
+                ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist, new VariableUtils()));
+            }
+            return ruleSet;
         }
 
-        public bool Validate(string propertyName, string datalist)
+        public bool Equals(BaseConvertTO other)
         {
-            return false;
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var collectionEquals = CommonEqualityOps.CollectionEquals(Expressions, other.Expressions, StringComparer.Ordinal);
+            return string.Equals(FromExpression, other.FromExpression)
+                   && string.Equals(FromType, other.FromType)
+                   && string.Equals(ToExpression, other.ToExpression)
+                   && string.Equals(ToType, other.ToType)
+                   && collectionEquals
+                   && Inserted == other.Inserted
+                   && IndexNumber == other.IndexNumber
+                   && string.Equals(Error, other.Error);
         }
 
-        #endregion
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((BaseConvertTO) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (FromExpression != null ? FromExpression.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FromType != null ? FromType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ToExpression != null ? ToExpression.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ToType != null ? ToType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Expressions != null ? Expressions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (WatermarkTextVariable != null ? WatermarkTextVariable.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (WatermarkText != null ? WatermarkText.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Inserted.GetHashCode();
+                hashCode = (hashCode * 397) ^ IndexNumber;
+                hashCode = (hashCode * 397) ^ (Error != null ? Error.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Errors != null ? Errors.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+       
     }
 }

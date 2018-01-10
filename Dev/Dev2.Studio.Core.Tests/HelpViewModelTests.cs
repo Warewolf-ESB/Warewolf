@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,9 +30,7 @@ namespace Dev2.Core.Tests
         public void HelpViewModel_OnViewLoaded_ValidHelpView_HelpViewIsSet()
         {
             //------------Setup for test--------------------------
-           // const string uri = "http://community.warewolf.io/";
-            var networkHelper = new Mock<INetworkHelper>();
-            var helpViewModel = new HelpViewModel(networkHelper.Object,null, true);// { Uri = uri };
+            var helpViewModel = new HelpViewModel(null, true);// { Uri = uri };
             var helpViewWrapper = new Mock<IHelpViewWrapper>(); 
             //------------Execute Test---------------------------
             helpViewModel.OnViewisLoaded(helpViewWrapper.Object);
@@ -47,9 +45,7 @@ namespace Dev2.Core.Tests
         public void HelpViewModel_OnViewLoaded_HelpViewIsNull_IsViewAvailableIsFalse()
         {
             //------------Setup for test--------------------------
-            //const string uri = "http://community.warewolf.io/";
-            var networkHelper = new Mock<INetworkHelper>();
-            var helpViewModel = new HelpViewModel(networkHelper.Object,null, false);
+            var helpViewModel = new HelpViewModel(null, false);
             //------------Execute Test---------------------------
             helpViewModel.OnViewisLoaded(null);
             //------------Assert Results-------------------------
@@ -64,17 +60,14 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             const string uri = "http://community.warewolf.io/";
-            var networkHelper = new Mock<INetworkHelper>();
             var task = new Task<bool>(() => true);
             task.RunSynchronously();
-            networkHelper.Setup(m => m.HasConnectionAsync(It.IsAny<string>()))
-                .Returns(task);
             var helpViewWrapper = new Mock<IHelpViewWrapper>();
-            Frame webBrowser = new Frame();   
+            var webBrowser = new Frame();
             helpViewWrapper.SetupGet(m => m.WebBrowser).Returns(webBrowser);
             helpViewWrapper.Setup(m => m.Navigate(It.IsAny<string>())).Verifiable();
-            var helpViewModel = new HelpViewModel(networkHelper.Object, helpViewWrapper.Object, false);
-            HelpView helpView = new HelpView();
+            var helpViewModel = new HelpViewModel(helpViewWrapper.Object, false);
+            var helpView = new HelpView();
             helpViewWrapper.SetupGet(m => m.HelpView).Returns(helpView);
             //------------Execute Test---------------------------
             await helpViewModel.LoadBrowserUri(uri);

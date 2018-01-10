@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ using Unlimited.Framework.Converters.Graph;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-
+using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Services.Execution
 {
@@ -40,7 +40,7 @@ namespace Dev2.Services.Execution
     {
         // Plugins need to handle formatting inside the RemoteObjectHandler 
         // and NOT here otherwise serialization issues occur!
-        protected readonly ErrorResultTO ErrorResult;
+        protected readonly ErrorResultTO _errorResult;
 
         /// <summary>
         ///     Construction for ServiceExecution
@@ -52,16 +52,17 @@ namespace Dev2.Services.Execution
         /// </param>
         protected ServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = true)
         {
-            ErrorResult = new ErrorResultTO();
+            _errorResult = new ErrorResultTO();
             DataObj = dataObj;
             HandlesOutputFormatting = handlesOutputFormatting;
+            _catalog = ResourceCatalog.Instance;
             if (DataObj.ResourceID != Guid.Empty || !string.IsNullOrEmpty(dataObj.ServiceName))
             {
-                CreateService(ResourceCatalog.Instance);
+                CreateService(_catalog);
             }
         }
 
-        private bool HandlesOutputFormatting { get; }
+        bool HandlesOutputFormatting { get; }
         protected TSource Source { get; private set; }
         public string InstanceOutputDefintions { get; set; }
         public IDSFDataObject DataObj { get; set; }
@@ -72,14 +73,14 @@ namespace Dev2.Services.Execution
         {
             //This execution will throw errors from the constructor
             errors = new ErrorResultTO();
-            errors.MergeErrors(ErrorResult);
-            ExecuteImpl(out errors,update);
+            errors.MergeErrors(_errorResult);
+            ExecuteImpl(out errors, update);
             return DataObj.DataListID;
         }
 
         public abstract void AfterExecution(ErrorResultTO errors);
 
-        private void CreateService(ResourceCatalog catalog)
+        void CreateService(IResourceCatalog catalog)
         {
             if (!GetService(catalog))
             {
@@ -89,46 +90,40 @@ namespace Dev2.Services.Execution
             GetSource(catalog);
         }
 
-        private void GetSource(ResourceCatalog catalog)
+        void GetSource(IResourceCatalog catalog)
         {
             Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceID) ??
                      catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceName);
             if (Source == null)
             {
-                ErrorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
+                _errorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
                     Service.Source.ResourceID, Service.Source.ResourceName));
             }
         }
 
+        readonly IResourceCatalog _catalog;
         public void GetSource(Guid sourceId)
         {
-            var catalog = ResourceCatalog.Instance;
-            if(Source == null)
+
+            if (Source == null)
             {
-                Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, sourceId);
+                var dbSources = _catalog.GetResourceList<DbSource>(GlobalConstants.ServerWorkspaceID);
+                Source = dbSources.Cast<TSource>().FirstOrDefault(p => p.ResourceID.Equals(sourceId));
                 if (Source == null)
                 {
-                    ErrorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
-                        Service.Source.ResourceID, Service.Source.ResourceName));
+                    _errorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
+                        Service?.Source?.ResourceID, Service?.Source?.ResourceName));
                 }
             }
-          
         }
 
-        public void SetSourceId(Guid sourceId)
-        {
-            SourceId = sourceId;
-        }
-
-        public Guid SourceId { get; set; }
-
-        private bool GetService(ResourceCatalog catalog)
+        bool GetService(IResourceCatalog catalog)
         {
             Service = catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ResourceID) ??
                       catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ServiceName);
             if (Service == null)
             {
-                ErrorResult.AddError(string.Format(ErrorResource.ErrorLoadingResource, DataObj.ResourceID));
+                _errorResult.AddError(string.Format(ErrorResource.ErrorLoadingResource, DataObj.ResourceID));
                 return false;
             }
             return true;
@@ -149,13 +144,13 @@ namespace Dev2.Services.Execution
 
             #region Create OutputFormatter
 
-            
+
             IOutputFormatter outputFormatter = null;
-            
+
 
             try
             {
-                if(!string.IsNullOrEmpty(InstanceOutputDefintions))
+                if (!string.IsNullOrEmpty(InstanceOutputDefintions))
                 {
                     outputFormatter = GetOutputFormatter(Service);
                 }
@@ -185,9 +180,9 @@ namespace Dev2.Services.Execution
 
                 var itrs = new List<IWarewolfIterator>(5);
                 IWarewolfListIterator itrCollection = new WarewolfListIterator();
-                if(string.IsNullOrEmpty(InstanceInputDefinitions) && string.IsNullOrEmpty(InstanceOutputDefintions))
+                if (string.IsNullOrEmpty(InstanceInputDefinitions) && string.IsNullOrEmpty(InstanceOutputDefintions))
                 {
-                    if(Inputs != null && Inputs.Count == 0)
+                    if (Inputs != null && Inputs.Count == 0)
                     {
                         ExecuteService(out invokeErrors, update, outputFormatter);
                         errors.MergeErrors(invokeErrors);
@@ -197,7 +192,7 @@ namespace Dev2.Services.Execution
                     {
                         BuildParameterIterators(update, null, itrCollection, itrs);
 
-                        while(itrCollection.HasMoreData())
+                        while (itrCollection.HasMoreData())
                         {
                             ExecuteService(itrCollection, itrs, out invokeErrors, update, outputFormatter);
                             errors.MergeErrors(invokeErrors);
@@ -205,7 +200,7 @@ namespace Dev2.Services.Execution
                         return;
                     }
                 }
-                ServiceMethod method = Service.Method;
+                var method = Service.Method;
                 var inputs = method.Parameters;
                 if (inputs.Count == 0)
                 {
@@ -229,19 +224,19 @@ namespace Dev2.Services.Execution
                 disposable?.Dispose();
 
                 // ensure errors bubble up ;)
-                errors.MergeErrors(ErrorResult);
+                errors.MergeErrors(_errorResult);
             }
         }
 
-        private void BuildParameterIterators(int update, IEnumerable<MethodParameter> inputs, IWarewolfListIterator itrCollection, ICollection<IWarewolfIterator> itrs)
+        void BuildParameterIterators(int update, IEnumerable<MethodParameter> inputs, IWarewolfListIterator itrCollection, ICollection<IWarewolfIterator> itrs)
         {
-            if(string.IsNullOrEmpty(InstanceInputDefinitions))
+            if (string.IsNullOrEmpty(InstanceInputDefinitions))
             {
-                if(Inputs != null)
+                if (Inputs != null)
                 {
                     foreach (var sai in Inputs)
                     {
-                        string val = sai.Name;
+                        var val = sai.Name;
                         string toInject = null;
 
                         if (val != null)
@@ -263,10 +258,10 @@ namespace Dev2.Services.Execution
                 return;
             }
             var inputDefs = DataListFactory.CreateInputParser().Parse(InstanceInputDefinitions);
-            foreach(MethodParameter sai in inputs)
+            foreach (MethodParameter sai in inputs)
             {
-                string val = sai.Name;
-                string toInject = "NULL";
+                var val = sai.Name;
+                var toInject = "NULL";
 
                 if (val != null)
                 {
@@ -295,17 +290,17 @@ namespace Dev2.Services.Execution
 
         #region ExecuteService
 
-        private void ExecuteService(IWarewolfListIterator itrCollection,
-            IEnumerable<IWarewolfIterator> itrs, out ErrorResultTO errors,int update, IOutputFormatter formater = null)
+        void ExecuteService(IWarewolfListIterator itrCollection,
+            IEnumerable<IWarewolfIterator> itrs, out ErrorResultTO errors, int update, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             if (Inputs.Any())
             {
                 // Loop iterators 
-                int pos = 0;
+                var pos = 0;
                 foreach (var itr in itrs)
                 {
-                    string injectVal = itrCollection.FetchNextValue(itr);
+                    var injectVal = itrCollection.FetchNextValue(itr);
                     var param = Inputs.ToList()[pos];
 
 
@@ -322,17 +317,18 @@ namespace Dev2.Services.Execution
 
             try
             {
-                ExecuteService(out ErrorResultTO invokeErrors, update, formater);
+                ErrorResultTO invokeErrors;
+                ExecuteService(out invokeErrors, update, formater);
                 errors.MergeErrors(invokeErrors);
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.Message));
+                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.StackTrace));
             }
         }
 
 
-        private void ExecuteService(out ErrorResultTO errors,int update, IOutputFormatter formater = null)
+        void ExecuteService(out ErrorResultTO errors, int update, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             try
@@ -363,13 +359,12 @@ namespace Dev2.Services.Execution
                 string result;
                 if (parameters.Any())
                 {
-                 
-
                     result = ExecuteService(update, out errors, formater).ToString();
                 }
                 else
                 {
-                    result = ExecuteService(update, out ErrorResultTO invokeErrors, formater).ToString();
+                    ErrorResultTO invokeErrors;
+                    result = ExecuteService(update, out invokeErrors, formater).ToString();
                     errors.MergeErrors(invokeErrors);
                 }
                 if (!HandlesOutputFormatting)
@@ -384,7 +379,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception ex)
             {
-                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.Message));
+                errors.AddError(string.Format(ErrorResource.ServiceExecutionError, ex.StackTrace));
             }
         }
 
@@ -392,21 +387,21 @@ namespace Dev2.Services.Execution
 
         #region MergeResultIntoDataList
 
-        private void PushXmlIntoEnvironment(string input,int update)
+        void PushXmlIntoEnvironment(string input, int update)
         {
 
             if (input != string.Empty)
             {
                 try
                 {
-                    string toLoad = input.ToCleanXml(); // clean up the rubish ;)
-                    XmlDocument xDoc = new XmlDocument();
+                    var toLoad = input.ToCleanXml(); // clean up the rubish ;)
+                    var xDoc = new XmlDocument();
                     toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
                     xDoc.LoadXml(toLoad);
 
                     if (xDoc.DocumentElement != null)
                     {
-                        XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                        var children = xDoc.DocumentElement.ChildNodes;
 
                         IDictionary<string, int> indexCache = new Dictionary<string, int>();
 
@@ -421,7 +416,8 @@ namespace Dev2.Services.Execution
                 }
             }
         }
-        void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update,int level = 0)
+
+        void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, int level = 0)
         {
             // spin through each element in the XML
             foreach (XmlNode c in children)
@@ -429,7 +425,7 @@ namespace Dev2.Services.Execution
                 if (c.Name != GlobalConstants.NaughtyTextNode)
                 {
                     // scalars and recordset fetch
-                    if ( level>0)
+                    if (level > 0)
                     {
                         var c1 = c;
                         var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
@@ -437,7 +433,8 @@ namespace Dev2.Services.Execution
                         if (dev2Definitions.Length != 0)
                         {
                             // fetch recordset index
-                            var idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1;
+                            int fetchIdx;
+                            var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
                             // process recordset
                             var nl = c.ChildNodes;
                             foreach (XmlNode subc in nl)
@@ -459,9 +456,9 @@ namespace Dev2.Services.Execution
                         else
                         {
                             var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
-                            if(scalarName != null)
+                            if (scalarName != null)
                             {
-                                DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml( c1.InnerXml), update);
+                                DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml(c1.InnerXml), update);
                             }
                         }
                     }
@@ -483,15 +480,15 @@ namespace Dev2.Services.Execution
 
             if (string.IsNullOrEmpty(InstanceInputDefinitions))
             {
-                List<string> okay = new List<string>();
-                int startindex = 0;
+                var okay = new List<string>();
+                var startindex = 0;
                 while (command.IndexOf("[[", startindex, StringComparison.Ordinal) != -1)
                 {
-                    int first = command.IndexOf("[[", startindex, StringComparison.Ordinal);
-                    int second = command.IndexOf("]]", first, StringComparison.Ordinal);
+                    var first = command.IndexOf("[[", startindex, StringComparison.Ordinal);
+                    var second = command.IndexOf("]]", first, StringComparison.Ordinal);
                     if (second != -1)
                     {
-                        string val = command.Substring(first, (second - first) + 2);
+                        var val = command.Substring(first, (second - first) + 2);
                         okay.Add(val);
 
                         var toInject = val;
@@ -512,12 +509,12 @@ namespace Dev2.Services.Execution
                     command = command.Replace(okay[i], vari);
                 }
             }
-            
+
             return command;
         }
         string UnescapeRawXml(string innerXml)
         {
-            if(innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))
+            if (innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))
             {
                 return new StringBuilder(innerXml).Unescape().ToString();
             }
@@ -528,7 +525,7 @@ namespace Dev2.Services.Execution
 
         #region GetOutputFormatter
 
-        private IOutputFormatter GetOutputFormatter(TService service)
+        IOutputFormatter GetOutputFormatter(TService service)
         {
             return OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
         }

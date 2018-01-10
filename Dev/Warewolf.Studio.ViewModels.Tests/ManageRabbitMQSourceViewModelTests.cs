@@ -22,14 +22,14 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IRabbitMQSourceModel> _rabbitMQSourceModel;
-        private Mock<IRequestServiceNameViewModel> _requestServiceNameViewModel;
-        private Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
-        private Mock<IRabbitMQServiceSourceDefinition> _rabbitMQServiceSourceDefinition;
-        private List<string> _changedProperties;
-        private ManageRabbitMQSourceViewModel _manageRabbitMQSourceViewModelWithTask;
-        private ManageRabbitMQSourceViewModel _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition;
-        private Mock<IAsyncWorker> _asyncWorkerMock;
+        Mock<IRabbitMQSourceModel> _rabbitMQSourceModel;
+        Mock<IRequestServiceNameViewModel> _requestServiceNameViewModel;
+        Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
+        Mock<IRabbitMQServiceSourceDefinition> _rabbitMQServiceSourceDefinition;
+        List<string> _changedProperties;
+        ManageRabbitMQSourceViewModel _manageRabbitMQSourceViewModelWithTask;
+        ManageRabbitMQSourceViewModel _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition;
+        Mock<IAsyncWorker> _asyncWorkerMock;
         #endregion Fields
 
         #region Test initialize
@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             .Callback<Func<IRabbitMQServiceSourceDefinition>, Action<IRabbitMQServiceSourceDefinition>>((func, action) =>
                             {
                                 var dbSource = func.Invoke();
-                                action(dbSource);
+                                action?.Invoke(dbSource);
                             });
             _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition = new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _rabbitMQServiceSourceDefinition.Object, _asyncWorkerMock.Object);
         }
@@ -245,14 +245,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOkCommand_Execute_SaveSource()
         {
             //arrange
-            string expectedResourceName = "ResourceName";
-            string expectedResourcePath = "ResourcePath";
-            string expectedHeader = expectedResourceName + " *";
-            string expectedHostName = "HostName";
-            int expectedPort = 1234;
-            string expectedUserName = "UserName";
-            string expectedPassword = "Password";
-            string expectedVirtualHost = "VirtualHost";
+            var expectedResourceName = "ResourceName";
+            var expectedResourcePath = "ResourcePath";
+            var expectedHeader = expectedResourceName + " *";
+            var expectedHostName = "HostName";
+            var expectedPort = 1234;
+            var expectedUserName = "UserName";
+            var expectedPassword = "Password";
+            var expectedVirtualHost = "VirtualHost";
 
             _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition.HostName = expectedHostName;
             _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition.Port = expectedPort;
@@ -294,7 +294,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestName()
         {
             //arrange
-            string expectedValue = "expectedValue";
+            var expectedValue = "expectedValue";
 
             //act
             _manageRabbitMQSourceViewModelWithTask.Name = expectedValue;
@@ -510,11 +510,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestToModelItemNull()
         {
             //arrange
-            string expectedHostName = "HostName";
-            int expectedPort = 1234;
-            string expectedUserName = "UserName";
-            string expectedPassword = "Password";
-            string expectedVirtualHost = "VirtualHost";
+            var expectedHostName = "HostName";
+            var expectedPort = 1234;
+            var expectedUserName = "UserName";
+            var expectedPassword = "Password";
+            var expectedVirtualHost = "VirtualHost";
 
             _manageRabbitMQSourceViewModelWithTask.HostName = expectedHostName;
             _manageRabbitMQSourceViewModelWithTask.Port = expectedPort;
@@ -524,7 +524,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _manageRabbitMQSourceViewModelWithTask.Item = null;
 
             //act
-            IRabbitMQServiceSourceDefinition result = _manageRabbitMQSourceViewModelWithTask.ToModel();
+            var result = _manageRabbitMQSourceViewModelWithTask.ToModel();
 
             //assert
             Assert.IsNotNull(result);
@@ -543,11 +543,11 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestToModelItemNotNull()
         {
             //arrange
-            string expectedHostName = "HostName";
-            int expectedPort = 1234;
-            string expectedUserName = "UserName";
-            string expectedPassword = "Password";
-            string expectedVirtualHost = "VirtualHost";
+            var expectedHostName = "HostName";
+            var expectedPort = 1234;
+            var expectedUserName = "UserName";
+            var expectedPassword = "Password";
+            var expectedVirtualHost = "VirtualHost";
 
             _manageRabbitMQSourceViewModelWithTask.HostName = expectedHostName;
             _manageRabbitMQSourceViewModelWithTask.Port = expectedPort;
@@ -575,14 +575,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSaveSource()
         {
             //arrange
-            string expectedResourceName = "ResourceName";
-            string expectedResourcePath = "ResourcePath";
-            string expectedHeader = expectedResourceName + " *";
-            string expectedHostName = "HostName";
-            int expectedPort = 1234;
-            string expectedUserName = "UserName";
-            string expectedPassword = "Password";
-            string expectedVirtualHost = "VirtualHost";
+            var expectedResourceName = "ResourceName";
+            var expectedResourcePath = "ResourcePath";
+            var expectedHeader = expectedResourceName + " *";
+            var expectedHostName = "HostName";
+            var expectedPort = 1234;
+            var expectedUserName = "UserName";
+            var expectedPassword = "Password";
+            var expectedVirtualHost = "VirtualHost";
 
             _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition.HostName = expectedHostName;
             _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition.Port = expectedPort;
@@ -620,8 +620,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestSaveNewSource()
         {
             //arrange
-            string expectedResourceName = "ResourceName";
-            string expectedResourcePath = "ResourcePath";
+            var expectedResourceName = "ResourceName";
+            var expectedResourcePath = "ResourcePath";
 
             _requestServiceNameViewModel.Setup(x => x.ShowSaveDialog()).Returns(MessageBoxResult.OK);
             _requestServiceNameViewModel.SetupGet(it => it.ResourceName).Returns(new ResourceName(expectedResourcePath, expectedResourceName));
@@ -655,9 +655,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestUpdateHelpDescriptor()
         {
             //arrange
-            string helpText = "helpText";
-            Mock<IShellViewModel> mainViewModelMock = new Mock<IShellViewModel>();
-            Mock<IHelpWindowViewModel> helpViewModelMock = new Mock<IHelpWindowViewModel>();
+            var helpText = "helpText";
+            var mainViewModelMock = new Mock<IShellViewModel>();
+            var helpViewModelMock = new Mock<IHelpWindowViewModel>();
             mainViewModelMock.SetupGet(it => it.HelpViewModel).Returns(helpViewModelMock.Object);
             CustomContainer.Register(mainViewModelMock.Object);
 

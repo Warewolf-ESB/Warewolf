@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
     {
 
 
-        private  Mock<ITaskServiceConvertorFactory> _taskServiceConvertorFactory;
+        Mock<ITaskServiceConvertorFactory> _taskServiceConvertorFactory;
 
         [TestInitialize]
         public void Init()
@@ -42,7 +42,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
 
             var dailynative = new DailyTrigger(2);
-            Dev2DailyTrigger daily = new Dev2DailyTrigger(_taskServiceConvertorFactory.Object,dailynative){RandomDelay = new TimeSpan(1,2,3)};
+            var daily = new Dev2DailyTrigger(_taskServiceConvertorFactory.Object,dailynative){RandomDelay = new TimeSpan(1,2,3)};
             Assert.AreEqual(2,daily.DaysInterval);
             Assert.AreEqual(dailynative.RandomDelay,daily.RandomDelay);
         }
@@ -55,7 +55,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
             int? id = 0;
             var eventTrigger = new EventTrigger("bob","thomas",id);
-            Dev2EventTrigger dev2EventTrigger = new Dev2EventTrigger(_taskServiceConvertorFactory.Object, eventTrigger) ;
+            var dev2EventTrigger = new Dev2EventTrigger(_taskServiceConvertorFactory.Object, eventTrigger);
             Assert.AreEqual(eventTrigger.Delay, dev2EventTrigger.Delay);
             Assert.AreEqual(eventTrigger.Subscription, dev2EventTrigger.Subscription);
             Assert.AreEqual(eventTrigger.ValueQueries, dev2EventTrigger.ValueQueries);
@@ -70,7 +70,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
 
             var idleTrigger = new IdleTrigger();
-            Dev2IdleTrigger wrappedIdle = new Dev2IdleTrigger(_taskServiceConvertorFactory.Object, idleTrigger);
+            var wrappedIdle = new Dev2IdleTrigger(_taskServiceConvertorFactory.Object, idleTrigger);
             Assert.AreEqual(idleTrigger, wrappedIdle.Instance);
 
         }
@@ -82,7 +82,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
 
             var idleTrigger = new RegistrationTrigger();
-            Dev2RegistrationTrigger wrappedIdle = new Dev2RegistrationTrigger(_taskServiceConvertorFactory.Object, idleTrigger);
+            var wrappedIdle = new Dev2RegistrationTrigger(_taskServiceConvertorFactory.Object, idleTrigger);
             Assert.AreEqual(idleTrigger, wrappedIdle.Instance);
 
         }
@@ -111,7 +111,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
 
             var native = new MonthlyDOWTrigger(DaysOfTheWeek.Monday,MonthsOfTheYear.August);
-            Dev2MonthlyDowTrigger wrapped = new Dev2MonthlyDowTrigger(_taskServiceConvertorFactory.Object, native);
+            var wrapped = new Dev2MonthlyDowTrigger(_taskServiceConvertorFactory.Object, native);
             Assert.AreEqual(native, wrapped.Instance);
             Assert.AreEqual(native.DaysOfWeek, wrapped.DaysOfWeek);
             Assert.AreEqual(native.Enabled, wrapped.Enabled);
@@ -129,7 +129,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
 
             var native = new EventTrigger("w", "ww",3);
-            Dev2EventTrigger wrapped = new Dev2EventTrigger(_taskServiceConvertorFactory.Object, native);
+            var wrapped = new Dev2EventTrigger(_taskServiceConvertorFactory.Object, native);
             wrapped.Delay = new TimeSpan(2);
             wrapped.Subscription = "bob";
             
@@ -149,7 +149,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
 
             var native = new DailyTrigger(3);
-            Dev2DailyTrigger wrapped = new Dev2DailyTrigger(_taskServiceConvertorFactory.Object, native);
+            var wrapped = new Dev2DailyTrigger(_taskServiceConvertorFactory.Object, native);
             wrapped.DaysInterval = 1;
             Assert.AreEqual(wrapped.DaysInterval, native.DaysInterval);
             Assert.AreEqual(wrapped.RandomDelay, native.RandomDelay);

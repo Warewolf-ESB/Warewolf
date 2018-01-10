@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,14 +19,14 @@ namespace Dev2.Studio.Core.ViewModels.Base
     {
         #region Class Members
 
-        private bool _closeRequested;
-        private ViewModelDialogResults _viewModelResults = ViewModelDialogResults.Cancel;
+        bool _closeRequested;
+        ViewModelDialogResults _viewModelResults = ViewModelDialogResults.Cancel;
 
         public bool IsDisposed {private set; get;}
 
         #endregion Class Members
 
-        private ValidationController _validationController;
+        ValidationController _validationController;
 
         public ValidationController ValidationController
         {

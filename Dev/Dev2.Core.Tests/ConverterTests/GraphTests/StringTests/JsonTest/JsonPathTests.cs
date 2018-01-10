@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,10 +28,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void GetSegments_Expected_CorrectSegmentCount()
         {
-            JsonPath path = new JsonPath("EnumerableData().NestedData.Name", "EnumerableData.NestedData.Name");
+            var path = new JsonPath("EnumerableData().NestedData.Name", "EnumerableData.NestedData.Name");
 
             const int expected = 3;
-            int actual = path.GetSegements().Count();
+            var actual = path.GetSegements().Count();
 
             Assert.AreEqual(expected, actual);
         }
@@ -42,10 +42,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void GetSegments_Expected_LastSegmentIsCorrect()
         {
-            JsonPath path = new JsonPath("EnumerableData().NestedData.NestedData.Name", "EnumerableData.NestedData.NestedData.Name");
+            var path = new JsonPath("EnumerableData().NestedData.NestedData.Name", "EnumerableData.NestedData.NestedData.Name");
 
             const string expected = "Name";
-            string actual = path.GetSegements().Last().ToString();
+            var actual = path.GetSegements().Last().ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -56,14 +56,14 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void CreateEnumerablePathSegmentFromJProperty_Expected_EnumerableJsonPathSegment()
         {
-            JProperty jProperty = new JProperty("EnumerableProperty", new JArray(
+            var jProperty = new JProperty("EnumerableProperty", new JArray(
                 new JObject(new JProperty("ScalarProperty", "ScalarValue"),
                 new JProperty("ScalarProperty1", "ScalarValue1"))));
-            JsonPath path = new JsonPath();
-            IPathSegment segment = path.CreatePathSegment(jProperty);
+            var path = new JsonPath();
+            var segment = path.CreatePathSegment(jProperty);
 
             const bool expected = true;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }
@@ -74,12 +74,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void CreateScalarPathSegmentFromJProperty_Expected_ScalarJsonPathSegment()
         {
-            JProperty jProperty = new JProperty("ScalarProperty", "ScalarValue");
-            JsonPath path = new JsonPath();
-            IPathSegment segment = path.CreatePathSegment(jProperty);
+            var jProperty = new JProperty("ScalarProperty", "ScalarValue");
+            var path = new JsonPath();
+            var segment = path.CreatePathSegment(jProperty);
 
             const bool expected = false;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }
@@ -90,11 +90,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void CreateEnumerablePathSegmentFromSegmentText_Expected_EnumerableJsonPathSegment()
         {
-            JsonPath path = new JsonPath();
-            IPathSegment segment = path.CreatePathSegment("EnumerableData()");
+            var path = new JsonPath();
+            var segment = path.CreatePathSegment("EnumerableData()");
 
             const bool expected = true;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }
@@ -105,11 +105,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void CreateScalarPathSegmentFromSegmentText_Expected_ScalarJsonPathSegment()
         {
-            JsonPath path = new JsonPath();
-            IPathSegment segment = path.CreatePathSegment("Name");
+            var path = new JsonPath();
+            var segment = path.CreatePathSegment("Name");
 
             const bool expected = false;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }

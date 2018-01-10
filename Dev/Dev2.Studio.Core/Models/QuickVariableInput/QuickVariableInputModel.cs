@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,8 +18,8 @@ namespace Dev2.Studio.Core.Models.QuickVariableInput
     public class QuickVariableInputModel
     {
 
-        private readonly ICollectionActivity _activity;
-        private readonly ModelItem _modelItem;
+        readonly ICollectionActivity _activity;
+        readonly ModelItem _modelItem;
 
         public QuickVariableInputModel(ModelItem modelItem, ICollectionActivity activity)
         {

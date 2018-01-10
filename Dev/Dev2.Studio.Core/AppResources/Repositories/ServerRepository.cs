@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,15 +28,13 @@ using Dev2.Util;
 
 namespace Dev2.Studio.Core
 {
-
     public class ServerRepository : IServerRepository
     {
         static readonly List<IServer> EmptyList = new List<IServer>();
-
         static readonly object FileLock = new Object();
         static readonly object RestoreLock = new Object();
         protected List<IServer> Environments;
-        private bool _isDisposed;
+        bool _isDisposed;
 
         #region Singleton Instance
 
@@ -73,18 +71,18 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region CTOR
-        
+
         public ServerRepository()
-            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppSettings.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
+            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppUsageStats.LocalHost), StringResources.DefaultEnvironmentName))
         {
         }
-        
+
         protected ServerRepository(IServer source)
         {
             Source = source ?? throw new ArgumentNullException(nameof(source));
             Environments = new List<IServer> { Source };
         }
-        
+
         public ServerRepository(IServerRepository serverRepository)
         {
 #pragma warning disable S3010 // For testing
@@ -99,7 +97,6 @@ namespace Dev2.Studio.Core
 
         public IServer Source { get; private set; }
         public IServer ActiveServer { get; set; }
-
         public bool IsLoaded { get; set; }
 
         #region Clear
@@ -291,7 +288,7 @@ namespace Dev2.Studio.Core
             IServer environment = null;
             if (server != null)
             {
-                Guid id = server.EnvironmentID;
+                var id = server.EnvironmentID;
                 environment = Environments.FirstOrDefault(e => e.EnvironmentID == id) ?? CreateEnvironmentModel(id, server.Connection.AppServerUri, server.Connection.AuthenticationType, server.Connection.UserName, server.Connection.Password, server.Name);
             }
             return environment;
@@ -372,7 +369,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        private void AddEnvironmentIfNotExist(IServer newEnv)
+        void AddEnvironmentIfNotExist(IServer newEnv)
         {
             if (!ValidateIfEnvironmentExists(newEnv))
             {
@@ -380,7 +377,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        private bool ValidateIfEnvironmentExists(IServer newEnv)
+        bool ValidateIfEnvironmentExists(IServer newEnv)
         {
             return Environments.Contains(newEnv);
         }
@@ -476,9 +473,9 @@ namespace Dev2.Studio.Core
                         #region Parse connection string values
 
                         // Let this use of strings go, payload should be under the LOH size limit if 85k bytes ;)
-                        XElement xe = XElement.Parse(payload.ToString());
+                        var xe = XElement.Parse(payload.ToString());
                         var conStr = xe.AttributeSafe("ConnectionString");
-                        Dictionary<string, string> connectionParams = ParseConnectionString(conStr);
+                        var connectionParams = ParseConnectionString(conStr);
 
                         if (!connectionParams.TryGetValue("AppServerUri", out string tmp))
                         {
@@ -490,7 +487,7 @@ namespace Dev2.Studio.Core
                         {
                             appServerUri = new Uri(tmp);
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             continue;
                         }
@@ -610,7 +607,7 @@ namespace Dev2.Studio.Core
 
         #region CreateEnvironmentModel
 
-        private static IServer CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
+        static IServer CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
         {
             var acutalWebServerUri = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
             var environmentConnection = new ServerProxy(acutalWebServerUri);

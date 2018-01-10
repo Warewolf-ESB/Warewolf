@@ -93,23 +93,23 @@ namespace Dev2.Data
 
         #region ComparerEqualityComparer
 
-        private sealed class ComparerEqualityComparer : IEqualityComparer<IScalar>
+        sealed class ComparerEqualityComparer : IEqualityComparer<IScalar>
         {
             public bool Equals(IScalar x, IScalar y)
             {
-                if(ReferenceEquals(x, y))
+                if (ReferenceEquals(x, y))
                 {
                     return true;
                 }
-                if(ReferenceEquals(x, null))
+                if (ReferenceEquals(x, null))
                 {
                     return false;
                 }
-                if(ReferenceEquals(y, null))
+                if (ReferenceEquals(y, null))
                 {
                     return false;
                 }
-                if(x.GetType() != y.GetType())
+                if (x.GetType() != y.GetType())
                 {
                     return false;
                 }
@@ -122,7 +122,7 @@ namespace Dev2.Data
             }
         }
 
-        private static readonly IEqualityComparer<IScalar> ComparerInstance = new ComparerEqualityComparer();
+        static readonly IEqualityComparer<IScalar> ComparerInstance = new ComparerEqualityComparer();
         public static IEqualityComparer<IScalar> Comparer => ComparerInstance;
 
         #endregion

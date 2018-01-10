@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,35 +11,19 @@
 using System;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.TO;
-using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Services.Execution;
-using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Execution
 {
-    /// <summary>
-    /// Database Execution Container
-    /// </summary>
     public class DatabaseServiceContainer : EsbExecutionContainer
     {
         readonly IServiceExecution _databaseServiceExecution;
 
-        #region Constuctors
-
-        public DatabaseServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace workspace, IEsbChannel esbChannel)
-            : base(sa, dataObj, workspace, esbChannel)
-        {
-            _databaseServiceExecution = new DatabaseServiceExecution(dataObj);
-        }
         public DatabaseServiceContainer(IServiceExecution databaseServiceExecution)
         {
             _databaseServiceExecution = databaseServiceExecution;
         }
-
-        #endregion
-
-        #region Execute
 
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
@@ -57,16 +41,8 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
-        {
-            return true;
-        }
+        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext) => true;
 
-        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
-        {
-            return null;
-        }
-
-        #endregion
+        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
     }
 }

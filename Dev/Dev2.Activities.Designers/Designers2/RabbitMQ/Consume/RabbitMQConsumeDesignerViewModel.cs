@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,15 +34,15 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 {
     public class RabbitMQConsumeDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {
-        private readonly IRabbitMQSourceModel _model;
-        private readonly IShellViewModel _shellViewModel;
+        readonly IRabbitMQSourceModel _model;
+        readonly IShellViewModel _shellViewModel;
         public RabbitMQConsumeDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
 
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-            IServer server = _shellViewModel.ActiveServer;
+            var server = _shellViewModel.ActiveServer;
             _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, _shellViewModel);
             SetupCommonViewModelProperties();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Consume;
@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             SetupCommonViewModelProperties();
         }
 
-        private void SetupCommonViewModelProperties()
+        void SetupCommonViewModelProperties()
         {
             ShowLarge = false;
 
@@ -91,7 +91,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
         public bool IsTimeOutFocused { get => (bool)GetValue(IsTimeOutFocusedProperty); set => SetValue(IsTimeOutFocusedProperty, value); }
         public static readonly DependencyProperty IsTimeOutFocusedProperty = DependencyProperty.Register("IsTimeOutFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        private IRabbitMQServiceSourceDefinition _selectedRabbitMQSource;
+        IRabbitMQServiceSourceDefinition _selectedRabbitMQSource;
 
         public IRabbitMQServiceSourceDefinition SelectedRabbitMQSource
         {
@@ -116,7 +116,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             }
         }
 
-        private Guid RabbitMQSourceResourceId
+        Guid RabbitMQSourceResourceId
         {
             get
             {
@@ -198,27 +198,27 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             set { SetProperty(value); }
         }
 
-        private ObservableCollection<IRabbitMQServiceSourceDefinition> LoadRabbitMQSources()
+        ObservableCollection<IRabbitMQServiceSourceDefinition> LoadRabbitMQSources()
         {
-            ICollection<IRabbitMQServiceSourceDefinition> rabbitMQSources = _model.RetrieveSources();
+            var rabbitMQSources = _model.RetrieveSources();
             return rabbitMQSources.ToObservableCollection();
         }
 
-        private void SetSelectedRabbitMQSource(IRabbitMQServiceSourceDefinition rabbitMQSource)
+        void SetSelectedRabbitMQSource(IRabbitMQServiceSourceDefinition rabbitMQSource)
         {
-            IRabbitMQServiceSourceDefinition selectRabbitMQSource = rabbitMQSource ?? RabbitMQSources.FirstOrDefault(d => d.ResourceID == RabbitMQSourceResourceId);
+            var selectRabbitMQSource = rabbitMQSource ?? RabbitMQSources.FirstOrDefault(d => d.ResourceID == RabbitMQSourceResourceId);
             SelectedRabbitMQSource = selectRabbitMQSource;
         }
 
-        private void EditRabbitMQSource()
+        void EditRabbitMQSource()
         {
             _model.EditSource(SelectedRabbitMQSource);
             RabbitMQSources = LoadRabbitMQSources();
-            IRabbitMQServiceSourceDefinition editedRabbitMQSources = RabbitMQSources.FirstOrDefault(source => source.ResourceID == RabbitMQSourceResourceId);
+            var editedRabbitMQSources = RabbitMQSources.FirstOrDefault(source => source.ResourceID == RabbitMQSourceResourceId);
             SetSelectedRabbitMQSource(editedRabbitMQSources);
         }
 
-        private void NewRabbitMQSource()
+        void NewRabbitMQSource()
         {
             _model.CreateNewSource();
             RabbitMQSources = LoadRabbitMQSources();
@@ -231,7 +231,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             Errors = result.Count == 0 ? null : result;
         }
 
-        private IEnumerable<IActionableErrorInfo> ValidateThis()
+        IEnumerable<IActionableErrorInfo> ValidateThis()
         {
             foreach (var error in GetRuleSet("RabbitMQSource").ValidateRules("'RabbitMQ Source'", () => IsRabbitMQSourceFocused = true))
             {
@@ -247,7 +247,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             }
         }
 
-        private IRuleSet GetRuleSet(string propertyName)
+        IRuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
 
@@ -272,7 +272,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName = null)
+        void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -17,24 +17,24 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageExchangeSourceViewModel : SourceBaseImpl<IExchangeSource>, IManageExchangeSourceViewModel
     {
-        private string _autoDiscoverUrl;
-        private string _userName;
-        private string _password;
-        private int _timeout;
-        private string _testMessage;
-        private string _emailTo;
+        string _autoDiscoverUrl;
+        string _userName;
+        string _password;
+        int _timeout;
+        string _testMessage;
+        string _emailTo;
         string _resourceName;
 
-        private IExchangeSource _emailServiceSource;
-        private readonly IManageExchangeSourceModel _updateManager;
+        IExchangeSource _emailServiceSource;
+        readonly IManageExchangeSourceModel _updateManager;
         CancellationTokenSource _token;
         bool _testPassed;
         bool _testFailed;
         bool _testing;
         string _headerText;
-        private bool _enableSend;
+        bool _enableSend;
 
-        private bool _isDisposed;
+        bool _isDisposed;
 
         public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator) : this(updateManager, aggregator)
         {
@@ -159,7 +159,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SaveConnection()
+        void SaveConnection()
         {
             if (_emailServiceSource == null)
             {

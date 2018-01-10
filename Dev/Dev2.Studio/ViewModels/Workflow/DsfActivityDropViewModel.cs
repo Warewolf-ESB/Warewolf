@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,10 +27,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
         #region Fields
 
-        private RelayCommand _executeCommmand;
-        private DelegateCommand _cancelComand;
+        RelayCommand _executeCommmand;
+        DelegateCommand _cancelComand;
 
-        private IContextualResourceModel _selectedResource;
+        IContextualResourceModel _selectedResource;
 
         #endregion Fields
 
@@ -115,13 +115,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         public bool CanOkay => CanSelect();
 
 
-        private bool CanSelect()
+        bool CanSelect()
         {
-            bool isMatched = false;
+            var isMatched = false;
 
             var explorerItemModel = SingleEnvironmentExplorerViewModel.SelectedItem;
 
-            if(explorerItemModel != null)
+            if (explorerItemModel != null)
             {
                 isMatched = explorerItemModel.IsService;
             }
@@ -132,7 +132,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var workSurfaceContextViewModel = conductorBaseWithActiveItem?.ActiveItem;
             var contextualResourceModel = workSurfaceContextViewModel?.ContextualResourceModel;
             var guid = contextualResourceModel?.ID;
-            if(explorerItemModel != null && explorerItemModel.ResourceId == guid)
+            if (explorerItemModel != null && explorerItemModel.ResourceId == guid)
             {
                 return false;
             }

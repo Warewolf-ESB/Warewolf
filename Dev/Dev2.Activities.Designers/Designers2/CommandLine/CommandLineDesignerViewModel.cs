@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -47,8 +47,8 @@ namespace Dev2.Activities.Designers2.CommandLine
             var errors = new List<IActionableErrorInfo>();
 
             Action onError = () => IsCommandFileNameFocused = true;
-
-            errors.AddError(CommandFileName.TryParseVariables(out string commandValue, onError));
+            var util = new VariableUtils();
+            util.AddError(errors, util.TryParseVariables(CommandFileName,out string commandValue, onError));
 
             if (string.IsNullOrWhiteSpace(commandValue))
             {

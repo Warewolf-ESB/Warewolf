@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dropbox.Api.Stone;
@@ -25,7 +26,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Download", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Download")]
-    public class DsfDropBoxDownloadActivity : DsfBaseActivity, IDisposable
+    public class DsfDropBoxDownloadActivity : DsfBaseActivity, IDisposable,IEquatable<DsfDropBoxDownloadActivity>
     {
         public DsfDropBoxDownloadActivity()
         {
@@ -43,11 +44,11 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         }
 
         public virtual IFile DropboxFile { get; set; }
-        private DropboxClient _client;
+        DropboxClient _client;
         protected IDownloadResponse<FileMetadata> Response;
         protected Exception Exception;
-        private ILocalPathManager _localPathManager;
-        private IDropboxClientWrapper _dropboxClientWrapper;
+        ILocalPathManager _localPathManager;
+        IDropboxClientWrapper _dropboxClientWrapper;
 
         public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
         {
@@ -125,8 +126,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         //All units used here has been unit tested seperately
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            evaluatedValues.TryGetValue("ToPath", out string localToPath);
-            evaluatedValues.TryGetValue("FromPath", out string localFromPath);
+            evaluatedValues.TryGetValue("ToPath", out var localToPath);
+            evaluatedValues.TryGetValue("FromPath", out var localFromPath);
             IDropboxSingleExecutor<IDropboxResult> dropBoxDownLoad = new DropBoxDownLoad(localToPath);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropBoxDownLoad);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetClient());
@@ -168,9 +169,9 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
             base.GetDebugInputs(env, update);
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Overwrite Local"), debugItem);
-            string value = OverwriteFile ? "True" : "False";
+            var value = OverwriteFile ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
@@ -178,6 +179,39 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         }
 
+        public bool Equals(DsfDropBoxDownloadActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SelectedSource, other.SelectedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && string.Equals(ToPath, other.ToPath) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && OverwriteFile == other.OverwriteFile
+                && string.Equals(FromPath, other.FromPath);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDropBoxDownloadActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ OverwriteFile.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FromPath != null ? FromPath.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
         public void Dispose()
         {
             _client.Dispose();

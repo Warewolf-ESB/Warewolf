@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -20,26 +20,24 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
 using Warewolf.Resource.Errors;
-
-
+using Dev2.Common;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
     /// <summary>
     /// Used for activties
     /// </summary>
-    
-    public class ActivityDTO : ValidatedObject, IDev2TOFn
-    
+
+    public class ActivityDTO : ValidatedObject, IDev2TOFn,  IEquatable<ActivityDTO>
+
     {
         string _fieldName;
         string _fieldValue;
         int _indexNumber;
 
         bool _isFieldNameFocused;
-        private bool _isFieldValueFocused;
-        private string _errorMessage;
+        bool _isFieldValueFocused;
+        string _errorMessage;
 
         public ActivityDTO()
             : this("[[Variable]]", "Expression", 0)
@@ -66,22 +64,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            
         }
 
         [FindMissing]
         public string FieldName
         {
-            get
-            {
-                return _fieldName;
-            }
+            get => _fieldName;
             set
             {
-                if(_fieldName != value)
+                if (_fieldName != value)
                 {
                     _fieldName = value;
                     OnPropertyChanged();
@@ -94,13 +87,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string FieldValue
         {
-            get
-            {
-                return _fieldValue;
-            }
+            get => _fieldValue;
             set
             {
-                if(_fieldValue != value)
+                if (_fieldValue != value)
                 {
                     _fieldValue = value;
                     OnPropertyChanged();
@@ -112,10 +102,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int IndexNumber
         {
-            get
-            {
-                return _indexNumber;
-            }
+            get => _indexNumber;
             set
             {
                 _indexNumber = value;
@@ -125,14 +112,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            bool result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
+            var result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
             return result;
         }
 
-
         public bool CanAdd()
         {
-            bool result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
+            var result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
             return result;
         }
 
@@ -165,10 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string ErrorMessage
         {
-            get
-            {
-                return _errorMessage;
-            }
+            get => _errorMessage;
             set
             {
                 _errorMessage = value;
@@ -186,10 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         public bool IsFieldNameFocused
         {
-            get
-            {
-                return _isFieldNameFocused;
-            }
+            get => _isFieldNameFocused;
             set
             {
                 OnPropertyChanged(ref _isFieldNameFocused, value);
@@ -198,10 +178,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsFieldValueFocused
         {
-            get
-            {
-                return _isFieldValueFocused;
-            }
+            get => _isFieldValueFocused;
             set
             {
                 OnPropertyChanged(ref _isFieldValueFocused, value);
@@ -210,18 +187,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         static string GetPropertyName<TU>(Expression<Func<TU>> propertyName)
         {
-            if(propertyName.NodeType != ExpressionType.Lambda)
+            if (propertyName.NodeType != ExpressionType.Lambda)
             {
                 throw new ArgumentException(ErrorResource.ExpectedLambdaExpresion, "propertyName");
             }
 
             var body = propertyName.Body as MemberExpression;
 
-            if(body == null)
+            if (body == null)
             {
                 throw new ArgumentException(ErrorResource.MustHaveBody);
             }
-            if(body.Member == null)
+            if (body.Member == null)
             {
                 throw new ArgumentException(ErrorResource.BodyMustHaveMember);
             }
@@ -230,35 +207,73 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsEmpty()
         {
-            return string.IsNullOrEmpty(FieldName)
-                   && string.IsNullOrEmpty(FieldValue);
+            return string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
         }
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             var ruleSet = new RuleSet();
 
-            if(IsEmpty())
+            if (IsEmpty())
             {
                 return ruleSet;
             }
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "FieldName":
                     ruleSet.Add(new IsStringEmptyRule(() => FieldName));
-                    ruleSet.Add(new IsValidExpressionRule(() => FieldName, datalist, "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => FieldName, datalist, "1", new VariableUtils()));
                     break;
                 case "FieldValue":
-                    ruleSet.Add(new IsValidExpressionRule(() => FieldValue, datalist, "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => FieldValue, datalist, "1", new VariableUtils()));
                     break;
                 case "FieldValueAndCalculate":
-                    ruleSet.Add(new ComposableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1")).Or(new IsValidCalculateRule(() => FieldValue)));
+                    ruleSet.Add(new ComposableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1", new VariableUtils())).Or(new IsValidCalculateRule(() => FieldValue)));
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
+                    Dev2Logger.Info("No Rule Set for the Activity DTO Property Name: " + propertyName, GlobalConstants.WarewolfInfo);
+                    break;
             }
             return ruleSet;
+        }
+        
+        public bool Equals(ActivityDTO other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return string.Equals(FieldName, other.FieldName) 
+                && string.Equals(FieldValue, other.FieldValue) 
+                && IndexNumber == other.IndexNumber
+                && IsFieldNameFocused == other.IsFieldNameFocused
+                && IsFieldValueFocused == other.IsFieldValueFocused 
+                && string.Equals(ErrorMessage, other.ErrorMessage) 
+                && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable)
+                && string.Equals(WatermarkTextValue, other.WatermarkTextValue) 
+                && Inserted == other.Inserted 
+                && OutList.SequenceEqual(other.OutList, StringComparer.Ordinal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ActivityDTO) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (FieldName != null ? FieldName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FieldValue != null ? FieldValue.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IndexNumber;
+                hashCode = (hashCode * 397) ^ IsFieldNameFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFieldValueFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ErrorMessage != null ? ErrorMessage.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -92,7 +92,7 @@ namespace Dev2.Common.DateAndTime.TO
             {
                 if (DaysOfYear != 0)
                 {
-                    DateTime tmpDate = new DateTime(Years, 1, 1).AddDays(DaysOfYear - 1);
+                    var tmpDate = new DateTime(Years, 1, 1).AddDays(DaysOfYear - 1);
                     Months = tmpDate.Month;
 
                     if (Days == 0)
@@ -102,7 +102,7 @@ namespace Dev2.Common.DateAndTime.TO
                 }
                 else if (Weeks != 0)
                 {
-                    DateTime tmpDate = CultureInfo.CurrentCulture.Calendar.AddWeeks(new DateTime(Years, 1, 1), Weeks);
+                    var tmpDate = CultureInfo.CurrentCulture.Calendar.AddWeeks(new DateTime(Years, 1, 1), Weeks);
                     Months = tmpDate.Month;
 
                     if (Days == 0)

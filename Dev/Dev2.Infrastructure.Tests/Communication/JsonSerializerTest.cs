@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,8 +34,8 @@ namespace Dev2.Infrastructure.Tests.Communication
         public void JsonSerializer_SerializeToBuffer_WhenEsbExecuteRequest_ValidObjectStringBuffer()
         {
             //------------Setup for test--------------------------
-            Dev2JsonSerializer js = new Dev2JsonSerializer();
-            EsbExecuteRequest request = new EsbExecuteRequest { ServiceName = "Foobar" };
+            var js = new Dev2JsonSerializer();
+            var request = new EsbExecuteRequest { ServiceName = "Foobar" };
             request.AddArgument("key1", new StringBuilder("value1"));
             request.AddArgument("key2", new StringBuilder("value2"));
 
@@ -65,14 +65,14 @@ Knowledge nay estimable questions repulsive daughters boy. Solicitude gay way un
 
 Why end might ask civil again spoil.";
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(theMessage);
 
-            StringBuilder buffer = new StringBuilder(JsonConvert.SerializeObject(msg));
+            var buffer = new StringBuilder(JsonConvert.SerializeObject(msg));
 
             //------------Execute Test---------------------------
 
-            Dev2JsonSerializer js = new Dev2JsonSerializer();
+            var js = new Dev2JsonSerializer();
 
             var result = js.Deserialize<ExecuteMessage>(buffer);
 
@@ -111,14 +111,14 @@ Far far away, behind the word mountains, far from the countries Vokalia and Cons
 
 Pointing has no control about the blind texts it is an almost unorthographic life One day however a small line of blind text by the name of Lorem Ipsum decided to leave for the far World of Grammar. The Big Oxmox advised her not to do so, because there were thousands of bad Commas, wild Question Marks and devious Semikoli, but the Little Blind Text didn't listen. She packed her seven versalia, put her initial into the belt and made herself on the way. When she reached the first hills of the Italic Mountains, she had a last view back on the skyline of her hometown Bookmarksgrove, the headline of ";
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(theMessage);
 
-            StringBuilder buffer = new StringBuilder(JsonConvert.SerializeObject(msg));
+            var buffer = new StringBuilder(JsonConvert.SerializeObject(msg));
 
             //------------Execute Test---------------------------
 
-            Dev2JsonSerializer js = new Dev2JsonSerializer();
+            var js = new Dev2JsonSerializer();
 
             var result = js.Deserialize<ExecuteMessage>(buffer);
 

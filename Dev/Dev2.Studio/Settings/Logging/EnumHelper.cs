@@ -9,7 +9,7 @@ namespace Dev2.Settings.Logging
     {
         public static string GetEnumDescription(string value)
         {
-            Type type = typeof(T);
+            var type = typeof(T);
             var name = Enum.GetNames(type).Where(f => f.Equals(value, StringComparison.CurrentCultureIgnoreCase)).Select(d => d).FirstOrDefault();
 
             if (name == null)
