@@ -6,6 +6,8 @@ using System.Threading;
 using Dev2.Core.Tests;
 using Dev2.Studio.Core.Factories;
 using System.Globalization;
+using Dev2.Common;
+using Dev2.Data;
 
 namespace Dev2.Integration.Tests
 {
