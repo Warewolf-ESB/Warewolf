@@ -153,7 +153,7 @@ $JobSpecs["Workflow Merge with Switch Tools Conflicting"]	= "Warewolf.UI.Tests",
 $JobSpecs["Workflow Merge with Variables Conflicting"]		= "Warewolf.UI.Tests", "Merge Variable Conflicts"
 #Load Tests
 $JobSpecs["UI Load Specs"]	= "Warewolf.UI.Load.Specs"
-$JobSpecs["Load Tests"]		= "Dev2.IntegrationTests", "Load Tests"
+$JobSpecs["Load Tests"]		= "Dev2.Integration.Tests", "Load Tests"
 
 $ServerExeName = "Warewolf Server.exe"
 $ServerPathSpecs = @()
