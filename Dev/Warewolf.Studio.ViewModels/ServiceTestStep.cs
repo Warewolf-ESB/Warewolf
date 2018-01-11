@@ -8,8 +8,6 @@ using Dev2.Data.Util;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
 
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestStep : BindableBase, IServiceTestStep
@@ -96,10 +94,6 @@ namespace Warewolf.Studio.ViewModels
                 _stepOutputs = value;
                 if (value != null)
                 {
-                    if (value.Count < 1)
-                    {
-                        TestInvalid = true;
-                    }
                     SetControlFlowValues(value);
                 }
                 OnPropertyChanged(() => StepOutputs);
@@ -306,7 +300,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        
         public bool IsExpanderVisible => Children.Count > 0;
 
         public bool AssertSelected
