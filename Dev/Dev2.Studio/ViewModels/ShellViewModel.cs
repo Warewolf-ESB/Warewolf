@@ -425,7 +425,7 @@ namespace Dev2.Studio.ViewModels
         {
             Dev2Logger.Info(message.GetType().Name, GlobalConstants.WarewolfInfo);
             DeleteResources(message.ResourceModels, message.FolderName, message.ShowDialog, message.ActionToDoOnDelete);
-        }      
+        }
 
         public void ShowDependencies(Guid resourceId, IServer server, bool isSource)
         {
@@ -1949,7 +1949,10 @@ namespace Dev2.Studio.ViewModels
             var key = WorkSurfaceKeyFactory.CreateKey(resource);
             var currentContext = FindWorkSurfaceContextViewModel(key);
             var vm = currentContext?.WorkSurfaceViewModel as WorkflowDesignerViewModel;
-            vm.CanMerge = true;
+            if (vm != null)
+            {
+                vm.CanMerge = true;
+            }
         }
 
         public IResource CreateResourceFromStreamContent(string resourceContent) => new Resource(resourceContent.ToStringBuilder().ToXElement());
