@@ -1162,22 +1162,11 @@ if ($RunWarewolfServiceTests.IsPresent) {
         $ServerPath = "http://localhost:3142"
     }
     $WarewolfServerURL = "$ServerPath/secure/apis.json"
-    if ($ServerUsername -eq "") {
-        $Headers = @{}
-        $ServerUsername = "Unknown User"
-    } else {
-        $pair = "$($ServerUsername):$($ServerPassword)"
-        $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
-        $basicAuthValue = "Basic $encodedCreds"
-        $Headers = @{
-            Authorization = $basicAuthValue
-        }
-    }
     Write-Warning "Connecting to $WarewolfServerURL"
     $TestStartDateTime = Get-Date -Format o
     $ConnectTimeout = 180
     try {
-        $ConnectToWarewolfServer = wget $WarewolfServerURL -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
+        $ConnectToWarewolfServer = wget $WarewolfServerURL -TimeoutSec $ConnectTimeout -UseDefaultCredentials -UseBasicParsing
     } catch {
         throw $_.Exception
     }
