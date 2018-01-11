@@ -1,5 +1,5 @@
 
-<Source ID="6b16a1b3-1264-4ee3-a17c-bf1d7a6e831d" Name="TestDb" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARJQ8jZmPMEGUnExaGS3pcAQAAAACAAAAAAADZgAAwAAAABAAAACpOUPtahRY6ezpkCk1IQGKAAAAAASAAACgAAAAEAAAAOuflL8C5fbtsO/5GAk6ES6YAAAA2zL5HKg9dV5UrLTpWA7A8Vs6uDtMlEbiS89XiV5qIWJIPGCrF1CO1+WlYkpd89MrMK9/X/1U5dYMvQ3QcRpyVWiu+RaE+fbdh83p+IbR1O0I6TYh/BcKMHZu6PUNe/S9lAP7VJ8P/Dk1yFdlWIRynFoMMLUpWr2On8tv4FaPIwoftMrIBAfhLu8DWrqdpVcTRIjI5ZYuB2UUAAAAd23bWX83+DgBAGEnMY9gyvY4hSs=" ServerVersion="0.0.6583.26842" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="6b16a1b3-1264-4ee3-a17c-bf1d7a6e831d" Name="TestDb" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="Data Source=RSAKLFSVRDEV,1433;Initial Catalog=TestDB;Integrated Security=SSPI;" ServerVersion="0.0.6583.26842" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>TestDb</DisplayName>
   <AuthorRoles>
   </AuthorRoles>
