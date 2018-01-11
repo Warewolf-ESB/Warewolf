@@ -973,12 +973,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
         {
             IExplorerItemViewModel explorerItem = null;
-            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
-            foreach (var environmentViewModel in environmentViewModels)
+            if (mvm?.ActiveServer != null)
             {
-                explorerItem =
-                    environmentViewModel.Children.Flatten(model => model.Children)
-                        .FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
+                foreach (var environmentViewModel in environmentViewModels)
+                {
+                    explorerItem =
+                        environmentViewModel.UnfilteredChildren.Flatten(model => model.UnfilteredChildren)
+                            .FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                }
             }
             return explorerItem;
         }
@@ -992,9 +995,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                     {
                         var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
+                        var explorerItem = GetSelected(mvm);
+                        if (explorerItem != null)
                         {
-                            var explorerItem = GetSelected(mvm);
                             mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer, explorerItem.IsSource || explorerItem.IsServer);
                         }
                     }
