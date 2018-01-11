@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -39,19 +49,17 @@ namespace Dev2.Activities
         {
             return Conditions.DisplayText;
         }
-        
 
         public override IEnumerable<IDev2Activity> GetNextNodes()
         {
             var nextNodes = new List<IDev2Activity>();
             if (TrueArm != null)
-            {                
+            {
                 nextNodes.Add(TrueArm?.FirstOrDefault());
             }
             if (FalseArm != null)
-            {                
+            {
                 nextNodes.Add(FalseArm?.FirstOrDefault());
-
             }
             return nextNodes;
         }
@@ -79,7 +87,7 @@ namespace Dev2.Activities
         public DsfDecision()
         : base("Decision") { }
         /// <summary>
-        /// When overridden runs the activity's execution logic 
+        /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
@@ -239,7 +247,6 @@ namespace Dev2.Activities
                 }
                 if (dataObject.IsDebugMode())
                 {
-
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
                 }
@@ -332,9 +339,7 @@ namespace Dev2.Activities
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-
             catch (Exception)
-
             {
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
@@ -353,10 +358,7 @@ namespace Dev2.Activities
             }
             else if (theResult == "False")
             {
-                if (theResult == "False")
-                {
-                    resultString = dds.FalseArmText;
-                }
+                resultString = dds.FalseArmText;
             }
             return resultString;
         }
@@ -392,8 +394,7 @@ namespace Dev2.Activities
 
                 itemResults.ForEach(a =>
                 {
-                    var found = result.SelectMany(r => r.FetchResultsList())
-                                      .SingleOrDefault(r => r.Variable.Equals(a.Variable));
+                    var found = result.SelectMany(r => r.FetchResultsList()).SingleOrDefault(r => r.Variable.Equals(a.Variable));
                     if (found != null)
                     {
                         allReadyAdded.Add(a);
@@ -430,7 +431,7 @@ namespace Dev2.Activities
             if (ReferenceEquals(this, other))
             {
                 return true;
-            }            
+            }
             var areConditionsEqual = CommonEqualityOps.AreObjectsEqual(Conditions, other.Conditions);
             if (!areConditionsEqual)
             {
@@ -440,7 +441,7 @@ namespace Dev2.Activities
                 && string.Equals(Result, other.Result)
                 && And == other.And
                 && Equals(UniqueID, other.UniqueID);
-        }      
+        }
 
         public override bool Equals(object obj)
         {
@@ -475,14 +476,12 @@ namespace Dev2.Activities
         }
     }
 
-
     public class TestMockDecisionStep : DsfActivityAbstract<string>
     {
         readonly DsfDecision _dsfDecision;
 
-
-        public TestMockDecisionStep():base("Mock Decision")
-        {            
+        public TestMockDecisionStep() : base("Mock Decision")
+        {
         }
 
         public TestMockDecisionStep(DsfDecision dsfDecision)
@@ -563,6 +562,5 @@ namespace Dev2.Activities
         {
             return new List<string>();
         }
-
     }
 }
