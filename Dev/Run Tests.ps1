@@ -1171,7 +1171,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
         throw $_.Exception
     }
     try {
-        $TryGetWarewolfServerVersion = wget "$ServerPath/secure/getserverversion.json" -Headers $Headers -TimeoutSec $ConnectTimeout -UseBasicParsing
+        $TryGetWarewolfServerVersion = wget "$ServerPath/secure/getserverversion.json" -TimeoutSec $ConnectTimeout -UseDefaultCredentials -UseBasicParsing
     } catch {
         Write-Warning $_.Exception
     }
@@ -1188,7 +1188,7 @@ if ($RunWarewolfServiceTests.IsPresent) {
         try {
             $TestTimeout = 180
             $TestStart = Get-Date
-            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -Headers $Headers -TimeoutSec $TestTimeout -UseBasicParsing)
+            $ServiceTestResults = ConvertFrom-Json (wget $WarewolfServiceTestURL -TimeoutSec $TestTimeout -UseDefaultCredentials -UseBasicParsing)
             $ServiceTestDuration = New-TimeSpan -start $TestStart -end (Get-Date)
             if ($ServiceTestResults -ne $null -and $ServiceTestResults -ne "" -and $ServiceTestResults.Count -gt 0) {
                 [double]$TestDurationSeconds = $ServiceTestDuration.TotalSeconds / $ServiceTestResults.Count
