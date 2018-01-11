@@ -139,9 +139,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 29
   testRunner.Given("I Load workflow \"WorkFlowWithOneScalar\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 30
-  testRunner.And("I Load workflow \"WorkFlowWithOneScalar\" from \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneScalar\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 31
-  testRunner.When("Merge Window is opened with remote \"WorkFlowWithOneScalar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("Merge Window is opened with local \"WorkFlowWithOneScalar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 32
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
@@ -168,10 +168,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 39
   testRunner.Given("I Load workflow \"WorkFlowWithOneScalar\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 40
-  testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneScalar\" from \"Remote Connection In" +
-                    "tegration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneScalar\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
-  testRunner.When("Merge Window is opened with remote \"WorkFlowWithOneScalar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("Merge Window is opened with local \"WorkFlowWithOneScalar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 42
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 43
@@ -198,10 +197,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 49
   testRunner.Given("I Load workflow \"WorkFlowWithOneRecordSet\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 50
-  testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneRecordSet\" from \"Remote Connection" +
-                    " Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneRecordSet\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
-  testRunner.When("Merge Window is opened with remote \"WorkFlowWithOneRecordSet\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("Merge Window is opened with local \"WorkFlowWithOneRecordSet\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 52
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 53
@@ -228,10 +226,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 59
   testRunner.Given("I Load workflow \"WorkFlowWithOneObject\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 60
-  testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneObject\" from \"Remote Connection In" +
-                    "tegration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneObject\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 61
-  testRunner.When("Merge Window is opened with remote \"WorkFlowWithOneObject\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("Merge Window is opened with local \"WorkFlowWithOneObject\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 62
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 63
@@ -277,22 +274,22 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge Workflow Containing SequenceTool With Different Children Count")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge Workflow Containing SequenceTool With Different Children Counts Equals One")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MergeExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowMerging")]
-        public virtual void MergeWorkflowContainingSequenceToolWithDifferentChildrenCount()
+        public virtual void MergeWorkflowContainingSequenceToolWithDifferentChildrenCountsEqualsOne()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing SequenceTool With Different Children Count", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing SequenceTool With Different Children Counts Equals One", ((string[])(null)));
 #line 77
 this.ScenarioSetup(scenarioInfo);
 #line 78
   testRunner.Given("I Load workflow \"WorkflowWithSequenceToolWithDifferentChildren\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 79
-  testRunner.And("I Load workflow \"WorkflowWithSequenceToolWithDifferentChildren\" from \"Remote Conn" +
-                    "ection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow version \"1\" of \"WorkflowWithSequenceToolWithDifferentChildren\" fr" +
+                    "om \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 80
-  testRunner.When("Merge Window is opened with remote \"WorkflowWithSequenceToolWithDifferentChildren" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("Merge Window is opened with local \"WorkflowWithSequenceToolWithDifferentChildren\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 81
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 82
@@ -318,11 +315,11 @@ this.ScenarioSetup(scenarioInfo);
   testRunner.Given("I Load workflow \"WorkflowWithSequenceToolWithChildrenInDifferentOrder\" from \"loca" +
                     "lhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 88
-  testRunner.And("I Load workflow \"WorkflowWithSequenceToolWithChildrenInDifferentOrder\" from \"Remo" +
-                    "te Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow version \"1\" of \"WorkflowWithSequenceToolWithChildrenInDifferentOr" +
+                    "der\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 89
-  testRunner.When("Merge Window is opened with remote \"WorkflowWithSequenceToolWithChildrenInDiffere" +
-                    "ntOrder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("Merge Window is opened with local \"WorkflowWithSequenceToolWithChildrenInDifferen" +
+                    "tOrder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 90
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 91

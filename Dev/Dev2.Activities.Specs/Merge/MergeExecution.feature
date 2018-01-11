@@ -27,8 +27,8 @@ Scenario: Merge VersionHelloWorld Workflow
 
 Scenario: Merge WorkFlowWithOneScalar Same VariableList
 	 Given I Load workflow "WorkFlowWithOneScalar" from "localhost"
-	 And I Load workflow "WorkFlowWithOneScalar" from "Remote Connection Integration"	 
-	 When Merge Window is opened with remote "WorkFlowWithOneScalar"
+	 And I Load workflow version "1" of "WorkFlowWithOneScalar" from "localhost"
+	 When Merge Window is opened with local "WorkFlowWithOneScalar"
 	 Then Current workflow contains "1" tools
 	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
@@ -37,8 +37,8 @@ Scenario: Merge WorkFlowWithOneScalar Same VariableList
 
 Scenario: Merge WorkFlowWithOneScalar different input mapping
 	 Given I Load workflow "WorkFlowWithOneScalar" from "localhost"
-	 And I Load workflow version "1" of "WorkFlowWithOneScalar" from "Remote Connection Integration"	 
-	 When Merge Window is opened with remote "WorkFlowWithOneScalar"
+	 And I Load workflow version "1" of "WorkFlowWithOneScalar" from "localhost"
+	 When Merge Window is opened with local "WorkFlowWithOneScalar"
 	 Then Current workflow contains "1" tools
 	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
@@ -47,8 +47,8 @@ Scenario: Merge WorkFlowWithOneScalar different input mapping
 
 Scenario: Merge WorkFlowWithOneRecordSet different input mapping
 	 Given I Load workflow "WorkFlowWithOneRecordSet" from "localhost"
-	 And I Load workflow version "1" of "WorkFlowWithOneRecordSet" from "Remote Connection Integration"	 
-	 When Merge Window is opened with remote "WorkFlowWithOneRecordSet"
+	 And I Load workflow version "1" of "WorkFlowWithOneRecordSet" from "localhost"
+	 When Merge Window is opened with local "WorkFlowWithOneRecordSet"
 	 Then Current workflow contains "1" tools
 	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
@@ -57,8 +57,8 @@ Scenario: Merge WorkFlowWithOneRecordSet different input mapping
 
 Scenario: Merge WorkFlowWithOneObject different input mapping
 	 Given I Load workflow "WorkFlowWithOneObject" from "localhost"
-	 And I Load workflow version "1" of "WorkFlowWithOneObject" from "Remote Connection Integration"	 
-	 When Merge Window is opened with remote "WorkFlowWithOneObject"
+	 And I Load workflow version "1" of "WorkFlowWithOneObject" from "localhost"
+	 When Merge Window is opened with local "WorkFlowWithOneObject"
 	 Then Current workflow contains "1" tools
 	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
@@ -74,10 +74,10 @@ Scenario: Merge Workflow with Assign tool As First Tool And Split tool as Second
 	 And Merge conflicts count is "3"
 	 And Merge variable conflicts is false
 
-Scenario: Merge Workflow Containing SequenceTool With Different Children Count
+Scenario: Merge Workflow Containing SequenceTool With Different Children Counts Equals One
 	 Given I Load workflow "WorkflowWithSequenceToolWithDifferentChildren" from "localhost"
-	 And I Load workflow "WorkflowWithSequenceToolWithDifferentChildren" from "Remote Connection Integration"	 
-	 When Merge Window is opened with remote "WorkflowWithSequenceToolWithDifferentChildren"
+	 And I Load workflow version "1" of "WorkflowWithSequenceToolWithDifferentChildren" from "localhost"
+	 When Merge Window is opened with local "WorkflowWithSequenceToolWithDifferentChildren"
 	 Then Current workflow contains "1" tools
 	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
@@ -85,8 +85,8 @@ Scenario: Merge Workflow Containing SequenceTool With Different Children Count
 
 Scenario: Merge Workflow Containing SequenceTool With Different Children Sequence
 	 Given I Load workflow "WorkflowWithSequenceToolWithChildrenInDifferentOrder" from "localhost"
-	 And I Load workflow "WorkflowWithSequenceToolWithChildrenInDifferentOrder" from "Remote Connection Integration"	 
-	 When Merge Window is opened with remote "WorkflowWithSequenceToolWithChildrenInDifferentOrder"
+	 And I Load workflow version "1" of "WorkflowWithSequenceToolWithChildrenInDifferentOrder" from "localhost"
+	 When Merge Window is opened with local "WorkflowWithSequenceToolWithChildrenInDifferentOrder"
 	 Then Current workflow contains "1" tools
 	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
