@@ -24,7 +24,7 @@ Scenario: Studio Large Debug Out UI Load Test
 	Then the timer duration is between "60" and "120" seconds
 	Given I start the timer
 	When I Filter the Debug with "Match Item"
-	Then the timer duration is between "60" and "120" seconds
+	Then the timer duration is between "60" and "130" seconds
 	
 Scenario: Studio Large Variable List UI Load Test
 	Given The Warewolf Studio is running
@@ -37,7 +37,7 @@ Scenario: Studio Large Variable List UI Load Test
 	When I Open Assign Tool Large View
 	And I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
 	And I Click Assign Tool Large View Done Button
-	Then the timer duration is between "160" and "360" seconds
+	Then the timer duration is between "130" and "360" seconds
 	
 Scenario: Studio With Many Large Workflow Tabs Open UI Load Test
 	Given there are "20" duplicates of All Tools workflow in the explorer
@@ -45,7 +45,7 @@ Scenario: Studio With Many Large Workflow Tabs Open UI Load Test
 	And I start the timer
 	When I Filter the Explorer with "All Tools"
 	And I Open Explorer First Item With Double Click
-	Then the timer duration is between "25" and "90" seconds
+	Then the timer duration is between "19" and "90" seconds
 	
 Scenario: Studio Openning Long Workflow UI Load Test
 	Given The Warewolf Studio is running
