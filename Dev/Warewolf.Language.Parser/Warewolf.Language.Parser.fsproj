@@ -5,12 +5,12 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>e0f7c709-a61b-4829-a659-d7780052326a</ProjectGuid>
+    <ProjectGuid>{df3ab090-911f-4646-9ad1-205e2ced908a}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>WarewolfLanguageParser</RootNamespace>
     <AssemblyName>WarewolfLanguageParser</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
-    <Name>WarewolfLanguageParser</Name>
+    <Name>Warewolf.Language.Parser</Name>
     <TargetFSharpCoreVersion>4.3.0.0</TargetFSharpCoreVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
@@ -85,10 +85,10 @@
     <Compile Include="DataStorage.fs" />
     <None Include="packages.config" />
     <Compile Include="LanguageAST.fs" />
-    <FsYacc Include="..\WarewolfLanguageParser\WarewolfLanguage.fsy">
+    <FsYacc Include="WarewolfLanguage.fsy">
       <OtherFlags>--module Parser</OtherFlags>
     </FsYacc>
-    <FsLex Include="..\WarewolfLanguageParser\WarewolfLanguageLex.fsl">
+    <FsLex Include="WarewolfLanguageLex.fsl">
       <OtherFlags>--unicode</OtherFlags>
     </FsLex>
     <Compile Include="WarewolfLanguage.fs" />
@@ -108,6 +108,11 @@
     <Compile Include="IntellisenseStringProvider.fs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
+      <Name>Warewolf.Parser.Interop</Name>
+      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.3.0.0.2\lib\net40\FSharp.Core.dll</HintPath>
       <Private>True</Private>
@@ -136,11 +141,6 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Name>Dev2.Common</Name>
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
-      <Name>WarewolfParserInterop</Name>
-      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
