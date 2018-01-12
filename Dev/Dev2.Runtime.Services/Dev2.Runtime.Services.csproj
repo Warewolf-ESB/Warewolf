@@ -506,6 +506,10 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
+      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
+      <Name>Warewolf.COMIPC.Client</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj">
       <Project>{CA5E9373-46FE-41B9-AB2E-BD637F48B456}</Project>
       <Name>Warewolf.Security</Name>
@@ -525,14 +529,6 @@
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
       <Name>Warewolf.Storage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj">
-      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
-      <Name>WarewolfCOMIPC.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
-      <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
-      <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
