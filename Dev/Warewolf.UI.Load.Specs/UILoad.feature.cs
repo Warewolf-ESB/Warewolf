@@ -121,7 +121,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 23
  testRunner.When("I Debug with input of \"500\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
- testRunner.Then("the timer duration is between \"60\" and \"120\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the timer duration is between \"60\" and \"155\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 25
  testRunner.Given("I start the timer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 26
