@@ -24,7 +24,6 @@ using System.Activities.Presentation.View;
 using System.Windows;
 using Dev2.Common.Interfaces;
 using Dev2.Communication;
-using System.Collections.Concurrent;
 
 namespace Warewolf.MergeParser
 {
@@ -32,7 +31,6 @@ namespace Warewolf.MergeParser
     {
         readonly IActivityParser _activityParser;
         readonly IResourceDefinationCleaner _definationCleaner;
-        readonly ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>(StringComparer.OrdinalIgnoreCase);
 
         public ServiceDifferenceParser()
             : this(CustomContainer.Get<IActivityParser>(), new ResourceDefinationCleaner())
@@ -47,7 +45,8 @@ namespace Warewolf.MergeParser
             _definationCleaner = definationCleaner;
         }
 
-        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
+        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference) => GetConflictTrees(current, difference, true);
+        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer)
         {
             var currentTree = BuildTree(current, true);
             var diffTree = BuildTree(difference, loadworkflowFromServer);
