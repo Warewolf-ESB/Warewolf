@@ -82,7 +82,7 @@ namespace Warewolf.UI.Load.Specs
         {
             var startTime = ScenarioContext.Current.Get<System.DateTime>("StartTime");
             var totalSeconds = (System.DateTime.Now - startTime).TotalSeconds;
-            var ErrorMessage = "Load test failed. Duration of " + totalSeconds.ToString() + " seconds is greater than " + durationLessThan + " seconds or less than " + durationGreaterThan + ".";
+            var ErrorMessage = "Load test failed. Duration of " + totalSeconds.ToString() + " seconds is less than " + durationGreaterThan + " seconds or greater than " + durationLessThan + ".";
             var LoadTestOutcome = totalSeconds < int.Parse(durationLessThan) && totalSeconds > int.Parse(durationGreaterThan);
 #if !DEBUG
             Assert.IsTrue(LoadTestOutcome, ErrorMessage);
