@@ -67,9 +67,9 @@ namespace Warewolf.UI.Tests
         }
 
         [Given("The Warewolf Studio is running")]
+        [Then("The Warewolf Studio is running")]
         public void AssertStudioIsRunning()
         {
-            Try_Click_No_On_Script_Error_Messagebox();
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Run Tests.ps1\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
         }
@@ -213,19 +213,10 @@ namespace Warewolf.UI.Tests
             Click_Close_Workflow_Tab_Button();
         }
 
-        [Given("I Click Save Ribbon Button Without Expecting a Dialog")]
-        [When("I Click Save Ribbon Button Without Expecting a Dialog")]
-        [Given("I Click Save Ribbon Button Without Expecting a Dialog")]
-        [Then("I Click Save Ribbon Button Without Expecting a Dialog")]
-        public void Click_Save_Ribbon_Button_Without_Expecting_A_Dialog()
-        {
-            Click_Save_Ribbon_Button_With_No_Save_Dialog(2000);
-        }
-
         [Given(@"I Click Save Ribbon Button With No Save Dialog")]
         [When(@"I Click Save Ribbon Button With No Save Dialog")]
         [Then(@"I Click Save Ribbon Button With No Save Dialog")]
-        public void Click_Save_Ribbon_Button_With_No_Save_Dialog(int WaitForSave = 2000)
+        public void Click_Save_Ribbon_Button_With_No_Save_Dialog()
         {
             Assert.IsTrue(MainStudioWindow.SideMenuBar.SaveButton.Exists, "Save ribbon button does not exist");
             Mouse.Click(MainStudioWindow.SideMenuBar.SaveButton, new Point(10, 5));
