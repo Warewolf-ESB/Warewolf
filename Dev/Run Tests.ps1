@@ -65,7 +65,7 @@ $JobSpecs["Recordset Tools Specs"]		 		= "Warewolf.Tools.Specs", "Recordset"
 $JobSpecs["Resource Tools Specs"]		 		= "Warewolf.Tools.Specs", "Resources"
 $JobSpecs["UI Binding Tests"] 				 	= "Warewolf.UIBindingTests.*"
 #Server Tests
-$JobSpecs["Integration Tests"]				 									= "Dev2.IntegrationTests"
+$JobSpecs["Integration Tests"]				 									= "Dev2.Integration.Tests"
 $JobSpecs["Other Specs"]		 												= "Dev2.*.Specs,Warewolf.*.Specs"
 $JobSpecs["Other Activities Specs"]		 										= "Dev2.Activities.Specs"
 $JobSpecs["Workflow Merging Specs"]		 										= "Dev2.Activities.Specs", "WorkflowMerging"
@@ -153,7 +153,7 @@ $JobSpecs["Workflow Merge with Switch Tools Conflicting"]	= "Warewolf.UI.Tests",
 $JobSpecs["Workflow Merge with Variables Conflicting"]		= "Warewolf.UI.Tests", "Merge Variable Conflicts"
 #Load Tests
 $JobSpecs["UI Load Specs"]	= "Warewolf.UI.Load.Specs"
-$JobSpecs["Load Tests"]		= "Dev2.IntegrationTests", "Load Tests"
+$JobSpecs["Load Tests"]		= "Dev2.Integration.Tests", "Load Tests"
 
 $ServerExeName = "Warewolf Server.exe"
 $ServerPathSpecs = @()
