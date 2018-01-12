@@ -61,17 +61,12 @@ namespace Dev2.Runtime
         public void SaveTest(Guid resourceId, IServiceTestModelTO serviceTestModelTo)
         {
             SaveTestToDisk(resourceId, serviceTestModelTo);
-            Tests.AddOrUpdate(resourceId, new List<IServiceTestModelTO> { serviceTestModelTo }, (id, list) =>
+            var existingTests = Tests.GetOrAdd(resourceId, new List<IServiceTestModelTO>());
+            var found = existingTests.FirstOrDefault(to => to.TestName.Equals(serviceTestModelTo.TestName, StringComparison.CurrentCultureIgnoreCase));
+            if (found == null)
             {
-                var serviceTestModelTos = Fetch(id);
-                var found = serviceTestModelTos.FirstOrDefault(to => to.TestName.Equals(serviceTestModelTo.TestName, StringComparison.CurrentCultureIgnoreCase));
-                if (found != null)
-                {
-                    serviceTestModelTos.Remove(found);
-                }
-                serviceTestModelTos.Add(serviceTestModelTo);
-                return serviceTestModelTos;
-            });
+                existingTests.Add(serviceTestModelTo);
+            }
         }
 
         void UpdateTestToInvalid(List<IServiceTestModelTO> testsToUpdate)
