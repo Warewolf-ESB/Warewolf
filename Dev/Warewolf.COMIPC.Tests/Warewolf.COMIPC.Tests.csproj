@@ -70,13 +70,13 @@
       <Project>{85617545-2121-4683-9828-daedb5878ce9}</Project>
       <Name>Dev2.Runtime.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj">
+    <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
       <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
-      <Name>WarewolfCOMIPC.Client</Name>
+      <Name>Warewolf.COMIPC.Client</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WarewolfCOMIPC\WarewolfCOMIPC.csproj">
+    <ProjectReference Include="..\Warewolf.COMIPC\Warewolf.COMIPC.csproj">
       <Project>{d58ab24f-c45b-4df1-9cde-54aff7995513}</Project>
-      <Name>WarewolfCOMIPC</Name>
+      <Name>Warewolf.COMIPC</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
@@ -107,6 +107,10 @@
     <Error Condition="!Exists('..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets'))" />
   </Target>
   <Import Project="..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets')" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

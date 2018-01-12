@@ -19,7 +19,7 @@ $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
                       "$PSScriptRoot\Dev\Server.sln",
                       "$PSScriptRoot\Dev\Studio.sln",
                       "$PSScriptRoot\Dev\Release.sln",
-                      "$PSScriptRoot\Dev\Web2.sln"
+                      "$PSScriptRoot\Dev\Web.sln"
 $NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent)
 if ($Target -ne "") {
 	$Target = "/t:" + $Target
