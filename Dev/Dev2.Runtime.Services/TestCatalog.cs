@@ -346,7 +346,7 @@ namespace Dev2.Runtime
             var resourceTestDirectories = _directoryWrapper.GetDirectories(EnvironmentVariables.TestPath);
             foreach (var resourceTestDirectory in resourceTestDirectories)
             {
-                var resIdString = _directoryWrapper.GetDirectoryName(resourceTestDirectory);
+                var resIdString = DirectoryWrapper.GetDirectoryName(resourceTestDirectory);
                 if (Guid.TryParse(resIdString, out Guid resId))
                 {
                     Tests.AddOrUpdate(resId, GetTestList(resourceTestDirectory), (id, list) => GetTestList(resourceTestDirectory));
