@@ -438,10 +438,6 @@
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
       <Name>Warewolf.Storage</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
-      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
-      <Name>WarewolfParserInterop</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Decrypt Server Resources.ps1" />
