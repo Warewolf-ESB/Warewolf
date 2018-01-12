@@ -1945,13 +1945,15 @@ namespace Dev2.Studio.ViewModels
 
         public void UpdateExplorerWorkflowChanges(Guid resourceId)
         {
-            var resource = ActiveServer.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
-            var key = WorkSurfaceKeyFactory.CreateKey(resource);
-            var currentContext = FindWorkSurfaceContextViewModel(key);
-            var vm = currentContext?.WorkSurfaceViewModel as WorkflowDesignerViewModel;
-            if (vm != null)
+            if (ActiveServer.ResourceRepository.FindSingle(c => c.ID == resourceId, true) is IContextualResourceModel resource)
             {
-                vm.CanMerge = true;
+                var key = WorkSurfaceKeyFactory.CreateKey(resource);
+                var currentContext = FindWorkSurfaceContextViewModel(key);
+                var vm = currentContext?.WorkSurfaceViewModel as WorkflowDesignerViewModel;
+                if (vm != null)
+                {
+                    vm.CanMerge = true;
+                }
             }
         }
 
