@@ -498,7 +498,6 @@
                                                                                  HorizontalAlignment="Right"
                                                                                  Margin="0,0,5,0"
                                                                                  GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
-                                                                                 ToolTip="{x:Static languages:Tooltips.MergeCurrentConflictRBTooltip}"
                                                                                  AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRB_AutoID">
                                                                         <RadioButton.Style>
                                                                             <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
@@ -509,6 +508,12 @@
                                                                                     <DataTrigger Binding="{Binding IsContained}" Value="True">
                                                                                         <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
                                                                                     </DataTrigger>
+                                                                                    <Trigger Property="IsEnabled" Value="False">
+                                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentConflictRBDisabledTooltip}" />
+                                                                                    </Trigger>
+                                                                                    <Trigger Property="IsEnabled" Value="True">
+                                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentConflictRBTooltip}" />
+                                                                                    </Trigger>
                                                                                 </Style.Triggers>
                                                                             </Style>
                                                                         </RadioButton.Style>
@@ -545,10 +550,20 @@
                                                                                  HorizontalAlignment="Left"
                                                                                  Margin="5,0,5,0"
                                                                                  GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
-                                                                                 ToolTip="{x:Static languages:Tooltips.MergeDifferenceConflictRBTooltip}"
-                                                                                 Style="{StaticResource MergeRadioButtonStyle}"
                                                                                  Visibility="{Binding IsContained, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                                                                  AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID">
+                                                                        <RadioButton.Style>
+                                                                            <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="RadioButton">
+                                                                                <Style.Triggers>
+                                                                                    <Trigger Property="IsEnabled" Value="False">
+                                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceConflictRBDisabledTooltip}" />
+                                                                                    </Trigger>
+                                                                                    <Trigger Property="IsEnabled" Value="True">
+                                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceConflictRBTooltip}" />
+                                                                                    </Trigger>
+                                                                                </Style.Triggers>
+                                                                            </Style>
+                                                                        </RadioButton.Style>
                                                                         <i:Interaction.Behaviors>
                                                                             <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceConflictRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                                         </i:Interaction.Behaviors>
@@ -714,6 +729,7 @@
                                                                Margin="45,0,0,0" 
                                                                Text="{Binding LeftArmDescription}" 
                                                                ToolTip="{Binding LeftArmDescription}"
+                                                               ToolTipService.ShowOnDisabled="True"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>
@@ -729,6 +745,7 @@
                                                                Margin="5,0,0,0" 
                                                                Text="{Binding RightArmDescription}" 
                                                                ToolTip="{Binding RightArmDescription}"
+                                                               ToolTipService.ShowOnDisabled="True"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>
@@ -743,7 +760,6 @@
                                                                  HorizontalAlignment="Right"
                                                                  Margin="0,0,5,0"
                                                                  GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
-                                                                 ToolTip="{x:Static languages:Tooltips.MergeCurrentArmRBTooltip}"
                                                                  AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
                                                         <RadioButton.Style>
                                                             <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
@@ -754,6 +770,12 @@
                                                                     <DataTrigger Binding="{Binding IsContained}" Value="True">
                                                                         <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
                                                                     </DataTrigger>
+                                                                    <Trigger Property="IsEnabled" Value="False">
+                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentArmRBDisabledTooltip}" />
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsEnabled" Value="True">
+                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentArmRBTooltip}" />
+                                                                    </Trigger>
                                                                 </Style.Triggers>
                                                             </Style>
                                                         </RadioButton.Style>
@@ -804,10 +826,26 @@
                                                                  IsChecked="{Binding IsChecked}" 
                                                                  HorizontalAlignment="Left"
                                                                  GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
-                                                                 ToolTip="{x:Static languages:Tooltips.MergeDifferenceArmRBTooltip}"
                                                                  Margin="5,0,5,0"
-                                                                 Style="{StaticResource MergeRadioButtonStyle}"
                                                                  AutomationProperties.AutomationId="UI_DifferenceNodeArmRB_AutoID">
+                                                        <RadioButton.Style>
+                                                            <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsContained}" Value="True">
+                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                    <Trigger Property="IsEnabled" Value="False">
+                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceArmRBDisabledTooltip}" />
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsEnabled" Value="True">
+                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceArmRBTooltip}" />
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </RadioButton.Style>
                                                         <i:Interaction.Behaviors>
                                                             <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceArmRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                         </i:Interaction.Behaviors>
@@ -816,6 +854,7 @@
                                                                Margin="25,0,0,0" 
                                                                Text="{Binding LeftArmDescription}" 
                                                                ToolTip="{Binding LeftArmDescription}"
+                                                               ToolTipService.ShowOnDisabled="True"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_DifferenceNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>
@@ -831,6 +870,7 @@
                                                                Margin="5,0,0,0" 
                                                                Text="{Binding RightArmDescription}" 
                                                                ToolTip="{Binding RightArmDescription}"
+                                                               ToolTipService.ShowOnDisabled="True"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>
