@@ -64,7 +64,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _emailServiceSource = source;
                 _emailServiceSource.Path = emailServiceSource.Path;
-                
                 FromModel(_emailServiceSource);
                 Item = ToModel();
                 SetupHeaderTextFromExisting();
@@ -87,7 +86,6 @@ namespace Warewolf.Studio.ViewModels
         public ManageEmailSourceViewModel()
             : base("EmailSource")
         {
-   
         }
 
         public override void FromModel(IEmailServiceSource emailServiceSource)
@@ -136,7 +134,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return TestPassed;
+            return !string.IsNullOrWhiteSpace(HostName);
         }
 
         public bool CanTest()
@@ -570,22 +568,17 @@ namespace Warewolf.Studio.ViewModels
                     EmailFrom = EmailFrom,
                     EmailTo = EmailTo,
                     Id = _emailServiceSource?.Id ?? Guid.NewGuid()
-                }
-            ;
+                };
             }
-            else
-            {
-                _emailServiceSource.HostName = HostName;
-                _emailServiceSource.UserName = UserName;
-                _emailServiceSource.Password = Password;
-                _emailServiceSource.Port = Port;
-                _emailServiceSource.Timeout = Timeout;
-                _emailServiceSource.EnableSsl = EnableSsl;
-                _emailServiceSource.EmailFrom = EmailFrom;
-                _emailServiceSource.EmailTo = EmailTo;
-                return _emailServiceSource;
-
-            }
+            _emailServiceSource.HostName = HostName;
+            _emailServiceSource.UserName = UserName;
+            _emailServiceSource.Password = Password;
+            _emailServiceSource.Port = Port;
+            _emailServiceSource.Timeout = Timeout;
+            _emailServiceSource.EnableSsl = EnableSsl;
+            _emailServiceSource.EmailFrom = EmailFrom;
+            _emailServiceSource.EmailTo = EmailTo;
+            return _emailServiceSource;
         }
 
         public override IEmailServiceSource ToModel()
