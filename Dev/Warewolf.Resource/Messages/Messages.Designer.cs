@@ -61,6 +61,24 @@ namespace Warewolf.Resource.Messages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test message from Warewolf for Email Service Source.
+        /// </summary>
+        public static string Test_EmailServerSource_EmailBody {
+            get {
+                return ResourceManager.GetString("Test_EmailServerSource_EmailBody", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Test Email Service Source.
+        /// </summary>
+        public static string Test_EmailServerSource_Header {
+            get {
+                return ResourceManager.GetString("Test_EmailServerSource_Header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed: Assert Choose. Expected &apos;{0}&apos; for &apos;{1}&apos; but got &apos;{2}&apos;.
         /// </summary>
         public static string Test_FailureMessage_Choose {
