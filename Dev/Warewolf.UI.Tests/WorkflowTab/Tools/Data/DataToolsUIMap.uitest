@@ -799,9 +799,9 @@
                                                                                 <WindowTitle>Warewolf</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI__Row1_FieldName_AutoID</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId" Operator="Contains">FieldName_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
@@ -841,9 +841,9 @@
                                                                                 <WindowTitle>Warewolf</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI__Row1_FieldValue_AutoID</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId" Operator="Contains">FieldValue_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>

@@ -435,7 +435,7 @@ namespace Warewolf.UI.Tests.SharepointSource.SharepointSourceUIMapClasses
                     #region Search Criteria
                     this.mSpinner.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.CircularProgressBar";
                     this.mSpinner.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SettingsProgress_Indicator";
-                    this.mSpinner.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mSpinner.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mSpinner;
@@ -451,7 +451,7 @@ namespace Warewolf.UI.Tests.SharepointSource.SharepointSourceUIMapClasses
                     this.mSuccessfulTestImage = new WpfImage(this);
                     #region Search Criteria
                     this.mSuccessfulTestImage.SearchConfigurations.Add(SearchConfiguration.NextSibling);
-                    this.mSuccessfulTestImage.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mSuccessfulTestImage.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mSuccessfulTestImage;

@@ -28,21 +28,12 @@ using System.Diagnostics;
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
 {
-
-    /// <summary>
-    /// Summary description for ComPluginRuntimeHandlerTest
-    /// </summary>
     [TestClass]
 
     public class ComPluginRuntimeHandlerTest
     {
         public const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        
+                
         public TestContext TestContext { get; set; }
 
         [ClassInitialize]

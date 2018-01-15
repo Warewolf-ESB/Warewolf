@@ -25,7 +25,8 @@ Param(
   [string]$TestList="",
   [switch]$RunWarewolfServiceTests,
   [string]$MergeDotCoverSnapshotsInDirectory="",
-  [switch]${Startmy.warewolf.io}
+  [switch]${Startmy.warewolf.io},
+  [string]$sendRecordedMediaForPassedTestCase="false"
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -65,7 +66,7 @@ $JobSpecs["Recordset Tools Specs"]		 		= "Warewolf.Tools.Specs", "Recordset"
 $JobSpecs["Resource Tools Specs"]		 		= "Warewolf.Tools.Specs", "Resources"
 $JobSpecs["UI Binding Tests"] 				 	= "Warewolf.UIBindingTests.*"
 #Server Tests
-$JobSpecs["Integration Tests"]				 									= "Dev2.IntegrationTests"
+$JobSpecs["Integration Tests"]				 									= "Dev2.Integration.Tests"
 $JobSpecs["Other Specs"]		 												= "Dev2.*.Specs,Warewolf.*.Specs"
 $JobSpecs["Other Activities Specs"]		 										= "Dev2.Activities.Specs"
 $JobSpecs["Workflow Merging Specs"]		 										= "Dev2.Activities.Specs", "WorkflowMerging"
@@ -153,7 +154,7 @@ $JobSpecs["Workflow Merge with Switch Tools Conflicting"]	= "Warewolf.UI.Tests",
 $JobSpecs["Workflow Merge with Variables Conflicting"]		= "Warewolf.UI.Tests", "Merge Variable Conflicts"
 #Load Tests
 $JobSpecs["UI Load Specs"]	= "Warewolf.UI.Load.Specs"
-$JobSpecs["Load Tests"]		= "Dev2.IntegrationTests", "Load Tests"
+$JobSpecs["Load Tests"]		= "Dev2.Integration.Tests", "Load Tests"
 
 $ServerExeName = "Warewolf Server.exe"
 $ServerPathSpecs = @()
@@ -964,7 +965,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
           <Configuration>
-            <MediaRecorder sendRecordedMediaForPassedTestCase="false" xmlns="" />
+            <MediaRecorder sendRecordedMediaForPassedTestCase="$sendRecordedMediaForPassedTestCase" xmlns="" />
           </Configuration>
         </DataCollector>
       </DataCollectors>
