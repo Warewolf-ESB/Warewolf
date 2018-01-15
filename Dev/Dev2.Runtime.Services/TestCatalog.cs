@@ -67,6 +67,11 @@ namespace Dev2.Runtime
             {
                 existingTests.Add(serviceTestModelTo);
             }
+            else
+            {
+                existingTests.Remove(found);
+                existingTests.Add(serviceTestModelTo);
+            }
         }
 
         void UpdateTestToInvalid(List<IServiceTestModelTO> testsToUpdate)
