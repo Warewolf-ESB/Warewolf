@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
@@ -13,6 +14,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragOnWorkflow_UITest()
         {
+            UIMap.InitializeABlankWorkflow();
+            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.VariableComboBox.Exists, "Varaible Combobox does not exist after dragging switch tool in from the toolbox.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.DisplayText.Exists, "Display Text Textbox does not exist after dragging switch tool in from the toolbox.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.OnErrorGroup.Exists, "On Error Pane does not exist after dragging switch tool in from the toolbox.");
@@ -26,6 +29,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragDialogWindow_UITest()
         {
+            UIMap.InitializeABlankWorkflow();
+            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
             Mouse.StartDragging(DialogsUIMap.DecisionOrSwitchDialog);
             Mouse.StopDragging(100, 100);
         }
@@ -37,8 +42,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            UIMap.InitializeABlankWorkflow();
-            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
         }
 
         UIMap UIMap
@@ -85,6 +88,21 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         ControlFlowToolsUIMap ControlFlowToolsUIMap
         {

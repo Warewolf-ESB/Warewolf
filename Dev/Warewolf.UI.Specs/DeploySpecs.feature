@@ -1,14 +1,15 @@
 ﻿@Deploy 
 Feature: DeploySpecs
 
-Scenario: Select All resources to deploy
+Scenario: Refresh does not uncheck all resources
 	Given The Warewolf Studio is running
 	When I Click Deploy Ribbon Button
 	And I Select LocalhostConnected From Deploy Tab Destination Server Combobox
 	And I Select RemoteConnectionIntegration From Deploy Tab Destination Server Combobox
-	And I filter for "DateTime" on the source filter
-	And I Select localhost from the source tab 
-	Then Deploy Button is enabled  "true"
+    And I Select localhost checkbox from the source tab 
+	Then Source explorer first item is checked
+	When I Click Deploy Tab Source Refresh Button
+	Then Source explorer first item is checked
 
 Scenario: Deploy is enabled when I change server after validation thrown
 	Given The Warewolf Studio is running
