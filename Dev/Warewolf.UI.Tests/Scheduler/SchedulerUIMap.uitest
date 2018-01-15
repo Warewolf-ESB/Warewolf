@@ -447,7 +447,7 @@
                                             <UIObject ControlType="ListItem" Id="UILoadTestiListItem" FriendlyName="Name:Tests UI Load Testing ResourceId:43a5f2d3-402..." SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
-                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                <WindowTitle>Warewolf</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -459,7 +459,7 @@
                                                 <UIObject ControlType="CheckBox" Id="EnabledCheckbox" FriendlyName="Enable or Disable the schedule" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -472,7 +472,7 @@
                                                 <UIObject ControlType="Button" Id="DeleteButton" FriendlyName="" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
