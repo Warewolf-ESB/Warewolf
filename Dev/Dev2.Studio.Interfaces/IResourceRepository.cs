@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -28,13 +28,13 @@ namespace Dev2.Studio.Interfaces
     {
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource, string savePath);
-        ExecuteMessage DeleteResource(IResourceModel resource);    
+        ExecuteMessage DeleteResource(IResourceModel resource);
         void Add(IResourceModel resource);
         void ForceLoad();
         void UpdateServer(IServer server);
         bool IsLoaded { get; }
         bool DoesResourceExistInRepo(IResourceModel resource);
-        ExecuteMessage SaveToServer(IResourceModel instanceObj);
+        ExecuteMessage SaveToServer(IResourceModel instanceObj, string reason = "Save");
         void DeployResources(IServer targetEnviroment, IServer sourceEnviroment, IDeployDto dto);
         ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
         List<T> FindSourcesByType<T>(IServer targetEnvironment, enSourceType sourceType);
@@ -50,7 +50,7 @@ namespace Dev2.Studio.Interfaces
         bool HasDependencies(IContextualResourceModel resourceModel);
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
         ICollection<IResourceModel> All();
-    
+
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition);
