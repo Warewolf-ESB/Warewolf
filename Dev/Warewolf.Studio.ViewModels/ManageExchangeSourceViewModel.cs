@@ -57,7 +57,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _emailServiceSource = source;
                 _emailServiceSource.Path = exchangeSource.Path;
-                
                 FromModel(_emailServiceSource);
                 SetupHeaderTextFromExisting();
             });
@@ -114,7 +113,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool CanSave()
         {
-            return TestPassed;
+            return !string.IsNullOrWhiteSpace(AutoDiscoverUrl);
         }
 
         public bool CanTest()
@@ -340,8 +339,7 @@ namespace Warewolf.Studio.ViewModels
             _token = new CancellationTokenSource();
 
 
-            var t = new Task(
-                SetupProgressSpinner, _token.Token);
+            var t = new Task(SetupProgressSpinner, _token.Token);
 
             t.ContinueWith(a => Application.Current?.Dispatcher.Invoke(() =>
             {
@@ -400,7 +398,7 @@ namespace Warewolf.Studio.ViewModels
         IExchangeSource ToNewSource()
         {
             var resourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID;
-            return new ExchangeSourceDefinition()
+            return new ExchangeSourceDefinition
             {
                 AutoDiscoverUrl = AutoDiscoverUrl,
                 Password = Password,
@@ -420,28 +418,24 @@ namespace Warewolf.Studio.ViewModels
             {
                 var resourceID = Guid.NewGuid();
                 return new ExchangeSourceDefinition
-                    {
-                        AutoDiscoverUrl = AutoDiscoverUrl,
-                        Password = Password,
-                        UserName = UserName,
-                        Timeout = Timeout,
-                        EmailTo = EmailTo,
-                        ResourceName = ResourceName,
-                        ResourceType = "ExchangeSource",
-                        Id = resourceID,
-                        ResourceID = resourceID,
-                    }
+                {
+                    AutoDiscoverUrl = AutoDiscoverUrl,
+                    Password = Password,
+                    UserName = UserName,
+                    Timeout = Timeout,
+                    EmailTo = EmailTo,
+                    ResourceName = ResourceName,
+                    ResourceType = "ExchangeSource",
+                    Id = resourceID,
+                    ResourceID = resourceID,
+                }
                     ;
             }
-            
-            else
-            {
-                _emailServiceSource.AutoDiscoverUrl = AutoDiscoverUrl;
-                _emailServiceSource.UserName = UserName;
-                _emailServiceSource.Password = Password;
-                _emailServiceSource.Timeout = Timeout;
-                return _emailServiceSource;
-            }
+            _emailServiceSource.AutoDiscoverUrl = AutoDiscoverUrl;
+            _emailServiceSource.UserName = UserName;
+            _emailServiceSource.Password = Password;
+            _emailServiceSource.Timeout = Timeout;
+            return _emailServiceSource;
         }
 
         public override IExchangeSource ToModel()
@@ -452,7 +446,7 @@ namespace Warewolf.Studio.ViewModels
                 return Item;
             }
             var resourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID;
-            return new ExchangeSourceDefinition()
+            return new ExchangeSourceDefinition
             {
                 AutoDiscoverUrl = AutoDiscoverUrl,
                 Password = Password,
@@ -495,9 +489,7 @@ namespace Warewolf.Studio.ViewModels
         public string TestMessage
         {
             get { return _testMessage; }
-            
             set
-            
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);
@@ -541,7 +533,7 @@ namespace Warewolf.Studio.ViewModels
             }
             DisposeManageExchangeSourceViewModel(true);
         }
-        
+
         void DisposeManageExchangeSourceViewModel(bool disposing)
         {
             if (!_isDisposed)
