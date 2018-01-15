@@ -1109,10 +1109,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Filter_Explorer(ItemName);
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Left, ModifierKeys.None, new Point(40, 9));
         }
-
-        [Given(@"I Open Explorer First Item With Double Click")]
+        
         [When(@"I Open Explorer First Item With Double Click")]
-        [Then(@"I Open Explorer First Item With Double Click")]
         public void Open_Explorer_First_Item_With_Double_Click()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Left, ModifierKeys.None, new Point(40, 9));
