@@ -133,8 +133,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(viewModel.CloseHelpCommand.CanExecute(null));
             Assert.IsNotNull(viewModel.PickResourceCommand);
             Assert.IsTrue(viewModel.PickResourceCommand.CanExecute(null));
-            Assert.IsNotNull(viewModel.PickWindowsGroupCommand);
-            Assert.IsTrue(viewModel.PickWindowsGroupCommand.CanExecute(null));
+            VerifyWindowsPermission(securitySettingsTO, viewModel);
             Assert.IsNotNull(viewModel.ServerPermissions);
             Assert.IsNotNull(viewModel.ResourcePermissions);
 
@@ -144,6 +143,19 @@ namespace Dev2.Core.Tests.Settings
             // constructor adds an extra "new"  permission
             Assert.AreEqual(serverPerms.Count + 1, viewModel.ServerPermissions.Count);
             Assert.AreEqual(resourcePerms.Count + 1, viewModel.ResourcePermissions.Count);
+        }
+
+        static void VerifyWindowsPermission(SecuritySettingsTO securitySettingsTO, SecurityViewModel viewModel)
+        {
+            Assert.IsNotNull(viewModel.PickWindowsGroupCommand);
+            if (securitySettingsTO != null)
+            {
+                Assert.IsTrue(viewModel.PickWindowsGroupCommand.CanExecute(securitySettingsTO.WindowsGroupPermissions[0]));
+            }
+            else
+            {
+                Assert.IsFalse(viewModel.PickWindowsGroupCommand.CanExecute(null));
+            }
         }
 
         [TestMethod]
