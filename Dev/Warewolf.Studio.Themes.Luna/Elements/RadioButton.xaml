@@ -190,6 +190,7 @@
         <Setter Property="Padding" Value="0,0,0,0" />
         <Setter Property="MinHeight" Value="14" />
         <Setter Property="MinWidth" Value="7" />
+        <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
     </Style>
 
     <Style x:Key="MergeNoConflictIcon" TargetType="fa:FontAwesome">
