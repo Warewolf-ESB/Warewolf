@@ -28,6 +28,7 @@
         <Style x:Key="PermissionsGridWindowsGroupButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="Content" Value="..." />
             <Setter Property="Margin" Value="1" />
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
             <Setter Property="Command" Value="{Binding DataContext.PickWindowsGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             <Setter Property="CommandParameter" Value="{Binding}" />
             <Setter Property="AutomationProperties.AutomationId">
@@ -38,11 +39,20 @@
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SettingsSecurityServerToolTipWindowsGroup}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SecurityWindowsGroupPermissionsDisabledTooltip}" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="PermissionsGridResourceButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="Content" Value="..." />
             <Setter Property="Margin" Value="1" />
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
             <Setter Property="Command" Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             <Setter Property="CommandParameter" Value="{Binding}" />
             <Setter Property="AutomationProperties.AutomationId">
@@ -53,6 +63,14 @@
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipResource}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SecurityResourcePermissionsDisabledTooltip}" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
     </UserControl.Resources>
@@ -113,8 +131,7 @@
                                     </TextBox>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
-                                            IsEnabled="{Binding Path=CanChangeName}"
-                                            ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipWindowsGroup}">
+                                            IsEnabled="{Binding Path=CanChangeName}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddWindowsGroupButton_AutoID">
                                                 <Binding Path="WindowsGroup" FallbackValue="New" />
@@ -373,8 +390,7 @@
                                     </TextBlock>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}"
-                                            IsEnabled="{Binding Path=EnableCellEditing}"
-                                            ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipResource}">
+                                            IsEnabled="{Binding Path=EnableCellEditing}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
                                                 <Binding Path="ResourceName" FallbackValue="New" />
@@ -420,8 +436,7 @@
                                     </TextBox>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
-                                            IsEnabled="{Binding Path=EnableCellEditing}"
-                                            ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipWindowsGroup}">
+                                            IsEnabled="{Binding Path=EnableCellEditing}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddWindowsGroupsButton_AutoID">
                                                 <Binding Path="WindowsGroup" FallbackValue="New" />
