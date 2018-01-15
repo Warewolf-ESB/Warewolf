@@ -48,7 +48,7 @@ namespace Warewolf.UI.Tests
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             Assert.AreEqual(newDll, DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");
             DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text = newDll2;            
-            UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             DotNetPluginSourceUIMap.Click_Close_DotNetPlugin_Source_Tab();
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             Assert.AreEqual(newDll2, DotNetPluginSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DotNetPluginSourceTab.WorkSurfaceContext.AssemblyComboBox.TextEdit.Text, "Assembly is not equal to updated text.");

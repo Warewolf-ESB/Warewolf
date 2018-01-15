@@ -1,11 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
-		{E0F7C709-A61B-4829-A659-D7780052326A} = {E0F7C709-A61B-4829-A659-D7780052326A}
 		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513} = {D58AB24F-C45B-4DF1-9CDE-54AFF7995513}
 		{76467C57-4F15-4FD6-90BD-68443ADB838D} = {76467C57-4F15-4FD6-90BD-68443ADB838D}
 		{B3D070E0-11C1-4C1C-81A5-E680C1494945} = {B3D070E0-11C1-4C1C-81A5-E680C1494945}
@@ -49,6 +48,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Tests", "Dev2.Activities.Tests\Dev2.Activities.Tests.csproj", "{2A8088A6-8F8D-42FD-B877-D809C494C561}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Tests", "Dev2.Runtime.Tests\Dev2.Runtime.Tests.csproj", "{85617545-2121-4683-9828-DAEDB5878CE9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513} = {D58AB24F-C45B-4DF1-9CDE-54AFF7995513}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Diagnostics", "Dev2.Diagnostics\Dev2.Diagnostics.csproj", "{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}"
 EndProject
@@ -83,10 +85,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UnitTestUtils", "Dev2.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "WarewolfLanguageParser", "WarewolfLanguageParser\WarewolfLanguageParser.fsproj", "{E0F7C709-A61B-4829-A659-D7780052326A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfParserInterop", "WarewolfParserInterop\WarewolfParserInterop.csproj", "{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Storage", "Warewolf.Storage\Warewolf.Storage.csproj", "{B3D070E0-11C1-4C1C-81A5-E680C1494945}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement", "Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj", "{F36B2034-94BF-485C-B584-4E590CCC6DD3}"
@@ -112,9 +110,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ResourceDecryptScript", "Re
 		Dev2.Server\Decrypt Server Resources.ps1 = Dev2.Server\Decrypt Server Resources.ps1
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC.Client", "WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Client", "Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC", "WarewolfCOMIPC\WarewolfCOMIPC.csproj", "{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC", "Warewolf.COMIPC\Warewolf.COMIPC.csproj", "{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Tests", "Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
 EndProject
@@ -141,6 +139,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Exchange.Email.Wrapper", "Warewolf.Exchange.Email.Wrapper\Warewolf.Exchange.Email.Wrapper.csproj", "{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Warewolf.Language.Parser", "Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj", "{DF3AB090-911F-4646-9AD1-205E2CED908A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Parser.Interop", "Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj", "{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -396,22 +398,6 @@ Global
 		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|x86.ActiveCfg = Release|Any CPU
 		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|x86.Build.0 = Release|Any CPU
-		{E0F7C709-A61B-4829-A659-D7780052326A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E0F7C709-A61B-4829-A659-D7780052326A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E0F7C709-A61B-4829-A659-D7780052326A}.Debug|x86.ActiveCfg = Debug|x86
-		{E0F7C709-A61B-4829-A659-D7780052326A}.Debug|x86.Build.0 = Debug|x86
-		{E0F7C709-A61B-4829-A659-D7780052326A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E0F7C709-A61B-4829-A659-D7780052326A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E0F7C709-A61B-4829-A659-D7780052326A}.Release|x86.ActiveCfg = Release|x86
-		{E0F7C709-A61B-4829-A659-D7780052326A}.Release|x86.Build.0 = Release|x86
-		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Debug|x86.Build.0 = Debug|Any CPU
-		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Release|x86.ActiveCfg = Release|Any CPU
-		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Release|x86.Build.0 = Release|Any CPU
 		{B3D070E0-11C1-4C1C-81A5-E680C1494945}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B3D070E0-11C1-4C1C-81A5-E680C1494945}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3D070E0-11C1-4C1C-81A5-E680C1494945}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -581,6 +567,22 @@ Global
 		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Release|x86.ActiveCfg = Release|Any CPU
 		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Release|x86.Build.0 = Release|Any CPU
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|x86.ActiveCfg = Debug|x86
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Debug|x86.Build.0 = Debug|x86
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|x86.ActiveCfg = Release|x86
+		{DF3AB090-911F-4646-9AD1-205E2CED908A}.Release|x86.Build.0 = Release|x86
+		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Debug|x86.Build.0 = Debug|Any CPU
+		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Release|x86.ActiveCfg = Release|Any CPU
+		{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

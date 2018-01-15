@@ -2946,6 +2946,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        public void DeLinkTools(string sourceUniqueId, string destinationUniqueId, string key)
+        {
+            if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key, true))
+            {
+                return;
+            }
+            if (SetNextForSwitch(sourceUniqueId, destinationUniqueId, key, true))
+            {
+                return;
+            }
+            var step = GetRegularActivityFromNodeCollection(sourceUniqueId);
+            if (step != null)
+            {
+                var next = GetItemFromNodeCollection(destinationUniqueId);
+                SetNext(next, step, true);
+            }
+        }
+
         public void LinkTools(string sourceUniqueId, string destinationUniqueId, string key)
         {
             if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key))
@@ -2964,7 +2982,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        bool SetNextForDecision(string sourceUniqueId, string destinationUniqueId, string key)
+        bool SetNextForDecision(string sourceUniqueId, string destinationUniqueId, string key, bool delink = false)
         {
             var decisionItem = GetDecisionFromNodeCollection(sourceUniqueId);
             if (decisionItem != null)
@@ -2976,8 +2994,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                     parentNodeProperty.SetValue(null);
                     if (next != null)
                     {
-                        parentNodeProperty.SetValue(next);
-                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                        if (delink)
+                        {
+                            parentNodeProperty.SetValue(null);
+                        }
+                        else
+                        {
+                            parentNodeProperty.SetValue(next);
+                            Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                        }
                     }
                     return true;
                 }
@@ -2987,7 +3012,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         ModelItem GetItemFromNodeCollection(string uniqueId) => GetDecisionFromNodeCollection(uniqueId) ?? GetSwitchFromNodeCollection(uniqueId) ?? GetRegularActivityFromNodeCollection(uniqueId);
 
-        bool SetNextForSwitch(string sourceUniqueId, string destinationUniqueId, string key)
+        bool SetNextForSwitch(string sourceUniqueId, string destinationUniqueId, string key, bool delink = false)
         {
             var switchItem = GetSwitchFromNodeCollection(sourceUniqueId);
             if (switchItem != null)
@@ -2995,35 +3020,51 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var next = GetItemFromNodeCollection(destinationUniqueId);
                 if (next != null)
                 {
-                    var nodeItem = next.GetCurrentValue() as FlowNode;
-                    if (nodeItem != null)
+                    if (next.GetCurrentValue() is FlowNode nodeItem)
                     {
-                        UpdateSwithArm(key, switchItem, nodeItem);
+                        UpdateSwithArm(key, switchItem, nodeItem, delink);
                     }
-                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                    if (!delink)
+                    {
+                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                    }
                     return true;
                 }
-                UpdateSwithArm(key, switchItem, null);
+                UpdateSwithArm(key, switchItem, null, delink);
             }
             return false;
         }
 
-        static void UpdateSwithArm(string key, ModelItem switchItem, FlowNode nodeItem)
+        static void UpdateSwithArm(string key, ModelItem switchItem, FlowNode nodeItem, bool delink = false)
         {
             if (key != "Default")
             {
                 var parentNodeProperty = switchItem.Properties["Cases"];
-                var cases = parentNodeProperty?.Dictionary;
-                cases.Remove(key);
-                cases.Add(key, nodeItem);
-                parentNodeProperty.SetValue(cases);
+                if (delink)
+                {
+                    parentNodeProperty.SetValue(null);
+                }
+                else
+                {
+                    var cases = parentNodeProperty?.Dictionary;
+                    cases.Remove(key);
+                    cases.Add(key, nodeItem);
+                    parentNodeProperty.SetValue(cases);
+                }
             }
             else
             {
                 var defaultProperty = switchItem.Properties["Default"];
                 if (defaultProperty != null)
                 {
-                    defaultProperty.SetValue(nodeItem);
+                    if (delink)
+                    {
+                        defaultProperty.SetValue(null);
+                    }
+                    else
+                    {
+                        defaultProperty.SetValue(nodeItem);
+                    }
                 }
             }
         }
@@ -3050,15 +3091,22 @@ namespace Dev2.Studio.ViewModels.Workflow
             return hasParent;
         });
 
-        void SetNext(ModelItem next, ModelItem source)
+        void SetNext(ModelItem next, ModelItem source, bool delink = false)
         {
             if (next != null)
             {
                 var nextStep = next.GetCurrentValue<FlowNode>();
                 if (nextStep != null)
                 {
-                    SetNextProperty(source, nextStep);
-                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                    if (delink)
+                    {
+                        SetNextProperty(source, null);
+                    }
+                    else
+                    {
+                        SetNextProperty(source, nextStep);
+                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                    }
                 }
             }
             else
@@ -3133,12 +3181,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                     nodes.Add(normalDecision);
                     break;
                 case FlowSwitch<string> normalSwitch:
-                    var switchAct = new DsfFlowSwitchActivity();
-                    switchAct.ExpressionText = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
+                    var switchAct = new DsfFlowSwitchActivity
+                    {
+                        ExpressionText = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
                                                     "(\"", nodeToAdd.GetProperty<string>("Switch"), "\",",
                                                     GlobalConstants.InjectedDecisionDataListVariable,
-                                                    ")");
-                    switchAct.UniqueID = nodeToAdd.GetProperty<string>("UniqueID");
+                                                    ")"),
+                        UniqueID = nodeToAdd.GetProperty<string>("UniqueID")
+                    };
+                    normalSwitch.DisplayName = model.MergeDescription;
                     normalSwitch.Expression = switchAct;
                     normalSwitch.Cases.Clear();
                     normalSwitch.Default = null;

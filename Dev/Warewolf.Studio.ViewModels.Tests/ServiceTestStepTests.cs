@@ -354,7 +354,16 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(true, serviceTestOutput.IsSearchCriteriaVisible);
         }
 
-
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void ServiceTestStep_EmptyStepOutputs_ShouldNotSetTestInvalid()
+        {
+            var serviceTestStep = new ServiceTestStep(Guid.NewGuid(), "", new ObservableCollection<IServiceTestOutput>(), StepType.Assert)
+            {
+                StepOutputs = new ObservableCollection<IServiceTestOutput>()
+            };
+            Assert.IsFalse(serviceTestStep.TestInvalid);
+        }
 
 
         static ServiceTestStep CreateDecisionMock()

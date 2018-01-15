@@ -873,7 +873,7 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfListItem.PropertyNames.Name] = "Name:Tests UI Load Testing ResourceId:43a5f2d3-4023-4b80-8afe-7c7ac0d703b4";
-            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         
@@ -887,7 +887,7 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
                     this.mEnabledCheckbox = new WpfCheckBox(this);
                     #region Search Criteria
                     this.mEnabledCheckbox.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Enable or Disable the schedule";
-                    this.mEnabledCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mEnabledCheckbox.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mEnabledCheckbox;
@@ -903,7 +903,7 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
                     this.mDeleteButton = new WpfButton(this);
                     #region Search Criteria
                     this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
-                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    this.mDeleteButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mDeleteButton;
