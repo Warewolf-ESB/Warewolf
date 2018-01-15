@@ -570,7 +570,7 @@
       <Project>{cad4d820-c619-4099-aa9c-dcacd23adb89}</Project>
       <Name>Warewolf.Tools.Specs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
+    <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
       <Project>{6EB59EEE-4E16-4F29-B1B0-715E56E9139D}</Project>
       <Name>WarewolfParserInterop</Name>
     </ProjectReference>

@@ -22,6 +22,7 @@
     <WarningLevel>4</WarningLevel>
     <LangVersion>7.1</LangVersion>
     <CodeAnalysisRuleSet>Warewolf.MergeParser.ruleset</CodeAnalysisRuleSet>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -85,7 +86,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Warewolf.MergeParser.ruleset" />
   </ItemGroup>

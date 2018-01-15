@@ -109,6 +109,14 @@
       <Project>{4BD0C970-ECD6-470B-B9EE-17ECFE53E5FB}</Project>
       <Name>Dev2.Data</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
+      <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
+      <Name>Warewolf.Language.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Parser.Interop\Warewolf.Parser.Interop.csproj">
+      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
+      <Name>Warewolf.Parser.Interop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
       <Name>Warewolf.Resource</Name>
@@ -120,14 +128,6 @@
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
       <Name>Warewolf.Storage</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
-      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
-      <Name>WarewolfLanguageParser</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
-      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
-      <Name>WarewolfParserInterop</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

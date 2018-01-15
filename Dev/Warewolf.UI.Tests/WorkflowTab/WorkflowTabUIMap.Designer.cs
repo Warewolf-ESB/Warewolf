@@ -30,16 +30,16 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
     {
         
         /// <summary>
-        /// Open_Tools_UI_Map_Designer_To_Flowchart - Use 'Open_Tools_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
+        /// Open_Workflow_Tab_UI_Map_Designer_To_Flowchart - Use 'Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
         /// </summary>
-        public void Open_Tools_UI_Map_Designer_To_Flowchart()
+        public void Open_Workflow_Tab_UI_Map_Designer_To_Flowchart()
         {
             #region Variable Declarations
             WpfCustom flowchart = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
             #endregion
 
             // Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
-            Assert.AreEqual(this.Open_Tools_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
+            Assert.AreEqual(this.Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
         /// <summary>
@@ -56,15 +56,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         }
         
         #region Properties
-        public virtual Open_Tools_UI_Map_Designer_To_FlowchartParams Open_Tools_UI_Map_Designer_To_FlowchartParams
+        public virtual Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams
         {
             get
             {
-                if ((this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams == null))
+                if ((this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartParams == null))
                 {
-                    this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams = new Open_Tools_UI_Map_Designer_To_FlowchartParams();
+                    this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartParams = new Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams();
                 }
-                return this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
+                return this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartParams;
             }
         }
         
@@ -130,7 +130,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         #endregion
         
         #region Fields
-        private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
+        private Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartParams;
         
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
@@ -145,10 +145,10 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
     }
     
     /// <summary>
-    /// Parameters to be passed into 'Open_Tools_UI_Map_Designer_To_Flowchart'
+    /// Parameters to be passed into 'Open_Workflow_Tab_UI_Map_Designer_To_Flowchart'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Open_Tools_UI_Map_Designer_To_FlowchartParams
+    public class Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams
     {
         
         #region Fields

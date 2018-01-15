@@ -277,12 +277,19 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 Assert.IsFalse(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled);
         }
 
-        [Given(@"I Select localhost from the source tab")]
-        [When(@"I Select localhost from the source tab")]
-        [Then(@"I Select localhost from the source tab")]
+        [Given(@"I Select localhost checkbox from the source tab")]
+        [When(@"I Select localhost checkbox from the source tab")]
+        [Then(@"I Select localhost checkbox from the source tab")]
         public void WhenISelectLocalhostFromTheSourceTab()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.EnvironmentNameCheckCheckBox);
+        }
+
+        [Given(@"Source explorer first item is checked")]
+        [Then(@"Source explorer first item is checked")]
+        public void SourceExplorerFirstItemIsChecked()
+        {
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked, "Explorer first resources is unchecked.");
         }
 
         [Then(@"I validate I can not Deploy ""(.*)""")]
@@ -345,6 +352,29 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(successful, "Deploy failed.");
         }
 
+        [When(@"I Click Deploy Tab Deploy Button with no version conflict dialog")]
+        public void Click_Deploy_Tab_Deploy_Button_no_version_conflict_dialog()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
+            WaitForDeploySuccessSkippingVersionConflicts();
+        }
+
+        void WaitForDeploySuccessSkippingVersionConflicts()
+        {
+            bool seenVersionConflict = false;
+            bool seenConflict = false;
+            bool successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
+            if (!successful)
+            {
+                successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
+                if (!successful)
+                {
+                    successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
+                }
+            }
+            Assert.IsTrue(successful, "Deploy failed.");
+        }
+
         bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict, ref bool seenSecondVersionConflict)
         {
             bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
@@ -377,6 +407,33 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             }
             var successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
             if (successful && OKButtonReady)
+            {
+                Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+            }
+            return successful;
+        }
+
+        bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict)
+        {
+            DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
+            if (!seenVersionConflict && !seenConflict)
+            {
+                if (DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            if (!seenConflict)
+            {
+                if (DialogsUIMap.MessageBoxWindow.DeployConflictsText.Exists)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            var successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
+            if (successful)
             {
                 Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
             }
