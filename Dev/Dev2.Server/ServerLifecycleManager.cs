@@ -73,7 +73,8 @@ namespace Dev2
             {
                 Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception, "Warewolf Fatal");
             };
-            if (Environment.UserInteractive || arguments[0] == "--interactive")
+            Thread.Sleep(10000);
+            if (Environment.UserInteractive || (arguments.Count() > 0 && arguments[0] == "--interactive"))
             {
                 Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
                 using (_singleton = new ServerLifecycleManager(arguments))
