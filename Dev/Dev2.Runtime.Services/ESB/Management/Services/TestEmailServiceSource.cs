@@ -41,11 +41,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 };
                 try
                 {
-                    con.Send(new MailMessage(src.EmailFrom,src.EmailTo,"Test Email Service Source","Test message from Warewolf for Email Service Source"));
+                    var mailMessage = new MailMessage(src.EmailFrom, src.EmailTo, Warewolf.Resource.Messages.Messages.Test_EmailServerSource_Header, Warewolf.Resource.Messages.Messages.Test_EmailServerSource_EmailBody);
+                    con.Send(mailMessage);
                 }
                 catch (SmtpException e)
                 {
-                    msg.HasError = false;
+                    msg.HasError = true;
                     msg.Message = new StringBuilder( e.Message);
                     return serializer.SerializeToBuilder(msg);
                 }
