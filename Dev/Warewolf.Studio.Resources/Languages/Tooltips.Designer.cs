@@ -2734,11 +2734,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Tool connection conflict selection not allowed.
+        /// </summary>
+        public static string MergeCurrentArmRBDisabledTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentArmRBDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the current Tool connection conflict.
         /// </summary>
         public static string MergeCurrentArmRBTooltip {
             get {
                 return ResourceManager.GetString("MergeCurrentArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Tool conflict selection not allowed.
+        /// </summary>
+        public static string MergeCurrentConflictRBDisabledTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentConflictRBDisabledTooltip", resourceCulture);
             }
         }
         
@@ -2770,11 +2788,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Difference Tool connection conflict selection not allowed.
+        /// </summary>
+        public static string MergeDifferenceArmRBDisabledTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceArmRBDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the difference Tool connection conflict.
         /// </summary>
         public static string MergeDifferenceArmRBTooltip {
             get {
                 return ResourceManager.GetString("MergeDifferenceArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Difference Tool conflict selection not allowed.
+        /// </summary>
+        public static string MergeDifferenceConflictRBDisabledTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceConflictRBDisabledTooltip", resourceCulture);
             }
         }
         

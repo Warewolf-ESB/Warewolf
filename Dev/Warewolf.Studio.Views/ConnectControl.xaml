@@ -65,17 +65,11 @@
                     Margin="{StaticResource ControlBorderLeft}"
                     ToolTip="{Binding Path=NewConnectionToolTip}"
                     Command="{Binding NewConnectionCommand}"
-                    Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                    Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlNewConnectionHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
-            <customControls:CircularProgressBar Height="22" 
-                                                Width="22"
-                                                Margin="3,0,2,0"
-                                                VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
             <customControls:CircularProgressBar Height="22" 
                                                 Width="22" 
                                                 Margin="3,0,2,0"

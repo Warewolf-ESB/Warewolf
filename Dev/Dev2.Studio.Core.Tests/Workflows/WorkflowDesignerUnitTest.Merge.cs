@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests.Workflows
             var serverRepo = new Mock<IServerRepository>();
             CustomContainer.Register(serverRepo.Object);
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(repository => repository.SaveToServer(It.IsAny<IResourceModel>())).Verifiable();
+            repo.Setup(repository => repository.SaveToServer(It.IsAny<IResourceModel>(), It.IsAny<string>())).Verifiable();
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -87,7 +87,7 @@ namespace Dev2.Core.Tests.Workflows
             dHelper.VerifyAll();
             modelService.VerifyAll();
             viewStateService.Verify(p => p.RemoveViewState(It.IsAny<ModelItem>(), It.IsAny<string>()));
-            viewStateService.Verify(p => p.StoreViewState(It.IsAny<ModelItem>(), It.IsAny<string>(),It.IsAny<Point>()));
+            viewStateService.Verify(p => p.StoreViewState(It.IsAny<ModelItem>(), It.IsAny<string>(), It.IsAny<Point>()));
         }
     }
 }
