@@ -50,8 +50,6 @@ namespace Warewolf.UI.Tests
         private static void OnPlaybackError(object sender, PlaybackErrorEventArgs e)
         {
             var errorType = e.Error.GetType().ToString();
-            string messageText;
-            object exceptionSource;
             switch (errorType)
             {
                 case "Microsoft.VisualStudio.TestTools.UITest.Extension.UITestControlNotAvailableException":
