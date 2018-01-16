@@ -23,10 +23,11 @@ namespace WarewolfCOMIPC.Client
             try
             {
                 _pipeClientStream.Connect(30000);
+                ReadMode = PipeTransmissionMode.Message;
             }
             catch (TimeoutException e)
             {
-                Dev2Logger.Info("Error connecting to COM Named Pipe Client Stream:\n" + e.Message, GlobalConstants.WarewolfInfo);
+                Dev2Logger.Warn("Error connecting to COM Named Pipe Client Stream. " + e.Message, GlobalConstants.WarewolfWarn);
             }
         }
 
