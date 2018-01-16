@@ -14,9 +14,6 @@ using Dev2.Data;
 using Dev2.Data.Util;
 using Warewolf.Security.Encryption;
 
-
-
-
 namespace Dev2.Runtime
 {
     public class TestCatalog : ITestCatalog
@@ -74,7 +71,7 @@ namespace Dev2.Runtime
             });
         }
 
-        void UpdateTestToInvalid(List<IServiceTestModelTO> testsToUpdate)
+        static void UpdateTestToInvalid(List<IServiceTestModelTO> testsToUpdate)
         {
             foreach (var serviceTestModelTO in testsToUpdate)
             {
@@ -118,7 +115,7 @@ namespace Dev2.Runtime
             }
         }
 
-        void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
+        static void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
         {
             if (serviceTestModelTo.TestSteps != null)
             {
@@ -152,7 +149,7 @@ namespace Dev2.Runtime
             Load();
         }
 
-        void UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs)
+        static void UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs)
         {
             if (outputDefs.Count == 0)
             {
@@ -241,7 +238,7 @@ namespace Dev2.Runtime
             }
         }
 
-        void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs)
+        static void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs)
         {
             if (inputDefs.Count == 0)
             {
