@@ -113,7 +113,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                                        out string actualValue, out string error);
             if (string.IsNullOrEmpty(expectedResult))
             {
-                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue), "Expected an empty result, but got " + actualValue);
             }
             else
             {

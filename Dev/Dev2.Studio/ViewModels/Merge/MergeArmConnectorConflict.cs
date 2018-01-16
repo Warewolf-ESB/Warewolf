@@ -18,12 +18,15 @@ namespace Dev2.ViewModels.Merge
     public class MergeArmConnectorConflict : BindableBase, IMergeArmConnectorConflict
     {
         public string ArmDescription { get; set; }
+        public string LeftArmDescription { get; set; }
+        public string RightArmDescription { get; set; }
         public string SourceUniqueId { get; set; }
         public string DestinationUniqueId { get; set; }
         public IArmConnectorConflict Container { get; set; }
         public string Key { get; set; }
         bool _isChecked;
         bool _isArmSelectionAllowed;
+        bool _isArmConnectorVisible;
 
         public string Grouping => SourceUniqueId + Key ?? "";
 
@@ -56,6 +59,8 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
+        public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
+
         public MergeArmConnectorConflict(IArmConnectorConflict container)
         {
             Container = container;
@@ -63,6 +68,12 @@ namespace Dev2.ViewModels.Merge
         public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId,string key, IArmConnectorConflict container)
         {
             ArmDescription = armDescription;
+            if (!string.IsNullOrWhiteSpace(armDescription))
+            {
+                var description = armDescription.Split(new[] { "->" }, StringSplitOptions.None);
+                LeftArmDescription = description[0];
+                RightArmDescription = description[1];
+            }
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
             Key = key;
@@ -84,7 +95,7 @@ namespace Dev2.ViewModels.Merge
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is null)
             {
                 return false;
             }
@@ -104,6 +115,7 @@ namespace Dev2.ViewModels.Merge
 
         public void DisableEvents()
         {
+            WorkflowDesignerViewModel?.DeLinkTools(SourceUniqueId, DestinationUniqueId, Key);
             IsArmSelectionAllowed = false;
             IsChecked = false;
         }

@@ -22,15 +22,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
     {
         IDbAction _selectedAction;
         EventHandler<List<string>> _errorsHandler;
-
-        #region Implementation of INotifyPropertyChanged
-
         public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Implementation of IToolRegion
-
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
@@ -43,8 +35,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             get => null;
             set => _errorsHandler = value;
         }
-
-        #endregion
 
         #region Implementation of IActionToolRegion<IDbAction>
 
