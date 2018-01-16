@@ -586,7 +586,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             }
         }
 
-        [When(@"I Wait For Explorer Localhost Spinner")]
+        [Given(@"I Wait For Explorer Localhost Spinner")]
         public void WaitForExplorerLocalhostSpinner()
         {
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
