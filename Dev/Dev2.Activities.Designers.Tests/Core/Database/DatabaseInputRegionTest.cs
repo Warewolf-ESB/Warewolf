@@ -131,7 +131,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var regionToRestore = new DatabaseInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------
-            region.RestoreRegion(regionToRestore);
+            region.RestoreRegion(regionToRestore as IToolRegion);
             //------------Assert Results-------------------------
 
         }
