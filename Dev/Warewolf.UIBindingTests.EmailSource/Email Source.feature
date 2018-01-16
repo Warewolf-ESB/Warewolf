@@ -62,7 +62,7 @@ Scenario: Enable Send and Enable Save With Validation
 	And "Port" input is "25"
 	And "Timeout" input is "10000"
 	And "Send" is "Enabled"
-	And "Save" is "Disabled"
+	And "Save" is "Enabled"
 	And I type To as "info@dev2.co.za"
 	And "Send" is "Enabled"
 	When I click "Send"
@@ -86,13 +86,13 @@ Scenario: Fail Send
 	And "Port" input is "25"
 	And "Timeout" input is "10000"
 	And "Send" is "Enabled"
-	And "Save" is "Disabled"
+	And "Save" is "Enabled"
 	And I type From as "warewolf@dev2.co.za"
 	And I type To as "queries@dev2.co.za"
 	Then "Send" is "Enabled"
 	And Send is "Unsuccessful"
 	Then Send is "Failed to Send: One or more errors occurred"
-	And "Save" is "Disabled"
+	And "Save" is "Enabled"
 
 @EmailSource
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
@@ -112,5 +112,5 @@ Scenario: Edit saves From and To
 	And "From" input is "warewolf@dev2.co.za"
 	And "To" input is "info@dev2.co.za"
 	And "Send" is "Enabled"
-	And "Save" is "Disabled"
+	And "Save" is "Enabled"
 	
