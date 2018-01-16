@@ -79,23 +79,23 @@ namespace Warewolf.Tools.Specs.Toolbox.Recordset.FindRecordIndexMultiple
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1045 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1073 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1045.AddRow(new string[] {
+            table1073.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1045.AddRow(new string[] {
+            table1073.AddRow(new string[] {
                         "rs().field",
                         "15"});
-            table1045.AddRow(new string[] {
+            table1073.AddRow(new string[] {
                         "rs().field",
                         "20"});
-            table1045.AddRow(new string[] {
+            table1073.AddRow(new string[] {
                         "rs().field",
                         "34"});
 #line 8
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1045, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1073, "Given ");
 #line 14
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
@@ -108,7 +108,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 18
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1046 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1074 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -118,7 +118,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1046.AddRow(new string[] {
+            table1074.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 1",
                         "",
@@ -128,7 +128,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1046.AddRow(new string[] {
+            table1074.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 15",
                         "",
@@ -138,7 +138,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1046.AddRow(new string[] {
+            table1074.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 20",
                         "",
@@ -148,7 +148,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1046.AddRow(new string[] {
+            table1074.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 34",
                         "1",
@@ -159,14 +159,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 19
- testRunner.And("the debug inputs as", ((string)(null)), table1046, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1074, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1047 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1075 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1047.AddRow(new string[] {
+            table1075.AddRow(new string[] {
                         "[[result]] = 3"});
 #line 25
- testRunner.And("the debug output as", ((string)(null)), table1047, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1075, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -181,14 +181,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 29
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1048 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1076 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1048.AddRow(new string[] {
+            table1076.AddRow(new string[] {
                         "",
                         ""});
 #line 30
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1048, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1076, "Given ");
 #line 33
  testRunner.And("field to search is \"[[rs().value]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
@@ -201,7 +201,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 37
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1049 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1077 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -211,7 +211,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1049.AddRow(new string[] {
+            table1077.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(*).value]] =",
                         "1",
@@ -222,14 +222,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 38
- testRunner.And("the debug inputs as", ((string)(null)), table1049, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1077, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1050 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1078 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1050.AddRow(new string[] {
+            table1078.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 41
- testRunner.And("the debug output as", ((string)(null)), table1050, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1078, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -244,23 +244,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 45
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1051 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1079 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1051.AddRow(new string[] {
+            table1079.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1051.AddRow(new string[] {
+            table1079.AddRow(new string[] {
                         "rs().field",
                         "15"});
-            table1051.AddRow(new string[] {
+            table1079.AddRow(new string[] {
                         "rs().field",
                         "20"});
-            table1051.AddRow(new string[] {
+            table1079.AddRow(new string[] {
                         "rs().field",
                         "34"});
 #line 46
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1051, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1079, "Given ");
 #line 52
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 53
@@ -273,7 +273,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 56
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1052 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1080 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -283,7 +283,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1052.AddRow(new string[] {
+            table1080.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 1",
                         "",
@@ -293,7 +293,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1052.AddRow(new string[] {
+            table1080.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 15",
                         "",
@@ -303,7 +303,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1052.AddRow(new string[] {
+            table1080.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 20",
                         "",
@@ -313,7 +313,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1052.AddRow(new string[] {
+            table1080.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 34",
                         "1",
@@ -324,14 +324,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 57
- testRunner.And("the debug inputs as", ((string)(null)), table1052, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1080, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1053 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1081 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1053.AddRow(new string[] {
+            table1081.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 63
- testRunner.And("the debug output as", ((string)(null)), table1053, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1081, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -346,23 +346,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 67
  this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1054 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1082 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1054.AddRow(new string[] {
+            table1082.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1054.AddRow(new string[] {
+            table1082.AddRow(new string[] {
                         "rs().field",
                         "15"});
-            table1054.AddRow(new string[] {
+            table1082.AddRow(new string[] {
                         "rs().field",
                         "20"});
-            table1054.AddRow(new string[] {
+            table1082.AddRow(new string[] {
                         "rs().field",
                         "34"});
 #line 68
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1054, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1082, "Given ");
 #line 74
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 75
@@ -375,7 +375,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 78
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1055 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1083 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -385,7 +385,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1055.AddRow(new string[] {
+            table1083.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 1",
                         "",
@@ -395,7 +395,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1055.AddRow(new string[] {
+            table1083.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 15",
                         "",
@@ -405,7 +405,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1055.AddRow(new string[] {
+            table1083.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 20",
                         "",
@@ -415,7 +415,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1055.AddRow(new string[] {
+            table1083.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 34",
                         "1",
@@ -426,14 +426,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 79
- testRunner.And("the debug inputs as", ((string)(null)), table1055, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1083, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1056 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1084 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1056.AddRow(new string[] {
+            table1084.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 85
- testRunner.And("the debug output as", ((string)(null)), table1056, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1084, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -448,23 +448,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 89
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1057 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1085 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1057.AddRow(new string[] {
+            table1085.AddRow(new string[] {
                         "rs().field",
                         "5/3/2013"});
-            table1057.AddRow(new string[] {
+            table1085.AddRow(new string[] {
                         "rs().field",
                         "2/3/2013"});
-            table1057.AddRow(new string[] {
+            table1085.AddRow(new string[] {
                         "rs().field",
                         "7/4/2013"});
-            table1057.AddRow(new string[] {
+            table1085.AddRow(new string[] {
                         "rs().field",
                         "11/11/2012"});
 #line 90
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1057, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1085, "Given ");
 #line 96
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
@@ -477,7 +477,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 100
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1058 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1086 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -487,7 +487,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1058.AddRow(new string[] {
+            table1086.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 5/3/2013",
                         "",
@@ -497,7 +497,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1058.AddRow(new string[] {
+            table1086.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 2/3/2013",
                         "",
@@ -507,7 +507,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1058.AddRow(new string[] {
+            table1086.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 7/4/2013",
                         "",
@@ -517,7 +517,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1058.AddRow(new string[] {
+            table1086.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 11/11/2012",
                         "1",
@@ -528,14 +528,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 101
- testRunner.And("the debug inputs as", ((string)(null)), table1058, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1086, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1059 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1087 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1059.AddRow(new string[] {
+            table1087.AddRow(new string[] {
                         "[[result]] = 2"});
 #line 107
- testRunner.And("the debug output as", ((string)(null)), table1059, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1087, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -550,23 +550,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 111
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1060 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1088 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1060.AddRow(new string[] {
+            table1088.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1060.AddRow(new string[] {
+            table1088.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1060.AddRow(new string[] {
+            table1088.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1060.AddRow(new string[] {
+            table1088.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
 #line 112
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1060, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1088, "Given ");
 #line 118
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 119
@@ -578,7 +578,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 122
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1061 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1089 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -588,7 +588,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1061.AddRow(new string[] {
+            table1089.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -598,7 +598,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1061.AddRow(new string[] {
+            table1089.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -608,7 +608,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1061.AddRow(new string[] {
+            table1089.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -618,7 +618,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1061.AddRow(new string[] {
+            table1089.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = d2FyZXdvbGY=",
                         "1",
@@ -629,14 +629,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 123
- testRunner.And("the debug inputs as", ((string)(null)), table1061, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1089, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1062 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1090 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1062.AddRow(new string[] {
+            table1090.AddRow(new string[] {
                         "[[result]] = 4"});
 #line 129
- testRunner.And("the debug output as", ((string)(null)), table1062, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1090, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -651,23 +651,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 133
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1063 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1091 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1063.AddRow(new string[] {
+            table1091.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1063.AddRow(new string[] {
+            table1091.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1063.AddRow(new string[] {
+            table1091.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1063.AddRow(new string[] {
+            table1091.AddRow(new string[] {
                         "rs().field",
                         "101011110010"});
 #line 134
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1063, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1091, "Given ");
 #line 140
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 141
@@ -679,7 +679,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 144
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1064 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1092 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -689,7 +689,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1064.AddRow(new string[] {
+            table1092.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -699,7 +699,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1064.AddRow(new string[] {
+            table1092.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -709,7 +709,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1064.AddRow(new string[] {
+            table1092.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -719,7 +719,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1064.AddRow(new string[] {
+            table1092.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 101011110010",
                         "1",
@@ -730,14 +730,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 145
- testRunner.And("the debug inputs as", ((string)(null)), table1064, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1092, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1065 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1093 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1065.AddRow(new string[] {
+            table1093.AddRow(new string[] {
                         "[[result]] = 4"});
 #line 151
- testRunner.And("the debug output as", ((string)(null)), table1065, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1093, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -752,23 +752,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 155
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1066 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1094 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1066.AddRow(new string[] {
+            table1094.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1066.AddRow(new string[] {
+            table1094.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1066.AddRow(new string[] {
+            table1094.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1066.AddRow(new string[] {
+            table1094.AddRow(new string[] {
                         "rs().field",
                         "77617265776f6c66"});
 #line 156
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1066, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1094, "Given ");
 #line 162
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 163
@@ -780,7 +780,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 166
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1067 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1095 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -790,7 +790,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1067.AddRow(new string[] {
+            table1095.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -800,7 +800,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1067.AddRow(new string[] {
+            table1095.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -810,7 +810,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1067.AddRow(new string[] {
+            table1095.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -820,7 +820,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1067.AddRow(new string[] {
+            table1095.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 77617265776f6c66",
                         "1",
@@ -831,14 +831,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 167
- testRunner.And("the debug inputs as", ((string)(null)), table1067, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1095, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1068 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1096 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1068.AddRow(new string[] {
+            table1096.AddRow(new string[] {
                         "[[result]] = 4"});
 #line 173
- testRunner.And("the debug output as", ((string)(null)), table1068, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1096, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -853,23 +853,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 177
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1069 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1097 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1069.AddRow(new string[] {
+            table1097.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
-            table1069.AddRow(new string[] {
+            table1097.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
-            table1069.AddRow(new string[] {
+            table1097.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
-            table1069.AddRow(new string[] {
+            table1097.AddRow(new string[] {
                         "rs().field",
                         "You"});
 #line 178
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1069, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1097, "Given ");
 #line 184
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 185
@@ -881,7 +881,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 188
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1070 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1098 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -891,7 +891,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1070.AddRow(new string[] {
+            table1098.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = d2FyZXdvbGY=",
                         "",
@@ -901,7 +901,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1070.AddRow(new string[] {
+            table1098.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = d2FyZXdvbGY=",
                         "",
@@ -911,7 +911,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1070.AddRow(new string[] {
+            table1098.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = d2FyZXdvbGY=",
                         "",
@@ -921,7 +921,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1070.AddRow(new string[] {
+            table1098.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = You",
                         "1",
@@ -932,14 +932,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 189
- testRunner.And("the debug inputs as", ((string)(null)), table1070, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1098, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1071 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1099 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1071.AddRow(new string[] {
+            table1099.AddRow(new string[] {
                         "[[result]] = 4"});
 #line 195
- testRunner.And("the debug output as", ((string)(null)), table1071, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1099, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -954,23 +954,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 199
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1072 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1100 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1072.AddRow(new string[] {
+            table1100.AddRow(new string[] {
                         "rs().field",
                         "2/3/2013"});
-            table1072.AddRow(new string[] {
+            table1100.AddRow(new string[] {
                         "rs().field",
                         "7/3/2013"});
-            table1072.AddRow(new string[] {
+            table1100.AddRow(new string[] {
                         "rs().field",
                         "2/3/2013"});
-            table1072.AddRow(new string[] {
+            table1100.AddRow(new string[] {
                         "rs().field",
                         "2/3/2013"});
 #line 200
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1072, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1100, "Given ");
 #line 206
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 207
@@ -983,7 +983,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 210
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1073 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1101 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -993,7 +993,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1073.AddRow(new string[] {
+            table1101.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 2/3/2013",
                         "",
@@ -1003,7 +1003,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1073.AddRow(new string[] {
+            table1101.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 7/3/2013",
                         "",
@@ -1013,7 +1013,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1073.AddRow(new string[] {
+            table1101.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 2/3/2013",
                         "",
@@ -1023,7 +1023,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1073.AddRow(new string[] {
+            table1101.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 2/3/2013",
                         "1",
@@ -1034,14 +1034,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 211
- testRunner.And("the debug inputs as", ((string)(null)), table1073, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1101, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1074 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1102 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1074.AddRow(new string[] {
+            table1102.AddRow(new string[] {
                         "[[result]] = 2"});
 #line 217
- testRunner.And("the debug output as", ((string)(null)), table1074, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1102, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1056,23 +1056,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 221
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1075 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1103 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1075.AddRow(new string[] {
+            table1103.AddRow(new string[] {
                         "rs().field",
                         "17"});
-            table1075.AddRow(new string[] {
+            table1103.AddRow(new string[] {
                         "rs().field",
                         "22"});
-            table1075.AddRow(new string[] {
+            table1103.AddRow(new string[] {
                         "rs().field",
                         "400"});
-            table1075.AddRow(new string[] {
+            table1103.AddRow(new string[] {
                         "rs().field",
                         "31"});
 #line 222
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1075, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1103, "Given ");
 #line 228
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 229
@@ -1085,7 +1085,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 232
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1076 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1104 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -1095,7 +1095,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1076.AddRow(new string[] {
+            table1104.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 17",
                         "",
@@ -1105,7 +1105,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1076.AddRow(new string[] {
+            table1104.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 22",
                         "",
@@ -1115,7 +1115,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1076.AddRow(new string[] {
+            table1104.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 400",
                         "",
@@ -1125,7 +1125,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1076.AddRow(new string[] {
+            table1104.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 31",
                         "1",
@@ -1136,14 +1136,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 233
- testRunner.And("the debug inputs as", ((string)(null)), table1076, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1104, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1077 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1105 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1077.AddRow(new string[] {
+            table1105.AddRow(new string[] {
                         "[[result]] = 3"});
 #line 239
- testRunner.And("the debug output as", ((string)(null)), table1077, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1105, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1158,23 +1158,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 243
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1078 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1106 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1078.AddRow(new string[] {
+            table1106.AddRow(new string[] {
                         "rs().field",
                         "101011110010"});
-            table1078.AddRow(new string[] {
+            table1106.AddRow(new string[] {
                         "rs().field",
                         "101011110010"});
-            table1078.AddRow(new string[] {
+            table1106.AddRow(new string[] {
                         "rs().field",
                         "101011110010"});
-            table1078.AddRow(new string[] {
+            table1106.AddRow(new string[] {
                         "rs().field",
                         "warewolf"});
 #line 244
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1078, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1106, "Given ");
 #line 250
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 251
@@ -1186,7 +1186,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 254
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1079 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1107 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -1196,7 +1196,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1079.AddRow(new string[] {
+            table1107.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 101011110010",
                         "",
@@ -1206,7 +1206,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1079.AddRow(new string[] {
+            table1107.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 101011110010",
                         "",
@@ -1216,7 +1216,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1079.AddRow(new string[] {
+            table1107.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 101011110010",
                         "",
@@ -1226,7 +1226,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1079.AddRow(new string[] {
+            table1107.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = warewolf",
                         "1",
@@ -1237,14 +1237,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 255
- testRunner.And("the debug inputs as", ((string)(null)), table1079, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1107, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1080 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1108 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1080.AddRow(new string[] {
+            table1108.AddRow(new string[] {
                         "[[result]] = 4"});
 #line 261
- testRunner.And("the debug output as", ((string)(null)), table1080, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1108, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1259,23 +1259,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 265
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1081 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1109 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1081.AddRow(new string[] {
+            table1109.AddRow(new string[] {
                         "rs().field",
                         "77617265776f6c66"});
-            table1081.AddRow(new string[] {
+            table1109.AddRow(new string[] {
                         "rs().field",
                         "77617265776f6c66"});
-            table1081.AddRow(new string[] {
+            table1109.AddRow(new string[] {
                         "rs().field",
                         "77617265776f6c66"});
-            table1081.AddRow(new string[] {
+            table1109.AddRow(new string[] {
                         "rs().field",
                         "warewolf"});
 #line 266
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1081, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1109, "Given ");
 #line 272
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 273
@@ -1287,7 +1287,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 276
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1082 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1110 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -1297,7 +1297,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1082.AddRow(new string[] {
+            table1110.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 77617265776f6c66",
                         "",
@@ -1307,7 +1307,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1082.AddRow(new string[] {
+            table1110.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 77617265776f6c66",
                         "",
@@ -1317,7 +1317,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1082.AddRow(new string[] {
+            table1110.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 77617265776f6c66",
                         "",
@@ -1327,7 +1327,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1082.AddRow(new string[] {
+            table1110.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = warewolf",
                         "1",
@@ -1338,14 +1338,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 277
- testRunner.And("the debug inputs as", ((string)(null)), table1082, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1110, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1083 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1111 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1083.AddRow(new string[] {
+            table1111.AddRow(new string[] {
                         "[[result]] = 4"});
 #line 283
- testRunner.And("the debug output as", ((string)(null)), table1083, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1111, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1360,23 +1360,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 287
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1084 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1112 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1084.AddRow(new string[] {
+            table1112.AddRow(new string[] {
                         "rs().field",
                         "999.999.999.999"});
-            table1084.AddRow(new string[] {
+            table1112.AddRow(new string[] {
                         "rs().field",
                         "999.999.999.999"});
-            table1084.AddRow(new string[] {
+            table1112.AddRow(new string[] {
                         "rs().field",
                         "999.999.999.999"});
-            table1084.AddRow(new string[] {
+            table1112.AddRow(new string[] {
                         "rs().field",
                         "warewolf"});
 #line 288
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1084, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1112, "Given ");
 #line 294
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 295
@@ -1389,7 +1389,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 298
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1085 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1113 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -1399,7 +1399,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1085.AddRow(new string[] {
+            table1113.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 999.999.999.999",
                         "",
@@ -1409,7 +1409,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1085.AddRow(new string[] {
+            table1113.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 999.999.999.999",
                         "",
@@ -1419,7 +1419,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1085.AddRow(new string[] {
+            table1113.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 999.999.999.999",
                         "",
@@ -1429,7 +1429,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1085.AddRow(new string[] {
+            table1113.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = warewolf",
                         "1",
@@ -1440,14 +1440,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 299
- testRunner.And("the debug inputs as", ((string)(null)), table1085, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1113, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1086 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1114 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1086.AddRow(new string[] {
+            table1114.AddRow(new string[] {
                         "[[result]] = 4"});
 #line 305
- testRunner.And("the debug output as", ((string)(null)), table1086, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1114, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1462,20 +1462,20 @@ this.ScenarioSetup(scenarioInfo);
 #line 309
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1087 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1115 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1087.AddRow(new string[] {
+            table1115.AddRow(new string[] {
                         "rs().field",
                         "what"});
-            table1087.AddRow(new string[] {
+            table1115.AddRow(new string[] {
                         "rs().field",
                         "why"});
-            table1087.AddRow(new string[] {
+            table1115.AddRow(new string[] {
                         "rs().field",
                         "yay"});
 #line 310
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1087, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1115, "Given ");
 #line 315
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 316
@@ -1487,7 +1487,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 319
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1088 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1116 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -1497,7 +1497,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1088.AddRow(new string[] {
+            table1116.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = what",
                         "",
@@ -1507,7 +1507,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1088.AddRow(new string[] {
+            table1116.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = why",
                         "",
@@ -1517,7 +1517,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1088.AddRow(new string[] {
+            table1116.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = yay",
                         "1",
@@ -1528,14 +1528,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 320
- testRunner.And("the debug inputs as", ((string)(null)), table1088, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1116, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1089 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1117 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1089.AddRow(new string[] {
+            table1117.AddRow(new string[] {
                         "[[result]] = 3"});
 #line 325
- testRunner.And("the debug output as", ((string)(null)), table1089, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1117, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1550,23 +1550,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 329
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1090 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1118 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1090.AddRow(new string[] {
+            table1118.AddRow(new string[] {
                         "rs().field",
                         "arev"});
-            table1090.AddRow(new string[] {
+            table1118.AddRow(new string[] {
                         "rs().field",
                         "v"});
-            table1090.AddRow(new string[] {
+            table1118.AddRow(new string[] {
                         "rs().field",
                         "modev"});
-            table1090.AddRow(new string[] {
+            table1118.AddRow(new string[] {
                         "rs().field",
                         "yay"});
 #line 330
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1090, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1118, "Given ");
 #line 336
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 337
@@ -1578,7 +1578,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 340
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1091 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1119 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -1588,7 +1588,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1091.AddRow(new string[] {
+            table1119.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = arev",
                         "",
@@ -1598,7 +1598,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1091.AddRow(new string[] {
+            table1119.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = v",
                         "",
@@ -1608,7 +1608,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1091.AddRow(new string[] {
+            table1119.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = modev",
                         "",
@@ -1618,7 +1618,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1091.AddRow(new string[] {
+            table1119.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = yay",
                         "1",
@@ -1629,14 +1629,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 341
- testRunner.And("the debug inputs as", ((string)(null)), table1091, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1119, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1092 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1120 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1092.AddRow(new string[] {
+            table1120.AddRow(new string[] {
                         "[[result]] = 4"});
 #line 347
- testRunner.And("the debug output as", ((string)(null)), table1092, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1120, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1651,29 +1651,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 351
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1093 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1121 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1093.AddRow(new string[] {
+            table1121.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1093.AddRow(new string[] {
+            table1121.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1093.AddRow(new string[] {
+            table1121.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1093.AddRow(new string[] {
+            table1121.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1093.AddRow(new string[] {
+            table1121.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1093.AddRow(new string[] {
+            table1121.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 352
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1093, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1121, "Given ");
 #line 360
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 361
@@ -1685,7 +1685,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 364
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1094 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1122 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -1695,7 +1695,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1094.AddRow(new string[] {
+            table1122.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -1705,7 +1705,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1094.AddRow(new string[] {
+            table1122.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -1715,7 +1715,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1094.AddRow(new string[] {
+            table1122.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -1725,7 +1725,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1094.AddRow(new string[] {
+            table1122.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -1735,7 +1735,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1094.AddRow(new string[] {
+            table1122.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -1745,7 +1745,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1094.AddRow(new string[] {
+            table1122.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -1756,14 +1756,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 365
- testRunner.And("the debug inputs as", ((string)(null)), table1094, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1122, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1095 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1123 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1095.AddRow(new string[] {
+            table1123.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 373
- testRunner.And("the debug output as", ((string)(null)), table1095, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1123, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1778,32 +1778,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 377
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1096 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1124 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1096.AddRow(new string[] {
+            table1124.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1096.AddRow(new string[] {
+            table1124.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1096.AddRow(new string[] {
+            table1124.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1096.AddRow(new string[] {
+            table1124.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1096.AddRow(new string[] {
+            table1124.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1096.AddRow(new string[] {
+            table1124.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1096.AddRow(new string[] {
+            table1124.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 378
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1096, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1124, "Given ");
 #line 387
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 388
@@ -1815,7 +1815,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 391
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1097 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1125 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -1825,7 +1825,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1097.AddRow(new string[] {
+            table1125.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -1835,7 +1835,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1097.AddRow(new string[] {
+            table1125.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -1845,7 +1845,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1097.AddRow(new string[] {
+            table1125.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -1855,7 +1855,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1097.AddRow(new string[] {
+            table1125.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -1865,7 +1865,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1097.AddRow(new string[] {
+            table1125.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -1875,7 +1875,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1097.AddRow(new string[] {
+            table1125.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -1885,7 +1885,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1097.AddRow(new string[] {
+            table1125.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -1896,14 +1896,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 392
- testRunner.And("the debug inputs as", ((string)(null)), table1097, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1125, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1098 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1126 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1098.AddRow(new string[] {
+            table1126.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 401
- testRunner.And("the debug output as", ((string)(null)), table1098, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1126, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1918,29 +1918,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 405
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1099 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1127 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1099.AddRow(new string[] {
+            table1127.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1099.AddRow(new string[] {
+            table1127.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1099.AddRow(new string[] {
+            table1127.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1099.AddRow(new string[] {
+            table1127.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1099.AddRow(new string[] {
+            table1127.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1099.AddRow(new string[] {
+            table1127.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 406
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1099, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1127, "Given ");
 #line 414
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 415
@@ -1952,7 +1952,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 418
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1100 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1128 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -1962,7 +1962,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1100.AddRow(new string[] {
+            table1128.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -1972,7 +1972,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1100.AddRow(new string[] {
+            table1128.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -1982,7 +1982,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1100.AddRow(new string[] {
+            table1128.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -1992,7 +1992,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1100.AddRow(new string[] {
+            table1128.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -2002,7 +2002,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1100.AddRow(new string[] {
+            table1128.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -2012,7 +2012,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1100.AddRow(new string[] {
+            table1128.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -2023,14 +2023,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 419
- testRunner.And("the debug inputs as", ((string)(null)), table1100, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1128, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1101 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1129 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1101.AddRow(new string[] {
+            table1129.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 427
- testRunner.And("the debug output as", ((string)(null)), table1101, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1129, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2045,29 +2045,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 431
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1102 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1130 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1102.AddRow(new string[] {
+            table1130.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table1102.AddRow(new string[] {
+            table1130.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1102.AddRow(new string[] {
+            table1130.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1102.AddRow(new string[] {
+            table1130.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1102.AddRow(new string[] {
+            table1130.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1102.AddRow(new string[] {
+            table1130.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 432
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1102, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1130, "Given ");
 #line 440
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 441
@@ -2079,7 +2079,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 444
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1103 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1131 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2089,7 +2089,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1103.AddRow(new string[] {
+            table1131.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
@@ -2099,7 +2099,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1103.AddRow(new string[] {
+            table1131.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -2109,7 +2109,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1103.AddRow(new string[] {
+            table1131.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -2119,7 +2119,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1103.AddRow(new string[] {
+            table1131.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 2",
                         "",
@@ -2129,7 +2129,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1103.AddRow(new string[] {
+            table1131.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -2139,7 +2139,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1103.AddRow(new string[] {
+            table1131.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -2150,14 +2150,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 445
- testRunner.And("the debug inputs as", ((string)(null)), table1103, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1131, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1104 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1132 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1104.AddRow(new string[] {
+            table1132.AddRow(new string[] {
                         "[[result]] = 1,2,3,5,6"});
 #line 453
- testRunner.And("the debug output as", ((string)(null)), table1104, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1132, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2174,32 +2174,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 457
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1105 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1133 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1105.AddRow(new string[] {
+            table1133.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table1105.AddRow(new string[] {
+            table1133.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1105.AddRow(new string[] {
+            table1133.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1105.AddRow(new string[] {
+            table1133.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1105.AddRow(new string[] {
+            table1133.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1105.AddRow(new string[] {
+            table1133.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1105.AddRow(new string[] {
+            table1133.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 458
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1105, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1133, "Given ");
 #line 467
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 468
@@ -2211,7 +2211,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 471
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1106 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1134 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2221,7 +2221,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1106.AddRow(new string[] {
+            table1134.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
@@ -2231,7 +2231,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1106.AddRow(new string[] {
+            table1134.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -2241,7 +2241,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1106.AddRow(new string[] {
+            table1134.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -2251,7 +2251,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1106.AddRow(new string[] {
+            table1134.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -2261,7 +2261,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1106.AddRow(new string[] {
+            table1134.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -2271,7 +2271,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1106.AddRow(new string[] {
+            table1134.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 2",
                         "",
@@ -2281,7 +2281,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1106.AddRow(new string[] {
+            table1134.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -2292,14 +2292,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 472
- testRunner.And("the debug inputs as", ((string)(null)), table1106, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1134, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1107 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1135 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1107.AddRow(new string[] {
+            table1135.AddRow(new string[] {
                         "[[result]] = 1,2,3,4,5,7"});
 #line 481
- testRunner.And("the debug output as", ((string)(null)), table1107, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1135, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2316,29 +2316,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 485
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1108 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1136 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1108.AddRow(new string[] {
+            table1136.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table1108.AddRow(new string[] {
+            table1136.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1108.AddRow(new string[] {
+            table1136.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1108.AddRow(new string[] {
+            table1136.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1108.AddRow(new string[] {
+            table1136.AddRow(new string[] {
                         "rs().field",
                         "8"});
-            table1108.AddRow(new string[] {
+            table1136.AddRow(new string[] {
                         "rs().field",
                         "2"});
 #line 486
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1108, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1136, "Given ");
 #line 494
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 495
@@ -2350,7 +2350,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 498
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1109 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1137 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2360,7 +2360,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1109.AddRow(new string[] {
+            table1137.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
@@ -2370,7 +2370,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1109.AddRow(new string[] {
+            table1137.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 2",
                         "",
@@ -2380,7 +2380,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1109.AddRow(new string[] {
+            table1137.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 2",
                         "",
@@ -2390,7 +2390,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1109.AddRow(new string[] {
+            table1137.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 2",
                         "",
@@ -2400,7 +2400,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1109.AddRow(new string[] {
+            table1137.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 8",
                         "",
@@ -2410,7 +2410,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1109.AddRow(new string[] {
+            table1137.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 2",
                         "1",
@@ -2421,14 +2421,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 499
- testRunner.And("the debug inputs as", ((string)(null)), table1109, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1137, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1110 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1138 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1110.AddRow(new string[] {
+            table1138.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 507
- testRunner.And("the debug output as", ((string)(null)), table1110, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1138, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2443,29 +2443,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 511
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1111 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1139 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1111.AddRow(new string[] {
+            table1139.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table1111.AddRow(new string[] {
+            table1139.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1111.AddRow(new string[] {
+            table1139.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1111.AddRow(new string[] {
+            table1139.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1111.AddRow(new string[] {
+            table1139.AddRow(new string[] {
                         "rs().field",
                         "8"});
-            table1111.AddRow(new string[] {
+            table1139.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 512
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1111, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1139, "Given ");
 #line 520
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 521
@@ -2477,7 +2477,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 524
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1112 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1140 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2487,7 +2487,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1112.AddRow(new string[] {
+            table1140.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
@@ -2497,7 +2497,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1112.AddRow(new string[] {
+            table1140.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -2507,7 +2507,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1112.AddRow(new string[] {
+            table1140.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -2517,7 +2517,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1112.AddRow(new string[] {
+            table1140.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -2527,7 +2527,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1112.AddRow(new string[] {
+            table1140.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 8",
                         "",
@@ -2537,7 +2537,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1112.AddRow(new string[] {
+            table1140.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -2548,14 +2548,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 525
- testRunner.And("the debug inputs as", ((string)(null)), table1112, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1140, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1113 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1141 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1113.AddRow(new string[] {
+            table1141.AddRow(new string[] {
                         "[[result]] = 1"});
 #line 533
- testRunner.And("the debug output as", ((string)(null)), table1113, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1141, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2570,32 +2570,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 537
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1114 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1142 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1114.AddRow(new string[] {
+            table1142.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table1114.AddRow(new string[] {
+            table1142.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1114.AddRow(new string[] {
+            table1142.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1114.AddRow(new string[] {
+            table1142.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1114.AddRow(new string[] {
+            table1142.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1114.AddRow(new string[] {
+            table1142.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1114.AddRow(new string[] {
+            table1142.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 538
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1114, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1142, "Given ");
 #line 547
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 548
@@ -2607,7 +2607,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 551
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1115 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1143 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2617,7 +2617,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1115.AddRow(new string[] {
+            table1143.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 4",
                         "",
@@ -2627,7 +2627,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1115.AddRow(new string[] {
+            table1143.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -2637,7 +2637,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1115.AddRow(new string[] {
+            table1143.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -2647,7 +2647,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1115.AddRow(new string[] {
+            table1143.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -2657,7 +2657,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1115.AddRow(new string[] {
+            table1143.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -2667,7 +2667,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1115.AddRow(new string[] {
+            table1143.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 2",
                         "",
@@ -2677,7 +2677,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1115.AddRow(new string[] {
+            table1143.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -2688,14 +2688,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 552
- testRunner.And("the debug inputs as", ((string)(null)), table1115, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1143, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1116 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1144 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1116.AddRow(new string[] {
+            table1144.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 561
- testRunner.And("the debug output as", ((string)(null)), table1116, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1144, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2712,29 +2712,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 565
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1117 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1145 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1117.AddRow(new string[] {
+            table1145.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1117.AddRow(new string[] {
+            table1145.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1117.AddRow(new string[] {
+            table1145.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1117.AddRow(new string[] {
+            table1145.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1117.AddRow(new string[] {
+            table1145.AddRow(new string[] {
                         "rs().field",
                         "5"});
-            table1117.AddRow(new string[] {
+            table1145.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 566
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1117, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1145, "Given ");
 #line 574
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 575
@@ -2746,7 +2746,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 578
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1118 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1146 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2756,7 +2756,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1118.AddRow(new string[] {
+            table1146.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 2",
                         "",
@@ -2766,7 +2766,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1118.AddRow(new string[] {
+            table1146.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -2776,7 +2776,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1118.AddRow(new string[] {
+            table1146.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -2786,7 +2786,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1118.AddRow(new string[] {
+            table1146.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -2796,7 +2796,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1118.AddRow(new string[] {
+            table1146.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 5",
                         "",
@@ -2806,7 +2806,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1118.AddRow(new string[] {
+            table1146.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -2817,14 +2817,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 579
- testRunner.And("the debug inputs as", ((string)(null)), table1118, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1146, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1119 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1147 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1119.AddRow(new string[] {
+            table1147.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 587
- testRunner.And("the debug output as", ((string)(null)), table1119, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1147, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2839,29 +2839,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 591
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1120 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1148 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1120.AddRow(new string[] {
+            table1148.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1120.AddRow(new string[] {
+            table1148.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1120.AddRow(new string[] {
+            table1148.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1120.AddRow(new string[] {
+            table1148.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1120.AddRow(new string[] {
+            table1148.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1120.AddRow(new string[] {
+            table1148.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
 #line 592
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1120, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1148, "Given ");
 #line 600
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 601
@@ -2873,7 +2873,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 604
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1121 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1149 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -2883,7 +2883,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1121.AddRow(new string[] {
+            table1149.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -2893,7 +2893,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1121.AddRow(new string[] {
+            table1149.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = Warewolf",
                         "",
@@ -2903,7 +2903,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1121.AddRow(new string[] {
+            table1149.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = Warewolf",
                         "",
@@ -2913,7 +2913,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1121.AddRow(new string[] {
+            table1149.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = Warewolf",
                         "",
@@ -2923,7 +2923,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1121.AddRow(new string[] {
+            table1149.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -2933,7 +2933,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1121.AddRow(new string[] {
+            table1149.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "1",
@@ -2944,14 +2944,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 605
- testRunner.And("the debug inputs as", ((string)(null)), table1121, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1149, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1122 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1150 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1122.AddRow(new string[] {
+            table1150.AddRow(new string[] {
                         "[[result]] =  1"});
 #line 613
- testRunner.And("the debug output as", ((string)(null)), table1122, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1150, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -2968,29 +2968,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 617
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1123 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1151 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1123.AddRow(new string[] {
+            table1151.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1123.AddRow(new string[] {
+            table1151.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1123.AddRow(new string[] {
+            table1151.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1123.AddRow(new string[] {
+            table1151.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1123.AddRow(new string[] {
+            table1151.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1123.AddRow(new string[] {
+            table1151.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 618
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1123, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1151, "Given ");
 #line 626
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 627
@@ -3002,7 +3002,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 630
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1124 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1152 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3012,7 +3012,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1124.AddRow(new string[] {
+            table1152.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -3022,7 +3022,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1124.AddRow(new string[] {
+            table1152.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -3032,7 +3032,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1124.AddRow(new string[] {
+            table1152.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -3042,7 +3042,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1124.AddRow(new string[] {
+            table1152.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -3052,7 +3052,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1124.AddRow(new string[] {
+            table1152.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -3062,7 +3062,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1124.AddRow(new string[] {
+            table1152.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -3073,14 +3073,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 631
- testRunner.And("the debug inputs as", ((string)(null)), table1124, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1152, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1125 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1153 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1125.AddRow(new string[] {
+            table1153.AddRow(new string[] {
                         "[[result]] = 1,2,3,4,6"});
 #line 639
- testRunner.And("the debug output as", ((string)(null)), table1125, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1153, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3097,29 +3097,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 643
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1126 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1154 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1126.AddRow(new string[] {
+            table1154.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1126.AddRow(new string[] {
+            table1154.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1126.AddRow(new string[] {
+            table1154.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1126.AddRow(new string[] {
+            table1154.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1126.AddRow(new string[] {
+            table1154.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1126.AddRow(new string[] {
+            table1154.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
 #line 644
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1126, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1154, "Given ");
 #line 652
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 653
@@ -3131,7 +3131,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 656
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1127 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1155 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3141,7 +3141,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1127.AddRow(new string[] {
+            table1155.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Mars",
                         "",
@@ -3151,7 +3151,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1127.AddRow(new string[] {
+            table1155.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = Mars",
                         "",
@@ -3161,7 +3161,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1127.AddRow(new string[] {
+            table1155.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = Mars",
                         "",
@@ -3171,7 +3171,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1127.AddRow(new string[] {
+            table1155.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = Mars",
                         "",
@@ -3181,7 +3181,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1127.AddRow(new string[] {
+            table1155.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Mars",
                         "",
@@ -3191,7 +3191,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1127.AddRow(new string[] {
+            table1155.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Mars",
                         "1",
@@ -3202,14 +3202,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 657
- testRunner.And("the debug inputs as", ((string)(null)), table1127, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1155, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1128 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1156 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1128.AddRow(new string[] {
+            table1156.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 665
- testRunner.And("the debug output as", ((string)(null)), table1128, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1156, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3224,29 +3224,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 669
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1129 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1157 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1129.AddRow(new string[] {
+            table1157.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1129.AddRow(new string[] {
+            table1157.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1129.AddRow(new string[] {
+            table1157.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1129.AddRow(new string[] {
+            table1157.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1129.AddRow(new string[] {
+            table1157.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table1129.AddRow(new string[] {
+            table1157.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 670
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1129, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1157, "Given ");
 #line 678
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 679
@@ -3258,7 +3258,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 682
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1130 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1158 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3268,7 +3268,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1130.AddRow(new string[] {
+            table1158.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 2",
                         "",
@@ -3278,7 +3278,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1130.AddRow(new string[] {
+            table1158.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -3288,7 +3288,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1130.AddRow(new string[] {
+            table1158.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -3298,7 +3298,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1130.AddRow(new string[] {
+            table1158.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -3308,7 +3308,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1130.AddRow(new string[] {
+            table1158.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 4",
                         "",
@@ -3318,7 +3318,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1130.AddRow(new string[] {
+            table1158.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -3329,14 +3329,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 683
- testRunner.And("the debug inputs as", ((string)(null)), table1130, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1158, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1131 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1159 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1131.AddRow(new string[] {
+            table1159.AddRow(new string[] {
                         "[[result]] = 2,3,4,5,6"});
 #line 691
- testRunner.And("the debug output as", ((string)(null)), table1131, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1159, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3353,29 +3353,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 695
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1132 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1160 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1132.AddRow(new string[] {
+            table1160.AddRow(new string[] {
                         "rs().field",
                         "50"});
-            table1132.AddRow(new string[] {
+            table1160.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1132.AddRow(new string[] {
+            table1160.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1132.AddRow(new string[] {
+            table1160.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1132.AddRow(new string[] {
+            table1160.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1132.AddRow(new string[] {
+            table1160.AddRow(new string[] {
                         "rs().field",
                         "4"});
 #line 696
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1132, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1160, "Given ");
 #line 704
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 705
@@ -3387,7 +3387,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 708
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1133 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1161 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3397,7 +3397,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1133.AddRow(new string[] {
+            table1161.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 50",
                         "",
@@ -3407,7 +3407,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1133.AddRow(new string[] {
+            table1161.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -3417,7 +3417,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1133.AddRow(new string[] {
+            table1161.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -3427,7 +3427,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1133.AddRow(new string[] {
+            table1161.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -3437,7 +3437,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1133.AddRow(new string[] {
+            table1161.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -3447,7 +3447,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1133.AddRow(new string[] {
+            table1161.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 4",
                         "1",
@@ -3458,14 +3458,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 709
- testRunner.And("the debug inputs as", ((string)(null)), table1133, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1161, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1134 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1162 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1134.AddRow(new string[] {
+            table1162.AddRow(new string[] {
                         "[[result]] = 1,2,3,4,5,6"});
 #line 717
- testRunner.And("the debug output as", ((string)(null)), table1134, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1162, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3482,29 +3482,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 721
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1135 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1163 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1135.AddRow(new string[] {
+            table1163.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1135.AddRow(new string[] {
+            table1163.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1135.AddRow(new string[] {
+            table1163.AddRow(new string[] {
                         "rs().field",
                         "3"});
-            table1135.AddRow(new string[] {
+            table1163.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1135.AddRow(new string[] {
+            table1163.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1135.AddRow(new string[] {
+            table1163.AddRow(new string[] {
                         "rs().field",
                         "3"});
 #line 722
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1135, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1163, "Given ");
 #line 730
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 731
@@ -3516,7 +3516,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 734
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1136 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1164 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3526,7 +3526,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1136.AddRow(new string[] {
+            table1164.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 1",
                         "",
@@ -3536,7 +3536,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1136.AddRow(new string[] {
+            table1164.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 2",
                         "",
@@ -3546,7 +3546,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1136.AddRow(new string[] {
+            table1164.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 3",
                         "",
@@ -3556,7 +3556,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1136.AddRow(new string[] {
+            table1164.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 1",
                         "",
@@ -3566,7 +3566,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1136.AddRow(new string[] {
+            table1164.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 2",
                         "",
@@ -3576,7 +3576,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1136.AddRow(new string[] {
+            table1164.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 3",
                         "1",
@@ -3587,14 +3587,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 735
- testRunner.And("the debug inputs as", ((string)(null)), table1136, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1164, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1137 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1165 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1137.AddRow(new string[] {
+            table1165.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 743
- testRunner.And("the debug output as", ((string)(null)), table1137, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1165, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3609,29 +3609,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 747
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1138 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1166 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1138.AddRow(new string[] {
+            table1166.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1138.AddRow(new string[] {
+            table1166.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1138.AddRow(new string[] {
+            table1166.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1138.AddRow(new string[] {
+            table1166.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1138.AddRow(new string[] {
+            table1166.AddRow(new string[] {
                         "rs().field",
                         "aaa"});
-            table1138.AddRow(new string[] {
+            table1166.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 748
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1138, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1166, "Given ");
 #line 756
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 757
@@ -3643,7 +3643,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 760
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1139 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1167 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3653,7 +3653,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1139.AddRow(new string[] {
+            table1167.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -3663,7 +3663,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1139.AddRow(new string[] {
+            table1167.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -3673,7 +3673,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1139.AddRow(new string[] {
+            table1167.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -3683,7 +3683,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1139.AddRow(new string[] {
+            table1167.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -3693,7 +3693,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1139.AddRow(new string[] {
+            table1167.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = aaa",
                         "",
@@ -3703,7 +3703,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1139.AddRow(new string[] {
+            table1167.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -3714,14 +3714,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 761
- testRunner.And("the debug inputs as", ((string)(null)), table1139, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1167, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1140 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1168 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1140.AddRow(new string[] {
+            table1168.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 769
- testRunner.And("the debug output as", ((string)(null)), table1140, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1168, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3738,29 +3738,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 773
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1141 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1169 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1141.AddRow(new string[] {
+            table1169.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1141.AddRow(new string[] {
+            table1169.AddRow(new string[] {
                         "rs().field",
                         "7"});
-            table1141.AddRow(new string[] {
+            table1169.AddRow(new string[] {
                         "rs().field",
                         "8"});
-            table1141.AddRow(new string[] {
+            table1169.AddRow(new string[] {
                         "rs().field",
                         "9"});
-            table1141.AddRow(new string[] {
+            table1169.AddRow(new string[] {
                         "rs().field",
                         "10"});
-            table1141.AddRow(new string[] {
+            table1169.AddRow(new string[] {
                         "rs().field",
                         "5"});
 #line 774
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1141, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1169, "Given ");
 #line 782
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 783
@@ -3772,7 +3772,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 786
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1142 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1170 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3782,7 +3782,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1142.AddRow(new string[] {
+            table1170.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 1",
                         "",
@@ -3792,7 +3792,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1142.AddRow(new string[] {
+            table1170.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 7",
                         "",
@@ -3802,7 +3802,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1142.AddRow(new string[] {
+            table1170.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 8",
                         "",
@@ -3812,7 +3812,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1142.AddRow(new string[] {
+            table1170.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 9",
                         "",
@@ -3822,7 +3822,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1142.AddRow(new string[] {
+            table1170.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 10",
                         "",
@@ -3832,7 +3832,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1142.AddRow(new string[] {
+            table1170.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 5",
                         "1",
@@ -3843,14 +3843,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 787
- testRunner.And("the debug inputs as", ((string)(null)), table1142, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1170, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1143 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1171 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1143.AddRow(new string[] {
+            table1171.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 795
- testRunner.And("the debug output as", ((string)(null)), table1143, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1171, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3867,29 +3867,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 799
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1144 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1172 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1144.AddRow(new string[] {
+            table1172.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1144.AddRow(new string[] {
+            table1172.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1144.AddRow(new string[] {
+            table1172.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1144.AddRow(new string[] {
+            table1172.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1144.AddRow(new string[] {
+            table1172.AddRow(new string[] {
                         "rs().field",
                         "5"});
-            table1144.AddRow(new string[] {
+            table1172.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 800
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1144, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1172, "Given ");
 #line 808
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 809
@@ -3901,7 +3901,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 812
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1145 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1173 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -3911,7 +3911,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1145.AddRow(new string[] {
+            table1173.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 2",
                         "",
@@ -3921,7 +3921,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1145.AddRow(new string[] {
+            table1173.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -3931,7 +3931,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1145.AddRow(new string[] {
+            table1173.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -3941,7 +3941,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1145.AddRow(new string[] {
+            table1173.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -3951,7 +3951,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1145.AddRow(new string[] {
+            table1173.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 5",
                         "",
@@ -3961,7 +3961,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1145.AddRow(new string[] {
+            table1173.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -3972,14 +3972,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 813
- testRunner.And("the debug inputs as", ((string)(null)), table1145, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1173, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1146 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1174 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1146.AddRow(new string[] {
+            table1174.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 821
- testRunner.And("the debug output as", ((string)(null)), table1146, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1174, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -3994,29 +3994,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 825
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1147 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1175 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1147.AddRow(new string[] {
+            table1175.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1147.AddRow(new string[] {
+            table1175.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1147.AddRow(new string[] {
+            table1175.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1147.AddRow(new string[] {
+            table1175.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1147.AddRow(new string[] {
+            table1175.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1147.AddRow(new string[] {
+            table1175.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 826
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1147, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1175, "Given ");
 #line 834
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 835
@@ -4028,7 +4028,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 838
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1148 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1176 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -4038,7 +4038,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1148.AddRow(new string[] {
+            table1176.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -4048,7 +4048,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1148.AddRow(new string[] {
+            table1176.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -4058,7 +4058,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1148.AddRow(new string[] {
+            table1176.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -4068,7 +4068,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1148.AddRow(new string[] {
+            table1176.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -4078,7 +4078,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1148.AddRow(new string[] {
+            table1176.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -4088,7 +4088,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1148.AddRow(new string[] {
+            table1176.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -4099,14 +4099,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 839
- testRunner.And("the debug inputs as", ((string)(null)), table1148, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1176, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1149 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1177 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1149.AddRow(new string[] {
+            table1177.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 847
- testRunner.And("the debug output as", ((string)(null)), table1149, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1177, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4121,32 +4121,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 851
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1150 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1178 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1150.AddRow(new string[] {
+            table1178.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1150.AddRow(new string[] {
+            table1178.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1150.AddRow(new string[] {
+            table1178.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1150.AddRow(new string[] {
+            table1178.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1150.AddRow(new string[] {
+            table1178.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1150.AddRow(new string[] {
+            table1178.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1150.AddRow(new string[] {
+            table1178.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 852
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1150, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1178, "Given ");
 #line 861
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 862
@@ -4158,7 +4158,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 865
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1151 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1179 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -4168,7 +4168,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1151.AddRow(new string[] {
+            table1179.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -4178,7 +4178,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1151.AddRow(new string[] {
+            table1179.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -4188,7 +4188,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1151.AddRow(new string[] {
+            table1179.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -4198,7 +4198,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1151.AddRow(new string[] {
+            table1179.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -4208,7 +4208,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1151.AddRow(new string[] {
+            table1179.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -4218,7 +4218,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1151.AddRow(new string[] {
+            table1179.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -4228,7 +4228,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1151.AddRow(new string[] {
+            table1179.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -4239,14 +4239,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 866
- testRunner.And("the debug inputs as", ((string)(null)), table1151, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1179, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1152 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1180 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1152.AddRow(new string[] {
+            table1180.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 875
- testRunner.And("the debug output as", ((string)(null)), table1152, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1180, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4263,29 +4263,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 879
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1153 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1181 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1153.AddRow(new string[] {
+            table1181.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1153.AddRow(new string[] {
+            table1181.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1153.AddRow(new string[] {
+            table1181.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1153.AddRow(new string[] {
+            table1181.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1153.AddRow(new string[] {
+            table1181.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1153.AddRow(new string[] {
+            table1181.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 880
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1153, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1181, "Given ");
 #line 888
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 889
@@ -4297,7 +4297,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 892
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1154 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1182 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -4307,7 +4307,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1154.AddRow(new string[] {
+            table1182.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -4317,7 +4317,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1154.AddRow(new string[] {
+            table1182.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -4327,7 +4327,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1154.AddRow(new string[] {
+            table1182.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -4337,7 +4337,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1154.AddRow(new string[] {
+            table1182.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -4347,7 +4347,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1154.AddRow(new string[] {
+            table1182.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -4357,7 +4357,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1154.AddRow(new string[] {
+            table1182.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -4368,14 +4368,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 893
- testRunner.And("the debug inputs as", ((string)(null)), table1154, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1182, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1155 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1183 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1155.AddRow(new string[] {
+            table1183.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 901
- testRunner.And("the debug output as", ((string)(null)), table1155, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1183, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4390,29 +4390,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 905
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1156 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1184 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1156.AddRow(new string[] {
+            table1184.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1156.AddRow(new string[] {
+            table1184.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1156.AddRow(new string[] {
+            table1184.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1156.AddRow(new string[] {
+            table1184.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1156.AddRow(new string[] {
+            table1184.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1156.AddRow(new string[] {
+            table1184.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 906
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1156, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1184, "Given ");
 #line 914
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 915
@@ -4424,7 +4424,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 918
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1157 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1185 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -4434,7 +4434,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1157.AddRow(new string[] {
+            table1185.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -4444,7 +4444,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1157.AddRow(new string[] {
+            table1185.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -4454,7 +4454,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1157.AddRow(new string[] {
+            table1185.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -4464,7 +4464,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1157.AddRow(new string[] {
+            table1185.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -4474,7 +4474,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1157.AddRow(new string[] {
+            table1185.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -4484,7 +4484,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1157.AddRow(new string[] {
+            table1185.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -4495,14 +4495,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 919
- testRunner.And("the debug inputs as", ((string)(null)), table1157, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1185, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1158 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1186 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1158.AddRow(new string[] {
+            table1186.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 927
- testRunner.And("the debug output as", ((string)(null)), table1158, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1186, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4517,32 +4517,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 931
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1159 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1187 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1159.AddRow(new string[] {
+            table1187.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1159.AddRow(new string[] {
+            table1187.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1159.AddRow(new string[] {
+            table1187.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1159.AddRow(new string[] {
+            table1187.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1159.AddRow(new string[] {
+            table1187.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1159.AddRow(new string[] {
+            table1187.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1159.AddRow(new string[] {
+            table1187.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 932
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1159, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1187, "Given ");
 #line 941
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 942
@@ -4554,7 +4554,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 945
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1160 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1188 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -4564,7 +4564,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1160.AddRow(new string[] {
+            table1188.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -4574,7 +4574,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1160.AddRow(new string[] {
+            table1188.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -4584,7 +4584,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1160.AddRow(new string[] {
+            table1188.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -4594,7 +4594,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1160.AddRow(new string[] {
+            table1188.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -4604,7 +4604,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1160.AddRow(new string[] {
+            table1188.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -4614,7 +4614,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1160.AddRow(new string[] {
+            table1188.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -4624,7 +4624,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1160.AddRow(new string[] {
+            table1188.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -4635,14 +4635,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 946
- testRunner.And("the debug inputs as", ((string)(null)), table1160, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1188, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1161 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1189 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1161.AddRow(new string[] {
+            table1189.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 955
- testRunner.And("the debug output as", ((string)(null)), table1161, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1189, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4659,29 +4659,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 959
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1162 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1190 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1162.AddRow(new string[] {
+            table1190.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1162.AddRow(new string[] {
+            table1190.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1162.AddRow(new string[] {
+            table1190.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1162.AddRow(new string[] {
+            table1190.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1162.AddRow(new string[] {
+            table1190.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1162.AddRow(new string[] {
+            table1190.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 960
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1162, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1190, "Given ");
 #line 968
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 969
@@ -4693,7 +4693,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 972
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1163 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1191 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -4703,7 +4703,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1163.AddRow(new string[] {
+            table1191.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -4713,7 +4713,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1163.AddRow(new string[] {
+            table1191.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -4723,7 +4723,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1163.AddRow(new string[] {
+            table1191.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -4733,7 +4733,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1163.AddRow(new string[] {
+            table1191.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -4743,7 +4743,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1163.AddRow(new string[] {
+            table1191.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -4753,7 +4753,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1163.AddRow(new string[] {
+            table1191.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -4764,14 +4764,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 973
- testRunner.And("the debug inputs as", ((string)(null)), table1163, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1191, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1164 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1192 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1164.AddRow(new string[] {
+            table1192.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 981
- testRunner.And("the debug output as", ((string)(null)), table1164, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1192, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4786,29 +4786,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 985
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1165 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1193 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1165.AddRow(new string[] {
+            table1193.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1165.AddRow(new string[] {
+            table1193.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1165.AddRow(new string[] {
+            table1193.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1165.AddRow(new string[] {
+            table1193.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1165.AddRow(new string[] {
+            table1193.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1165.AddRow(new string[] {
+            table1193.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 986
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1165, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1193, "Given ");
 #line 994
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 995
@@ -4820,7 +4820,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 998
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1166 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1194 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -4830,7 +4830,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1166.AddRow(new string[] {
+            table1194.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -4840,7 +4840,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1166.AddRow(new string[] {
+            table1194.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -4850,7 +4850,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1166.AddRow(new string[] {
+            table1194.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -4860,7 +4860,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1166.AddRow(new string[] {
+            table1194.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -4870,7 +4870,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1166.AddRow(new string[] {
+            table1194.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -4880,7 +4880,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1166.AddRow(new string[] {
+            table1194.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -4891,14 +4891,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 999
- testRunner.And("the debug inputs as", ((string)(null)), table1166, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1194, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1167 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1195 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1167.AddRow(new string[] {
+            table1195.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1007
- testRunner.And("the debug output as", ((string)(null)), table1167, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1195, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -4913,32 +4913,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1011
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1168 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1196 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1168.AddRow(new string[] {
+            table1196.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1168.AddRow(new string[] {
+            table1196.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1168.AddRow(new string[] {
+            table1196.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1168.AddRow(new string[] {
+            table1196.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1168.AddRow(new string[] {
+            table1196.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1168.AddRow(new string[] {
+            table1196.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1168.AddRow(new string[] {
+            table1196.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1012
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1168, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1196, "Given ");
 #line 1021
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1022
@@ -4950,7 +4950,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1025
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1169 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1197 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -4960,7 +4960,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1169.AddRow(new string[] {
+            table1197.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -4970,7 +4970,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1169.AddRow(new string[] {
+            table1197.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -4980,7 +4980,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1169.AddRow(new string[] {
+            table1197.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -4990,7 +4990,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1169.AddRow(new string[] {
+            table1197.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -5000,7 +5000,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1169.AddRow(new string[] {
+            table1197.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -5010,7 +5010,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1169.AddRow(new string[] {
+            table1197.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -5020,7 +5020,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1169.AddRow(new string[] {
+            table1197.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -5031,14 +5031,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1026
- testRunner.And("the debug inputs as", ((string)(null)), table1169, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1197, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1170 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1198 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1170.AddRow(new string[] {
+            table1198.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1035
- testRunner.And("the debug output as", ((string)(null)), table1170, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1198, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5053,29 +5053,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1039
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1171 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1199 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1171.AddRow(new string[] {
+            table1199.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1171.AddRow(new string[] {
+            table1199.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1171.AddRow(new string[] {
+            table1199.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1171.AddRow(new string[] {
+            table1199.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1171.AddRow(new string[] {
+            table1199.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1171.AddRow(new string[] {
+            table1199.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1040
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1171, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1199, "Given ");
 #line 1048
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1049
@@ -5087,7 +5087,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1052
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1172 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1200 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -5097,7 +5097,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1172.AddRow(new string[] {
+            table1200.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -5107,7 +5107,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1172.AddRow(new string[] {
+            table1200.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -5117,7 +5117,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1172.AddRow(new string[] {
+            table1200.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -5127,7 +5127,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1172.AddRow(new string[] {
+            table1200.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -5137,7 +5137,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1172.AddRow(new string[] {
+            table1200.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -5147,7 +5147,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1172.AddRow(new string[] {
+            table1200.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -5158,14 +5158,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1053
- testRunner.And("the debug inputs as", ((string)(null)), table1172, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1200, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1173 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1201 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1173.AddRow(new string[] {
+            table1201.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1061
- testRunner.And("the debug output as", ((string)(null)), table1173, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1201, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5180,29 +5180,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1065
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1174 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1202 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1174.AddRow(new string[] {
+            table1202.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1174.AddRow(new string[] {
+            table1202.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1174.AddRow(new string[] {
+            table1202.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1174.AddRow(new string[] {
+            table1202.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1174.AddRow(new string[] {
+            table1202.AddRow(new string[] {
                         "rs().field",
                         "user"});
-            table1174.AddRow(new string[] {
+            table1202.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
 #line 1066
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1174, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1202, "Given ");
 #line 1074
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1075
@@ -5214,7 +5214,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1078
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1175 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1203 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -5224,7 +5224,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1175.AddRow(new string[] {
+            table1203.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -5234,7 +5234,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1175.AddRow(new string[] {
+            table1203.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = Warewolf",
                         "",
@@ -5244,7 +5244,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1175.AddRow(new string[] {
+            table1203.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = Warewolf",
                         "",
@@ -5254,7 +5254,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1175.AddRow(new string[] {
+            table1203.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = Warewolf",
                         "",
@@ -5264,7 +5264,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1175.AddRow(new string[] {
+            table1203.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = user",
                         "",
@@ -5274,7 +5274,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1175.AddRow(new string[] {
+            table1203.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "1",
@@ -5285,14 +5285,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1079
- testRunner.And("the debug inputs as", ((string)(null)), table1175, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1203, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1176 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1204 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1176.AddRow(new string[] {
+            table1204.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1087
- testRunner.And("the debug output as", ((string)(null)), table1176, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1204, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5309,29 +5309,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1091
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1177 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1205 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1177.AddRow(new string[] {
+            table1205.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1177.AddRow(new string[] {
+            table1205.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1177.AddRow(new string[] {
+            table1205.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1177.AddRow(new string[] {
+            table1205.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1177.AddRow(new string[] {
+            table1205.AddRow(new string[] {
                         "rs().field",
                         "user"});
-            table1177.AddRow(new string[] {
+            table1205.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
 #line 1092
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1177, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1205, "Given ");
 #line 1100
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1101
@@ -5343,7 +5343,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1104
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1178 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1206 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -5353,7 +5353,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1178.AddRow(new string[] {
+            table1206.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -5363,7 +5363,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1178.AddRow(new string[] {
+            table1206.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = Warewolf",
                         "",
@@ -5373,7 +5373,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1178.AddRow(new string[] {
+            table1206.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = Warewolf",
                         "",
@@ -5383,7 +5383,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1178.AddRow(new string[] {
+            table1206.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = Warewolf",
                         "",
@@ -5393,7 +5393,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1178.AddRow(new string[] {
+            table1206.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = user",
                         "",
@@ -5403,7 +5403,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1178.AddRow(new string[] {
+            table1206.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "1",
@@ -5414,14 +5414,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1105
- testRunner.And("the debug inputs as", ((string)(null)), table1178, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1206, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1179 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1207 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1179.AddRow(new string[] {
+            table1207.AddRow(new string[] {
                         "[[result]] = 1,5"});
 #line 1113
- testRunner.And("the debug output as", ((string)(null)), table1179, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1207, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5438,29 +5438,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1117
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1180 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1208 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1180.AddRow(new string[] {
+            table1208.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1180.AddRow(new string[] {
+            table1208.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1180.AddRow(new string[] {
+            table1208.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1180.AddRow(new string[] {
+            table1208.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1180.AddRow(new string[] {
+            table1208.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
-            table1180.AddRow(new string[] {
+            table1208.AddRow(new string[] {
                         "rs().field",
                         "Mars"});
 #line 1118
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1180, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1208, "Given ");
 #line 1126
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1127
@@ -5472,7 +5472,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1130
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1181 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1209 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -5482,7 +5482,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1181.AddRow(new string[] {
+            table1209.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Mars",
                         "",
@@ -5492,7 +5492,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1181.AddRow(new string[] {
+            table1209.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = Mars",
                         "",
@@ -5502,7 +5502,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1181.AddRow(new string[] {
+            table1209.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = Mars",
                         "",
@@ -5512,7 +5512,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1181.AddRow(new string[] {
+            table1209.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = Mars",
                         "",
@@ -5522,7 +5522,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1181.AddRow(new string[] {
+            table1209.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Mars",
                         "",
@@ -5532,7 +5532,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1181.AddRow(new string[] {
+            table1209.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Mars",
                         "1",
@@ -5543,14 +5543,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1131
- testRunner.And("the debug inputs as", ((string)(null)), table1181, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1209, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1182 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1210 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1182.AddRow(new string[] {
+            table1210.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1139
- testRunner.And("the debug output as", ((string)(null)), table1182, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1210, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5565,29 +5565,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1143
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1183 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1211 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1183.AddRow(new string[] {
+            table1211.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1183.AddRow(new string[] {
+            table1211.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1183.AddRow(new string[] {
+            table1211.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1183.AddRow(new string[] {
+            table1211.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1183.AddRow(new string[] {
+            table1211.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1183.AddRow(new string[] {
+            table1211.AddRow(new string[] {
                         "rs().field",
                         "$$"});
 #line 1144
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1183, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1211, "Given ");
 #line 1152
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1153
@@ -5599,7 +5599,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1156
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1184 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1212 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -5609,7 +5609,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1184.AddRow(new string[] {
+            table1212.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = $$",
                         "",
@@ -5619,7 +5619,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1184.AddRow(new string[] {
+            table1212.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = $$",
                         "",
@@ -5629,7 +5629,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1184.AddRow(new string[] {
+            table1212.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = $$",
                         "",
@@ -5639,7 +5639,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1184.AddRow(new string[] {
+            table1212.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = $$",
                         "",
@@ -5649,7 +5649,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1184.AddRow(new string[] {
+            table1212.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -5659,7 +5659,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1184.AddRow(new string[] {
+            table1212.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = $$",
                         "1",
@@ -5670,14 +5670,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1157
- testRunner.And("the debug inputs as", ((string)(null)), table1184, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1212, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1185 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1213 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1185.AddRow(new string[] {
+            table1213.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1165
- testRunner.And("the debug output as", ((string)(null)), table1185, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1213, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5694,32 +5694,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1169
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1186 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1214 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1186.AddRow(new string[] {
+            table1214.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1186.AddRow(new string[] {
+            table1214.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1186.AddRow(new string[] {
+            table1214.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1186.AddRow(new string[] {
+            table1214.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1186.AddRow(new string[] {
+            table1214.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1186.AddRow(new string[] {
+            table1214.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1186.AddRow(new string[] {
+            table1214.AddRow(new string[] {
                         "rs().field",
                         "$$"});
 #line 1170
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1186, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1214, "Given ");
 #line 1179
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1180
@@ -5731,7 +5731,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1183
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1187 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1215 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -5741,7 +5741,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1187.AddRow(new string[] {
+            table1215.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -5751,7 +5751,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1187.AddRow(new string[] {
+            table1215.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = $$",
                         "",
@@ -5761,7 +5761,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1187.AddRow(new string[] {
+            table1215.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = $$",
                         "",
@@ -5771,7 +5771,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1187.AddRow(new string[] {
+            table1215.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = $$",
                         "",
@@ -5781,7 +5781,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1187.AddRow(new string[] {
+            table1215.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = $$",
                         "",
@@ -5791,7 +5791,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1187.AddRow(new string[] {
+            table1215.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -5801,7 +5801,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1187.AddRow(new string[] {
+            table1215.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = $$",
                         "1",
@@ -5812,14 +5812,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1184
- testRunner.And("the debug inputs as", ((string)(null)), table1187, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1215, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1188 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1216 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1188.AddRow(new string[] {
+            table1216.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1193
- testRunner.And("the debug output as", ((string)(null)), table1188, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1216, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5836,29 +5836,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1197
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1189 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1217 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1189.AddRow(new string[] {
+            table1217.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1189.AddRow(new string[] {
+            table1217.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1189.AddRow(new string[] {
+            table1217.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1189.AddRow(new string[] {
+            table1217.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1189.AddRow(new string[] {
+            table1217.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1189.AddRow(new string[] {
+            table1217.AddRow(new string[] {
                         "rs().field",
                         "$$"});
 #line 1198
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1189, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1217, "Given ");
 #line 1206
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1207
@@ -5870,7 +5870,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1210
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1190 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1218 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -5880,7 +5880,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1190.AddRow(new string[] {
+            table1218.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = $$",
                         "",
@@ -5890,7 +5890,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1190.AddRow(new string[] {
+            table1218.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = $$",
                         "",
@@ -5900,7 +5900,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1190.AddRow(new string[] {
+            table1218.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = $$",
                         "",
@@ -5910,7 +5910,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1190.AddRow(new string[] {
+            table1218.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = $$",
                         "",
@@ -5920,7 +5920,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1190.AddRow(new string[] {
+            table1218.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = $$",
                         "",
@@ -5930,7 +5930,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1190.AddRow(new string[] {
+            table1218.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = $$",
                         "1",
@@ -5941,14 +5941,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1211
- testRunner.And("the debug inputs as", ((string)(null)), table1190, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1218, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1191 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1219 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1191.AddRow(new string[] {
+            table1219.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1219
- testRunner.And("the debug output as", ((string)(null)), table1191, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1219, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -5963,29 +5963,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1223
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1192 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1220 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1192.AddRow(new string[] {
+            table1220.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1192.AddRow(new string[] {
+            table1220.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1192.AddRow(new string[] {
+            table1220.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1192.AddRow(new string[] {
+            table1220.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1192.AddRow(new string[] {
+            table1220.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
-            table1192.AddRow(new string[] {
+            table1220.AddRow(new string[] {
                         "rs().field",
                         "You"});
 #line 1224
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1192, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1220, "Given ");
 #line 1232
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1233
@@ -5997,7 +5997,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1236
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1193 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1221 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -6007,7 +6007,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1193.AddRow(new string[] {
+            table1221.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -6017,7 +6017,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1193.AddRow(new string[] {
+            table1221.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -6027,7 +6027,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1193.AddRow(new string[] {
+            table1221.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -6037,7 +6037,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1193.AddRow(new string[] {
+            table1221.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -6047,7 +6047,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1193.AddRow(new string[] {
+            table1221.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = d2FyZXdvbGY=",
                         "",
@@ -6057,7 +6057,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1193.AddRow(new string[] {
+            table1221.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = You",
                         "1",
@@ -6068,14 +6068,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1237
- testRunner.And("the debug inputs as", ((string)(null)), table1193, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1221, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1194 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1222 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1194.AddRow(new string[] {
+            table1222.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1245
- testRunner.And("the debug output as", ((string)(null)), table1194, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1222, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -6090,32 +6090,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1249
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1195 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1223 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1195.AddRow(new string[] {
+            table1223.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
-            table1195.AddRow(new string[] {
+            table1223.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1195.AddRow(new string[] {
+            table1223.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1195.AddRow(new string[] {
+            table1223.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1195.AddRow(new string[] {
+            table1223.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1195.AddRow(new string[] {
+            table1223.AddRow(new string[] {
                         "rs().field",
                         "d2FyZXdvbGY="});
-            table1195.AddRow(new string[] {
+            table1223.AddRow(new string[] {
                         "rs().field",
                         "You"});
 #line 1250
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1195, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1223, "Given ");
 #line 1259
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1260
@@ -6127,7 +6127,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1263
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1196 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1224 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -6137,7 +6137,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1196.AddRow(new string[] {
+            table1224.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = d2FyZXdvbGY=",
                         "",
@@ -6147,7 +6147,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1196.AddRow(new string[] {
+            table1224.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -6157,7 +6157,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1196.AddRow(new string[] {
+            table1224.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -6167,7 +6167,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1196.AddRow(new string[] {
+            table1224.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -6177,7 +6177,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1196.AddRow(new string[] {
+            table1224.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = You",
                         "",
@@ -6187,7 +6187,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1196.AddRow(new string[] {
+            table1224.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = d2FyZXdvbGY=",
                         "",
@@ -6197,7 +6197,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1196.AddRow(new string[] {
+            table1224.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = You",
                         "1",
@@ -6208,14 +6208,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1264
- testRunner.And("the debug inputs as", ((string)(null)), table1196, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1224, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1197 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1225 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1197.AddRow(new string[] {
+            table1225.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1273
- testRunner.And("the debug output as", ((string)(null)), table1197, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1225, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -6232,29 +6232,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1277
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1198 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1226 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1198.AddRow(new string[] {
+            table1226.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1198.AddRow(new string[] {
+            table1226.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1198.AddRow(new string[] {
+            table1226.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1198.AddRow(new string[] {
+            table1226.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1198.AddRow(new string[] {
+            table1226.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1198.AddRow(new string[] {
+            table1226.AddRow(new string[] {
                         "rs().field",
                         "You"});
 #line 1278
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1198, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1226, "Given ");
 #line 1286
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1287
@@ -6266,7 +6266,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1290
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1199 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1227 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -6276,7 +6276,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1199.AddRow(new string[] {
+            table1227.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -6286,7 +6286,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1199.AddRow(new string[] {
+            table1227.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -6296,7 +6296,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1199.AddRow(new string[] {
+            table1227.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -6306,7 +6306,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1199.AddRow(new string[] {
+            table1227.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = You",
                         "",
@@ -6316,7 +6316,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1199.AddRow(new string[] {
+            table1227.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = You",
                         "",
@@ -6326,7 +6326,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1199.AddRow(new string[] {
+            table1227.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = You",
                         "1",
@@ -6337,14 +6337,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1291
- testRunner.And("the debug inputs as", ((string)(null)), table1199, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1227, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1200 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1228 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1200.AddRow(new string[] {
+            table1228.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1299
- testRunner.And("the debug output as", ((string)(null)), table1200, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1228, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -6359,29 +6359,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1303
  this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1201 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1229 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1201.AddRow(new string[] {
+            table1229.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1201.AddRow(new string[] {
+            table1229.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1201.AddRow(new string[] {
+            table1229.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1201.AddRow(new string[] {
+            table1229.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1201.AddRow(new string[] {
+            table1229.AddRow(new string[] {
                         "rs().field",
                         "12/10/2013"});
-            table1201.AddRow(new string[] {
+            table1229.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1304
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1201, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1229, "Given ");
 #line 1312
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1313
@@ -6393,7 +6393,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1316
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1202 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1230 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -6403,7 +6403,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1202.AddRow(new string[] {
+            table1230.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -6413,7 +6413,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1202.AddRow(new string[] {
+            table1230.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -6423,7 +6423,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1202.AddRow(new string[] {
+            table1230.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -6433,7 +6433,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1202.AddRow(new string[] {
+            table1230.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -6443,7 +6443,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1202.AddRow(new string[] {
+            table1230.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 12/10/2013",
                         "",
@@ -6453,7 +6453,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1202.AddRow(new string[] {
+            table1230.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -6464,14 +6464,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1317
- testRunner.And("the debug inputs as", ((string)(null)), table1202, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1230, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1203 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1231 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1203.AddRow(new string[] {
+            table1231.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1325
- testRunner.And("the debug output as", ((string)(null)), table1203, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1231, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -6486,32 +6486,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1329
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1204 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1232 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1204.AddRow(new string[] {
+            table1232.AddRow(new string[] {
                         "rs().field",
                         "12/10/2013"});
-            table1204.AddRow(new string[] {
+            table1232.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1204.AddRow(new string[] {
+            table1232.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1204.AddRow(new string[] {
+            table1232.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1204.AddRow(new string[] {
+            table1232.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1204.AddRow(new string[] {
+            table1232.AddRow(new string[] {
                         "rs().field",
                         "12/10/2013"});
-            table1204.AddRow(new string[] {
+            table1232.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1330
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1204, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1232, "Given ");
 #line 1339
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1340
@@ -6523,7 +6523,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1343
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1205 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1233 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -6533,7 +6533,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1205.AddRow(new string[] {
+            table1233.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 12/10/2013",
                         "",
@@ -6543,7 +6543,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1205.AddRow(new string[] {
+            table1233.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -6553,7 +6553,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1205.AddRow(new string[] {
+            table1233.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -6563,7 +6563,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1205.AddRow(new string[] {
+            table1233.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -6573,7 +6573,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1205.AddRow(new string[] {
+            table1233.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -6583,7 +6583,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1205.AddRow(new string[] {
+            table1233.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 12/10/2013",
                         "",
@@ -6593,7 +6593,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1205.AddRow(new string[] {
+            table1233.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -6604,14 +6604,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1344
- testRunner.And("the debug inputs as", ((string)(null)), table1205, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1233, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1206 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1234 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1206.AddRow(new string[] {
+            table1234.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1353
- testRunner.And("the debug output as", ((string)(null)), table1206, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1234, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -6626,29 +6626,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1357
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1207 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1235 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1207.AddRow(new string[] {
+            table1235.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1207.AddRow(new string[] {
+            table1235.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1207.AddRow(new string[] {
+            table1235.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1207.AddRow(new string[] {
+            table1235.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1207.AddRow(new string[] {
+            table1235.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1207.AddRow(new string[] {
+            table1235.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1358
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1207, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1235, "Given ");
 #line 1366
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1367
@@ -6660,7 +6660,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1370
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1208 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1236 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -6670,7 +6670,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1208.AddRow(new string[] {
+            table1236.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -6680,7 +6680,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1208.AddRow(new string[] {
+            table1236.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -6690,7 +6690,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1208.AddRow(new string[] {
+            table1236.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -6700,7 +6700,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1208.AddRow(new string[] {
+            table1236.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -6710,7 +6710,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1208.AddRow(new string[] {
+            table1236.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -6720,7 +6720,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1208.AddRow(new string[] {
+            table1236.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -6731,14 +6731,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1371
- testRunner.And("the debug inputs as", ((string)(null)), table1208, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1236, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1209 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1237 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1209.AddRow(new string[] {
+            table1237.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1379
- testRunner.And("the debug output as", ((string)(null)), table1209, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1237, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -6753,29 +6753,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1383
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1210 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1238 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1210.AddRow(new string[] {
+            table1238.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1210.AddRow(new string[] {
+            table1238.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1210.AddRow(new string[] {
+            table1238.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1210.AddRow(new string[] {
+            table1238.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1210.AddRow(new string[] {
+            table1238.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1210.AddRow(new string[] {
+            table1238.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1384
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1210, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1238, "Given ");
 #line 1392
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1393
@@ -6787,7 +6787,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1396
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1211 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1239 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -6797,7 +6797,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1211.AddRow(new string[] {
+            table1239.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -6807,7 +6807,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1211.AddRow(new string[] {
+            table1239.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -6817,7 +6817,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1211.AddRow(new string[] {
+            table1239.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -6827,7 +6827,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1211.AddRow(new string[] {
+            table1239.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -6837,7 +6837,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1211.AddRow(new string[] {
+            table1239.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = test@testEmail.co.za",
                         "",
@@ -6847,7 +6847,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1211.AddRow(new string[] {
+            table1239.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -6858,14 +6858,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1397
- testRunner.And("the debug inputs as", ((string)(null)), table1211, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1239, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1212 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1240 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1212.AddRow(new string[] {
+            table1240.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1405
- testRunner.And("the debug output as", ((string)(null)), table1212, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1240, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -6880,32 +6880,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1409
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1213 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1241 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1213.AddRow(new string[] {
+            table1241.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1213.AddRow(new string[] {
+            table1241.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1213.AddRow(new string[] {
+            table1241.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1213.AddRow(new string[] {
+            table1241.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1213.AddRow(new string[] {
+            table1241.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1213.AddRow(new string[] {
+            table1241.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1213.AddRow(new string[] {
+            table1241.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1410
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1213, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1241, "Given ");
 #line 1419
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1420
@@ -6917,7 +6917,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1423
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1214 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1242 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -6927,7 +6927,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1214.AddRow(new string[] {
+            table1242.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = test@testEmail.co.za",
                         "",
@@ -6937,7 +6937,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1214.AddRow(new string[] {
+            table1242.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -6947,7 +6947,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1214.AddRow(new string[] {
+            table1242.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -6957,7 +6957,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1214.AddRow(new string[] {
+            table1242.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -6967,7 +6967,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1214.AddRow(new string[] {
+            table1242.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -6977,7 +6977,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1214.AddRow(new string[] {
+            table1242.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = test@testEmail.co.za",
                         "",
@@ -6987,7 +6987,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1214.AddRow(new string[] {
+            table1242.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -6998,14 +6998,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1424
- testRunner.And("the debug inputs as", ((string)(null)), table1214, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1242, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1215 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1243 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1215.AddRow(new string[] {
+            table1243.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1433
- testRunner.And("the debug output as", ((string)(null)), table1215, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1243, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7020,29 +7020,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1437
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1216 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1244 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1216.AddRow(new string[] {
+            table1244.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1216.AddRow(new string[] {
+            table1244.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1216.AddRow(new string[] {
+            table1244.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1216.AddRow(new string[] {
+            table1244.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1216.AddRow(new string[] {
+            table1244.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1216.AddRow(new string[] {
+            table1244.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1438
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1216, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1244, "Given ");
 #line 1446
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1447
@@ -7054,7 +7054,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1450
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1217 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1245 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -7064,7 +7064,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1217.AddRow(new string[] {
+            table1245.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -7074,7 +7074,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1217.AddRow(new string[] {
+            table1245.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -7084,7 +7084,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1217.AddRow(new string[] {
+            table1245.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -7094,7 +7094,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1217.AddRow(new string[] {
+            table1245.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -7104,7 +7104,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1217.AddRow(new string[] {
+            table1245.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -7114,7 +7114,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1217.AddRow(new string[] {
+            table1245.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -7125,14 +7125,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1451
- testRunner.And("the debug inputs as", ((string)(null)), table1217, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1245, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1218 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1246 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1218.AddRow(new string[] {
+            table1246.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1459
- testRunner.And("the debug output as", ((string)(null)), table1218, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1246, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7147,29 +7147,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1463
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1219 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1247 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1219.AddRow(new string[] {
+            table1247.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1219.AddRow(new string[] {
+            table1247.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1219.AddRow(new string[] {
+            table1247.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1219.AddRow(new string[] {
+            table1247.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1219.AddRow(new string[] {
+            table1247.AddRow(new string[] {
                         "rs().field",
                         "45"});
-            table1219.AddRow(new string[] {
+            table1247.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1464
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1219, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1247, "Given ");
 #line 1472
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1473
@@ -7181,7 +7181,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1476
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1220 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1248 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -7191,7 +7191,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1220.AddRow(new string[] {
+            table1248.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -7201,7 +7201,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1220.AddRow(new string[] {
+            table1248.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -7211,7 +7211,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1220.AddRow(new string[] {
+            table1248.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -7221,7 +7221,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1220.AddRow(new string[] {
+            table1248.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -7231,7 +7231,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1220.AddRow(new string[] {
+            table1248.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 45",
                         "",
@@ -7241,7 +7241,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1220.AddRow(new string[] {
+            table1248.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -7252,14 +7252,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1477
- testRunner.And("the debug inputs as", ((string)(null)), table1220, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1248, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1221 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1249 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1221.AddRow(new string[] {
+            table1249.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1485
- testRunner.And("the debug output as", ((string)(null)), table1221, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1249, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7274,32 +7274,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1489
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1222 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1250 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1222.AddRow(new string[] {
+            table1250.AddRow(new string[] {
                         "rs().field",
                         "41"});
-            table1222.AddRow(new string[] {
+            table1250.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1222.AddRow(new string[] {
+            table1250.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1222.AddRow(new string[] {
+            table1250.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1222.AddRow(new string[] {
+            table1250.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1222.AddRow(new string[] {
+            table1250.AddRow(new string[] {
                         "rs().field",
                         "54"});
-            table1222.AddRow(new string[] {
+            table1250.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1490
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1222, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1250, "Given ");
 #line 1499
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1500
@@ -7311,7 +7311,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1503
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1223 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1251 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -7321,7 +7321,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1223.AddRow(new string[] {
+            table1251.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 41",
                         "",
@@ -7331,7 +7331,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1223.AddRow(new string[] {
+            table1251.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -7341,7 +7341,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1223.AddRow(new string[] {
+            table1251.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -7351,7 +7351,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1223.AddRow(new string[] {
+            table1251.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -7361,7 +7361,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1223.AddRow(new string[] {
+            table1251.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -7371,7 +7371,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1223.AddRow(new string[] {
+            table1251.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 54",
                         "",
@@ -7381,7 +7381,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1223.AddRow(new string[] {
+            table1251.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -7392,14 +7392,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1504
- testRunner.And("the debug inputs as", ((string)(null)), table1223, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1251, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1224 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1252 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1224.AddRow(new string[] {
+            table1252.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1513
- testRunner.And("the debug output as", ((string)(null)), table1224, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1252, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7416,29 +7416,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1517
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1225 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1253 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1225.AddRow(new string[] {
+            table1253.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1225.AddRow(new string[] {
+            table1253.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1225.AddRow(new string[] {
+            table1253.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1225.AddRow(new string[] {
+            table1253.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1225.AddRow(new string[] {
+            table1253.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1225.AddRow(new string[] {
+            table1253.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1518
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1225, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1253, "Given ");
 #line 1526
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1527
@@ -7450,7 +7450,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1530
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1226 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1254 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -7461,7 +7461,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1226.AddRow(new string[] {
+            table1254.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -7472,7 +7472,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1226.AddRow(new string[] {
+            table1254.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -7483,7 +7483,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1226.AddRow(new string[] {
+            table1254.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -7494,7 +7494,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1226.AddRow(new string[] {
+            table1254.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -7505,7 +7505,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1226.AddRow(new string[] {
+            table1254.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -7516,7 +7516,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1226.AddRow(new string[] {
+            table1254.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -7528,14 +7528,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1531
- testRunner.And("the debug inputs as", ((string)(null)), table1226, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1254, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1227 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1255 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1227.AddRow(new string[] {
+            table1255.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1539
- testRunner.And("the debug output as", ((string)(null)), table1227, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1255, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7550,29 +7550,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1543
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1228 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1256 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1228.AddRow(new string[] {
+            table1256.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1228.AddRow(new string[] {
+            table1256.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1228.AddRow(new string[] {
+            table1256.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1228.AddRow(new string[] {
+            table1256.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1228.AddRow(new string[] {
+            table1256.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1228.AddRow(new string[] {
+            table1256.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1544
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1228, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1256, "Given ");
 #line 1552
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1553
@@ -7584,7 +7584,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1556
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1229 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1257 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -7594,7 +7594,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1229.AddRow(new string[] {
+            table1257.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -7604,7 +7604,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1229.AddRow(new string[] {
+            table1257.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -7614,7 +7614,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1229.AddRow(new string[] {
+            table1257.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -7624,7 +7624,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1229.AddRow(new string[] {
+            table1257.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -7634,7 +7634,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1229.AddRow(new string[] {
+            table1257.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -7644,7 +7644,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1229.AddRow(new string[] {
+            table1257.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -7655,14 +7655,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1557
- testRunner.And("the debug inputs as", ((string)(null)), table1229, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1257, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1230 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1258 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1230.AddRow(new string[] {
+            table1258.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1565
- testRunner.And("the debug output as", ((string)(null)), table1230, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1258, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7677,32 +7677,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1569
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1231 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1259 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1231.AddRow(new string[] {
+            table1259.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1231.AddRow(new string[] {
+            table1259.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1231.AddRow(new string[] {
+            table1259.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1231.AddRow(new string[] {
+            table1259.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1231.AddRow(new string[] {
+            table1259.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1231.AddRow(new string[] {
+            table1259.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1231.AddRow(new string[] {
+            table1259.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1570
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1231, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1259, "Given ");
 #line 1579
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1580
@@ -7714,7 +7714,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1583
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1232 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1260 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -7724,7 +7724,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1232.AddRow(new string[] {
+            table1260.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -7734,7 +7734,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1232.AddRow(new string[] {
+            table1260.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -7744,7 +7744,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1232.AddRow(new string[] {
+            table1260.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -7754,7 +7754,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1232.AddRow(new string[] {
+            table1260.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -7764,7 +7764,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1232.AddRow(new string[] {
+            table1260.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -7774,7 +7774,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1232.AddRow(new string[] {
+            table1260.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -7784,7 +7784,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1232.AddRow(new string[] {
+            table1260.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -7795,14 +7795,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1584
- testRunner.And("the debug inputs as", ((string)(null)), table1232, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1260, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1233 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1261 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1233.AddRow(new string[] {
+            table1261.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1593
- testRunner.And("the debug output as", ((string)(null)), table1233, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1261, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7817,29 +7817,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1597
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1234 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1262 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1234.AddRow(new string[] {
+            table1262.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1234.AddRow(new string[] {
+            table1262.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1234.AddRow(new string[] {
+            table1262.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1234.AddRow(new string[] {
+            table1262.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1234.AddRow(new string[] {
+            table1262.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1234.AddRow(new string[] {
+            table1262.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1598
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1234, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1262, "Given ");
 #line 1606
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1607
@@ -7851,7 +7851,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1610
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1235 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1263 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -7861,7 +7861,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1235.AddRow(new string[] {
+            table1263.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -7871,7 +7871,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1235.AddRow(new string[] {
+            table1263.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -7881,7 +7881,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1235.AddRow(new string[] {
+            table1263.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -7891,7 +7891,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1235.AddRow(new string[] {
+            table1263.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -7901,7 +7901,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1235.AddRow(new string[] {
+            table1263.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -7911,7 +7911,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1235.AddRow(new string[] {
+            table1263.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -7922,14 +7922,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1611
- testRunner.And("the debug inputs as", ((string)(null)), table1235, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1263, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1236 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1264 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1236.AddRow(new string[] {
+            table1264.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1619
- testRunner.And("the debug output as", ((string)(null)), table1236, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1264, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7944,29 +7944,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1623
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1237 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1265 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1237.AddRow(new string[] {
+            table1265.AddRow(new string[] {
                         "rs().field",
                         "15"});
-            table1237.AddRow(new string[] {
+            table1265.AddRow(new string[] {
                         "rs().field",
                         "56"});
-            table1237.AddRow(new string[] {
+            table1265.AddRow(new string[] {
                         "rs().field",
                         "45"});
-            table1237.AddRow(new string[] {
+            table1265.AddRow(new string[] {
                         "rs().field",
                         "7"});
-            table1237.AddRow(new string[] {
+            table1265.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1237.AddRow(new string[] {
+            table1265.AddRow(new string[] {
                         "rs().field",
                         "16"});
 #line 1624
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1237, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1265, "Given ");
 #line 1632
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1633
@@ -7978,7 +7978,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1636
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1238 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1266 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -7988,7 +7988,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1238.AddRow(new string[] {
+            table1266.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 15",
                         "",
@@ -7998,7 +7998,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1238.AddRow(new string[] {
+            table1266.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 56",
                         "",
@@ -8008,7 +8008,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1238.AddRow(new string[] {
+            table1266.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 45",
                         "",
@@ -8018,7 +8018,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1238.AddRow(new string[] {
+            table1266.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 7",
                         "",
@@ -8028,7 +8028,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1238.AddRow(new string[] {
+            table1266.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -8038,7 +8038,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1238.AddRow(new string[] {
+            table1266.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 16",
                         "1",
@@ -8049,14 +8049,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1637
- testRunner.And("the debug inputs as", ((string)(null)), table1238, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1266, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1239 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1267 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1239.AddRow(new string[] {
+            table1267.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1645
- testRunner.And("the debug output as", ((string)(null)), table1239, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1267, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8071,32 +8071,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1649
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1240 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1268 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1240.AddRow(new string[] {
+            table1268.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1240.AddRow(new string[] {
+            table1268.AddRow(new string[] {
                         "rs().field",
                         "45"});
-            table1240.AddRow(new string[] {
+            table1268.AddRow(new string[] {
                         "rs().field",
                         "54"});
-            table1240.AddRow(new string[] {
+            table1268.AddRow(new string[] {
                         "rs().field",
                         "51"});
-            table1240.AddRow(new string[] {
+            table1268.AddRow(new string[] {
                         "rs().field",
                         "86"});
-            table1240.AddRow(new string[] {
+            table1268.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1240.AddRow(new string[] {
+            table1268.AddRow(new string[] {
                         "rs().field",
                         "8"});
 #line 1650
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1240, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1268, "Given ");
 #line 1659
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1660
@@ -8108,7 +8108,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1663
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1241 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1269 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -8118,7 +8118,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1241.AddRow(new string[] {
+            table1269.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -8128,7 +8128,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1241.AddRow(new string[] {
+            table1269.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 45",
                         "",
@@ -8138,7 +8138,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1241.AddRow(new string[] {
+            table1269.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 54",
                         "",
@@ -8148,7 +8148,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1241.AddRow(new string[] {
+            table1269.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 51",
                         "",
@@ -8158,7 +8158,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1241.AddRow(new string[] {
+            table1269.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 86",
                         "",
@@ -8168,7 +8168,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1241.AddRow(new string[] {
+            table1269.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -8178,7 +8178,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1241.AddRow(new string[] {
+            table1269.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = 8",
                         "1",
@@ -8189,14 +8189,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1664
- testRunner.And("the debug inputs as", ((string)(null)), table1241, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1269, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1242 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1270 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1242.AddRow(new string[] {
+            table1270.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1673
- testRunner.And("the debug output as", ((string)(null)), table1242, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1270, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8211,29 +8211,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1677
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1243 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1271 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1243.AddRow(new string[] {
+            table1271.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1243.AddRow(new string[] {
+            table1271.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1243.AddRow(new string[] {
+            table1271.AddRow(new string[] {
                         "rs().field",
                         "3"});
-            table1243.AddRow(new string[] {
+            table1271.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table1243.AddRow(new string[] {
+            table1271.AddRow(new string[] {
                         "rs().field",
                         "6"});
-            table1243.AddRow(new string[] {
+            table1271.AddRow(new string[] {
                         "rs().field",
                         "5"});
 #line 1678
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1243, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1271, "Given ");
 #line 1686
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1687
@@ -8245,7 +8245,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1690
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1244 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1272 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -8255,7 +8255,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1244.AddRow(new string[] {
+            table1272.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 1",
                         "",
@@ -8265,7 +8265,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1244.AddRow(new string[] {
+            table1272.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 2",
                         "",
@@ -8275,7 +8275,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1244.AddRow(new string[] {
+            table1272.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 3",
                         "",
@@ -8285,7 +8285,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1244.AddRow(new string[] {
+            table1272.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 4",
                         "",
@@ -8295,7 +8295,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1244.AddRow(new string[] {
+            table1272.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 6",
                         "",
@@ -8305,7 +8305,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1244.AddRow(new string[] {
+            table1272.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 5",
                         "1",
@@ -8316,14 +8316,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1691
- testRunner.And("the debug inputs as", ((string)(null)), table1244, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1272, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1245 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1273 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1245.AddRow(new string[] {
+            table1273.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1699
- testRunner.And("the debug output as", ((string)(null)), table1245, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1273, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8338,29 +8338,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1703
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1246 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1274 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1246.AddRow(new string[] {
+            table1274.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1246.AddRow(new string[] {
+            table1274.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1246.AddRow(new string[] {
+            table1274.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1246.AddRow(new string[] {
+            table1274.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1246.AddRow(new string[] {
+            table1274.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1246.AddRow(new string[] {
+            table1274.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1704
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1246, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1274, "Given ");
 #line 1712
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1713
@@ -8372,7 +8372,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1716
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1247 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1275 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -8382,7 +8382,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1247.AddRow(new string[] {
+            table1275.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -8392,7 +8392,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1247.AddRow(new string[] {
+            table1275.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -8402,7 +8402,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1247.AddRow(new string[] {
+            table1275.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -8412,7 +8412,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1247.AddRow(new string[] {
+            table1275.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -8422,7 +8422,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1247.AddRow(new string[] {
+            table1275.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = <test></test>",
                         "",
@@ -8432,7 +8432,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1247.AddRow(new string[] {
+            table1275.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -8443,14 +8443,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1717
- testRunner.And("the debug inputs as", ((string)(null)), table1247, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1275, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1248 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1276 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1248.AddRow(new string[] {
+            table1276.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1725
- testRunner.And("the debug output as", ((string)(null)), table1248, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1276, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8465,32 +8465,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1729
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1249 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1277 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1249.AddRow(new string[] {
+            table1277.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1249.AddRow(new string[] {
+            table1277.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1249.AddRow(new string[] {
+            table1277.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1249.AddRow(new string[] {
+            table1277.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1249.AddRow(new string[] {
+            table1277.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1249.AddRow(new string[] {
+            table1277.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1249.AddRow(new string[] {
+            table1277.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1730
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1249, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1277, "Given ");
 #line 1739
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1740
@@ -8502,7 +8502,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1743
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1250 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1278 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -8512,7 +8512,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1250.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = <test></test>",
                         "",
@@ -8522,7 +8522,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1250.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -8532,7 +8532,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1250.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -8542,7 +8542,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1250.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -8552,7 +8552,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1250.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -8562,7 +8562,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1250.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = <test></test>",
                         "",
@@ -8572,7 +8572,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1250.AddRow(new string[] {
+            table1278.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -8583,14 +8583,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1744
- testRunner.And("the debug inputs as", ((string)(null)), table1250, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1278, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1251 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1279 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1251.AddRow(new string[] {
+            table1279.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1753
- testRunner.And("the debug output as", ((string)(null)), table1251, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1279, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8605,29 +8605,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1757
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1252 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1280 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1252.AddRow(new string[] {
+            table1280.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1252.AddRow(new string[] {
+            table1280.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1252.AddRow(new string[] {
+            table1280.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1252.AddRow(new string[] {
+            table1280.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1252.AddRow(new string[] {
+            table1280.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1252.AddRow(new string[] {
+            table1280.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1758
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1252, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1280, "Given ");
 #line 1766
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1767
@@ -8639,7 +8639,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1770
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1253 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1281 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -8649,7 +8649,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1253.AddRow(new string[] {
+            table1281.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -8659,7 +8659,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1253.AddRow(new string[] {
+            table1281.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -8669,7 +8669,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1253.AddRow(new string[] {
+            table1281.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -8679,7 +8679,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1253.AddRow(new string[] {
+            table1281.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -8689,7 +8689,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1253.AddRow(new string[] {
+            table1281.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -8699,7 +8699,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1253.AddRow(new string[] {
+            table1281.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -8710,14 +8710,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1771
- testRunner.And("the debug inputs as", ((string)(null)), table1253, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1281, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1254 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1282 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1254.AddRow(new string[] {
+            table1282.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1779
- testRunner.And("the debug output as", ((string)(null)), table1254, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1282, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8732,29 +8732,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1783
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1255 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1283 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1255.AddRow(new string[] {
+            table1283.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1255.AddRow(new string[] {
+            table1283.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1255.AddRow(new string[] {
+            table1283.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1255.AddRow(new string[] {
+            table1283.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1255.AddRow(new string[] {
+            table1283.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1255.AddRow(new string[] {
+            table1283.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1784
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1255, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1283, "Given ");
 #line 1792
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1793
@@ -8766,7 +8766,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1796
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1256 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1284 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -8776,7 +8776,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1256.AddRow(new string[] {
+            table1284.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -8786,7 +8786,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1256.AddRow(new string[] {
+            table1284.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -8796,7 +8796,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1256.AddRow(new string[] {
+            table1284.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -8806,7 +8806,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1256.AddRow(new string[] {
+            table1284.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -8816,7 +8816,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1256.AddRow(new string[] {
+            table1284.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = $$",
                         "",
@@ -8826,7 +8826,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1256.AddRow(new string[] {
+            table1284.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -8837,14 +8837,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1797
- testRunner.And("the debug inputs as", ((string)(null)), table1256, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1284, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1257 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1285 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1257.AddRow(new string[] {
+            table1285.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1805
- testRunner.And("the debug output as", ((string)(null)), table1257, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1285, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8861,32 +8861,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1809
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1258 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1286 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1258.AddRow(new string[] {
+            table1286.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1258.AddRow(new string[] {
+            table1286.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1258.AddRow(new string[] {
+            table1286.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1258.AddRow(new string[] {
+            table1286.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1258.AddRow(new string[] {
+            table1286.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1258.AddRow(new string[] {
+            table1286.AddRow(new string[] {
                         "rs().field",
                         "$$"});
-            table1258.AddRow(new string[] {
+            table1286.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1810
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1258, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1286, "Given ");
 #line 1819
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1820
@@ -8898,7 +8898,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1823
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1259 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1287 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -8908,7 +8908,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1259.AddRow(new string[] {
+            table1287.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = $$",
                         "",
@@ -8918,7 +8918,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1259.AddRow(new string[] {
+            table1287.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -8928,7 +8928,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1259.AddRow(new string[] {
+            table1287.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -8938,7 +8938,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1259.AddRow(new string[] {
+            table1287.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -8948,7 +8948,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1259.AddRow(new string[] {
+            table1287.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -8958,7 +8958,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1259.AddRow(new string[] {
+            table1287.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = $$",
                         "",
@@ -8968,7 +8968,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1259.AddRow(new string[] {
+            table1287.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -8979,14 +8979,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1824
- testRunner.And("the debug inputs as", ((string)(null)), table1259, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1287, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1260 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1288 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1260.AddRow(new string[] {
+            table1288.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1833
- testRunner.And("the debug output as", ((string)(null)), table1260, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1288, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9003,29 +9003,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1837
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1261 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1289 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1261.AddRow(new string[] {
+            table1289.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1261.AddRow(new string[] {
+            table1289.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1261.AddRow(new string[] {
+            table1289.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1261.AddRow(new string[] {
+            table1289.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1261.AddRow(new string[] {
+            table1289.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1261.AddRow(new string[] {
+            table1289.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 1838
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1261, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1289, "Given ");
 #line 1846
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1847
@@ -9037,7 +9037,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1850
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1262 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1290 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -9047,7 +9047,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1262.AddRow(new string[] {
+            table1290.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -9057,7 +9057,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1262.AddRow(new string[] {
+            table1290.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -9067,7 +9067,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1262.AddRow(new string[] {
+            table1290.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -9077,7 +9077,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1262.AddRow(new string[] {
+            table1290.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -9087,7 +9087,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1262.AddRow(new string[] {
+            table1290.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -9097,7 +9097,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1262.AddRow(new string[] {
+            table1290.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -9108,14 +9108,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1851
- testRunner.And("the debug inputs as", ((string)(null)), table1262, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1290, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1263 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1291 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1263.AddRow(new string[] {
+            table1291.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1859
- testRunner.And("the debug output as", ((string)(null)), table1263, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1291, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9130,29 +9130,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1863
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1264 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1292 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1264.AddRow(new string[] {
+            table1292.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1264.AddRow(new string[] {
+            table1292.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1264.AddRow(new string[] {
+            table1292.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1264.AddRow(new string[] {
+            table1292.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1264.AddRow(new string[] {
+            table1292.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1264.AddRow(new string[] {
+            table1292.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
 #line 1864
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1264, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1292, "Given ");
 #line 1872
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1873
@@ -9164,7 +9164,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1876
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1265 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1293 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -9174,7 +9174,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1265.AddRow(new string[] {
+            table1293.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 12/11/2013",
                         "",
@@ -9184,7 +9184,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1265.AddRow(new string[] {
+            table1293.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 12/11/2013",
                         "",
@@ -9194,7 +9194,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1265.AddRow(new string[] {
+            table1293.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 12/11/2013",
                         "",
@@ -9204,7 +9204,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1265.AddRow(new string[] {
+            table1293.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 12/11/2013",
                         "",
@@ -9214,7 +9214,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1265.AddRow(new string[] {
+            table1293.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -9224,7 +9224,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1265.AddRow(new string[] {
+            table1293.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 12/11/2013",
                         "1",
@@ -9235,14 +9235,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1877
- testRunner.And("the debug inputs as", ((string)(null)), table1265, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1293, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1266 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1294 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1266.AddRow(new string[] {
+            table1294.AddRow(new string[] {
                         "[[result]] = 5"});
 #line 1885
- testRunner.And("the debug output as", ((string)(null)), table1266, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1294, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9257,32 +9257,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1889
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1267 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1295 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1267.AddRow(new string[] {
+            table1295.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1267.AddRow(new string[] {
+            table1295.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1267.AddRow(new string[] {
+            table1295.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1267.AddRow(new string[] {
+            table1295.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1267.AddRow(new string[] {
+            table1295.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1267.AddRow(new string[] {
+            table1295.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1267.AddRow(new string[] {
+            table1295.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
 #line 1890
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1267, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1295, "Given ");
 #line 1899
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1900
@@ -9294,7 +9294,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1903
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1268 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1296 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -9304,7 +9304,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1268.AddRow(new string[] {
+            table1296.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -9314,7 +9314,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1268.AddRow(new string[] {
+            table1296.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 12/11/2013",
                         "",
@@ -9324,7 +9324,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1268.AddRow(new string[] {
+            table1296.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 12/11/2013",
                         "",
@@ -9334,7 +9334,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1268.AddRow(new string[] {
+            table1296.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 12/11/2013",
                         "",
@@ -9344,7 +9344,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1268.AddRow(new string[] {
+            table1296.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 12/11/2013",
                         "",
@@ -9354,7 +9354,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1268.AddRow(new string[] {
+            table1296.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -9364,7 +9364,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1268.AddRow(new string[] {
+            table1296.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = 12/11/2013",
                         "1",
@@ -9375,14 +9375,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1904
- testRunner.And("the debug inputs as", ((string)(null)), table1268, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1296, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1269 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1297 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1269.AddRow(new string[] {
+            table1297.AddRow(new string[] {
                         "[[result]] = 1,6"});
 #line 1913
- testRunner.And("the debug output as", ((string)(null)), table1269, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1297, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9397,29 +9397,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1917
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1270 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1298 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1270.AddRow(new string[] {
+            table1298.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1270.AddRow(new string[] {
+            table1298.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1270.AddRow(new string[] {
+            table1298.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1270.AddRow(new string[] {
+            table1298.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1270.AddRow(new string[] {
+            table1298.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
-            table1270.AddRow(new string[] {
+            table1298.AddRow(new string[] {
                         "rs().field",
                         "12/11/2013"});
 #line 1918
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1270, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1298, "Given ");
 #line 1926
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1927
@@ -9431,7 +9431,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1930
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1271 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1299 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -9441,7 +9441,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1271.AddRow(new string[] {
+            table1299.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 12/11/2013",
                         "",
@@ -9451,7 +9451,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1271.AddRow(new string[] {
+            table1299.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 12/11/2013",
                         "",
@@ -9461,7 +9461,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1271.AddRow(new string[] {
+            table1299.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 12/11/2013",
                         "",
@@ -9471,7 +9471,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1271.AddRow(new string[] {
+            table1299.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 12/11/2013",
                         "",
@@ -9481,7 +9481,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1271.AddRow(new string[] {
+            table1299.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 12/11/2013",
                         "",
@@ -9491,7 +9491,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1271.AddRow(new string[] {
+            table1299.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 12/11/2013",
                         "1",
@@ -9502,14 +9502,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1931
- testRunner.And("the debug inputs as", ((string)(null)), table1271, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1299, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1272 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1300 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1272.AddRow(new string[] {
+            table1300.AddRow(new string[] {
                         "[[result]] = -1"});
 #line 1939
- testRunner.And("the debug output as", ((string)(null)), table1272, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1300, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9524,29 +9524,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1943
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1273 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1301 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1273.AddRow(new string[] {
+            table1301.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1273.AddRow(new string[] {
+            table1301.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1273.AddRow(new string[] {
+            table1301.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1273.AddRow(new string[] {
+            table1301.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1273.AddRow(new string[] {
+            table1301.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1273.AddRow(new string[] {
+            table1301.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
 #line 1944
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1273, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1301, "Given ");
 #line 1952
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1953
@@ -9558,7 +9558,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1956
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1274 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1302 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -9568,7 +9568,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1274.AddRow(new string[] {
+            table1302.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = test@testEmail.co.za",
                         "",
@@ -9578,7 +9578,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1274.AddRow(new string[] {
+            table1302.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = test@testEmail.co.za",
                         "",
@@ -9588,7 +9588,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1274.AddRow(new string[] {
+            table1302.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = test@testEmail.co.za",
                         "",
@@ -9598,7 +9598,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1274.AddRow(new string[] {
+            table1302.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = test@testEmail.co.za",
                         "",
@@ -9608,7 +9608,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1274.AddRow(new string[] {
+            table1302.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -9618,7 +9618,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1274.AddRow(new string[] {
+            table1302.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = test@testEmail.co.za",
                         "1",
@@ -9629,14 +9629,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1957
- testRunner.And("the debug inputs as", ((string)(null)), table1274, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1302, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1275 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1303 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1275.AddRow(new string[] {
+            table1303.AddRow(new string[] {
                         "[[result]] =  5"});
 #line 1965
- testRunner.And("the debug output as", ((string)(null)), table1275, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1303, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9651,32 +9651,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 1969
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1276 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1304 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1276.AddRow(new string[] {
+            table1304.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1276.AddRow(new string[] {
+            table1304.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1276.AddRow(new string[] {
+            table1304.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1276.AddRow(new string[] {
+            table1304.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1276.AddRow(new string[] {
+            table1304.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1276.AddRow(new string[] {
+            table1304.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1276.AddRow(new string[] {
+            table1304.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
 #line 1970
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1276, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1304, "Given ");
 #line 1979
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 1980
@@ -9688,7 +9688,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 1983
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1277 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1305 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -9698,7 +9698,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1277.AddRow(new string[] {
+            table1305.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -9708,7 +9708,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1277.AddRow(new string[] {
+            table1305.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = test@testEmail.co.za",
                         "",
@@ -9718,7 +9718,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1277.AddRow(new string[] {
+            table1305.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = test@testEmail.co.za",
                         "",
@@ -9728,7 +9728,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1277.AddRow(new string[] {
+            table1305.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = test@testEmail.co.za",
                         "",
@@ -9738,7 +9738,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1277.AddRow(new string[] {
+            table1305.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = test@testEmail.co.za",
                         "",
@@ -9748,7 +9748,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1277.AddRow(new string[] {
+            table1305.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -9758,7 +9758,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1277.AddRow(new string[] {
+            table1305.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = test@testEmail.co.za",
                         "1",
@@ -9769,14 +9769,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 1984
- testRunner.And("the debug inputs as", ((string)(null)), table1277, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1305, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1278 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1306 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1278.AddRow(new string[] {
+            table1306.AddRow(new string[] {
                         "[[result]] =  1,6"});
 #line 1993
- testRunner.And("the debug output as", ((string)(null)), table1278, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1306, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9793,29 +9793,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 1997
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1279 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1307 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1279.AddRow(new string[] {
+            table1307.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1279.AddRow(new string[] {
+            table1307.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1279.AddRow(new string[] {
+            table1307.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1279.AddRow(new string[] {
+            table1307.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1279.AddRow(new string[] {
+            table1307.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
-            table1279.AddRow(new string[] {
+            table1307.AddRow(new string[] {
                         "rs().field",
                         "test@testEmail.co.za"});
 #line 1998
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1279, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1307, "Given ");
 #line 2006
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2007
@@ -9827,7 +9827,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2010
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1280 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1308 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -9837,7 +9837,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1280.AddRow(new string[] {
+            table1308.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = test@testEmail.co.za",
                         "",
@@ -9847,7 +9847,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1280.AddRow(new string[] {
+            table1308.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = test@testEmail.co.za",
                         "",
@@ -9857,7 +9857,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1280.AddRow(new string[] {
+            table1308.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = test@testEmail.co.za",
                         "",
@@ -9867,7 +9867,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1280.AddRow(new string[] {
+            table1308.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = test@testEmail.co.za",
                         "",
@@ -9877,7 +9877,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1280.AddRow(new string[] {
+            table1308.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = test@testEmail.co.za",
                         "",
@@ -9887,7 +9887,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1280.AddRow(new string[] {
+            table1308.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = test@testEmail.co.za",
                         "1",
@@ -9898,14 +9898,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2011
- testRunner.And("the debug inputs as", ((string)(null)), table1280, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1308, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1281 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1309 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1281.AddRow(new string[] {
+            table1309.AddRow(new string[] {
                         "[[result]] =  -1"});
 #line 2019
- testRunner.And("the debug output as", ((string)(null)), table1281, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1309, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9920,29 +9920,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2023
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1282 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1310 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1282.AddRow(new string[] {
+            table1310.AddRow(new string[] {
                         "rs().field",
                         "152"});
-            table1282.AddRow(new string[] {
+            table1310.AddRow(new string[] {
                         "rs().field",
                         "5"});
-            table1282.AddRow(new string[] {
+            table1310.AddRow(new string[] {
                         "rs().field",
                         "6"});
-            table1282.AddRow(new string[] {
+            table1310.AddRow(new string[] {
                         "rs().field",
                         "7"});
-            table1282.AddRow(new string[] {
+            table1310.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1282.AddRow(new string[] {
+            table1310.AddRow(new string[] {
                         "rs().field",
                         "5"});
 #line 2024
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1282, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1310, "Given ");
 #line 2032
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2033
@@ -9954,7 +9954,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2036
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1283 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1311 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -9964,7 +9964,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1283.AddRow(new string[] {
+            table1311.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 152",
                         "",
@@ -9974,7 +9974,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1283.AddRow(new string[] {
+            table1311.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 5",
                         "",
@@ -9984,7 +9984,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1283.AddRow(new string[] {
+            table1311.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 6",
                         "",
@@ -9994,7 +9994,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1283.AddRow(new string[] {
+            table1311.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 7",
                         "",
@@ -10004,7 +10004,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1283.AddRow(new string[] {
+            table1311.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -10014,7 +10014,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1283.AddRow(new string[] {
+            table1311.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 5",
                         "1",
@@ -10025,14 +10025,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2037
- testRunner.And("the debug inputs as", ((string)(null)), table1283, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1311, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1284 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1312 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1284.AddRow(new string[] {
+            table1312.AddRow(new string[] {
                         "[[result]] =  5"});
 #line 2045
- testRunner.And("the debug output as", ((string)(null)), table1284, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1312, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10047,32 +10047,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 2049
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1285 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1313 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1285.AddRow(new string[] {
+            table1313.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1285.AddRow(new string[] {
+            table1313.AddRow(new string[] {
                         "rs().field",
                         "45"});
-            table1285.AddRow(new string[] {
+            table1313.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1285.AddRow(new string[] {
+            table1313.AddRow(new string[] {
                         "rs().field",
                         "4"});
-            table1285.AddRow(new string[] {
+            table1313.AddRow(new string[] {
                         "rs().field",
                         "5"});
-            table1285.AddRow(new string[] {
+            table1313.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1285.AddRow(new string[] {
+            table1313.AddRow(new string[] {
                         "rs().field",
                         "5"});
 #line 2050
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1285, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1313, "Given ");
 #line 2059
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2060
@@ -10084,7 +10084,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2063
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1286 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1314 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -10094,7 +10094,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1286.AddRow(new string[] {
+            table1314.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -10104,7 +10104,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1286.AddRow(new string[] {
+            table1314.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 45",
                         "",
@@ -10114,7 +10114,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1286.AddRow(new string[] {
+            table1314.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 2",
                         "",
@@ -10124,7 +10124,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1286.AddRow(new string[] {
+            table1314.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 4",
                         "",
@@ -10134,7 +10134,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1286.AddRow(new string[] {
+            table1314.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 5",
                         "",
@@ -10144,7 +10144,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1286.AddRow(new string[] {
+            table1314.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -10154,7 +10154,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1286.AddRow(new string[] {
+            table1314.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = 5",
                         "1",
@@ -10165,14 +10165,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2064
- testRunner.And("the debug inputs as", ((string)(null)), table1286, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1314, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1287 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1315 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1287.AddRow(new string[] {
+            table1315.AddRow(new string[] {
                         "[[result]] =  1,6"});
 #line 2073
- testRunner.And("the debug output as", ((string)(null)), table1287, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1315, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10189,29 +10189,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2077
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1288 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1316 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1288.AddRow(new string[] {
+            table1316.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1288.AddRow(new string[] {
+            table1316.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1288.AddRow(new string[] {
+            table1316.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1288.AddRow(new string[] {
+            table1316.AddRow(new string[] {
                         "rs().field",
                         "2"});
-            table1288.AddRow(new string[] {
+            table1316.AddRow(new string[] {
                         "rs().field",
                         "3"});
-            table1288.AddRow(new string[] {
+            table1316.AddRow(new string[] {
                         "rs().field",
                         "3"});
 #line 2078
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1288, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1316, "Given ");
 #line 2086
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2087
@@ -10223,7 +10223,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2090
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1289 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1317 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -10233,7 +10233,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1289.AddRow(new string[] {
+            table1317.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 1",
                         "",
@@ -10243,7 +10243,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1289.AddRow(new string[] {
+            table1317.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 1",
                         "",
@@ -10253,7 +10253,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1289.AddRow(new string[] {
+            table1317.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 2",
                         "",
@@ -10263,7 +10263,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1289.AddRow(new string[] {
+            table1317.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 2",
                         "",
@@ -10273,7 +10273,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1289.AddRow(new string[] {
+            table1317.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 3",
                         "",
@@ -10283,7 +10283,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1289.AddRow(new string[] {
+            table1317.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 3",
                         "1",
@@ -10294,14 +10294,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2091
- testRunner.And("the debug inputs as", ((string)(null)), table1289, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1317, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1290 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1318 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1290.AddRow(new string[] {
+            table1318.AddRow(new string[] {
                         "[[result]] =  -1"});
 #line 2099
-  testRunner.And("the debug output as", ((string)(null)), table1290, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table1318, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10316,29 +10316,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2103
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1291 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1319 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1291.AddRow(new string[] {
+            table1319.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1291.AddRow(new string[] {
+            table1319.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1291.AddRow(new string[] {
+            table1319.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1291.AddRow(new string[] {
+            table1319.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1291.AddRow(new string[] {
+            table1319.AddRow(new string[] {
                         "rs().field",
                         "52"});
-            table1291.AddRow(new string[] {
+            table1319.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 2104
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1291, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1319, "Given ");
 #line 2112
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2113
@@ -10350,7 +10350,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2116
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1292 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1320 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -10360,7 +10360,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1292.AddRow(new string[] {
+            table1320.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -10370,7 +10370,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1292.AddRow(new string[] {
+            table1320.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -10380,7 +10380,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1292.AddRow(new string[] {
+            table1320.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -10390,7 +10390,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1292.AddRow(new string[] {
+            table1320.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -10400,7 +10400,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1292.AddRow(new string[] {
+            table1320.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = 52",
                         "",
@@ -10410,7 +10410,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1292.AddRow(new string[] {
+            table1320.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -10421,14 +10421,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2117
- testRunner.And("the debug inputs as", ((string)(null)), table1292, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1320, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1293 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1321 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1293.AddRow(new string[] {
+            table1321.AddRow(new string[] {
                         "[[result]] =  5"});
 #line 2125
- testRunner.And("the debug output as", ((string)(null)), table1293, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1321, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10443,32 +10443,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 2129
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1294 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1322 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1294.AddRow(new string[] {
+            table1322.AddRow(new string[] {
                         "rs().field",
                         "45"});
-            table1294.AddRow(new string[] {
+            table1322.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1294.AddRow(new string[] {
+            table1322.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1294.AddRow(new string[] {
+            table1322.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1294.AddRow(new string[] {
+            table1322.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1294.AddRow(new string[] {
+            table1322.AddRow(new string[] {
                         "rs().field",
                         "741"});
-            table1294.AddRow(new string[] {
+            table1322.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 2130
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1294, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1322, "Given ");
 #line 2139
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2140
@@ -10480,7 +10480,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2143
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1295 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1323 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -10490,7 +10490,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1295.AddRow(new string[] {
+            table1323.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 45",
                         "",
@@ -10500,7 +10500,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1295.AddRow(new string[] {
+            table1323.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -10510,7 +10510,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1295.AddRow(new string[] {
+            table1323.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -10520,7 +10520,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1295.AddRow(new string[] {
+            table1323.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -10530,7 +10530,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1295.AddRow(new string[] {
+            table1323.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -10540,7 +10540,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1295.AddRow(new string[] {
+            table1323.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 741",
                         "",
@@ -10550,7 +10550,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1295.AddRow(new string[] {
+            table1323.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -10561,14 +10561,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2144
- testRunner.And("the debug inputs as", ((string)(null)), table1295, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1323, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1296 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1324 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1296.AddRow(new string[] {
+            table1324.AddRow(new string[] {
                         "[[result]] =  1,6"});
 #line 2153
- testRunner.And("the debug output as", ((string)(null)), table1296, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1324, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10583,29 +10583,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2157
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1297 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1325 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1297.AddRow(new string[] {
+            table1325.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1297.AddRow(new string[] {
+            table1325.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1297.AddRow(new string[] {
+            table1325.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1297.AddRow(new string[] {
+            table1325.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1297.AddRow(new string[] {
+            table1325.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1297.AddRow(new string[] {
+            table1325.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 2158
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1297, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1325, "Given ");
 #line 2166
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2167
@@ -10617,7 +10617,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2170
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1298 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1326 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -10627,7 +10627,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1298.AddRow(new string[] {
+            table1326.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = You",
                         "",
@@ -10637,7 +10637,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1298.AddRow(new string[] {
+            table1326.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = are",
                         "",
@@ -10647,7 +10647,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1298.AddRow(new string[] {
+            table1326.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = the",
                         "",
@@ -10657,7 +10657,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1298.AddRow(new string[] {
+            table1326.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = best",
                         "",
@@ -10667,7 +10667,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1298.AddRow(new string[] {
+            table1326.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -10677,7 +10677,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1298.AddRow(new string[] {
+            table1326.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = user",
                         "1",
@@ -10688,14 +10688,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2171
- testRunner.And("the debug inputs as", ((string)(null)), table1298, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1326, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1299 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1327 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1299.AddRow(new string[] {
+            table1327.AddRow(new string[] {
                         "[[result]] =  -1"});
 #line 2179
-  testRunner.And("the debug output as", ((string)(null)), table1299, "And ");
+  testRunner.And("the debug output as", ((string)(null)), table1327, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10710,29 +10710,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2183
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1300 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1328 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1300.AddRow(new string[] {
+            table1328.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1300.AddRow(new string[] {
+            table1328.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1300.AddRow(new string[] {
+            table1328.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1300.AddRow(new string[] {
+            table1328.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1300.AddRow(new string[] {
+            table1328.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1300.AddRow(new string[] {
+            table1328.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
 #line 2184
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1300, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1328, "Given ");
 #line 2192
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2193
@@ -10744,7 +10744,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2196
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1301 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1329 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -10754,7 +10754,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1301.AddRow(new string[] {
+            table1329.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = <test></test>",
                         "",
@@ -10764,7 +10764,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1301.AddRow(new string[] {
+            table1329.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = <test></test>",
                         "",
@@ -10774,7 +10774,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1301.AddRow(new string[] {
+            table1329.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = <test></test>",
                         "",
@@ -10784,7 +10784,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1301.AddRow(new string[] {
+            table1329.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = <test></test>",
                         "",
@@ -10794,7 +10794,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1301.AddRow(new string[] {
+            table1329.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = Warewolf",
                         "",
@@ -10804,7 +10804,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1301.AddRow(new string[] {
+            table1329.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = <test></test>",
                         "1",
@@ -10815,14 +10815,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2197
- testRunner.And("the debug inputs as", ((string)(null)), table1301, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1329, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1302 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1330 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1302.AddRow(new string[] {
+            table1330.AddRow(new string[] {
                         "[[result]] =  5"});
 #line 2205
- testRunner.And("the debug output as", ((string)(null)), table1302, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1330, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10837,32 +10837,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 2209
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1303 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1331 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1303.AddRow(new string[] {
+            table1331.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1303.AddRow(new string[] {
+            table1331.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1303.AddRow(new string[] {
+            table1331.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1303.AddRow(new string[] {
+            table1331.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1303.AddRow(new string[] {
+            table1331.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1303.AddRow(new string[] {
+            table1331.AddRow(new string[] {
                         "rs().field",
                         "Warewolf"});
-            table1303.AddRow(new string[] {
+            table1331.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
 #line 2210
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1303, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1331, "Given ");
 #line 2219
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2220
@@ -10874,7 +10874,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2223
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1304 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1332 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -10884,7 +10884,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1304.AddRow(new string[] {
+            table1332.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = Warewolf",
                         "",
@@ -10894,7 +10894,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1304.AddRow(new string[] {
+            table1332.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = <test></test>",
                         "",
@@ -10904,7 +10904,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1304.AddRow(new string[] {
+            table1332.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = <test></test>",
                         "",
@@ -10914,7 +10914,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1304.AddRow(new string[] {
+            table1332.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = <test></test>",
                         "",
@@ -10924,7 +10924,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1304.AddRow(new string[] {
+            table1332.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = <test></test>",
                         "",
@@ -10934,7 +10934,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1304.AddRow(new string[] {
+            table1332.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = Warewolf",
                         "",
@@ -10944,7 +10944,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1304.AddRow(new string[] {
+            table1332.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = <test></test>",
                         "1",
@@ -10955,14 +10955,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2224
- testRunner.And("the debug inputs as", ((string)(null)), table1304, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1332, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1305 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1333 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1305.AddRow(new string[] {
+            table1333.AddRow(new string[] {
                         "[[result]] =  1,6"});
 #line 2233
- testRunner.And("the debug output as", ((string)(null)), table1305, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1333, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10977,29 +10977,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 2237
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1306 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1334 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1306.AddRow(new string[] {
+            table1334.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1306.AddRow(new string[] {
+            table1334.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1306.AddRow(new string[] {
+            table1334.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1306.AddRow(new string[] {
+            table1334.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1306.AddRow(new string[] {
+            table1334.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
-            table1306.AddRow(new string[] {
+            table1334.AddRow(new string[] {
                         "rs().field",
                         "<test></test>"});
 #line 2238
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1306, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1334, "Given ");
 #line 2246
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2247
@@ -11011,7 +11011,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2250
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1307 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1335 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -11021,7 +11021,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1307.AddRow(new string[] {
+            table1335.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = <test></test>",
                         "",
@@ -11031,7 +11031,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1307.AddRow(new string[] {
+            table1335.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = <test></test>",
                         "",
@@ -11041,7 +11041,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1307.AddRow(new string[] {
+            table1335.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = <test></test>",
                         "",
@@ -11051,7 +11051,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1307.AddRow(new string[] {
+            table1335.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = <test></test>",
                         "",
@@ -11061,7 +11061,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1307.AddRow(new string[] {
+            table1335.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = <test></test>",
                         "",
@@ -11071,7 +11071,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1307.AddRow(new string[] {
+            table1335.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = <test></test>",
                         "1",
@@ -11082,14 +11082,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2251
- testRunner.And("the debug inputs as", ((string)(null)), table1307, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1335, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1308 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1336 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1308.AddRow(new string[] {
+            table1336.AddRow(new string[] {
                         "[[result]] =  -1"});
 #line 2259
- testRunner.And("the debug output as", ((string)(null)), table1308, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1336, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -11106,61 +11106,61 @@ this.ScenarioSetup(scenarioInfo);
 #line 2263
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1309 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1337 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1309.AddRow(new string[] {
+            table1337.AddRow(new string[] {
                         "rs(1).field1",
                         "123"});
-            table1309.AddRow(new string[] {
+            table1337.AddRow(new string[] {
                         "rs(2).field1",
                         "2"});
-            table1309.AddRow(new string[] {
+            table1337.AddRow(new string[] {
                         "rs(3).field1",
                         "5"});
 #line 2264
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1309, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1337, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1310 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1338 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1310.AddRow(new string[] {
+            table1338.AddRow(new string[] {
                         "rs1(1).field2",
                         "214"});
-            table1310.AddRow(new string[] {
+            table1338.AddRow(new string[] {
                         "rs1(2).field2",
                         "51"});
-            table1310.AddRow(new string[] {
+            table1338.AddRow(new string[] {
                         "rs1(3).field2",
                         "56"});
 #line 2269
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1310, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1338, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1311 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1339 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1311.AddRow(new string[] {
+            table1339.AddRow(new string[] {
                         "rs2(1).field3",
                         "512"});
-            table1311.AddRow(new string[] {
+            table1339.AddRow(new string[] {
                         "rs2(2).field3",
                         "84"});
-            table1311.AddRow(new string[] {
+            table1339.AddRow(new string[] {
                         "rs2(3).field3",
                         "12"});
 #line 2274
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1311, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1339, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1312 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1340 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
-            table1312.AddRow(new string[] {
+            table1340.AddRow(new string[] {
                         "[[rs().field1]]"});
-            table1312.AddRow(new string[] {
+            table1340.AddRow(new string[] {
                         "[[rs1().field2]]"});
-            table1312.AddRow(new string[] {
+            table1340.AddRow(new string[] {
                         "[[rs2().field3]]"});
 #line 2279
- testRunner.And("the fields to search is", ((string)(null)), table1312, "And ");
+ testRunner.And("the fields to search is", ((string)(null)), table1340, "And ");
 #line 2284
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2285
@@ -11191,61 +11191,61 @@ this.ScenarioSetup(scenarioInfo);
 #line 2292
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1313 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1341 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1313.AddRow(new string[] {
+            table1341.AddRow(new string[] {
                         "rs(1).field1",
                         "123"});
-            table1313.AddRow(new string[] {
+            table1341.AddRow(new string[] {
                         "rs(2).field1",
                         "2"});
-            table1313.AddRow(new string[] {
+            table1341.AddRow(new string[] {
                         "rs(3).field1",
                         "5"});
 #line 2293
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1313, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1341, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1314 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1342 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1314.AddRow(new string[] {
+            table1342.AddRow(new string[] {
                         "rs1(1).field2",
                         "214"});
-            table1314.AddRow(new string[] {
+            table1342.AddRow(new string[] {
                         "rs1(2).field2",
                         "51"});
-            table1314.AddRow(new string[] {
+            table1342.AddRow(new string[] {
                         "rs1(3).field2",
                         "56"});
 #line 2298
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1314, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1342, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1315 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1343 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1315.AddRow(new string[] {
+            table1343.AddRow(new string[] {
                         "rs2(1).field3",
                         "512"});
-            table1315.AddRow(new string[] {
+            table1343.AddRow(new string[] {
                         "rs2(2).field3",
                         "84"});
-            table1315.AddRow(new string[] {
+            table1343.AddRow(new string[] {
                         "rs2(3).field3",
                         "12"});
 #line 2303
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1315, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1343, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1316 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1344 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
-            table1316.AddRow(new string[] {
+            table1344.AddRow(new string[] {
                         "[[rs().field1]]"});
-            table1316.AddRow(new string[] {
+            table1344.AddRow(new string[] {
                         "[[rs1().field2]]"});
-            table1316.AddRow(new string[] {
+            table1344.AddRow(new string[] {
                         "[[rs2().field3]]"});
 #line 2308
- testRunner.And("the fields to search is", ((string)(null)), table1316, "And ");
+ testRunner.And("the fields to search is", ((string)(null)), table1344, "And ");
 #line 2313
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2314
@@ -11276,61 +11276,61 @@ this.ScenarioSetup(scenarioInfo);
 #line 2321
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1317 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1345 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1317.AddRow(new string[] {
+            table1345.AddRow(new string[] {
                         "AB(1).f1",
                         "123"});
-            table1317.AddRow(new string[] {
+            table1345.AddRow(new string[] {
                         "AB(2).f1",
                         "2"});
-            table1317.AddRow(new string[] {
+            table1345.AddRow(new string[] {
                         "AB(3).f1",
                         "5"});
 #line 2322
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1317, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1345, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1318 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1346 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1318.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "CD(1).f2",
                         "214"});
-            table1318.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "CD(2).f2",
                         "51"});
-            table1318.AddRow(new string[] {
+            table1346.AddRow(new string[] {
                         "CD(3).f2",
                         "56"});
 #line 2327
- testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table1318, "And ");
+ testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table1346, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1319 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1347 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1319.AddRow(new string[] {
+            table1347.AddRow(new string[] {
                         "EF(1).f3",
                         "512"});
-            table1319.AddRow(new string[] {
+            table1347.AddRow(new string[] {
                         "EF(2).f3",
                         "84"});
-            table1319.AddRow(new string[] {
+            table1347.AddRow(new string[] {
                         "EF(3).f3",
                         "12"});
 #line 2332
- testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table1319, "And ");
+ testRunner.And("I have the following recordset to search for multiple criteria", ((string)(null)), table1347, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1320 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1348 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
-            table1320.AddRow(new string[] {
+            table1348.AddRow(new string[] {
                         "[[AB().f1]]"});
-            table1320.AddRow(new string[] {
+            table1348.AddRow(new string[] {
                         "[[CD().f2]]"});
-            table1320.AddRow(new string[] {
+            table1348.AddRow(new string[] {
                         "[[EF().f3]]"});
 #line 2337
- testRunner.And("the fields to search is", ((string)(null)), table1320, "And ");
+ testRunner.And("the fields to search is", ((string)(null)), table1348, "And ");
 #line 2342
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2343
@@ -11361,61 +11361,61 @@ this.ScenarioSetup(scenarioInfo);
 #line 2350
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1321 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1349 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1321.AddRow(new string[] {
+            table1349.AddRow(new string[] {
                         "rs(1).field1",
                         "123"});
-            table1321.AddRow(new string[] {
+            table1349.AddRow(new string[] {
                         "rs(2).field1",
                         "2"});
-            table1321.AddRow(new string[] {
+            table1349.AddRow(new string[] {
                         "rs(3).field1",
                         "5"});
 #line 2351
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1321, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1349, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1322 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1350 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1322.AddRow(new string[] {
+            table1350.AddRow(new string[] {
                         "rs1(1).field2",
                         "214"});
-            table1322.AddRow(new string[] {
+            table1350.AddRow(new string[] {
                         "rs1(2).field2",
                         "52"});
-            table1322.AddRow(new string[] {
+            table1350.AddRow(new string[] {
                         "rs1(3).field2",
                         "56"});
 #line 2356
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1322, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1350, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1323 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1351 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1323.AddRow(new string[] {
+            table1351.AddRow(new string[] {
                         "rs2(1).field3",
                         "512"});
-            table1323.AddRow(new string[] {
+            table1351.AddRow(new string[] {
                         "rs2(2).field3",
                         "82"});
-            table1323.AddRow(new string[] {
+            table1351.AddRow(new string[] {
                         "rs2(3).field3",
                         "12"});
 #line 2361
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1323, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1351, "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table1324 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1352 = new TechTalk.SpecFlow.Table(new string[] {
                         "field"});
-            table1324.AddRow(new string[] {
+            table1352.AddRow(new string[] {
                         "[[rs().field1]]"});
-            table1324.AddRow(new string[] {
+            table1352.AddRow(new string[] {
                         "[[rs1().field2]]"});
-            table1324.AddRow(new string[] {
+            table1352.AddRow(new string[] {
                         "[[rs2().field3]]"});
 #line 2366
- testRunner.And("the fields to search is", ((string)(null)), table1324, "And ");
+ testRunner.And("the fields to search is", ((string)(null)), table1352, "And ");
 #line 2371
  testRunner.And("search the recordset with type \"Contains\" and criteria is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2372
@@ -11444,17 +11444,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 2379
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1325 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1353 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1325.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "rs().row",
                         "Warewolf"});
-            table1325.AddRow(new string[] {
+            table1353.AddRow(new string[] {
                         "rs().row",
                         "User"});
 #line 2380
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1325, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1353, "Given ");
 #line 2384
  testRunner.And("field to search is \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2385
@@ -11464,7 +11464,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2387
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1326 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1354 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -11474,7 +11474,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1326.AddRow(new string[] {
+            table1354.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).row]] = Warewolf",
                         "",
@@ -11484,7 +11484,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1326.AddRow(new string[] {
+            table1354.AddRow(new string[] {
                         "",
                         "[[rs(2).row]] = User",
                         "1",
@@ -11495,7 +11495,7 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2388
- testRunner.And("the debug inputs as", ((string)(null)), table1326, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1354, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -11510,23 +11510,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 2393
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1327 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1355 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1327.AddRow(new string[] {
+            table1355.AddRow(new string[] {
                         "rs().field",
                         "1"});
-            table1327.AddRow(new string[] {
+            table1355.AddRow(new string[] {
                         "rs().field",
                         "15"});
-            table1327.AddRow(new string[] {
+            table1355.AddRow(new string[] {
                         "rs().field",
                         "20"});
-            table1327.AddRow(new string[] {
+            table1355.AddRow(new string[] {
                         "rs().field",
                         "34"});
 #line 2394
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1327, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1355, "Given ");
 #line 2400
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2401
@@ -11539,7 +11539,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2404
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1328 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1356 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -11549,7 +11549,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1328.AddRow(new string[] {
+            table1356.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 1",
                         "",
@@ -11559,7 +11559,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1328.AddRow(new string[] {
+            table1356.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = 15",
                         "",
@@ -11569,7 +11569,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1328.AddRow(new string[] {
+            table1356.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = 20",
                         "",
@@ -11579,7 +11579,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1328.AddRow(new string[] {
+            table1356.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = 34",
                         "1",
@@ -11590,14 +11590,14 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2405
- testRunner.And("the debug inputs as", ((string)(null)), table1328, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1356, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1329 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1357 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1329.AddRow(new string[] {
+            table1357.AddRow(new string[] {
                         "[[result]] = 3"});
 #line 2411
- testRunner.And("the debug output as", ((string)(null)), table1329, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1357, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -11612,14 +11612,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 2416
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1330 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1358 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1330.AddRow(new string[] {
+            table1358.AddRow(new string[] {
                         "[[rs().row]]",
                         "NULL"});
 #line 2417
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1330, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1358, "Given ");
 #line 2420
  testRunner.And("field to search is \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2421
@@ -11646,14 +11646,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 2427
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1331 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1359 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1331.AddRow(new string[] {
+            table1359.AddRow(new string[] {
                         "[[rs().row]]",
                         "NULL"});
 #line 2428
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1331, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1359, "Given ");
 #line 2431
  testRunner.And("field to search is \"[[rs().row]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2432
@@ -11682,32 +11682,32 @@ this.ScenarioSetup(scenarioInfo);
 #line 2438
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table1332 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1360 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table1332.AddRow(new string[] {
+            table1360.AddRow(new string[] {
                         "rs().field",
                         "45"});
-            table1332.AddRow(new string[] {
+            table1360.AddRow(new string[] {
                         "rs().field",
                         "You"});
-            table1332.AddRow(new string[] {
+            table1360.AddRow(new string[] {
                         "rs().field",
                         "are"});
-            table1332.AddRow(new string[] {
+            table1360.AddRow(new string[] {
                         "rs().field",
                         "the"});
-            table1332.AddRow(new string[] {
+            table1360.AddRow(new string[] {
                         "rs().field",
                         "best"});
-            table1332.AddRow(new string[] {
+            table1360.AddRow(new string[] {
                         "rs().field",
                         "741"});
-            table1332.AddRow(new string[] {
+            table1360.AddRow(new string[] {
                         "rs().field",
                         "user"});
 #line 2439
- testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1332, "Given ");
+ testRunner.Given("I have the following recordset to search for multiple criteria", ((string)(null)), table1360, "Given ");
 #line 2448
  testRunner.And("field to search is \"[[rs().field]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2449
@@ -11719,7 +11719,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 2452
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1333 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1361 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         "#",
@@ -11729,7 +11729,7 @@ this.ScenarioSetup(scenarioInfo);
                         "And",
                         "Require All Fields To Match",
                         "Require All Matches To Be True"});
-            table1333.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "In Field(s)",
                         "[[rs(1).field]] = 45",
                         "",
@@ -11739,7 +11739,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1333.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "",
                         "[[rs(2).field]] = You",
                         "",
@@ -11749,7 +11749,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1333.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "",
                         "[[rs(3).field]] = are",
                         "",
@@ -11759,7 +11759,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1333.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "",
                         "[[rs(4).field]] = the",
                         "",
@@ -11769,7 +11769,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1333.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "",
                         "[[rs(5).field]] = best",
                         "",
@@ -11779,7 +11779,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1333.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "",
                         "[[rs(6).field]] = 741",
                         "",
@@ -11789,7 +11789,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         ""});
-            table1333.AddRow(new string[] {
+            table1361.AddRow(new string[] {
                         "",
                         "[[rs(7).field]] = user",
                         "1",
@@ -11800,16 +11800,16 @@ this.ScenarioSetup(scenarioInfo);
                         "NO",
                         "NO"});
 #line 2453
- testRunner.And("the debug inputs as", ((string)(null)), table1333, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1361, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1334 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1362 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table1334.AddRow(new string[] {
+            table1362.AddRow(new string[] {
                         "[[res(1).val]] =  1"});
-            table1334.AddRow(new string[] {
+            table1362.AddRow(new string[] {
                         "[[res(2).val]] =  6"});
 #line 2462
- testRunner.And("the debug output as", ((string)(null)), table1334, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table1362, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
