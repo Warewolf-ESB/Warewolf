@@ -167,8 +167,8 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Designers2\Core\ActionRegion\WcfActionMemento.cs" />
     <Compile Include="Designers2\Core\InputRegion\ServiceInputNameComparer.cs" />
-    <Compile Include="Designers2\Core\InputRegion\ServiceInputNameValueComparer.cs" />
     <Compile Include="Designers2\Core\ViewPropertyBuilder.cs" />
     <Compile Include="Designers2\Foreach\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
@@ -308,13 +308,9 @@
     <Compile Include="Designers2\Core\Source\WcfSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\WebSourceRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
-    <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
     <Compile Include="Designers2\Core\Web\Delete\WebDeleteInputRegion.cs" />
-    <Compile Include="Designers2\Core\Web\Delete\WebDeleteRegionClone.cs" />
-    <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
-    <Compile Include="Designers2\Core\Web\Put\WebPutRegionClone.cs" />
     <Compile Include="Designers2\CountRecordsNullHandler\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -1237,6 +1233,10 @@
       <Project>{1990550d-ea6f-4dac-9b5e-8571e86923ed}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
+      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
+      <Name>Warewolf.Language.Parser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
@@ -1264,10 +1264,6 @@
     <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
       <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
       <Name>Warewolf.Studio.Themes.Luna</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfLanguageParser\WarewolfLanguageParser.fsproj">
-      <Project>{e0f7c709-a61b-4829-a659-d7780052326a}</Project>
-      <Name>WarewolfLanguageParser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

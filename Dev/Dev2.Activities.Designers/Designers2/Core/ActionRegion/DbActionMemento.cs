@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
@@ -29,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors { get; set; }
         public IToolRegion CloneRegion() => null;
-        public void RestoreRegion(IToolRegion toRestore){}
+        public void RestoreRegion(IToolRegion toRestore) => throw new NotImplementedException();
 
         public EventHandler<List<string>> ErrorsHandler
         {
@@ -58,11 +57,5 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public double LabelWidth { get; set; }
 
         #endregion
-
-
-        protected virtual void OnSomethingChanged(IToolRegion args) => SomethingChanged?.Invoke(this, args);
-
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

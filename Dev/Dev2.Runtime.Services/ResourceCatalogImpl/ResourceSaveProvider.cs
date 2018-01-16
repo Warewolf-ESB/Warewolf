@@ -378,7 +378,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                    Dev2Logger.Warn($"Error saving {resource.ResourceName}. " + e.Message, "Warewolf Warn");
                     Transaction.Current.Rollback();
                     throw;
                 }

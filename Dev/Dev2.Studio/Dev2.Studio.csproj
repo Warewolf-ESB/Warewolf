@@ -871,10 +871,6 @@
       <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
       <Name>Warewolf.Studio.Views</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
-      <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
-      <Name>WarewolfParserInterop</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\Google.Protobuf.dll" />
