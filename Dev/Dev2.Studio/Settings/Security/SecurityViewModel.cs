@@ -385,7 +385,7 @@ namespace Dev2.Settings.Security
             }
         }
 
-        void UpdateOverridingPermission(WindowsGroupPermission windowsGroupPermission, string propertyName)
+        static void UpdateOverridingPermission(WindowsGroupPermission windowsGroupPermission, string propertyName)
         {
             if (windowsGroupPermission == null)
             {
@@ -566,7 +566,7 @@ namespace Dev2.Settings.Security
             }
         }
 
-        ObservableCollection<WindowsGroupPermission> CloneResourcePermissions(ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        static ObservableCollection<WindowsGroupPermission> CloneResourcePermissions(ObservableCollection<WindowsGroupPermission> resourcePermissions)
         {
             var resolver = new ShouldSerializeContractResolver();
             var ser = JsonConvert.SerializeObject(resourcePermissions, new JsonSerializerSettings { ContractResolver = resolver });
@@ -574,7 +574,7 @@ namespace Dev2.Settings.Security
             return clone;
         }
 
-        ObservableCollection<WindowsGroupPermission> CloneServerPermissions(ObservableCollection<WindowsGroupPermission> serverPermissions)
+        static ObservableCollection<WindowsGroupPermission> CloneServerPermissions(ObservableCollection<WindowsGroupPermission> serverPermissions)
         {
             var resolver = new ShouldSerializeContractResolver();
             var ser = JsonConvert.SerializeObject(serverPermissions, new JsonSerializerSettings { ContractResolver = resolver });
