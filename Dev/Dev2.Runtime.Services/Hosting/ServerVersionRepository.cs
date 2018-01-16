@@ -305,7 +305,7 @@ namespace Dev2.Runtime.Hosting
             }
             try
             {
-                var partialName = "VersionControl";
+                const string partialName = "VersionControl";
                 var dirs = directory.GetDirectories(_resourcePath, "*" + partialName + "*");
                 foreach (var item in dirs)
                 {
