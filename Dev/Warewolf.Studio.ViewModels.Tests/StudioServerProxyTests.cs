@@ -21,9 +21,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core;
-
-
-
+using Dev2.Explorer;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -392,6 +390,41 @@ namespace Warewolf.Studio.ViewModels.Tests
             studioServerProxy.CreateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>());
             //------------Assert Results-------------------------
             updateManagerProxy.Verify(manager => manager.AddFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("StudioServerProxy_CreateFolder")]
+        public void StudioServerProxy_CreateFolder_VerifyFolderIsTrue()
+        {
+            //------------Setup for test--------------------------
+            var commControllerFatoryMock = new Mock<ICommunicationControllerFactory>();
+            var commController = new Mock<ICommunicationController>();
+            commController.Setup(controller => controller.ExecuteCommand<IExplorerRepositoryResult>(It.IsAny<IEnvironmentConnection>(), It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Success,""));            
+            ServerExplorerItem sendItem = null;
+            var serialiser = new Dev2JsonSerializer();
+            commController.Setup(controller => controller.AddPayloadArgument(It.IsAny<string>(), It.IsAny<StringBuilder>())).Callback((string key, StringBuilder builder) => {
+                sendItem = serialiser.Deserialize<ServerExplorerItem>(builder);
+            });
+            commControllerFatoryMock.Setup(controller => controller.CreateController(It.IsAny<string>())).Returns(commController.Object);
+            var studioServerProxy = new StudioServerProxy(commControllerFatoryMock.Object, new Mock<IEnvironmentConnection>().Object);
+            var mockQueryManager = new Mock<IQueryManager>();
+            var mockVersionManager = new Mock<IVersionManager>();
+            studioServerProxy.QueryManagerProxy = mockQueryManager.Object;
+            studioServerProxy.VersionManager = mockVersionManager.Object;
+
+            var resID = Guid.NewGuid();
+            var resName = "TestFolder";
+            var resPath = "TestFolderPath";
+
+            //------------Execute Test---------------------------
+            studioServerProxy.CreateFolder(resPath, resName, resID);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resID, sendItem.ResourceId);
+            Assert.AreEqual(resName, sendItem.DisplayName);
+            Assert.AreEqual(resPath + "\\" + resName, sendItem.ResourcePath);
+            Assert.AreEqual("Folder", sendItem.ResourceType);
+            Assert.AreEqual(true, sendItem.IsFolder);
         }
 
         [TestMethod]
