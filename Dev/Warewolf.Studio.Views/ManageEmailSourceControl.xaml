@@ -71,7 +71,8 @@
                              Grid.Row="0" 
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Tooltips.ManageEmailHostNameTooltip}"
-                             Text="{Binding HostName, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding HostName, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                             AutomationProperties.ItemStatus="{Binding RelativeSource={RelativeSource Self}, Path=BorderBrush}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourceHostNameHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
@@ -138,7 +139,8 @@
                              Grid.Row="4" 
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Tooltips.ManageEmailPortTooltip}"
-                             Text="{Binding Port, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding Port, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntInRangeConverter}, ValidatesOnDataErrors=True}"
+                             AutomationProperties.ItemStatus="{Binding RelativeSource={RelativeSource Self}, Path=BorderBrush}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourcePortHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
@@ -150,7 +152,8 @@
                              Grid.Column="1" 
                              ToolTip="{x:Static languages:Tooltips.ManageEmailTimeoutTooltip}"
                              Margin="{StaticResource ControlBorderTop}"
-                             Text="{Binding Timeout, UpdateSourceTrigger=PropertyChanged}">
+                             Text="{Binding Timeout, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource StringToIntInRangeConverter}, ValidatesOnDataErrors=True}"
+                             AutomationProperties.ItemStatus="{Binding RelativeSource={RelativeSource Self}, Path=BorderBrush}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.EmailSourceTimeoutHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>
