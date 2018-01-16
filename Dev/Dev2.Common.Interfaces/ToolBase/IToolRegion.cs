@@ -10,10 +10,8 @@ namespace Dev2.Common.Interfaces.ToolBase
         bool IsEnabled { get; set; }
         IList<IToolRegion> Dependants { get; set; }
         IList<string> Errors { get; }
-
         IToolRegion CloneRegion();
         void RestoreRegion(IToolRegion toRestore);
-
         EventHandler<List<string>> ErrorsHandler { get; set; } 
     }
 
