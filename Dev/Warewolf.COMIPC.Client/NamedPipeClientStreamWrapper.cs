@@ -19,7 +19,7 @@ namespace WarewolfCOMIPC.Client
 
         public void Connect()
         {
-            _pipeClientStream.Connect();
+            _pipeClientStream.Connect(30000);
         }
 
         public void Close()
