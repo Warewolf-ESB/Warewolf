@@ -163,18 +163,18 @@ namespace Dev2.Activities.Designers2.Core
             {
                 headers2.Add(new NameValue(nameValue.Name,nameValue.Value));
             }
-            return new WebGetInputRegionClone
+            return new WebGetInputRegion
             {
                 Headers = headers2,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled
-            };
+            } as IToolRegion;
         }
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WebGetInputRegionClone region)
+            if (toRestore is WebGetInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;

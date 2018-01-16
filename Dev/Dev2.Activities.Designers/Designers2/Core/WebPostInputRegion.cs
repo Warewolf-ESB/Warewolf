@@ -133,19 +133,19 @@ namespace Dev2.Activities.Designers2.Core
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebPostInputRegionClone
+            return new WebPostInputRegion(_modelItem, _source)
             {
                 Headers = headers2,
                 PostData = PostData,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled
-            };
+            } as IToolRegion;
         }
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WebPostInputRegionClone region)
+            if (toRestore is WebPostInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
                 PostData = region.PostData;
