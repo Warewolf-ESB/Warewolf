@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -62,6 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 values.TryGetValue("ResourceXml", out StringBuilder resourceDefinition);
                 values.TryGetValue("WorkspaceID", out StringBuilder tmp);
+                values.TryGetValue("Reason", out StringBuilder reason);
                 if (tmp != null)
                 {
                     workspaceIdString = tmp.ToString();
@@ -78,13 +79,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var serializer = new Dev2JsonSerializer();
                 resourceDefinition = new StringBuilder(serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
                 var res = new ExecuteMessage { HasError = false };
-                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, savePathValue.ToString(), "Save");
+                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, savePathValue.ToString(), reason.ToString());
                 if (workspaceId == GlobalConstants.ServerWorkspaceID)
                 {
-                    ResourceCatalog.Instance.SaveResource(theWorkspace.ID, resourceDefinition, savePathValue.ToString(), "Save");
+                    ResourceCatalog.Instance.SaveResource(theWorkspace.ID, resourceDefinition, savePathValue.ToString(), reason.ToString());
                 }
                 res.SetMessage(saveResult.Message + " " + DateTime.Now);
-                
+
                 return serializer.SerializeToBuilder(res);
             }
             catch (Exception err)

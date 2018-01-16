@@ -15,9 +15,6 @@ using Dev2.DataList.Contract;
 
 namespace Dev2.DataList
 {
-    /// <summary>
-    /// Abstract class that check the validity of the input arguments
-    /// </summary>
     public abstract class AbstractRecsetSearchValidation : IFindRecsetOptions
     {
         public virtual Func<DataStorage.WarewolfAtom, bool> GenerateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from,IEnumerable<DataStorage.WarewolfAtom> to, bool all)

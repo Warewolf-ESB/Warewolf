@@ -29,10 +29,6 @@ using WarewolfCOMIPC.Client;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 {
-
-    /// <summary>
-    /// Handler that invokes a plugin in its own app domain
-    /// </summary>
     public class ComPluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
         readonly INamedPipeClientStreamWrapper _clientStreamWrapper;
@@ -46,11 +42,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
         {
             
         }
-        /// <summary>
-        /// Runs the specified setup information.
-        /// </summary>
-        /// <param name="setupInfo">The setup information.</param>
-        /// <returns></returns>
+
         public object Run(ComPluginInvokeArgs setupInfo)
         {
             var methodToRun = ExecuteComPlugin(setupInfo, out object pluginResult);

@@ -19,7 +19,7 @@ namespace Warewolf.UI.Tests
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
-            UIMap.Click_Save_Ribbon_Button_Without_Expecting_A_Dialog();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             Assert.IsFalse(MainStudioWindow.SideMenuBar.SaveButton.Enabled);
         }
 
