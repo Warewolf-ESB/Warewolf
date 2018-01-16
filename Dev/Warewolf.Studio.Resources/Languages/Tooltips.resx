@@ -2213,14 +2213,26 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="MergeCurrentConflictRBTooltip" xml:space="preserve">
     <value>Select the current Tool conflict</value>
   </data>
+  <data name="MergeCurrentConflictRBDisabledTooltip" xml:space="preserve">
+    <value>Current Tool conflict selection not allowed</value>
+  </data>
   <data name="MergeDifferenceConflictRBTooltip" xml:space="preserve">
     <value>Select the difference Tool conflict</value>
+  </data>
+  <data name="MergeDifferenceConflictRBDisabledTooltip" xml:space="preserve">
+    <value>Difference Tool conflict selection not allowed</value>
   </data>
   <data name="MergeCurrentArmRBTooltip" xml:space="preserve">
     <value>Select the current Tool connection conflict</value>
   </data>
+  <data name="MergeCurrentArmRBDisabledTooltip" xml:space="preserve">
+    <value>Current Tool connection conflict selection not allowed</value>
+  </data>
   <data name="MergeDifferenceArmRBTooltip" xml:space="preserve">
     <value>Select the difference Tool connection conflict</value>
+  </data>
+  <data name="MergeDifferenceArmRBDisabledTooltip" xml:space="preserve">
+    <value>Difference Tool connection conflict selection not allowed</value>
   </data>
   <data name="MergeSelectionViewLabelTooltip" xml:space="preserve">
     <value>Select the version you want to merge with</value>
