@@ -193,7 +193,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         [When(@"I Click VariableList Scalar Row1 Delete Button")]
         public void Click_VariableList_Scalar_Row1_Delete_Button()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton.Image, new Point(5, 8));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.ScrollViewerPane.NameTextbox.DeleteButton, new Point(5, 8));
         }
 
         [When(@"I DisplayStartNodeContextMenu")]
@@ -1416,9 +1416,17 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         [Given(@"I Click DecisionStep In Debug Output")]
         [When(@"I Click DecisionStep In Debug Output")]
         [Then(@"I Click DecisionStep In Debug Output")]
-        public void Click_DesicionStep_InDebugOutput()
+        public void Click_DecisionStep_InDebugOutput()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.DecisionOnDebugOutput);
+        }
+
+        [Given(@"I Filter the Debug with ""(.*)""")]
+        [When(@"I Filter the Debug with ""(.*)""")]
+        [Then(@"I Filter the Debug with ""(.*)""")]
+        public void Click_DecisionStep_InDebugOutput(string filterText)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox.Text = filterText;
         }
 
         #region UIMaps

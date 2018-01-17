@@ -49,7 +49,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="Open_Tools_UI_Map_Designer_To_Flowchart">
+    <TestStepMarkerAction Comment="" MarkerInformation="Open_Workflow_Tab_UI_Map_Designer_To_Flowchart">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>

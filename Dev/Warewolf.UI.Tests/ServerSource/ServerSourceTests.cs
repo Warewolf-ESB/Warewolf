@@ -116,11 +116,17 @@ namespace Warewolf.UI.Tests.ServerSource
         public void Try_Create_Server_Source_On_Restricted_Server()
         {
             var ServerSourceName = "Try_Create_Server_Source_On_Restricted_Server";
-            var ServerSourceDefinition = @"\\tst-ci-remote.dev2.local\c$\ProgramData\Warewolf\Resources\" + ServerSourceName + ".xml";
-            if (File.Exists(ServerSourceDefinition))
+            var ServerSourceDefinitionXml = @"\\tst-ci-remote.dev2.local\c$\ProgramData\Warewolf\Resources\" + ServerSourceName + ".xml";
+            var ServerSourceDefinitionBite = @"\\tst-ci-remote.dev2.local\c$\ProgramData\Warewolf\Resources\" + ServerSourceName + ".bite";
+            if (File.Exists(ServerSourceDefinitionXml))
             {
-                File.Delete(ServerSourceDefinition);
+                File.Delete(ServerSourceDefinitionXml);
             }
+            else if (File.Exists(ServerSourceDefinitionBite))
+            {
+                File.Delete(ServerSourceDefinitionBite);
+            }
+
             try
             {
                 ExplorerUIMap.ConnectToRestrictedRemoteServer();
@@ -134,9 +140,14 @@ namespace Warewolf.UI.Tests.ServerSource
             }
             finally
             {
-                if (File.Exists(ServerSourceDefinition))
+                if (File.Exists(ServerSourceDefinitionXml))
                 {
-                    File.Delete(ServerSourceDefinition);
+                    File.Delete(ServerSourceDefinitionXml);
+                    Assert.Fail("Created new server source on server without permission to do so.");
+                }
+                else if (File.Exists(ServerSourceDefinitionBite))
+                {
+                    File.Delete(ServerSourceDefinitionBite);
                     Assert.Fail("Created new server source on server without permission to do so.");
                 }
             }

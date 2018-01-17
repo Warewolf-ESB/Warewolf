@@ -9,14 +9,13 @@ namespace Dev2.Core.Tests.Merge
     [TestClass]
     public class MergeArmConnectorConflictTests
     {
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MergeArmConnectorConflict_IsArmSelectionAllowed_DefaultConstruction_ShouldBeFalse()
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new MergeArmConnectorConflict("a", "a", "a", "a", new ArmConnectorConflict());
+            var completeConflict = new MergeArmConnectorConflict("a -> b", "a", "a", "a", new ArmConnectorConflict());
             var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
@@ -38,7 +37,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new MergeArmConnectorConflict("a", "a", "a", "a", new ArmConnectorConflict());
+            var completeConflict = new MergeArmConnectorConflict("a -> b", "a", "a", "a", new ArmConnectorConflict());
 
             //------------Assert Results-------------------------
             var areEqual = completeConflict.Equals(null);
@@ -51,12 +50,36 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new MergeArmConnectorConflict("a", "a", "a", "a", new ArmConnectorConflict());
-            var completeConflict1 = new MergeArmConnectorConflict("a", "a", "a", "a", new ArmConnectorConflict());
+            var completeConflict = new MergeArmConnectorConflict("a -> b", "a", "a", "a", new ArmConnectorConflict());
+            var completeConflict1 = new MergeArmConnectorConflict("a -> b", "a", "a", "a", new ArmConnectorConflict());
 
             //------------Assert Results-------------------------
             var areEqual = completeConflict.Equals(completeConflict1);
             Assert.AreEqual(true, areEqual);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void MergeArmConnectorConflict_LeftArmDescription_ShouldHaveValue()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var completeConflict = new MergeArmConnectorConflict("a -> b", "a", "a", "a", new ArmConnectorConflict());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(completeConflict);
+            Assert.AreEqual("a ", completeConflict.LeftArmDescription);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void MergeArmConnectorConflict_RightArmDescription_ShouldHaveValue()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var completeConflict = new MergeArmConnectorConflict("a -> b", "a", "a", "a", new ArmConnectorConflict());
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(completeConflict);
+            Assert.AreEqual(" b", completeConflict.RightArmDescription);
         }
 
         [TestMethod]

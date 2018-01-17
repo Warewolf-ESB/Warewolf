@@ -28,7 +28,6 @@ using Dev2.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Models;
@@ -241,7 +240,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public ExecuteMessage Save(IResourceModel instanceObj)
         {
             AddResourceIfNotExist(instanceObj);
-            var executeMessage = SaveResource(_server, instanceObj.ToServiceDefinition(), _server.Connection.WorkspaceID, instanceObj.GetSavePath());
+            var executeMessage = SaveResource(_server, instanceObj.ToServiceDefinition(), _server.Connection.WorkspaceID, instanceObj.GetSavePath(), "Save");
             return executeMessage;
         }
 
@@ -255,10 +254,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        public ExecuteMessage SaveToServer(IResourceModel instanceObj)
+        public ExecuteMessage SaveToServer(IResourceModel instanceObj, string reason = "Save")
         {
             AddResourceIfNotExist(instanceObj);
-            var saveResource = SaveResource(_server, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID, instanceObj.GetSavePath());
+            var saveResource = SaveResource(_server, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID, instanceObj.GetSavePath(), reason);
             if (saveResource != null && !saveResource.HasError)
             {
                 var connection = _server.Connection;
@@ -485,7 +484,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     return null;
                 }
             }
-            var id = data.ResourceID;       
+            var id = data.ResourceID;
 
             if (!IsInCache(id) || forced)
             {
@@ -555,7 +554,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         internal Func<string, ICommunicationController> GetCommunicationController = serviveName => new CommunicationController { ServiceName = serviveName };
 
-        ExecuteMessage SaveResource(IServer targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath)
+        ExecuteMessage SaveResource(IServer targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath, string reason)
         {
             var comsController = GetCommunicationController?.Invoke("SaveResourceService");
             var message = new CompressedExecuteMessage();
@@ -564,6 +563,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("savePath", savePath);
             comsController.AddPayloadArgument("ResourceXml", ser.SerializeToBuilder(message));
             comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
+            comsController.AddPayloadArgument("Reason", reason);
             var con = targetEnvironment.Connection;
             var result = comsController.ExecuteCommand<ExecuteMessage>(con, con.WorkspaceID);
             return result;
