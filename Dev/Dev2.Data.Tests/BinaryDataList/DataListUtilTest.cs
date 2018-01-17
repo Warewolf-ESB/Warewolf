@@ -637,7 +637,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             //---------------Test Result -----------------------
             Assert.AreEqual("rec(*).name", indexWithStar);
         }
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ReplaceRecordsetIndexWithStar_GivenRecSetWithStar_ShouldReturnSame()
@@ -649,6 +648,30 @@ namespace Dev2.Data.Tests.BinaryDataList
             var indexWithStar = DataListUtil.ReplaceRecordsetIndexWithStar(recName);
             //---------------Test Result -----------------------
             Assert.AreEqual("rec(*).name", indexWithStar);
+        }
+        [TestMethod]
+        public void VariableNameToMapTo_GivenVariable_ShouldReturnVariableName()
+        {
+            //---------------Set up test pack-------------------
+            const string recName = "[[name]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var variableName = DataListUtil.GetVariableNameToMapOutputTo(recName);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("rec(*).name", variableName);
+        }
+
+
+        [TestMethod]
+        public void VariableNameToMapTo_GivenRecSet_ShouldReturnFieldName()
+        {
+            //---------------Set up test pack-------------------
+            const string recName = "[[rec(*).name]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var fieldName = DataListUtil.GetVariableNameToMapOutputTo(recName);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("name", fieldName);
         }
 
         [TestMethod]
