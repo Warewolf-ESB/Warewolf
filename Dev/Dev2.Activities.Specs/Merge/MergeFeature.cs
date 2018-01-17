@@ -176,6 +176,14 @@ namespace Dev2.Activities.Specs.Merge
             Assert.IsFalse(a);
         }
 
+        [Then(@"Merge variable conflicts is true")]
+        public void ThenMergeVariableConflictsIsTrue()
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var a = mergeVm.HasVariablesConflict;
+            Assert.IsTrue(a);
+        }
+
         [Then(@"Merge window has no Conflicting tools")]
         public void ThenMergeWindowHasNoConflictingTools()
         {

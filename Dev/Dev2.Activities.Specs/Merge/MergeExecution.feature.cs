@@ -128,12 +128,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge WorkFlowWithOneScalar Same VariableList")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge WorkFlowWithOneScalar different input mapping")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MergeExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowMerging")]
-        public virtual void MergeWorkFlowWithOneScalarSameVariableList()
+        public virtual void MergeWorkFlowWithOneScalarDifferentInputMapping()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge WorkFlowWithOneScalar Same VariableList", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge WorkFlowWithOneScalar different input mapping", ((string[])(null)));
 #line 28
 this.ScenarioSetup(scenarioInfo);
 #line 29
@@ -149,37 +149,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
   testRunner.And("Merge conflicts count is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
-  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Merge variable conflicts is true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 36
-  testRunner.And("Merge window has \"1\" Conflicting tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge WorkFlowWithOneScalar different input mapping")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MergeExecution")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowMerging")]
-        public virtual void MergeWorkFlowWithOneScalarDifferentInputMapping()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge WorkFlowWithOneScalar different input mapping", ((string[])(null)));
-#line 38
-this.ScenarioSetup(scenarioInfo);
-#line 39
-  testRunner.Given("I Load workflow \"WorkFlowWithOneScalar\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 40
-  testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneScalar\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
-  testRunner.When("Merge Window is opened with local \"WorkFlowWithOneScalar\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 42
-  testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 43
-  testRunner.And("Different workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
-  testRunner.And("Merge conflicts count is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
-  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
   testRunner.And("Merge window has \"1\" Conflicting tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -192,23 +163,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MergeWorkFlowWithOneRecordSetDifferentInputMapping()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge WorkFlowWithOneRecordSet different input mapping", ((string[])(null)));
-#line 48
+#line 38
 this.ScenarioSetup(scenarioInfo);
-#line 49
+#line 39
   testRunner.Given("I Load workflow \"WorkFlowWithOneRecordSet\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 50
+#line 40
   testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneRecordSet\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 51
+#line 41
   testRunner.When("Merge Window is opened with local \"WorkFlowWithOneRecordSet\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 52
+#line 42
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 53
+#line 43
   testRunner.And("Different workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 44
   testRunner.And("Merge conflicts count is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
-  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 45
+  testRunner.And("Merge variable conflicts is true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
   testRunner.And("Merge window has \"1\" Conflicting tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -221,23 +192,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MergeWorkFlowWithOneObjectDifferentInputMapping()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge WorkFlowWithOneObject different input mapping", ((string[])(null)));
-#line 58
+#line 48
 this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 49
   testRunner.Given("I Load workflow \"WorkFlowWithOneObject\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 50
   testRunner.And("I Load workflow version \"1\" of \"WorkFlowWithOneObject\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 51
   testRunner.When("Merge Window is opened with local \"WorkFlowWithOneObject\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 62
+#line 52
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 63
+#line 53
   testRunner.And("Different workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
+#line 54
   testRunner.And("Merge conflicts count is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 65
-  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
+#line 55
+  testRunner.And("Merge variable conflicts is true", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
   testRunner.And("Merge window has \"1\" Conflicting tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -252,22 +223,22 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow with Assign tool As First Tool And Split tool as Second tool count" +
                     "", ((string[])(null)));
-#line 68
+#line 58
 this.ScenarioSetup(scenarioInfo);
-#line 69
+#line 59
   testRunner.Given("I Load workflow \"WorkflowWithDifferentToolSequence\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 70
+#line 60
   testRunner.And("I Load workflow \"WorkflowWithDifferentToolSequence\" from \"Remote Connection Integ" +
                     "ration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 61
   testRunner.When("Merge Window is opened with remote \"WorkflowWithDifferentToolSequence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 72
+#line 62
   testRunner.Then("Current workflow contains \"3\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 73
+#line 63
   testRunner.And("Different workflow contains \"3\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 64
   testRunner.And("Merge conflicts count is \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 75
+#line 65
   testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -280,23 +251,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MergeWorkflowContainingSequenceToolWithDifferentChildrenCountsEqualsOne()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing SequenceTool With Different Children Counts Equals One", ((string[])(null)));
-#line 77
+#line 67
 this.ScenarioSetup(scenarioInfo);
-#line 78
+#line 68
   testRunner.Given("I Load workflow \"WorkflowWithSequenceToolWithDifferentChildren\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 79
+#line 69
   testRunner.And("I Load workflow version \"1\" of \"WorkflowWithSequenceToolWithDifferentChildren\" fr" +
                     "om \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 80
+#line 70
   testRunner.When("Merge Window is opened with local \"WorkflowWithSequenceToolWithDifferentChildren\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 81
+#line 71
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 82
+#line 72
   testRunner.And("Different workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
+#line 73
   testRunner.And("Merge conflicts count is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 74
   testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -309,24 +280,24 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MergeWorkflowContainingSequenceToolWithDifferentChildrenSequence()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing SequenceTool With Different Children Sequence", ((string[])(null)));
-#line 86
+#line 76
 this.ScenarioSetup(scenarioInfo);
-#line 87
+#line 77
   testRunner.Given("I Load workflow \"WorkflowWithSequenceToolWithChildrenInDifferentOrder\" from \"loca" +
                     "lhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 88
+#line 78
   testRunner.And("I Load workflow version \"1\" of \"WorkflowWithSequenceToolWithChildrenInDifferentOr" +
                     "der\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
+#line 79
   testRunner.When("Merge Window is opened with local \"WorkflowWithSequenceToolWithChildrenInDifferen" +
                     "tOrder\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 90
+#line 80
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 91
+#line 81
   testRunner.And("Different workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 92
+#line 82
   testRunner.And("Merge conflicts count is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 93
+#line 83
   testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -339,55 +310,55 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MergeWorkflowContainingSameToolsButDisconnectedArms()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing Same tools But disconnected Arms", ((string[])(null)));
-#line 95
+#line 85
 this.ScenarioSetup(scenarioInfo);
-#line 96
+#line 86
   testRunner.Given("I Load workflow \"WorkflowWithAssignToolsWithDisconnectedArms\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 97
+#line 87
   testRunner.And("I Load workflow \"WorkflowWithAssignToolsWithDisconnectedArms\" from \"Remote Connec" +
                     "tion Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 98
+#line 88
   testRunner.When("Merge Window is opened with remote \"WorkflowWithAssignToolsWithDisconnectedArms\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 99
+#line 89
   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 100
+#line 90
   testRunner.And("Different workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 101
+#line 91
   testRunner.And("Merge conflicts count is \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 102
+#line 92
   testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge Workflow Containing Removed tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge Workflow Containing Removed tool with same Variable List")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MergeExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowMerging")]
-        public virtual void MergeWorkflowContainingRemovedTool()
+        public virtual void MergeWorkflowContainingRemovedToolWithSameVariableList()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing Removed tool", ((string[])(null)));
-#line 104
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing Removed tool with same Variable List", ((string[])(null)));
+#line 94
 this.ScenarioSetup(scenarioInfo);
-#line 105
+#line 95
   testRunner.Given("I Load workflow \"MergeRemovedTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 106
+#line 96
   testRunner.And("I Load workflow version \"1\" of \"MergeRemovedTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 97
   testRunner.When("Merge Window is opened with local \"MergeRemovedTool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 108
+#line 98
   testRunner.Then("Current workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 109
+#line 99
   testRunner.And("Different workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 100
   testRunner.And("Merge conflicts count is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 111
+#line 101
   testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 112
+#line 102
   testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 103
   testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 104
   testRunner.Then("Save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -400,31 +371,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MergeWorkflowContainingSwitchTool()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing Switch tool", ((string[])(null)));
-#line 116
+#line 106
 this.ScenarioSetup(scenarioInfo);
-#line 117
+#line 107
   testRunner.Given("I Load workflow \"MergeSwitchTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 118
+#line 108
   testRunner.And("I Load workflow version \"1\" of \"MergeSwitchTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 119
+#line 109
   testRunner.When("Merge Window is opened with local \"MergeSwitchTool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 120
+#line 110
   testRunner.Then("Current workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 121
+#line 111
   testRunner.And("Different workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 122
+#line 112
   testRunner.And("Merge conflicts count is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 123
+#line 113
   testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 124
+#line 114
   testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 125
+#line 115
   testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 126
+#line 116
   testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 127
+#line 117
   testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 118
   testRunner.Then("Save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
