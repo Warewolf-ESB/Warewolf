@@ -92,7 +92,7 @@ namespace Dev2.Settings.Security
             _directoryObjectPicker.TargetComputer = string.Empty;
             _directoryObjectPicker.ShowAdvancedView = false;
 
-            PickWindowsGroupCommand = new DelegateCommand(PickWindowsGroup, CanPickWindowsGroup);
+            PickWindowsGroupCommand = new DelegateCommand(o => PickWindowsGroup(), o => CanPickWindowsGroup(securitySettings?.WindowsGroupPermissions));
             PickResourceCommand = new DelegateCommand(PickResource);
 
             InitializeHelp();
@@ -100,10 +100,9 @@ namespace Dev2.Settings.Security
             InitializePermissions(securitySettings?.WindowsGroupPermissions);
         }
 
-        static bool CanPickWindowsGroup(object obj)
+        static bool CanPickWindowsGroup(IEnumerable<WindowsGroupPermission> permissions)
         {
-            var permission = obj as WindowsGroupPermission;
-            return permission != null;
+            return permissions != null;
         }
 
         public ObservableCollection<WindowsGroupPermission> ServerPermissions
