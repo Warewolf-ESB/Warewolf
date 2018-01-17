@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
     {
         
         /// <summary>
-        /// Open_Workflow_Tab_UI_Map_Designer_To_Flowchart - Use 'Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
+        /// Open_Workflow_Tab_UI_Map_Designer_To_Flowchart - Use 'Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues' to pass parameters into this method.
         /// </summary>
         public void Open_Workflow_Tab_UI_Map_Designer_To_Flowchart()
         {
@@ -38,8 +38,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             WpfText uISQLErrorError15700seText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UISQLServerDatabaseTreeItem.UISQLErrorError15700seText;
             #endregion
 
-            // Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
-            Assert.AreEqual(this.Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
+            // Verify that the 'ControlType' property of 'SQL Error: Error 15700, severity -1, state 1 was r...' label equals 'Text'
+            Assert.AreEqual(this.Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues.UISQLErrorError15700seTextControlType, uISQLErrorError15700seText.ControlType.ToString());
         }
         
         /// <summary>
@@ -56,15 +56,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         }
         
         #region Properties
-        public virtual Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams
+        public virtual Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues
         {
             get
             {
-                if ((this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartParams == null))
+                if ((this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues == null))
                 {
-                    this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartParams = new Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams();
+                    this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues = new Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues();
                 }
-                return this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartParams;
+                return this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
             }
         }
         
@@ -118,9 +118,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         #endregion
         
         #region Fields
-        private Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartParams;
-        
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        private Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
         
         private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
         
@@ -136,7 +134,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
     /// Parameters to be passed into 'Open_Workflow_Tab_UI_Map_Designer_To_Flowchart'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Open_Workflow_Tab_UI_Map_Designer_To_FlowchartParams
+    public class Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues
     {
         
         #region Fields
