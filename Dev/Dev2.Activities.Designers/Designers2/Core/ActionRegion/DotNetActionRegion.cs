@@ -9,7 +9,6 @@ using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
-using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
 
@@ -21,8 +20,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
     public class DotNetActionRegion : IActionToolRegion<IPluginAction>
     {
         readonly ModelItem _modelItem;
-        readonly ISourceToolRegion<IPluginSource> _source;
-        readonly INamespaceToolRegion<INamespaceItem> _namespace;
         bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
@@ -38,57 +35,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public DotNetActionRegion()
         {
             ToolRegionName = "DotNetActionRegion";
-        }
-
-        public DotNetActionRegion(IPluginServiceModel model, ModelItem modelItem, ISourceToolRegion<IPluginSource> source, INamespaceToolRegion<INamespaceItem> namespaceItem)
-        {
-            try
-            {
-                Errors = new List<string>();
-
-                LabelWidth = 70;
-                ToolRegionName = "DotNetActionRegion";
-                _modelItem = modelItem;
-                _model = model;
-                _source = source;
-                _namespace = namespaceItem;
-                _namespace.SomethingChanged += SourceOnSomethingChanged;
-                Dependants = new List<IToolRegion>();
-                IsRefreshing = false;
-                if (_source.SelectedSource != null)
-                {
-                    Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
-                }
-                if (Method != null && Actions != null)
-                {
-                    IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null; 
-                    SelectedAction = Actions.FirstOrDefault(action => action.Method == Method.Method);
-                }
-                RefreshActionsCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() =>
-                {
-                    IsRefreshing = true;
-                    if (_source.SelectedSource != null)
-                    {
-                        Actions = model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
-                    }
-                    IsRefreshing = false;
-                }, CanRefresh);
-
-                IsEnabled = true;
-                _modelItem = modelItem;
-            }
-            catch (Exception e)
-            {
-                Errors.Add(e.Message);
-            }
+            Errors = new List<string>();
+            IsEnabled = true;
         }
 
         IPluginAction Method
         {
-            get
-            {
-                return _modelItem.GetProperty<IPluginAction>("Method");
-            }
             set
             {
                 _modelItem.SetProperty("Method", value);
@@ -97,61 +49,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public double LabelWidth
         {
-            get
-            {
-                return _labelWidth;
-            }
+            get => _labelWidth;
             set
             {
                 _labelWidth = value;
                 OnPropertyChanged();
             }
-        }
-
-        void SourceOnSomethingChanged(object sender, IToolRegion args)
-        {
-            try
-            {
-                Errors.Clear();
-                IsRefreshing = true;
-
-                UpdateBasedOnNamespace();
-                IsRefreshing = false;
-
-                OnPropertyChanged(@"IsEnabled");
-            }
-            catch (Exception e)
-            {
-                IsRefreshing = false;
-                Errors.Add(e.Message);
-            }
-            finally
-            {
-                OnSomethingChanged(this);
-                CallErrorsEventHandler();
-            }
-        }
-
-        void CallErrorsEventHandler()
-        {
-            ErrorsHandler?.Invoke(this, new List<string>(Errors));
-        }
-
-        void UpdateBasedOnNamespace()
-        {
-            if (_source?.SelectedSource != null)
-            {
-                Actions = _model.GetActions(_source.SelectedSource, _namespace.SelectedNamespace);
-                SelectedAction = null;
-                IsActionEnabled = true;
-                IsEnabled = true;
-            }
-        }
-
-        public bool CanRefresh()
-        {
-            IsActionEnabled = _source.SelectedSource != null && _namespace.SelectedNamespace != null;
-            return _source.SelectedSource != null;
         }
 
         public IPluginAction SelectedAction

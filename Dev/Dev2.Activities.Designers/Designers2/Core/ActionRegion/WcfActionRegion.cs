@@ -21,7 +21,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         readonly ModelItem _modelItem;
         readonly ISourceToolRegion<IWcfServerSource> _source;
         bool _isEnabled;
-
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         Action _sourceChangedAction;
         IWcfAction _selectedAction;
@@ -32,17 +31,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         double _labelWidth;
         IList<string> _errors;
 
-        public WcfActionRegion()
-        {
-            ToolRegionName = "WcfActionRegion";
-        }
+        public WcfActionRegion() => ToolRegionName = "WcfActionRegion";
 
         public WcfActionRegion(IWcfServiceModel model, ModelItem modelItem, ISourceToolRegion<IWcfServerSource> source)
         {
             try
             {
                 Errors = new List<string>();
-
                 LabelWidth = 46;
                 ToolRegionName = "DbActionRegion";
                 _modelItem = modelItem;
@@ -85,7 +80,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 Errors.Clear();
                 IsRefreshing = true;
-
                 if (_source?.SelectedSource != null)
                 {
                     Actions = _model.GetActions(_source.SelectedSource);
@@ -94,7 +88,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsEnabled = true;
                 }
                 IsRefreshing = false;
-
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -116,11 +109,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         IWcfAction Method
         {
-            get { return _modelItem.GetProperty<IWcfAction>("Method"); }
-            set
-            {
-                _modelItem.SetProperty("Method", value);
-            }
+            get => _modelItem.GetProperty<IWcfAction>("Method");
+            set => _modelItem.SetProperty("Method", value);
         }
 
         public bool CanRefresh()
@@ -131,10 +121,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IWcfAction SelectedAction
         {
-            get
-            {
-                return _selectedAction;
-            }
+            get => _selectedAction;
             set
             {
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
@@ -179,10 +166,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public ICollection<IWcfAction> Actions
         {
-            get
-            {
-                return _actions;
-            }
+            get => _actions;
             set
             {
                 _actions = value;
@@ -192,10 +176,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public ICommand RefreshActionsCommand { get; set; }
         public bool IsActionEnabled
         {
-            get
-            {
-                return _isActionEnabled;
-            }
+            get => _isActionEnabled;
             set
             {
                 _isActionEnabled = value;
@@ -204,10 +185,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
         public bool IsRefreshing
         {
-            get
-            {
-                return _isRefreshing;
-            }
+            get => _isRefreshing;
             set
             {
                 _isRefreshing = value;
@@ -217,22 +195,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public Action SourceChangedAction
         {
-            get
-            {
-                return _sourceChangedAction ?? (() => { });
-            }
-            set
-            {
-                _sourceChangedAction = value;
-            }
+            get => _sourceChangedAction ?? (() => { });
+            set => _sourceChangedAction = value;
         }
         public event SomethingChanged SomethingChanged;
         public double LabelWidth
         {
-            get
-            {
-                return _labelWidth;
-            }
+            get => _labelWidth;
             set
             {
                 _labelWidth = value;
@@ -245,16 +214,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public string ToolRegionName { get; set; }
         public bool IsEnabled
         {
-            get
-            {
-                return _isEnabled;
-            }
+            get => _isEnabled;
             set
             {
                 _isEnabled = value;
                 OnPropertyChanged();
             }
         }
+
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
@@ -318,17 +285,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        bool IsAPreviousValue(IWcfAction value)
-        {
-            return value != null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
-        }
+        bool IsAPreviousValue(IWcfAction value) => value != null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
 
         public IList<string> Errors
         {
-            get
-            {
-                return _errors;
-            }
+            get => _errors;
             set
             {
                 _errors = value;
@@ -338,14 +299,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IWcfAction SavedAction
         {
-            get
-            {
-                return _modelItem.GetProperty<IWcfAction>("SavedAction");
-            }
-            set
-            {
-                _modelItem.SetProperty("SavedAction", value);
-            }
+            get => _modelItem.GetProperty<IWcfAction>("SavedAction");
+            set => _modelItem.SetProperty("SavedAction", value);
         }
 
         #endregion
@@ -362,77 +317,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         {
             var handler = SomethingChanged;
             handler?.Invoke(this, args);
-        }
-    }
-
-    public class WcfActionMemento : IActionToolRegion<IWcfAction>
-    {
-        IWcfAction _selectedAction;
-
-        #region Implementation of INotifyPropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        #endregion
-
-        #region Implementation of IToolRegion
-
-        public string ToolRegionName { get; set; }
-        public bool IsEnabled { get; set; }
-        public IList<IToolRegion> Dependants { get; set; }
-        public IList<string> Errors { get; set; }
-
-        public IToolRegion CloneRegion()
-        {
-            return null;
-        }
-
-        public void RestoreRegion(IToolRegion toRestore)
-        {
-        }
-
-        public EventHandler<List<string>> ErrorsHandler
-        {
-            get;
-            set;
-        }
-
-        #endregion
-
-        #region Implementation of IActionToolRegion<IDbAction>
-
-        public IWcfAction SelectedAction
-        {
-            get
-            {
-                return _selectedAction;
-            }
-            set
-            {
-                _selectedAction = value;
-            }
-        }
-        public ICollection<IWcfAction> Actions { get; set; }
-        public ICommand RefreshActionsCommand { get; set; }
-        public bool IsActionEnabled { get; set; }
-        public bool IsRefreshing { get; set; }
-        public event SomethingChanged SomethingChanged;
-        public double LabelWidth { get; set; }
-
-        #endregion
-
-    
-        protected virtual void OnSomethingChanged(IToolRegion args)
-        {
-            var handler = SomethingChanged;
-            handler?.Invoke(this, args);
-        }
-
-    
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
