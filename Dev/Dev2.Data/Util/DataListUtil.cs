@@ -112,6 +112,15 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string ReplaceRecordsetIndexWithStar(string expression) => RecSetCommon.ReplaceRecordsetIndexWithStar(expression);
 
+        public static string VariableNameToMapTo(string mappedTo)
+        {
+            if (IsValueRecordset(mappedTo))
+            {
+                return ExtractFieldNameFromValue(mappedTo);
+            }
+            return RemoveLanguageBrackets(mappedTo);
+        }
+
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].
         /// </summary>
