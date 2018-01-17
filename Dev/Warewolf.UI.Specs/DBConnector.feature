@@ -6,6 +6,7 @@ Feature: DBConnector
 
 Scenario: Create New DB Connector With Variables
 	Given The Warewolf Studio is running
+	And I Wait For Explorer Localhost Spinner
 	And I Click New SQLServerSource Explorer Context Menu
 	And I Type rsaklfsvrgen into DB Source Wizard Server Textbox
 	Given RSAKLFSVRDEV appears as an option in the DB source wizard server combobox

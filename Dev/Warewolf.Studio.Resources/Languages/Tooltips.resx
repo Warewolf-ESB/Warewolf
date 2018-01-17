@@ -304,6 +304,12 @@ Use a comma to separate the variables.</value>
   <data name="SchedulesDeleteSelectedScheduleDisabledTooltip" xml:space="preserve">
     <value>Cannot delete an enabled schedule</value>
   </data>
+  <data name="SecurityWindowsGroupPermissionsDisabledTooltip" xml:space="preserve">
+    <value>Windows group access denied</value>
+  </data>
+  <data name="SecurityResourcePermissionsDisabledTooltip" xml:space="preserve">
+    <value>Select Resource access denied</value>
+  </data>
   <data name="TestEditorToolTip" xml:space="preserve">
     <value>View the current tests for this resource</value>
   </data>
@@ -2213,14 +2219,26 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="MergeCurrentConflictRBTooltip" xml:space="preserve">
     <value>Select the current Tool conflict</value>
   </data>
+  <data name="MergeCurrentConflictRBDisabledTooltip" xml:space="preserve">
+    <value>Current Tool conflict selection not allowed</value>
+  </data>
   <data name="MergeDifferenceConflictRBTooltip" xml:space="preserve">
     <value>Select the difference Tool conflict</value>
+  </data>
+  <data name="MergeDifferenceConflictRBDisabledTooltip" xml:space="preserve">
+    <value>Difference Tool conflict selection not allowed</value>
   </data>
   <data name="MergeCurrentArmRBTooltip" xml:space="preserve">
     <value>Select the current Tool connection conflict</value>
   </data>
+  <data name="MergeCurrentArmRBDisabledTooltip" xml:space="preserve">
+    <value>Current Tool connection conflict selection not allowed</value>
+  </data>
   <data name="MergeDifferenceArmRBTooltip" xml:space="preserve">
     <value>Select the difference Tool connection conflict</value>
+  </data>
+  <data name="MergeDifferenceArmRBDisabledTooltip" xml:space="preserve">
+    <value>Difference Tool connection conflict selection not allowed</value>
   </data>
   <data name="MergeSelectionViewLabelTooltip" xml:space="preserve">
     <value>Select the version you want to merge with</value>

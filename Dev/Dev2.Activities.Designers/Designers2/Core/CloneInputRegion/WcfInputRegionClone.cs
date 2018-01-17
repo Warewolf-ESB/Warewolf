@@ -1,33 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Activities.Designers2.Core.CloneInputRegion
 {
-    public class WcfInputRegionClone : IToolRegion
+    public class WcfInputRegionClone
     {
         public event PropertyChangedEventHandler PropertyChanged;
-        public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
-        public IList<IToolRegion> Dependants { get; set; }
-        
-        public IList<string> Errors { get; private set; }
         public IList<IServiceInput> Inputs { get; set; }
-        public IToolRegion CloneRegion()
-        {
-            return this;
-        }
-        public void RestoreRegion(IToolRegion toRestore)
-        {
-
-        }
-
-        public EventHandler<List<string>> ErrorsHandler
-        {
-            get;
-            set;
-        }
     }
 }

@@ -8,11 +8,6 @@ using Dev2.Studio.Core.Factories;
 using System.Globalization;
 using Dev2.Common;
 using Dev2.Data;
-using Dev2.Studio.ViewModels.DataList;
-using Moq;
-using Dev2.Studio.Interfaces;
-using Caliburn.Micro;
-using Dev2.Studio.Core;
 
 namespace Dev2.Integration.Tests
 {

@@ -264,4 +264,10 @@
   <data name="Test_NotAuthorizedMsg" xml:space="preserve">
     <value>Failed: The user running the test is not authorized to execute resource {0}.</value>
   </data>
+  <data name="Test_EmailServerSource_EmailBody" xml:space="preserve">
+    <value>Test message from Warewolf for Email Service Source</value>
+  </data>
+  <data name="Test_EmailServerSource_Header" xml:space="preserve">
+    <value>Test Email Service Source</value>
+  </data>
 </root>
