@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Mvvm;
@@ -143,6 +144,18 @@ namespace Warewolf.Studio.Views
         public void CancelTest()
         {
             CancelButton.Command.Execute(null);
+        }
+
+        void ServerTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (sender is TextBox textbox)
+            {
+                var viewModel = textbox.DataContext as ManageWebserviceSourceViewModel;
+                if (!viewModel.HostName.Contains("://"))
+                {
+                    viewModel.HostName = GlobalConstants.HTTPSAddress + viewModel.HostName;
+                }
+            }
         }
     }
 }

@@ -82,6 +82,62 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void OnLoad_GivenHasModelAndId_ThumbVisibility_ExpectedTrue()
+        {
+            //---------------Set up test pack-------------------
+            CustomContainer.LoadedTypes = new List<Type>()
+            {
+                typeof(ManageWebServiceModel)
+            };
+            var shellVm = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            var updateProxy = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IQueryManager>();
+            serverMock.Setup(server => server.UpdateRepository).Returns(updateProxy.Object);
+            serverMock.Setup(server => server.QueryProxy).Returns(updateManager.Object);
+            shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellVm.Object);
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            IsItemDragged.Instance.IsDragged = true;
+            var putViewModel = new WebServicePutViewModel(modelItem);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(putViewModel.ShowLarge);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void OnLoad_GivenHasModelAndId_ThumbVisibility_ExpectedFalse()
+        {
+            //---------------Set up test pack-------------------
+            CustomContainer.LoadedTypes = new List<Type>()
+            {
+                typeof(ManageWebServiceModel)
+            };
+            var shellVm = new Mock<IShellViewModel>();
+            var serverMock = new Mock<IServer>();
+            var updateProxy = new Mock<IStudioUpdateManager>();
+            var updateManager = new Mock<IQueryManager>();
+            serverMock.Setup(server => server.UpdateRepository).Returns(updateProxy.Object);
+            serverMock.Setup(server => server.QueryProxy).Returns(updateManager.Object);
+            shellVm.Setup(model => model.ActiveServer).Returns(serverMock.Object);
+            CustomContainer.Register(shellVm.Object);
+            var mod = GetMockModel();
+            var act = GetPostActivityWithOutPuts(mod);
+            var modelItem = ModelItemUtils.CreateModelItem(act);
+            IsItemDragged.Instance.IsDragged = false;
+            var putViewModel = new WebServicePutViewModel(modelItem);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsFalse(putViewModel.ShowLarge);
+        }
+
         static WebServicePutViewModel CreateViewModel(DsfWebPutActivity act, MyWebModel mod)
         {
             return new WebServicePutViewModel(ModelItemUtils.CreateModelItem(act), mod);

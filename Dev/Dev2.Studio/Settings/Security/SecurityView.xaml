@@ -9,6 +9,7 @@
              xmlns:security="clr-namespace:Dev2.Services.Security;assembly=Dev2.Infrastructure"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -27,8 +28,8 @@
         <Style x:Key="PermissionsGridWindowsGroupButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="Content" Value="..." />
             <Setter Property="Margin" Value="1" />
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
             <Setter Property="Command" Value="{Binding DataContext.PickWindowsGroupCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
-            <Setter Property="Visibility" Value="{Binding DataContext.Visibility, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             <Setter Property="CommandParameter" Value="{Binding}" />
             <Setter Property="AutomationProperties.AutomationId">
                 <Setter.Value>
@@ -38,11 +39,20 @@
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SettingsSecurityServerToolTipWindowsGroup}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SecurityWindowsGroupPermissionsDisabledTooltip}" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
         <Style x:Key="PermissionsGridResourceButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource ButtonStyle}">
             <Setter Property="Content" Value="..." />
             <Setter Property="Margin" Value="1" />
+            <Setter Property="ToolTipService.ShowOnDisabled" Value="True"/>
             <Setter Property="Command" Value="{Binding DataContext.PickResourceCommand, RelativeSource={RelativeSource AncestorType=UserControl}}" />
             <Setter Property="CommandParameter" Value="{Binding}" />
             <Setter Property="AutomationProperties.AutomationId">
@@ -53,6 +63,14 @@
                     </MultiBinding>
                 </Setter.Value>
             </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="True">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipResource}" />
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.SecurityResourcePermissionsDisabledTooltip}" />
+                </Trigger>
+            </Style.Triggers>
         </Style>
 
     </UserControl.Resources>
@@ -66,7 +84,7 @@
             <RowDefinition Height="8" />
             <RowDefinition Height="50*"/>
         </Grid.RowDefinitions>
-        
+
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -80,13 +98,13 @@
                             Orientation="Horizontal">
                 <TextBlock Margin="5" Style="{StaticResource SourceHeader}">Server Permissions</TextBlock>
             </StackPanel>
-            
+
             <ig:XamGrid Grid.Row="1"
                         x:Name="ServerPermissionsDataGrid"
                         AutoGenerateColumns="False"
                         ColumnSorting="ServerColumnSorting"
                         ItemsSource="{Binding ServerPermissions}">
-                
+
                 <ig:XamGrid.Columns>
                     <ig:TemplateColumn x:Name="WindowsGroupColumn" Key="WindowsGroup" HeaderText="Windows Group" Width="*" MinimumWidth="100" HorizontalContentAlignment="Stretch"
                                         d:DataContext="{d:DesignInstance Type=security:WindowsGroupPermission}">
@@ -113,8 +131,7 @@
                                     </TextBox>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
-                                            IsEnabled="{Binding Path=CanChangeName}"
-                                            ToolTip="{x:Static languages:Tooltips.SettingsSecurityServerToolTipWindowsGroup}">
+                                            IsEnabled="{Binding Path=CanChangeName}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddWindowsGroupButton_AutoID">
                                                 <Binding Path="WindowsGroup" FallbackValue="New" />
@@ -311,9 +328,7 @@
                                 <Button AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
                                         Command="{Binding Path=RemoveRow}"
                                         ToolTip="Removes Permissions">
-                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
-                                           Height="15"
-                                           Width="15" />
+                                    <fa:FontAwesome Icon="Trash" FontSize="15"></fa:FontAwesome>
                                 </Button>
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>
@@ -375,8 +390,7 @@
                                     </TextBlock>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridResourceButtonStyle}"
-                                            IsEnabled="{Binding Path=EnableCellEditing}"
-                                            ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipResource}">
+                                            IsEnabled="{Binding Path=EnableCellEditing}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddResourceButton_AutoID">
                                                 <Binding Path="ResourceName" FallbackValue="New" />
@@ -422,8 +436,7 @@
                                     </TextBox>
                                     <Button Grid.Column="1"
                                             Style="{StaticResource PermissionsGridWindowsGroupButtonStyle}"
-                                            IsEnabled="{Binding Path=EnableCellEditing}"
-                                            ToolTip="{x:Static languages:Tooltips.SettingsSecurityResourceToolTipWindowsGroup}">
+                                            IsEnabled="{Binding Path=EnableCellEditing}">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_{0}_AddWindowsGroupsButton_AutoID">
                                                 <Binding Path="WindowsGroup" FallbackValue="New" />
@@ -535,9 +548,7 @@
                                 <Button AutomationProperties.AutomationId="UI_AddRemovebtn_AutoID"
                                         Command="{Binding Path=RemoveRow}"
                                         ToolTip="Removes Permissions">
-                                    <Image Source="{StaticResource RemoveUnusedVariable-32}"
-                                           Height="15"
-                                           Width="15" />
+                                    <fa:FontAwesome Icon="Trash" FontSize="15"></fa:FontAwesome>
                                 </Button>
                             </DataTemplate>
                         </ig:TemplateColumn.ItemTemplate>

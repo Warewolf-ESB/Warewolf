@@ -29,20 +29,10 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragDialogWindow_UITest()
         {
+            UIMap.InitializeABlankWorkflow();
+            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
             Mouse.StartDragging(DialogsUIMap.DecisionOrSwitchDialog);
             Mouse.StopDragging(100, 100);
-        }
-
-        [TestMethod]
-        [TestCategory("Control Flow Tools")]
-        public void SwitchTool_Move_Arm_No_Dialog_UITest()
-        {
-            ExplorerUIMap.Filter_Explorer("MovingSwitchArmsWithoutADialogUITest");
-            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
-            ControlFlowToolsUIMap.Drag_Switch_Arm_To_Fourth_Comment_Tool();
-            Playback.Wait(500);
-            Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector4.Height > 200, "Connector was not moved to fourth comment after drag was attempted.");
-            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.DecisionOrSwitchDialog), "Dialog exists after moving switch arm.");
         }
 
         #region Additional test attributes

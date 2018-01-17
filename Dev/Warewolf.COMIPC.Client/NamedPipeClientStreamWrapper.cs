@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dev2.Common;
+using System;
 using System.IO;
 using System.IO.Pipes;
 
@@ -19,7 +20,15 @@ namespace WarewolfCOMIPC.Client
 
         public void Connect()
         {
-            _pipeClientStream.Connect();
+            try
+            {
+                _pipeClientStream.Connect(30000);
+                ReadMode = PipeTransmissionMode.Message;
+            }
+            catch (TimeoutException e)
+            {
+                Dev2Logger.Warn("Error connecting to COM Named Pipe Client Stream. " + e.Message, GlobalConstants.WarewolfWarn);
+            }
         }
 
         public void Close()

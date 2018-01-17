@@ -106,7 +106,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
                         break;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     if (numTries > 10)
                     {
