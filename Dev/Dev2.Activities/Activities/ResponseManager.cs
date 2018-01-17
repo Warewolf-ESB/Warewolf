@@ -112,7 +112,7 @@ namespace Dev2.Activities
                 var outputDefs =
                     Outputs.Select(
                         a =>
-                            new Dev2Definition(DataListUtil.VariableNameToMapTo(a.MappedTo), a.MappedTo, "", a.RecordSetName, true, "", true,
+                            new Dev2Definition(DataListUtil.GetVariableNameToMapOutputTo(a.MappedTo), a.MappedTo, "", a.RecordSetName, true, "", true,
                                 a.MappedTo) as IDev2Definition).ToList();
                 TryConvert(children, outputDefs, indexCache, update, dataObj);
             }
