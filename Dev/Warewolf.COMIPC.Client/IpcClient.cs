@@ -6,8 +6,6 @@ using System.IO.Pipes;
 using Newtonsoft.Json;
 using System.Reflection;
 
-
-
 namespace WarewolfCOMIPC.Client
 {
     public class IpcClient : IDisposable, IDev2IpcClient
@@ -35,14 +33,9 @@ namespace WarewolfCOMIPC.Client
             _process = Process.Start(psi);
             _pipeWrapper = new NamedPipeClientStreamWrapper(".", token, PipeDirection.InOut);
             _pipeWrapper.Connect();
-
-            _pipeWrapper.ReadMode = PipeTransmissionMode.Message;
         }
 
-        public IpcClient(INamedPipeClientStreamWrapper clientStreamWrapper)
-        {
-            _pipeWrapper = clientStreamWrapper;
-        }
+        public IpcClient(INamedPipeClientStreamWrapper clientStreamWrapper) => _pipeWrapper = clientStreamWrapper;
 
         public static IpcClient GetIPCExecutor() => GetIPCExecutor(null);
 
@@ -57,17 +50,7 @@ namespace WarewolfCOMIPC.Client
                 return _ipcClient ?? (_ipcClient = new IpcClient());
             }
         }
-
-
-        /// <summary>
-        /// Executes a call to a library.
-        /// </summary>
-        /// <param name="clsid"></param>
-        /// <param name="function">Name of the function to call.</param>
-        /// <param name="execute"></param>
-        /// <param name="args">Array of args to pass to the function.</param>
-        /// <returns>Result object returned by the library.</returns>
-        /// <exception cref="Exception">This Method will rethrow all exceptions thrown by the wrapper.</exception>
+        
         public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
         {
             if (_disposed)

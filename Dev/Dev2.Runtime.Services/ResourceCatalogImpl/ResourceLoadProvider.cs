@@ -44,10 +44,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
             }
-
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn("Error getting perf counters. " + e.Message, "Warewolf Warn");
             }
                 if (managementServices != null)
             {

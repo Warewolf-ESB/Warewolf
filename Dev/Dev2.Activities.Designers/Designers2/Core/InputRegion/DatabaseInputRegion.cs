@@ -22,14 +22,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         readonly ModelItem _modelItem;
         readonly IActionToolRegion<IDbAction> _action;
         bool _isEnabled;
-
         ICollection<IServiceInput> _inputs;
         bool _isInputsEmptyRows;
 
-        public DatabaseInputRegion()
-        {
-            ToolRegionName = "DatabaseInputRegion";
-        }
+        public DatabaseInputRegion() => ToolRegionName = "DatabaseInputRegion";
 
         public DatabaseInputRegion(ModelItem modelItem, IActionToolRegion<IDbAction> action)
             : this(new ActionInputDatatalistMapper())
@@ -74,10 +70,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _modelItem.SetProperty("Inputs", Inputs);
-        }
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e) => _modelItem.SetProperty("Inputs", Inputs);
 
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
@@ -95,19 +88,14 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        public DatabaseInputRegion(IActionInputDatatalistMapper datatalistMapper)
-        {
-            _datatalistMapper = datatalistMapper;
-        }
+        public DatabaseInputRegion(IActionInputDatatalistMapper datatalistMapper) => _datatalistMapper = datatalistMapper;
 
         void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
-
                 UpdateOnActionSelection();
-
                 OnPropertyChanged(@"Inputs");
                 OnPropertyChanged(@"IsEnabled");
             }
@@ -121,10 +109,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        void CallErrorsEventHandler()
-        {
-            ErrorsHandler?.Invoke(this, new List<string>(Errors));
-        }
+        void CallErrorsEventHandler() => ErrorsHandler?.Invoke(this, new List<string>(Errors));
 
         void UpdateOnActionSelection()
         {
@@ -158,22 +143,15 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         ICollection<IServiceInput> InputsFromSameAction(IList<IServiceInput> selectedActionInputs)
         {
-            if (!Inputs.SequenceEqual(selectedActionInputs, new ServiceInputNameValueComparer()))
-            {
-                var newInputs = selectedActionInputs.Except(Inputs, new ServiceInputNameComparer());
-                var serviceInputs = newInputs as IServiceInput[] ?? newInputs.ToArray();
-                _datatalistMapper.MapInputsToDatalist(serviceInputs);
-                return serviceInputs;
-            }
-            return new List<IServiceInput>();
+            var newInputs = selectedActionInputs.Except(Inputs, new ServiceInputNameComparer());
+            var serviceInputs = newInputs as IServiceInput[] ?? newInputs.ToArray();
+            _datatalistMapper.MapInputsToDatalist(serviceInputs);
+            return serviceInputs;
         }
 
         public bool IsInputsEmptyRows
         {
-            get
-            {
-                return _isInputsEmptyRows;
-            }
+            get => _isInputsEmptyRows;
             set
             {
                 _isInputsEmptyRows = value;
@@ -186,10 +164,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         public string ToolRegionName { get; set; }
         public bool IsEnabled
         {
-            get
-            {
-                return _isEnabled;
-            }
+            get => _isEnabled;
             set
             {
                 _isEnabled = value;
@@ -206,7 +181,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 Inputs = inputs2,
                 IsEnabled = IsEnabled
-            };
+            } as IToolRegion;
         }
 
         public void RestoreRegion(IToolRegion toRestore)
@@ -216,9 +191,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 Inputs.Clear();
                 if (region.Inputs != null)
                 {
-                    var inp = region.Inputs.ToList();
-
-                    Inputs = inp;
+                    Inputs = region.Inputs.ToList();
                 }
                 OnPropertyChanged("Inputs");
                 IsInputsEmptyRows = Inputs == null || Inputs.Count == 0;
@@ -238,10 +211,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 IList<string> errors = new List<string>();
                 return errors;
             }
-            set
-            {
-                ErrorsHandler.Invoke(this, new List<string>(value));
-            }
+            set => ErrorsHandler.Invoke(this, new List<string>(value));
         }
 
         #endregion
@@ -258,10 +228,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public ICollection<IServiceInput> Inputs
         {
-            get
-            {
-                return _inputs;
-            }
+            get => _inputs;
             set
             {
                 if (value != null)

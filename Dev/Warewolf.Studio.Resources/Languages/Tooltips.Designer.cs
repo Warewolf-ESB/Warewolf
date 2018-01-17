@@ -3776,6 +3776,24 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select Resource access denied.
+        /// </summary>
+        public static string SecurityResourcePermissionsDisabledTooltip {
+            get {
+                return ResourceManager.GetString("SecurityResourcePermissionsDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows group access denied.
+        /// </summary>
+        public static string SecurityWindowsGroupPermissionsDisabledTooltip {
+            get {
+                return ResourceManager.GetString("SecurityWindowsGroupPermissionsDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Specify an alias for the selected data. 
         ///This needs to conform to variable notation..
         /// </summary>
