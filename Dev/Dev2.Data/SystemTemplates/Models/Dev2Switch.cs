@@ -8,10 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Data.TO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
@@ -22,10 +20,6 @@ namespace Dev2.Data.SystemTemplates.Models
         public string SwitchVariable { get; set; }
         public string SwitchExpression { get; set; }
 
-        #region Implementation of IDev2FlowModel
-
         public string DisplayText { get; set; }
-
-        #endregion
     }
 }

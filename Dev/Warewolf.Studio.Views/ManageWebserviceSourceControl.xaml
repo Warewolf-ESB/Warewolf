@@ -65,6 +65,7 @@
                      Text="{Binding HostName,UpdateSourceTrigger=PropertyChanged}"
                      ToolTip="{x:Static languages:Tooltips.ManageWebSourceHostNameTooltip}"
                      Focusable="True"
+                     LostFocus="ServerTextBox_LostFocus"
                      views:FocusExtension.IsFocused="True">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.WebServiceSourceServerHelp}" DataContext="{Binding}" />

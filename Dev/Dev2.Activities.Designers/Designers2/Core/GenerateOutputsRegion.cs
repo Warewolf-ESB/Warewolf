@@ -10,7 +10,6 @@ namespace Dev2.Activities.Designers2.Core
     public class GenerateOutputsRegion : IGenerateOutputArea
     {
         ICollection<IServiceOutputMapping> _outputs;
-        bool _textResults;
 
         public GenerateOutputsRegion()
         {
@@ -23,20 +22,8 @@ namespace Dev2.Activities.Designers2.Core
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        public IList<string> Errors
-        {
-            get
-            {
-                IList<string> errors = new List<string>();
-                return errors;
-            }
-        }
-
-        public IToolRegion CloneRegion()
-        {
-            return null;
-        }
-
+        public IList<string> Errors => new List<string>();
+        public IToolRegion CloneRegion() => null;
         public void RestoreRegion(IToolRegion toRestore)
         {
         }
@@ -60,18 +47,6 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _outputs = value;
-                OnPropertyChanged();
-            }
-        }
-        public bool TextResults
-        {
-            get
-            {
-                return _textResults;
-            }
-            set
-            {
-                _textResults = value;
                 OnPropertyChanged();
             }
         }
