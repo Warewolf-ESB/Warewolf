@@ -25,16 +25,6 @@ Scenario: Merge VersionHelloWorld Workflow
 	 And Merge variable conflicts is false
 	 And Merge window has "2" Conflicting tools
 
-Scenario: Merge WorkFlowWithOneScalar Same VariableList
-	 Given I Load workflow "WorkFlowWithOneScalar" from "localhost"
-	 And I Load workflow version "1" of "WorkFlowWithOneScalar" from "localhost"
-	 When Merge Window is opened with local "WorkFlowWithOneScalar"
-	 Then Current workflow contains "1" tools
-	 And Different workflow contains "1" tools
-	 And Merge conflicts count is "1"
-	 And Merge variable conflicts is false
-	 And Merge window has "1" Conflicting tools
-
 Scenario: Merge WorkFlowWithOneScalar different input mapping
 	 Given I Load workflow "WorkFlowWithOneScalar" from "localhost"
 	 And I Load workflow version "1" of "WorkFlowWithOneScalar" from "localhost"
@@ -42,7 +32,7 @@ Scenario: Merge WorkFlowWithOneScalar different input mapping
 	 Then Current workflow contains "1" tools
 	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
-	 And Merge variable conflicts is false
+	 And Merge variable conflicts is true
 	 And Merge window has "1" Conflicting tools
 
 Scenario: Merge WorkFlowWithOneRecordSet different input mapping
@@ -52,7 +42,7 @@ Scenario: Merge WorkFlowWithOneRecordSet different input mapping
 	 Then Current workflow contains "1" tools
 	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
-	 And Merge variable conflicts is false
+	 And Merge variable conflicts is true
 	 And Merge window has "1" Conflicting tools
 
 Scenario: Merge WorkFlowWithOneObject different input mapping
@@ -62,7 +52,7 @@ Scenario: Merge WorkFlowWithOneObject different input mapping
 	 Then Current workflow contains "1" tools
 	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
-	 And Merge variable conflicts is false
+	 And Merge variable conflicts is true
 	 And Merge window has "1" Conflicting tools
 
 Scenario: Merge Workflow with Assign tool As First Tool And Split tool as Second tool count
@@ -101,7 +91,7 @@ Scenario: Merge Workflow Containing Same tools But disconnected Arms
 	 And Merge conflicts count is "1"
 	 And Merge variable conflicts is false
 
-Scenario: Merge Workflow Containing Removed tool
+Scenario: Merge Workflow Containing Removed tool with same Variable List
 	 Given I Load workflow "MergeRemovedTool" from "localhost"
 	 And I Load workflow version "1" of "MergeRemovedTool" from "localhost"	 
 	 When Merge Window is opened with local "MergeRemovedTool"
