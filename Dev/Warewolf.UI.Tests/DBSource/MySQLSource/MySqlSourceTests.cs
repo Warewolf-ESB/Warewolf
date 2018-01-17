@@ -15,6 +15,7 @@ namespace Warewolf.UI.Tests
         [TestCategory("Database Sources")]
         public void Create_Save_And_Edit_MySQLSource_From_ExplorerContextMenu_UITests()
         {
+            ExplorerUIMap.WaitForExplorerLocalhostSpinner();
             //Create Source
             ExplorerUIMap.Select_NewMySQLSource_From_ExplorerContextMenu();
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.Exists, "MySQL Source Tab does not exist.");
