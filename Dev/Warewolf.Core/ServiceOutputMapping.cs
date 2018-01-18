@@ -18,13 +18,11 @@ using Dev2.Util;
 
 namespace Warewolf.Core
 {
-    public class ServiceOutputMapping : ObservableObject,IServiceOutputMapping, IEquatable<ServiceOutputMapping>
+    public class ServiceOutputMapping : ObservableObject, IServiceOutputMapping, IEquatable<ServiceOutputMapping>
     {
         string _mappedFrom;
         string _mappedTo;
         string _recordSetName;
-
-        #region Equality members
 
         /// <summary>
         /// Indicates whether the current object is equal to another object of the same type.
@@ -63,7 +61,7 @@ namespace Warewolf.Core
         }
 
         /// <summary>
-        /// Serves as a hash function for a particular type. 
+        /// Serves as a hash function for a particular type.
         /// </summary>
         /// <returns>
         /// A hash code for the current <see cref="T:System.Object"/>.
@@ -83,8 +81,6 @@ namespace Warewolf.Core
             return !Equals(left, right);
         }
 
-        #endregion
-
         public ServiceOutputMapping(string mappedFrom, string mapping, string recordsetName)
         {
             MappedFrom = mappedFrom;
@@ -98,9 +94,8 @@ namespace Warewolf.Core
 
         public ServiceOutputMapping()
             : this("", "", "")
-        {            
+        {
         }
-        #region Implementation of IDbOutputMapping
 
         public string MappedFrom
         {
@@ -125,6 +120,7 @@ namespace Warewolf.Core
             set
             {
                 _mappedTo = value;
+                UpdateMappingRecordSetValue(value);
                 OnPropertyChanged();
             }
         }
@@ -140,7 +136,6 @@ namespace Warewolf.Core
                 UpdateMappedToValue(value);
                 _recordSetName = value;
                 OnPropertyChanged();
-                
             }
         }
 
@@ -168,7 +163,12 @@ namespace Warewolf.Core
                 }
             }
         }
-
-        #endregion
+        void UpdateMappingRecordSetValue(string newRecordsetName)
+        {
+            if (!DataListUtil.IsValueRecordset(newRecordsetName))
+            {
+                RecordSetName = string.Empty;
+            }
+        }
     }
 }
