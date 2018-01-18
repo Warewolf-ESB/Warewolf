@@ -54,7 +54,6 @@ namespace Dev2.Activities
                             OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
                             i++;
                         }
-                        var notString = OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath);
                         if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
                         {
                             var serviceOutputMapping = Outputs.First();
@@ -120,7 +119,7 @@ namespace Dev2.Activities
 
         public string UnescapeRawXml(string innerXml)
         {
-            if (innerXml.StartsWith("&lt;", StringComparison.Ordinal) && innerXml.EndsWith("&gt;"))
+            if (innerXml.StartsWith("&lt;", StringComparison.Ordinal) && innerXml.EndsWith("&gt;", StringComparison.Ordinal))
             {
                 return new StringBuilder(innerXml).Unescape().ToString();
             }

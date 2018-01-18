@@ -60,17 +60,16 @@ namespace Dev2.Activities.Designers2.Core
                 outputs.AddRange(serviceOutputMappings);
                 Outputs = outputs;
             }
-           
+
             IsObject = _modelItem.GetProperty<bool>("IsObject");
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
             IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-          
+
         }
 
-    
         //Needed for Deserialization
         public OutputsRegion()
         {
@@ -80,11 +79,9 @@ namespace Dev2.Activities.Designers2.Core
 
         void OutputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            
             OnPropertyChanged("IsOutputsEmptyRows");
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
-            
         }
 
 
@@ -276,7 +273,6 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-     
                 if (Outputs != null)
                 {
                     _recordsetName = value;
@@ -287,7 +283,7 @@ namespace Dev2.Activities.Designers2.Core
                             serviceOutputMapping.RecordSetName = value;
                         }
                     }
-                }               
+                }
                 OnPropertyChanged();
             }
         }
@@ -300,7 +296,7 @@ namespace Dev2.Activities.Designers2.Core
                 _isObject = value;
                 _modelItem.SetProperty("IsObject", value);
                 OnPropertyChanged();
-            }            
+            }
         }
 
 
@@ -317,7 +313,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        bool CanRunCommand(object obj)
+        static bool CanRunCommand(object obj)
         {
             return true;
         }
@@ -334,7 +330,6 @@ namespace Dev2.Activities.Designers2.Core
             get { return _objectName; }
             set
             {
-               
                 if (IsObject &&!string.IsNullOrEmpty(ObjectResult))
                 {
                     try
@@ -351,8 +346,8 @@ namespace Dev2.Activities.Designers2.Core
                                     _shellViewModel = CustomContainer.Get<IShellViewModel>();
                                 }
                                 _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
-                            }                            
-                            _modelItem.SetProperty("ObjectName", value);                            
+                            }
+                            _modelItem.SetProperty("ObjectName", value);
                         }
                         else
                         {
@@ -361,11 +356,10 @@ namespace Dev2.Activities.Designers2.Core
                             OnPropertyChanged();
                         }
                     }
-                    catch(Exception)
+                    catch(Exception e)
                     {
-                        //Is not an object identifier
+                        Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
                     }
-                    
                 }
             }
         }
@@ -438,7 +432,5 @@ namespace Dev2.Activities.Designers2.Core
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-      
     }
 }
