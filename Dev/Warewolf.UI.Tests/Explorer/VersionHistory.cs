@@ -6,6 +6,7 @@ using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System.Drawing;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
 
 // ReSharper disable InconsistentNaming
 
@@ -84,6 +85,17 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(UIMap.MainStudioWindow.DependenciesOKButton.Exists, "The dependencies error window is showing multiple times.");
         }
 
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void Delete_A_Version_Should_Remove_Version()
+        {
+            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
+            ExplorerUIMap.Delete_FirstResourceVersion_From_ExplorerContextMenu();
+            DialogsUIMap.Click_Yes_On_The_Confirm_Delete();
+            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow));
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
@@ -107,6 +119,20 @@ namespace Warewolf.UI.Tests
         }
 
         private UIMap _UIMap;
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {
