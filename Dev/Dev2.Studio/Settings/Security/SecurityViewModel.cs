@@ -33,7 +33,6 @@ using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
-
 namespace Dev2.Settings.Security
 {
     public class SecurityViewModel : SettingsItemViewModel, IHelpSource, IUpdatesHelp
@@ -92,7 +91,7 @@ namespace Dev2.Settings.Security
             _directoryObjectPicker.TargetComputer = string.Empty;
             _directoryObjectPicker.ShowAdvancedView = false;
 
-            PickWindowsGroupCommand = new DelegateCommand(o => PickWindowsGroup(), o => CanPickWindowsGroup(securitySettings?.WindowsGroupPermissions));
+            PickWindowsGroupCommand = new DelegateCommand(PickWindowsGroup, o => CanPickWindowsGroup(securitySettings?.WindowsGroupPermissions));
             PickResourceCommand = new DelegateCommand(PickResource);
 
             InitializeHelp();
@@ -444,9 +443,7 @@ namespace Dev2.Settings.Security
 
         ActivityDesignerToggle CreateHelpToggle(DependencyProperty targetProperty)
         {
-            var toggle = ActivityDesignerToggle.Create(@"ServiceHelp", @"Close Help", @"ServiceHelp", @"Open Help", @"HelpToggle", this, targetProperty
-                );
-
+            var toggle = ActivityDesignerToggle.Create(@"ServiceHelp", @"Close Help", @"ServiceHelp", @"Open Help", @"HelpToggle", this, targetProperty);
             return toggle;
         }
 
