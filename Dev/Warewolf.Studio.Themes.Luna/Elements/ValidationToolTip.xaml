@@ -83,7 +83,7 @@
             <Border CornerRadius="2">
                 <TextBlock MaxWidth="250"
                            Margin="8,4,8,4"
-                           Foreground="{StaticResource LightForegroundBrush}"
+                           Foreground="White"
                            Text="{Binding (Validation.Errors)[0].ErrorContent}"
                            TextWrapping="Wrap"
                            UseLayoutRounding="false" />
