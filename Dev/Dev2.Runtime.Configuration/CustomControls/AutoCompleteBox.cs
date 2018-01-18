@@ -1327,7 +1327,6 @@ namespace System.Windows.Controls
             var populateReady = newText.Length >= MinimumPrefixLength && MinimumPrefixLength >= 0;
             _userCalledPopulate = populateReady && userInitiated;
 
-            newText = newText.Replace("\r\n", "\n");
             UpdateTextValue(newText, userInitiated);
 
             if (populateReady)
