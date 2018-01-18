@@ -62,7 +62,7 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
             }
             catch (HttpException e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn("Error writing to stream. " + e.Message, "Warewolf Warn");
             }
             finally
             {

@@ -69,7 +69,7 @@
                                         <DoubleAnimation Duration="0"
                                                          Storyboard.TargetName="disabled"
                                                          Storyboard.TargetProperty="(UIElement.Opacity)"
-                                                         To="1" />
+                                                         To="0.65" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -190,6 +190,7 @@
         <Setter Property="Padding" Value="0,0,0,0" />
         <Setter Property="MinHeight" Value="14" />
         <Setter Property="MinWidth" Value="7" />
+        <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
     </Style>
 
     <Style x:Key="MergeNoConflictIcon" TargetType="fa:FontAwesome">

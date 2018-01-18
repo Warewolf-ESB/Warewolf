@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Help;
@@ -143,7 +142,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOkCommandCanExecute()
         {
             //arrange
-            _target.TestPassed = true;
+            _target.HostName = "host";
 
 
             //act
@@ -889,7 +888,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanSaveTrue()
         {
             //arrange
-            _target.TestPassed = true;
+            _target.HostName = "host";
 
             //act
             var result = _target.CanSave();
@@ -902,7 +901,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanSaveFalse()
         {
             //arrange
-            _target.TestPassed = false;
+            _target.HostName = string.Empty;
 
             //act
             var result = _target.CanSave();

@@ -586,7 +586,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             }
         }
 
-        [When(@"I Wait For Explorer Localhost Spinner")]
+        [Given(@"I Wait For Explorer Localhost Spinner")]
         public void WaitForExplorerLocalhostSpinner()
         {
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Checkbox.Spinner);
@@ -920,6 +920,15 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Open.Exists, "Open does not exist in explorer context menu.");
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Open);
         }
+        [Given(@"I Delete FirstResource Version FromContextMenu")]
+        [When(@"I Delete FirstResource Version FromContextMenu")]
+        [Then(@"I Delete FirstResource Version FromContextMenu")]
+        public void Delete_FirstResourceVersion_From_ExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 12));
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete);
+        }
+
 
         [Given(@"I Delete FirstResource FromContextMenu")]
         [When(@"I Delete FirstResource FromContextMenu")]
