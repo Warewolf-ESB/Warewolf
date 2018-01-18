@@ -189,6 +189,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ApplicationAdaptor.cs" />
+    <Compile Include="AppResources\Converters\StringToIntInRangeConverter.cs" />
     <Compile Include="Equality\ComplexObjectItemModelComparer.cs" />
     <Compile Include="Equality\DataListItemModelComparer.cs" />
     <Compile Include="Equality\DataListViewModelComparer.cs" />
