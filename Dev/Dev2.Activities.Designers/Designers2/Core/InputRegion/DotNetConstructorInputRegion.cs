@@ -211,7 +211,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 Inputs = inputs2,
                 IsEnabled = IsEnabled
-            };
+            } as IToolRegion;
         }
 
         public void RestoreRegion(IToolRegion toRestore)
