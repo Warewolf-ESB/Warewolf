@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -14,7 +15,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 
 namespace Warewolf.Studio.ViewModels
 {
-    public class ManageEmailSourceViewModel : SourceBaseImpl<IEmailServiceSource>, IManageEmailSourceViewModel
+    public class ManageEmailSourceViewModel : SourceBaseImpl<IEmailServiceSource>, IManageEmailSourceViewModel, IDataErrorInfo
     {
         string _hostName;
         string _userName;
@@ -112,12 +113,45 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override string Name
+        public string Error => string.Empty;
+
+        public string this[string columnName]
         {
             get
             {
-                return ResourceName;
+                var errorMessage = string.Empty;
+                switch (columnName)
+                {
+                    case "HostName":
+                        if (string.IsNullOrEmpty(HostName))
+                        {
+                            errorMessage = "HostName cannot be blank.";
+                        }
+                        break;
+                    case "Port":
+                        if (string.IsNullOrEmpty(Port.ToString()) || Port == 0)
+                        {
+                            errorMessage = "Port cannot be blank.";
+                        }
+                        if (Port < 1 || Port > 65535)
+                        {
+                            errorMessage = "Port range must be between 1 and 65535.";
+                        }
+                        break;
+                    case "Timeout":
+                        if (string.IsNullOrEmpty(Timeout.ToString()) || Timeout == 0)
+                        {
+                            errorMessage = "Timeout cannot be blank.";
+                        }
+                        break;
+                }
+                return errorMessage;
             }
+        }
+
+        public override string Name
+        {
+            get => ResourceName;
             set
             {
                 ResourceName = value;
@@ -164,10 +198,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string ResourceName
         {
-            get
-            {
-                return _resourceName;
-            }
+            get => _resourceName;
             set
             {
                 _resourceName = value;
@@ -227,7 +258,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string HostName
         {
-            get { return _hostName; }
+            get => _hostName;
             set
             {
                 if (value != _hostName)
@@ -247,7 +278,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string UserName
         {
-            get { return _userName; }
+            get => _userName;
             set
             {
                 if (value != _userName)
@@ -268,7 +299,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string Password
         {
-            get { return _password; }
+            get => _password;
             set
             {
                 if (value != _password)
@@ -288,7 +319,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool EnableSsl
         {
-            get { return _enableSsl; }
+            get => _enableSsl;
             set
             {
                 if (value != _enableSsl)
@@ -307,7 +338,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool EnableSslYes
         {
-            get { return _enableSslYes; }
+            get => _enableSslYes;
             set
             {
                 _enableSslYes = value;
@@ -326,7 +357,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool EnableSslNo
         {
-            get { return _enableSslNo; }
+            get => _enableSslNo;
             set
             {
                 _enableSslNo = value;
@@ -346,7 +377,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int Port
         {
-            get { return _port; }
+            get => _port;
             set
             {
                 if (value != _port)
@@ -371,7 +402,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int Timeout
         {
-            get { return _timeout; }
+            get => _timeout;
             set
             {
                 if (value != _timeout)
@@ -396,7 +427,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string EmailFrom
         {
-            get { return _emailFrom; }
+            get => _emailFrom;
             set
             {
                 if (value != _emailFrom)
@@ -427,7 +458,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string EmailTo
         {
-            get { return _emailTo; }
+            get => _emailTo;
             set
             {
                 if (value != _emailTo)
@@ -458,7 +489,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestPassed
         {
-            get { return _testPassed; }
+            get => _testPassed;
             set
             {
                 _testPassed = value;
@@ -469,7 +500,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string HeaderText
         {
-            get { return _headerText; }
+            get => _headerText;
             set
             {
                 _headerText = value;
@@ -604,10 +635,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestFailed
         {
-            get
-            {
-                return _testFailed;
-            }
+            get => _testFailed;
             set
             {
                 _testFailed = value;
@@ -616,10 +644,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool Testing
         {
-            get
-            {
-                return _testing;
-            }
+            get => _testing;
             private set
             {
                 _testing = value;
@@ -630,7 +655,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string TestMessage
         {
-            get { return _testMessage; }
+            get => _testMessage;
             set
             {
                 _testMessage = value;
@@ -644,7 +669,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool EnableSend
         {
-            get { return _enableSend; }
+            get => _enableSend;
             set
             {
                 _enableSend = value;
@@ -679,7 +704,7 @@ namespace Warewolf.Studio.ViewModels
             }
             DisposeManageEmailSourceViewModel(true);
         }
-        
+
         void DisposeManageEmailSourceViewModel(bool disposing)
         {
             if (!_isDisposed)
