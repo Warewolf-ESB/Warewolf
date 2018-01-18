@@ -25,7 +25,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Ctor_ValidModelItem_ExpectVisibleAndValidData()
         {
             //------------Setup for test--------------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c") } };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("a", "b", "c") } };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
 
             //------------Execute Test---------------------------
@@ -41,7 +41,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Ctor_NewModelItem_ExpectVisibleAndValidData()
         {
             //------------Setup for test--------------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
 
             //------------Execute Test---------------------------
@@ -51,12 +51,28 @@ namespace Dev2.Activities.Designers.Tests.Core
         }
 
         [TestMethod]
+        [TestCategory("OutputsRegion_Ctor")]
+        public void OutputsRegion_Given_MappedTo_Is_Changed_From_RecordSetTo_Scalar_Sets_RecordSet_To_Empty()
+        {
+            //------------Setup for test--------------------------
+            var act = new DsfWebGetActivity { SourceId = Guid.NewGuid(), Outputs = null };
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
+            outputsRegion.Outputs.Add(new ServiceOutputMapping { MappedFrom = "A", MappedTo = "[[Person().A]]", RecordSetName = "Person" });
+            outputsRegion.Outputs.Add(new ServiceOutputMapping { MappedFrom = "B", MappedTo = "[[Person().B]]", RecordSetName = "Person" });
+            //------------Execute Test---------------------------
+            outputsRegion.Outputs.First().MappedTo = "A";
+            //------------Assert Results-------------------------
+            Assert.IsTrue(String.IsNullOrEmpty(outputsRegion.Outputs.First().RecordSetName));
+        }
+
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("OutputsRegion_Ctor")]
         public void OutputsRegion_AddSomeOutputsExpectHeightChanged()
         {
             //------------Setup for test--------------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
@@ -75,7 +91,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Clone()
         {
             //------------Setup for test--------------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
@@ -87,7 +103,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var x = outputsRegion.CloneRegion() as OutputsRegion;
             //------------Assert Results-------------------------
             Assert.IsNotNull(x, "x != null");
-            Assert.AreEqual(x.Outputs.Count, 4);
+            Assert.AreEqual(4, x.Outputs.Count);
         }
 
         [TestMethod]
@@ -96,7 +112,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void OutputsRegion_Restore()
         {
             //------------Setup for test--------------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
             outputsRegion.Outputs.Add(new ServiceOutputMapping());
@@ -120,7 +136,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void Outputs_GivenNull_ShouldUpdatesModelItem()
         {
             //---------------Set up test pack-------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             var wasCalled = false;
             outputsRegion.PropertyChanged += (sender, args) =>
@@ -142,9 +158,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void Outputs_GivenNull_ShouldAttachEventHandlers()
         {
             //---------------Set up test pack-------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
-            var serviceOutputMapping = new ServiceOutputMapping()
+            var serviceOutputMapping = new ServiceOutputMapping
             {
                 MappedFrom = "j",
                 MappedTo = "H"
@@ -152,10 +168,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var outPutsChanged = false;
             serviceOutputMapping.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "MappedFrom")
-                {
-                    outPutsChanged = true;
-                }
+                outPutsChanged |= args.PropertyName == "MappedFrom";
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(outputsRegion.Outputs);
@@ -171,9 +184,9 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void Outputs_GivenNull_ShouldRemovedEventHandlers()
         {
             //---------------Set up test pack-------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
-            var serviceOutputMapping = new ServiceOutputMapping()
+            var serviceOutputMapping = new ServiceOutputMapping
             {
                 MappedFrom = "j",
                 MappedTo = "H"
@@ -181,10 +194,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var outPutsChanged = false;
             serviceOutputMapping.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "MappedFrom")
-                {
-                    outPutsChanged = true;
-                }
+                outPutsChanged |= args.PropertyName == "MappedFrom";
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(outputsRegion.Outputs);
@@ -206,7 +216,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ObjectName_GivenIsObjectAndNullObjectResult_ShouldNotFireChanges()
         {
             //---------------Set up test pack-------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
             var wasCalled = false;
             outputsRegion.PropertyChanged += (sender, args) =>
@@ -226,7 +236,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ObjectName_GivenIsObjectAndObjectResult_ShouldFireChanges()
         {
             //---------------Set up test pack-------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true)
             {
                 ObjectResult = this.SerializeToJsonString(new DefaultSerializationBinder())
@@ -254,13 +264,13 @@ namespace Dev2.Activities.Designers.Tests.Core
             var shellVm = new Mock<IShellViewModel>();
             shellVm.Setup(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             CustomContainer.Register(shellVm.Object);
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true)
             {
                 ObjectResult = this.SerializeToJsonString(new DefaultSerializationBinder())
             };
-            
-         
+
+
             //---------------Assert Precondition----------------
             Assert.IsTrue(outputsRegion.IsObject);
             Assert.IsTrue(!string.IsNullOrEmpty(outputsRegion.ObjectResult));
@@ -277,7 +287,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void ObjectName_GivenIsObjectAndNullValues_ShouldUpdateDatalist()
         {
             //---------------Set up test pack-------------------
-            var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
+            var act = new DsfWebGetActivity{ SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true)
             {
                 ObjectResult = this.SerializeToJsonString(new DefaultSerializationBinder())
