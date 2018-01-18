@@ -96,10 +96,6 @@
     <Reference Include="TechTalk.SpecFlow, Version=2.2.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
       <HintPath>..\packages\SpecFlow.2.2.0\lib\net45\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
-    <Reference Include="WarewolfLanguageParser, Version=0.0.5919.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\WarewolfLanguageParser\bin\Debug\WarewolfLanguageParser.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -166,6 +162,10 @@
     <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
       <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
       <Name>Dev2.Studio</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Language.Parser\Warewolf.Language.Parser.fsproj">
+      <Project>{df3ab090-911f-4646-9ad1-205e2ced908a}</Project>
+      <Name>Warewolf.Language.Parser</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
