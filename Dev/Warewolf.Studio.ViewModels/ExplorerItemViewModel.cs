@@ -1020,7 +1020,10 @@ namespace Warewolf.Studio.ViewModels
                     _isSelected = value;
 
                     OnPropertyChanged(() => IsSelected);
-                    _shellViewModel?.SetActiveServer(Server.EnvironmentID);
+                    if (!IsResourceCheckedEnabled)
+                    {
+                        _shellViewModel?.SetActiveServer(Server.EnvironmentID);
+                    }
                 }
             }
         }
