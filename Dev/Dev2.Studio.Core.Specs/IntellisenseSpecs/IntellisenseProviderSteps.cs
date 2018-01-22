@@ -179,19 +179,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             var error = IntellisenseStringProvider.parseLanguageExpressionAndValidate(inputText);
             Assert.AreEqual(errorMessage.TrimEnd(' '), error.Item2.TrimEnd(' '));
         }
-
-
-        [Given(@"the options as '(.*)'")]
-        public void GivenTheOptionsAs(string option)
-        {
-            //Dev2TrieSugggestionProvider provider = new Dev2TrieSugggestionProvider(IntellisenseStringProvider.FilterOption.All,1);
-            //provider.VariableList = new ObservableCollection<string>( ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
-            //provider.GetSuggestions(option);
-        }
-
-
-       
-
+        
         [Given(@"the suggestion list as '(.*)'")]
         public void GivenTheSuggestionListAs(string p0)
         {

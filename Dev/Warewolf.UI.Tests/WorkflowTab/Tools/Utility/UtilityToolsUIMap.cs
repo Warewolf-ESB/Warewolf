@@ -60,6 +60,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.FxCombobox.TextEdit.Text = "[[SomeVariable]]";
         }
 
+        [When(@"I Enter SomeVariable Into Calculate Small View Function Textbox")]
+        public void Enter_SomeVariable_Into_SmallView_CalculateTool_FXCombobox()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.FxCombobox.TextEdit.Text = "[[SomeVariable]]";
+        }
+
         internal void Enter_Values_Into_Case_Conversion_Large_Tool(string value)
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.LargeViewContentCustom.SmallDataGridTable.Row1.TypeCell.TypeComboBox.TextEdit.Text = value;

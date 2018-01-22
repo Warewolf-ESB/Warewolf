@@ -287,7 +287,7 @@ namespace Warewolf.Studio.ViewModels
                         for (var index = parentNames.Count; index > 0; index--)
                         {
                             var parentName = parentNames[index - 1];
-                            path.Append(path + "\\" + parentName);
+                            path.Append("\\" + parentName);
                         }
                     }
                     if (selectedItem.ResourceType == "Folder")
