@@ -297,7 +297,6 @@ namespace Dev2.Activities.Designers.Tests.Core
             shellVm.Verify(model => model.UpdateCurrentDataListWithObjectFromJson(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             Assert.AreEqual(outputsRegion.ObjectName, act.ObjectName);
         }
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ObjectName_GivenIsObjectAndNullValues_ShouldUpdateDatalist()
@@ -316,6 +315,32 @@ namespace Dev2.Activities.Designers.Tests.Core
             //---------------Test Result -----------------------
             Assert.AreEqual(string.Empty, act.ObjectName);
             Assert.AreEqual(outputsRegion.ObjectName, string.Empty);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void ResetOutputs_GivenUpdatedOutputs_ShouldUpdateOutPutsCollection()
+        {
+            //---------------Set up test pack-------------------
+            var updatedOutputs = new List<IServiceOutputMapping>
+            {
+                new ServiceOutputMapping { MappedFrom = "Name", MappedTo = "[[Person().Firstname]]", RecordSetName = "Person"},
+                new ServiceOutputMapping { MappedFrom = "Surname", MappedTo = "[[Person().Surname]]", RecordSetName = "Person" }
+            };
+            var act = new DsfWebGetActivity { SourceId = Guid.NewGuid(), Outputs = null, IsObject = true };
+            var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
+            outputsRegion.Outputs.Add(new ServiceOutputMapping { MappedFrom = "Name", MappedTo = "[[Person().Name]]", RecordSetName = "Person" });
+            outputsRegion.Outputs.Add(new ServiceOutputMapping { MappedFrom = "Surname", MappedTo = "[[Person().Surname]]", RecordSetName = "Person" });
+            //---------------Assert Precondition----------------
+            Assert.AreEqual(2, outputsRegion.Outputs.Count);
+            Assert.AreEqual("[[Person().Name]]", outputsRegion.Outputs.First().MappedTo);
+            Assert.AreEqual("[[Person().Surname]]", outputsRegion.Outputs.Last().MappedTo);
+            //---------------Execute Test ----------------------
+            outputsRegion.ResetOutputs(updatedOutputs);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(2, outputsRegion.Outputs.Count);
+            Assert.AreEqual("[[Person().Firstname]]", outputsRegion.Outputs.First().MappedTo);
+            Assert.AreEqual("[[Person().Surname]]", outputsRegion.Outputs.Last().MappedTo);
         }
     }
 }
