@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers2.Core
 
         readonly ObservableCollection<ActivityDesignerToggle> _titleBarToggles = new ObservableCollection<ActivityDesignerToggle>();
 
-        protected ActivityDesignerViewModel(ModelItem modelItem)
+        protected ActivityDesignerViewModel(ModelItem modelItem,bool registerEvents=true)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
             _modelItem = modelItem;

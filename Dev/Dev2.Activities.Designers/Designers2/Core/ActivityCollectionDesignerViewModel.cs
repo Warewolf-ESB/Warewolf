@@ -21,8 +21,8 @@ namespace Dev2.Activities.Designers2.Core
     {
         bool _isToggleCheckedChanged;
 
-        protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
-            : base(modelItem)
+        protected ActivityCollectionDesignerViewModel(ModelItem modelItem,bool registerEvents = true)
+            : base(modelItem,registerEvents)
         {
             QuickVariableInputViewModel = new QuickVariableInputViewModel(AddToCollection);
 
