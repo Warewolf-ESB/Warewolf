@@ -29,6 +29,27 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
             Assert.AreEqual("[[SomeVariable]]", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.FxCombobox.TextEdit.Text, "Calculate large view function textbox text does not equal \"[[SomeVariable]]\"");
         }
 
+        [TestMethod]
+        [TestCategory("Utility Tools")]
+        public void CalculateTool_Enter_On_DropDown_DoesNot_FreezeStudio()
+        {
+            //Enter SomeVariable
+            UtilityToolsUIMap.Enter_SomeVariable_Into_SmallView_CalculateTool_FXCombobox();
+            Assert.AreEqual("[[SomeVariable]]", UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.SmallView.FxCombobox.TextEdit.Text, "Calculate large view function textbox text does not equal \"[[SomeVariable]]\"");
+            Keyboard.SendKeys("{ENTER}");
+            Keyboard.SendKeys("e");
+            Keyboard.SendKeys("{DOWN}");
+            Keyboard.SendKeys("{ENTER}");
+            Keyboard.SendKeys("{ENTER}");
+            Keyboard.SendKeys("e");
+            Keyboard.SendKeys("{DOWN}");
+            Keyboard.SendKeys("{ENTER}");
+            Keyboard.SendKeys("{ENTER}");
+            UtilityToolsUIMap.Open_Calculate_Tool_Large_View();
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.DoneButton.Exists, "Done Button does not exist on design surface.");
+            UtilityToolsUIMap.Click_CalculateTool_DoneButton();
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

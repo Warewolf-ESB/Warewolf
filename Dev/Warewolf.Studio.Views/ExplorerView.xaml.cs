@@ -278,6 +278,11 @@ namespace Warewolf.Studio.Views
 
         void TreeViewItemPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (DataContext is DeploySourceExplorerViewModel)
+            {
+                return;
+            }
+
             var treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
             if (treeViewItem != null)
             {
@@ -331,6 +336,11 @@ namespace Warewolf.Studio.Views
             }
             else
             {
+                if (DataContext is DeploySourceExplorerViewModel)
+                {
+                    return;
+                }
+
                 var explorerViewModel = DataContext as ExplorerViewModel;
 
                 if (item is IExplorerItemViewModel explorerItemViewModel)
@@ -585,5 +595,3 @@ namespace Warewolf.Studio.Views
         }
     }
 }
-
-    
