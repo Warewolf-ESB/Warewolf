@@ -64,7 +64,13 @@ namespace Dev2.Activities.Designers2.Core
 
         void CommandAction(object o)
         {
-            if (DataContext is ActivityDesignerViewModel activityDesignerViewModel && !activityDesignerViewModel.IsMerge && IsValidatedBefore)
+            var canValidate = IsValidatedBefore;
+            if (DataContext is ActivityDesignerViewModel activityDesignerViewModel)
+            {
+                canValidate &= !activityDesignerViewModel.IsMerge;
+            }
+
+            if (canValidate)
             {
                 DoValidate();
             }
