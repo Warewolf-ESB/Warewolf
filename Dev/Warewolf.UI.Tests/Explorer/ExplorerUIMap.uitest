@@ -532,6 +532,96 @@
                                             </UIObject>
                                           </Descendants>
                                         </UIObject>
+                                        <UIObject ControlType="TreeItem" Id="FolderC" FriendlyName="Warewolf.Studio.ViewModels.ExplorerItemViewModel" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>SaveDialogView</WindowTitle>
+                                          </WindowTitles>
+                                          <SearchConfigurations>
+                                            <SearchConfiguration>Distinct</SearchConfiguration>
+                                            <SearchConfiguration>Expand</SearchConfiguration>
+                                          </SearchConfigurations>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                            <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ExplorerItemViewModel</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="TreeItem" Id="FolderD" FriendlyName="Warewolf.Studio.ViewModels.ExplorerItemViewModel" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>SaveDialogView</WindowTitle>
+                                              </WindowTitles>
+                                              <SearchConfigurations>
+                                                <SearchConfiguration>Distinct</SearchConfiguration>
+                                                <SearchConfiguration>Expand</SearchConfiguration>
+                                              </SearchConfigurations>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ExplorerItemViewModel</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants>
+                                                <UIObject ControlType="TreeItem" Id="SuperNestedResource" FriendlyName="Warewolf.Studio.ViewModels.ExplorerItemViewModel" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>SaveDialogView</WindowTitle>
+                                                  </WindowTitles>
+                                                  <SearchConfigurations>
+                                                    <SearchConfiguration>Distinct</SearchConfiguration>
+                                                    <SearchConfiguration>Expand</SearchConfiguration>
+                                                  </SearchConfigurations>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                    <PropertyCondition Name="Name">Warewolf.Studio.ViewModels.ExplorerItemViewModel</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Edit" Id="UIItemEdit" FriendlyName="" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>SaveDialogView</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants />
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                                <UIObject ControlType="Edit" Id="UIItemEdit" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>SaveDialogView</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                              </Descendants>
+                                            </UIObject>
+                                            <UIObject ControlType="Edit" Id="UIItemEdit" FriendlyName="" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>SaveDialogView</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
                                         <UIObject ControlType="Edit" Id="ItemEdit" FriendlyName="" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
