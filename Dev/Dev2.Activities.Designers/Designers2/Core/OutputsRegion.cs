@@ -77,6 +77,14 @@ namespace Dev2.Activities.Designers2.Core
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
         }
 
+        public void ResetOutputs(ICollection<IServiceOutputMapping> outputs)
+        {
+            var newOutputs = new ObservableCollection<IServiceOutputMapping>();
+            newOutputs.CollectionChanged += OutputsCollectionChanged;
+            newOutputs.AddRange(outputs);
+            Outputs = newOutputs;
+        }
+
         void OutputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             OnPropertyChanged("IsOutputsEmptyRows");
@@ -85,14 +93,14 @@ namespace Dev2.Activities.Designers2.Core
         }
 
 
-        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)
         {
-            if (args.NewItems == null)
+            if (e.NewItems == null)
             {
                 return;
             }
 
-            foreach (INotifyPropertyChanged item in args.NewItems)
+            foreach (INotifyPropertyChanged item in e.NewItems)
             {
                 if (item != null)
                 {
@@ -106,14 +114,14 @@ namespace Dev2.Activities.Designers2.Core
             _modelItem.SetProperty("Outputs", _outputs.ToList());
         }
 
-        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)
         {
-            if (args.OldItems == null)
+            if (e.OldItems == null)
             {
                 return;
             }
 
-            foreach (INotifyPropertyChanged item in args.OldItems)
+            foreach (INotifyPropertyChanged item in e.OldItems)
             {
                 if (item != null)
                 {
