@@ -23,8 +23,8 @@ namespace Dev2.Activities.Designers2.MultiAssign
     public class MultiAssignDesignerViewModel : ActivityCollectionDesignerViewModel<ActivityDTO>
     {
         readonly Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
-        public MultiAssignDesignerViewModel(ModelItem modelItem)
-            : base(modelItem)
+        public MultiAssignDesignerViewModel(ModelItem modelItem,bool registerEvents = true)
+            : base(modelItem,registerEvents)
         {
             AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();

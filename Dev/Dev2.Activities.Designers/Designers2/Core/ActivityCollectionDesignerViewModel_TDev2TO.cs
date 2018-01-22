@@ -38,8 +38,8 @@ namespace Dev2.Activities.Designers2.Core
         TDev2TOFn _initialDto = new TDev2TOFn();
         readonly object _syncLock = new object();
 
-        protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
-            : base(modelItem)
+        protected ActivityCollectionDesignerViewModel(ModelItem modelItem,bool registerEvents = true)
+            : base(modelItem,registerEvents)
         {
            
         }

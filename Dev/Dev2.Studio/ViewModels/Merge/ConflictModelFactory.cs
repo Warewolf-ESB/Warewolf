@@ -157,7 +157,7 @@ namespace Dev2.ViewModels.Merge
             }
             else
             {
-                instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
+                instance = Activator.CreateInstance(actual, modelItem,false) as ActivityDesignerViewModel;
             }
 
             var mergeToolModel = CreateNewMergeToolModel(modelItem, node, parentItem, parentLabelDescription, instance, workflowDesignerViewModel);
