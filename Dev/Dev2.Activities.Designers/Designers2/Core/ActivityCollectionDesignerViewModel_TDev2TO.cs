@@ -36,12 +36,13 @@ namespace Dev2.Activities.Designers2.Core
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
         TDev2TOFn _initialDto = new TDev2TOFn();
+        private bool _registerEvents;
         readonly object _syncLock = new object();
 
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem,bool registerEvents = true)
             : base(modelItem,registerEvents)
         {
-           
+            _registerEvents = registerEvents;
         }
 
         public int ItemCount => ModelItemCollection.Count;
@@ -55,7 +56,8 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         protected void InitializeItems(ModelItemCollection modelItemCollection)
-        {            
+        {
+            
             ModelItemCollection = modelItemCollection;
             BindingOperations.EnableCollectionSynchronization(ModelItemCollection, _syncLock);
             // Do this before, because AddDTO() also attaches events
@@ -404,7 +406,10 @@ namespace Dev2.Activities.Designers2.Core
 
         void AttachEvents(INotifyPropertyChanged dto)
         {
-            dto.PropertyChanged += OnDtoPropertyChanged;
+            if (_registerEvents)
+            {
+                dto.PropertyChanged += OnDtoPropertyChanged;
+            }
         }
 
 
