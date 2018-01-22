@@ -48,6 +48,22 @@ namespace Warewolf.UI.Tests
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ErrorWindow), "The studio throws an error when you right click on the folder count part of the explorer.");
         }
 
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void Save_Resource_In_Nested_Folder_Saves_Correctly_UITest()
+        {
+            UIMap.Click_NewWorkflow_RibbonButton();
+            WorkflowTabUIMap.Make_Workflow_Savable();
+            UIMap.Click_Save_RibbonButton();
+            DialogsUIMap.Filter_Save_Dialog_Explorer("FolderD");
+            Mouse.Click(DialogsUIMap.SaveDialogWindow.ExplorerView.ExplorerTree.localhost.FirstItem.FirstSubItem.FolderC.FolderD);
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("SuperNestedResource");
+            DialogsUIMap.Click_SaveDialog_Save_Button();
+            ExplorerUIMap.Filter_Explorer("SuperNestedResource");
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FolderC.FolderD.SuperNestedResource.UIItemEdit.Exists);
+            Assert.AreEqual(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem.FolderC.FolderD.SuperNestedResource.UIItemEdit.Text, "SuperNestedResource");
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
