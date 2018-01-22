@@ -289,6 +289,20 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     taskkill /im "geckodriver.exe" /f  2>&1 | out-null
     taskkill /im "IEDriverServer.exe" /f  2>&1 | out-null
 
+    #Stop Server Container
+    if (Get-Command docker -ErrorAction SilentlyContinue) {
+        docker container ls | %{if ($_.EndsWith("warewolfserver")) { 
+            docker exec warewolfserver sc stop "Warewolf Server"
+            $ServerContainerLogText = docker exec warewolfserver cmd /c type "C:\\ProgramData\\Warewolf\\Server Log\\warewolf-server.log"    
+            $ServerContainerLogText | Out-File -LiteralPath "$TestsResultsPath\ServerContainer.log" -Encoding utf8 -Force
+            docker stop warewolfserver
+        }}
+        docker container ls -a | %{if ($_.EndsWith("warewolfserver")) { 
+            docker container rm -f warewolfserver
+            docker images | ConvertFrom-String | where {$_.P2 -eq "<none>"} | % { docker rmi $_.P3 }
+        }}
+    }
+
     #Delete Certain Studio and Server Resources
     $ToClean = "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
                "$env:LOCALAPPDATA\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml",
@@ -661,7 +675,6 @@ function Start-my.warewolf.io {
     }
     Write-Host Starting my.warewolf.io from $WebsPath
     if (!(Test-Path $WebsPath)) {
-        Write-Warning "Webs not found at $WebsPath. Attempting to find the webs that was deployed to the server directory."
         if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
             $ServerPath = Find-Warewolf-Server-Exe
         }
@@ -1068,6 +1081,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                 Start-my.warewolf.io
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
+                    Start-Container
                     Start-Server $ServerPath $ResourcesType
                     if ($StartStudio.IsPresent) {
                         Start-Studio
@@ -1386,6 +1400,7 @@ if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsT
     Start-my.warewolf.io
     if (!${Startmy.warewolf.io}.IsPresent) {
         $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
+        Start-Container
         Start-Server $ServerPath $ResourcesType
         if (!$StartServer.IsPresent -and !${Startmy.warewolf.io}.IsPresent) {
             Start-Studio
