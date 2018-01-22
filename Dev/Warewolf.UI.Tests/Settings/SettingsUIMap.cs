@@ -216,6 +216,7 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
 
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
+            Assert.IsTrue(FindAddWindowsGroupButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Enabled);
             Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
             Assert.IsTrue(DialogsUIMap.ServicePickerDialog.Exists, "Service picker dialog does not exist.");
         }
