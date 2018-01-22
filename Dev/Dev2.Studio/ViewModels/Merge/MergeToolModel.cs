@@ -36,13 +36,26 @@ namespace Dev2.ViewModels.Merge
         FlowNode _flowNode;
         IMergeToolModel _parent;
         string _nodeArmDescription;
+        ActivityDesignerViewModel _activityDesignerViewModel;
 
         public MergeToolModel()
         {
             Children = new ObservableCollection<IMergeToolModel>();
         }
 
-        public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
+        public ActivityDesignerViewModel ActivityDesignerViewModel
+        {
+            get
+            {
+                _activityDesignerViewModel.IsMerge = true;
+                return _activityDesignerViewModel;
+            }
+            set
+            {
+                _activityDesignerViewModel = value;
+                OnPropertyChanged(() => ActivityDesignerViewModel);
+            }
+        }
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 
