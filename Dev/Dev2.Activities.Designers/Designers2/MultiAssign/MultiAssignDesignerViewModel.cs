@@ -23,8 +23,20 @@ namespace Dev2.Activities.Designers2.MultiAssign
     public class MultiAssignDesignerViewModel : ActivityCollectionDesignerViewModel<ActivityDTO>
     {
         readonly Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
-        public MultiAssignDesignerViewModel(ModelItem modelItem,bool registerEvents = true)
-            : base(modelItem,registerEvents)
+
+        public MultiAssignDesignerViewModel(ModelItem modelItem,bool registerEvents)
+            : base(modelItem, registerEvents)
+        {
+            AddTitleBarLargeToggle();
+            AddTitleBarQuickVariableInputToggle();
+
+            dynamic mi = ModelItem;
+            InitializeItems(mi.FieldsCollection);
+            HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Data_Assign;
+        }
+
+        public MultiAssignDesignerViewModel(ModelItem modelItem)
+            : base(modelItem,true)
         {
             AddTitleBarLargeToggle();
             AddTitleBarQuickVariableInputToggle();
