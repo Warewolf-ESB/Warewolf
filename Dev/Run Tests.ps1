@@ -659,12 +659,8 @@ function Start-Container {
         }
         $ServerDirectory = (Get-Item $ServerPath).Directory.FullName
         Write-Host Starting container from $ServerDirectory
-        $ErrorActionPreference = 'silentlycontinue'
-        docker network create "My Container Network"
-        docker container rm -f warewolfserver
-        $ErrorActionPreference = 'Continue'
         docker build -t warewolfserver "$ServerDirectory"
-        docker run --name warewolfserver --hostname localwarewolfservercontainer --network "My Container Network" -d warewolfserver ping -t 4.2.2.3
+        docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver ping -t 4.2.2.3
         Write-Host Server container has started.
     } else {
         Write-Warning -Message "Cannot find Docker, container server not started."
