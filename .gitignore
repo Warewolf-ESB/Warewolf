@@ -68,3 +68,4 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /DotCoverOutput/**
 /DotCoverRunner.xml
 /DotCoverOutput.html
+/Dev/.axoCover
