@@ -205,7 +205,7 @@ namespace Dev2
             }
             catch (Exception e)
             {
-                Dev2Logger.Warn("Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", GlobalConstants.WarewolfWarn);
+                throw new Exception("Ensure you are running as an Administrator. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]", e);
             }
 #endif
 
@@ -217,7 +217,7 @@ namespace Dev2
                 InitializeServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
-                OpenCOMStream();
+                _ipcIpcClient = IpcClient.GetIPCExecutor();
                 var catalog = LoadResourceCatalog();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 StartPulseLogger();
@@ -238,13 +238,7 @@ namespace Dev2
                 Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
                 Stop(true, 0);
             }
-        }
 
-        void OpenCOMStream()
-        {
-            Write("Openning Named Pipe Client Stream for COM IPC...");
-            _ipcIpcClient = IpcClient.GetIPCExecutor();
-            Write("done.");
         }
 
         void StartPulseLogger()

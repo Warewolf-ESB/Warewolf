@@ -219,7 +219,7 @@ namespace Dev2.Controller
         {
             if (payload == null || payload.Length == 0)
             {
-                if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected && Application.Current != null)
+                if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                 {
                     Application.Current.Dispatcher.Invoke(() =>
                     {
