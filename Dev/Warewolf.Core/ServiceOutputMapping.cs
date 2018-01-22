@@ -165,9 +165,16 @@ namespace Warewolf.Core
         }
         void UpdateMappingRecordSetValue(string newRecordsetName)
         {
-            if (!DataListUtil.IsValueRecordset(newRecordsetName))
+            if (!string.IsNullOrEmpty(newRecordsetName))
             {
-                RecordSetName = string.Empty;
+                if (!DataListUtil.IsValueRecordset(newRecordsetName) && !string.IsNullOrEmpty(RecordSetName))
+                {
+                    RecordSetName = string.Empty;
+                }
+                else if (DataListUtil.IsValueRecordset(newRecordsetName) && string.IsNullOrEmpty(RecordSetName))
+                {
+                    RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(newRecordsetName);
+                }
             }
         }
     }
