@@ -26,7 +26,8 @@ Param(
   [switch]$RunWarewolfServiceTests,
   [string]$MergeDotCoverSnapshotsInDirectory="",
   [switch]${Startmy.warewolf.io},
-  [string]$sendRecordedMediaForPassedTestCase="false"
+  [string]$sendRecordedMediaForPassedTestCase="false",
+  [switch]$StartServerContainer
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -1078,10 +1079,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
+            if ($StartServerContainer.IsPresent) {
+                Start-Container
+            }
             if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                 Start-my.warewolf.io
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-                    Start-Container
                     Start-Server $ServerPath $ResourcesType
                     if ($StartStudio.IsPresent) {
                         Start-Studio
@@ -1396,11 +1399,15 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "") {
+if ($StartServerContainer.IsPresent) {
+    Start-Container
+}
+
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "" -and !$StartServerContainer.IsPresent) {
     Start-my.warewolf.io
+    Start-Container
     if (!${Startmy.warewolf.io}.IsPresent) {
         $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
-        Start-Container
         Start-Server $ServerPath $ResourcesType
         if (!$StartServer.IsPresent -and !${Startmy.warewolf.io}.IsPresent) {
             Start-Studio
