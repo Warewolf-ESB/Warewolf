@@ -242,9 +242,9 @@ namespace Dev2
 
         void OpenCOMStream()
         {
-            Write("Openning Named Pipe Client Stream for COM IPC...");
+            Write("Openning Named Pipe Client Stream for COM IPC... ");
             _ipcIpcClient = IpcClient.GetIPCExecutor();
-            Write("done.");
+            WriteLine("done.");
         }
 
         void StartPulseLogger()
@@ -285,8 +285,7 @@ namespace Dev2
                 }
             }
         }
-
-
+        
         void DeleteTempFiles()
         {
             var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
@@ -529,12 +528,7 @@ namespace Dev2
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
-
-        /// <summary>
-        /// </summary>
-        /// <returns></returns>
-        /// <author>Trevor.Williams-Ros</author>
-        /// <date>2013/03/13</date>
+        
         static ResourceCatalog LoadResourceCatalog()
         {
             
@@ -598,12 +592,7 @@ namespace Dev2
                 Directory.CreateDirectory(folder);
             }
         }
-
-        /// <summary>
-        /// PBI 1018 - Loads the settings provider.
-        /// </summary>
-        /// <author>Trevor.Williams-Ros</author>
-        /// <date>2013/03/07</date>
+        
         static void LoadSettingsProvider()
         {
             Write("Loading settings provider...  ");
