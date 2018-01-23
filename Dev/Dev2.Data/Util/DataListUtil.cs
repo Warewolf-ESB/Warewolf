@@ -82,7 +82,7 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="path"></param>
         /// <returns></returns>
@@ -112,6 +112,15 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string ReplaceRecordsetIndexWithStar(string expression) => RecSetCommon.ReplaceRecordsetIndexWithStar(expression);
 
+        public static string GetVariableNameToMapOutputTo(string mappedTo)
+        {
+            if (IsValueRecordset(mappedTo))
+            {
+                return ExtractFieldNameFromValue(mappedTo);
+            }
+            return RemoveLanguageBrackets(mappedTo);
+        }
+
         /// <summary>
         /// Determines whether [is calc evaluation] [the specified expression].
         /// </summary>
@@ -126,18 +135,18 @@ namespace Dev2.Data.Util
 
             newExpression = string.Empty;
 
-            if (expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
+            if (expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix, StringComparison.Ordinal))
             {
-                if (expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
+                if (expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix, StringComparison.Ordinal))
                 {
                     newExpression = expression.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
                     result = true;
                 }
             }
 
-            if (expression.StartsWith(GlobalConstants.AggregateCalculateTextConvertPrefix))
+            if (expression.StartsWith(GlobalConstants.AggregateCalculateTextConvertPrefix, StringComparison.Ordinal))
             {
-                if (expression.EndsWith(GlobalConstants.AggregateCalculateTextConvertSuffix))
+                if (expression.EndsWith(GlobalConstants.AggregateCalculateTextConvertSuffix, StringComparison.Ordinal))
                 {
                     newExpression = expression.Substring(GlobalConstants.AggregateCalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.AggregateCalculateTextConvertSuffix.Length + GlobalConstants.AggregateCalculateTextConvertPrefix.Length));
                     result = true;
@@ -172,7 +181,7 @@ namespace Dev2.Data.Util
             // Transfer System Tags
             var result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
 
-            if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
+            if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal))
             {
                 tag = tag.Replace(GlobalConstants.SystemTagNamespaceSearch, "");
                 result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
@@ -181,10 +190,6 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Shapes the definitions to data list.
-        /// </summary>
-        /// <returns></returns>
         public static IExecutionEnvironment InputsToEnvironment(IExecutionEnvironment outerEnvironment, string inputDefs, int update)
         {
             var env = new ExecutionEnvironment();
@@ -277,12 +282,12 @@ namespace Dev2.Data.Util
         {
             var result = value;
 
-            if (result.StartsWith(OpeningSquareBrackets))
+            if (result.StartsWith(OpeningSquareBrackets, StringComparison.Ordinal))
             {
                 result = result.Substring(2, result.Length - 2);
             }
 
-            if (result.EndsWith(ClosingSquareBrackets))
+            if (result.EndsWith(ClosingSquareBrackets, StringComparison.Ordinal))
             {
                 result = result.Substring(0, result.Length - 2);
             }
@@ -301,11 +306,11 @@ namespace Dev2.Data.Util
 
         public static string MakeValueIntoHighLevelRecordset(string value) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, false);
         public static string MakeValueIntoHighLevelRecordset(string value, bool starNotation) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, starNotation);
-        
+
         public static string ExtractIndexRegionFromRecordset(string rs) => RecSetCommon.ExtractIndexRegionFromRecordset(rs);
-        
+
         public static bool IsStarIndex(string rs) => RecSetCommon.IsStarIndex(rs);
-        
+
         public static bool IsFullyEvaluated(string payload)
         {
             var result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
@@ -338,7 +343,7 @@ namespace Dev2.Data.Util
 
         /// <summary>
         /// Is the expression evaluated
-        /// </summary>  
+        /// </summary>
         /// <param name="payload">The payload.</param>
         /// <returns>
         ///   <c>true</c> if the specified payload is evaluated; otherwise, <c>false</c>.
@@ -359,18 +364,12 @@ namespace Dev2.Data.Util
 
         //used in the replace node method
 
-        /// <summary>
-        /// Checks if the info contained in data is well formed XML
-        /// </summary>
         public static bool IsXml(string data)
         {
             var isXml = XmlHelper.IsXml(data, out bool isFragment, out bool isHtml);
             return isXml && !isFragment && !isHtml;
         }
 
-        /// <summary>
-        /// Checks if the info contained in data is well formed XML
-        /// </summary>
         public static bool IsXml(string data, out bool isFragment)
         {
 
@@ -380,7 +379,7 @@ namespace Dev2.Data.Util
         public static bool IsJson(string data)
         {
             var tmp = data.Trim();
-            if (tmp.StartsWith("{") && tmp.EndsWith("}"))
+            if (tmp.StartsWith("{", StringComparison.Ordinal) && tmp.EndsWith("}", StringComparison.Ordinal))
             {
                 return true;
             }
@@ -412,7 +411,7 @@ namespace Dev2.Data.Util
         public static string AdjustForEncodingIssues(string payload)
         {
             var trimedData = payload.Trim();
-            var isXml = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
+            var isXml = trimedData.StartsWith("<", StringComparison.Ordinal) && !trimedData.StartsWith("<![CDATA[", StringComparison.Ordinal);
 
             if (!isXml)
             {
@@ -441,9 +440,9 @@ namespace Dev2.Data.Util
             trimedData = trimedData.Replace("\0", "");
             return trimedData;
         }
-        
+
         public static string RemoveRecordsetBracketsFromValue(string value) => RecSetCommon.RemoveRecordsetBracketsFromValue(value);
-        
+
         public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum) => RecSetCommon.CreateRecordsetDisplayValue(recsetName, colName, indexNum);
 
         public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer) => UpsertTokens(target, tokenizer, null, null, true);
