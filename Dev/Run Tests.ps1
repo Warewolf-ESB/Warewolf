@@ -1079,11 +1079,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
         }
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
-            if ($StartServerContainer.IsPresent) {
-                Start-Container
-            }
             if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                 Start-my.warewolf.io
+                if ($StartServerContainer.IsPresent) {
+                    Start-Container
+                }
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
                     Start-Server $ServerPath $ResourcesType
                     if ($StartStudio.IsPresent) {
