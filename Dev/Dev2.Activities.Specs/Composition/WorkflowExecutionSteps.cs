@@ -258,7 +258,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 ID = resourceId,
                 ResourceName = workflowName,
-                Category = workflowName,
+                Category = "Acceptance Tests\\" + workflowName,
                 ResourceType = ResourceType.WorkflowService
             };
 
