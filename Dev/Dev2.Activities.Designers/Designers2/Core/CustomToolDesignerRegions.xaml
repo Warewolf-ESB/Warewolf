@@ -554,7 +554,7 @@
                                                             SourcePropertyValue="{Binding Path=Value, UpdateSourceTrigger=PropertyChanged}"
                                                             Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core1:ActivityDesignerTemplate}}" />
                                     </i:Interaction.Behaviors>
-                                        <AutomationProperties.AutomationId>
+                                    <AutomationProperties.AutomationId>
                                         <MultiBinding StringFormat="UI_{0}_Row{1}_InputColumn_AutoID">
                                             <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=core1:ActivityDesignerTemplate}" />
                                             <Binding Path="IndexNumber" />
@@ -768,6 +768,7 @@
                                                     MaxHeight="80"
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
+                                                    WrapInBrackets="True"
                                                     ToolTip="{x:Static languages:HelpText.MappingsDefaultValueHelp}"
                                                     Text="{Binding Path=MappedTo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     Style="{StaticResource ActivityMappingDataGridIntellisenseTextBoxStyle}">

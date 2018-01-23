@@ -99,9 +99,9 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _serviceHeaderBuilder.BuildHeader(_viewmodel.GetHeaderRegion(), requestpayLoad);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // 
+                Console.Write(e.Message);
             }
         }
         public void ExecuteTest()
@@ -184,7 +184,7 @@ namespace Dev2.Activities.Designers2.Core
                 _viewmodel.OutputsRegion.Outputs.Clear();
                 if (OutputArea != null)
                 {
-                    _viewmodel.OutputsRegion.Outputs = new ObservableCollection<IServiceOutputMapping>(OutputArea.Outputs);
+                    _viewmodel.OutputsRegion.ResetOutputs(OutputArea.Outputs);
                     var recSet = _recordsetList.FirstOrDefault(recordset => !string.IsNullOrEmpty(recordset.Name));
                     if (recSet != null)
                     {
