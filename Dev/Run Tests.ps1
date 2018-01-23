@@ -885,25 +885,28 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $MSTestPath = $MSTestPath.Replace("Enterprise", "Community")
         }
     }
-    if (!(Test-Path $VSTestPath) -and !(Test-Path $MSTestPath)) {
-        Write-Error -Message "Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath `'`' or -MSTestPath `'`' parameters to pass paths to one of those files."
-        sleep 30
-        exit 1
-    }
 
-    if ($ApplyDotCover -and $DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
-        Write-Error -Message "Error cannot find dotcover.exe. Use -DotCoverPath `'`' parameter to pass a path to that file."
-        sleep 30
-        exit 1
-    }
+    if(!$JobContainer.IsPresent) {
+        if (!(Test-Path $VSTestPath) -and !(Test-Path $MSTestPath)) {
+            Write-Error -Message "Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath `'`' or -MSTestPath `'`' parameters to pass paths to one of those files."
+            sleep 30
+            exit 1
+        }
 
-    if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
-        Remove-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx"
-        Write-Host Removed loose TRX files from VS install directory.
-    }
+        if ($ApplyDotCover -and $DotCoverPath -ne "" -and !(Test-Path $DotCoverPath)) {
+            Write-Error -Message "Error cannot find dotcover.exe. Use -DotCoverPath `'`' parameter to pass a path to that file."
+            sleep 30
+            exit 1
+        }
 
-    if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
-        $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
+        if (Test-Path "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
+            Remove-Item "$env:vs140comntools..\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx"
+            Write-Host Removed loose TRX files from VS install directory.
+        }
+
+        if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
+            $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
+        }
     }
 
     if (!$MSTest.IsPresent) {
@@ -976,16 +979,17 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
 FROM microsoft/windowsservercore
 SHELL ["powershell"]
-New-Item -Path Build -ItemType Directory
-ADD [".", Build]
+RUN New-Item -Path Build -ItemType Directory
+ADD . Build
 
 # Install MSTest
 RUN Invoke-WebRequest "https://download.microsoft.com/download/8/A/F/8AFFDD5A-53D9-46EB-98D7-B61BBCAF0DE6/vstf_testagent.exe" -OutFile "`$env:TEMP\vstf_testagent.exe" -UseBasicParsing
 RUN & "`$env:TEMP\vstf_testagent.exe" /quiet | echo "Installing MSTest."
 RUN if (!(Test-Path \"`$env:vs140comntools..\IDE\MSTest.exe\")) {Write-Host MSTest did not install correctly; exit 1}
+RUN $env:vs140comntools
 
 # Run Tests
-RUN & "Build\\Run Tests.ps1" -JobName '$JobName'
+RUN &('.\Build\Run Tests.ps1') -JobName '$JobName' -TestList '$TestList' -MSTestPath '`$env:vs140comntools..\IDE\MSTest.exe'
 "@
             docker build -t jobcontainer "$TestsPath"
             docker cp jobcontainer:C:\Build\TestResults $TestsPath\TestResults
