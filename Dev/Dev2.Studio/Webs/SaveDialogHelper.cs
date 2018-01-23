@@ -15,26 +15,21 @@ using System.Windows;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
 using Warewolf.Studio.ViewModels;
-using Dev2.Utilities;
-using System.Activities.Presentation.Services;
-using System.Activities.Presentation;
 
 namespace Dev2.Webs
 {
     public static class SaveDialogHelper
     {
-        
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel) => ShowNewWorkflowSaveDialog(resourceModel, null, true);
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId, bool addToTabManager)
         {
             ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, resourceModel, addToTabManager));
         }
-        internal static void ShowNewWorkflowSaveDialog(IContextualResourceModel contextualResourceModel, bool loadingFromServer, string originalPath) 
+        internal static void ShowNewWorkflowSaveDialog(IContextualResourceModel contextualResourceModel, bool loadingFromServer, string originalPath)
             => ShowSaveDialog(contextualResourceModel
                , new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, contextualResourceModel, true)
                , loadingFromServer: loadingFromServer
@@ -71,6 +66,10 @@ namespace Dev2.Webs
 
                 var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.EnvironmentID);
+                if (environmentViewModel == null)
+                {
+                    return;
+                }
 
                 var header = string.IsNullOrEmpty(resourceModel.Category) ? "Unsaved Item" : resourceModel.Category;
                 var lastHeaderIndexOf = header.LastIndexOf("\\", StringComparison.Ordinal);
