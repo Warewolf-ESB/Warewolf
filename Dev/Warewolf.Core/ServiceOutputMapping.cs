@@ -145,7 +145,7 @@ namespace Warewolf.Core
             {
                 var recSetName = DataListUtil.ExtractRecordsetNameFromValue(_mappedTo);
                 var fieldName = DataListUtil.ExtractFieldNameOnlyFromValue(_mappedTo);
-                if (string.Equals(recSetName, _recordSetName, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(recSetName, _recordSetName, StringComparison.OrdinalIgnoreCase) && !string.Equals(recSetName, newRecordsetName, StringComparison.OrdinalIgnoreCase))
                 {
                     MappedTo = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(newRecordsetName, fieldName, ""));
                 }
@@ -163,18 +163,19 @@ namespace Warewolf.Core
                 }
             }
         }
-        void UpdateMappingRecordSetValue(string newRecordsetName)
+        void UpdateMappingRecordSetValue(string newMappedTo)
         {
-            if (!string.IsNullOrEmpty(newRecordsetName))
+            if (!string.IsNullOrEmpty(newMappedTo))
             {
-                if (!DataListUtil.IsValueRecordset(newRecordsetName) && !string.IsNullOrEmpty(RecordSetName))
+                if (!DataListUtil.IsValueRecordset(newMappedTo) && !string.IsNullOrEmpty(RecordSetName))
                 {
-                    RecordSetName = string.Empty;
+                    _recordSetName = string.Empty;
                 }
-                else if (DataListUtil.IsValueRecordset(newRecordsetName) && string.IsNullOrEmpty(RecordSetName))
+                else if (DataListUtil.IsValueRecordset(newMappedTo) && string.IsNullOrEmpty(RecordSetName))
                 {
-                    RecordSetName = DataListUtil.ExtractRecordsetNameFromValue(newRecordsetName);
+                    _recordSetName = DataListUtil.ExtractRecordsetNameFromValue(newMappedTo);
                 }
+                OnPropertyChanged("RecordSetName");
             }
         }
     }

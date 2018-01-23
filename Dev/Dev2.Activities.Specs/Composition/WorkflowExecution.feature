@@ -3220,8 +3220,8 @@ Scenario: Workflow with AsyncLogging and ForEach
 Scenario: Database PostgreSql Database service inputs and outputs
      Given I have a workflow "PostgreSqlGetCountries"
 	 And "PostgreSqlGetCountries" contains a postgre tool using "get_countries" with mappings as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  | Prefix           | s             | Id                  | [[countries(*).Id]]  |
+	  | Input to Service | From Variable | Output from Service | To Variable           |
+	  | Prefix           | s             | Id                  | [[countries(*).Id]]   |
 	  |                  |               | Name                | [[countries(*).Name]] |
       When "PostgreSqlGetCountries" is executed
      Then the workflow execution has "NO" error
