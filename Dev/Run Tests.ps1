@@ -27,7 +27,8 @@ Param(
   [string]$MergeDotCoverSnapshotsInDirectory="",
   [switch]${Startmy.warewolf.io},
   [string]$sendRecordedMediaForPassedTestCase="false",
-  [switch]$StartServerContainer
+  [switch]$StartServerContainer,
+  [switch]$JobContainer
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -971,107 +972,125 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 }
             }
         }
-        if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
-	        Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
-	        exit 1
-        }
+        if ($JobContainer.IsPresent) {
+            Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
+FROM microsoft/windowsservercore
+SHELL ["powershell"]
+New-Item -Path Build -ItemType Directory
+ADD [".", Build]
 
-        # Setup for screen recording
-        if ($RecordScreen.IsPresent) {
-		    $TestSettingsId = [guid]::NewGuid()
-            $NamingSchemeTag = "`n"
+# Install MSTest
+RUN Invoke-WebRequest "https://download.microsoft.com/download/8/A/F/8AFFDD5A-53D9-46EB-98D7-B61BBCAF0DE6/vstf_testagent.exe" -OutFile "`$env:TEMP\vstf_testagent.exe" -UseBasicParsing
+RUN & "`$env:TEMP\vstf_testagent.exe" /quiet | echo "Installing MSTest."
+RUN if (!(Test-Path \"`$env:vs140comntools..\IDE\MSTest.exe\")) {Write-Host MSTest did not install correctly; exit 1}
 
-            # Create test settings.
-            $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
-            Copy-On-Write $TestSettingsFile
-            [system.io.file]::WriteAllText($TestSettingsFile,  @"
+# Run Tests
+RUN & "Build\\Run Tests.ps1" -JobName '$JobName'
+"@
+            docker build -t jobcontainer "$TestsPath"
+            docker cp jobcontainer:C:\Build\TestResults $TestsPath\TestResults
+        } else {
+            if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
+	            Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
+	            exit 1
+            }
+
+            # Setup for screen recording
+            if ($RecordScreen.IsPresent) {
+		        $TestSettingsId = [guid]::NewGuid()
+                $NamingSchemeTag = "`n"
+
+                # Create test settings.
+                $TestSettingsFile = "$TestsResultsPath\$JobName.testsettings"
+                Copy-On-Write $TestSettingsFile
+                [system.io.file]::WriteAllText($TestSettingsFile,  @"
 <?xml version=`"1.0`" encoding="UTF-8"?>
 <TestSettings id="$TestSettingsId" name="$JobName" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
-  <Description>Run $JobName With Screen Recording.</Description>
-  <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
-  <Execution>
+    <Description>Run $JobName With Screen Recording.</Description>
+    <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
+    <Execution>
     <AgentRule name="LocalMachineDefaultRole">
-      <DataCollectors>
+        <DataCollectors>
         <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
-          <Configuration>
+            <Configuration>
             <MediaRecorder sendRecordedMediaForPassedTestCase="$sendRecordedMediaForPassedTestCase" xmlns="" />
-          </Configuration>
+            </Configuration>
         </DataCollector>
-      </DataCollectors>
+        </DataCollectors>
     </AgentRule>
-  </Execution>
+    </Execution>
 </TestSettings>
 "@)
-        }
+            }
 
-        if (!$MSTest.IsPresent) {
-            #Resolve test results file name
-            Set-Location -Path "$TestsResultsPath\.."
+            if (!$MSTest.IsPresent) {
+                #Resolve test results file name
+                Set-Location -Path "$TestsResultsPath\.."
 
-            # Create full VSTest argument string.
-            if ($TestList -eq "") {
-                if ($TestCategories -ne "") {
-                    $TestCategories = " /TestCaseFilter:`"(TestCategory=" + $TestCategories  + ")`""
+                # Create full VSTest argument string.
+                if ($TestList -eq "") {
+                    if ($TestCategories -ne "") {
+                        $TestCategories = " /TestCaseFilter:`"(TestCategory=" + $TestCategories  + ")`""
+                    } else {
+                        $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
+                        if ($DefinedCategories.Count -gt 0) {
+                            $TestCategories = $DefinedCategories -join ")&(TestCategory!="
+                            $TestCategories = " /TestCaseFilter:`"(TestCategory!=$TestCategories)`""
+                        }
+                    }
                 } else {
-                    $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
-                    if ($DefinedCategories.Count -gt 0) {
-                        $TestCategories = $DefinedCategories -join ")&(TestCategory!="
-                        $TestCategories = " /TestCaseFilter:`"(TestCategory!=$TestCategories)`""
+                    $TestCategories = ""
+                    if (!($TestList.StartsWith(" /Tests:"))) {
+                        $TestList = " /Tests:" + $TestList
                     }
                 }
-            } else {
-                $TestCategories = ""
-                if (!($TestList.StartsWith(" /Tests:"))) {
-                    $TestList = " /Tests:" + $TestList
-                }
-            }
-            if($RecordScreen.IsPresent) {
-                $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
-            } else {
-                $TestSettings = ""
-            }
-
-            if ($Parallelize.IsPresent) {
-                $ParallelSwitch = " /Parallel"
-            } else {
-                $ParallelSwitch = ""
-            }
-            $FullArgsList = $TestAssembliesList + " /logger:trx" + $TestList + $TestSettings + $TestCategories + $ParallelSwitch
-
-            # Write full command including full argument string.
-            $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
-            Copy-On-Write "$TestRunnerPath"
-            Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
-        } else {
-            #Resolve test results file name
-            $TestResultsFile = $TestsResultsPath + "\" + $JobName + " Results.trx"
-            Copy-On-Write $TestResultsFile
-
-            if($RecordScreen.IsPresent) {
-                $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
-            } else {
-                $TestSettings = ""
-            }
-
-            # Create full MSTest argument string.
-            if ($TestList -eq "") {
-                if ($TestCategories -ne "") {
-                    $TestCategories = " /category:`"$TestCategories`""
+                if($RecordScreen.IsPresent) {
+                    $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
                 } else {
-                    $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
-                    if ($DefinedCategories.Count -gt 0) {
-                        $TestCategories = $DefinedCategories -join "&!"
-                        $TestCategories = " /category:`"!$TestCategories`""
+                    $TestSettings = ""
+                }
+
+                if ($Parallelize.IsPresent) {
+                    $ParallelSwitch = " /Parallel"
+                } else {
+                    $ParallelSwitch = ""
+                }
+                $FullArgsList = $TestAssembliesList + " /logger:trx" + $TestList + $TestSettings + $TestCategories + $ParallelSwitch
+
+                # Write full command including full argument string.
+                $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
+                Copy-On-Write "$TestRunnerPath"
+                Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$VSTestPath`"$FullArgsList
+            } else {
+                #Resolve test results file name
+                $TestResultsFile = $TestsResultsPath + "\" + $JobName + " Results.trx"
+                Copy-On-Write $TestResultsFile
+
+                if($RecordScreen.IsPresent) {
+                    $TestSettings =  " /Settings:`"" + $TestSettingsFile + "`""
+                } else {
+                    $TestSettings = ""
+                }
+
+                # Create full MSTest argument string.
+                if ($TestList -eq "") {
+                    if ($TestCategories -ne "") {
+                        $TestCategories = " /category:`"$TestCategories`""
+                    } else {
+                        $DefinedCategories = AllCategoriesDefinedForProject $ProjectSpec
+                        if ($DefinedCategories.Count -gt 0) {
+                            $TestCategories = $DefinedCategories -join "&!"
+                            $TestCategories = " /category:`"!$TestCategories`""
+                        }
+                    }
+                } else {
+                    $TestCategories = ""
+                    if (!($TestList.StartsWith(" /test:"))) {
+                        $TestNames = $TestList.Split(",") -join " /test:"
+                        $TestList = " /test:" + $TestNames
                     }
                 }
-            } else {
-                $TestCategories = ""
-                if (!($TestList.StartsWith(" /test:"))) {
-                    $TestNames = $TestList.Split(",") -join " /test:"
-                    $TestList = " /test:" + $TestNames
-                }
-            }
-            $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
+                $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 
             # Write full command including full argument string.
             $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
@@ -1101,14 +1120,14 @@ if ($TotalNumberOfJobsToRun -gt 0) {
 	<Output>$DotCoverSnapshotFile</Output>
 	<Scope>
 "@
-                foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
-                    $DotCoverArgs += @"
+                    foreach ($TestAssembliesDirectory in $TestAssembliesDirectories) {
+                        $DotCoverArgs += @"
 
         <ScopeEntry>$TestAssembliesDirectory\*.dll</ScopeEntry>
         <ScopeEntry>$TestAssembliesDirectory\*.exe</ScopeEntry>
 "@
-                }
-                $DotCoverArgs += @"
+                    }
+                    $DotCoverArgs += @"
 
     </Scope>
     <Filters>
@@ -1126,36 +1145,37 @@ if ($TotalNumberOfJobsToRun -gt 0) {
     </Filters>
 </AnalyseParams>
 "@
-                $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
-                Copy-On-Write $DotCoverRunnerXMLPath
-                Out-File -LiteralPath $DotCoverRunnerXMLPath -Encoding default -InputObject $DotCoverArgs
+                    $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
+                    Copy-On-Write $DotCoverRunnerXMLPath
+                    Out-File -LiteralPath $DotCoverRunnerXMLPath -Encoding default -InputObject $DotCoverArgs
                 
-                # Create full DotCover argument string.
-                $DotCoverLogFile = "$TestsResultsPath\DotCover.xml.log"
-                Copy-On-Write $DotCoverLogFile
-                $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile`""
+                    # Create full DotCover argument string.
+                    $DotCoverLogFile = "$TestsResultsPath\DotCover.xml.log"
+                    Copy-On-Write $DotCoverLogFile
+                    $FullArgsList = " cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$DotCoverLogFile`""
 
-                #Write DotCover Runner Batch File
-                $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
-                Copy-On-Write $DotCoverRunnerPath
-                Out-File -LiteralPath "$DotCoverRunnerPath" -Encoding default -InputObject `"$DotCoverPath`"$FullArgsList
+                    #Write DotCover Runner Batch File
+                    $DotCoverRunnerPath = "$TestsResultsPath\Run $JobName DotCover.bat"
+                    Copy-On-Write $DotCoverRunnerPath
+                    Out-File -LiteralPath "$DotCoverRunnerPath" -Encoding default -InputObject `"$DotCoverPath`"$FullArgsList
                 
-                #Run DotCover Runner Batch File
-                &"$DotCoverRunnerPath"
-                if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
-                    Cleanup-ServerStudio $false
+                    #Run DotCover Runner Batch File
+                    &"$DotCoverRunnerPath"
+                    if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
+                        Cleanup-ServerStudio $false
+                    }
+                } else {
+                    &"$TestRunnerPath"
+                    if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
+                        Cleanup-ServerStudio (!$ApplyDotCover)
+                    }
                 }
-            } else {
-                &"$TestRunnerPath"
-                if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
-                    Cleanup-ServerStudio (!$ApplyDotCover)
-                }
+                Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
             }
-            Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
         }
-    }
-    if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1) {
-        Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
+        if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1) {
+            Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
+        }
     }
 }
 
