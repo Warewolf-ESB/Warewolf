@@ -51,7 +51,7 @@ namespace Dev2.Activities
                         var i = 0;
                         foreach (var serviceOutputMapping in Outputs)
                         {
-                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
+                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = !string.IsNullOrEmpty(DataListUtil.RemoveLanguageBrackets(serviceOutputMapping.MappedTo)) ? DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo) : string.Empty;
                             i++;
                         }
                         if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
