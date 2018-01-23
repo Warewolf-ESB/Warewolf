@@ -146,6 +146,54 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("Can only save to folders or root", requestServiceNameViewModel.ErrorMessage);
         }
 
+        [TestMethod]
+        [TestCategory("RequestServiceNameViewModel_ShowSaveDialog")]
+        public async Task RequestServiceNameViewModel_ShowSaveDialog_ItemSelectedHasMultipleParents_ShouldReturnResourceNameWithPathWithParent()
+        {
+            //------------Setup for test--------------------------
+            var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
+            CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
+            mockEnvironmentModel.Setup(model => model.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
+            var requestServiceNameViewModel = await RequestServiceNameViewModel.CreateAsync(mockEnvironmentModel.Object, "", "");
+            requestServiceNameViewModel.ShowSaveDialog();
+
+            requestServiceNameViewModel.Name = "TestResource";
+            var mockExplorerTreeItemA = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItemA.Setup(item => item.ResourceType).Returns("Folder");
+            mockExplorerTreeItemA.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+            mockExplorerTreeItemA.Setup(item => item.ResourceName).Returns("A");
+
+            var mockExplorerTreeItemB = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItemB.Setup(item => item.ResourceType).Returns("Folder");
+            mockExplorerTreeItemB.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+            mockExplorerTreeItemB.Setup(item => item.ResourceName).Returns("B");
+            mockExplorerTreeItemB.Setup(item => item.Parent).Returns(mockExplorerTreeItemA.Object);
+
+            var mockExplorerTreeItemC = new Mock<IExplorerTreeItem>();
+            mockExplorerTreeItemC.Setup(item => item.ResourceType).Returns("Folder");
+            mockExplorerTreeItemC.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+            mockExplorerTreeItemC.Setup(item => item.ResourceName).Returns("C");
+            mockExplorerTreeItemC.Setup(item => item.Parent).Returns(mockExplorerTreeItemB.Object);
+
+            var mockExplorerParentTreeItemD = new Mock<IExplorerTreeItem>();
+            mockExplorerParentTreeItemD.Setup(item => item.ResourceType).Returns("Folder");
+            mockExplorerParentTreeItemD.Setup(item => item.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+            mockExplorerParentTreeItemD.Setup(item => item.ResourceName).Returns("D");
+            mockExplorerParentTreeItemD.Setup(item => item.Parent).Returns(mockExplorerTreeItemC.Object);
+
+            requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.SelectedItem = mockExplorerParentTreeItemD.Object;
+            //------------Execute Test---------------------------
+            requestServiceNameViewModel.OkCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(requestServiceNameViewModel.ResourceName);
+            Assert.AreEqual("A\\B\\C\\D\\", requestServiceNameViewModel.ResourceName.Path);
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

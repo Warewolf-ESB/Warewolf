@@ -36,14 +36,15 @@ namespace Dev2.Studio.Core
                 DisplayName = name,
                 ResourceType = "Folder",
                 ResourcePath = resourcePath,
-                ResourceId = id
+                ResourceId = id,
+                IsFolder = true
             };
             controller.AddPayloadArgument("itemToAdd", serialiser.SerializeToBuilder(explorerItemModel));
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
             if(result.Status != ExecStatus.Success)
             {
                 throw new WarewolfSaveException(result.Message,null);
-            }            
+            }
         }
 
         /// <summary>

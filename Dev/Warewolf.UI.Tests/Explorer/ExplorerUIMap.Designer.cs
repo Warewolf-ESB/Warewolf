@@ -1003,6 +1003,18 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             }
         }
         
+        public FolderC FolderC
+        {
+            get
+            {
+                if ((this.mFolderC == null))
+                {
+                    this.mFolderC = new FolderC(this);
+                }
+                return this.mFolderC;
+            }
+        }
+        
         public WpfEdit ItemEdit
         {
             get
@@ -1052,6 +1064,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         
         #region Fields
         private ResourceImageImage1 mResourceImageImage;
+        
+        private FolderC mFolderC;
         
         private WpfEdit mItemEdit;
         
@@ -1115,6 +1129,148 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         private WpfButton mViewIcon;
         
         private WpfButton mExecuteIcon;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class FolderC : WpfTreeItem
+    {
+        
+        public FolderC(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("SaveDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public FolderD FolderD
+        {
+            get
+            {
+                if ((this.mFolderD == null))
+                {
+                    this.mFolderD = new FolderD(this);
+                }
+                return this.mFolderD;
+            }
+        }
+        
+        public WpfEdit UIItemEdit
+        {
+            get
+            {
+                if ((this.mUIItemEdit == null))
+                {
+                    this.mUIItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIItemEdit.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private FolderD mFolderD;
+        
+        private WpfEdit mUIItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class FolderD : WpfTreeItem
+    {
+        
+        public FolderD(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("SaveDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public SuperNestedResource SuperNestedResource
+        {
+            get
+            {
+                if ((this.mSuperNestedResource == null))
+                {
+                    this.mSuperNestedResource = new SuperNestedResource(this);
+                }
+                return this.mSuperNestedResource;
+            }
+        }
+        
+        public WpfEdit UIItemEdit
+        {
+            get
+            {
+                if ((this.mUIItemEdit == null))
+                {
+                    this.mUIItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIItemEdit.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SuperNestedResource mSuperNestedResource;
+        
+        private WpfEdit mUIItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class SuperNestedResource : WpfTreeItem
+    {
+        
+        public SuperNestedResource(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("SaveDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIItemEdit
+        {
+            get
+            {
+                if ((this.mUIItemEdit == null))
+                {
+                    this.mUIItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIItemEdit.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIItemEdit;
         #endregion
     }
     
