@@ -1399,10 +1399,6 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if ($StartServerContainer.IsPresent) {
-    Start-Container
-}
-
 if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "" -and !$StartServerContainer.IsPresent) {
     Start-my.warewolf.io
     Start-Container
