@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Text;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -291,5 +293,22 @@ namespace Dev2.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual("<DataList />", outPutJson);
         }
+
+        [TestMethod]
+        public void ExecutionEnvironmentUtils_UpdateEnvironmentFromInputPayload_WithXmlChar_ShouldStillMapWhenInputAsJson()
+        {
+            var dataObj = new DsfDataObject(string.Empty, Guid.NewGuid());
+            const string dataList = "<DataList>" +
+                        "<input Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\"/>" +
+                        "</DataList>";
+            var inputPayload = new StringBuilder("{\"input\":\"123<1234\"}");
+            ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(dataObj, inputPayload, dataList);
+            Assert.IsNotNull(dataObj.Environment);
+            var values = dataObj.Environment.EvalAsListOfStrings("[[input]]", 0);
+            Assert.IsNotNull(values);
+            Assert.AreEqual(1, values.Count);
+            Assert.AreEqual("123<1234", values[0]);
+
+        }                  
     }
 }
