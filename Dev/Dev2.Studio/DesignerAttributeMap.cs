@@ -130,6 +130,7 @@ namespace Dev2
                 { typeof(DsfFileRead), typeof(ReadFileDesignerViewModel) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel) },
                 { typeof(DsfFolderRead), typeof(ReadFolderDesignerViewModel) },
+                { typeof(DsfFolderReadActivity), typeof(Activities.Designers2.FolderRead.FolderReadDesignerViewModel) },
                 { typeof(DsfPathRename), typeof(RenameDesignerViewModel) },
                 { typeof(DsfUnZip), typeof(UnzipDesignerViewModel) },
                 { typeof(DsfZip), typeof(ZipDesignerViewModel) },
