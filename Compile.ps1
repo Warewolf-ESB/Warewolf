@@ -267,18 +267,19 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
     }
 }
 
-$TagExists = $null
-Try {
-    $TagExists = Invoke-WebRequest -Uri "https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID" -DisableKeepAlive -TimeoutSec 20 -UseBasicParsing
+if ($AcceptanceTesting.IsPresent -or $Server.IsPresent -or $Release.IsPresent) {
+    $TagExists = $null
+    Try {
+        $TagExists = Invoke-WebRequest -Uri "https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID" -DisableKeepAlive -TimeoutSec 20 -UseBasicParsing
+    }
+    Catch {
+       "$_"
+    }
+    if (!$TagExists) {
+        docker build -t warewolfserver/warewolfserver:$GitCommitID "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
+        docker push warewolfserver/warewolfserver
+    } else {
+        Write-Host Already tagged. See: https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID
+    }
 }
-Catch {
-   "$_"
-}
-if (!$TagExists) {
-    docker build -t warewolfserver/warewolfserver:$GitCommitID "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
-    docker push warewolfserver/warewolfserver
-} else {
-    Write-Host Already tagged. See: https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID
-}
-
 exit 0
