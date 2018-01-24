@@ -277,6 +277,7 @@ if ($AcceptanceTesting.IsPresent -or $Server.IsPresent -or $Release.IsPresent) {
     if (!$TagExists) {
         docker build -t warewolfserver/warewolfserver:$GitCommitID "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
         docker push warewolfserver/warewolfserver
+        docker rmi warewolfserver
     } else {
         Write-Host Already tagged. See: https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID
     }
