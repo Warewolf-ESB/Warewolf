@@ -266,4 +266,18 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         }
     }
 }
+
+Try {
+    $TagExists = Invoke-WebRequest -Uri "https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID" -DisableKeepAlive -TimeoutSec 20 -UseBasicParsing
+}
+Catch {
+   "$_"
+}
+if (!$TagExists) {
+    docker build -t warewolfserver "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
+    docker tag warewolfserver warewolfserver/warewolfserver:$GitCommitID
+    docker push warewolfserver/warewolfserver
+    docker image rm warewolfserver:$GitCommitID
+}
+
 exit 0
