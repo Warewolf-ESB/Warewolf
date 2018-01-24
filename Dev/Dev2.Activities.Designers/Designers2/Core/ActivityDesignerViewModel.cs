@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -31,7 +31,7 @@ using Dev2.Common;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public abstract class ActivityDesignerViewModel : DependencyObject, IClosable, IHelpSource, IValidator, IErrorsSource,IDisposable,IUpdatesHelp
+    public abstract class ActivityDesignerViewModel : DependencyObject, IClosable, IHelpSource, IValidator, IErrorsSource, IDisposable, IUpdatesHelp
     {
         readonly ModelItem _modelItem;
         Action _setInitialFocus;
@@ -105,7 +105,7 @@ namespace Dev2.Activities.Designers2.Core
             var isValid = errors == null || errors.Count == 0;
             viewModel.IsValid = isValid;
             viewModel.ShowErrors = !isValid;
-            if(viewModel.ShowErrors)
+            if (viewModel.ShowErrors)
             {
                 viewModel.ShowHelp = false;
             }
@@ -117,6 +117,12 @@ namespace Dev2.Activities.Designers2.Core
             set => SetValue(ShowLargeProperty, value);
         }
 
+        public bool IsMerge
+        {
+            get => (bool)GetValue(IsMergeProperty);
+            set => SetValue(IsMergeProperty, value);
+        }
+
         protected void RemoveHelpToggle()
         {
             var activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
@@ -126,6 +132,9 @@ namespace Dev2.Activities.Designers2.Core
                 ShowHelp = false;
             }
         }
+
+        public static readonly DependencyProperty IsMergeProperty =
+            DependencyProperty.Register("IsMerge", typeof(bool), typeof(ActivityDesignerViewModel), new PropertyMetadata(false));
 
         public static readonly DependencyProperty ShowLargeProperty =
             DependencyProperty.Register("ShowLarge", typeof(bool), typeof(ActivityDesignerViewModel), new PropertyMetadata(false, OnTitleBarToggleChanged));
@@ -274,9 +283,9 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual void OnToggleCheckedChanged(string propertyName, bool isChecked)
         {
-            if(this is ServiceDesignerViewModel && propertyName == "ShowLarge")
+            if (this is ServiceDesignerViewModel && propertyName == "ShowLarge")
             {
-                if(isChecked)
+                if (isChecked)
                 {
                     var activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
                 }
@@ -292,7 +301,7 @@ namespace Dev2.Activities.Designers2.Core
             ThumbVisibility = isSelectedOrMouseOver && !showSmall ? Visibility.Visible : Visibility.Collapsed;
             ConnectorVisibility = isSelectedOrMouseOver && showSmall ? Visibility.Visible : Visibility.Collapsed;
 
-            if(!isChecked)
+            if (!isChecked)
             {
                 PreviousView = propertyName;
             }
@@ -368,10 +377,10 @@ namespace Dev2.Activities.Designers2.Core
             CEventHelper.RemoveAllEventHandlers(this);
             CEventHelper.RemoveAllEventHandlers(TitleBarToggles);
             CEventHelper.RemoveAllEventHandlers(ModelItem);
-           GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
 
-        protected virtual void OnDispose(){}
+        protected virtual void OnDispose() { }
 
         #region Implementation of IUpdatesHelp
 
