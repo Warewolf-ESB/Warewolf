@@ -82,6 +82,7 @@ if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 }
 
 #Version
+$GitCommitID = git -C "$PSScriptRoot" rev-parse HEAD
 if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     Write-Host Writing C# and F# versioning files...
 
@@ -90,7 +91,6 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 
     # Generate informational version.
     # (from git commit id and time)
-    $GitCommitID = git -C "$PSScriptRoot" rev-parse HEAD
     $GitCommitTimeObject = git -C "$PSScriptRoot" show -s --format="%ct" $GitCommitID
     if (($GitCommitTimeObject[0]).ToString().length -gt 1){
         $GitCommitTimeString = $GitCommitTimeObject[0]
@@ -267,6 +267,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
     }
 }
 
+$TagExists = $null
 Try {
     $TagExists = Invoke-WebRequest -Uri "https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID" -DisableKeepAlive -TimeoutSec 20 -UseBasicParsing
 }
@@ -278,6 +279,8 @@ if (!$TagExists) {
     docker tag warewolfserver warewolfserver/warewolfserver:$GitCommitID
     docker push warewolfserver/warewolfserver
     docker image rm warewolfserver:$GitCommitID
+} else {
+    Write-Host Already tagged. See: https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID
 }
 
 exit 0
