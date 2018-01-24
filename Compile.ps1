@@ -272,7 +272,7 @@ if ($AcceptanceTesting.IsPresent -or $Server.IsPresent -or $Release.IsPresent) {
         $TagExists = Invoke-WebRequest -Uri "https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID" -DisableKeepAlive -TimeoutSec 20 -UseBasicParsing
     }
     Catch {
-       Write-Host Server build context has not need published.
+       Write-Host Server build context has not been published.
     }
     if (!$TagExists) {
         docker build -t warewolfserver "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
