@@ -107,9 +107,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        if (AssignOutputs)
                         {
-                            dataObject.Environment.Assign(region, "", update);
+                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                            {
+                                dataObject.Environment.Assign(region, "", update);
+                            }
                         }
                     }
                     if (dataObject.IsDebugMode())
@@ -190,6 +193,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
+        private bool AssignOutputs => !string.Equals("Folder Read", DisplayName);
 
         /// <summary>
         /// Gets or sets the username.
