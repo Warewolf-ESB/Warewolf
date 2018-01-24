@@ -267,20 +267,21 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 }
 
 if ($AcceptanceTesting.IsPresent -or $Server.IsPresent -or $Release.IsPresent) {
-    $TagExists = $null
-    Try {
-        $TagExists = Invoke-WebRequest -Uri "https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID" -DisableKeepAlive -TimeoutSec 20 -UseBasicParsing
-    }
-    Catch {
-       Write-Host Server build context has not been published.
-    }
-    if (!$TagExists) {
-        docker build -t warewolfserver "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
-        docker tag warewolfserver warewolfserver/warewolfserver:$GitCommitID
-        docker push warewolfserver/warewolfserver
-        docker rmi warewolfserver
-    } else {
-        Write-Host Already tagged. See: https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID
+    if (Get-Command docker -ErrorAction SilentlyContinue) {
+        $TagExists = $null
+        Try {
+            $TagExists = Invoke-WebRequest -Uri "https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID" -DisableKeepAlive -TimeoutSec 20 -UseBasicParsing
+        }
+        Catch {
+           Write-Host Server build context has not been published.
+        }
+        if (!$TagExists) {
+            docker build -t warewolfserver/warewolfserver:$GitCommitID "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
+            docker push warewolfserver/warewolfserver:$GitCommitID
+            docker rmi warewolfserver/warewolfserver:$GitCommitID
+        } else {
+            Write-Host Already tagged. See: https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID
+        }
     }
 }
 exit 0
