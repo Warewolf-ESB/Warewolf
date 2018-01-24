@@ -275,7 +275,7 @@ Catch {
    "$_"
 }
 if (!$TagExists) {
-    docker build -t warewolfserver "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
+    docker build -t warewolfserver/warewolfserver:$GitCommitID "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
     docker tag warewolfserver warewolfserver/warewolfserver:$GitCommitID
     docker push warewolfserver/warewolfserver
 } else {
