@@ -661,11 +661,12 @@ function Start-Container {
             $ServerPath = Find-Warewolf-Server-Exe
         }
         $ServerDirectory = (Get-Item $ServerPath).Directory.FullName
-        Write-Host Starting container from $ServerDirectory
         if ($ServerContainerVersion -eq $null -or $ServerContainerVersion -eq "") {
+            Write-Host Starting container from $ServerDirectory
             docker build -t warewolfserver "$ServerDirectory"
             docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver ping -t 4.2.2.3
         } else {
+            Write-Host Starting container from warewolfserver/warewolfserver:$ServerContainerVersion
             docker pull warewolfserver/warewolfserver:$ServerContainerVersion
             docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver/warewolfserver:$ServerContainerVersion ping -t 4.2.2.3
         }
