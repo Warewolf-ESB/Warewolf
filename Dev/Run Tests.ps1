@@ -28,6 +28,7 @@ Param(
   [switch]${Startmy.warewolf.io},
   [string]$sendRecordedMediaForPassedTestCase="false",
   [switch]$StartServerContainer,
+  [string]$ServerContainerVersion,
   [switch]$JobContainer
 )
 $JobSpecs = @{}
@@ -661,7 +662,11 @@ function Start-Container {
         }
         $ServerDirectory = (Get-Item $ServerPath).Directory.FullName
         Write-Host Starting container from $ServerDirectory
-        docker build -t warewolfserver "$ServerDirectory"
+        if ($ServerContainerVersion -eq $null -or $ServerContainerVersion -eq "") {
+            docker build -t warewolfserver "$ServerDirectory"
+        } else {
+            docker pull warewolfserver/warewolfserver:$ServerContainerVersion
+        }
         docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver ping -t 4.2.2.3
         Write-Host Server container has started.
     } else {
@@ -1104,7 +1109,7 @@ RUN &('.\Build\Run Tests.ps1') -JobName '$JobName' -TestList '$TestList' -MSTest
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
             if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                 Start-my.warewolf.io
-                if ($StartServerContainer.IsPresent) {
+                if ($StartServerContainer.IsPresent -or ($ServerContainerVersion -ne $null -and $ServerContainerVersion -ne "")) {
                     Start-Container
                 }
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
