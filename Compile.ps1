@@ -275,7 +275,8 @@ if ($AcceptanceTesting.IsPresent -or $Server.IsPresent -or $Release.IsPresent) {
        "$_"
     }
     if (!$TagExists) {
-        docker build -t warewolfserver/warewolfserver:$GitCommitID "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
+        docker build -t warewolfserver "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
+        docker tag warewolfserver warewolfserver/warewolfserver:$GitCommitID
         docker push warewolfserver/warewolfserver
         docker rmi warewolfserver
     } else {
