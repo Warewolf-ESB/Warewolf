@@ -664,10 +664,11 @@ function Start-Container {
         Write-Host Starting container from $ServerDirectory
         if ($ServerContainerVersion -eq $null -or $ServerContainerVersion -eq "") {
             docker build -t warewolfserver "$ServerDirectory"
+            docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver ping -t 4.2.2.3
         } else {
             docker pull warewolfserver/warewolfserver:$ServerContainerVersion
+            docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver:$ServerContainerVersion ping -t 4.2.2.3
         }
-        docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver ping -t 4.2.2.3
         Write-Host Server container has started.
     } else {
         Write-Warning -Message "Cannot find Docker, container server not started."
