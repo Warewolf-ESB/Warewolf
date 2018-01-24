@@ -63,6 +63,30 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.Enabled, "Radio button not enabled");
         }
 
+        [TestMethod]
+        [TestCategory("Merge Assign Conflicts")]
+        public void Open_MergeAssign_Then_Update_Tool_Does_Not_Freeze_Studio()
+        {
+            MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
+            Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.LeftVariablesRadio.Selected = true;
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.FirstAssign_Diff_On_Surface.Exists, "Assign tool was not Added on the Design Surface after selecting variable radio button.");
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.Enabled, "Radio button not enabled");
+            Mouse.DoubleClick(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.FirstAssign_Diff_On_Surface, new Point(10, 10));
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("a");
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("{TAB}");
+            Keyboard.SendKeys("{ENTER}");
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
