@@ -39,21 +39,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New
     /// Purpose : To provide an activity that can read a folder's contents via FTP, FTPS and file system
     /// </summary>
-    [ToolDescriptorInfo("FileFolder-ReadFolder", "Read Folder", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
+    [ToolDescriptorInfo("FileFolder-ReadFolder", "Folder Read", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
     public class DsfFolderReadActivity : DsfAbstractFileActivity, IPathInput,IEquatable<DsfFolderReadActivity>
     {
 
         public DsfFolderReadActivity()
-            : base("FolderRead")
+            : base("Folder Read")
         {
             InputPath = string.Empty;
         }
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO allErrors, int update)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             IsNotCertVerifiable = true;
 
-            allErrors = new ErrorResultTO();
+            error = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
 
             using (var colItr = new WarewolfListIterator())
@@ -96,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     try
                     {
-                        var listOfDir = broker.ListDirectory(endPoint, GetReadType());                       
+                        var listOfDir = broker.ListDirectory(endPoint, GetReadType());
                         if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
                         {
                             if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
@@ -143,7 +143,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     catch (Exception e)
                     {
                         outputs.Add(DataListFactory.CreateOutputTO(null));
-                        allErrors.AddError(e.Message);
+                        error.AddError(e.Message);
                         break;
                     }
                 }
@@ -152,13 +152,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
         }
-        
+
         /// <summary>
         /// Gets or sets the files option.
         /// </summary>
         [Inputs("Files")]
         [FindMissing]
-        
+
         public bool IsFilesSelected
         {
             get;
@@ -178,7 +178,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets the files and folders option.
         /// </summary>
-    
+
         [Inputs("Files & Folders")]
         [FindMissing]
         public bool IsFilesAndFoldersSelected
@@ -244,10 +244,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return base.Equals(other) 
+            return base.Equals(other)
                 && IsFilesSelected == other.IsFilesSelected
-                && IsFoldersSelected == other.IsFoldersSelected 
-                && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected 
+                && IsFoldersSelected == other.IsFoldersSelected
+                && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected
                 && string.Equals(InputPath, other.InputPath);
         }
 
