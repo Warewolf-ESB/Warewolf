@@ -278,7 +278,6 @@ if (!$TagExists) {
     docker build -t warewolfserver "$PSScriptRoot\Dev\Dev2.Server\bin\Debug"
     docker tag warewolfserver warewolfserver/warewolfserver:$GitCommitID
     docker push warewolfserver/warewolfserver
-    docker image rm warewolfserver:$GitCommitID
 } else {
     Write-Host Already tagged. See: https://index.docker.io/v1/repositories/warewolfserver/warewolfserver/tags/$GitCommitID
 }
