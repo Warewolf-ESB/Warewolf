@@ -107,7 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        if (AssignOutputs)
+                        if (AssignEmptyOutputsToRecordSet)
                         {
                             foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                             {
@@ -194,7 +194,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private bool AssignOutputs => !string.Equals("Folder Read", DisplayName);
+        private bool AssignEmptyOutputsToRecordSet => !string.Equals("Folder Read", DisplayName);
 
         /// <summary>
         /// Gets or sets the username.

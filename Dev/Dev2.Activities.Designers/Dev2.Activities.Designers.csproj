@@ -173,6 +173,16 @@
     <Compile Include="Designers2\Foreach\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\ReadFolderNew\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolderNew\ReadFolderDesigner.xaml.cs">
+      <DependentUpon>ReadFolderDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ReadFolderNew\ReadFolderNewDesignerViewModel.cs" />
+    <Compile Include="Designers2\ReadFolderNew\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\SelectAndApply\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
@@ -1611,6 +1621,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\ReadFolderNew\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\ReadFolderNew\ReadFolderDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\ReadFolderNew\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\RecordsLengthNullHandler\RecordsLengthDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -2294,7 +2316,6 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Designers2\ReadFolder2\" />
     <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
