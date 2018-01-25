@@ -162,9 +162,9 @@ namespace Warewolf.MergeParser
             }
         }
 
-        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
+        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadDiffFromLoacalServer = true)
         {
-            var trees = GetConflictTrees(current, difference, loadworkflowFromServer);
+            var trees = GetConflictTrees(current, difference, loadDiffFromLoacalServer);
             return trees;
         }
 
