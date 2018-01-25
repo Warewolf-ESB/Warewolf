@@ -230,6 +230,12 @@
       <DependentUpon>Read File.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Read File\ReadFileSteps.cs" />
+    <Compile Include="Toolbox\FileAndFolder\ReadFolderNew\Read Folder New.feature.cs">
+      <DependentUpon>Read Folder New.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Toolbox\FileAndFolder\ReadFolderNew\ReadFolderNewSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -585,6 +591,10 @@
     <None Include="Toolbox\FileAndFolder\Read File\Read File.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Read File1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\FileAndFolder\ReadFolderNew\Read Folder New.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Read Folder New.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\FileAndFolder\Read Folder\Read Folder.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
