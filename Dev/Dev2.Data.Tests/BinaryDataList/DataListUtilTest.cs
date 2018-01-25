@@ -28,7 +28,7 @@ using Dev2.Data.Interfaces.Enums;
 namespace Dev2.Data.Tests.BinaryDataList
 {
     [TestClass]
-    
+
     public class DataListUtilTest
     {
 
@@ -197,7 +197,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Execute Test---------------------------
             var result = DataListUtil.AdjustForEncodingIssues(startingData);
             //------------Assert Results-------------------------
-            Assert.IsTrue(result.StartsWith("<"));
+            Assert.IsTrue(result.StartsWith("<", StringComparison.Ordinal));
         }
 
         [TestMethod]
@@ -510,9 +510,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             var tokens = new List<string> { "f1", "", "f3", "f4", "" };
 
             var tokenizer = new Mock<IDev2Tokenizer>();
-            
+
             tokenizer.Setup(t => t.HasMoreOps()).Returns(() => tokenNumber < TokenCount);
-            
+
             tokenizer.Setup(t => t.NextToken()).Returns(() => tokens[tokenNumber++]);
 
             var target = new Collection<ObservablePair<string, string>>();
@@ -548,9 +548,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             var tokens = new List<string> { "f1", "", "f2", "f3", "" };
 
             var tokenizer = new Mock<IDev2Tokenizer>();
-            
+
             tokenizer.Setup(t => t.HasMoreOps()).Returns(() => tokenNumber < TokenCount);
-            
+
             tokenizer.Setup(t => t.NextToken()).Returns(() => tokens[tokenNumber++]);
 
             var target = new Collection<ObservablePair<string, string>>();
@@ -637,7 +637,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             //---------------Test Result -----------------------
             Assert.AreEqual("rec(*).name", indexWithStar);
         }
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ReplaceRecordsetIndexWithStar_GivenRecSetWithStar_ShouldReturnSame()
@@ -649,6 +648,30 @@ namespace Dev2.Data.Tests.BinaryDataList
             var indexWithStar = DataListUtil.ReplaceRecordsetIndexWithStar(recName);
             //---------------Test Result -----------------------
             Assert.AreEqual("rec(*).name", indexWithStar);
+        }
+        [TestMethod]
+        public void VariableNameToMapTo_GivenVariable_ShouldReturnVariableName()
+        {
+            //---------------Set up test pack-------------------
+            const string recName = "[[name]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var variableName = DataListUtil.GetVariableNameToMapOutputTo(recName);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("name", variableName);
+        }
+
+
+        [TestMethod]
+        public void FieldNameToMapTo_GivenRecordSet_ShouldReturnFieldName()
+        {
+            //---------------Set up test pack-------------------
+            const string recName = "[[rec(*).name]]";
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var fieldName = DataListUtil.GetVariableNameToMapOutputTo(recName);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("name", fieldName);
         }
 
         [TestMethod]
@@ -738,18 +761,6 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void IsFullyEvaluated_GivenINotClosedVariable_ShouldReturnFalse()
-        {
-            //---------------Set up test pack-------------------
-            const string v = "[[a";
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var encrypted = DataListUtil.IsFullyEvaluated(v);
-            //---------------Test Result -----------------------
-            Assert.IsFalse(encrypted);
-        }
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void IsFullyEvaluated_GivenINotOpenedVariable_ShouldReturnFalse()
         {
             //---------------Set up test pack-------------------
             const string v = "[[a";

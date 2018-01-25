@@ -51,7 +51,7 @@ namespace Dev2.Activities
                         var i = 0;
                         foreach (var serviceOutputMapping in Outputs)
                         {
-                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
+                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = !string.IsNullOrEmpty(DataListUtil.RemoveLanguageBrackets(serviceOutputMapping.MappedTo)) ? DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo) : string.Empty;
                             i++;
                         }
                         if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
@@ -111,7 +111,7 @@ namespace Dev2.Activities
                 var outputDefs =
                     Outputs.Select(
                         a =>
-                            new Dev2Definition(a.MappedFrom, a.MappedTo, "", a.RecordSetName, true, "", true,
+                            new Dev2Definition(DataListUtil.GetVariableNameToMapOutputTo(a.MappedTo), a.MappedTo, "", a.RecordSetName, true, "", true,
                                 a.MappedTo) as IDev2Definition).ToList();
                 TryConvert(children, outputDefs, indexCache, update, dataObj);
             }
@@ -119,7 +119,7 @@ namespace Dev2.Activities
 
         public string UnescapeRawXml(string innerXml)
         {
-            if (innerXml.StartsWith("&lt;") && innerXml.EndsWith("&gt;"))
+            if (innerXml.StartsWith("&lt;", StringComparison.Ordinal) && innerXml.EndsWith("&gt;", StringComparison.Ordinal))
             {
                 return new StringBuilder(innerXml).Unescape().ToString();
             }

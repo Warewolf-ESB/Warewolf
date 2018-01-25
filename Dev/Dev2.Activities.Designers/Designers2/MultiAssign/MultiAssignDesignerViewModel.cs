@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -23,6 +23,7 @@ namespace Dev2.Activities.Designers2.MultiAssign
     public class MultiAssignDesignerViewModel : ActivityCollectionDesignerViewModel<ActivityDTO>
     {
         readonly Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+
         public MultiAssignDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -44,12 +45,12 @@ namespace Dev2.Activities.Designers2.MultiAssign
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
             var dto = mi.GetCurrentValue() as ActivityDTO;
-            if(dto == null)
+            if (dto == null)
             {
                 yield break;
             }
 
-            foreach(var error in dto.GetRuleSet("FieldName", GetDatalistString()).ValidateRules("'Variable'", () => mi.SetProperty("IsFieldNameFocused", true)))
+            foreach (var error in dto.GetRuleSet("FieldName", GetDatalistString()).ValidateRules("'Variable'", () => mi.SetProperty("IsFieldNameFocused", true)))
             {
                 yield return error;
             }

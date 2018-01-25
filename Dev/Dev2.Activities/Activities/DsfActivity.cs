@@ -41,14 +41,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
     public class DsfActivity : DsfActivityAbstract<bool>,IEquatable<DsfActivity>
     {
-        #region Fields
         InArgument<string> _iconPath = string.Empty;
         string _previousInstanceId;
         ICollection<IServiceInput> _inputs;
         ICollection<IServiceOutputMapping> _outputs;
-        #endregion
 
-        #region Constructors
         public DsfActivity()
         {
         }
@@ -68,10 +65,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ResultValidationExpression = resultValidationExpression;
             IsService = false;
         }
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets or sets the help link.
         /// </summary>
@@ -86,9 +79,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The friendly name of the source.
         /// </value>
-        
+
         public InArgument<string> FriendlySourceName
-        
         {
             get
             {
@@ -100,11 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        
-        
         public InArgument<Guid> EnvironmentID
-
-        
         {
             get
             {
@@ -116,7 +104,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        
         public InArgument<Guid> ResourceID { get; set; }
 
 
@@ -148,13 +135,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>
         public string DataTags { get; set; }
         /// <summary>
-        /// The Tags are are required to be in the result of the service invocation 
+        /// The Tags are are required to be in the result of the service invocation
         /// in order for the result to be interpreted as valid.
         /// </summary>
         public string ResultValidationRequiredTags { get; set; }
         /// <summary>
         /// The JScript expression that must evaluate to true (boolean) in order for the
-        /// result to be interpreted as valid. 
+        /// result to be interpreted as valid.
         /// </summary>
         public string ResultValidationExpression { get; set; }
         public string Category { get; set; }
@@ -166,9 +153,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The service URI.
         /// </value>
-        
         public string ServiceUri
-        
         {
             get
             {
@@ -215,7 +200,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         string _serviceUri;
         InArgument<string> _friendlySourceName;
-        
+
         InArgument<Guid> _environmentID;
 
         [NonSerialized]
@@ -429,15 +414,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors, update, !String.IsNullOrEmpty(OnErrorVariable));
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            throw new NotImplementedException();
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => throw new NotImplementedException();
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            throw new NotImplementedException();
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => throw new NotImplementedException();
 
         public override enFindMissingType GetFindMissingType()
         {
@@ -584,17 +563,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return Outputs.Select(mapping => mapping.MappedTo).ToList();
         }
 
-        #endregion
-
-        #region Private Methods
-
-        #endregion
-
-        #region Overridden ActivityAbstact Methods
-
-        #endregion Overridden ActivityAbstact Methods
-
-        #region Debug IO
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             var parser = DataListFactory.CreateInputParser();
@@ -708,16 +676,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return results;
         }
 
-        #region Overrides of DsfNativeActivity<bool>
-
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             GetDebugOutputsFromEnv(env, update);
             return _debugOutputs;
         }
-
-        #endregion
-
         public void GetDebugOutputsFromEnv(IExecutionEnvironment environment, int update)
         {
             var results = new List<DebugItem>();
@@ -775,21 +738,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = results;
         }
 
-        #endregion
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
 
-        #region Get ForEach Input/Output Updates
-
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
 
         public bool Equals(DsfActivity other)
         {
@@ -825,7 +776,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ (ServiceUri != null ? ServiceUri.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ServiceName != null ? ServiceName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Category != null ? Category.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ RunWorkflowAsync.GetHashCode();                
+                hashCode = (hashCode * 397) ^ RunWorkflowAsync.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
                 return hashCode;
             }

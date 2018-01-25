@@ -16,5 +16,6 @@ namespace Dev2.Common.Interfaces.ToolBase
         bool IsObjectOutputUsed { get; set; }
         IOutputDescription Description { get; set; }
         bool OutputCountExpandAllowed { get; set; }
+        void ResetOutputs(ICollection<IServiceOutputMapping> outputs);
     }
 }
