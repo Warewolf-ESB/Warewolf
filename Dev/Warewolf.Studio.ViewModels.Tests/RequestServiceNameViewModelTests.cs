@@ -574,9 +574,9 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 viewModel.DuplicateCommand.Execute(null);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                //
+                Console.Write(e.Message);
             }
             //---------------Test Result -----------------------
             controller.Verify(communicationController => communicationController.AddPayloadArgument("ResourceID", It.IsAny<string>()));
@@ -679,11 +679,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
             catch (Exception f) when (f is NullReferenceException)
             {
-                // Console.WriteLine(e);
+                 Console.WriteLine(f);
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                // Console.WriteLine(e);
+                Console.WriteLine(e);
             }
             //---------------Test Result -----------------------
             var value = lazyComs.GetValue(viewModel) as ICommunicationController;

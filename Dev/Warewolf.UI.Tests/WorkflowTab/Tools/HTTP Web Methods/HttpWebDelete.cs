@@ -74,7 +74,21 @@ namespace Warewolf.UI.Tests.Tools
             HTTPToolsUIMap.Click_DELETEWebTool_TestInputsButton();
             HTTPToolsUIMap.Click_DELETEWebTool_Outputs_DoneButton();
         }
-
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void HTTPWebDELETETool_Intellisense_UITest()
+        {
+            HTTPToolsUIMap.Select_DELETEWebTool_Source_From_SourceCombobox();
+            Assert.IsTrue(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.GenerateOutputsButton.Enabled, "Web Delete tool large view generate outputs button is not enabled after selecting a source.");
+            HTTPToolsUIMap.Click_DELETEWebTool_GenerateOutputsButton();
+            Assert.IsTrue(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.TestButton.Exists, "Web Delete large view generate outputs test button does not exist.");
+            HTTPToolsUIMap.Click_DELETEWebTool_TestInputsButton();
+            HTTPToolsUIMap.Click_DELETEWebTool_Outputs_DoneButton();
+            Assert.IsTrue(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.OutputsGridTable.UIItemRow.UIItemWarewolfCoreServCell.UIThedefaultvaluetobeuComboBox.Enabled, "Web delete large view MappedTo is not enabled.");
+            HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.OutputsGridTable.UIItemRow.UIItemWarewolfCoreServCell.UIThedefaultvaluetobeuComboBox.UITextEdit.Text = "Output";
+            Mouse.Click(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.RecordSetTextBox);
+            Assert.AreEqual("[[Output]]", HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebDelete.LargeView.OutputsGridTable.UIItemRow.UIItemWarewolfCoreServCell.UIThedefaultvaluetobeuComboBox.UITextEdit.Text);
+        }
         #region Additional test attributes
 
         [TestInitialize]

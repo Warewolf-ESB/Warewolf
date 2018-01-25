@@ -184,13 +184,14 @@ namespace Dev2
         static void UpdateEnviromentWithMappings(IDSFDataObject dataObject, StringBuilder rawPayload, List<string> mappings)
         {
             JObject inputObject;
-            var toLoad = rawPayload.ToString().ToCleanXml();
+            var toLoad = rawPayload.ToString();
             if (string.IsNullOrEmpty(toLoad))
             {
                 return;
             }
             if (!toLoad.IsJSON())
-            {
+            {           
+                toLoad = toLoad.ToCleanXml();
                 var sXNode = JsonConvert.SerializeXNode(XDocument.Parse(toLoad), Newtonsoft.Json.Formatting.Indented, true);
                 inputObject = JsonConvert.DeserializeObject(sXNode) as JObject;
             }
