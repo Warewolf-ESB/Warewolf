@@ -167,6 +167,8 @@
     <Compile Include="ODBC\TestODBCServerViewModel.cs" />
     <Compile Include="PostgresSqlTests\PostgresSqlDatabaseDesignerViewModelTests.cs" />
     <Compile Include="DeleteRecordsNullHandler\DeleteRecordsNullHandlerDesignerViewModelTests.cs" />
+    <Compile Include="ReadFolderNew\ReadFolderNewDesignerViewModelTests.cs" />
+    <Compile Include="ReadFolderNew\TestReadFolderNewDesignerViewModel.cs" />
     <Compile Include="RecordsLengthNullHandler\RecordsLengthNullHandlerDesignerViewModelTests.cs" />
     <Compile Include="DeleteRecordsNullHandler\TestDeleteRecordsDesignerViewModel.cs" />
     <Compile Include="RecordsLengthNullHandler\TestRecordsLengthnullHandlerDesignerViewModel.cs" />
