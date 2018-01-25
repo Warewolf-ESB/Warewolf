@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -29,22 +29,18 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
-
     /// <summary>
     /// PBI : 1172
     /// Status : New
     /// Purpose : To provide an activity that can read a folder's contents via FTP, FTPS and file system
     /// </summary>
-    [ToolDescriptorInfo("FileFolder-ReadFolder", "Folder Read", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
-    public class DsfFolderReadActivity : DsfAbstractFileActivity, IPathInput,IEquatable<DsfFolderReadActivity>
+    [ToolDescriptorInfo("FileFolder-ReadFolder", "Read Folder", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
+    public class DsfFolderReadActivity : DsfAbstractFileActivity, IPathInput, IEquatable<DsfFolderReadActivity>
     {
-
         public DsfFolderReadActivity()
-            : base("Folder Read")
+                : base("Folder Read")
         {
             InputPath = string.Empty;
         }
@@ -58,7 +54,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             using (var colItr = new WarewolfListIterator())
             {
-
                 //get all the possible paths for all the string variables
                 var inputItr = new WarewolfIterator(context.Environment.Eval(InputPath, update));
                 colItr.AddVariableToIterateOn(inputItr);
@@ -215,7 +210,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null && updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 InputPath = updates[0].Item2;
             }
@@ -224,7 +219,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == Result);
-            if(itemUpdate != null)
+            if (itemUpdate != null)
             {
                 Result = itemUpdate.Item2;
             }
@@ -256,7 +251,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfFolderReadActivity) obj);
+            return Equals((DsfFolderRead)obj);
         }
 
         public override int GetHashCode()

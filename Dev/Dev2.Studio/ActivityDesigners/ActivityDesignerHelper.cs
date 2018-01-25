@@ -45,6 +45,7 @@ using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
 using Dev2.Activities.Designers2.ReadFolder;
+using Dev2.Activities.Designers2.ReadFolderNew;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
@@ -135,7 +136,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPathDelete), typeof(DeleteDesigner) },
                 { typeof(DsfFileRead), typeof(ReadFileDesigner) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
-                { typeof(DsfFolderRead), typeof(ReadFolderDesigner) },
+                { typeof(DsfFolderRead), typeof(Activities.Designers2.ReadFolder.ReadFolderDesigner) },
+                { typeof(DsfFolderReadActivity), typeof(Activities.Designers2.ReadFolderNew.ReadFolderDesigner) },
                 { typeof(DsfPathRename), typeof(RenameDesigner) },
                 { typeof(DsfUnZip), typeof(UnzipDesigner) },
                 { typeof(DsfZip), typeof(ZipDesigner) },
