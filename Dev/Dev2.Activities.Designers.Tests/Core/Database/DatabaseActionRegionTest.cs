@@ -232,9 +232,18 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             //------------Execute Test---------------------------
             var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
 
-            var dbActionRegionToRestore = new DbActionMemento();
-            dbActionRegionToRestore.IsEnabled = false;
-            dbActionRegionToRestore.SelectedAction = action;
+            var dbActionRegionToRestore = new DbActionMemento
+            {
+                IsEnabled = false,
+                SelectedAction = action,
+                ToolRegionName = "New Tool Action Region",
+                Dependants = new List<IToolRegion> { new DbActionMemento() },
+                Errors = new List<string> { "New Action Region Error" },
+                Actions = new List<IDbAction> { new DbAction() },
+                IsActionEnabled = true,
+                IsRefreshing = false,
+                LabelWidth = 1.0
+            };
 
             dbActionRegion.RestoreRegion(dbActionRegionToRestore);
 

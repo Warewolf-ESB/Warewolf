@@ -702,7 +702,7 @@ namespace Dev2.Activities.Designers2.Service
             base.OnDispose();
         }
 
-        void Dispose(bool disposing)
+        public void Dispose(bool disposing)
         {
             if (!_isDisposed)
             {
@@ -719,15 +719,7 @@ namespace Dev2.Activities.Designers2.Service
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public override void UpdateHelpDescriptor(string helpText)
-        {
-            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
-        }
+        protected void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public override void UpdateHelpDescriptor(string helpText) => CustomContainer.Get<IShellViewModel>()?.HelpViewModel.UpdateHelpText(helpText);
     }
 }
