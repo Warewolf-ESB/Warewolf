@@ -509,7 +509,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 145
 this.ScenarioSetup(scenarioInfo);
 #line 146
- testRunner.Given("exchange to address is \"pieter.terblanche@dev2.co.za\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("exchange to address is \"test1@freemail.com\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 147
  testRunner.And("the exchange subject is \"Testing this cool framework\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
