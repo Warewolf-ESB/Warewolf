@@ -148,6 +148,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
+		protected override bool AssignEmptyOutputsToRecordSet {get{
+			return false;
+		}}
+		
         /// <summary>
         /// Gets or sets the files option.
         /// </summary>

@@ -194,7 +194,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private bool AssignEmptyOutputsToRecordSet => !string.Equals("Folder Read", DisplayName);
+        protected abstract bool AssignEmptyOutputsToRecordSet {get;}
 
         /// <summary>
         /// Gets or sets the username.
