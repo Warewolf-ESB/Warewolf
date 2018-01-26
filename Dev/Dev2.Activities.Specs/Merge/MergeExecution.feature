@@ -101,6 +101,7 @@ Scenario: Merge Workflow Containing Removed tool with same Variable List
 	 And Merge variable conflicts is false
 	 And I select Current Tool
 	 And I select Current Arm
+	 And I select Current Arm
 	 Then Save is enabled
 
 Scenario: Merge Workflow Containing Switch tool
