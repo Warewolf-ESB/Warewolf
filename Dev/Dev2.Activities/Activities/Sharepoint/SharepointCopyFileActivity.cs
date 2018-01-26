@@ -55,6 +55,7 @@ namespace Dev2.Activities.Sharepoint
             get;
             set;
         }
+        protected override bool AssignEmptyOutputsToRecordSet => true;
 
         [Inputs("Overwrite")]
         [FindMissing]
