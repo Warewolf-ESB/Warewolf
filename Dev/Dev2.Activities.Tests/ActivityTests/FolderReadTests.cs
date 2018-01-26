@@ -183,8 +183,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCleanup]
         public void DeleteDir()
         {
-            dirHelper.Delete(_inputPath, true);
+            if (!string.IsNullOrEmpty(_inputPath) && dirHelper.Exists(_inputPath))
+            {
+                dirHelper.Delete(_inputPath, true);
+            }
         }
-
     }
 }
