@@ -251,7 +251,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfFolderRead)obj);
+            return Equals((DsfFolderReadActivity)obj);
         }
 
         public override int GetHashCode()
