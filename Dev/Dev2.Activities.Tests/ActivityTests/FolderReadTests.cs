@@ -40,7 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             dirHelper = new DirectoryWrapper();
             var id = Guid.NewGuid().ToString();
-            _inputPath = EnvironmentVariables.ResourcePath + id.Substring(0, 8);
+            _inputPath = EnvironmentVariables.ResourcePath + "\\"+ id.Substring(0, 8);
             dirHelper.CreateIfNotExists(_inputPath);
             var act = new DsfFolderRead { InputPath = _inputPath, Result = "[[RecordSet().File]]" };
             //------------Execute Test---------------------------
@@ -178,6 +178,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, dsfForEachItems.Count);
             Assert.AreEqual(result, dsfForEachItems[0].Name);
             Assert.AreEqual(result, dsfForEachItems[0].Value);
+        }
+
+        [TestCleanup]
+        public void DeleteDir()
+        {
+            dirHelper.Delete(_inputPath, true);
         }
 
     }

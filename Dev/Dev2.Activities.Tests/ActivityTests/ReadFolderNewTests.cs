@@ -32,12 +32,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [TestCategory("DsfFolderRead_UpdateForEachInputs")]
-        public void DsfFolderRead_Execute_Expecting_No_Out_Puts_Has_1_Empty_Record()
+        public void DsfFolderRead_Execute_Expecting_No_Out_Puts_Has_0_Records()
         {
             //------------Setup for test--------------------------
             dirHelper = new DirectoryWrapper();
             var id = Guid.NewGuid().ToString();
-            _inputPath = EnvironmentVariables.ResourcePath + id.Substring(0, 8);
+            _inputPath = EnvironmentVariables.ResourcePath + "\\" + id.Substring(0, 8);
             dirHelper.CreateIfNotExists(_inputPath);
             var act = new DsfFolderReadActivity { InputPath = _inputPath, Result = "[[RecordSet().File]]" };
             //------------Execute Test---------------------------
