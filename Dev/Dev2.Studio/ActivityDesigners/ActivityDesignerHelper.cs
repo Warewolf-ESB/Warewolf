@@ -162,6 +162,7 @@ namespace Dev2.Studio.ActivityDesigners
                   { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
                   { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
                 {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
+                {typeof(DsfExchangeEmailNewActivity),typeof(Activities.Designers2.ExchangeNewEmail.ExchangeEmailDesigner) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },

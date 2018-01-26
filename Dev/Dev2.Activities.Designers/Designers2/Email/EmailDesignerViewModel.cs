@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -19,6 +19,7 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Extensions;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -45,9 +46,6 @@ namespace Dev2.Activities.Designers2.Email
 {
     public class EmailDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>
     {
-        static readonly EmailSource NewEmailSource = new EmailSource { ResourceID = Guid.NewGuid(), ResourceName = "New Email Source..." };
-        static readonly EmailSource SelectEmailSource = new EmailSource { ResourceID = Guid.NewGuid(), ResourceName = "Select an Email Source..." };
-
         readonly IEventAggregator _eventPublisher;
         readonly IServer _server;
         readonly IAsyncWorker _asyncWorker;
@@ -77,20 +75,19 @@ namespace Dev2.Activities.Designers2.Email
             EmailSources = new ObservableCollection<EmailSource>();
             Priorities = new ObservableCollection<enMailPriorityEnum> { enMailPriorityEnum.High, enMailPriorityEnum.Normal, enMailPriorityEnum.Low };
 
+            NewEmailSourceCommand = new RelayCommand(o => CreateEmailSource());
             EditEmailSourceCommand = new RelayCommand(o => EditEmailSource(), o => IsEmailSourceSelected);
             TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
 
             RefreshSources(true);
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Email_SMTP_Send;
+            Testing = false;
         }
 
         public EmailSource SelectedEmailSource
         {
-            get
-            {
-                return (EmailSource)GetValue(SelectedEmailSourceProperty);
-            }
+            get => (EmailSource)GetValue(SelectedEmailSourceProperty);
             set
             {
                 SetValue(SelectedEmailSourceProperty, value);
@@ -107,10 +104,11 @@ namespace Dev2.Activities.Designers2.Email
         }
 
         public RelayCommand EditEmailSourceCommand { get; }
+        public RelayCommand NewEmailSourceCommand { get; }
         public RelayCommand TestEmailAccountCommand { get; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
-        public bool IsEmailSourceSelected => SelectedEmailSource != SelectEmailSource;
+        public bool IsEmailSourceSelected => SelectedEmailSource != null;
 
         public bool CanEditSource { get; set; }
 
@@ -122,10 +120,7 @@ namespace Dev2.Activities.Designers2.Email
 
         public bool CanTestEmailAccount
         {
-            get
-            {
-                return (bool)GetValue(CanTestEmailAccountProperty);
-            }
+            get => (bool)GetValue(CanTestEmailAccountProperty);
             set
             {
                 SetValue(CanTestEmailAccountProperty, value);
@@ -157,7 +152,7 @@ namespace Dev2.Activities.Designers2.Email
 
         public bool IsAttachmentsFocused { get => (bool)GetValue(IsAttachmentsFocusedProperty); set => SetValue(IsAttachmentsFocusedProperty, value); }
         public static readonly DependencyProperty IsAttachmentsFocusedProperty = DependencyProperty.Register("IsAttachmentsFocused", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(default(bool)));
-        
+
         public string Password { get => GetProperty<string>(); set => SetProperty(value); }
         string FromAccount => GetProperty<string>();
         string To => GetProperty<string>();
@@ -167,18 +162,20 @@ namespace Dev2.Activities.Designers2.Email
         string Subject => GetProperty<string>();
         string Body => GetProperty<string>();
 
+        public bool Testing { get => (bool)GetValue(TestingProperty); set => SetValue(TestingProperty, value); }
+        public static readonly DependencyProperty TestingProperty = DependencyProperty.Register("Testing", typeof(bool), typeof(EmailDesignerViewModel), new PropertyMetadata(true));
+
+        public string StatusMessage { get => (string)GetValue(StatusMessageProperty); set => SetValue(StatusMessageProperty, value); }
+        public static readonly DependencyProperty StatusMessageProperty = DependencyProperty.Register("StatusMessage", typeof(string), typeof(EmailDesignerViewModel), new PropertyMetadata(null));
+
         EmailSource EmailSource
         {
-            
-            get { return GetProperty<EmailSource>("SelectedEmailSource"); }
-            
+            get => GetProperty<EmailSource>("SelectedEmailSource");
             set
             {
                 if(!_isInitializing)
                 {
-                    
                     SetProperty(value, "SelectedEmailSource");
-                    
                 }
             }
         }
@@ -204,7 +201,6 @@ namespace Dev2.Activities.Designers2.Email
             };
 
             CustomContainer.Get<IShellViewModel>().EditResource(def);
-
         }
 
         string GetTestEmailAccount()
@@ -238,11 +234,55 @@ namespace Dev2.Activities.Designers2.Email
             {
                 return;
             }
-            var uri = new Uri(new Uri(AppUsageStats.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
-            var jsonData = testSource.ToString();
+            //var uri = new Uri(new Uri(AppUsageStats.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
+            //var jsonData = testSource.ToString();
 
-            var requestInvoker = CreateWebRequestInvoker();
-            requestInvoker.ExecuteRequest("POST", uri.ToString(), jsonData, null, OnTestCompleted);
+            //var requestInvoker = CreateWebRequestInvoker();
+            //requestInvoker.ExecuteRequest("POST", uri.ToString(), jsonData, null, OnTestCompleted);
+
+            SendEmail(ToNewSource(testSource));
+        }
+
+        void SendEmail(EmailServiceSourceDefinition emailServiceSourceDefinition)
+        {
+            _asyncWorker.Start(() =>
+            {
+                try
+                {
+                    var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                    shellViewModel?.ActiveServer?.UpdateRepository?.TestConnection(emailServiceSourceDefinition);
+                }
+                catch (Exception ex)
+                {
+                    SetStatusMessage(ex.Message);
+                }
+                finally
+                {
+                    Testing = false;
+                }
+            });
+        }
+
+        static EmailServiceSourceDefinition ToNewSource(EmailSource emailSource)
+        {
+            var def = new EmailServiceSourceDefinition
+            {
+                Id = emailSource.ResourceID,
+                HostName = emailSource.Host,
+                Password = emailSource.Password,
+                UserName = emailSource.UserName,
+                Port = emailSource.Port,
+                Timeout = emailSource.Timeout,
+                ResourceName = emailSource.ResourceName,
+                EnableSsl = emailSource.EnableSsl
+            };
+
+            return def;
+        }
+
+        public void SetStatusMessage(string message)
+        {
+            StatusMessage = message;
         }
 
         bool EmailAddresssIsAVariable(string testEmailAccount)
@@ -295,18 +335,8 @@ namespace Dev2.Activities.Designers2.Email
 
         protected virtual void OnSelectedEmailSourceChanged()
         {
-            if(SelectedEmailSource == NewEmailSource)
-            {
-                CreateEmailSource();
-                return;
-            }
-
             IsRefreshing = true;
 
-            if(SelectedEmailSource != SelectEmailSource)
-            {
-                EmailSources.Remove(SelectEmailSource);
-            }
             EmailSource = SelectedEmailSource;
             EditEmailSourceCommand.RaiseCanExecuteChanged();
         }
@@ -333,22 +363,12 @@ namespace Dev2.Activities.Designers2.Email
         void SetSelectedEmailSource(Resource source)
         {
             var selectedSource = source == null ? null : EmailSources.FirstOrDefault(d => d.ResourceID == source.ResourceID);
-            if(selectedSource == null)
-            {
-                if(EmailSources.FirstOrDefault(d => d.Equals(SelectEmailSource)) == null)
-                {
-                    EmailSources.Insert(0, SelectEmailSource);
-                }
-                selectedSource = SelectEmailSource;
-            }
             SelectedEmailSource = selectedSource;
         }
 
         void LoadSources(System.Action continueWith = null)
         {
             EmailSources.Clear();
-            EmailSources.Add(NewEmailSource);
-
             _asyncWorker.Start(() => GetEmailSources().OrderBy(r => r.ResourceName), sources =>
             {
                 foreach(var source in sources)
