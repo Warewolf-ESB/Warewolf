@@ -194,6 +194,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
+		protected override bool AssignEmptyOutputsToRecordSet {get{
+			return true;
+		}}
+		
         #endregion Properties
 
         #region Private Methods
