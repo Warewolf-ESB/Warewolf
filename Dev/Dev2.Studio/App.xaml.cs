@@ -67,7 +67,7 @@ using Dev2.Factory;
 
 namespace Dev2.Studio
 {
-    public partial class App : System.Windows.Application, IApp
+    public partial class App : System.Windows.Application, IApp, IDisposable
     {
         ShellViewModel _shellViewModel;
         
