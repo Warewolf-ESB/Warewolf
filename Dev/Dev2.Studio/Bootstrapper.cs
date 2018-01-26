@@ -31,7 +31,7 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2
 {
-    public class Bootstrapper : Bootstrapper<IShellViewModel>
+    public class Bootstrapper : Bootstrapper<IShellViewModel>, IDisposable
     {
         protected override void PrepareApplication()
         {
@@ -200,6 +200,11 @@ namespace Dev2
         static bool IsUnc(Uri sysUri)
         {
             return sysUri.IsUnc;
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_mainViewModel).Dispose();
         }
 
         #endregion Private Methods

@@ -66,20 +66,12 @@ using Dev2.Studio.Core;
 using Dev2.Factory;            
 
 namespace Dev2.Studio
-
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : System.Windows.Application, IApp
     {
         ShellViewModel _shellViewModel;
-        //This is ignored because when starting the studio twice the second one crashes without this line
-
-
-
+        
         private Mutex _processGuard = null;
-
 
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
@@ -385,7 +377,6 @@ namespace Dev2.Studio
         public void Dispose()
         {
             _resetSplashCreated.Dispose();
-
         }
     }
 
