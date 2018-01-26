@@ -287,7 +287,7 @@
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
                   Margin="-6,0,0,0"
-                  Content="Require All Matches To Be True"
+                  Content="All Matches Required For Each Field"
                   IsChecked="{Binding ModelItem.RequireAllTrue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static languages:Tooltips.FindToolTipRequireAllMatchesToBeTrue}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
@@ -300,7 +300,7 @@
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
                   Margin="-6,0,0,0"
-                  Content="Requires All Fields To Match"
+                  Content="Each Field Has At Least One Match"
                   IsChecked="{Binding ModelItem.RequireAllFieldsToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static languages:Tooltips.FindToolTipRequireAllFieldsToMatch}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllFieldsToMatch_AutoID}">
