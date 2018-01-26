@@ -359,6 +359,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 103
   testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
+  testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
   testRunner.Then("Save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -371,31 +373,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MergeWorkflowContainingSwitchTool()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing Switch tool", ((string[])(null)));
-#line 106
-this.ScenarioSetup(scenarioInfo);
 #line 107
-  testRunner.Given("I Load workflow \"MergeSwitchTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 108
-  testRunner.And("I Load workflow version \"1\" of \"MergeSwitchTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I Load workflow \"MergeSwitchTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 109
-  testRunner.When("Merge Window is opened with local \"MergeSwitchTool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("I Load workflow version \"1\" of \"MergeSwitchTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 110
-  testRunner.Then("Current workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("Merge Window is opened with local \"MergeSwitchTool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 111
-  testRunner.And("Different workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Then("Current workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 112
-  testRunner.And("Merge conflicts count is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Different workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 113
-  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Merge conflicts count is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 114
-  testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 115
-  testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 116
   testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 117
+#line 116
   testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 117
+  testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 118
+  testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 119
   testRunner.Then("Save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

@@ -74,12 +74,14 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            //---------------Test Result -----------------------
-            Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
-            Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
+            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
+            {
+                //---------------Assert Precondition----------------
+                //---------------Execute Test ----------------------
+                //---------------Test Result -----------------------
+                Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
+                Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
+            }
         }
 
         [TestMethod]
@@ -115,16 +117,18 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(new StringBuilder(assignExampleDiff.ToString(System.Xml.Linq.SaveOptions.DisableFormatting)));
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false);
-            //---------------Assert Precondition----------------
-            Assert.AreNotSame(currentResourceModel, differenceResourceModel);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
-            Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
-            //---------------Test Result -----------------------
-            var mergeToolModels = mergeWorkflowViewModel.CurrentConflictModel;
-            var differenceViewModel = mergeWorkflowViewModel.DifferenceConflictModel;
-            Assert.AreNotSame(mergeToolModels, differenceViewModel);
+            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
+            {
+                //---------------Assert Precondition----------------
+                Assert.AreNotSame(currentResourceModel, differenceResourceModel);
+                //---------------Execute Test ----------------------
+                Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
+                Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
+                //---------------Test Result -----------------------
+                var mergeToolModels = mergeWorkflowViewModel.CurrentConflictModel;
+                var differenceViewModel = mergeWorkflowViewModel.DifferenceConflictModel;
+                Assert.AreNotSame(mergeToolModels, differenceViewModel);
+            }
         }
 
         [TestMethod]
@@ -158,14 +162,16 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
-            var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false);
-            //---------------Assert Precondition----------------
-            Assert.AreNotSame(currentResourceModel, differenceResourceModel);
-            //---------------Execute Test ----------------------
-            Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
-            Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
-            //---------------Test Result -----------------------
-            Assert.AreEqual(13, mergeWorkflowViewModel.Conflicts.Count);
+            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
+            {
+                //---------------Assert Precondition----------------
+                Assert.AreNotSame(currentResourceModel, differenceResourceModel);
+                //---------------Execute Test ----------------------
+                Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
+                Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
+                //---------------Test Result -----------------------
+                Assert.AreEqual(13, mergeWorkflowViewModel.Conflicts.Count);
+            }
         }
 
         [TestMethod]
@@ -394,7 +400,7 @@ namespace Dev2.Core.Tests
                 var id2 = new Guid().ToString();
                 var aaaa = methodToRun.Invoke(null, new object[] { conflicts, itemsToAdd, armConnectorConflicts });
                 //---------------Test Result -----------------------
-                Assert.AreEqual(0, itemsToAdd.Count());
+                Assert.AreEqual(0, itemsToAdd.Count);
             }
         }
 
@@ -431,7 +437,7 @@ namespace Dev2.Core.Tests
             var b = new ArmConnectorConflict();
             var calcActivity = new DsfCalculateActivity();
             var conflictTreeNode = new ConflictTreeNode(calcActivity, new Point());
-            var guid = calcActivity.UniqueID.ToGuid(); ;
+            var guid = calcActivity.UniqueID.ToGuid();
             var itemsToAdd = new List<IConflict>();
             var armConnectorConflicts = new List<IArmConnectorConflict>();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
@@ -444,7 +450,7 @@ namespace Dev2.Core.Tests
                 var id2 = new Guid().ToString();
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { armConnectorConflicts, conflictTreeNode, guid });
                 //---------------Test Result -----------------------
-                Assert.AreEqual(0, itemsToAdd.Count());
+                Assert.AreEqual(0, itemsToAdd.Count);
             }
         }
 
@@ -495,7 +501,7 @@ namespace Dev2.Core.Tests
                 //---------------Execute Test ----------------------
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { armConnectorConflicts, conflictTreeNode, iniqueId.ToGuid() });
                 //---------------Test Result -----------------------
-                Assert.AreEqual(1, armConnectorConflicts.Count());
+                Assert.AreEqual(1, armConnectorConflicts.Count);
                 var hasConflict = armConnectorConflicts.Single().HasConflict;
                 var isArmSelectionAllowed = armConnectorConflicts.Single().CurrentArmConnector.IsArmSelectionAllowed;
                 var isArmSelectionAllowed1 = armConnectorConflicts.Single().DifferentArmConnector.IsArmSelectionAllowed;
@@ -559,7 +565,7 @@ namespace Dev2.Core.Tests
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { armConnectorConflicts, conflictTreeNode, iniqueId.ToGuid() });
                 var bbbb = nextMethodToRun.Invoke(mergeWorkflowViewModel, new object[] { });
                 //---------------Test Result -----------------------
-                Assert.AreEqual(1, armConnectorConflicts.Count());
+                Assert.AreEqual(1, armConnectorConflicts.Count);
 
                 var hasConflict = armConnectorConflicts.Single().HasConflict;
                 var isArmSelectionAllowed = armConnectorConflicts.Single().CurrentArmConnector.IsArmSelectionAllowed;
@@ -621,7 +627,7 @@ namespace Dev2.Core.Tests
                 //---------------Execute Test ----------------------
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { armConnectorConflicts, conflictTreeNode, iniqueId.ToGuid() });
                 //---------------Test Result -----------------------
-                Assert.AreEqual(1, armConnectorConflicts.Count());
+                Assert.AreEqual(1, armConnectorConflicts.Count);
                 var hasConflict = armConnectorConflicts.Single().HasConflict;
                 var isArmSelectionAllowed = armConnectorConflicts.Single().CurrentArmConnector.IsArmSelectionAllowed;
                 Assert.IsFalse(hasConflict);
@@ -678,7 +684,7 @@ namespace Dev2.Core.Tests
                 //---------------Assert Precondition----------------
                 Assert.IsNotNull(methodToRun);
                 //---------------Execute Test ----------------------
-                var aaaa = methodToRun.Invoke(null, new object[] { b.UniqueId, b }) as MergeArmConnectorConflict;
+                var aaaa = methodToRun.Invoke(null, new object[] { b.UniqueId, b, null }) as MergeArmConnectorConflict;
                 //---------------Test Result -----------------------
                 Assert.AreEqual(iniqueId, aaaa.SourceUniqueId);
                 Assert.AreEqual(Guid.Empty.ToString(), aaaa.DestinationUniqueId);
