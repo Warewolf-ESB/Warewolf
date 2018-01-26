@@ -438,12 +438,12 @@ namespace Dev2.ViewModels.Merge
                 s.CurrentArmConnector.IsArmSelectionAllowed = false;
                 s.DifferentArmConnector.IsArmSelectionAllowed = false;
                 s.IsMergeExpanderEnabled = false;
-                if (foundCurrentDestination && foundCurrentSource)
+                if ((foundCurrentDestination && foundCurrentSource) || s.CurrentArmConnector.ArmDescription == null)
                 {
                     s.CurrentArmConnector.IsArmSelectionAllowed = true;
                     s.IsMergeExpanderEnabled = true;
                 }
-                if (foundDiffDestination && foundDiffSource)
+                if ((foundDiffDestination && foundDiffSource) || s.DifferentArmConnector.ArmDescription == null)
                 {
                     s.DifferentArmConnector.IsArmSelectionAllowed = true;
                     s.IsMergeExpanderEnabled = true;
@@ -525,7 +525,7 @@ namespace Dev2.ViewModels.Merge
                         WorkflowDesignerViewModel = WorkflowDesignerViewModel
                     };
                     armConnector.DifferentArmConnector = mergeArmConnectorConflict;
-                    armConnector.CurrentArmConnector = EmptyMergeArmConnectorConflict(id, armConnector);
+                    armConnector.CurrentArmConnector = EmptyMergeArmConnectorConflict(id, armConnector, WorkflowDesignerViewModel);
                     armConnector.CurrentArmConnector.OnChecked += ArmCheck;
                     armConnector.DifferentArmConnector.OnChecked += ArmCheck;
                     armConnector.HasConflict = true;
@@ -543,14 +543,14 @@ namespace Dev2.ViewModels.Merge
                 {
                     UniqueId = id,
                     Key = Key,
-                    HasConflict = true
+                    HasConflict = true 
                 };
                 var mergeArmConnectorConflict = new MergeArmConnectorConflict(Description, SourceUniqueId, DestinationUniqueId, Key, armConnector)
                 {
                     WorkflowDesignerViewModel = WorkflowDesignerViewModel
                 };
                 armConnector.CurrentArmConnector = mergeArmConnectorConflict;
-                armConnector.DifferentArmConnector = EmptyMergeArmConnectorConflict(id, armConnector);
+                armConnector.DifferentArmConnector = EmptyMergeArmConnectorConflict(id, armConnector, WorkflowDesignerViewModel);
                 armConnector.CurrentArmConnector.OnChecked += ArmCheck;
                 armConnector.DifferentArmConnector.OnChecked += ArmCheck;
                 armConnector.HasConflict = true;
@@ -561,13 +561,14 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        static MergeArmConnectorConflict EmptyMergeArmConnectorConflict(Guid uniqueId, IArmConnectorConflict container)
+        static MergeArmConnectorConflict EmptyMergeArmConnectorConflict(Guid uniqueId, IArmConnectorConflict container, IWorkflowDesignerViewModel workflowDesignerViewModel)
         {
             return new MergeArmConnectorConflict(container)
             {
                 SourceUniqueId = uniqueId.ToString(),
                 DestinationUniqueId = Guid.Empty.ToString(),
-                Key = container.Key
+                Key = container.Key,
+                WorkflowDesignerViewModel = workflowDesignerViewModel
             };
         }
 

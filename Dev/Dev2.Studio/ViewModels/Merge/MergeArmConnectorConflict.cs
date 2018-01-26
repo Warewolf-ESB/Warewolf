@@ -42,7 +42,15 @@ namespace Dev2.ViewModels.Merge
                 _isChecked = value;
                 if (_isChecked)
                 {
-                    WorkflowDesignerViewModel?.LinkTools(SourceUniqueId, DestinationUniqueId, Key);
+                    if (string.IsNullOrEmpty(ArmDescription))
+                    {
+                        WorkflowDesignerViewModel?.DeLinkTools(SourceUniqueId, DestinationUniqueId, Key);
+                    }
+                    else
+                    {
+                        WorkflowDesignerViewModel?.LinkTools(SourceUniqueId, DestinationUniqueId, Key);
+                    }
+                    
                     OnChecked?.Invoke(Container, _isChecked);
                 }
                 OnPropertyChanged(() => IsChecked);
@@ -65,7 +73,7 @@ namespace Dev2.ViewModels.Merge
         {
             Container = container;
         }
-        public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId,string key, IArmConnectorConflict container)
+        public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId, string key, IArmConnectorConflict container)
         {
             ArmDescription = armDescription;
             if (!string.IsNullOrWhiteSpace(armDescription))
