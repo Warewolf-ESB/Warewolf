@@ -43,7 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             InputPath = string.Empty;
         }
-
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
         {
             IList<OutputTO> outputs = new List<OutputTO>();

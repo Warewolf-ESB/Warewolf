@@ -36,7 +36,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         WarewolfIterator _archPassItr;
-
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         #region Properties
         /// <summary>
         /// Gets or sets the archive password.
