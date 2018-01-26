@@ -180,6 +180,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="ActivityComparerTests\Exchange\DsfExchangeNewEmailActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sequence\DsfSequenceActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\SysInfo\DsfGatherSystemInformationActivity.cs" />
     <Compile Include="ActivityComparerTests\ExecuteCommandLine\DsfExecuteCommandLineActivityComparerTest.cs" />

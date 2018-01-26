@@ -762,6 +762,9 @@
   <data name="DropboxResultHelpText" xml:space="preserve">
     <value>The result of the drop box operation will be assigned to this value</value>
   </data>
+  <data name="NewEmailSourceHelp" xml:space="preserve">
+    <value>Create a connection to a new email server.</value>
+  </data>
   <data name="EditEmailSourceHelp" xml:space="preserve">
     <value>Edit the email source that is selected.</value>
   </data>
@@ -787,7 +790,7 @@
     <value>Any data or variable can go in here.	To send an email, enter the email address of the account you want to send from.	If you are on a domain, you still need to provide the email address of the account you are sending from.	If you leave it blank, the account used to setup the Email Source will be used.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>
   </data>
   <data name="EmailHelpMailSource" xml:space="preserve">
-    <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
+    <value>Select a preconfigured email source.</value>
   </data>
   <data name="EmailHelpPassword" xml:space="preserve">
     <value>Enter the password, if there is one, for the account you are sending from.	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;</value>

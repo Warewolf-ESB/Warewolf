@@ -24,9 +24,9 @@ using Dev2.Validation;
 using Warewolf.Resource.Errors;
 using Dev2.Studio.Interfaces;
 
-namespace Dev2.Activities.Designers2.ExchangeEmail
+namespace Dev2.Activities.Designers2.ExchangeNewEmail
 {
-    public class ExchangeEmailDesignerViewModel : CustomToolWithRegionBase, IExchangeServiceViewModel
+    public class ExchangeNewEmailDesignerViewModel : CustomToolWithRegionBase, IExchangeServiceViewModel
     {
         readonly IEventAggregator _eventPublisher;
         readonly IServer _server;
@@ -36,12 +36,12 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
-        public ExchangeEmailDesignerViewModel(ModelItem modelItem)
+        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new AsyncWorker(), ServerRepository.Instance.ActiveServer, EventPublishers.Aggregator)
         {
         }
 
-        public ExchangeEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IExchangeServiceModel model,IEventAggregator eventPublisher) : base(modelItem)
+        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IExchangeServiceModel model, IEventAggregator eventPublisher) : base(modelItem)
         {
             TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
             ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
@@ -51,7 +51,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             SetupCommonProperties();
         }
 
-        public ExchangeEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher)
+        public ExchangeNewEmailDesignerViewModel(ModelItem modelItem, IAsyncWorker asyncWorker, IServer server, IEventAggregator eventPublisher)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -144,36 +144,37 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
 
-            SourceRegion = new ExchangeSourceRegion(Model,ModelItem, "ExchangeSource");
+            SourceRegion = new ExchangeSourceRegion(Model, ModelItem, "ExchangeSource");
             regions.Add(SourceRegion);
 
             return regions;
         }
 
-        public static readonly DependencyProperty CanTestEmailAccountProperty = DependencyProperty.Register("CanTestEmailAccount", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(true));
+        public static readonly DependencyProperty CanTestEmailAccountProperty = DependencyProperty.Register("CanTestEmailAccount", typeof(bool), typeof(ExchangeNewEmailDesignerViewModel), new PropertyMetadata(true));
         public bool IsEmailSourceFocused { get => (bool)GetValue(IsEmailSourceFocusedProperty); set => SetValue(IsEmailSourceFocusedProperty, value); }
-        public static readonly DependencyProperty IsEmailSourceFocusedProperty = DependencyProperty.Register("IsEmailSourceFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsEmailSourceFocusedProperty = DependencyProperty.Register("IsEmailSourceFocused", typeof(bool), typeof(ExchangeNewEmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
         public bool IsToFocused { get => (bool)GetValue(IsToFocusedProperty); set => SetValue(IsToFocusedProperty, value); }
-        public static readonly DependencyProperty IsToFocusedProperty = DependencyProperty.Register("IsToFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsToFocusedProperty = DependencyProperty.Register("IsToFocused", typeof(bool), typeof(ExchangeNewEmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
         public bool IsCcFocused { get => (bool)GetValue(IsCcFocusedProperty); set => SetValue(IsCcFocusedProperty, value); }
-        public static readonly DependencyProperty IsCcFocusedProperty = DependencyProperty.Register("IsCcFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsCcFocusedProperty = DependencyProperty.Register("IsCcFocused", typeof(bool), typeof(ExchangeNewEmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
         public bool IsBccFocused { get => (bool)GetValue(IsBccFocusedProperty); set => SetValue(IsBccFocusedProperty, value); }
-        public static readonly DependencyProperty IsBccFocusedProperty = DependencyProperty.Register("IsBccFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsBccFocusedProperty = DependencyProperty.Register("IsBccFocused", typeof(bool), typeof(ExchangeNewEmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
         public bool IsSubjectFocused { get => (bool)GetValue(IsSubjectFocusedProperty); set => SetValue(IsSubjectFocusedProperty, value); }
-        public static readonly DependencyProperty IsSubjectFocusedProperty = DependencyProperty.Register("IsSubjectFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsSubjectFocusedProperty = DependencyProperty.Register("IsSubjectFocused", typeof(bool), typeof(ExchangeNewEmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
         public bool IsAttachmentsFocused { get => (bool)GetValue(IsAttachmentsFocusedProperty); set => SetValue(IsAttachmentsFocusedProperty, value); }
-        public static readonly DependencyProperty IsAttachmentsFocusedProperty = DependencyProperty.Register("IsAttachmentsFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
+        public static readonly DependencyProperty IsAttachmentsFocusedProperty = DependencyProperty.Register("IsAttachmentsFocused", typeof(bool), typeof(ExchangeNewEmailDesignerViewModel), new PropertyMetadata(default(bool)));
         string To { get { return GetProperty<string>(); } }
         string Cc { get { return GetProperty<string>(); } }
         string Bcc { get { return GetProperty<string>(); } }
         string Attachments { get => GetProperty<string>(); set => SetProperty(value); }
         string Subject { get { return GetProperty<string>(); } }
         string Body { get { return GetProperty<string>(); } }
+        bool IsHtml { get { return GetProperty<bool>(); } }
 
         public bool CanTestEmailAccount
         {
@@ -198,7 +199,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             if (string.IsNullOrEmpty(To))
             {
                 Testing = false;
-                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.ToAddressRequired} };
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.ToAddressRequired } };
                 return;
             }
             if (SourceRegion.SelectedSource == null)
@@ -254,7 +255,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             {
                 try
                 {
-                    testSource.Send(new ExchangeEmailSender(testSource), testMessage);
+                    testSource.Send(new ExchangeEmailSender(testSource), testMessage, IsHtml);
                 }
                 catch (Exception)
                 {

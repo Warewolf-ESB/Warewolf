@@ -27,11 +27,12 @@ using Warewolf.Exchange.Email.Wrapper;
 
 namespace Dev2.Activities.Exchange
 {
-    public class DsfExchangeEmailActivity : DsfActivityAbstract<string>,IEquatable<DsfExchangeEmailActivity>
+    [ToolDescriptorInfo("Utility-SendMail", "Exchange Send", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Email_Exchange_Send")]
+    public class DsfExchangeEmailNewActivity : DsfActivityAbstract<string>, IEquatable<DsfExchangeEmailNewActivity>
     {
         readonly IDev2EmailSender _emailSender;
 
-        public DsfExchangeEmailActivity()
+        public DsfExchangeEmailNewActivity()
             : this(new Dev2EmailSender())
         {
             To = string.Empty;
@@ -40,9 +41,10 @@ namespace Dev2.Activities.Exchange
             Subject = string.Empty;
             Attachments = string.Empty;
             Body = string.Empty;
+            IsHtml = false;
         }
 
-        public DsfExchangeEmailActivity(IDev2EmailSender emailSender)
+        public DsfExchangeEmailNewActivity(IDev2EmailSender emailSender)
             : base("Exchange Email")
         {
             _emailSender = emailSender;
@@ -64,6 +66,8 @@ namespace Dev2.Activities.Exchange
         public string Attachments { get; set; }
         [FindMissing]
         public string Body { get; set; }
+
+        public bool IsHtml { get; set; }
 
         /// <summary>
         /// The property that holds the result string the user enters into the "Result" box
@@ -147,7 +151,7 @@ namespace Dev2.Activities.Exchange
                 {
                     while (colItr.HasMoreData())
                     {
-                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
+                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors, IsHtml);
                         allErrors.MergeErrors(errors);
                         if (!allErrors.HasErrors())
                         {
@@ -309,7 +313,7 @@ namespace Dev2.Activities.Exchange
 
         #endregion
 
-        public bool Equals(DsfExchangeEmailActivity other)
+        public bool Equals(DsfExchangeEmailNewActivity other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
@@ -322,6 +326,7 @@ namespace Dev2.Activities.Exchange
                 && string.Equals(Subject, other.Subject)
                 && string.Equals(Attachments, other.Attachments)
                 && string.Equals(Body, other.Body)
+                && IsHtml == other.IsHtml
                 && string.Equals(DisplayName, other.DisplayName)
                 && string.Equals(Result, other.Result);
         }
@@ -331,7 +336,7 @@ namespace Dev2.Activities.Exchange
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfExchangeEmailActivity) obj);
+            return Equals((DsfExchangeEmailNewActivity)obj);
         }
 
         public override int GetHashCode()
@@ -347,6 +352,7 @@ namespace Dev2.Activities.Exchange
                 hashCode = (hashCode * 397) ^ (Subject != null ? Subject.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Attachments != null ? Attachments.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Body != null ? Body.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsHtml.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
             }
