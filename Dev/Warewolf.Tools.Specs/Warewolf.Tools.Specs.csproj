@@ -198,6 +198,12 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Toolbox\Email\Exchange\ExchangeEmailSteps.cs" />
+    <Compile Include="Toolbox\Exchange\ExchangeEmail.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExchangeEmail.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Exchange\ExchangeEmailSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Copy\Copy.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -562,6 +568,10 @@
       <LastGenOutput>Replace.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Email\Exchange\ExchangeEmail.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExchangeEmail.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Exchange\ExchangeEmail.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExchangeEmail.feature.cs</LastGenOutput>
     </None>
