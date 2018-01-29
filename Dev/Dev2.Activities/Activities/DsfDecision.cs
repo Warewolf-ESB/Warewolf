@@ -356,7 +356,7 @@ namespace Dev2.Activities
             {
                 resultString = dds.TrueArmText;
             }
-            else if (theResult == "False")
+            if (theResult == "False")
             {
                 resultString = dds.FalseArmText;
             }
