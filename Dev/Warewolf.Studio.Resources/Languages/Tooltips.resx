@@ -1415,10 +1415,10 @@ Using recordset () will add a new record and (*) will assign every record.
 If there are multiple results and a scalar is used, then each result will be separated with a comma.</value>
   </data>
   <data name="FindToolTipRequireAllMatchesToBeTrue" xml:space="preserve">
-    <value>Will only return rows that match all of the criteria if selected.</value>
+    <value>Only return rows with a field that matches all of the criteria.</value>
   </data>
   <data name="FindToolTipRequireAllFieldsToMatch" xml:space="preserve">
-    <value>Will only return rows where each field specified meets the match criteria if selected.</value>
+    <value>Only return rows where each field specified meets a match criteria.</value>
   </data>
   <data name="FindToolTipMatch" xml:space="preserve">
     <value>Match data</value>
