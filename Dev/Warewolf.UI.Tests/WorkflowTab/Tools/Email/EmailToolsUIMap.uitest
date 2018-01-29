@@ -545,6 +545,19 @@
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants />
                                                                     </UIObject>
+                                                                    <UIObject ControlType="ComboBox" Id="Sources" FriendlyName="SourcesComboBox" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">SourcesComboBox</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
                                                                 <UIObject ControlType="Custom" Id="SmallViewContent" FriendlyName="SmallViewContent" SpecialControlType="None">
@@ -737,6 +750,72 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
+                                                                    <UIObject ControlType="Button" Id="NewButton" FriendlyName="New" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">SourceNewButton</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="Button" Id="Edit" FriendlyName="..." SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">SourceEditButton</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="ComboBox" Id="Sources" FriendlyName="SourcesComboBox" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">SourcesComboBox</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="ListItem" Id="NewEmailSource" FriendlyName="{&quot;Host&quot;:null,&quot;UserName&quot;:null,&quot;Password&quot;:null,&quot;Port..." SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="Name">{"Host":null,"UserName":null,"Password":null,"Port":25,"EnableSsl":false,"Timeout":100000,"TestFromAddress":null,"TestToAddress":null,"DataList":null,"IsSource":true,"IsService":false,"IsFolder":false,"IsReservedService":false,"IsServer":false,"IsResourceVersion":false,"Version":null,"ResourceID":"33804493-8656-4cf8-9e5c-7776cf1dd287","ResourceType":"EmailSource","ResourceName":"New Email Source...","IsValid":false,"Errors":null,"ReloadActions":false,"UserPermissions":0,"VersionInfo":null}</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                        <UIObject ControlType="ListItem" Id="UIHostlocalhostUserNamListItem" FriendlyName="{&quot;Host&quot;:&quot;localhost&quot;,&quot;UserName&quot;:&quot;test&quot;,&quot;Password&quot;:&quot;..." SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">3</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
                                                                     <UIObject ControlType="ComboBox" Id="SourceComboBox" FriendlyName="InitialFocusElement" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
@@ -900,6 +979,46 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
+                                                                    <UIObject ControlType="ComboBox" Id="Sources" FriendlyName="SourcesComboBox" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">SourcesComboBox</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="ListItem" Id="UIHostlocalhostUserNamListItem" FriendlyName="{&quot;Host&quot;:&quot;localhost&quot;,&quot;UserName&quot;:&quot;test&quot;,&quot;Password&quot;:&quot;..." SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\DYLAN.DELPORT)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">1</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="CheckBox" Id="HtmlBodyCheckBox" FriendlyName="Sets the body type to HTML (Checked) or plain text..." SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                        <PropertyCondition Name="HelpText">Sets the body type to HTML (Checked) or plain text (Unchecked)</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
                                                                     <UIObject ControlType="ComboBox" Id="SourceComboBox" FriendlyName="InitialFocusElement" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
@@ -1230,6 +1349,32 @@
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                         <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__EditEmailSourceBtn_AutoID</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="Button" Id="NewButton" FriendlyName="New" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">SourceNewButton</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="Button" Id="Edit" FriendlyName="..." SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">SourceEditButton</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants />
