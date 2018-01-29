@@ -107,9 +107,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        if (AssignEmptyOutputsToRecordSet)
                         {
-                            dataObject.Environment.Assign(region, "", update);
+                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                            {
+                                dataObject.Environment.Assign(region, "", update);
+                            }
                         }
                     }
                     if (dataObject.IsDebugMode())
@@ -190,6 +193,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
+        protected abstract bool AssignEmptyOutputsToRecordSet {get;}
 
         /// <summary>
         /// Gets or sets the username.

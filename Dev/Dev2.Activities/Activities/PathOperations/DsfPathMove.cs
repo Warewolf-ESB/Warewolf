@@ -26,7 +26,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : base("Move")
         {
         }
-
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
             var opTo = new Dev2CRUDOperationTO(Overwrite);

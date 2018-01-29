@@ -754,6 +754,38 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
                 return this.mItemButton;
             }
         }
+        
+        public WpfCheckBox HtmlBodyCheckBox
+        {
+            get
+            {
+                if ((this.mHtmlBodyCheckBox == null))
+                {
+                    this.mHtmlBodyCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mHtmlBodyCheckBox.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Sets the body type to HTML (Checked) or plain text (Unchecked)";
+                    this.mHtmlBodyCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHtmlBodyCheckBox;
+            }
+        }
+        
+        public WpfComboBox Sources
+        {
+            get
+            {
+                if ((this.mSources == null))
+                {
+                    this.mSources = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mSources.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+                    this.mSources.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSources;
+            }
+        }
         #endregion
         
         #region Fields
@@ -780,6 +812,10 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
         private ToComboBox mToComboBox;
         
         private WpfButton mItemButton;
+        
+        private WpfCheckBox mHtmlBodyCheckBox;
+        
+        private WpfComboBox mSources;
         #endregion
     }
     
@@ -1424,6 +1460,50 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
         }
         
         #region Properties
+        public WpfButton NewButton
+        {
+            get
+            {
+                if ((this.mNewButton == null))
+                {
+                    this.mNewButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mNewButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceNewButton";
+                    this.mNewButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewButton;
+            }
+        }
+        
+        public WpfButton Edit
+        {
+            get
+            {
+                if ((this.mEdit == null))
+                {
+                    this.mEdit = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEdit.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceEditButton";
+                    this.mEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEdit;
+            }
+        }
+        
+        public Sources Sources
+        {
+            get
+            {
+                if ((this.mSources == null))
+                {
+                    this.mSources = new Sources(this);
+                }
+                return this.mSources;
+            }
+        }
+        
         public SourceComboBox SourceComboBox
         {
             get
@@ -1502,6 +1582,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfButton mNewButton;
+        
+        private WpfButton mEdit;
+        
+        private Sources mSources;
+        
         private SourceComboBox mSourceComboBox;
         
         private WpfButton mItemButton;
@@ -1513,6 +1599,60 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
         private BodyComboBox2 mBodyComboBox;
         
         private ResultComboBox2 mResultComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Sources : WpfComboBox
+    {
+        
+        public Sources(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem NewEmailSource
+        {
+            get
+            {
+                if ((this.mNewEmailSource == null))
+                {
+                    this.mNewEmailSource = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewEmailSource.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Host"":null,""UserName"":null,""Password"":null,""Port"":25,""EnableSsl"":false,""Timeout"":100000,""TestFromAddress"":null,""TestToAddress"":null,""DataList"":null,""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""Version"":null,""ResourceID"":""33804493-8656-4cf8-9e5c-7776cf1dd287"",""ResourceType"":""EmailSource"",""ResourceName"":""New Email Source..."",""IsValid"":false,""Errors"":null,""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":null}";
+                    this.mNewEmailSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mNewEmailSource;
+            }
+        }
+        
+        public WpfListItem UIHostlocalhostUserNamListItem
+        {
+            get
+            {
+                if ((this.mUIHostlocalhostUserNamListItem == null))
+                {
+                    this.mUIHostlocalhostUserNamListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUIHostlocalhostUserNamListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
+                    this.mUIHostlocalhostUserNamListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUIHostlocalhostUserNamListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mNewEmailSource;
+        
+        private WpfListItem mUIHostlocalhostUserNamListItem;
         #endregion
     }
     
@@ -1711,6 +1851,34 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
         }
         
         #region Properties
+        public Sources1 Sources
+        {
+            get
+            {
+                if ((this.mSources == null))
+                {
+                    this.mSources = new Sources1(this);
+                }
+                return this.mSources;
+            }
+        }
+        
+        public WpfCheckBox HtmlBodyCheckBox
+        {
+            get
+            {
+                if ((this.mHtmlBodyCheckBox == null))
+                {
+                    this.mHtmlBodyCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mHtmlBodyCheckBox.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Sets the body type to HTML (Checked) or plain text (Unchecked)";
+                    this.mHtmlBodyCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHtmlBodyCheckBox;
+            }
+        }
+        
         public SourceComboBox1 SourceComboBox
         {
             get
@@ -1914,9 +2082,45 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
                 return this.mEditSourceButton;
             }
         }
+        
+        public WpfButton NewButton
+        {
+            get
+            {
+                if ((this.mNewButton == null))
+                {
+                    this.mNewButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mNewButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceNewButton";
+                    this.mNewButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewButton;
+            }
+        }
+        
+        public WpfButton Edit
+        {
+            get
+            {
+                if ((this.mEdit == null))
+                {
+                    this.mEdit = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEdit.SearchProperties[WpfButton.PropertyNames.AutomationId] = "SourceEditButton";
+                    this.mEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEdit;
+            }
+        }
         #endregion
         
         #region Fields
+        private Sources1 mSources;
+        
+        private WpfCheckBox mHtmlBodyCheckBox;
+        
         private SourceComboBox1 mSourceComboBox;
         
         private FromAddressComboBox mFromAddressComboBox;
@@ -1946,6 +2150,46 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
         private WpfButton mSelectFilesButton;
         
         private WpfButton mEditSourceButton;
+        
+        private WpfButton mNewButton;
+        
+        private WpfButton mEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Sources1 : WpfComboBox
+    {
+        
+        public Sources1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SourcesComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem UIHostlocalhostUserNamListItem
+        {
+            get
+            {
+                if ((this.mUIHostlocalhostUserNamListItem == null))
+                {
+                    this.mUIHostlocalhostUserNamListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUIHostlocalhostUserNamListItem.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
+                    this.mUIHostlocalhostUserNamListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    #endregion
+                }
+                return this.mUIHostlocalhostUserNamListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mUIHostlocalhostUserNamListItem;
         #endregion
     }
     

@@ -34,7 +34,7 @@ namespace Dev2.Activities.Sharepoint
             ServerInputPathFrom = string.Empty;
             ServerInputPathTo = string.Empty;
         }
-
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         /// <summary>
         /// Gets or sets the input path.
         /// </summary>

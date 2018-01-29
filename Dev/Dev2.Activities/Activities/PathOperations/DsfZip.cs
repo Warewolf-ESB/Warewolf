@@ -50,7 +50,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             CompressionRatio = string.Empty;
             ArchivePassword = string.Empty;
         }
-
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         IWarewolfIterator _archPassItr;
         IWarewolfIterator _compresItr;
         IWarewolfIterator _archNameItr;
