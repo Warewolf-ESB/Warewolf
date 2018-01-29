@@ -269,9 +269,14 @@ namespace Dev2.Tests.Activities.ActivityTests
 
                         Assert.IsTrue(hasErrors);
                         if (item.ToUpper().Contains("y".ToUpper()))
+                        {
                             Assert.IsTrue(period.Years >= 9, "this format has failed " + item);
+                        }
                         else
+                        {
                             Assert.AreEqual(a, actual);
+                        }
+
                         passCount++;
                         //using (var stream = File.AppendText(n))
                         //{                            

@@ -664,7 +664,7 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), mergeIDOut.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeType.ToString(), enDataListMergeTypes.Union.ToString());
             StringAssert.Contains(dataObjct.DatalistOutMergeDepth.ToString(), Common.Interfaces.DataList.Contract.enTranslationDepth.Data.ToString());
-            StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.Never.ToString());
+            StringAssert.Contains(dataObjct.DatalistOutMergeFrequency.ToString(), DataListMergeFrequency.None.ToString());
 
             StringAssert.Contains(dataObjct.DatalistInMergeID.ToString(), mergeIDIn.ToString());
             StringAssert.Contains(dataObjct.DatalistInMergeType.ToString(), enDataListMergeTypes.Union.ToString());

@@ -65,8 +65,16 @@ namespace Dev2.TO
 
         public bool Equals(SharepointReadListTo other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return IndexNumber == other.IndexNumber
                 && string.Equals(InternalName, other.InternalName)
                 && string.Equals(FieldName, other.FieldName) 
@@ -78,9 +86,21 @@ namespace Dev2.TO
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((SharepointReadListTo) obj);
         }
 

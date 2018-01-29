@@ -88,7 +88,7 @@ namespace Dev2.DataList.Contract
                             {
                                 children.Add(DataListFactory.CreateIntellisensePart(childNl[q].Name, ExtractDescription(childNl[q])));
                             }
-                            if (FilterTO.FilterType == enIntellisensePartType.All)
+                            if (FilterTO.FilterType == enIntellisensePartType.None)
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(recordsetName, ExtractDescription(tmpNode), children));
                             }
@@ -103,7 +103,7 @@ namespace Dev2.DataList.Contract
                         }
                         else
                         {
-                            if (FilterTO.FilterType == enIntellisensePartType.All || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly)
+                            if (FilterTO.FilterType == enIntellisensePartType.None || FilterTO.FilterType == enIntellisensePartType.ScalarsOnly)
                             {
                                 result.Add(DataListFactory.CreateIntellisensePart(tmpNode.Name, ExtractDescription(tmpNode)));
                             }

@@ -8,8 +8,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(IPluginAction p1, IPluginAction p2)
         {
-            if (p1 == null && p2 == null) return true;
-            if (p1 == null || p2 == null) return false;
+            if (p1 == null && p2 == null)
+            {
+                return true;
+            }
+
+            if (p1 == null || p2 == null)
+            {
+                return false;
+            }
+
             var methodsAreEqual = string.Equals(p1.Method, p2.Method)
                                  && string.Equals(p1.Dev2ReturnType, p2.Dev2ReturnType)
                                  && string.Equals(p1.ErrorMessage, p2.ErrorMessage)

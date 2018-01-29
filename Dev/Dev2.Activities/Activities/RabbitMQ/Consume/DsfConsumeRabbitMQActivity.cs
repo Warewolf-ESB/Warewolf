@@ -387,9 +387,16 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         public bool Equals(DsfConsumeRabbitMQActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-          
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(RabbitSource, other.RabbitSource);
             return base.Equals(other)
                 && string.Equals(Result, other.Result)
@@ -410,9 +417,21 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfConsumeRabbitMQActivity)obj);
         }
 

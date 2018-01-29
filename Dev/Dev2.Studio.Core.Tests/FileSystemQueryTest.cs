@@ -643,7 +643,7 @@ namespace Dev2.Core.Tests
             children.Setup(a => a.GetEnumerator()).Returns(actualChildren.Select(a => a.Object).GetEnumerator());
             actualChildren.First().Setup(a => a.Children).Returns(gChildren.Object);
             gChildren.Setup(a => a.GetEnumerator()).Returns(actualGChildren.Select(a => a.Object).GetEnumerator());
-            IList<Share> shares = hasShares ? new List<Share> { new Share("a", "b", ShareType.Disk) } : new List<Share>();
+            IList<Share> shares = hasShares ? new List<Share> { new Share("a", "b", ShareType.None) } : new List<Share>();
             var sFact = new Mock<IShareCollectionFactory>();
             sFact.Setup(a => a.CreateShareCollection(It.IsAny<string>())).Returns(new ShareCollection(shares));
 

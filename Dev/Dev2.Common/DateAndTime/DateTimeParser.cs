@@ -24,9 +24,6 @@ namespace Dev2.Common.DateAndTime
 {
     public abstract class DateTimeParser : IDateTimeParser
     {
-        /// <summary>
-        ///     used to describe the position of the parser relative to escaped regions
-        /// </summary>
         public enum LiteralRegionStates
         {
             OutsideLiteralRegion,

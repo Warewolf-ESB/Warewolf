@@ -163,8 +163,16 @@ namespace Dev2.TO
 
         public bool Equals(AssignObjectDTO other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return string.Equals(FieldName, other.FieldName)
                 && string.Equals(FieldValue, other.FieldValue)
                 && IndexNumber == other.IndexNumber
@@ -177,9 +185,21 @@ namespace Dev2.TO
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((AssignObjectDTO)obj);
         }
 
