@@ -283,7 +283,7 @@ namespace Dev2.Network
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start();
+                    await HubConnection.Start().ConfigureAwait(true);
                     if (HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
                         if (!IsLocalHost)
@@ -295,7 +295,7 @@ namespace Dev2.Network
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connecting)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start();
+                    await HubConnection.Start().ConfigureAwait(true);
                     if (HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
                         if (!IsLocalHost)

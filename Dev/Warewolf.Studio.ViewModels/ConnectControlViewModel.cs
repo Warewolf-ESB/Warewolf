@@ -374,7 +374,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 try
                 {
-                    var connected = await connection.ConnectAsync();
+                    var connected = await connection.ConnectAsync().ConfigureAwait(true);
                     if (connected && connection.IsConnected)
                     {
                         if (ShouldUpdateActiveEnvironment)
@@ -387,7 +387,7 @@ namespace Warewolf.Studio.ViewModels
                         var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
                         if (result == MessageBoxResult.Yes)
                         {
-                            await ConnectAsync(connection);
+                            await ConnectAsync(connection).ConfigureAwait(true);
                         }
                         else
                         {
