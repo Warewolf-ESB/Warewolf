@@ -181,6 +181,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ActivityComparerTests\PathOperations\DsfFolderReadNewComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\Exchange\DsfExchangeNewEmailActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sequence\DsfSequenceActivityComparerTest.cs" />
     <Compile Include="ActivityComparerTests\SysInfo\DsfGatherSystemInformationActivity.cs" />
     <Compile Include="ActivityComparerTests\ExecuteCommandLine\DsfExecuteCommandLineActivityComparerTest.cs" />

@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -10,31 +10,18 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.Email
+namespace Dev2.Activities.Designers2.ExchangeNewEmail
 {
+    /// <summary>
+    /// Interaction logic for Large.xaml
+    /// </summary>
     public partial class Large
     {
         public Large()
         {
             InitializeComponent();
-            Loaded += OnLoaded;
         }
-
-        EmailDesignerViewModel ViewModel => DataContext as EmailDesignerViewModel;
 
         protected override IInputElement GetInitialFocusElement() => this;
-
-        public string ThePassword { get => ThePasswordBox.Password; set => ThePasswordBox.Password = value; }
-
-        void OnLoaded(object sender, RoutedEventArgs routedEventArgs) => OnPasswordChanged(sender, routedEventArgs);
-
-        void OnPasswordChanged(object sender, RoutedEventArgs e)
-        {
-            var viewModel = ViewModel;
-            if (viewModel != null)
-            {
-                viewModel.Password = ThePassword;
-            }
-        }
     }
 }

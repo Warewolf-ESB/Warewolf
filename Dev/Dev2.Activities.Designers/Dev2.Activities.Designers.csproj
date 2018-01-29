@@ -170,6 +170,16 @@
     <Compile Include="Designers2\Core\ActionRegion\WcfActionMemento.cs" />
     <Compile Include="Designers2\Core\InputRegion\ServiceInputNameComparer.cs" />
     <Compile Include="Designers2\Core\ViewPropertyBuilder.cs" />
+    <Compile Include="Designers2\ExchangeNewEmail\ExchangeEmailDesigner.xaml.cs">
+      <DependentUpon>ExchangeEmailDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeNewEmail\ExchangeNewEmailDesignerViewModel.cs" />
+    <Compile Include="Designers2\ExchangeNewEmail\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\ExchangeNewEmail\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Foreach\SmallErrorView.xaml.cs">
       <DependentUpon>SmallErrorView.xaml</DependentUpon>
     </Compile>
@@ -1512,6 +1522,18 @@
     <Page Include="Designers2\ExchangeEmail\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\ExchangeNewEmail\ExchangeEmailDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\ExchangeNewEmail\Large.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\ExchangeNewEmail\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\FindIndex\Large.xaml">
       <Generator>MSBuild:Compile</Generator>

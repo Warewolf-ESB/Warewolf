@@ -141,3 +141,17 @@ Scenario: Send exchange email with a negative index recordset for Body
 	And the debug output as 
 	|                       |
 	| [[result]] =  |
+
+Scenario: Send exchange email with new line in body
+	Given exchange to address is "test1@freemail.com"	
+	And the exchange subject is "Testing this cool framework"	
+	And exchange body is "testing email with \r\n new line"
+	When the exchange email tool is executed
+	Then the exchange email result will be "Success"
+	And the exchange execution has "NO" error
+	And the debug inputs as  
+	| To                 | Subject                     | Body |
+	| test1@freemail.com | Testing this cool framework | testing email with \r\n new line   |
+	And the debug output as 
+	|                       |
+	| [[result]] = Success |
