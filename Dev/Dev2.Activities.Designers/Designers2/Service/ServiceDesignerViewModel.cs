@@ -690,34 +690,6 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        ~ServiceDesignerViewModel()
-        {
-            Dispose(false);
-        }
-
-        protected override void OnDispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-            base.OnDispose();
-        }
-
-        public void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                if (disposing)
-                {
-                    ValidationMemoManager.ValidationService?.Dispose();
-                    if (_environment != null)
-                    {
-                        _environment.AuthorizationServiceSet -= OnEnvironmentOnAuthorizationServiceSet;
-                    }
-                }
-                _isDisposed = true;
-            }
-        }
-
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName = null) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         public override void UpdateHelpDescriptor(string helpText) => CustomContainer.Get<IShellViewModel>()?.HelpViewModel.UpdateHelpText(helpText);
