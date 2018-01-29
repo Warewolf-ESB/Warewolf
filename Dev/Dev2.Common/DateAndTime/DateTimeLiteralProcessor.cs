@@ -176,7 +176,7 @@ namespace Dev2.Common.DateAndTime
                         result = lookupResults[count];
                         count = lookupResults.Count;
                     }
-                    if (count == lookupLengths.Count - 1)
+                    else if (count == lookupLengths.Count - 1)
                     {
                         nothingDied = false;
                         error =

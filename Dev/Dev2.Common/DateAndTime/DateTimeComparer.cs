@@ -93,7 +93,7 @@ namespace Dev2.Common.DateAndTime
                     {
                         result++;
                     }
-                    if (result > 0)
+                    else if (result > 0)
                     {
                         result--;
                     }
@@ -115,11 +115,12 @@ namespace Dev2.Common.DateAndTime
                 {
                     result++;
                 }
-                if (result > 0)
+                else if (result > 0)
                 {
                     result--;
                 }
             }
+
             result = result + 12 * tmpYears;
             return result;
         }
