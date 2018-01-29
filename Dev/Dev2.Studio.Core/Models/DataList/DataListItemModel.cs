@@ -300,7 +300,7 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Both;
                 }
-                if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Input;
                 }

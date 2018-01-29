@@ -1708,7 +1708,7 @@ namespace Dev2.Studio.ViewModels
             {
                 closeStudio = false;
             }
-            if (result == MessageBoxResult.Yes)
+            else if (result == MessageBoxResult.Yes)
             {
                 closeStudio = true;
                 SaveAllCommand.Execute(null);
@@ -1743,7 +1743,7 @@ namespace Dev2.Studio.ViewModels
                         }
                     }
                 }
-                if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
+                else if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
                 {
                     if (vm is SettingsViewModel settingsViewModel && settingsViewModel.IsDirty)
                     {
@@ -1751,7 +1751,7 @@ namespace Dev2.Studio.ViewModels
                         break;
                     }
                 }
-                if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                else if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
                 {
                     var schedulerViewModel = vm as SchedulerViewModel;
                     if (schedulerViewModel?.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
@@ -1760,7 +1760,7 @@ namespace Dev2.Studio.ViewModels
                         break;
                     }
                 }
-                if (vm.GetType().Name == "SourceViewModel`1")
+                else if (vm.GetType().Name == "SourceViewModel`1")
                 {
                     if (vm is SourceViewModel<IServerSource> serverSourceModel)
                     {

@@ -270,10 +270,6 @@ namespace Dev2.Settings.Scheduler
                                 {
                                     _schedulerViewModel.SelectedTask = _schedulerViewModel.TaskList[0];
                                 }
-                                else
-                                {
-                                    throw new Exception("Incorrect number of tasks in the task scheduler.");
-                                }
                             }
                             _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.History);
                         }

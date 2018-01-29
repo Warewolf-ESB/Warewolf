@@ -178,19 +178,19 @@ namespace Dev2.Common.DateAndTime
                 {
                     forwardLookupLength = DateTimeLiteralProcessor.ProcessOutsideLiteral(dateTimeFormatForwardLookups, dateTimeFormatPartOptions, formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref literalRegionState, ref currentValue);
                 }
-                if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegion)
+                else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegion)
                 {
                     forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideInferredLiteral(dateTimeFormatForwardLookups, dateTimeFormatPartOptions, formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
                 }
-                if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegionWithEscape)
+                else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegionWithEscape)
                 {
                     literalRegionState = DateTimeLiteralProcessor.ProcessInsideInferredEscapedLiteral(ref error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
                 }
-                if (literalRegionState == LiteralRegionStates.InsideLiteralRegion)
+                else if (literalRegionState == LiteralRegionStates.InsideLiteralRegion)
                 {
                     forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideLiteral(formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
                 }
-                if (literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
+                else if (literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
                 {
                     literalRegionState = DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
                 }
@@ -207,7 +207,7 @@ namespace Dev2.Common.DateAndTime
             {
                 formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
             }
-            if (currentValue.Length > 0)
+            else if (currentValue.Length > 0)
             {
                 nothingDied = false;
                 error = "A \' character defines a start or end of a non date time region, there apears to be a extra \' character.";
