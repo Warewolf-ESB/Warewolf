@@ -32,32 +32,11 @@ namespace Dev2.DataList.Contract
             IList<IDev2DataLanguageIntellisensePart> result = new List<IDev2DataLanguageIntellisensePart>();
 
             var xDoc = new XmlDocument();
-
-            string rawRecsetName;
             
             if (FilterTO == null)
             {
                 FilterTO = new IntellisenseFilterOpsTO();
             }
-            if (FilterTO.FilterCondition != null)
-            {
-                rawRecsetName = FilterTO.FilterCondition;
-                if (rawRecsetName.Contains("[["))
-                {
-                    rawRecsetName = rawRecsetName.Replace("[[", "");
-                }
-                if (rawRecsetName.Contains("]]"))
-                {
-                    rawRecsetName = rawRecsetName.Replace("]]", "");
-                }
-                if (rawRecsetName.Contains("()"))
-                {
-                    
-                    rawRecsetName = rawRecsetName.Replace("()", "");
-                    
-                }
-            }
-
 
             if (!string.IsNullOrEmpty(DataList))
             {
