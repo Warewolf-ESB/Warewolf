@@ -60,8 +60,10 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             sourceRegion.SelectedSource = dotNetsrc;
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            var dotNetNamespaceRegion = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
-            dotNetNamespaceRegion.SelectedNamespace = namespaceItem;
+            var dotNetNamespaceRegion = new DotNetNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion)
+            {
+                SelectedNamespace = namespaceItem
+            };
 
             //------------Execute Test---------------------------
             var dotNetActionRegion = new DotNetActionRegion();
