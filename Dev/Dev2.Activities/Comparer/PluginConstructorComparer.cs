@@ -8,8 +8,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(IPluginConstructor p1, IPluginConstructor p2)
         {
-            if (p1 == null && p2 == null) return true;
-            if (p1 == null || p2 == null) return false;
+            if (p1 == null && p2 == null)
+            {
+                return true;
+            }
+
+            if (p1 == null || p2 == null)
+            {
+                return false;
+            }
+
             var methodsAreEqual = Equals(p1.ID, p2.ID)
                                   && string.Equals(p1.ConstructorName, p2.ConstructorName)
                                   && string.Equals(p1.ReturnObject, p2.ReturnObject)

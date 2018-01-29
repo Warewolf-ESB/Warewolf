@@ -15,7 +15,7 @@ namespace Dev2.Common.Interfaces
     [Flags]
     public enum enIntellisensePartType
     {
-        All = 0,
+        None = 0,
         RecordsetsOnly = 1,
         ScalarsOnly = 2,
         RecordsetFields = 4,

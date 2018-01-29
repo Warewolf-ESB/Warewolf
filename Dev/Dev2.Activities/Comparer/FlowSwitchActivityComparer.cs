@@ -8,8 +8,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(DsfFlowSwitchActivity x, DsfFlowSwitchActivity y)
         {
-            if (x == null && y == null) return true;
-            if ((x == null && y != null) || (x != null && y == null)) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if ((x == null && y != null) || (x != null && y == null))
+            {
+                return false;
+            }
+
             return x != null
                 && y != null
                 && string.Equals(x.DisplayName, y.DisplayName)

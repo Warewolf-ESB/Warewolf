@@ -7,8 +7,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(IServiceInput input1, IServiceInput input2)
         {
-            if (input1 == null && input2 == null) return true;
-            if (input1 == null || input2 == null) return false;
+            if (input1 == null && input2 == null)
+            {
+                return true;
+            }
+
+            if (input1 == null || input2 == null)
+            {
+                return false;
+            }
+
             var inputsAreTheSame = string.Equals(input1.ActionName, input2.ActionName)
                                    && string.Equals(input1.Dev2ReturnType, input2.Dev2ReturnType)
                                    && string.Equals(input1.FullName, input2.FullName)

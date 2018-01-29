@@ -6,8 +6,15 @@ namespace Dev2
     {
         public bool Equals(IDev2Activity x, IDev2Activity y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
 
             var @equals = x.Equals(y);
             return @equals;
