@@ -28,14 +28,9 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.PathOperations
 {
-
-    /// <summary>
-    /// Used for internal security reasons
-    /// </summary>
-
     public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        SafeTokenHandle()
+        public SafeTokenHandle()
             : base(true)
         {
         }
@@ -51,14 +46,8 @@ namespace Dev2.PathOperations
             return CloseHandle(handle);
         }
     }
-
-    /// <summary>
-    /// PBI : 1172
-    /// Status : New
-    /// Purpose : To provide file system IO operations to the File activities
-    /// </summary>
+    
     [Serializable]
-
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
         static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
