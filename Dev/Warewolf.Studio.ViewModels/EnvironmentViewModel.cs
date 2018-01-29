@@ -198,7 +198,7 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = server.DisplayName;
             RefreshCommand = new DelegateCommand(async () =>
             {
-                await RefreshAsync();
+                await RefreshAsync().ConfigureAwait(true);
             });
             IsServerIconVisible = true;
             SelectAction = selectAction ?? (a => { });
@@ -219,7 +219,7 @@ namespace Warewolf.Studio.ViewModels
                  {
                      Application.Current.Dispatcher.Invoke(async () =>
                      {
-                         await RefreshAsync();
+                         await RefreshAsync().ConfigureAwait(true);
                      }, DispatcherPriority.Background);
 
                  }
@@ -254,7 +254,7 @@ namespace Warewolf.Studio.ViewModels
         async Task RefreshAsync()
         {
             var isDeploy = Children.Any(a => AllowResourceCheck);
-            await LoadAsync(isDeploy, true);
+            await LoadAsync(isDeploy, true).ConfigureAwait(true);
             if (isDeploy)
             {
                 ShowContextMenu = false;
@@ -865,9 +865,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async Task<bool> LoadAsync() => await LoadAsync(false, false);
+        public async Task<bool> LoadAsync() => await LoadAsync(false, false).ConfigureAwait(true);
 
-        public async Task<bool> LoadAsync(bool isDeploy) => await LoadAsync(isDeploy, false);
+        public async Task<bool> LoadAsync(bool isDeploy) => await LoadAsync(isDeploy, false).ConfigureAwait(true);
 
         public async Task<bool> LoadAsync(bool isDeploy, bool reloadCatalogue)
         {
@@ -876,7 +876,7 @@ namespace Warewolf.Studio.ViewModels
                 try
                 {
                     IsLoading = true;
-                    var result = await LoadDialogAsync(null, isDeploy, reloadCatalogue);
+                    var result = await LoadDialogAsync(null, isDeploy, reloadCatalogue).ConfigureAwait(true);
                     ReloadConnectControl(isDeploy);
                     return result;
                 }
@@ -946,7 +946,7 @@ namespace Warewolf.Studio.ViewModels
             if (IsConnected && Server.IsConnected)
             {
                 IsConnecting = true;
-                var explorerItems = await Server.LoadExplorer(reloadCatalogue);
+                var explorerItems = await Server.LoadExplorer(reloadCatalogue).ConfigureAwait(true);
                 if (explorerItems != null)
                 {
                     CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, isDeploy);
@@ -966,7 +966,7 @@ namespace Warewolf.Studio.ViewModels
             if (IsConnected)
             {
                 IsConnecting = true;
-                var explorerItems = await Server.LoadExplorer();
+                var explorerItems = await Server.LoadExplorer().ConfigureAwait(true);
                 if (explorerItems != null)
                 {
                     CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
