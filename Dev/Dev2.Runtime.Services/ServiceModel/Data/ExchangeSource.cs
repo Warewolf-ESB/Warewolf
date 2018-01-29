@@ -108,7 +108,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             Timeout = Int32.TryParse(properties["Timeout"], out int timeout) ? timeout : DefaultTimeout;
         }
 
-        public void Send(IExchangeEmailSender emailSender, ExchangeTestMessage testMessage)
+        public void Send(IExchangeEmailSender emailSender, ExchangeTestMessage testMessage, bool isHtml = true)
         {
             InitializeService();
 
@@ -119,6 +119,15 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Body = testMessage.Body,
                 Subject = testMessage.Subject
             };
+
+            if (isHtml)
+            {
+                emailMessage.Body.BodyType = BodyType.HTML;
+            }
+            else
+            {
+                emailMessage.Body.BodyType = BodyType.Text;
+            }
 
             foreach (var to in testMessage.Tos)
             {

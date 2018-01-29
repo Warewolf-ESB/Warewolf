@@ -115,6 +115,7 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.EditEmailSourceCommand);
+            Assert.IsNotNull(viewModel.NewEmailSourceCommand);
             Assert.IsNotNull(viewModel.TestEmailAccountCommand);
             Assert.IsNotNull(viewModel.ChooseAttachmentsCommand);
             Assert.IsNotNull(viewModel.EmailSources);
@@ -123,9 +124,8 @@ namespace Dev2.Activities.Designers.Tests.Email
             Assert.IsFalse(viewModel.IsRefreshing);
             Assert.IsTrue(viewModel.CanTestEmailAccount);
 
-            Assert.AreEqual(EmailSourceCount + 2, viewModel.EmailSources.Count);
-            Assert.AreEqual(viewModel.EmailSources[0], viewModel.SelectedEmailSource);
-            Assert.AreEqual("Select an Email Source...", viewModel.EmailSources[0].ResourceName);
+            Assert.AreEqual(EmailSourceCount, viewModel.EmailSources.Count);
+            Assert.IsNull(viewModel.SelectedEmailSource);
 
             Assert.IsNull(viewModel.SelectedEmailSourceModelItemValue);
 
@@ -192,11 +192,8 @@ namespace Dev2.Activities.Designers.Tests.Email
             Assert.IsFalse(viewModel.IsRefreshing);
             Assert.IsTrue(viewModel.CanTestEmailAccount);
 
-            Assert.AreEqual(EmailSourceCount + 1, viewModel.EmailSources.Count);
+            Assert.AreEqual(EmailSourceCount, viewModel.EmailSources.Count);
             Assert.AreEqual(selectedEmailSource, viewModel.SelectedEmailSource);
-
-            Assert.AreEqual("New Email Source...", viewModel.EmailSources[0].ResourceName);
-            Assert.AreNotEqual(Guid.Empty, viewModel.EmailSources[0].ResourceID);
 
             Assert.IsNotNull(viewModel.SelectedEmailSourceModelItemValue);
 
@@ -290,10 +287,10 @@ namespace Dev2.Activities.Designers.Tests.Email
             var viewModel = CreateViewModel(emailSources, modelItem, eventPublisher.Object, resourceModel.Object);
 
             var createEmailSource = viewModel.EmailSources[0];
-            Assert.AreEqual("New Email Source...", createEmailSource.ResourceName);
+            Assert.AreEqual("Email0", createEmailSource.ResourceName);
 
             //------------Execute Test---------------------------
-            viewModel.SelectedEmailSource = createEmailSource;
+            viewModel.NewEmailSourceCommand.Execute(null);
 
             //------------Assert Results-------------------------
             mockShellViewModel.Verify(model => model.NewEmailSource(It.IsAny<string>()));
@@ -323,13 +320,13 @@ namespace Dev2.Activities.Designers.Tests.Email
                 hitCount++;
             };
             var createEmailSource = viewModel.EmailSources[0];
-            Assert.AreEqual("New Email Source...", createEmailSource.ResourceName);
+            Assert.AreEqual("Email0", createEmailSource.ResourceName);
 
             //------------Execute Test---------------------------
             viewModel.SelectedEmailSource = createEmailSource;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(3, hitCount);
+            Assert.AreEqual(1, hitCount);
         }
 
         [TestMethod]
@@ -455,104 +452,6 @@ namespace Dev2.Activities.Designers.Tests.Email
             eventPublisher.Verify(p => p.Publish(It.IsAny<FileChooserMessage>()));
             var attachments = modelItem.GetProperty<string>("Attachments");
             Assert.AreEqual(string.Join(";", expectedFiles), attachments);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("EmailDesignerViewModel_TestEmailAccount")]
-        public void EmailDesignerViewModel_TestEmailAccount_TestIsValid_InvokesEmailSourcesTestAndNoErrors()
-        {
-            Verify_TestEmailAccount(true, true);
-            Verify_TestEmailAccount(true, false);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("EmailDesignerViewModel_TestEmailAccount")]
-        public void EmailDesignerViewModel_TestEmailAccount_TestIsNotValid_InvokesEmailSourcesTestAndSetsErrors()
-        {
-            Verify_TestEmailAccount(false, true);
-            Verify_TestEmailAccount(false, false);
-        }
-
-        void Verify_TestEmailAccount(bool isTestResultValid, bool hasFromAccount)
-        {
-            //------------Setup for test--------------------------
-            const string ExpectedUri = AppLocalhost + "/wwwroot/sources/Service/EmailSources/Test";
-            const string TestToAddress = "test@mydomain.com";
-            const string TestFromAccount = "from@mydomain.com";
-            const string TestFromPassword = "FromPassword";
-
-            var result = new ValidationResult { IsValid = isTestResultValid };
-            if (!isTestResultValid)
-            {
-                result.ErrorMessage = "Unable to connect to SMTP server";
-            }
-
-            var emailSource = new EmailSource
-            {
-                ResourceID = Guid.NewGuid(),
-                ResourceName = "EmailTest",
-                UserName = "user@mydomain.com",
-                Password = "SourcePassword",
-            };
-
-            var modelItem = CreateModelItem();
-            modelItem.SetProperty("SelectedEmailSource", emailSource);
-            modelItem.SetProperty("To", TestToAddress);
-
-
-            var expectedSource = new EmailSource(emailSource.ToXml()) { TestToAddress = TestToAddress };
-            if (hasFromAccount)
-            {
-                modelItem.SetProperty("FromAccount", TestFromAccount);
-                modelItem.SetProperty("Password", TestFromPassword);
-                expectedSource.UserName = TestFromAccount;
-                expectedSource.Password = TestFromPassword;
-                expectedSource.TestFromAddress = TestFromAccount;
-            }
-            else
-            {
-                expectedSource.TestFromAddress = emailSource.UserName;
-            }
-
-            var expectedPostData = expectedSource.ToString();
-
-            string postData = null;
-            var webRequestInvoker = new Mock<IWebRequestInvoker>();
-            webRequestInvoker.Setup(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()))
-                .Callback((string method, string url, string data, List<Tuple<string, string>> headers, Action<string> asyncCallback) =>
-                {
-                    postData = data;
-                    asyncCallback?.Invoke(new Dev2JsonSerializer().Serialize(result));
-                }).Returns(string.Empty)
-                .Verifiable();
-
-            var viewModel = CreateViewModel(new List<EmailSource> { emailSource }, modelItem);
-            viewModel.WebRequestInvoker = webRequestInvoker.Object;
-
-            Assert.IsTrue(viewModel.CanTestEmailAccount);
-
-            //------------Execute Test---------------------------
-            viewModel.TestEmailAccountCommand.Execute(null);
-
-            //------------Assert Results-------------------------
-            webRequestInvoker.Verify(w => w.ExecuteRequest("POST", ExpectedUri, It.IsAny<string>(), null, It.IsAny<Action<string>>()));
-            Assert.IsNotNull(postData);
-            Assert.AreEqual(expectedPostData, postData);
-            Assert.IsTrue(viewModel.CanTestEmailAccount);
-            if (isTestResultValid)
-            {
-                Assert.IsNull(viewModel.Errors);
-            }
-            else
-            {
-                Assert.IsNotNull(viewModel.Errors);
-                Assert.AreEqual(result.ErrorMessage, viewModel.Errors[0].Message);
-                Assert.IsFalse(viewModel.IsFromAccountFocused);
-                viewModel.Errors[0].Do();
-                Assert.IsTrue(viewModel.IsFromAccountFocused);
-            }
         }
 
         [TestMethod]

@@ -1145,7 +1145,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one..
+        ///   Looks up a localized string similar to Select a preconfigured email source..
         /// </summary>
         public static string EmailHelpMailSource {
             get {
@@ -2163,6 +2163,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string NativeActivityHelpPuterrorinthisvariable {
             get {
                 return ResourceManager.GetString("NativeActivityHelpPuterrorinthisvariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Create a connection to a new email server..
+        /// </summary>
+        public static string NewEmailSourceHelp {
+            get {
+                return ResourceManager.GetString("NewEmailSourceHelp", resourceCulture);
             }
         }
         

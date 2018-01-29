@@ -1,22 +1,22 @@
 ﻿using Dev2.Activities.Exchange;
-using Dev2.Data.Util;
-using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using netDumbster.smtp;
-using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Data.TO;
+using Dev2.Data.Util;
 using Dev2.Interfaces;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using netDumbster.smtp;
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
 using TechTalk.SpecFlow;
 using Warewolf.Tools.Specs.BaseTypes;
 
-namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
+namespace Warewolf.Tools.Specs.Toolbox.Exchange
 {
     [Binding]
     public class ExchangeEmailSteps : RecordSetBases
@@ -52,6 +52,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             scenarioContext.TryGetValue("password", out string password);
             scenarioContext.TryGetValue("simulationOutput", out string simulationOutput);
             scenarioContext.TryGetValue("to", out string to);
+            scenarioContext.TryGetValue("isHtml", out string isHtml);
 
             var server = SimpleSmtpServer.Start(25);
             scenarioContext.Add("server", server);
@@ -67,7 +68,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
                 ResourceID = resourceID
             };
 
-            
+
             var emailSource = new ExchangeSource
             {
                 AutoDiscoverUrl = "https://outlook.office365.com/EWS/Exchange.asmx",
@@ -78,21 +79,22 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSource, "");
             var emailSender = new Mock<IDev2EmailSender>();
-            
+
             var eR = new ErrorResultTO();
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR, It.IsAny<bool>()))
                 .Returns("Success")
-                .Callback((IExchange source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors, bool isHtml)=>
-            {
-                listIterator.FetchNextValue(i1);
-                listIterator.FetchNextValue(i2);
-                listIterator.FetchNextValue(i3);
-                listIterator.FetchNextValue(i4);
-                listIterator.FetchNextValue(i5);
-                listIterator.FetchNextValue(i6);
-            });
-            var sendEmail = new DsfExchangeEmailActivity(emailSender.Object)
+                .Callback((IExchange source, IWarewolfListIterator listIterator, IWarewolfIterator i1, IWarewolfIterator i2, IWarewolfIterator i3, IWarewolfIterator i4, IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors, bool _isHtml) =>
+                {
+                    listIterator.FetchNextValue(i1);
+                    listIterator.FetchNextValue(i2);
+                    listIterator.FetchNextValue(i3);
+                    listIterator.FetchNextValue(i4);
+                    listIterator.FetchNextValue(i5);
+                    listIterator.FetchNextValue(i6);
+                    isHtml = _isHtml ? "true" : "false";
+                });
+            var sendEmail = new DsfExchangeEmailNewActivity(emailSender.Object)
             {
                 Result = ResultVariable,
                 Body = string.IsNullOrEmpty(body) ? "" : body,
@@ -103,6 +105,14 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
                 Bcc = String.Empty,
                 Attachments = String.Empty
             };
+            if (isHtml == "true")
+            {
+                sendEmail.IsHtml = true;
+            }
+            else
+            {
+                sendEmail.IsHtml = false;
+            }
 
             TestStartNode = new FlowStep
             {
@@ -111,7 +121,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             scenarioContext.Add("activity", sendEmail);
         }
 
-        protected  void BuildDataList(string result)
+        protected void BuildDataList(string result)
         {
             scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
@@ -129,6 +139,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             scenarioContext.TryGetValue("password", out string password);
             scenarioContext.TryGetValue("simulationOutput", out string simulationOutput);
             scenarioContext.TryGetValue("to", out string to);
+            scenarioContext.TryGetValue("isHtml", out string isHtml);
 
             var server = SimpleSmtpServer.Start(25);
             scenarioContext.Add("server", server);
@@ -154,22 +165,22 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSource, "");
             var emailSender = new Mock<IDev2EmailSender>();
-            
+
             var eR = new ErrorResultTO();
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR, It.IsAny<bool>()))
                 .Returns(result)
-                .Callback((IExchangeSource source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors)=>
-            {
-                listIterator.FetchNextValue(i1);
-                listIterator.FetchNextValue(i2);
-                listIterator.FetchNextValue(i3);
-                listIterator.FetchNextValue(i4);
-                listIterator.FetchNextValue(i5);
-                listIterator.FetchNextValue(i6);
-                
-            });
-            var sendEmail = new DsfExchangeEmailActivity(emailSender.Object)
+                .Callback((IExchangeSource source, IWarewolfListIterator listIterator, IWarewolfIterator i1, IWarewolfIterator i2, IWarewolfIterator i3, IWarewolfIterator i4, IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors) =>
+                {
+                    listIterator.FetchNextValue(i1);
+                    listIterator.FetchNextValue(i2);
+                    listIterator.FetchNextValue(i3);
+                    listIterator.FetchNextValue(i4);
+                    listIterator.FetchNextValue(i5);
+                    listIterator.FetchNextValue(i6);
+
+                });
+            var sendEmail = new DsfExchangeEmailNewActivity(emailSender.Object)
             {
                 Result = ResultVariable,
                 Body = string.IsNullOrEmpty(body) ? "" : body,
@@ -188,8 +199,8 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             scenarioContext.Add("activity", sendEmail);
         }
 
-        [Given(@"I have an exchange email variable ""(.*)"" equal to ""(.*)""")]
-        public void GivenIHaveAnExchangEmailVariableEqualTo(string variable, string value)
+        [Given(@"I have a new exchange email variable ""(.*)"" equal to ""(.*)""")]
+        public void GivenIHaveANewExchangeEmailVariableEqualTo(string variable, string value)
         {
             scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
@@ -202,42 +213,40 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             variableList.Add(new Tuple<string, string>(variable, value));
         }
 
-        [Given(@"to exchange address is ""(.*)""")]
-        public void GivenToExchangeAddressIs(string to)
+        [Given(@"new to exchange address is ""(.*)""")]
+        public void GivenNewToExchangeAddressIs(string to)
         {
             scenarioContext.Add("to", to);
         }
 
-        [Given(@"the exchange subject is ""(.*)""")]
-        public void GivenTheExchangeSubjectIs(string subject)
+        [Given(@"the new exchange subject is ""(.*)""")]
+        public void GivenTheNewExchangeSubjectIs(string subject)
         {
             scenarioContext.Add("subject", subject);
         }
 
-        [Given(@"exchange body is ""(.*)""")]
-        public void GivenExchangeBodyIs(string body)
+        [Given(@"new exchange body is ""(.*)""")]
+        public void GivenNewExchangeBodyIs(string body)
         {
             scenarioContext.Add("body", body);
         }
 
-        [When(@"the exchange email tool is executed")]
-        public void WhenTheExchangeEmailToolIsExecuted()
+        [Given(@"new exchange IsHtml is ""(.*)""")]
+        public void GivenNewExchangeIsHtmlIs(string isHtml)
+        {
+            scenarioContext.Add("isHtml", isHtml);
+        }
+
+        [When(@"the new exchange email tool is executed")]
+        public void WhenTheNewExchangeEmailToolIsExecuted()
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
-        [When(@"the exchange email tool is executed ""(.*)""")]
-        public void WhenTheExchangeEmailToolIsExecuted(string p0)
-        {
-            BuildDataList(p0);
-            var result = ExecuteProcess(isDebug: true, throwException: false);
-            scenarioContext.Add("result", result);
-        }
 
-
-        [Then(@"the exchange email result will be ""(.*)""")]
-        public void ThenTheExchangeEmailResultWillBe(string expectedResult)
+        [Then(@"the new exchange email result will be ""(.*)""")]
+        public void ThenTheNewExchangeEmailResultWillBe(string expectedResult)
         {
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
@@ -253,8 +262,8 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             }
         }
 
-        [Then(@"the exchange execution has ""(.*)"" error")]
-        public void ThenTheExchangeExecutionHasError(string anError)
+        [Then(@"the new exchange execution has ""(.*)"" error")]
+        public void ThenTheNewExchangeExecutionHasError(string anError)
         {
             var expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
             var result = scenarioContext.Get<IDSFDataObject>("result");
@@ -269,10 +278,25 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             Assert.IsTrue(hasAnError || errorMessageMatches, message);
         }
 
-        [Given(@"exchange to address is ""(.*)""")]
-        public void GivenExchangeToAddressIs(string to)
+        [Given(@"new exchange to address is ""(.*)""")]
+        public void GivenNewExchangeToAddressIs(string to)
         {
             scenarioContext.Add("to", to);
         }
+
+        [When(@"the new exchange email tool is executed ""(.*)""")]
+        public void WhenTheNewExchangeEmailToolIsExecuted(string p0)
+        {
+            BuildDataList(p0);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
+            scenarioContext.Add("result", result);
+        }
+
+        [Given(@"new to address is ""(.*)""")]
+        public void GivenNewToAddressIs(string to)
+        {
+            scenarioContext.Add("to", to);
+        }
+
     }
 }
