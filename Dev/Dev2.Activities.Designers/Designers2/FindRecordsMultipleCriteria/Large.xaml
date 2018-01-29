@@ -287,7 +287,7 @@
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
                   Margin="-6,0,0,0"
-                  Content="All Matches Required For Each Field"
+                  Content="All Matches Required For At Least One Field"
                   IsChecked="{Binding ModelItem.RequireAllTrue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static languages:Tooltips.FindToolTipRequireAllMatchesToBeTrue}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
