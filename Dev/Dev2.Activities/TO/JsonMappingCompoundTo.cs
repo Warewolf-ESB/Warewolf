@@ -323,7 +323,7 @@ namespace Dev2.TO
                         return ErrorResource.ExpressionMustBeCommaSeperated;
                     }
                 }
-                else if (!parsed.IsRecordSetNameExpression &&
+                if (!parsed.IsRecordSetNameExpression &&
                         !parsed.IsRecordSetExpression &&
                         !parsed.IsScalarExpression &&
                         !parsed.IsWarewolfAtomExpression)

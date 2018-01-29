@@ -105,7 +105,7 @@ namespace Dev2.UI
 
                 HandleSpecialKeys(e);
             }
-            else if (e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+            if (e.Key == Key.Space && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 if (!isOpen)
                 {
@@ -115,11 +115,11 @@ namespace Dev2.UI
 
                 e.Handled = true;
             }            
-            else if (e.Key == Key.Home || e.Key == Key.End)
+            if (e.Key == Key.Home || e.Key == Key.End)
             {
                 CloseDropDown(true,false);
             }
-            else if (e.Key == Key.V && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+            if (e.Key == Key.V && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
                 IsPaste = true;
             }
@@ -228,7 +228,7 @@ namespace Dev2.UI
                                 foundMinimum = i;
                                 foundLength = index - i;
                             }
-                            else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
+                            if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
                             {
                                 i = -1;
                             }
@@ -485,7 +485,7 @@ namespace Dev2.UI
 
                     IsInCalculateMode = calculateMode;
                 }
-                else if (IsInCalculateMode)
+                if (IsInCalculateMode)
                 {
                     calculateMode = true;
                 }
@@ -571,7 +571,7 @@ namespace Dev2.UI
                             ttErrorBuilder.AppendLine("Scalar is not allowed");
                         }
                     }
-                    else if (FilterType == enIntellisensePartType.ScalarsOnly)
+                    if (FilterType == enIntellisensePartType.ScalarsOnly)
                     {
                         if (text.Contains("(") && text.Contains(")"))
                         {

@@ -1492,7 +1492,7 @@ namespace System.Windows.Controls
                 {
                     viewIndex++;
                 }
-                else if (inResults)
+                if (inResults)
                 {
                     if (viewCount > viewIndex && _view[viewIndex] != item)
                     {
@@ -1514,7 +1514,7 @@ namespace System.Windows.Controls
                         viewCount++;
                     }
                 }
-                else if (viewCount > viewIndex && _view[viewIndex] == item)
+                if (viewCount > viewIndex && _view[viewIndex] == item)
                 {
                     _view.RemoveAt(viewIndex);
                     viewCount--;
