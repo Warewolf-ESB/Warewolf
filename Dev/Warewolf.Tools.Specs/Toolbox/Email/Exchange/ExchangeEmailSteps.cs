@@ -81,9 +81,9 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             
             var eR = new ErrorResultTO();
             emailSender
-                .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
+                .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR, It.IsAny<bool>()))
                 .Returns("Success")
-                .Callback((IExchange source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors)=>
+                .Callback((IExchange source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors, bool isHtml)=>
             {
                 listIterator.FetchNextValue(i1);
                 listIterator.FetchNextValue(i2);
@@ -157,7 +157,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             
             var eR = new ErrorResultTO();
             emailSender
-                .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
+                .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR, It.IsAny<bool>()))
                 .Returns(result)
                 .Callback((IExchangeSource source,IWarewolfListIterator listIterator,IWarewolfIterator i1,IWarewolfIterator i2,IWarewolfIterator i3,IWarewolfIterator i4,IWarewolfIterator i5, IWarewolfIterator i6, ErrorResultTO errors)=>
             {

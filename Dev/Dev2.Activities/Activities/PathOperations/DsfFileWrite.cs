@@ -48,6 +48,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             FileContents = string.Empty;
         }
 
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
