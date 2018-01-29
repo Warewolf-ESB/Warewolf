@@ -13,13 +13,18 @@ namespace Dev2
         }
     }
 
-    public class SingleInstanceApplicationWrapper : Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase
+    public class SingleInstanceApplicationWrapper : Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase, IDisposable
     {
         App _app;
 
         public SingleInstanceApplicationWrapper()
         {
             IsSingleInstance = true;
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_app).Dispose();
         }
 
         protected override bool OnStartup(Microsoft.VisualBasic.ApplicationServices.StartupEventArgs eventArgs)
