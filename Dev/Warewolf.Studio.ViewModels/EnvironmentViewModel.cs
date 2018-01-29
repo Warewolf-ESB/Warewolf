@@ -378,6 +378,7 @@ namespace Warewolf.Studio.ViewModels
             get => _isResource;
             set
             {
+                Dev2Logger.Info("New environment selected: " + value, GlobalConstants.WarewolfInfo);
                 if (Children.Any() && Children.All(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value))
                 {
                     _isResource = true;
