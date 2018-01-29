@@ -66,12 +66,26 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
                 return this.mMainStudioWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
         
         private MainStudioWindow mMainStudioWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -2288,6 +2302,108 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Email.EmailToolsUIMapClasses
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDsfExchangeEmailNewACustom UIDsfExchangeEmailNewACustom
+        {
+            get
+            {
+                if ((this.mUIDsfExchangeEmailNewACustom == null))
+                {
+                    this.mUIDsfExchangeEmailNewACustom = new UIDsfExchangeEmailNewACustom(this);
+                }
+                return this.mUIDsfExchangeEmailNewACustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDsfExchangeEmailNewACustom mUIDsfExchangeEmailNewACustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIDsfExchangeEmailNewACustom : WpfCustom
+    {
+        
+        public UIDsfExchangeEmailNewACustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ExchangeEmailDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Exchange Email(ExchangeEmailDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UILargeViewContentCustom UILargeViewContentCustom
+        {
+            get
+            {
+                if ((this.mUILargeViewContentCustom == null))
+                {
+                    this.mUILargeViewContentCustom = new UILargeViewContentCustom(this);
+                }
+                return this.mUILargeViewContentCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UILargeViewContentCustom mUILargeViewContentCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UILargeViewContentCustom : WpfCustom
+    {
+        
+        public UILargeViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox HtmlBodyCheckBox
+        {
+            get
+            {
+                if ((this.mHtmlBodyCheckBox == null))
+                {
+                    this.mHtmlBodyCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mHtmlBodyCheckBox.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Sets the body type to HTML (Checked) or plain text (Unchecked)";
+                    this.mHtmlBodyCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mHtmlBodyCheckBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mHtmlBodyCheckBox;
         #endregion
     }
 }
