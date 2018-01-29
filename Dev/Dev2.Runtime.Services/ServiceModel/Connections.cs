@@ -58,7 +58,6 @@ namespace Dev2.Runtime.ServiceModel
                 // Validate URI, ports, etc...
                 new Uri(connection.Address);
 
-
                 var connectResult = ConnectToServer(connection);
                 if (!string.IsNullOrEmpty(connectResult))
                 {
