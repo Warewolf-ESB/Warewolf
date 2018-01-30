@@ -1369,7 +1369,7 @@ namespace System.Windows.Controls
             OnPopulated(populated);
 
             
-            if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
+            if(SelectionAdapter != null && !SelectionAdapter.ItemsSource.Equals(_view))
             {
                 SelectionAdapter.ItemsSource = _view;
             }
@@ -1529,7 +1529,7 @@ namespace System.Windows.Controls
         {
             _items = newValue == null ? null : new List<object>(newValue.Cast<object>().ToList());
             ClearView();
-            if (SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
+            if (SelectionAdapter != null && !SelectionAdapter.ItemsSource.Equals(_view))
             {
                 SelectionAdapter.ItemsSource = _view;
             }

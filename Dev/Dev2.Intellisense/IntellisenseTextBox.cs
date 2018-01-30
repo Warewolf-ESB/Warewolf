@@ -845,7 +845,6 @@ namespace Dev2.UI
         void LostFocusImpl()
         {
             ExecWrapBrackets();
-            //CloseDropDown(true, false);
             var be = BindingOperations.GetBindingExpression(this, TextProperty);
             be?.UpdateSource();
         }

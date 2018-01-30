@@ -39,9 +39,9 @@ namespace Dev2.Activities.Designers2.Core
                 _dataContext.ModelItemCollection.CollectionChanged += ModelItemCollectionCollectionChanged;
             }
         }
-        protected override void OnUnloaded()
+
+        protected void OnUnloaded()
         {
-            base.OnUnloaded();
             if (_dataContext?.ModelItemCollection != null)
             {
                 _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;

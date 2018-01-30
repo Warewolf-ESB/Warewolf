@@ -310,10 +310,5 @@ namespace Dev2.Common.TimeZoneBuilder
                     new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberSeconds, true, null, _assignManager.AssignSeconds),
                 });
         }
-        protected override void AddWeekParts()
-        {
-            //base.AddWeekParts();
-        }
-
     }
 }

@@ -1663,19 +1663,7 @@ namespace Dev2.Studio.ViewModels
 
         public void PersistTabs(bool isStudioShutdown = false)
         {
-            if (isStudioShutdown)
-            {
-                SaveAndShutdown(true);
-            }
-            else
-            {
-                SaveOnBackgroundTask(false);
-            }
-        }
-        readonly object _locker = new object();
-        void SaveOnBackgroundTask(bool isStudioShutdown)
-        {
-            SaveWorkspaceItems();
+            SaveAndShutdown(isStudioShutdown);
         }
 
         void SaveAndShutdown(bool isStudioShutdown)
