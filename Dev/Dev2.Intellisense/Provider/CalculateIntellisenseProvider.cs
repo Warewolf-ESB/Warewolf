@@ -46,21 +46,9 @@ namespace Dev2.Studio.InterfaceImplementors
         #endregion
 
         #region Public Properties
-        public bool Optional
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool Optional => false;
 
-        public bool HandlesResultInsertion
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool HandlesResultInsertion => false;
         #endregion
 
         #region Constructors

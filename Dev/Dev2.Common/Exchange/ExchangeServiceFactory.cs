@@ -15,9 +15,6 @@ namespace Dev2.Common.Exchange
 {
     public class ExchangeServiceFactory : IExchangeServiceFactory
     {
-        public ExchangeService Create()
-        {
-            return new ExchangeService(ExchangeVersion.Exchange2007_SP1);
-        }
+        public ExchangeService Create() => new ExchangeService(ExchangeVersion.Exchange2007_SP1);
     }
 }

@@ -111,10 +111,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public bool CanSelectWorkflow()
-        {
-            return CurrentResourcePickerDialog != null;
-        }
+        public bool CanSelectWorkflow() => CurrentResourcePickerDialog != null;
 
         public bool SaveTasks()
         {
@@ -350,9 +347,6 @@ namespace Dev2.Settings.Scheduler
             _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.TaskList);
         }
 
-        public static bool TriggerEquals(Microsoft.Win32.TaskScheduler.Trigger a, Microsoft.Win32.TaskScheduler.Trigger b)
-        {
-            return a.ToString() == b.ToString() && a.StartBoundary == b.StartBoundary && a.EndBoundary == b.EndBoundary && a.ExecutionTimeLimit == b.ExecutionTimeLimit;
-        }
+        public static bool TriggerEquals(Microsoft.Win32.TaskScheduler.Trigger a, Microsoft.Win32.TaskScheduler.Trigger b) => a.ToString() == b.ToString() && a.StartBoundary == b.StartBoundary && a.EndBoundary == b.EndBoundary && a.ExecutionTimeLimit == b.ExecutionTimeLimit;
     }
 }

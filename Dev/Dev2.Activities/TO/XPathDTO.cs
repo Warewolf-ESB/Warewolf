@@ -118,10 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool IsOutputVariableFocused { get => _isOutputVariableFocused; set => OnPropertyChanged(ref _isOutputVariableFocused, value); }
         public bool IsXpathVariableFocused { get => _isXpathVariableFocused; set => OnPropertyChanged(ref _isXpathVariableFocused, value); }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(XPath);
-        }
+        public bool IsEmpty() => string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(XPath);
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {

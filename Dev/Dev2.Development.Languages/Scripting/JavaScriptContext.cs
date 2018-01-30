@@ -33,14 +33,9 @@ namespace Dev2.Development.Languages.Scripting
             return _jsContext.CallGlobalFunction("__result__").ToString();
         }
 
-        public IList<FileScriptSource> ScriptSources()
-        {
-            return _scriptSources.GetFileScriptSources();
-        }
-        public enScriptType HandlesType()
-        {
-            return enScriptType.JavaScript;
-        }
+        public IList<FileScriptSource> ScriptSources() => _scriptSources.GetFileScriptSources();
+
+        public enScriptType HandlesType() => enScriptType.JavaScript;
 
         public void AddScriptSourcesToContext()
         {

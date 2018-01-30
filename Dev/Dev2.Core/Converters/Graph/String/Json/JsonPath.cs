@@ -76,10 +76,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             return pathSegment;
         }
 
-        public IPathSegment CreatePathSegment(JProperty jProperty)
-        {
-            return new JsonPathSegment(jProperty.Name, jProperty.IsEnumerable());
-        }
+        public IPathSegment CreatePathSegment(JProperty jProperty) => new JsonPathSegment(jProperty.Name, jProperty.IsEnumerable());
 
         #endregion Methods
 

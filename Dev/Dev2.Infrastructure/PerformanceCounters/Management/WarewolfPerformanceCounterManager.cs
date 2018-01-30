@@ -22,15 +22,10 @@ namespace Dev2.PerformanceCounters.Management
             EmptyCounter = new EmptyCounter();
         }
 
-        public IPerformanceCounter GetCounter(string name)
-        {
-            return _counters.First(a => a.Name == name).ToSafe();
-        }
+        public IPerformanceCounter GetCounter(string name) => _counters.First(a => a.Name == name).ToSafe();
 
-        public IPerformanceCounter GetCounter(WarewolfPerfCounterType type)
-        {
-            return _counters.First(a => a.PerfCounterType == type).ToSafe();
-        }
+        public IPerformanceCounter GetCounter(WarewolfPerfCounterType type) => _counters.First(a => a.PerfCounterType == type).ToSafe();
+
         public IPerformanceCounter GetCounter(Guid resourceId, WarewolfPerfCounterType type)
         {
             try

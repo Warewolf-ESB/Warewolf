@@ -32,15 +32,12 @@ namespace Dev2.Factory
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2/28/2013</date>
-        public static IWorkSurfaceKey CreateKey(WorkSurfaceContext context)
+        public static IWorkSurfaceKey CreateKey(WorkSurfaceContext context) => new WorkSurfaceKey
         {
-            return new WorkSurfaceKey
-            {
-                WorkSurfaceContext = context,
-                ResourceID = Guid.NewGuid(),
-                ServerID = Guid.Empty
-            };
-        }
+            WorkSurfaceContext = context,
+            ResourceID = Guid.NewGuid(),
+            ServerID = Guid.Empty
+        };
 
         /// <summary>
         /// Create a key which are unique to the entire studio
@@ -50,15 +47,13 @@ namespace Dev2.Factory
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>2/28/2013</date>
-        public static IWorkSurfaceKey CreateEnvKey(WorkSurfaceContext context, Guid environemt)
+        public static IWorkSurfaceKey CreateEnvKey(WorkSurfaceContext context, Guid environemt) => new WorkSurfaceKey
         {
-            return new WorkSurfaceKey
-            {
-                WorkSurfaceContext = context,
-                ResourceID = environemt,
-                ServerID = environemt
-            };
-        }
+            WorkSurfaceContext = context,
+            ResourceID = environemt,
+            ServerID = environemt
+        };
+
         /// <summary>
         /// Creates a key for a worksurface that identifies a unique resource
         /// </summary>
@@ -71,16 +66,13 @@ namespace Dev2.Factory
         /// <date>2/28/2013</date>
 
         public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid resourceID, Guid serverID) => CreateKey(context, resourceID, serverID, null);
-        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid resourceID, Guid serverID, Guid? environmentID)
+        public static WorkSurfaceKey CreateKey(WorkSurfaceContext context, Guid resourceID, Guid serverID, Guid? environmentID) => new WorkSurfaceKey
         {
-            return new WorkSurfaceKey
-            {
-                WorkSurfaceContext = context,
-                ResourceID = resourceID,
-                ServerID = serverID,
-                EnvironmentID = environmentID
-            };
-        }
+            WorkSurfaceContext = context,
+            ResourceID = resourceID,
+            ServerID = serverID,
+            EnvironmentID = environmentID
+        };
 
         /// <summary>
         /// Creates the for a specific Contextual Resource

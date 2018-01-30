@@ -207,16 +207,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        EventHandler<ConnectedEventArgs> EnvironmentModelOnIsConnectedChanged()
-        {
-            return (sender, args) =>
-            {
-                if (!args.IsConnected)
-                {
-                    SetDebugStatus(DebugStatus.Finished);
-                }
-            };
-        }
+        EventHandler<ConnectedEventArgs> EnvironmentModelOnIsConnectedChanged() => (sender, args) =>
+                                                                                             {
+                                                                                                 if (!args.IsConnected)
+                                                                                                 {
+                                                                                                     SetDebugStatus(DebugStatus.Finished);
+                                                                                                 }
+                                                                                             };
 
         #endregion ctors
 
@@ -282,59 +279,23 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region commands
 
-        public AuthorizeCommand SaveCommand
-        {
-            get
-            {
-                return _saveCommand ??
+        public AuthorizeCommand SaveCommand => _saveCommand ??
                        (_saveCommand = new AuthorizeCommand(AuthorizationContext.Contribute, param => Save(), param => CanSave()));
-            }
-        }
 
-        public AuthorizeCommand RunCommand
-        {
-            get
-            {
-                return _runCommand ??
+        public AuthorizeCommand RunCommand => _runCommand ??
                        (_runCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => Debug(ContextualResourceModel, false), param => CanExecute()));
-            }
-        }
 
-        public AuthorizeCommand ViewInBrowserCommand
-        {
-            get
-            {
-                return _viewInBrowserCommand ??
+        public AuthorizeCommand ViewInBrowserCommand => _viewInBrowserCommand ??
                        (_viewInBrowserCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => ViewInBrowser(), param => CanDebug()));
-            }
-        }
 
-        public AuthorizeCommand DebugCommand
-        {
-            get
-            {
-                return _debugCommand ??
+        public AuthorizeCommand DebugCommand => _debugCommand ??
                        (_debugCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => Debug(), param => CanDebug()));
-            }
-        }
 
-        public AuthorizeCommand QuickViewInBrowserCommand
-        {
-            get
-            {
-                return _quickViewInBrowserCommand ??
+        public AuthorizeCommand QuickViewInBrowserCommand => _quickViewInBrowserCommand ??
                        (_quickViewInBrowserCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => QuickViewInBrowser(), param => CanViewInBrowser()));
-            }
-        }
 
-        public AuthorizeCommand QuickDebugCommand
-        {
-            get
-            {
-                return _quickDebugCommand ??
+        public AuthorizeCommand QuickDebugCommand => _quickDebugCommand ??
                        (_quickDebugCommand = new AuthorizeCommand(AuthorizationContext.Execute, param => QuickDebug(), param => CanDebug()));
-            }
-        }
 
         public bool CanSave()
         {
@@ -529,10 +490,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             return saveResult;
         }
 
-        public bool IsEnvironmentConnected()
-        {
-            return Environment != null && Environment.IsConnected;
-        }
+        public bool IsEnvironmentConnected() => Environment != null && Environment.IsConnected;
 
         public void FindMissing()
         {
@@ -547,7 +505,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region private methods
 
-        protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager = true)
+        protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave) => Save(resource, isLocalSave, true);
+
+        protected virtual bool Save(IContextualResourceModel resource, bool isLocalSave, bool addToTabManager)
         {
             if (resource == null || !resource.UserPermissions.IsContributor())
             {

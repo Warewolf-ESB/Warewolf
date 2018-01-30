@@ -89,13 +89,10 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public IList<string> Errors { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new ExchangeSourceRegion
         {
-            return new ExchangeSourceRegion
-            {
-                SelectedSource = SelectedSource
-            };
-        }
+            SelectedSource = SelectedSource
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {

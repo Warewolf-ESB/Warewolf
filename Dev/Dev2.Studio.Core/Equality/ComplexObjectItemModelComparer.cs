@@ -20,9 +20,6 @@ namespace Dev2.Studio.Core
             return x.Equals(y);
         }
 
-        public int GetHashCode(IComplexObjectItemModel obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(IComplexObjectItemModel obj) => 1;
     }
 }

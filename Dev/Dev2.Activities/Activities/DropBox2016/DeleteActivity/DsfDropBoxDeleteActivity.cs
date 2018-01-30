@@ -82,10 +82,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         #endregion Overrides of DsfNativeActivity<string>
 

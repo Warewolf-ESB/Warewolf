@@ -7,10 +7,7 @@ namespace Dev2.Common.Wrappers
     {
         #region Implementation of IDomain
 
-        public Domain GetComputerDomain()
-        {
-            return Domain.GetComputerDomain();
-        }
+        public Domain GetComputerDomain() => Domain.GetComputerDomain();
 
         #endregion
     }

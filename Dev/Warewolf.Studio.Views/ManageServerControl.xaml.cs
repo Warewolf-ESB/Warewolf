@@ -56,20 +56,11 @@ namespace Warewolf.Studio.Views
             PasswordTextBox.Password = password;
         }
 
-        public string GetPort()
-        {
-            return PortTextBox.Text;
-        }
+        public string GetPort() => PortTextBox.Text;
 
-        public string GetUsername()
-        {
-            return UsernameTextBox.Text;
-        }
+        public string GetUsername() => UsernameTextBox.Text;
 
-        public string GetPassword()
-        {
-            return PasswordTextBox.Password;
-        }
+        public string GetPassword() => PasswordTextBox.Password;
 
         public void SetAuthenticationType(AuthenticationType authenticationType)
         {

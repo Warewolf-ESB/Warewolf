@@ -2098,9 +2098,6 @@ namespace Dev2.Activities.Specs.Composition
 
             dsfWebPostActivity.Outputs = outputMapping;
             dsfWebPostActivity.Headers = new List<INameValue>();
-            //{
-            //    new NameValue("Content-Type","text/html")
-            //};
             dsfWebPostActivity.QueryString = string.Empty;
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfWebPostActivity);
         }
@@ -2494,7 +2491,6 @@ namespace Dev2.Activities.Specs.Composition
 
             for (var i = 0; i < count; i++)
             {
-                //repository.Save(resourceModel);
                 repository.SaveToServer(resourceModel);
             }
 
@@ -2910,7 +2906,6 @@ namespace Dev2.Activities.Specs.Composition
                     var errorMessage = string.Join(Environment.NewLine, responseService.RecordsetList.Select(recordset => recordset.ErrorMessage));
                     throw new Exception(errorMessage);
                 }
-                //var TestResults = responseService.SerializedResult;
                 var _recordsetList = responseService.RecordsetList;
                 if (_recordsetList.Any(recordset => recordset.HasErrors))
                 {
@@ -3394,7 +3389,6 @@ namespace Dev2.Activities.Specs.Composition
                 var type = tableRow["Type"];
                 var at = tableRow["At"];
                 var include = tableRow["Include"] == "Selected";
-                //var escapeChar = tableRow["Escape"];
                 _commonSteps.AddVariableToVariableList(variable);
                 if (!string.IsNullOrEmpty(valueToSplit))
                 {

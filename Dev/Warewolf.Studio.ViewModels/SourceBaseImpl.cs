@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
 
         public abstract string Name { get; set; }
 
-        public abstract void FromModel(T service);
+        public abstract void FromModel(T source);
 
         #endregion
 

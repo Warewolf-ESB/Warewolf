@@ -44,7 +44,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Get Debug Inputs/Outputs
 
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             var result = new List<DebugItem>();
             var itemToAdd = new DebugItem();
@@ -82,14 +82,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return DsfForEachItem.EmptyList;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => DsfForEachItem.EmptyList;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return new List<DsfForEachItem>
+        public override IList<DsfForEachItem> GetForEachOutputs() => new List<DsfForEachItem>
             {
                 new DsfForEachItem
                 {
@@ -97,7 +92,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     Name = Text
                 }
             };
-        }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -109,10 +103,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
         public bool Equals(DsfCommentActivity other)
         {

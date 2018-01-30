@@ -102,25 +102,13 @@ namespace Warewolf.Studio.Views
             return ErrorTextBlock.Text;
         }
 
-        public string GetAddress()
-        {
-            return ServerTextBox.Text;
-        }
+        public string GetAddress() => ServerTextBox.Text;
 
-        public string GetDefaultQuery()
-        {
-            return DefaultQueryTextBox.Text;
-        }
+        public string GetDefaultQuery() => DefaultQueryTextBox.Text;
 
-        public string GetUsername()
-        {
-            return UserNameTextBox.Text;
-        }
+        public string GetUsername() => UserNameTextBox.Text;
 
-        public string GetPassword()
-        {
-            return PasswordTextBox.Password;
-        }
+        public string GetPassword() => PasswordTextBox.Password;
 
         public string GetTestDefault()
         {

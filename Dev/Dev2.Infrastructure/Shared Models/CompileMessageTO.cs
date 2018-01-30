@@ -39,32 +39,26 @@ namespace Dev2.Data.ServiceModel.Messages
         // should be json or other sensable string data ;)
         public string MessagePayload { get; set; }
 
-        public ICompileMessageTO Clone()
+        public ICompileMessageTO Clone() => new CompileMessageTO
         {
-            return new CompileMessageTO
-            {
-                UniqueID = UniqueID,
-                WorkspaceID = WorkspaceID,
-                ServiceName = ServiceName,
-                ErrorType = ErrorType,
-                MessageID = MessageID,
-                ServiceID = ServiceID,
-                MessageType = MessageType,
-                MessagePayload = MessagePayload
-            };
-        }
+            UniqueID = UniqueID,
+            WorkspaceID = WorkspaceID,
+            ServiceName = ServiceName,
+            ErrorType = ErrorType,
+            MessageID = MessageID,
+            ServiceID = ServiceID,
+            MessageType = MessageType,
+            MessagePayload = MessagePayload
+        };
 
-        public IErrorInfo ToErrorInfo()
+        public IErrorInfo ToErrorInfo() => new ErrorInfo
         {
-            return new ErrorInfo
-            {
-                InstanceID = UniqueID,
-                ErrorType = ErrorType,
-                FixType = ToFixType(),
-                Message = MessageType.GetDescription(),
-                FixData = MessagePayload,
-            };
-        }
+            InstanceID = UniqueID,
+            ErrorType = ErrorType,
+            FixType = ToFixType(),
+            Message = MessageType.GetDescription(),
+            FixData = MessagePayload,
+        };
 
         public FixType ToFixType()
         {

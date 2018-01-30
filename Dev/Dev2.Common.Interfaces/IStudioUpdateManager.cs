@@ -29,8 +29,8 @@ namespace Dev2.Common.Interfaces
         void TestConnection(IServerSource serverSource);
         void TestConnection(IWebServiceSource serverSource);
         void TestConnection(ISharepointServerSource sharePointServiceSource);
-        string TestConnection(IEmailServiceSource emailServiceSourceSource);
-        string TestConnection(IExchangeSource emailServiceSourceSource);
+        string TestConnection(IEmailServiceSource emailServiceSource);
+        string TestConnection(IExchangeSource emailServiceSource);
         string TestConnection(IRabbitMQServiceSourceDefinition rabbitMqServiceSource);
         IList<string> TestDbConnection(IDbSource serverSource);
         DataTable TestDbService(IDatabaseService inputValues);

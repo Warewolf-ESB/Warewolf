@@ -55,13 +55,7 @@ namespace Dev2.DynamicServices.Objects.Base
         public string Category { get; set; }
         public string HelpLink { get; set; }
 
-        public bool IsCompiled
-        {
-            get
-            {
-                return CompilerErrors?.Count <= 0;
-            }
-        }
+        public bool IsCompiled => CompilerErrors?.Count <= 0;
 
         #endregion
 

@@ -43,10 +43,7 @@ namespace Dev2
         public List<IServiceTestOutput> Outputs { get; }
         public string ActualTypeName { get; private set; }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
         #region Overrides of DsfNativeActivity<string>
 
@@ -62,15 +59,9 @@ namespace Dev2
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

@@ -19,47 +19,29 @@ namespace Dev2.Runtime.WebServer.Security
 {
     public static class AuthorizationRequestHelper
     {
-        public static AuthorizationRequest GetAuthorizationRequest(this HttpActionContext context)
+        public static AuthorizationRequest GetAuthorizationRequest(this HttpActionContext context) => new AuthorizationRequest
         {
-            return new AuthorizationRequest
-            {
-                RequestType = context.GetRequestType(),
-                User = context.ControllerContext.RequestContext.Principal,
-                Url = context.Request.RequestUri,
-                QueryString = new QueryString(context.Request.GetQueryNameValuePairs())
-            };
-        }
+            RequestType = context.GetRequestType(),
+            User = context.ControllerContext.RequestContext.Principal,
+            Url = context.Request.RequestUri,
+            QueryString = new QueryString(context.Request.GetQueryNameValuePairs())
+        };
 
-        public static AuthorizationRequest GetAuthorizationRequest(this HubDescriptor hubDescriptor, IRequest request)
-        {
-            return GetAuthorizationRequest(request, WebServerRequestType.HubConnect);
-        }
+        public static AuthorizationRequest GetAuthorizationRequest(this HubDescriptor hubDescriptor, IRequest request) => GetAuthorizationRequest(request, WebServerRequestType.HubConnect);
 
-        public static AuthorizationRequest GetAuthorizationRequest(this IHubIncomingInvokerContext context)
-        {
-            return GetAuthorizationRequest(context.Hub.Context.Request, context.GetRequestType());
-        }
+        public static AuthorizationRequest GetAuthorizationRequest(this IHubIncomingInvokerContext context) => GetAuthorizationRequest(context.Hub.Context.Request, context.GetRequestType());
 
-        static AuthorizationRequest GetAuthorizationRequest(this IRequest request, WebServerRequestType requestType)
+        static AuthorizationRequest GetAuthorizationRequest(this IRequest request, WebServerRequestType requestType) => new AuthorizationRequest
         {
-            return new AuthorizationRequest
-            {
-                RequestType = requestType,
-                User = request.User,
-                Url = request.Url,
-                QueryString = request.QueryString
-            };
-        }
+            RequestType = requestType,
+            User = request.User,
+            Url = request.Url,
+            QueryString = request.QueryString
+        };
 
-        static WebServerRequestType GetRequestType(this IHubIncomingInvokerContext context)
-        {
-            return ParseRequestType(context.MethodDescriptor.Hub.Name, context.MethodDescriptor.Name);
-        }
+        static WebServerRequestType GetRequestType(this IHubIncomingInvokerContext context) => ParseRequestType(context.MethodDescriptor.Hub.Name, context.MethodDescriptor.Name);
 
-        static WebServerRequestType GetRequestType(this HttpActionContext context)
-        {
-            return ParseRequestType("Web", context.ActionDescriptor.ActionName);
-        }
+        static WebServerRequestType GetRequestType(this HttpActionContext context) => ParseRequestType("Web", context.ActionDescriptor.ActionName);
 
         static WebServerRequestType ParseRequestType(string source, string actionName)
         {

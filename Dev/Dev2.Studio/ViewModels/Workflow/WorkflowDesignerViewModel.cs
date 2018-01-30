@@ -127,59 +127,67 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="resource"> Workflow that appears on design surface</param>
-        /// <param name="createDesigner"></param>
-        public WorkflowDesignerViewModel(IContextualResourceModel resource, bool createDesigner = true)
+        private readonly IWorkflowDesignerWrapper _workflowDesignerHelper;
+
+        public WorkflowDesignerViewModel(IContextualResourceModel resource)
+            : this(resource, true)
+        {
+        }
+        
+        public WorkflowDesignerViewModel(IContextualResourceModel resource, bool createDesigner)
             : this(resource, new WorkflowHelper(), createDesigner)
         {
         }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="resource">Resource that will be opened</param>
-        /// <param name="workflowHelper">seriali</param>
-        /// <param name="createDesigner">create a new designer flag</param>
-        public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
+        
+        public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper)
+            : this(resource, workflowHelper, true)
+        {
+        }
+        
+        public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner)
             : this(EventPublishers.Aggregator, resource, workflowHelper, createDesigner)
         {
         }
+        
+        WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper)
+            : this(eventPublisher, resource, workflowHelper, true)
+        {
+        }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="eventPublisher">Event publisher that is not the singleton</param>
-        /// <param name="resource">Resource that will be opened</param>
-        /// <param name="workflowHelper">Serialization helper</param>
-        /// <param name="createDesigner">create a new designer flag</param>
-
-        WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
-
+        WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner)
             : this(eventPublisher, resource, workflowHelper,
                 CustomContainer.Get<IPopupController>(), new AsyncWorker(), createDesigner)
         {
         }
 
-        /// <summary>
-        /// Unit Testing Constructor
-        /// </summary>
-        /// <param name="eventPublisher"> Non singleton event publisher</param>
-        /// <param name="resource">Resource that will be opened</param>
-        /// <param name="workflowHelper">Serialisation Helper</param>
-        /// <param name="popupController">Injected popup controller</param>
-        /// <param name="asyncWorker"></param>
-        /// <param name="createDesigner">Create a new designer flag</param>
-        /// <param name="liteInit"> Lite initialise designer. Testing only</param>
-        public WorkflowDesignerViewModel(IWorkflowDesignerWrapper workflowDesignerHelper, IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false)
+        public WorkflowDesignerViewModel(IWorkflowDesignerWrapper workflowDesignerHelper, IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker)
+            : this(workflowDesignerHelper, eventPublisher, resource, workflowHelper, popupController, asyncWorker, true, false)
+        {
+        }
+
+        public WorkflowDesignerViewModel(IWorkflowDesignerWrapper workflowDesignerHelper, IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner)
+            : this(workflowDesignerHelper, eventPublisher, resource, workflowHelper, popupController, asyncWorker, createDesigner, false)
+        {
+        }
+
+        public WorkflowDesignerViewModel(IWorkflowDesignerWrapper workflowDesignerHelper, IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner, bool liteInit)
             : this(eventPublisher, resource, workflowHelper, popupController, asyncWorker, createDesigner, liteInit)
         {
             _workflowDesignerHelper = workflowDesignerHelper;
         }
-        private readonly IWorkflowDesignerWrapper _workflowDesignerHelper;
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false)
+
+
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker)
+            : this(eventPublisher, resource, workflowHelper, popupController, asyncWorker, true, false)
+        {
+        }
+
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner)
+            : this(eventPublisher, resource, workflowHelper, popupController, asyncWorker, createDesigner, false)
+        {
+        }
+
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner, bool liteInit)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
@@ -618,7 +626,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public string GetWorkflowLink(bool addWorkflowId = true)
+
+        public string GetWorkflowLink() => GetWorkflowLink(true);
+
+        public string GetWorkflowLink(bool addWorkflowId)
         {
             if (_workflowInputDataViewModel != null)
             {
@@ -698,135 +709,93 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(_modelService); } set { } }
 
-        public ICommand CollapseAllCommand
-        {
-            get
-            {
-                return _collapseAllCommand ?? (_collapseAllCommand = new DelegateCommand(param =>
-                {
-                    var val = Convert.ToBoolean(param);
-                    if (val)
-                    {
-                        _designerManagementService.RequestCollapseAll();
-                    }
-                    else
-                    {
-                        _designerManagementService.RequestRestoreAll();
-                    }
-                }));
-            }
-        }
+        public ICommand CollapseAllCommand => _collapseAllCommand ?? (_collapseAllCommand = new DelegateCommand(param =>
+                                                            {
+                                                                var val = Convert.ToBoolean(param);
+                                                                if (val)
+                                                                {
+                                                                    _designerManagementService.RequestCollapseAll();
+                                                                }
+                                                                else
+                                                                {
+                                                                    _designerManagementService.RequestRestoreAll();
+                                                                }
+                                                            }));
 
-        public ICommand ExpandAllCommand
-        {
-            get
-            {
-                return _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(param =>
-                {
-                    var val = Convert.ToBoolean(param);
-                    if (val)
-                    {
-                        _designerManagementService.RequestExpandAll();
-                    }
-                    else
-                    {
-                        _designerManagementService.RequestRestoreAll();
-                    }
-                }));
-            }
-        }
+        public ICommand ExpandAllCommand => _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(param =>
+                                                          {
+                                                              var val = Convert.ToBoolean(param);
+                                                              if (val)
+                                                              {
+                                                                  _designerManagementService.RequestExpandAll();
+                                                              }
+                                                              else
+                                                              {
+                                                                  _designerManagementService.RequestRestoreAll();
+                                                              }
+                                                          }));
 
-        public ICommand OpenWorkflowLinkCommand
-        {
-            get
-            {
-                return _openWorkflowLinkCommand ?? (_openWorkflowLinkCommand = new DelegateCommand(param =>
-                {
-                    if (!string.IsNullOrEmpty(_workflowLink))
-                    {
-                        SaveToWorkspace();
-                        if (_workflowInputDataViewModel.WorkflowInputCount == 0)
-                        {
-                            PopUp.ShowNoInputsSelectedWhenClickLink();
-                        }
-                        try
-                        {
-                            OpenLinkInBrowser();
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Error("OpenWorkflowLinkCommand", e, GlobalConstants.WarewolfError);
-                        }
+        public ICommand OpenWorkflowLinkCommand => _openWorkflowLinkCommand ?? (_openWorkflowLinkCommand = new DelegateCommand(param =>
+                                                                 {
+                                                                     if (!string.IsNullOrEmpty(_workflowLink))
+                                                                     {
+                                                                         SaveToWorkspace();
+                                                                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
+                                                                         {
+                                                                             PopUp.ShowNoInputsSelectedWhenClickLink();
+                                                                         }
+                                                                         try
+                                                                         {
+                                                                             OpenLinkInBrowser();
+                                                                         }
+                                                                         catch (Exception e)
+                                                                         {
+                                                                             Dev2Logger.Error("OpenWorkflowLinkCommand", e, GlobalConstants.WarewolfError);
+                                                                         }
 
-                    }
-                }));
-            }
-        }
+                                                                     }
+                                                                 }));
 
-        public ICommand NewServiceCommand
-        {
-            get
-            {
-                return _newServiceCommand ?? (_newServiceCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            mvm.NewService("");
-                        }
-                    }
-                }));
-            }
-        }
+        public ICommand NewServiceCommand => _newServiceCommand ?? (_newServiceCommand = new DelegateCommand(param =>
+                                                           {
+                                                               if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                               {
+                                                                   var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                                   if (mvm?.ActiveItem != null)
+                                                                   {
+                                                                       mvm.NewService("");
+                                                                   }
+                                                               }
+                                                           }));
 
-        public ICommand DebugInputsCommand
-        {
-            get
-            {
-                return _debugInputsCommand ?? (_debugInputsCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            mvm.DebugCommand.Execute(mvm.ActiveItem);
-                        }
-                    }
-                }));
-            }
-        }
+        public ICommand DebugInputsCommand => _debugInputsCommand ?? (_debugInputsCommand = new DelegateCommand(param =>
+                                                            {
+                                                                if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                                {
+                                                                    var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                                    if (mvm?.ActiveItem != null)
+                                                                    {
+                                                                        mvm.DebugCommand.Execute(mvm.ActiveItem);
+                                                                    }
+                                                                }
+                                                            }));
 
-        public ICommand DebugStudioCommand
-        {
-            get
-            {
-                return _debugStudioCommand ?? (_debugStudioCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            mvm.QuickDebugCommand.Execute(mvm.ActiveItem);
-                        }
-                    }
-                }));
-            }
-        }
+        public ICommand DebugStudioCommand => _debugStudioCommand ?? (_debugStudioCommand = new DelegateCommand(param =>
+                                                            {
+                                                                if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                                {
+                                                                    var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                                    if (mvm?.ActiveItem != null)
+                                                                    {
+                                                                        mvm.QuickDebugCommand.Execute(mvm.ActiveItem);
+                                                                    }
+                                                                }
+                                                            }));
 
-        public ICommand DebugBrowserCommand
-        {
-            get
-            {
-                return _debugBrowserCommand ?? (_debugBrowserCommand = new DelegateCommand(param =>
-                {
-                    OpenLinkInBrowser();
-                }));
-            }
-        }
+        public ICommand DebugBrowserCommand => _debugBrowserCommand ?? (_debugBrowserCommand = new DelegateCommand(param =>
+                                                             {
+                                                                 OpenLinkInBrowser();
+                                                             }));
 
         static void OpenLinkInBrowser()
         {
@@ -840,135 +809,99 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public ICommand ScheduleCommand
-        {
-            get
-            {
-                return _scheduleCommand ?? (_scheduleCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            mvm.CreateNewSchedule(mvm.ActiveItem.ContextualResourceModel.ID);
-                        }
-                    }
-                }));
-            }
-        }
+        public ICommand ScheduleCommand => _scheduleCommand ?? (_scheduleCommand = new DelegateCommand(param =>
+                                                         {
+                                                             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                             {
+                                                                 var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                                 if (mvm?.ActiveItem != null)
+                                                                 {
+                                                                     mvm.CreateNewSchedule(mvm.ActiveItem.ContextualResourceModel.ID);
+                                                                 }
+                                                             }
+                                                         }));
 
-        public ICommand TestEditorCommand
-        {
-            get
-            {
-                return _testEditorCommand ?? (_testEditorCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            mvm.CreateTest(mvm.ActiveItem.ContextualResourceModel.ID);
-                        }
-                    }
-                }));
-            }
-        }
+        public ICommand TestEditorCommand => _testEditorCommand ?? (_testEditorCommand = new DelegateCommand(param =>
+                                                           {
+                                                               if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                               {
+                                                                   var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                                   if (mvm?.ActiveItem != null)
+                                                                   {
+                                                                       mvm.CreateTest(mvm.ActiveItem.ContextualResourceModel.ID);
+                                                                   }
+                                                               }
+                                                           }));
 
-        public ICommand RunAllTestsCommand
-        {
-            get
-            {
-                return _runAllTestsCommand ?? (_runAllTestsCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            mvm.RunAllTests(string.Empty, mvm.ActiveItem.ContextualResourceModel.ID);
-                        }
-                    }
-                }));
-            }
-        }
+        public ICommand RunAllTestsCommand => _runAllTestsCommand ?? (_runAllTestsCommand = new DelegateCommand(param =>
+                                                            {
+                                                                if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                                {
+                                                                    var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                                    if (mvm?.ActiveItem != null)
+                                                                    {
+                                                                        mvm.RunAllTests(string.Empty, mvm.ActiveItem.ContextualResourceModel.ID);
+                                                                    }
+                                                                }
+                                                            }));
 
-        public ICommand DuplicateCommand
-        {
-            get
-            {
-                return _duplicateCommand ?? (_duplicateCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            IExplorerItemViewModel explorerItem = null;
-                            var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
-                            foreach (var environmentViewModel in environmentViewModels)
-                            {
-                                explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
-                            }
+        public ICommand DuplicateCommand => _duplicateCommand ?? (_duplicateCommand = new DelegateCommand(param =>
+                                                          {
+                                                              if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                              {
+                                                                  var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                                  if (mvm?.ActiveItem != null)
+                                                                  {
+                                                                      IExplorerItemViewModel explorerItem = null;
+                                                                      var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
+                                                                      foreach (var environmentViewModel in environmentViewModels)
+                                                                      {
+                                                                          explorerItem = environmentViewModel.Children.Flatten(model => model.Children).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                                                                      }
 
-                            if (explorerItem != null)
-                            {
-                                mvm.DuplicateResource(explorerItem);
-                            }
-                        }
-                    }
-                }));
-            }
-        }
+                                                                      if (explorerItem != null)
+                                                                      {
+                                                                          mvm.DuplicateResource(explorerItem);
+                                                                      }
+                                                                  }
+                                                              }
+                                                          }));
 
-        public ICommand DeployCommand
-        {
-            get
-            {
-                return _deployCommand ?? (_deployCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            var explorerItem = GetSelected(mvm);
-                            if (explorerItem != null)
-                            {
-                                mvm.AddDeploySurface(explorerItem.AsList().Union(new[] { explorerItem }));
-                            }
-                        }
-                    }
-                }));
-            }
-        }
+        public ICommand DeployCommand => _deployCommand ?? (_deployCommand = new DelegateCommand(param =>
+                                                       {
+                                                           if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                           {
+                                                               var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                               if (mvm?.ActiveItem != null)
+                                                               {
+                                                                   var explorerItem = GetSelected(mvm);
+                                                                   if (explorerItem != null)
+                                                                   {
+                                                                       mvm.AddDeploySurface(explorerItem.AsList().Union(new[] { explorerItem }));
+                                                                   }
+                                                               }
+                                                           }
+                                                       }));
 
-        public ICommand MergeCommand
-        {
-            get
-            {
-                return _mergeCommand ?? (_mergeCommand = new DelegateCommand(param =>
-                {
+        public ICommand MergeCommand => _mergeCommand ?? (_mergeCommand = new DelegateCommand(param =>
+                                                      {
                     // OPEN WINDOW TO SELECT RESOURCE TO MERGE WITH
 
                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            var environmentViewModel = mvm.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
-                            var explorerItem = environmentViewModel?.Children?.Flatten(model => model.Children).Where(model => !model.IsVersion).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                                                          {
+                                                              var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                              if (mvm?.ActiveItem != null)
+                                                              {
+                                                                  var environmentViewModel = mvm.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
+                                                                  var explorerItem = environmentViewModel?.Children?.Flatten(model => model.Children).Where(model => !model.IsVersion).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
 
-                            if (explorerItem != null)
-                            {
-                                mvm.OpenMergeDialogView(explorerItem);
-                            }
-                        }
-                    }
-                }));
-            }
-        }
+                                                                  if (explorerItem != null)
+                                                                  {
+                                                                      mvm.OpenMergeDialogView(explorerItem);
+                                                                  }
+                                                              }
+                                                          }
+                                                      }));
 
         static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
         {
@@ -986,53 +919,36 @@ namespace Dev2.Studio.ViewModels.Workflow
             return explorerItem;
         }
 
-        public ICommand ShowDependenciesCommand
-        {
-            get
-            {
-                return _showDependenciesCommand ?? (_showDependenciesCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        var explorerItem = GetSelected(mvm);
-                        if (explorerItem != null)
-                        {
-                            mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer, explorerItem.IsSource || explorerItem.IsServer);
-                        }
-                    }
-                }));
-            }
-        }
+        public ICommand ShowDependenciesCommand => _showDependenciesCommand ?? (_showDependenciesCommand = new DelegateCommand(param =>
+                                                                 {
+                                                                     if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                                     {
+                                                                         var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                                         var explorerItem = GetSelected(mvm);
+                                                                         if (explorerItem != null)
+                                                                         {
+                                                                             mvm.ShowDependencies(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer, explorerItem.IsSource || explorerItem.IsServer);
+                                                                         }
+                                                                     }
+                                                                 }));
 
-        public ICommand ViewSwaggerCommand
-        {
-            get
-            {
-                return _viewSwaggerCommand ?? (_viewSwaggerCommand = new DelegateCommand(param =>
-                {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            mvm.ViewSwagger(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
-                        }
-                    }
-                }));
-            }
-        }
+        public ICommand ViewSwaggerCommand => _viewSwaggerCommand ?? (_viewSwaggerCommand = new DelegateCommand(param =>
+                                                            {
+                                                                if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                                {
+                                                                    var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                                                                    if (mvm?.ActiveItem != null)
+                                                                    {
+                                                                        mvm.ViewSwagger(mvm.ActiveItem.ContextualResourceModel.ID, mvm.ActiveServer);
+                                                                    }
+                                                                }
+                                                            }));
 
-        public ICommand CopyUrlCommand
-        {
-            get
-            {
-                return _copyUrlCommand ?? (_copyUrlCommand = new DelegateCommand(param =>
-                {
-                    Clipboard.SetText(GetWorkflowLink(false));
-                }));
-            }
-        }
+        public ICommand CopyUrlCommand => _copyUrlCommand ?? (_copyUrlCommand = new DelegateCommand(param =>
+                                                        {
+                                                            Clipboard.SetText(GetWorkflowLink(false));
+                                                        }));
+
         /// <summary>
         /// Fixes up items added. Assigns unique Id. Initialises as flow step
         /// </summary>
@@ -1476,13 +1392,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         public Action<ModelItem> ItemSelectedAction { get; set; }
-
-        /// <summary>
-        ///     Handels the list of strings to be added to the data list without a pop up message
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <author>Massimo.Guerrera</author>
-        /// <date>2013/02/06</date>
+        
         public void Handle(AddStringListToDataListMessage message)
         {
             Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
@@ -1500,21 +1410,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                 dlvm.AddMissingDataListItems(uniqueDataListPartsToAdd);
             }
         }
+
+        public bool NotifyItemSelected(object primarySelection) => false;
+
+        public void BindToModel() => _resourceModel.WorkflowXaml = ServiceDefinition;
+
+        public void InitializeDesigner(IDictionary<Type, Type> designerAttributes) => InitializeDesigner(designerAttributes, false);
         
-        public bool NotifyItemSelected(object primarySelection)
-        {
-            return false;
-        }
-        
-        public void BindToModel()
-        {
-            _resourceModel.WorkflowXaml = ServiceDefinition;
-        }
-        
-        public void InitializeDesigner(IDictionary<Type, Type> designerAttributes, bool liteInit = false)
+        public void InitializeDesigner(IDictionary<Type, Type> designerAttributes, bool liteInit)
         {
             _wd = new WorkflowDesigner();
-
             if (!liteInit)
             {
                 SetHashTable();
@@ -1576,7 +1481,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void CreateDesigner(bool liteInit = false)
+        public void CreateDesigner() => CreateDesigner(false);
+
+        public void CreateDesigner(bool liteInit)
         {
             _wd = new WorkflowDesigner();
 
@@ -2081,10 +1988,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return true;
         }
 
-        bool CheckServiceDefinition()
-        {
-            return ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
-        }
+        bool CheckServiceDefinition() => ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
 
         /// <summary>
         /// Processes the data list configuration load.

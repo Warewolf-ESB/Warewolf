@@ -83,10 +83,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        public override List<string> GetOutputs()
-        {
-            return ResultsCollection?.Select(dto => dto.OutputVariable).ToList() ?? new List<string>();
-        }
+        public override List<string> GetOutputs() => ResultsCollection?.Select(dto => dto.OutputVariable).ToList() ?? new List<string>();
 
         #region Overridden NativeActivity Methods
 
@@ -281,10 +278,7 @@ namespace Dev2.Activities
             AddDebugInputItem(new DebugEvalResult(expression, "XML", environment, update));
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.MixedActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
         #endregion
 
@@ -380,7 +374,7 @@ namespace Dev2.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -393,7 +387,7 @@ namespace Dev2.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -471,10 +465,7 @@ namespace Dev2.Activities
 
         #region Implementation of ICollectionActivity
 
-        public int GetCollectionCount()
-        {
-            return ResultsCollection.Count(xPathDto => !xPathDto.CanRemove());
-        }
+        public int GetCollectionCount() => ResultsCollection.Count(xPathDto => !xPathDto.CanRemove());
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {

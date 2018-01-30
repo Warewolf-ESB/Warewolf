@@ -188,10 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(ArchiveName, ArchivePassword, CompressionRatio, InputPath, OutputPath);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(ArchiveName, ArchivePassword, CompressionRatio, InputPath, OutputPath);
         #endregion
 
         public bool Equals(DsfZip other)

@@ -18,9 +18,9 @@ namespace Dev2.Activities
     {
         #region Implementation of IActivityParser
 
-        public IDev2Activity Parse(List<IDev2Activity> seenActivities, object step)
+        public IDev2Activity Parse(List<IDev2Activity> seenActivities, object flowChart)
         {
-            var modelItem = step as ModelItem;
+            var modelItem = flowChart as ModelItem;
             var currentValue = modelItem?.GetCurrentValue();
             if (currentValue is null)
             {
@@ -153,9 +153,9 @@ namespace Dev2.Activities
             return dev2Activities;
         }
 
-        public IEnumerable<IDev2Activity> FlattenNextNodesInclusive(IDev2Activity decision)
+        public IEnumerable<IDev2Activity> FlattenNextNodesInclusive(IDev2Activity firstOrDefault)
         {
-            switch (decision)
+            switch (firstOrDefault)
             {
                 case DsfDecision a:
                     {
@@ -167,7 +167,7 @@ namespace Dev2.Activities
                     }
                 default:
                     {
-                        var truArmToFlatList = ActivityToFlatList(decision);
+                        var truArmToFlatList = ActivityToFlatList(firstOrDefault);
                         return truArmToFlatList;
                     }
             }
@@ -337,10 +337,7 @@ namespace Dev2.Activities
 
         #region Implementation of IActivityParser
 
-        public IDev2Activity Parse(DynamicActivity dynamicActivity)
-        {
-            return Parse(dynamicActivity, new List<IDev2Activity>());
-        }
+        public IDev2Activity Parse(DynamicActivity dynamicActivity) => Parse(dynamicActivity, new List<IDev2Activity>());
 
         #endregion
     }

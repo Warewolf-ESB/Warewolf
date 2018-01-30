@@ -613,29 +613,13 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public ICommand SaveCommand
-        {
-            get
-            {
-                return _saveCommand ??
+        public ICommand SaveCommand => _saveCommand ??
                        (_saveCommand = new DelegateCommand(param => SchedulerTaskManager.SaveTasks()));
-            }
-        }
 
-        public ICommand NewCommand
-        {
-            get
-            {
-                return _newCommand ??
+        public ICommand NewCommand => _newCommand ??
                        (_newCommand = new DelegateCommand(param => CreateNewTask()));
-            }
-        }
 
-        public ICommand DeleteCommand
-        {
-            get
-            {
-                return _deleteCommand ??
+        public ICommand DeleteCommand => _deleteCommand ??
                        (_deleteCommand = new DelegateCommand(param =>
                        {
                            var taskToBeDeleted = param as IScheduledResource;
@@ -647,17 +631,9 @@ namespace Dev2.Settings.Scheduler
                            SelectedTask = taskToBeDeleted;
                            SchedulerTaskManager.DeleteTask();
                        }));
-            }
-        }
 
-        public ICommand EditTriggerCommand
-        {
-            get
-            {
-                return _editTriggerCommand ??
+        public ICommand EditTriggerCommand => _editTriggerCommand ??
                        (_editTriggerCommand = new DelegateCommand(param => SchedulerTaskManager.EditTrigger()));
-            }
-        }
 
         public ICommand AddWorkflowCommand => _addWorkflowCommand ??
                                               (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SchedulerTaskManager.AddWorkflow, SchedulerTaskManager.CanSelectWorkflow));
@@ -878,13 +854,7 @@ namespace Dev2.Settings.Scheduler
 
         public string ResourceType => "Scheduler";
         internal SchedulerTaskManager SchedulerTaskManager { get; set; }
-        public IPopupController PopupController
-        {
-            get
-            {
-                return _popupController;
-            }
-        }
+        public IPopupController PopupController => _popupController;
 
         public DebugOutputViewModel DebugOutputViewModel
         {

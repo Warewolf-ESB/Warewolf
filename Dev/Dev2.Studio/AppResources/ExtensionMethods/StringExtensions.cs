@@ -31,9 +31,6 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
             return sb.ToString();
         }
 
-        public static bool SpaceCaseInsenstiveComparision(this string stringa, string stringb)
-        {
-            return stringa == null && stringb == null || stringa != null && stringa.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }));
-        }
+        public static bool SpaceCaseInsenstiveComparision(this string stringa, string stringb) => stringa == null && stringb == null || stringa != null && stringa.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }).Equals(stringb.ToLower().ExceptChars(new[] { ' ', '\t', '\n', '\r' }));
     }
 }

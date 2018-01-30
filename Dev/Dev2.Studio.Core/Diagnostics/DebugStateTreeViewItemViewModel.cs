@@ -73,19 +73,19 @@ namespace Dev2.Studio.Core
         }
 
         
-        protected override void Initialize(IDebugState content)
+        protected override void Initialize(IDebugState value)
         {
-            if (content == null)
+            if (value == null)
             {
                 return;
             }
             SelectionType = ActivitySelectionType.Add;
-            IsSelected = content.ActivityType != ActivityType.Workflow;
+            IsSelected = value.ActivityType != ActivityType.Workflow;
 
-            var isRemote = Guid.TryParse(content.Server, out Guid serverId);
-            if (isRemote || string.IsNullOrEmpty(content.Server))
+            var isRemote = Guid.TryParse(value.Server, out Guid serverId);
+            if (isRemote || string.IsNullOrEmpty(value.Server))
             {
-                var envId = content.EnvironmentID;
+                var envId = value.EnvironmentID;
 
                 var env = _serverRepository.All().FirstOrDefault(e => e.EnvironmentID == envId);
                 if (env == null)
@@ -95,34 +95,34 @@ namespace Dev2.Studio.Core
                 }
                 if (Equals(env, _serverRepository.Source))
                 {
-                    content.Server = "Unknown Remote Server";
+                    value.Server = "Unknown Remote Server";
                 }
                 else
                 {
                     if (env != null)
                     {
-                        content.Server = env.Name;
+                        value.Server = env.Name;
                     }
                 }
             }
-            BuildBindableListFromDebugItems(content.Inputs, _inputs);
-            BuildBindableListFromDebugItems(content.Outputs, _outputs);
-            BuildBindableListFromDebugItems(content.AssertResultList, _assertResultList);
+            BuildBindableListFromDebugItems(value.Inputs, _inputs);
+            BuildBindableListFromDebugItems(value.Outputs, _outputs);
+            BuildBindableListFromDebugItems(value.AssertResultList, _assertResultList);
 
-            if (content.HasError)
+            if (value.HasError)
             {
                 HasError = true;
             }
-            if (content.AssertResultList != null)
+            if (value.AssertResultList != null)
             {
                 var setAllError = false;
                 
-                foreach (var debugItem in content.AssertResultList.Where(debugItem => debugItem.ResultsList.Any(debugItemResult => debugItemResult.HasError)))
+                foreach (var debugItem in value.AssertResultList.Where(debugItem => debugItem.ResultsList.Any(debugItemResult => debugItemResult.HasError)))
                 {
                     setAllError = true;
                 }
 
-                foreach (var debugItemResult in content.AssertResultList.SelectMany(debugItem => debugItem.ResultsList))
+                foreach (var debugItemResult in value.AssertResultList.SelectMany(debugItem => debugItem.ResultsList))
                 {
                     if (setAllError)
                     {
@@ -249,10 +249,7 @@ namespace Dev2.Studio.Core
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
-        public override string ToString()
-        {
-            return Content.DisplayName;
-        }
+        public override string ToString() => Content.DisplayName;
 
         #endregion
     }

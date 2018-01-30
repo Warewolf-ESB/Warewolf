@@ -19,9 +19,6 @@ namespace Dev2.Data
             return x.Equals(y);
         }
 
-        public int GetHashCode(DataStorage.WarewolfAtom obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(DataStorage.WarewolfAtom obj) => obj.GetHashCode();
     }
 }

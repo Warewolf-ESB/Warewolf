@@ -35,9 +35,6 @@ namespace Dev2.Comparer
             ;
         }
 
-        public int GetHashCode(FindRecordsTO obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(FindRecordsTO obj) => 1;
     }
 }

@@ -86,20 +86,11 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             return xmlPathSegment;
         }
 
-        public IPathSegment CreatePathSegment(XElement element)
-        {
-            return new XmlPathSegment(element.Name.ToString(), element.Elements().Count() > 1);
-        }
+        public IPathSegment CreatePathSegment(XElement element) => new XmlPathSegment(element.Name.ToString(), element.Elements().Count() > 1);
 
-        public IPathSegment CreatePathSegment(XAttribute attribute)
-        {
-            return new XmlPathSegment(attribute.Name.ToString(), false);
-        }
+        public IPathSegment CreatePathSegment(XAttribute attribute) => new XmlPathSegment(attribute.Name.ToString(), false);
 
-        public IPathSegment CreateAttributePathSegment(string attribute)
-        {
-            return new XmlPathSegment(attribute, false, true);
-        }
+        public IPathSegment CreateAttributePathSegment(string attribute) => new XmlPathSegment(attribute, false, true);
 
         #endregion Methods
 

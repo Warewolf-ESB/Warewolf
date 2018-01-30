@@ -154,34 +154,31 @@ namespace Dev2.Studio.Core
             LoadInternal();
         }
 
-        public IServer Get(Guid id)
-        {
-            return All().FirstOrDefault(e => e.EnvironmentID == id);
-        }
+        public IServer Get(Guid id) => All().FirstOrDefault(e => e.EnvironmentID == id);
 
         #endregion
 
         #region Save
 
-        public void Save(ICollection<IServer> environments)
+        public void Save(ICollection<IServer> instanceObjs)
         {
-            if (environments == null || environments.Count == 0)
+            if (instanceObjs == null || instanceObjs.Count == 0)
             {
                 return;
             }
-            foreach (var environmentModel in environments)
+            foreach (var environmentModel in instanceObjs)
             {
                 AddInternal(environmentModel);
             }
         }
 
-        public string Save(IServer environment)
+        public string Save(IServer instanceObj)
         {
-            if (environment == null)
+            if (instanceObj == null)
             {
                 return "Not Saved";
             }
-            AddInternal(environment);
+            AddInternal(instanceObj);
             return "Saved";
         }
 
@@ -189,13 +186,13 @@ namespace Dev2.Studio.Core
 
         #region Remove
 
-        public void Remove(ICollection<IServer> environments)
+        public void Remove(ICollection<IServer> instanceObjs)
         {
-            if (environments == null || environments.Count == 0)
+            if (instanceObjs == null || instanceObjs.Count == 0)
             {
                 return;
             }
-            foreach (var environmentModel in environments)
+            foreach (var environmentModel in instanceObjs)
             {
                 RemoveInternal(environmentModel);
             }
@@ -205,13 +202,13 @@ namespace Dev2.Studio.Core
             //
         }
 
-        public void Remove(IServer environment)
+        public void Remove(IServer instanceObj)
         {
-            if (environment == null)
+            if (instanceObj == null)
             {
                 return;
             }
-            RemoveInternal(environment);
+            RemoveInternal(instanceObj);
             //
             // NOTE: This should NEVER remove the environment source from the server 
             //       as this is done by the user via the explorer
@@ -330,7 +327,10 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region LoadInternal
-        protected virtual void LoadInternal(bool force = false)
+
+        protected virtual void LoadInternal() => LoadInternal(false);
+
+        protected virtual void LoadInternal(bool force)
         {
             lock (RestoreLock)
             {
@@ -377,10 +377,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        bool ValidateIfEnvironmentExists(IServer newEnv)
-        {
-            return Environments.Contains(newEnv);
-        }
+        bool ValidateIfEnvironmentExists(IServer newEnv) => Environments.Contains(newEnv);
 
         protected virtual void LoadComplete()
         {
@@ -598,10 +595,7 @@ namespace Dev2.Studio.Core
 
         #region GetEnvironmentsFilePath
 
-        public static string GetEnvironmentsFilePath()
-        {
-            return Path.Combine(GetEnvironmentsDirectory(), "Environments.xml");
-        }
+        public static string GetEnvironmentsFilePath() => Path.Combine(GetEnvironmentsDirectory(), "Environments.xml");
 
         #endregion
 

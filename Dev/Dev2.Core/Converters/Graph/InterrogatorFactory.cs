@@ -49,10 +49,7 @@ namespace Unlimited.Framework.Converters.Graph
 
         #region Methods
 
-        public static IInterrogator CreateInteregator(Type dataType)
-        {
-            return Interrogators.TryGetValue(dataType, out IInterrogator interrogatror) ? interrogatror : DefaultInterrogator;
-        }
+        public static IInterrogator CreateInteregator(Type dataType) => Interrogators.TryGetValue(dataType, out IInterrogator interrogatror) ? interrogatror : DefaultInterrogator;
 
         #endregion Methods
     }

@@ -224,19 +224,16 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new WcfActionMemento
         {
-            return new WcfActionMemento
+            IsEnabled = IsEnabled,
+            SelectedAction = SelectedAction == null ? null : new WcfAction()
             {
-                IsEnabled = IsEnabled,
-                SelectedAction = SelectedAction == null ? null : new WcfAction()
-                {
-                    Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
-                    FullName = SelectedAction.FullName,
-                    Method = SelectedAction.Method
-                }
-            };
-        }
+                Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
+                FullName = SelectedAction.FullName,
+                Method = SelectedAction.Method
+            }
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {

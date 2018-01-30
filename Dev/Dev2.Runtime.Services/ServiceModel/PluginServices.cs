@@ -43,13 +43,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region DeserializeService
 
-    
-        protected virtual Service DeserializeService(string args)
-        {
-            return JsonConvert.DeserializeObject<PluginService>(args);
-        }
 
-    
+        protected virtual Service DeserializeService(string args) => JsonConvert.DeserializeObject<PluginService>(args);
+
         protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
             return xml == null ? new PluginService() : new PluginService(xml);
@@ -87,16 +83,16 @@ namespace Dev2.Runtime.ServiceModel
         #region Namespaces
 
         // POST: Service/PluginServices/Namespaces
-        public virtual NamespaceList Namespaces(PluginSource pluginSource, Guid workspaceId, Guid dataListId)
+        public virtual NamespaceList Namespaces(PluginSource args, Guid workspaceId, Guid dataListId)
         {
             var result = new NamespaceList();
             try
             {
 
-                if (pluginSource != null)
+                if (args != null)
                 {
                     var broker = new PluginBroker();
-                    return broker.GetNamespaces(pluginSource);
+                    return broker.GetNamespaces(args);
                 }
             }
             catch (BadImageFormatException e)
@@ -141,7 +137,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Methods
 
         // POST: Service/PluginServices/Methods
-        public ServiceMethodList Methods(PluginService service, Guid workspaceId, Guid dataListId)
+        public ServiceMethodList Methods(PluginService args, Guid workspaceId, Guid dataListId)
         {
             var result = new ServiceMethodList();
             try
@@ -149,7 +145,7 @@ namespace Dev2.Runtime.ServiceModel
                 // BUG 9500 - 2013.05.31 - TWR : changed to use PluginService as args 
               
                 var broker = new PluginBroker();
-                result = broker.GetMethods(((PluginSource)service.Source).AssemblyLocation, ((PluginSource)service.Source).AssemblyName, service.Namespace);
+                result = broker.GetMethods(((PluginSource)args.Source).AssemblyLocation, ((PluginSource)args.Source).AssemblyName, args.Namespace);
                 return result;
             }
             catch(Exception ex)
@@ -158,6 +154,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             return result;
         }
+
         // POST: Service/PluginServices/MethodsWithReturns
         public ServiceMethodList MethodsWithReturns(PluginService service, Guid workspaceId, Guid dataListId)
         {
@@ -177,7 +174,7 @@ namespace Dev2.Runtime.ServiceModel
             return result;
         }
 
-        public ServiceConstructorList Constructors(PluginService service, Guid workspaceId, Guid dataListId)
+        public ServiceConstructorList Constructors(PluginService args, Guid workspaceId, Guid dataListId)
         {
             var result = new ServiceConstructorList();
             try
@@ -185,7 +182,7 @@ namespace Dev2.Runtime.ServiceModel
                 // BUG 9500 - 2013.05.31 - TWR : changed to use PluginService as args 
 
                 var broker = new PluginBroker();
-                result = broker.GetConstructors(((PluginSource)service.Source).AssemblyLocation, ((PluginSource)service.Source).AssemblyName, service.Namespace);
+                result = broker.GetConstructors(((PluginSource)args.Source).AssemblyLocation, ((PluginSource)args.Source).AssemblyName, args.Namespace);
                 return result;
             }
             catch (Exception ex)

@@ -116,10 +116,7 @@ namespace Dev2.Activities.DateAndTime
             ExecuteTool(dataObject, 0);
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -285,7 +282,7 @@ namespace Dev2.Activities.DateAndTime
             return DateTimeConverterFactory.CreateDateTimeTO(evaledDateTime, evaledInputFormat, evaledOutputFormat, timeModifierType, tmpTimeAmount, Result);
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -294,7 +291,7 @@ namespace Dev2.Activities.DateAndTime
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -339,14 +336,8 @@ namespace Dev2.Activities.DateAndTime
             }
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(DateTime, InputFormat, TimeModifierAmountDisplay, OutputFormat);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(DateTime, InputFormat, TimeModifierAmountDisplay, OutputFormat);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
     }
 }

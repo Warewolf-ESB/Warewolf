@@ -561,28 +561,22 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        static MergeArmConnectorConflict EmptyMergeArmConnectorConflict(Guid uniqueId, IArmConnectorConflict container)
+        static MergeArmConnectorConflict EmptyMergeArmConnectorConflict(Guid uniqueId, IArmConnectorConflict container) => new MergeArmConnectorConflict(container)
         {
-            return new MergeArmConnectorConflict(container)
-            {
-                SourceUniqueId = uniqueId.ToString(),
-                DestinationUniqueId = Guid.Empty.ToString(),
-                Key = container.Key
-            };
-        }
+            SourceUniqueId = uniqueId.ToString(),
+            DestinationUniqueId = Guid.Empty.ToString(),
+            Key = container.Key
+        };
 
-        static MergeToolModel EmptyConflictViewModel(Guid uniqueId, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        static MergeToolModel EmptyConflictViewModel(Guid uniqueId, IWorkflowDesignerViewModel workflowDesignerViewModel) => new MergeToolModel
         {
-            return new MergeToolModel
-            {
-                ModelItem = null,
-                WorkflowDesignerViewModel = workflowDesignerViewModel,
-                NodeLocation = new Point(),
-                IsMergeEnabled = false,
-                IsMergeVisible = false,
-                UniqueId = uniqueId
-            };
-        }
+            ModelItem = null,
+            WorkflowDesignerViewModel = workflowDesignerViewModel,
+            NodeLocation = new Point(),
+            IsMergeEnabled = false,
+            IsMergeVisible = false,
+            UniqueId = uniqueId
+        };
 
         bool All(Func<IConflict, bool> check)
         {

@@ -33,10 +33,7 @@ namespace Dev2.PerformanceCounters.Counters
         public string Name { get;  set; }
         public WarewolfPerfCounterType PerfCounterType { get;  set; }
 
-        public IList<CounterCreationData> CreationData()
-        {
-            return null;
-        }
+        public IList<CounterCreationData> CreationData() => null;
 
         public bool IsActive { get; set; }
 

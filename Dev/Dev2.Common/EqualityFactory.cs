@@ -77,22 +77,16 @@ namespace Dev2.Common
             }
 
         }
-        
-        public static IComparer<T> GetComparer<T>(Func<T, T, int> compareMethod)
-        {
-            return new InternalComparer<T>(compareMethod);
-        }
 
-      public static IEqualityComparer<T> GetEqualityComparer<T>(Func<T, T, bool> equalsMethod, Func<T, int> getHashCodeMethod)
+        public static IComparer<T> GetComparer<T>(Func<T, T, int> compareMethod) => new InternalComparer<T>(compareMethod);
+
+        public static IEqualityComparer<T> GetEqualityComparer<T>(Func<T, T, bool> equalsMethod, Func<T, int> getHashCodeMethod)
         {
             return new InternalComparer<T>(equalsMethod, getHashCodeMethod);
         }
-        
-        public static IComparable<T> GetComparable<T>(Func<T, int> compareToMethod)
-        {
-            return new InternalComparer<T>(compareToMethod);
-        }
-        
+
+        public static IComparable<T> GetComparable<T>(Func<T, int> compareToMethod) => new InternalComparer<T>(compareToMethod);
+
         public static IEquatable<T> GetEquitable<T>(Func<T, bool> equalsMethod)
         {
             return new InternalComparer<T>(equalsMethod);

@@ -20,9 +20,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             InitializeComponent();
         }
 
-        protected override WebServiceDeleteViewModel CreateViewModel()
-        {
-            return new WebServiceDeleteViewModel(ModelItem);
-        }
+        protected override WebServiceDeleteViewModel CreateViewModel() => new WebServiceDeleteViewModel(ModelItem);
     }
 }

@@ -79,10 +79,7 @@ namespace System.Windows.Automation.Peers
         /// GetAutomationControlType.
         /// </summary>
         /// <returns>ComboBox AutomationControlType.</returns>
-        protected override AutomationControlType GetAutomationControlTypeCore()
-        {
-            return AutomationControlType.ComboBox;
-        }
+        protected override AutomationControlType GetAutomationControlTypeCore() => AutomationControlType.ComboBox;
 
         /// <summary>
         /// Gets the name of the AutoCompleteBox that is associated with this
@@ -90,10 +87,7 @@ namespace System.Windows.Automation.Peers
         /// GetClassName.
         /// </summary>
         /// <returns>The name AutoCompleteBox.</returns>
-        protected override string GetClassNameCore()
-        {
-            return AutoCompleteBoxClassNameCore;
-        }
+        protected override string GetClassNameCore() => AutoCompleteBoxClassNameCore;
 
         /// <summary>
         /// Gets the control pattern for the AutoCompleteBox that is associated

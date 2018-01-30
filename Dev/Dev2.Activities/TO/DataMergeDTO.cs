@@ -192,12 +192,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region IsEmpty
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeIndex && string.IsNullOrEmpty(At)
+        public bool IsEmpty() => string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeIndex && string.IsNullOrEmpty(At)
                    || string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeChars && string.IsNullOrEmpty(At)
                    || string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeNone && string.IsNullOrEmpty(At);
-        }
 
         #endregion
 

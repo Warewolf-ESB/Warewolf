@@ -162,11 +162,8 @@ namespace Warewolf.MergeParser
             }
         }
 
-        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadDiffFromLoacalServer = true)
-        {
-            var trees = GetConflictTrees(current, difference, loadDiffFromLoacalServer);
-            return trees;
-        }
+        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference) => GetDifferences(current, difference, true);
+        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadDiffFromLocalServer) => GetConflictTrees(current, difference, loadDiffFromLocalServer);
 
         static Point GetShapeLocation(WorkflowDesigner wd, ModelItem modelItem)
         {

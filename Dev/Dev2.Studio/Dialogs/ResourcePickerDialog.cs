@@ -138,10 +138,7 @@ namespace Dev2.Dialogs
             return false;
         }
 
-        protected virtual IDialog CreateDialog(DsfActivityDropViewModel dataContext)
-        {
-            return new DsfActivityDropWindow { DataContext = dataContext };
-        }
+        protected virtual IDialog CreateDialog(DsfActivityDropViewModel dataContext) => new DsfActivityDropWindow { DataContext = dataContext };
 
         public static enDsfActivityType DetermineDropActivityType(string typeName)
         {

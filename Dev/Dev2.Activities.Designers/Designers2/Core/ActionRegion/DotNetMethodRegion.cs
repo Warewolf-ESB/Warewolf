@@ -163,10 +163,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        public bool CanRefresh()
-        {
-            return IsActionEnabled;
-        }
+        public bool CanRefresh() => IsActionEnabled;
 
         public IPluginAction SelectedMethod
         {
@@ -244,33 +241,18 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
-        public RelayCommand ViewObjectResult
-        {
-            get
-            {
-                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
-                {
-                    ViewJsonObjects();
-                }, CanRunCommand));
-            }
-        }
+        public RelayCommand ViewObjectResult => _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                                                              {
+                                                                  ViewJsonObjects();
+                                                              }, CanRunCommand));
 
-        public RelayCommand ViewObjectResultForParameterInput
-        {
-            get
-            {
-                return _viewObjectForServiceInputResult ?? (_viewObjectForServiceInputResult = new RelayCommand(item =>
-                {
-                    var serviceInput = item as ServiceInput;
-                    ViewObjectsResultForParameterInput(serviceInput);
-                }, CanRunCommand));
-            }
-        }
+        public RelayCommand ViewObjectResultForParameterInput => _viewObjectForServiceInputResult ?? (_viewObjectForServiceInputResult = new RelayCommand(item =>
+                                                                               {
+                                                                                   var serviceInput = item as ServiceInput;
+                                                                                   ViewObjectsResultForParameterInput(serviceInput);
+                                                                               }, CanRunCommand));
 
-        bool CanRunCommand(object obj)
-        {
-            return true;
-        }
+        bool CanRunCommand(object obj) => true;
 
         void ViewJsonObjects()
         {
@@ -454,24 +436,21 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new DotNetMethodRegion
         {
-            return new DotNetMethodRegion
+            IsEnabled = IsEnabled,
+            SelectedMethod = SelectedMethod == null ? null : new PluginAction
             {
-                IsEnabled = IsEnabled,
-                SelectedMethod = SelectedMethod == null ? null : new PluginAction
+                Inputs = SelectedMethod?.Inputs?.Select(a =>
                 {
-                    Inputs = SelectedMethod?.Inputs?.Select(a =>
-                    {
-                        var serviceInput = new ServiceInput(a.Name, a.Value) as IServiceInput;
-                        serviceInput.IntellisenseFilter = a.IntellisenseFilter;
-                        return serviceInput;
-                    }).ToList(),
-                    FullName = SelectedMethod.FullName,
-                    Method = SelectedMethod.Method,
-                }
-            };
-        }
+                    var serviceInput = new ServiceInput(a.Name, a.Value) as IServiceInput;
+                    serviceInput.IntellisenseFilter = a.IntellisenseFilter;
+                    return serviceInput;
+                }).ToList(),
+                FullName = SelectedMethod.FullName,
+                Method = SelectedMethod.Method,
+            }
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {
@@ -513,10 +492,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        bool IsAPreviousValue(IPluginAction value)
-        {
-            return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
-        }
+        bool IsAPreviousValue(IPluginAction value) => value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
 
         public IList<string> Errors
         {

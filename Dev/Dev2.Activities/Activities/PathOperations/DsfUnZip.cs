@@ -98,10 +98,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #region GetForEachInputs/Outputs
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(ArchivePassword, Overwrite.ToString(), OutputPath, InputPath);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(ArchivePassword, Overwrite.ToString(), OutputPath, InputPath);
         #endregion
 
         public bool Equals(DsfUnZip other)

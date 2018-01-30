@@ -72,19 +72,11 @@ namespace Dev2.Common.Interfaces
                 return ((Inputs?.GetHashCode() ?? 0) * 397) ^ (Method?.GetHashCode() ?? 0);
             }
         }
-        public string GetIdentifier()
-        {
-            return FullName + Method;
-        }
-        public static bool operator ==(PluginAction left, PluginAction right)
-        {
-            return Equals(left, right);
-        }
+        public string GetIdentifier() => FullName + Method;
 
-        public static bool operator !=(PluginAction left, PluginAction right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator ==(PluginAction left, PluginAction right) => Equals(left, right);
+
+        public static bool operator !=(PluginAction left, PluginAction right) => !Equals(left, right);
 
         #region Overrides of Object
 
@@ -94,10 +86,7 @@ namespace Dev2.Common.Interfaces
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
-        public override string ToString()
-        {
-            return Method;
-        }
+        public override string ToString() => Method;
 
         public Guid ID { get; set; }
 

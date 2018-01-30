@@ -51,15 +51,9 @@ namespace Dev2.Data.Util
             return fullRecSetName;
         }
 
-        public string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum)
-        {
-            return string.Concat(recsetName, DataListUtil.RecordsetIndexOpeningBracket, indexNum, ").", colName);
-        }
+        public string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum) => string.Concat(recsetName, DataListUtil.RecordsetIndexOpeningBracket, indexNum, ").", colName);
 
-        public string RemoveRecordsetBracketsFromValue(string value)
-        {
-            return value.Replace(EmptyBrackets, "");
-        }
+        public string RemoveRecordsetBracketsFromValue(string value) => value.Replace(EmptyBrackets, "");
 
         public enRecordsetIndexType GetRecordsetIndexType(string expression)
         {
@@ -189,10 +183,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        public bool IsValueRecordsetWithFields(string value)
-        {
-            return !string.IsNullOrEmpty(value) && value.Contains(").");
-        }
+        public bool IsValueRecordsetWithFields(string value) => !string.IsNullOrEmpty(value) && value.Contains(").");
 
         public bool IsValueRecordset(string value)
         {

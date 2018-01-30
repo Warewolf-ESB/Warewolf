@@ -14,10 +14,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class IsLessThanOrEqual : IDecisionOperation
     {
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsLessThanOrEqual;
-        }
+        public Enum HandlesType() => enDecisionType.IsLessThanOrEqual;
 
         public bool Invoke(string[] cols)
         {

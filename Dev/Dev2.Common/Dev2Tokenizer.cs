@@ -95,11 +95,8 @@ namespace Dev2.Common
 
         #endregion Private Method
 
-        public bool HasMoreOps()
-        {
-            return _hasMoreOps;
-        }
-        
+        public bool HasMoreOps() => _hasMoreOps;
+
         public string NextToken()
         {    
             // we can be smart about the operations ;)

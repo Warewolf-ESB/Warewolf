@@ -33,10 +33,7 @@ namespace Dev2.Runtime.ESB.Execution
         public string InstanceOutputDefinition { get; set; }
         public string InstanceInputDefinition { get; set; }
 
-        public IDSFDataObject GetDataObject()
-        {
-            return DataObject;
-        }
+        public IDSFDataObject GetDataObject() => DataObject;
 
         protected EsbExecutionContainer(ServiceAction sa, IDSFDataObject dataObject, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : this(sa, dataObject, theWorkspace, esbChannel, null)

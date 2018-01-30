@@ -87,10 +87,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         public QueueingBasicConsumer Consumer { get; set; }
 
-        public bool ShouldSerializeConsumer()
-        {
-            return false;
-        }
+        public bool ShouldSerializeConsumer() => false;
 
         [NonSerialized]
         ConnectionFactory _connectionFactory;
@@ -107,31 +104,17 @@ namespace Dev2.Activities.RabbitMQ.Consume
             }
         }
 
-        public bool ShouldSerializeConnectionFactory()
-        {
-            return false;
-        }
+        public bool ShouldSerializeConnectionFactory() => false;
 
         internal IConnection Connection { get; set; }
 
-        public bool ShouldSerializeConnection()
-        {
-            return false;
-        }
-
+        public bool ShouldSerializeConnection() => false;
 
         internal IModel Channel { get; set; }
-        public bool ShouldSerializeChannel()
-        {
-            return false;
-        }
+        public bool ShouldSerializeChannel() => false;
 
         public RabbitMQSource RabbitSource { get; set; }
-        public bool ShouldSerializeRabbitSource()
-        {
-            return false;
-        }
-
+        public bool ShouldSerializeRabbitSource() => false;
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
@@ -294,10 +277,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
 
         #region Overrides of DsfBaseActivity
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Response, Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Response, Result };
 
         #endregion
 
@@ -316,25 +296,25 @@ namespace Dev2.Activities.RabbitMQ.Consume
         }
 
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
-            base.GetDebugOutputs(dataList, update);
+            base.GetDebugOutputs(env, update);
 
-            if (dataList != null && !string.IsNullOrEmpty(Response))
+            if (env != null && !string.IsNullOrEmpty(Response))
             {
                 if (!IsObject)
                 {
                     var debugItem = new DebugItem();
-                    AddDebugItem(new DebugEvalResult(Response, "", dataList, update), debugItem);
+                    AddDebugItem(new DebugEvalResult(Response, "", env, update), debugItem);
                     _debugOutputs.Add(debugItem);
                 }
             }
-            if (dataList != null && !string.IsNullOrEmpty(ObjectName))
+            if (env != null && !string.IsNullOrEmpty(ObjectName))
             {
                 if (IsObject)
                 {
                     var debugItem = new DebugItem();
-                    AddDebugItem(new DebugEvalResult(ObjectName, "", dataList, update), debugItem);
+                    AddDebugItem(new DebugEvalResult(ObjectName, "", env, update), debugItem);
                     _debugOutputs.Add(debugItem);
                 }
             }

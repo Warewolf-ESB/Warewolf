@@ -329,10 +329,7 @@ namespace Dev2.Runtime.Security
             return startIndex;
         }
 
-        static bool IsWebInvokeServiceSave(string absolutePath)
-        {
-            return absolutePath.EndsWith("/save", StringComparison.InvariantCultureIgnoreCase);
-        }
+        static bool IsWebInvokeServiceSave(string absolutePath) => absolutePath.EndsWith("/save", StringComparison.InvariantCultureIgnoreCase);
 
         protected override void OnDisposed()
         {

@@ -38,11 +38,7 @@ namespace Dev2.PathOperations
         public static IActivityIOPath CreatePathFromString(string path, string user, string pass) => CreatePathFromString(path, user, pass, "");
 
 
-        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, string privateKeyFile)
-        {
-            return CreatePathFromString(path, user, pass, false, privateKeyFile);
-        }
-
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, string privateKeyFile) => CreatePathFromString(path, user, pass, false, privateKeyFile);
         public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable) => CreatePathFromString(path, user, pass, isNotCertVerifiable, "");
         
         public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable, string privateKeyFile)
@@ -64,11 +60,8 @@ namespace Dev2.PathOperations
 
         public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable) => CreatePathFromString(path, isNotCertVerifiable, "");
 
-        public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable, string privateKeyFile)
-        {
-            return CreatePathFromString(path, string.Empty, string.Empty, isNotCertVerifiable, privateKeyFile);
-        }
-        
+        public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable, string privateKeyFile) => CreatePathFromString(path, string.Empty, string.Empty, isNotCertVerifiable, privateKeyFile);
+
         public static IActivityIOOperationsEndPoint CreateOperationEndPointFromIOPath(IActivityIOPath target)
         {
             lock(EndPointsLock)
@@ -116,21 +109,15 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        public static IActivityOperationsBroker CreateOperationsBroker()
-        {
-            return new Dev2ActivityIOBroker();
-        }
-    
+        public static IActivityOperationsBroker CreateOperationsBroker() => new Dev2ActivityIOBroker();
+
         public static IActivityOperationsBroker CreateOperationsBroker(IFile file, ICommon common)
         {
             return new Dev2ActivityIOBroker(file, common);
         }
-        
-        public static Dev2PutRawOperationTO CreatePutRawOperationTO(WriteType writeType, string contents)
-        {
-            return new Dev2PutRawOperationTO(writeType, contents);
-        }
-        
+
+        public static Dev2PutRawOperationTO CreatePutRawOperationTO(WriteType writeType, string contents) => new Dev2PutRawOperationTO(writeType, contents);
+
         public static Dev2UnZipOperationTO CreateUnzipTO(string passwd, bool overwrite)
         {
             return new Dev2UnZipOperationTO(passwd, overwrite);
@@ -138,9 +125,6 @@ namespace Dev2.PathOperations
 
         public static Dev2ZipOperationTO CreateZipTO(string ratio, string passwd, string name) => CreateZipTO(ratio, passwd, name, false);
 
-        public static Dev2ZipOperationTO CreateZipTO(string ratio, string passwd, string name, bool overwrite)
-        {
-            return new Dev2ZipOperationTO(ratio, passwd, name, overwrite);
-        }
+        public static Dev2ZipOperationTO CreateZipTO(string ratio, string passwd, string name, bool overwrite) => new Dev2ZipOperationTO(ratio, passwd, name, overwrite);
     }
 }

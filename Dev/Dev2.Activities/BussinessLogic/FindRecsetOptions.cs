@@ -95,9 +95,6 @@ namespace Dev2.DataList
         /// Find all AbstractRecsetSearchValidation objects
         /// </summary>
         /// <returns></returns>
-        public static IList<IFindRecsetOptions> FindAllDecision()
-        {
-            return _options.Values.ToList();
-        }
+        public static IList<IFindRecsetOptions> FindAllDecision() => _options.Values.ToList();
     }
 }

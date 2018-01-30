@@ -20,14 +20,11 @@ namespace Warewolf.Storage
             IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms = warewolfEvalResult as DataStorage.WarewolfAtom[] ?? warewolfEvalResult.ToArray();
             _listResult = warewolfAtoms.GetEnumerator();
             _maxValue = warewolfAtoms.Count();
-        }        
+        }
 
         #region Implementation of IWarewolfIterator
 
-        public int GetLength()
-        {
-            return _maxValue;
-        }
+        public int GetLength() => _maxValue;
 
         public string GetNextValue()
         {
@@ -44,10 +41,7 @@ namespace Warewolf.Storage
             return null;
         }
 
-        public bool HasMoreData()
-        {
-            return _currentValue<=_maxValue-1;
-        }
+        public bool HasMoreData() => _currentValue <= _maxValue - 1;
         #endregion
     }
 }

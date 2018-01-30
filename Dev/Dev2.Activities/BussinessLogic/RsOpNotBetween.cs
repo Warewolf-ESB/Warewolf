@@ -20,13 +20,7 @@ namespace Dev2.BussinessLogic
 
     public class RsOpNotBetween : AbstractRecsetSearchValidation
     {
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> tovals, bool all)
-        {
-
-            return a => !RunBetween(warewolfAtoms, tovals, a);
-
-        }
-
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => a => !RunBetween(from, to, a);
 
         static bool RunBetween(IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> tovals, DataStorage.WarewolfAtom a)
         {
@@ -72,10 +66,7 @@ namespace Dev2.BussinessLogic
             }
             return false;
         }
-        public override string HandlesType()
-        {
-            return "Not Between";
-        }
+        public override string HandlesType() => "Not Between";
 
         public override int ArgumentCount => 3;
     }

@@ -17,9 +17,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         {
             InitializeComponent();
         }
-        protected override DotNetDllEnhancedViewModel CreateViewModel()
-        {
-            return new DotNetDllEnhancedViewModel(ModelItem);
-        }
+        protected override DotNetDllEnhancedViewModel CreateViewModel() => new DotNetDllEnhancedViewModel(ModelItem);
     }
 }

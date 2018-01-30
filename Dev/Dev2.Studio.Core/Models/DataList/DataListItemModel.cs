@@ -101,8 +101,8 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public virtual string ValidateName(string name) { return name;}
-        
+        public virtual string ValidateName(string name) => name;
+
         public string Name
         {
             get
@@ -357,31 +357,25 @@ namespace Dev2.Studio.Core.Models.DataList
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString()
-        {
-            return DisplayName;
-        }
+        public override string ToString() => DisplayName;
 
         #endregion Overrides of Object
 
-        public bool Equals(IDataListItemModel other)
-        {
-            return string.Equals(Description, other.Description)
+        public bool Equals(IDataListItemModel other) => string.Equals(Description, other.Description)
                 && HasError == other.HasError
                 && string.Equals(ErrorMessage, other.ErrorMessage)
                 && IsEditable == other.IsEditable
                 && IsVisible == other.IsVisible
-                && IsSelected == other.IsSelected 
+                && IsSelected == other.IsSelected
                 && IsUsed == other.IsUsed
-                && AllowNotes == other.AllowNotes 
+                && AllowNotes == other.AllowNotes
                 && IsComplexObject == other.IsComplexObject
-                && string.Equals(DisplayName, other.DisplayName) 
-                && ColumnIODirection == other.ColumnIODirection   
+                && string.Equals(DisplayName, other.DisplayName)
+                && ColumnIODirection == other.ColumnIODirection
                 && string.Equals(Name, other.Name)
                 && Equals(IsBlank, other.IsBlank)
                 && Equals(Output, other.Output)
                 && Equals(Input, other.Input);
-        }
 
         public override bool Equals(object obj)
         {

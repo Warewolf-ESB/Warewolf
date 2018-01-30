@@ -94,10 +94,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Ctor
 
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
 
         /// <summary>
@@ -263,10 +260,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.MixedActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
         void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, ref ErrorResultTO errorTos, int update)
         {
@@ -299,10 +293,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return _debugOutputs;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
         #endregion
 
@@ -426,7 +417,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -498,10 +489,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Implementation of ICollectionActivity
 
-        public int GetCollectionCount()
-        {
-            return ResultsCollection.Count(findRecordsTo => !findRecordsTo.CanRemove());
-        }
+        public int GetCollectionCount() => ResultsCollection.Count(findRecordsTo => !findRecordsTo.CanRemove());
 
         public IList<FindRecordsTO> ResultsCollection { get; set; }
 

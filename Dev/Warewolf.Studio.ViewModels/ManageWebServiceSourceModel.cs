@@ -32,14 +32,14 @@ namespace Warewolf.Studio.ViewModels
             _updateRepository.TestConnection(resource);
         }
 
-        public void Save(IWebServiceSource resource)
+        public void Save(IWebServiceSource toDbSource)
         {
-            _updateRepository.Save(resource);
+            _updateRepository.Save(toDbSource);
         }
 
-        public IWebServiceSource FetchSource(Guid resourceID)
+        public IWebServiceSource FetchSource(Guid id)
         {
-            var xaml = _queryProxy.FetchResourceXaml(resourceID);
+            var xaml = _queryProxy.FetchResourceXaml(id);
             var db = new WebSource(xaml.ToXElement());
 
             var def = new WebServiceSourceDefinition(db);

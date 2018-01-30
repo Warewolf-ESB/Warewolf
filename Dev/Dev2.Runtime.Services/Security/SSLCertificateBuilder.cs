@@ -69,10 +69,7 @@ namespace Dev2.Runtime.Security
             return result;
         }
 
-        static string AuthorityName()
-        {
-            return Guid.NewGuid().ToString();
-        }
+        static string AuthorityName() => Guid.NewGuid().ToString();
 
         public static bool BindSslCertToPorts(IPEndPoint endPoint, string sslCertPath)
         {

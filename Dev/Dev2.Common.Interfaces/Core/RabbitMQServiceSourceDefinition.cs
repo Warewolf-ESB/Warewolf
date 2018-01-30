@@ -56,10 +56,7 @@ namespace Dev2.Common.Interfaces.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(IRabbitMQServiceSourceDefinition other)
-        {
-            return Equals(other as RabbitMQServiceSourceDefinition);
-        }
+        public bool Equals(IRabbitMQServiceSourceDefinition other) => Equals(other as RabbitMQServiceSourceDefinition);
 
         #endregion Equality members
 

@@ -117,10 +117,7 @@ namespace Dev2
         /// <summary>
         /// Checks if the info contained in data is well formed XML
         /// </summary>
-        public static bool IsXml(string data, out bool isFragment)
-        {
-            return IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
-        }
+        public static bool IsXml(string data, out bool isFragment) => IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
 
         /// <summary>
         /// Checks if the info contained in data is well formed XML

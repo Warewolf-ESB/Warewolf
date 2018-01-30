@@ -20,9 +20,6 @@ namespace Dev2.Data
             return x.Equals(y);
         }
 
-        public int GetHashCode(Dev2Decision obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(Dev2Decision obj) => obj.GetHashCode();
     }
 }

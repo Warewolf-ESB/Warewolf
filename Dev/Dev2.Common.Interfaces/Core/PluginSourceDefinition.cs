@@ -36,15 +36,11 @@ namespace Dev2.Common.Interfaces.Core
         }
         #region Equality members
 
-        public bool Equals(IPluginSource other)
-        {
-            
-            return string.Equals(Name, other.Name) &&
+        public bool Equals(IPluginSource other) => string.Equals(Name, other.Name) &&
                 string.Equals(Path, other.Path) &&
                 string.Equals(ConfigFilePath, other.ConfigFilePath) &&
                 string.Equals(FileSystemAssemblyName, other.FileSystemAssemblyName) &&
                 string.Equals(GACAssemblyName, other.GACAssemblyName);
-        }
 
 
         /// <summary>
@@ -90,15 +86,9 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(PluginSourceDefinition left, PluginSourceDefinition right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(PluginSourceDefinition left, PluginSourceDefinition right) => Equals(left, right);
 
-        public static bool operator !=(PluginSourceDefinition left, PluginSourceDefinition right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(PluginSourceDefinition left, PluginSourceDefinition right) => !Equals(left, right);
 
         #endregion
 

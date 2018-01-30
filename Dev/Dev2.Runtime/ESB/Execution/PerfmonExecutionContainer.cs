@@ -67,10 +67,7 @@ namespace Dev2.Runtime.ESB.Execution
             
         }
 
-        public IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
-        {
-            return Container.Execute(inputs,activity);
-        }
+        public IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => Container.Execute(inputs, activity);
 
         public string InstanceOutputDefinition
         {
@@ -95,10 +92,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        public IDSFDataObject GetDataObject()
-        {
-            return _container.GetDataObject();
-        }
+        public IDSFDataObject GetDataObject() => _container.GetDataObject();
 
         public IEsbExecutionContainer Container => _container;
 

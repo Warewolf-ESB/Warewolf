@@ -28,18 +28,20 @@ namespace Dev2.Activities.WcfEndPoint
             DisplayName = "WCF Service";
         }
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            errors = new ErrorResultTO();
+            tmpErrors = new ErrorResultTO();
             if (Method == null)
             {
-                errors.AddError(ErrorResource.NoMethodSelected);
+                tmpErrors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
-            ExecuteService(update, out errors, Method, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
+            ExecuteService(update, out tmpErrors, Method, dataObject, OutputFormatterFactory.CreateOutputFormatter(OutputDescription));
         }
 
-        protected void ExecuteService(int update, out ErrorResultTO errors, IWcfAction method, IDSFDataObject dataObject, IOutputFormatter formater = null)
+        protected void ExecuteService(int update, out ErrorResultTO errors, IWcfAction method, IDSFDataObject dataObject) => ExecuteService(update, out errors, method, dataObject, null);
+
+        protected void ExecuteService(int update, out ErrorResultTO errors, IWcfAction method, IDSFDataObject dataObject, IOutputFormatter formater)
         {
             errors = new ErrorResultTO();
             Source = ResourceCatalog.GetResource<WcfSource>(dataObject.WorkspaceID, SourceId);
@@ -83,10 +85,7 @@ namespace Dev2.Activities.WcfEndPoint
         }
         public IResponseManager ResponseManager { get; set; }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(DsfWcfEndPointActivity other)
         {

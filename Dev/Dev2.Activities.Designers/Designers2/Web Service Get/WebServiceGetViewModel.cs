@@ -295,7 +295,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             HasLargeView = true;
         }
 
-        public void SetDisplayName(string outputFieldName)
+        public void SetDisplayName(string displayName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
@@ -304,22 +304,17 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
                 DisplayName = DisplayName.Remove(index);
             }
 
-            var displayName = DisplayName;
-
             if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
             {
                 DisplayName = displayName;
             }
-            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            if (!string.IsNullOrWhiteSpace(displayName))
             {
-                DisplayName = displayName + outputFieldName;
+                DisplayName = displayName + displayName;
             }
         }
 
-        public IHeaderRegion GetHeaderRegion()
-        {
-            return InputArea;
-        }
+        public IHeaderRegion GetHeaderRegion() => InputArea;
 
         public Runtime.Configuration.ViewModels.Base.DelegateCommand FixErrorsCommand { get; set; }
 

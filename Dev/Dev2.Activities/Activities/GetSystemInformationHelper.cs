@@ -67,15 +67,9 @@ namespace Dev2.Activities
     {
         #region Implementation of IGetSystemInformation
 
-        public string GetOperatingSystemInformation()
-        {
-            return GetOperatingSystemProperty("Caption");
-        }
+        public string GetOperatingSystemInformation() => GetOperatingSystemProperty("Caption");
 
-        public string GetOperatingSystemVersionInformation()
-        {
-            return GetOperatingSystemProperty("Version");
-        }
+        public string GetOperatingSystemVersionInformation() => GetOperatingSystemProperty("Version");
 
         string GetOperatingSystemProperty(string property)
         {
@@ -103,10 +97,7 @@ namespace Dev2.Activities
             return stringBuilder.ToString();
         }
 
-        public virtual string GetFullDateTimeInformation()
-        {
-            return DateTime.Now.ToString(GlobalConstants.PreviousGlobalDefaultNowFormat);
-        }
+        public virtual string GetFullDateTimeInformation() => DateTime.Now.ToString(GlobalConstants.PreviousGlobalDefaultNowFormat);
 
         public virtual string GetDateTimeFormatInformation()
         {
@@ -295,26 +286,13 @@ namespace Dev2.Activities
             return stringBuilder.ToString().TrimEnd(',');
         }
 
-        public string GetUserNameInformation()
-        {
-            return Environment.UserName;
-        }
+        public string GetUserNameInformation() => Environment.UserName;
 
-        public string GetDomainInformation()
-        {
-            return Environment.UserDomainName;
-        }
+        public string GetDomainInformation() => Environment.UserDomainName;
 
-        public string GetComputerName()
-        {
-            return Environment.MachineName;
-        }
+        public string GetComputerName() => Environment.MachineName;
 
-
-        public string GetWareWolfVersion()
-        {
-            return GetServerVersion.GetVersion();
-        }
+        public string GetWareWolfVersion() => GetServerVersion.GetVersion();
 
         public string GetWarewolfServerMemory()
         {
@@ -357,15 +335,9 @@ namespace Dev2.Activities
             return string.Join(",", macs);
         }
 
-        public string GetIPv4Adresses()
-        {
-            return GetIPAddress(AddressFamily.InterNetwork);
-        }
+        public string GetIPv4Adresses() => GetIPAddress(AddressFamily.InterNetwork);
 
-        public string GetIPv6Adresses()
-        {
-            return GetIPAddress(AddressFamily.InterNetworkV6);
-        }
+        public string GetIPv6Adresses() => GetIPAddress(AddressFamily.InterNetworkV6);
 
         string GetIPAddress(AddressFamily ipv)
         {

@@ -211,10 +211,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
-        {
-            return null;
-        }
+        public IToolRegion CloneRegion() => null;
 
         public void RestoreRegion(IToolRegion toRestore)
         {

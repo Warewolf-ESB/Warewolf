@@ -25,9 +25,6 @@ namespace Dev2.Providers.Validation.Rules
         {
         }
 
-        protected override bool IsValid(string item)
-        {
-            return item.IsEmail();
-        }
+        protected override bool IsValid(string item) => item.IsEmail();
     }
 }

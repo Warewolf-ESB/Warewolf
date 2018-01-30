@@ -40,9 +40,6 @@ namespace Dev2.Runtime.WebServer.Responses
             stream.Write();
         }
 
-        protected virtual Stream OpenFileStream()
-        {
-            return File.Open(_file, FileMode.Open, FileAccess.Read, FileShare.Read);
-        }
+        protected virtual Stream OpenFileStream() => File.Open(_file, FileMode.Open, FileAccess.Read, FileShare.Read);
     }
 }

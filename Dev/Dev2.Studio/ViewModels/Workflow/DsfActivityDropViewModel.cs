@@ -105,13 +105,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Commands
 
-        public RelayCommand OkCommand
-        {
-            get
-            {
-                return _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Okay(), param => CanOkay));
-            }
-        }
+        public RelayCommand OkCommand => _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Okay(), param => CanOkay));
+
         public bool CanOkay => CanSelect();
 
 
@@ -140,13 +135,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return explorerItemModel != null && isMatched;
         }
 
-        public ICommand CancelCommand
-        {
-            get
-            {
-                return _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
-            }
-        }
+        public ICommand CancelCommand => _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
 
         #endregion Cammands
 

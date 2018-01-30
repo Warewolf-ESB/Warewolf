@@ -67,8 +67,9 @@ namespace Dev2.Activities.Designers2.PostgreSql
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Database_PostgreSQL;
         }
 
-        
-        Guid UniqueId { get { return GetProperty<Guid>(); } }
+
+        Guid UniqueId => GetProperty<Guid>();
+
         void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
@@ -433,7 +434,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
             }
         }
 
-        public void SetDisplayName(string outputFieldName)
+        public void SetDisplayName(string displayName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
@@ -442,15 +443,13 @@ namespace Dev2.Activities.Designers2.PostgreSql
                 DisplayName = DisplayName.Remove(index);
             }
 
-            var displayName = DisplayName;
-
             if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
             {
                 DisplayName = displayName;
             }
-            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            if (!string.IsNullOrWhiteSpace(displayName))
             {
-                DisplayName = displayName + outputFieldName;
+                DisplayName = displayName + displayName;
             }
         }
 

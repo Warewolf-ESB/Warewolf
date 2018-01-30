@@ -44,10 +44,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return dateTime.ToString(Format);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
 
         #endregion Override Mehods
     }

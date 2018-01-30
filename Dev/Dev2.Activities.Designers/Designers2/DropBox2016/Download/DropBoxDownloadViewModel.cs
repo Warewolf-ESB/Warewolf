@@ -80,13 +80,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
         }
         
         public RelayCommand EditDropboxSourceCommand { get; private set; }
-        public bool IsDropboxSourceSelected
-        {
-            get
-            {
-                return SelectedSource != null;
-            }
-        }
+        public bool IsDropboxSourceSelected => SelectedSource != null;
 
         public string ToPath
         {
@@ -196,13 +190,10 @@ namespace Dev2.Activities.Designers2.DropBox2016.Download
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName = null)
+        protected void OnPropertyChanged() => OnPropertyChanged(null);
+        protected void OnPropertyChanged(string propertyName)
         {
-            var handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
 

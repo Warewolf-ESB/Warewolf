@@ -20,10 +20,7 @@ namespace Dev2.PathOperations
     /// </summary>
     public class Dev2PutOperationTOFactory
     {
-    
-        public IFileWrite CreateDev2PutOperationTO(bool append, string content, bool overwrite)
-        {
-            return new Dev2PutOperationTO(append, content, overwrite);
-        }
+
+        public IFileWrite CreateDev2PutOperationTO(bool append, string content, bool overwrite) => new Dev2PutOperationTO(append, content, overwrite);
     }
 }

@@ -352,17 +352,41 @@ namespace Dev2.Studio.ViewModels
                 OpenMergeConflictsView(ActiveItem as IExplorerItemViewModel, resourceId, ActiveServer);
             }));
         }
-        public IVersionChecker Version { get; }
 
-        [ExcludeFromCodeCoverage]
+        public IVersionChecker Version { get; }
+        
         public ShellViewModel()
             : this(EventPublishers.Aggregator, new AsyncWorker(), CustomContainer.Get<IServerRepository>(), new VersionChecker(), new ViewFactory())
         {
         }
 
         public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
-            IVersionChecker versionChecker, IViewFactory factory, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            IPopupController popupController = null, IExplorerViewModel explorer = null)
+            IVersionChecker versionChecker, IViewFactory factory)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, true, null, null, null)
+        {
+        }
+
+        public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
+            IVersionChecker versionChecker, IViewFactory factory, bool createDesigners)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, null, null, null)
+        {
+        }
+
+        public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
+            IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, null, null)
+        {
+        }
+
+        public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
+            IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController, IPopupController popupController)
+            : this(eventPublisher, asyncWorker, serverRepository, versionChecker, factory, createDesigners, browserPopupController, popupController, null)
+        {
+        }
+
+        public ShellViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IServerRepository serverRepository,
+            IVersionChecker versionChecker, IViewFactory factory, bool createDesigners, IBrowserPopupController browserPopupController,
+            IPopupController popupController, IExplorerViewModel explorer)
             : base(eventPublisher)
         {
             _file = new FileWrapper();
@@ -850,40 +874,25 @@ namespace Dev2.Studio.ViewModels
             return workSurfaceContextViewModel;
         }
 
-        ManageMySqlSourceViewModel ProcessMySQLDBSource(IDbSource def)
-        {
-            return new ManageMySqlSourceViewModel(
+        ManageMySqlSourceViewModel ProcessMySQLDBSource(IDbSource def) => new ManageMySqlSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
-        }
 
-        ManagePostgreSqlSourceViewModel ProcessPostgreSQLDBSource(IDbSource def)
-        {
-            return new ManagePostgreSqlSourceViewModel(
+        ManagePostgreSqlSourceViewModel ProcessPostgreSQLDBSource(IDbSource def) => new ManagePostgreSqlSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
-        }
 
-        ManageOracleSourceViewModel ProcessOracleDBSource(IDbSource def)
-        {
-            return new ManageOracleSourceViewModel(
+        ManageOracleSourceViewModel ProcessOracleDBSource(IDbSource def) => new ManageOracleSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
-        }
 
-        ManageOdbcSourceViewModel ProcessODBCDBSource(IDbSource def)
-        {
-            return new ManageOdbcSourceViewModel(
+        ManageOdbcSourceViewModel ProcessODBCDBSource(IDbSource def) => new ManageOdbcSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
-        }
 
-        ManageSqlServerSourceViewModel ProcessSQLDBSource(IDbSource def)
-        {
-            return new ManageSqlServerSourceViewModel(
+        ManageSqlServerSourceViewModel ProcessSQLDBSource(IDbSource def) => new ManageSqlServerSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
-        }
 
         private static IDbSource CreateDbSource(IContextualResourceModel contextualResourceModel, WorkSurfaceContext workSurfaceContext)
         {
@@ -1029,15 +1038,12 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)
-        {
-            return Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
-        }
+        WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key) => Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
 
-        public void CloseResource(IContextualResourceModel contextualResourceModel, Guid environmentId)
+        public void CloseResource(IContextualResourceModel currentResourceModel, Guid environmentId)
         {
             var environmentModel = ServerRepository.Get(environmentId);
-            Close(contextualResourceModel);
+            Close(currentResourceModel);
         }
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
@@ -1071,105 +1077,102 @@ namespace Dev2.Studio.ViewModels
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);
         }
 
-        public void ShowPopup(IPopupMessage popupMessage)
+        public void ShowPopup(IPopupMessage getDuplicateMessage) => PopupProvider.Show(getDuplicateMessage.Description, getDuplicateMessage.Header, getDuplicateMessage.Buttons, MessageBoxImage.Error, "", false, true, false, false, false, false);
+
+        public void EditSqlServerResource(IDbSource selectedSource) => EditSqlServerResource(selectedSource, null);
+
+        public void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
-            PopupProvider.Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, MessageBoxImage.Error, "", false, true, false, false, false, false);
+            key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.SqlServerSource, selectedSource.Id);
+            ProcessDBSource(ProcessSQLDBSource(selectedSource), key as WorkSurfaceKey);
         }
 
-        public void EditSqlServerResource(IDbSource selectedSourceDefinition) => EditSqlServerResource(selectedSourceDefinition, null);
+        public void EditMySqlResource(IDbSource selectedSource) => EditMySqlResource(selectedSource, null);
 
-        public void EditSqlServerResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
+        public void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
-            workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.SqlServerSource, selectedSourceDefinition.Id);
-            ProcessDBSource(ProcessSQLDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
+            key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.MySqlSource, selectedSource.Id);
+            ProcessDBSource(ProcessMySQLDBSource(selectedSource), key as WorkSurfaceKey);
         }
 
-        public void EditMySqlResource(IDbSource selectedSourceDefinition) => EditMySqlResource(selectedSourceDefinition, null);
+        public void EditPostgreSqlResource(IDbSource selectedSource) => EditPostgreSqlResource(selectedSource, null);
 
-        public void EditMySqlResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
+        public void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
-            workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.MySqlSource, selectedSourceDefinition.Id);
-            ProcessDBSource(ProcessMySQLDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
+            key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.PostgreSqlSource, selectedSource.Id);
+            ProcessDBSource(ProcessPostgreSQLDBSource(selectedSource), key as WorkSurfaceKey);
         }
 
-        public void EditPostgreSqlResource(IDbSource selectedSourceDefinition) => EditPostgreSqlResource(selectedSourceDefinition, null);
+        public void EditOracleResource(IDbSource selectedSource) => EditOracleResource(selectedSource, null);
 
-        public void EditPostgreSqlResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
+        public void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
-            workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.PostgreSqlSource, selectedSourceDefinition.Id);
-            ProcessDBSource(ProcessPostgreSQLDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
+            key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.OracleSource, selectedSource.Id);
+            ProcessDBSource(ProcessOracleDBSource(selectedSource), key as WorkSurfaceKey);
         }
 
-        public void EditOracleResource(IDbSource selectedSourceDefinition) => EditOracleResource(selectedSourceDefinition, null);
+        public void EditOdbcResource(IDbSource selectedSource) => EditOdbcResource(selectedSource, null);
 
-        public void EditOracleResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
+        public void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
-            workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OracleSource, selectedSourceDefinition.Id);
-            ProcessDBSource(ProcessOracleDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
-        }
-
-        public void EditOdbcResource(IDbSource selectedSourceDefinition) => EditOdbcResource(selectedSourceDefinition, null);
-
-        public void EditOdbcResource(IDbSource selectedSourceDefinition, IWorkSurfaceKey workSurfaceKey)
-        {
-            workSurfaceKey = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OdbcSource, selectedSourceDefinition.Id);
-            ProcessDBSource(ProcessODBCDBSource(selectedSourceDefinition), workSurfaceKey as WorkSurfaceKey);
+            key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.OdbcSource, selectedSource.Id);
+            ProcessDBSource(ProcessODBCDBSource(selectedSource), key as WorkSurfaceKey);
         }
 
         public void EditResource(IPluginSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey)
+        public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key)
         {
             var view = _factory.GetViewGivenServerResourceType("PluginSource");
-            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
+            _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
         public void EditResource(IWebServiceSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey)
+        public void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key)
         {
             var view = _factory.GetViewGivenServerResourceType("WebSource");
-            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
+            _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
         public void EditResource(IEmailServiceSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey)
+        public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key)
         {
             var view = _factory.GetViewGivenServerResourceType("EmailSource");
-            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
+            _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
         public void EditResource(IExchangeSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey)
+        public void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key)
         {
             var view = _factory.GetViewGivenServerResourceType("ExchangeSource");
-            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
+            _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
         public void EditResource(IRabbitMQServiceSourceDefinition selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey workSurfaceKey)
+        public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key)
         {
             var view = _factory.GetViewGivenServerResourceType("RabbitMQSource");
-            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
+            _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
         public void EditResource(IWcfServerSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey)
+        public void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key)
         {
             var view = _factory.GetViewGivenServerResourceType("WcfSource");
-            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
+            _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
         public void EditResource(IComPluginSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey)
+        public void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey key)
         {
             var view = _factory.GetViewGivenServerResourceType("ComPluginSource");
-            _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
+            _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
         public void NewService(string resourcePath)
@@ -1561,7 +1564,11 @@ namespace Dev2.Studio.ViewModels
             return workflow;
         }
 
-        public void DeleteResources(ICollection<IContextualResourceModel> models, string folderName, bool showConfirm = true, System.Action actionToDoOnDelete = null)
+        public void DeleteResources(ICollection<IContextualResourceModel> models, string folderName) => DeleteResources(models, folderName, true, null);
+
+        public void DeleteResources(ICollection<IContextualResourceModel> models, string folderName, bool showConfirm) => DeleteResources(models, folderName, showConfirm, null);
+
+        public void DeleteResources(ICollection<IContextualResourceModel> models, string folderName, bool showConfirm, System.Action actionToDoOnDelete)
         {
             if (models == null || showConfirm && !ConfirmDelete(models, folderName))
             {
@@ -1651,20 +1658,16 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public bool IsWorkFlowOpened(IContextualResourceModel resource)
-        {
-            return _worksurfaceContextManager.IsWorkFlowOpened(resource);
-        }
+        public bool IsWorkFlowOpened(IContextualResourceModel resource) => _worksurfaceContextManager.IsWorkFlowOpened(resource);
 
         public void AddWorkSurfaceContext(IContextualResourceModel resourceModel)
         {
             _worksurfaceContextManager.AddWorkSurfaceContext(resourceModel);
         }
 
-        public void PersistTabs(bool isStudioShutdown = false)
-        {
-            SaveAndShutdown(isStudioShutdown);
-        }
+        public void PersistTabs() => PersistTabs(false);
+
+        public void PersistTabs(bool isStudioShutdown) => SaveAndShutdown(isStudioShutdown);
 
         void SaveAndShutdown(bool isStudioShutdown)
         {
@@ -1863,10 +1866,7 @@ namespace Dev2.Studio.ViewModels
             return workflowDesignerViewModel;
         }
 
-        public static bool IsDownloading()
-        {
-            return false;
-        }
+        public static bool IsDownloading() => false;
 
         public async Task<bool> CheckForNewVersionAsync()
         {

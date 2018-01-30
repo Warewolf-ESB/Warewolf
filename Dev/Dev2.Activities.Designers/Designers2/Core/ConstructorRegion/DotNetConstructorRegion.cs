@@ -155,10 +155,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             }
         }
 
-        public bool CanRefresh()
-        {
-            return IsConstructorEnabled;
-        }
+        public bool CanRefresh() => IsConstructorEnabled;
 
         public IPluginConstructor SelectedConstructor
         {
@@ -270,19 +267,16 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
         }
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new DotNetConstructorRegion
         {
-            return new DotNetConstructorRegion
+            IsEnabled = IsEnabled,
+            SelectedConstructor = SelectedConstructor == null ? null : new PluginConstructor
             {
-                IsEnabled = IsEnabled,
-                SelectedConstructor = SelectedConstructor == null ? null : new PluginConstructor
-                {
-                    Inputs = SelectedConstructor.Inputs,
-                    ConstructorName = SelectedConstructor.ConstructorName,
-                    ReturnObject = SelectedConstructor.ReturnObject
-                }
-            };
-        }
+                Inputs = SelectedConstructor.Inputs,
+                ConstructorName = SelectedConstructor.ConstructorName,
+                ReturnObject = SelectedConstructor.ReturnObject
+            }
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {
@@ -326,10 +320,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             }
         }
 
-        bool IsAPreviousValue(IPluginConstructor value)
-        {
-            return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
-        }
+        bool IsAPreviousValue(IPluginConstructor value) => value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
 
         public IList<string> Errors
         {

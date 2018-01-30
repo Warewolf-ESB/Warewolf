@@ -32,15 +32,15 @@ namespace Dev2.Activities
             DisplayName = "SQL Server Database";
         }
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             var execErrors = new ErrorResultTO();
 
-            errors = new ErrorResultTO();
-            errors.MergeErrors(execErrors);
+            tmpErrors = new ErrorResultTO();
+            tmpErrors.MergeErrors(execErrors);
             if (string.IsNullOrEmpty(ProcedureName))
             {
-                errors.AddError(ErrorResource.NoActionsInSelectedDB);
+                tmpErrors.AddError(ErrorResource.NoActionsInSelectedDB);
                 return;
             }
             if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
@@ -59,7 +59,7 @@ namespace Dev2.Activities
             {
                 dataObject.Environment.Errors.Add(error);
             }
-            errors.MergeErrors(execErrors);
+            tmpErrors.MergeErrors(execErrors);
         }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
@@ -102,10 +102,7 @@ namespace Dev2.Activities
         }
 
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(DsfSqlServerDatabaseActivity other)
         {

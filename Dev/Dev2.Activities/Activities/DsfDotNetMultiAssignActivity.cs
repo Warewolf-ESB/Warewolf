@@ -68,10 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _fieldsCollection = new List<ActivityDTO>();
         }
 
-        public override List<string> GetOutputs()
-        {
-            return FieldsCollection.Select(dto => dto.FieldName).ToList();
-        }          
+        public override List<string> GetOutputs() => FieldsCollection.Select(dto => dto.FieldName).ToList();
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -382,10 +379,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -419,28 +413,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
-        {
-            return _debugOutputs;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return (from item in FieldsCollection
-                    where !string.IsNullOrEmpty(item.FieldValue) && item.FieldValue.Contains("[[")
-                    select new DsfForEachItem { Name = item.FieldName, Value = item.FieldValue }).ToList();
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => (from item in FieldsCollection
+                                                                     where !string.IsNullOrEmpty(item.FieldValue) && item.FieldValue.Contains("[[")
+                                                                     select new DsfForEachItem { Name = item.FieldName, Value = item.FieldValue }).ToList();
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return (from item in FieldsCollection
-                    where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
-                    select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => (from item in FieldsCollection
+                                                                      where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
+                                                                      select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
     }
 }

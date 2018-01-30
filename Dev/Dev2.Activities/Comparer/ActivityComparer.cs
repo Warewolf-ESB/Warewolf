@@ -22,9 +22,6 @@ namespace Dev2.Comparer
                 && string.Equals(x.Id, y.Id);
         }
 
-        public int GetHashCode(Activity obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(Activity obj) => 1;
     }
 }

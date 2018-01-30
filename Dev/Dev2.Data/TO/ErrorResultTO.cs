@@ -60,10 +60,7 @@ namespace Dev2.Data.TO
         /// Fetches the errors.
         /// </summary>
         /// <returns></returns>
-        public IList<string> FetchErrors()
-        {
-            return _errorList.Select(e=>e.ToString()).ToList();
-        }
+        public IList<string> FetchErrors() => _errorList.Select(e => e.ToString()).ToList();
 
         /// <summary>
         /// Determines whether this instance has errors.>	Dev2.Data.dll!Dev2.DataList.Contract.ErrorResultTO.FetchErrors() Line 59	C#
@@ -72,10 +69,7 @@ namespace Dev2.Data.TO
         /// <returns>
         ///   <c>true</c> if this instance has errors; otherwise, <c>false</c>.
         /// </returns>
-        public bool HasErrors()
-        {
-            return _errorList.Count > 0;
-        }
+        public bool HasErrors() => _errorList.Count > 0;
 
         /// <summary>
         /// Merges the errors.

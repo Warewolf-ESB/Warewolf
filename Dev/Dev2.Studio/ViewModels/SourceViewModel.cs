@@ -50,10 +50,7 @@ namespace Dev2.ViewModels
         public override bool HasVariables => false;
         public override bool HasDebugOutput => false;
 
-        public override object GetView(object context = null)
-        {
-            return View;
-        }
+        public override object GetView(object context = null) => View;
 
         protected override void OnViewAttached(object view, object context)
         {
@@ -178,21 +175,15 @@ namespace Dev2.ViewModels
             return true;
         }
 
-        MessageBoxResult IsDirtyPopup()
-        {
-            return _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
+        MessageBoxResult IsDirtyPopup() => _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
                                     $"Save {ViewModel.Header.Replace("*", "")}?",
                                                       MessageBoxButton.YesNoCancel,
                                                       MessageBoxImage.Information, "", false, false, true, false, false, false);
-        }
 
-        MessageBoxResult HasChangedPopup()
-        {
-            return _popupController.Show(string.Format(StringResources.ItemSource_HasChanged_NotTested),
+        MessageBoxResult HasChangedPopup() => _popupController.Show(string.Format(StringResources.ItemSource_HasChanged_NotTested),
                                     $"Test {ViewModel.Header.Replace("*", "")}?",
                                                       MessageBoxButton.YesNo,
                                                       MessageBoxImage.Information, "", false, false, true, false, false, false);
-        }
 
         #endregion
     }

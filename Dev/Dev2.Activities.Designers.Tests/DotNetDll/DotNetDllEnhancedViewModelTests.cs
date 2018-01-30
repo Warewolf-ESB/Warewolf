@@ -848,8 +848,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(outputsRegion);
             Assert.AreEqual(true, outputsRegion.IsObject);
             Assert.AreEqual("@Human", outputsRegion.ObjectName);
-            //Assert.AreEqual(humanString.RemoveWhiteSpace().Replace(Environment.NewLine,"").TrimStart().TrimEnd()
-            //    , outputsRegion.ObjectResult.RemoveWhiteSpace().Replace(Environment.NewLine, "").TrimStart().TrimEnd());
             Assert.AreEqual(0, outputsRegion.Outputs.Count);
             Assert.AreEqual(1, outputsRegion.Dependants.Count);
             Assert.AreEqual("OutputsRegion", outputsRegion.ToolRegionName);

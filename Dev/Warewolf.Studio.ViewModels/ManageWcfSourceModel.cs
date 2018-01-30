@@ -32,9 +32,9 @@ namespace Warewolf.Studio.ViewModels
             _updateRepository.TestConnection(resource);
         }
 
-        public void Save(IWcfServerSource resource)
+        public void Save(IWcfServerSource toSource)
         {
-            _updateRepository.Save(resource);
+            _updateRepository.Save(toSource);
         }
 
         public string ServerName { get; set; }

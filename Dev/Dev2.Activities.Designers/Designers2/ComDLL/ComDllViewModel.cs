@@ -516,7 +516,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             }
         }
 
-        public void SetDisplayName(string outputFieldName)
+        public void SetDisplayName(string displayName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
@@ -525,15 +525,13 @@ namespace Dev2.Activities.Designers2.ComDLL
                 DisplayName = DisplayName.Remove(index);
             }
 
-            var displayName = DisplayName;
-
             if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
             {
                 DisplayName = displayName;
             }
-            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            if (!string.IsNullOrWhiteSpace(displayName))
             {
-                DisplayName = displayName + outputFieldName;
+                DisplayName = displayName + displayName;
             }
         }
 

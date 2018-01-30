@@ -15,9 +15,6 @@ namespace Dev2.Scheduler
 {
     public class FileHelper : IFileHelper
     {
-        public string ReadAllText(string fileName)
-        {
-            return File.ReadAllText(fileName);
-        }
+        public string ReadAllText(string fileName) => File.ReadAllText(fileName);
     }
 }
