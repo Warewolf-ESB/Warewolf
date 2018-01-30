@@ -72,6 +72,8 @@ type WarewolfColumnData = WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRec
 ///Name of a Column
 type WarewolfColumnHeader = string
 
+exception WarewolfInvalidComparisonException of string
+
 /// A Recordset is a dictionary od strings to lists of attoms
 /// Last index is maintained as well as the count
 [<ExcludeFromCodeCoverage>]
@@ -122,25 +124,25 @@ let CompareDataStringWithAtom(x : WarewolfAtom) (y : WarewolfAtom) =
         if (hasDecimalValue) then
             stringValue.CompareTo(decimal b)
         else
-            raise (System.InvalidOperationException "incompatible types in comparison")
+            raise (WarewolfInvalidComparisonException "incompatible types in comparison")
     | (DataString a, Float b) ->
         let hasDecimalValue = System.Decimal.TryParse(a, &stringValue)
         if (hasDecimalValue) then
             stringValue.CompareTo(decimal b)
         else
-            raise (System.InvalidOperationException "incompatible types in comparison")
+            raise (WarewolfInvalidComparisonException "incompatible types in comparison")
     | (Float a, DataString b) ->
         let hasDecimalValue = System.Decimal.TryParse(b, &stringValue)
         if (hasDecimalValue) then
             (decimal a).CompareTo(stringValue)
         else
-            raise (System.InvalidOperationException "incompatible types in comparison")
+            raise (WarewolfInvalidComparisonException "incompatible types in comparison")
     | (Int a, DataString b) ->
         let hasDecimalValue = System.Decimal.TryParse(b, &stringValue)
         if (hasDecimalValue) then
             (decimal a).CompareTo(stringValue)
         else
-            raise (System.InvalidOperationException "incompatible types in comparison")
+            raise (WarewolfInvalidComparisonException "incompatible types in comparison")
     | (a, b) -> failwith "unexpected datastring comparison"
 
 
