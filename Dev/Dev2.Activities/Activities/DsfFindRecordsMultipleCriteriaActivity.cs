@@ -32,6 +32,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using Dev2.Common.Interfaces.Data.TO;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -40,7 +41,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Activity for finding records accoring to a search criteria that the user specifies
     /// </New>
     [ToolDescriptorInfo("RecordSet-FindRecords", "Find Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Find_Records")]
-    public class DsfFindRecordsMultipleCriteriaActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfFindRecordsMultipleCriteriaActivity>
+    public class DsfFindRecordsMultipleCriteriaActivity : DsfActivityAbstract<string>, ICollectionActivity, IEquatable<DsfFindRecordsMultipleCriteriaActivity>
     {
         #region Properties
 
@@ -111,256 +112,52 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ExecuteTool(dataObject, 0);
         }
 
+        class B : A
+        {
+            public B(DsfFindRecordsMultipleCriteriaActivity activity, bool RequireAllFieldsToMatch, bool RequireAllTrue)
+                : base(activity, RequireAllFieldsToMatch, RequireAllTrue)
+            {
+            }
+
+            public override void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, ref ErrorResultTO errorTos, int update)
+            {
+                activity.AddDebugInputValues(dataObject, toSearch, ref errorTos, update);
+            }
+
+            public override void AddDebugOutputItem(DebugOutputBase debugItem)
+            {
+                activity.AddDebugOutputItem(debugItem);
+            }
+
+            public override void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update)
+            {
+                activity.DispatchDebugState(dataObject, stateType, update);
+            }
+
+            public override void InitializeDebug(IDSFDataObject dataObject)
+            {
+                activity.InitializeDebug(dataObject);
+            }
+
+            protected override void DisplayAndWriteError(string serviceName, IErrorResultTO errors)
+            {
+                
+            }
+        }
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            var env = dataObject.Environment;
-
-            // Local Functions
-            //-------------------------------------------------------------------------------------
-            #region local-functions
-            void ApplyResultsToEnvironment(IList<int> results)
+            var b = new B(this, RequireAllFieldsToMatch, RequireAllTrue)
             {
-                var distinctResults = results.Distinct();
-                if (DataListUtil.IsValueScalar(Result))
-                {
-                    var res = string.Join(",", distinctResults);
-                    env.Assign(Result, res, update);
-                }
-                else
-                {
-                    foreach (var distinctResult in distinctResults)
-                    {
-                        env.Assign(Result, distinctResult.ToString(), update);
-                    }
-                }
-            }
-            IEnumerable<int> GetResultsForField(string searchvar)
-            {
-                Func<DataStorage.WarewolfAtom, bool> func = null;
-                foreach (FindRecordsTO criteria in ResultsCollection.Where(a => !String.IsNullOrEmpty(a.SearchType)))
-                {
-                    if (criteria.From.Length > 0 && String.IsNullOrEmpty(criteria.To)
-                       || criteria.To.Length > 0 && String.IsNullOrEmpty(criteria.From))
-                    {
-                        throw new Exception(ErrorResource.FROMAndTORequired);
-                    }
-                    ValidateRequiredFields(criteria, out _errorsTo);
-                    var right = env.EvalAsList(criteria.SearchCriteria, update);
-                    IEnumerable<DataStorage.WarewolfAtom> from = new List<DataStorage.WarewolfAtom>();
-                    IEnumerable<DataStorage.WarewolfAtom> tovalue = new List<DataStorage.WarewolfAtom>();
-
-                    if (!String.IsNullOrEmpty(criteria.From))
-                    {
-                        @from = env.EvalAsList(criteria.From, update);
-                    }
-                    if (!String.IsNullOrEmpty(criteria.To))
-                    {
-                        tovalue = env.EvalAsList(criteria.To, update);
-                    }
-                    func = BuildQueryExpression(ref func, criteria, right, from, tovalue);
-                }
-                return env.EvalWhere(env.ToStar(searchvar), func, update);
-            }
-            List<int> GetResults(IList<string> toSearch)
-            {
-                var hasEvaled = false;
-                var results = new List<int>();
-
-                foreach (var searchvar in toSearch)
-                {
-                    var output = GetResultsForField(searchvar);
-
-                    results = RequireAllFieldsToMatch && hasEvaled ? results.Intersect(output).ToList() : results.Union(output).ToList();
-                    hasEvaled = true;
-                }
-
-                if (!results.Any())
-                {
-                    results.Add(-1);
-                }
-
-                return results;
-            }
-
-            ref Func<DataStorage.WarewolfAtom, bool> BuildQueryExpression(ref Func<DataStorage.WarewolfAtom, bool> func, FindRecordsTO criteria, IEnumerable<DataStorage.WarewolfAtom> right, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> tovalue)
-            {
-                if (func == null)
-                {
-                    func = CreateFuncFromOperator(criteria.SearchType, right, @from, tovalue);
-                }
-                else if (RequireAllTrue)
-                {
-                    func = CombineFuncAnd(func, criteria.SearchType, right, @from, tovalue);
-                }
-                else
-                {
-                    func = CombineFuncOr(func, criteria.SearchType, right, @from, tovalue);
-                }
-
-                return ref func;
-            }
-
-            void ValidateSearchFields(IList<string> toSearch)
-            {
-                var scalarValues = toSearch.Where(DataListUtil.IsValueScalar).ToList();
-                if (scalarValues.Any())
-                {
-                    throw new Exception(ErrorResource.ScalarsNotAllowed + Environment.NewLine + string.Join(Environment.NewLine, scalarValues));
-                }
-            }
-            #endregion
-
-            InitializeDebug(dataObject);
-            var allErrors = new ErrorResultTO();
-
-            try
-            {
-                IList<string> toSearch = FieldsToSearch.Split(',')
-                                             .Select(a => a.Trim())
-                                             .ToList();
-
-                ValidateSearchFields(toSearch);
-
-                if (dataObject.IsDebugMode()) { AddDebugInputValues(dataObject, toSearch, ref allErrors, update); }
-
-                var results = GetResults(toSearch);
-                ApplyResultsToEnvironment(results);
-
-                if (dataObject.IsDebugMode())
-                {
-                    if (DataListUtil.IsValueRecordset(Result))
-                    {
-                        var recVar = DataListUtil.ReplaceRecordsetBlankWithStar(Result);
-                        AddDebugOutputItem(new DebugEvalResult(recVar, "", dataObject.Environment, update));
-                    }
-                    else
-                    {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                Dev2Logger.Error("DSFRecordsMultipleCriteria", exception, GlobalConstants.WarewolfError);
-                allErrors.AddError(exception.Message);
-            }
-            finally
-            {
-                var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
-                {
-                    DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result, "-1", update);
-                    if (dataObject.IsDebugMode())
-                    {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                    }
-                }
-
-                if (dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
-                }
-            }
-        }
-
-
-        Func<DataStorage.WarewolfAtom, bool> CombineFuncAnd(Func<DataStorage.WarewolfAtom, bool> func, string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
-        {
-            var func2 = CreateFuncFromOperator(searchType, values, from, to);
-
-            return a =>
-            {
-                try
-                {
-                    return func.Invoke(a) && func2.Invoke(a);
-                }
-                catch (DataStorage.WarewolfInvalidComparisonException ex)
-                {
-                    return false;
-                }
+                Result = Result
             };
+
+            //(Result, _errorsTo) = b.GetResult();
+            b.Execute(dataObject, update);
         }
 
-        Func<DataStorage.WarewolfAtom, bool> CombineFuncOr(Func<DataStorage.WarewolfAtom, bool> func, string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
+        internal void SetErrorsTO(ErrorResultTO errorTo)
         {
-            var func2 = CreateFuncFromOperator(searchType, values, from, to);
-            return a =>
-            {
-                bool CatchInvalidComparisons(Func<DataStorage.WarewolfAtom, bool> f)
-                {
-                    var ret = false;
-                    try
-                    {
-                        ret = f.Invoke(a);
-                        if (ret)
-                        {
-                            return ret;
-                        }
-                    }
-                    catch (DataStorage.WarewolfInvalidComparisonException ex)
-                    {
-                        ret = false;
-                    }
-                    return ret;
-                }
-                return CatchInvalidComparisons(func) || CatchInvalidComparisons(func2);
-
-                //try
-                //{
-                //    ret = func2.Invoke(a);
-                //    if (ret)
-                //    {
-                //        return ret;
-                //    }
-                //} catch (InvalidOperationException ex)
-                //{
-                //    ret = false;
-                //}
-                //return ret;
-            };
-        }
-
-
-        Func<DataStorage.WarewolfAtom, bool> CreateFuncFromOperator(string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
-        {
-
-            var opt = FindRecsetOptions.FindMatch(searchType);
-            return (a) =>
-            {
-                try
-                {
-                    return opt.GenerateFunc(values, from, to, RequireAllFieldsToMatch).Invoke(a);
-                } catch (DataStorage.WarewolfInvalidComparisonException ex)
-                {
-                    return false;
-                }
-            };
-        }
-
-        void ValidateRequiredFields(FindRecordsTO searchTo, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            if (string.IsNullOrEmpty(searchTo.SearchType))
-            {
-                errors.AddError(string.Format(ErrorResource.IsRequired, "Search Type"));
-            }
-
-            if (searchTo.SearchType.Equals("Is Between"))
-            {
-                if (string.IsNullOrEmpty(searchTo.From))
-                {
-                    errors.AddError(string.Format(ErrorResource.IsRequired, "FROM"));
-                }
-
-                if (string.IsNullOrEmpty(searchTo.To))
-                {
-                    errors.AddError(string.Format(ErrorResource.IsRequired, "TO"));
-                }
-            }
+            _errorsTo = errorTo;
         }
 
         public override enFindMissingType GetFindMissingType()
@@ -435,7 +232,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     indexCount++;
                 }
             }
-        } 
+        }
 
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
@@ -492,7 +289,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             CleanUpCollection(mic, modelItem, startIndex);
         }
 
-        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        static void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
             if (startIndex < mic.Count)
             {
@@ -506,7 +303,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        string CreateDisplayName(ModelItem modelItem, int count)
+        static string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty == null)
@@ -526,7 +323,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -639,7 +436,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((DsfFindRecordsMultipleCriteriaActivity) obj);
+            return Equals((DsfFindRecordsMultipleCriteriaActivity)obj);
         }
 
         public override int GetHashCode()
@@ -655,6 +452,317 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 hashCode = (hashCode * 397) ^ RequireAllFieldsToMatch.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ResultsCollection != null ? ResultsCollection.GetHashCode() : 0);
                 return hashCode;
+            }
+        }
+    }
+
+
+    abstract class A_Debug
+    {
+        public virtual void InitializeDebug(IDSFDataObject dataObject) { }
+        public virtual void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, ref ErrorResultTO errorTos, int update) { }
+        public virtual void AddDebugOutputItem(DebugOutputBase debugItem) { }
+        protected virtual void DisplayAndWriteError(string serviceName, Dev2.Common.Interfaces.Data.TO.IErrorResultTO errors) { }
+        public virtual void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update) { }
+    }
+
+    abstract class A : A_Debug
+    {
+        public string Result;
+        public readonly bool RequireAllFieldsToMatch;
+        public readonly bool RequireAllTrue;
+        protected DsfFindRecordsMultipleCriteriaActivity activity;
+
+        protected A(DsfFindRecordsMultipleCriteriaActivity activity, bool RequireAllFieldsToMatch, bool RequireAllTrue)
+        {
+            this.activity = activity;
+            this.RequireAllFieldsToMatch = RequireAllFieldsToMatch;
+            this.RequireAllTrue = RequireAllTrue;
+        }
+
+
+
+        public string Execute(IDSFDataObject dataObject, int update)
+        {
+            var env = dataObject.Environment;
+
+            // Local Functions
+            //-------------------------------------------------------------------------------------
+            #region local-functions
+            void ApplyResultsToEnvironment(IList<int> results)
+            {
+                var distinctResults = results.Distinct();
+                if (DataListUtil.IsValueScalar(Result))
+                {
+                    var res = string.Join(",", distinctResults);
+                    env.Assign(Result, res, update);
+                }
+                else
+                {
+                    foreach (var distinctResult in distinctResults)
+                    {
+                        env.Assign(Result, distinctResult.ToString(), update);
+                    }
+                }
+            }
+            IEnumerable<int> GetResultsForField(string searchvar)
+            {
+                Func<DataStorage.WarewolfAtom, bool> func = null;
+                foreach (FindRecordsTO criteria in activity.ResultsCollection.Where(a => !String.IsNullOrEmpty(a.SearchType)))
+                {
+                    var right = env.EvalAsList(criteria.SearchCriteria, update);
+                    IEnumerable<DataStorage.WarewolfAtom> from = new List<DataStorage.WarewolfAtom>();
+                    IEnumerable<DataStorage.WarewolfAtom> tovalue = new List<DataStorage.WarewolfAtom>();
+
+                    if (!String.IsNullOrEmpty(criteria.From))
+                    {
+                        @from = env.EvalAsList(criteria.From, update);
+                    }
+                    if (!String.IsNullOrEmpty(criteria.To))
+                    {
+                        tovalue = env.EvalAsList(criteria.To, update);
+                    }
+                    func = BuildQueryExpression(ref func, criteria, right, from, tovalue);
+                }
+                return env.EvalWhere(env.ToStar(searchvar), func, update);
+            }
+            List<int> GetResults(SearchContext searchContext)
+            {
+                var hasEvaled = false;
+                var results = new List<int>();
+
+                foreach (var searchvar in searchContext.ToSearch)
+                {
+                    var output = GetResultsForField(searchvar);
+
+                    results = RequireAllFieldsToMatch && hasEvaled ? results.Intersect(output).ToList() : results.Union(output).ToList();
+                    hasEvaled = true;
+                }
+
+                if (!results.Any())
+                {
+                    results.Add(-1);
+                }
+
+                return results;
+            }
+
+            ref Func<DataStorage.WarewolfAtom, bool> BuildQueryExpression(ref Func<DataStorage.WarewolfAtom, bool> func, FindRecordsTO criteria, IEnumerable<DataStorage.WarewolfAtom> right, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> tovalue)
+            {
+                if (func == null)
+                {
+                    func = CreateFuncFromOperator(criteria.SearchType, right, @from, tovalue);
+                }
+                else if (RequireAllTrue)
+                {
+                    func = CombineFuncAnd(func, criteria.SearchType, right, @from, tovalue);
+                }
+                else
+                {
+                    func = CombineFuncOr(func, criteria.SearchType, right, @from, tovalue);
+                }
+
+                return ref func;
+            }
+
+            
+            #endregion
+
+            InitializeDebug(dataObject);
+            var allErrors = new ErrorResultTO();
+
+            try
+            {
+                var searchContext = new SearchContext(activity);
+                var errorsTo = new ErrorResultTO();
+                searchContext.Validate(errorsTo);
+                activity.SetErrorsTO(errorsTo);
+
+                if (dataObject.IsDebugMode()) { AddDebugInputValues(dataObject, searchContext.ToSearch, ref allErrors, update); }
+
+                var results = GetResults(searchContext);
+                ApplyResultsToEnvironment(results);
+
+                if (dataObject.IsDebugMode())
+                {
+                    if (DataListUtil.IsValueRecordset(Result))
+                    {
+                        var recVar = DataListUtil.ReplaceRecordsetBlankWithStar(Result);
+                        AddDebugOutputItem(new DebugEvalResult(recVar, "", dataObject.Environment, update));
+                    }
+                    else
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Dev2Logger.Error("DSFRecordsMultipleCriteria", exception, GlobalConstants.WarewolfError);
+                allErrors.AddError(exception.Message);
+            }
+            finally
+            {
+                var hasErrors = allErrors.HasErrors();
+                if (hasErrors)
+                {
+                    DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    dataObject.Environment.Assign(Result, "-1", update);
+                    if (dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", env, update));
+                    }
+                }
+
+                if (dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+
+            return Result;
+        }
+
+
+        Func<DataStorage.WarewolfAtom, bool> CombineFuncAnd(Func<DataStorage.WarewolfAtom, bool> func, string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
+        {
+            var func2 = CreateFuncFromOperator(searchType, values, from, to);
+
+            return a =>
+            {
+                try
+                {
+                    return func.Invoke(a) && func2.Invoke(a);
+                }
+                catch (DataStorage.WarewolfInvalidComparisonException ex)
+                {
+                    return false;
+                }
+            };
+        }
+
+        Func<DataStorage.WarewolfAtom, bool> CombineFuncOr(Func<DataStorage.WarewolfAtom, bool> func, string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
+        {
+            var func2 = CreateFuncFromOperator(searchType, values, from, to);
+            return a =>
+            {
+                bool CatchInvalidComparisons(Func<DataStorage.WarewolfAtom, bool> f)
+                {
+                    var ret = false;
+                    try
+                    {
+                        ret = f.Invoke(a);
+                        if (ret)
+                        {
+                            return ret;
+                        }
+                    }
+                    catch (DataStorage.WarewolfInvalidComparisonException ex)
+                    {
+                        ret = false;
+                    }
+                    return ret;
+                }
+                return CatchInvalidComparisons(func) || CatchInvalidComparisons(func2);
+
+            //try
+            //{
+            //    ret = func2.Invoke(a);
+            //    if (ret)
+            //    {
+            //        return ret;
+            //    }
+            //} catch (InvalidOperationException ex)
+            //{
+            //    ret = false;
+            //}
+            //return ret;
+        };
+        }
+
+
+        Func<DataStorage.WarewolfAtom, bool> CreateFuncFromOperator(string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
+        {
+
+            var opt = FindRecsetOptions.FindMatch(searchType);
+            return (a) =>
+            {
+                try
+                {
+                    return opt.GenerateFunc(values, from, to, RequireAllFieldsToMatch).Invoke(a);
+                }
+                catch (DataStorage.WarewolfInvalidComparisonException ex)
+                {
+                    return false;
+                }
+            };
+        }
+
+    }
+
+    class SearchContext
+    {
+        protected DsfFindRecordsMultipleCriteriaActivity activity;
+
+        public readonly IList<string> ToSearch;
+
+        public SearchContext(DsfFindRecordsMultipleCriteriaActivity activity)
+        {
+            this.activity = activity;
+            ToSearch = activity.FieldsToSearch.Split(',')
+                            .Select(a => a.Trim())
+                            .ToList();
+        }
+
+        public void Validate(ErrorResultTO errorsTo)
+        {
+            ValidateSearchFields();
+            ValidateMatchesAgainstFields(errorsTo);
+        }
+
+        void ValidateSearchFields()
+        {
+            var scalarValues = ToSearch.Where(DataListUtil.IsValueScalar).ToList();
+            if (scalarValues.Any())
+            {
+                throw new Exception(ErrorResource.ScalarsNotAllowed + Environment.NewLine + string.Join(Environment.NewLine, scalarValues));
+            }
+        }
+
+        void ValidateMatchesAgainstFields(ErrorResultTO errorsTo)
+        {
+            foreach (FindRecordsTO criteria in activity.ResultsCollection.Where(a => !String.IsNullOrEmpty(a.SearchType)))
+            {
+                if (criteria.From.Length > 0 && String.IsNullOrEmpty(criteria.To)
+                   || criteria.To.Length > 0 && String.IsNullOrEmpty(criteria.From))
+                {
+                    throw new Exception(ErrorResource.FROMAndTORequired);
+                }
+                ValidateRequiredFields(criteria, errorsTo);
+            }
+        }
+
+        static void ValidateRequiredFields(FindRecordsTO searchTo, ErrorResultTO errors)
+        {
+            if (string.IsNullOrEmpty(searchTo.SearchType))
+            {
+                errors.AddError(string.Format(ErrorResource.IsRequired, "Search Type"));
+            }
+
+            if (searchTo.SearchType.Equals("Is Between"))
+            {
+                if (string.IsNullOrEmpty(searchTo.From))
+                {
+                    errors.AddError(string.Format(ErrorResource.IsRequired, "FROM"));
+                }
+
+                if (string.IsNullOrEmpty(searchTo.To))
+                {
+                    errors.AddError(string.Format(ErrorResource.IsRequired, "TO"));
+                }
             }
         }
     }
