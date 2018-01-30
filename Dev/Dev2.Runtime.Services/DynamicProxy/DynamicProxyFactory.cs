@@ -515,7 +515,7 @@ namespace Dev2.Runtime.DynamicProxy
 
                 return importErrStr.ToString();
             }
-            return null;
+            return string.Empty;
         }
 
         public static string ToString(IEnumerable<CompilerError> compilerErrors)
@@ -530,7 +530,7 @@ namespace Dev2.Runtime.DynamicProxy
 
                 return builder.ToString();
             }
-            return null;
+            return string.Empty;
         }
 
         static IEnumerable<CompilerError> ToEnumerable(

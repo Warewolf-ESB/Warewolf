@@ -234,11 +234,6 @@ namespace Dev2.Activities.Designers2.Email
             {
                 return;
             }
-            //var uri = new Uri(new Uri(AppUsageStats.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
-            //var jsonData = testSource.ToString();
-
-            //var requestInvoker = CreateWebRequestInvoker();
-            //requestInvoker.ExecuteRequest("POST", uri.ToString(), jsonData, null, OnTestCompleted);
 
             SendEmail(ToNewSource(testSource));
         }

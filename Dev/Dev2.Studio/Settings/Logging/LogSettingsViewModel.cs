@@ -145,22 +145,14 @@ namespace Dev2.Settings.Logging
         public bool CanEditLogSettings => CurrentEnvironment.IsConnected;
 
         public bool CanEditStudioLogSettings => CurrentEnvironment.IsLocalHost;
-
-        [ExcludeFromCodeCoverage]
+        
         public virtual void Save(LoggingSettingsTo logSettings)
         {
-            //logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
             Dev2Logger.WriteLogSettings(StudioLogMaxSize, StudioFileLogLevel.ToString(), StudioEventLogLevel.ToString(), settingsConfigFile, "Warewolf Studio");
-
             SetItem(this);
-        }
-
-        protected override void CloseHelp()
-        {
-            //Implement if help is done for the log settings.
         }
 
         [JsonIgnore]
@@ -325,6 +317,11 @@ namespace Dev2.Settings.Logging
                             int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
                             int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
             return equalsSeq;
+        }
+
+        protected override void CloseHelp()
+        {
+            throw new NotImplementedException();
         }
     }
 }

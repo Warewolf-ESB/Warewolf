@@ -605,7 +605,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var variableName = serviceInput.Value;
                             if (DataListUtil.IsValueRecordset(variableName))
                             {
-                                //variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
                                 AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
                             }
                             else

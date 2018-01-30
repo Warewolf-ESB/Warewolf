@@ -588,7 +588,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             get => _dataListViewModel;
             set
             {
-                if (_dataListViewModel == value)
+                if (_dataListViewModel.Equals(value))
                 {
                     return;
                 }
@@ -1500,46 +1500,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 dlvm.AddMissingDataListItems(uniqueDataListPartsToAdd);
             }
         }
-
-        /// <summary>
-        /// Notifies the item selected.
-        /// </summary>
-        /// <param name="primarySelection">The primary selection.</param>
-        /// <returns></returns>
+        
         public bool NotifyItemSelected(object primarySelection)
         {
-
-            if (primarySelection is ModelItem selectedItem)
-            {
-                if (selectedItem.ItemType == typeof(DsfForEachActivity))
-                {
-                    dynamic test = selectedItem;
-                    ModelItem innerActivity = RecursiveForEachCheck(test);
-                    if (innerActivity != null)
-                    {
-                        //Commenting this out to allow for the Foreach tool to expand to large view.
-                        //Do not take out until we have finalized that this is not to be used
-                        //selectedItem = innerActivity;
-                    }
-                }
-                //Selection.Union(_wd.Context, selectedItem);
-            }
             return false;
         }
-
-        /// <summary>
-        /// Saves the new XAML ;)
-        /// </summary>
+        
         public void BindToModel()
         {
             _resourceModel.WorkflowXaml = ServiceDefinition;
         }
-
-        /// <summary>
-        /// Initializes the designer.
-        /// </summary>
-        /// <param name="designerAttributes">The designer attributes.</param>
-        /// <param name="liteInit">if set to <c>true</c> [lite initialize]. THIS IS FOR TESTING!!!!</param>
+        
         public void InitializeDesigner(IDictionary<Type, Type> designerAttributes, bool liteInit = false)
         {
             _wd = new WorkflowDesigner();
@@ -1567,7 +1538,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-                //_wd..View.MouseEnter += ViewPreviewMouseWheel;
                 _wd.View.PreviewKeyDown += ViewOnKeyDown;
                 _wd.View.LostFocus += OnViewOnLostFocus;
 
@@ -1596,8 +1566,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 LoadDesignerXaml();
                 _workflowHelper.EnsureImplementation(_modelService);
-
-                //For Changing the icon of the flowchart.
+                
                 WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
                 SubscribeToDebugSelectionChanged();
@@ -1634,7 +1603,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.Measure(new Size(2000, 2000));
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
-                //_wd..View.MouseEnter += ViewPreviewMouseWheel;
                 _wd.View.PreviewKeyDown += ViewOnKeyDown;
                 _wd.View.LostFocus += OnViewOnLostFocus;
 
@@ -1660,7 +1628,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
 
                 Selection.Subscribe(_wd.Context, SelectedItemChanged);
-                //For Changing the icon of the flowchart.
                 WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
                 SubscribeToDebugSelectionChanged();
@@ -2167,13 +2134,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return true;
         }
-
-        /// <summary>
-        /// Adds the missing with no pop up and find unused data list items.
-        /// </summary>
+        
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {
-            //DoWorkspaceSave();
             UpdateDataList();
         }
 
@@ -2192,11 +2155,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return selectedModelItem;
         }
-
-        /// <summary>
-        /// Adds the missing with no pop up and find unused data list items implementation.
-        /// </summary>
-        /// <param name="isLoadEvent">if set to <c>true</c> [is load event].</param>
+        
         void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent)
         {
             if (DataListViewModel != null)
@@ -2624,43 +2583,26 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         protected IServer ActiveEnvironment { get; set; }
-
-        /// <summary>
-        ///     Handler attached to intercept checks for executing the delete command
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">
-        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
-        /// </param>
-        [ExcludeFromCodeCoverage]
+        
         void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (e.Command == ApplicationCommands.Delete ||      //triggered from deleting an activity
-                e.Command == EditingCommands.Delete ||          //triggered from editing displayname, expressions, etc
-                e.Command == System.Activities.Presentation.View.DesignerView.CopyCommand ||
-                e.Command == System.Activities.Presentation.View.DesignerView.CutCommand)
+            if (e.Command.Equals(ApplicationCommands.Delete) ||      //triggered from deleting an activity
+                e.Command.Equals(EditingCommands.Delete) ||          //triggered from editing displayname, expressions, etc
+                e.Command.Equals(System.Activities.Presentation.View.DesignerView.CopyCommand) ||
+                e.Command.Equals(System.Activities.Presentation.View.DesignerView.CutCommand))
             {
                 PreventCommandFromBeingExecuted(e);
             }
         }
-
-
-        /// <summary>
-        ///     Handler attached to intercept checks for executing the delete command
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">
-        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
-        /// </param>
-        [ExcludeFromCodeCoverage]
+        
         void PreviewExecutedRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
         {
-            if (e.Command == ApplicationCommands.Delete)
+            if (e.Command.Equals(ApplicationCommands.Delete))
             {
                 _wd?.View?.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
 
-            if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
+            if (e.Command.Equals(System.Activities.Presentation.View.DesignerView.PasteCommand))
             {
                 _isPaste = true;
                 var dataObject = Clipboard.GetDataObject();
