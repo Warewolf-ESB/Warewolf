@@ -311,7 +311,6 @@ namespace Dev2
 
         void Stop(bool didBreak, int result)
         {
-
             Tracker.Stop();
 
             if (!didBreak)
@@ -324,7 +323,6 @@ namespace Dev2
 
         void ServerLoop(bool interactiveMode)
         {
-
             if (interactiveMode)
             {
                 Write("Press <ENTER> to terminate service and/or web server if started");
