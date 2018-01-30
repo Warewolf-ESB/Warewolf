@@ -4412,8 +4412,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ReadFolderDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Read Folder(ReadFolderDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.ClassName, "ReadFolderDesigner", PropertyExpressionOperator.Contains));
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "ReadFolderDesigner", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }

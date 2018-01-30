@@ -332,8 +332,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(DsfDateTimeDifferenceActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && string.Equals(Input1, other.Input1) 
                 && string.Equals(Input2, other.Input2) 
@@ -344,9 +352,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfDateTimeDifferenceActivity) obj);
         }
 

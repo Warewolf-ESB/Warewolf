@@ -7,8 +7,16 @@ namespace Dev2.Comparers
     {
         public bool Equals(IDataSourceShape x, IDataSourceShape y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return x.Equals(y);
         }
 

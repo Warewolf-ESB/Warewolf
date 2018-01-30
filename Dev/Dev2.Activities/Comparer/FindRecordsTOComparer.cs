@@ -8,8 +8,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(FindRecordsTO x, FindRecordsTO y)
         {
-            if (x == null && y == null) return true;
-            if ((x == null && y != null) || (x != null && y == null)) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if ((x == null && y != null) || (x != null && y == null))
+            {
+                return false;
+            }
+
             var optionListsAreEqual = Common.CommonEqualityOps.CollectionEquals(x.WhereOptionList, y.WhereOptionList, StringComparer.Ordinal);
             return string.Equals(x.From, y.From)
                 && string.Equals(x.To, y.To)

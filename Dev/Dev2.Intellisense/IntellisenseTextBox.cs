@@ -191,7 +191,6 @@ namespace Dev2.UI
             if (appendText != null)
             {
                 var currentText = Text;
-
                 var foundLength = 0;
                 if (isInsert)
                 {
@@ -202,10 +201,8 @@ namespace Dev2.UI
                         try
                         {
                             Text = currentProvider.PerformResultInsertion(appendText, context);
-                        }
-                        
-                        catch
-                        
+                        }                        
+                        catch                        
                         {
                             //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                             //This catch is intentionally blanks since if a provider throws an exception the intellisense
@@ -213,14 +210,12 @@ namespace Dev2.UI
                         }
                         
                         TextBox?.Select(context.CaretPosition, 0);
-
                         IsDropDownOpen = false;
                         appendText = null;
                     }
                     else
                     {
                         var foundMinimum = -1;
-
                         for (int i = index - 1; i >= 0; i--)
                         {
                             if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
@@ -339,6 +334,7 @@ namespace Dev2.UI
                 ValidateText(currentText);
             }
         }
+
         internal void UpdateErrorState()
         {
             EnsureIntellisenseResults(Text, true, _desiredResultSet);
@@ -364,14 +360,7 @@ namespace Dev2.UI
             }
             return false;
         }
-
-        /// <summary>
-        /// Raises the
-        /// <see cref="E:System.Windows.Controls.AutoCompleteBox.TextChanged" />
-        /// event.
-        /// </summary>
-        /// <param name="e">A <see cref="T:System.Windows.RoutedEventArgs" />
-        /// that contains the event data.</param>
+        
         protected override void OnTextChanged(RoutedEventArgs e)
         {
             var text = Text ?? string.Empty;
@@ -443,17 +432,17 @@ namespace Dev2.UI
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
 
-            public bool SelectAllOnGotFocus
+        public bool SelectAllOnGotFocus
+        {
+            get
             {
-                get
-                {
-                    return (bool)GetValue(SelectAllOnGotFocusProperty);
-                }
-                set
-                {
-                    SetValue(SelectAllOnGotFocusProperty, value);
-                }
+                return (bool)GetValue(SelectAllOnGotFocusProperty);
             }
+            set
+            {
+                SetValue(SelectAllOnGotFocusProperty, value);
+            }
+        }
 
         IEnumerable<IntellisenseProviderResult> IntellisenseResults
         {
@@ -787,7 +776,7 @@ namespace Dev2.UI
 
        
 
-        public static readonly DependencyProperty FilterTypeProperty = DependencyProperty.Register("FilterType", typeof(enIntellisensePartType), typeof(IntellisenseTextBox), new UIPropertyMetadata(enIntellisensePartType.All));
+        public static readonly DependencyProperty FilterTypeProperty = DependencyProperty.Register("FilterType", typeof(enIntellisensePartType), typeof(IntellisenseTextBox), new UIPropertyMetadata(enIntellisensePartType.None));
 
         public enIntellisensePartType FilterType
         {

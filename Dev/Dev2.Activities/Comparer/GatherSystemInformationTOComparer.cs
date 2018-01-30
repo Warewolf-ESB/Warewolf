@@ -7,8 +7,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(GatherSystemInformationTO x, GatherSystemInformationTO y)
         {
-            if (x == null && y == null) return true;
-            if ((x != null && y == null) || (x == null && y != null)) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if ((x != null && y == null) || (x == null && y != null))
+            {
+                return false;
+            }
+
             var expressionsAreEqual = Common.CommonEqualityOps.CollectionEquals(x.Expressions, y.Expressions, StringComparer.Ordinal);
             return string.Equals(x.WatermarkTextVariable, y.WatermarkTextVariable)
                 && string.Equals(x.WatermarkText, y.WatermarkText)

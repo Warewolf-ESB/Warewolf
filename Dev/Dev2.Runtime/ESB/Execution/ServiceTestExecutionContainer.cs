@@ -131,23 +131,6 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
             {
-                var userName = serviceTestModelTo.UserName;
-                var domain = "";
-                if (userName.Contains("\\"))
-                {
-                    var slashIndex = userName.IndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
-                    domain = userName.Substring(0, slashIndex);
-                    userName = userName.Substring(slashIndex + 1);
-                }
-                else
-                {
-                    if (userName.Contains("@"))
-                    {
-                        var atIndex = userName.IndexOf("@", StringComparison.InvariantCultureIgnoreCase);
-                        userName = userName.Substring(0, atIndex);
-                        domain = userName.Substring(atIndex + 1);
-                    }
-                }
                 var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
                 var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
                 DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);

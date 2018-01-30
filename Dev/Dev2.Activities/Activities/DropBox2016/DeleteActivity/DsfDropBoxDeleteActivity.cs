@@ -104,8 +104,16 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         public bool Equals(DsfDropBoxDeleteActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SelectedSource, other.SelectedSource);
             return base.Equals(other) 
                 && isSourceEqual
@@ -115,9 +123,21 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfDropBoxDeleteActivity) obj);
         }
 

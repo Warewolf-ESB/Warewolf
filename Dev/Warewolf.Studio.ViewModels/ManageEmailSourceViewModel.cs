@@ -144,6 +144,8 @@ namespace Warewolf.Studio.ViewModels
                             errorMessage = "Timeout cannot be blank.";
                         }
                         break;
+                    default:
+                        break;
                 }
                 return errorMessage;
             }

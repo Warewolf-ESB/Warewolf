@@ -170,6 +170,7 @@ namespace Dev2.Runtime.Security
         #endregion
 
         #region EnsureSSL
+
         public bool EnsureSsl(string certPath, IPEndPoint endPoint)
         {
             var result = false;
@@ -179,10 +180,8 @@ namespace Dev2.Runtime.Security
                 try
                 {
                     var certificateBuilder = new SslCertificateBuilder();
-                    result = certificateBuilder.EnsureSslCertificate(certPath, endPoint);
-
+                    certificateBuilder.EnsureSslCertificate(certPath, endPoint);
                     result = File.Exists(certPath);
-
                 }
                 catch (Exception e)
                 {

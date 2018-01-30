@@ -28,7 +28,10 @@ namespace Dev2.Common.Common
         {
             var dir = new DirectoryInfo(path);
             if (extensions == null)
+            {
                 throw new ArgumentNullException("extensions");
+            }
+
             var _files = new List<string>();
             foreach (string ext in extensions)
             {

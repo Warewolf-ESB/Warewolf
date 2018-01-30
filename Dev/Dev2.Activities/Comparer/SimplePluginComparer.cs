@@ -7,8 +7,15 @@ namespace Dev2.Comparer
     {
         public bool Equals(ISimpePlugin p1, ISimpePlugin p2)
         {
-            if (p1 == null && p2 == null) return true;
-            if (p1 == null || p2 == null) return false;
+            if (p1 == null && p2 == null)
+            {
+                return true;
+            }
+
+            if (p1 == null || p2 == null)
+            {
+                return false;
+            }
 
             bool methodsAreEqual;
             bool nameSpacesAreEqual;

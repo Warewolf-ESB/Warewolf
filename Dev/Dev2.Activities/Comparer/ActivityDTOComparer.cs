@@ -7,8 +7,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(ActivityDTO x, ActivityDTO y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return x.Equals(y);
         }
 
