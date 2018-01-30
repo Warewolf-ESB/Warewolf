@@ -400,7 +400,7 @@ namespace Dev2.Studio.Core.Models
 
         public async Task<bool> ConnectAsync()
         {
-            var connected = await Connection.ConnectAsync(EnvironmentID);
+            var connected = await Connection.ConnectAsync(EnvironmentID).ConfigureAwait(true);
             OnPropertyChanged("IsConnected");
             OnPropertyChanged("DisplayName");
             return connected;

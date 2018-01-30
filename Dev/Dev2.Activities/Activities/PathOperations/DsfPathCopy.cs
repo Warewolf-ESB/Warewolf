@@ -26,7 +26,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : base("Copy")
         {
         }
-
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
 

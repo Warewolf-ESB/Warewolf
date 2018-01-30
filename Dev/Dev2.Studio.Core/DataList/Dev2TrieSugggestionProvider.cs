@@ -264,7 +264,7 @@ namespace Dev2.Studio.Core.DataList
                     }
 
                     break;
-                case enIntellisensePartType.All:
+                case enIntellisensePartType.None:
                     break;
                 default:
                     break;

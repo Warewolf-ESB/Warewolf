@@ -129,7 +129,7 @@ namespace Dev2
                 { typeof(DsfPathDelete), typeof(DeleteDesignerViewModel) },
                 { typeof(DsfFileRead), typeof(ReadFileDesignerViewModel) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel) },
-                { typeof(DsfFolderRead), typeof(ReadFolderDesignerViewModel) },
+                { typeof(DsfFolderRead), typeof(ReadFolderDesignerViewModel) },                
                 { typeof(DsfPathRename), typeof(RenameDesignerViewModel) },
                 { typeof(DsfUnZip), typeof(UnzipDesignerViewModel) },
                 { typeof(DsfZip), typeof(ZipDesignerViewModel) },

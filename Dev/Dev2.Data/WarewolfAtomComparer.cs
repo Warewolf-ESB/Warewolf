@@ -6,8 +6,16 @@ namespace Dev2.Data
     {
         public bool Equals(DataStorage.WarewolfAtom x, DataStorage.WarewolfAtom y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return x.Equals(y);
         }
 

@@ -1740,6 +1740,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                             case Key.Y:
                                 e.Handled = true;
                                 break;
+                            default:
+                                break;
                         }
                     }
                 }
@@ -2946,6 +2948,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 case FlowSwitch<string> normalSwitch:
                     nodes.Remove(normalSwitch);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -3197,6 +3201,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                     normalSwitch.Cases.Clear();
                     normalSwitch.Default = null;
                     nodes.Add(normalSwitch);
+                    break;
+                default:
                     break;
             }
             var modelItem = GetItemFromNodeCollection(model.UniqueId.ToString());

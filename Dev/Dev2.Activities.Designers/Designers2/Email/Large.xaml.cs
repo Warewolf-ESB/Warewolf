@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.Email
 
         EmailDesignerViewModel ViewModel => DataContext as EmailDesignerViewModel;
 
-        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
+        protected override IInputElement GetInitialFocusElement() => this;
 
         public string ThePassword { get => ThePasswordBox.Password; set => ThePasswordBox.Password = value; }
 

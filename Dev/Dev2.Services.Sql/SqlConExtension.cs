@@ -11,7 +11,9 @@ namespace Dev2.Services.Sql
             try
             {
                 if (connection.State != ConnectionState.Open)
+                {
                     connection.Open();
+                }
             }
             catch (Exception e)
             {
