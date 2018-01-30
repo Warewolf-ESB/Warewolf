@@ -9,10 +9,8 @@ namespace Dev2.Studio.Core
         public const string RootTag = "DataList";
         public const string Description = "Description";
         public const string IsEditable = "IsEditable";
-        public static bool ParseIsEditable(XmlAttribute attr)
-        {
-            return ParseBoolAttribute(attr);
-        }
+        public static bool ParseIsEditable(XmlAttribute attr) => ParseBoolAttribute(attr);
+
         public static string ParseDescription(XmlAttribute attr)
         {
             var result = string.Empty;

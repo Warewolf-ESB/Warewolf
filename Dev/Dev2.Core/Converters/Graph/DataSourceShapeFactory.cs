@@ -15,9 +15,6 @@ namespace Unlimited.Framework.Converters.Graph
 {
     public static class DataSourceShapeFactory
     {
-        public static IDataSourceShape CreateDataSourceShape()
-        {
-            return new DataSourceShape();
-        }
+        public static IDataSourceShape CreateDataSourceShape() => new DataSourceShape();
     }
 }

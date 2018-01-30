@@ -65,10 +65,7 @@ namespace Dev2.Common
             return result;
         }
 
-        bool IsInIntRange(double x)
-        {
-            return x >= int.MinValue && x <= int.MaxValue;
-        }
+        bool IsInIntRange(double x) => x >= int.MinValue && x <= int.MaxValue;
 
         uint GetDecimalPlaces(double from, double to)
         {

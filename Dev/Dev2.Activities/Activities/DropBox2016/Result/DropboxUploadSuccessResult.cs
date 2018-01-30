@@ -12,9 +12,6 @@ namespace Dev2.Activities.DropBox2016.Result
             _metadata = metadata;
         }
 
-        public FileMetadata GerFileMetadata()
-        {
-            return _metadata;
-        }
+        public FileMetadata GerFileMetadata() => _metadata;
     }
 }

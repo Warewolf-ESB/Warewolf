@@ -418,10 +418,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachOutputs() => throw new NotImplementedException();
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DsfActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DsfActivity;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

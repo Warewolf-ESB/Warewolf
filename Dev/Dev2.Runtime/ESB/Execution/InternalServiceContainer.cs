@@ -146,10 +146,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        bool CanExecute(IEsbManagementEndpoint eme)
-        {
-            return CanExecute(eme.GetResourceID(Request.Args), DataObject, eme.GetAuthorizationContextForService());
-        }
+        bool CanExecute(IEsbManagementEndpoint eme) => CanExecute(eme.GetResourceID(Request.Args), DataObject, eme.GetAuthorizationContextForService());
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
         {
@@ -157,10 +154,7 @@ namespace Dev2.Runtime.ESB.Execution
             return isAuthorized;
         }
 
-        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
-        {
-            return null;
-        }
+        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
         void GenerateRequestDictionaryFromDataObject(out ErrorResultTO errors)
         {

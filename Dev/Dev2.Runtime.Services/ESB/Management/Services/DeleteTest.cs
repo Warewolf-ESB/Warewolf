@@ -32,11 +32,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
-        
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
@@ -92,9 +89,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public string HandlesType()
-        {
-            return "DeleteTest";
-        }
+        public string HandlesType() => "DeleteTest";
     }
 }

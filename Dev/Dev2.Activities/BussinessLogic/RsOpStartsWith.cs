@@ -21,7 +21,7 @@ namespace Dev2.DataList
 
     public class RsOpStartsWith : AbstractRecsetSearchValidation
     {
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
             if (all)
             {
@@ -30,10 +30,8 @@ namespace Dev2.DataList
 
             return a => values.Any(x => a.ToString().ToLower(CultureInfo.InvariantCulture).StartsWith(x.ToString().ToLower(CultureInfo.InvariantCulture)));
         }
-        public override string HandlesType()
-        {
-            return "Starts With";
-        }
+        public override string HandlesType() => "Starts With";
+
         public override int ArgumentCount => 2;
     }
 }

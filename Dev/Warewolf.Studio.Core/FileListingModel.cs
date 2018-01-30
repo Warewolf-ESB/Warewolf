@@ -210,12 +210,8 @@ namespace Warewolf.Studio.Core
 
         #region Equality members
 
-        public bool Equals(FileListingModel other)
-        {
-            
-            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) &&
+        public bool Equals(FileListingModel other) => string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) &&
                    IsDirectory == other.IsDirectory;
-        }
 
 
         /// <summary>
@@ -259,15 +255,9 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        public static bool operator ==(FileListingModel left, FileListingModel right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(FileListingModel left, FileListingModel right) => Equals(left, right);
 
-        public static bool operator !=(FileListingModel left, FileListingModel right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(FileListingModel left, FileListingModel right) => !Equals(left, right);
 
         #endregion
 

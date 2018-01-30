@@ -195,30 +195,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public RelayCommand OkCommand
-        {
-            get
-            {
-                return _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Save(), param => CanDebug));
-            }
-        }
+        public RelayCommand OkCommand => _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Save(), param => CanDebug));
 
-        public RelayCommand ViewInBrowserCommand
-        {
-            get
-            {
-                return _viewInBrowserCommmand ?? (_viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => CanViewInBrowser));
-            }
-        }
+        public RelayCommand ViewInBrowserCommand => _viewInBrowserCommmand ?? (_viewInBrowserCommmand = new RelayCommand(param => ViewInBrowser(), param => CanViewInBrowser));
 
-
-        public RelayCommand CancelCommand
-        {
-            get
-            {
-                return _cancelCommand ?? (_cancelCommand = new RelayCommand(param => Cancel()));
-            }
-        }
+        public RelayCommand CancelCommand => _cancelCommand ?? (_cancelCommand = new RelayCommand(param => Cancel()));
 
         public bool IsInError { private get; set; }
         
@@ -675,10 +656,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             base.OnViewAttached(view, context);
         }
 
-        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel)
-        {
-            return Create(resourceModel, Guid.Empty, DebugMode.Run);
-        }
+        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel) => Create(resourceModel, Guid.Empty, DebugMode.Run);
 
         public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel, Guid sessionId, DebugMode debugMode)
         {

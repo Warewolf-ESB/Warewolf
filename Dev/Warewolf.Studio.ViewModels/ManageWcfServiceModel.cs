@@ -30,15 +30,9 @@ namespace Warewolf.Studio.ViewModels
 
         public IStudioUpdateManager UpdateRepository => _updateRepository;
 
-        public ObservableCollection<IWcfServerSource> RetrieveSources()
-        {
-            return new ObservableCollection<IWcfServerSource>(_queryProxy.FetchWcfSources());
-        }
+        public ObservableCollection<IWcfServerSource> RetrieveSources() => new ObservableCollection<IWcfServerSource>(_queryProxy.FetchWcfSources());
 
-        public ICollection<IWcfAction> GetActions(IWcfServerSource source)
-        {
-            return _queryProxy.WcfActions(source).ToArray();
-        }
+        public ICollection<IWcfAction> GetActions(IWcfServerSource source) => _queryProxy.WcfActions(source).ToArray();
 
         public void CreateNewSource()
         {
@@ -51,9 +45,6 @@ namespace Warewolf.Studio.ViewModels
             _shell.EditResource(selectedSource);
         }
 
-        public string TestService(IWcfService inputValues)
-        {
-            return _updateRepository.TestWcfService(inputValues);
-        }
+        public string TestService(IWcfService inputValues) => _updateRepository.TestWcfService(inputValues);
     }
 }

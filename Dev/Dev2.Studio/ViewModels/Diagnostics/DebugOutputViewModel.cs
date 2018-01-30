@@ -85,7 +85,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         bool _dispatchLastDebugState;
         string _addNewTestTooltip;
 
-        public DebugOutputViewModel(IEventPublisher serverEventPublisher, IServerRepository serverRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy, IContextualResourceModel contextualResourceModel = null)
+        public DebugOutputViewModel(IEventPublisher serverEventPublisher, IServerRepository serverRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy)
+            : this(serverEventPublisher, serverRepository, debugOutputFilterStrategy, null)
+        {
+        }
+
+        public DebugOutputViewModel(IEventPublisher serverEventPublisher, IServerRepository serverRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy, IContextualResourceModel contextualResourceModel)
         {
             VerifyArgument.IsNotNull("serverEventPublisher", serverEventPublisher);
             VerifyArgument.IsNotNull("environmentRepository", serverRepository);
@@ -435,10 +440,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        public bool CanOpenMoreLink(IDebugLineItem item)
-        {
-            return !string.IsNullOrEmpty(item?.MoreLink);
-        }
+        public bool CanOpenMoreLink(IDebugLineItem item) => !string.IsNullOrEmpty(item?.MoreLink);
+
         [ExcludeFromCodeCoverage]
         void CreatProcessController(IDebugLineItem item)
         {
@@ -477,23 +480,17 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public ICommand ExpandAllCommand => _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(ExpandAll));
 
-        public ICommand ShowOptionsCommand
-        {
-            get
-            {
-                return _showOptionsCommand ?? (_showOptionsCommand = new DelegateCommand(o =>
-                {
-                    if (SkipOptionsCommandExecute)
-                    {
-                        SkipOptionsCommandExecute = false;
-                    }
-                    else
-                    {
-                        ShowOptions = !ShowOptions;
-                    }
-                }));
-            }
-        }
+        public ICommand ShowOptionsCommand => _showOptionsCommand ?? (_showOptionsCommand = new DelegateCommand(o =>
+                                                            {
+                                                                if (SkipOptionsCommandExecute)
+                                                                {
+                                                                    SkipOptionsCommandExecute = false;
+                                                                }
+                                                                else
+                                                                {
+                                                                    ShowOptions = !ShowOptions;
+                                                                }
+                                                            }));
 
         public bool IsConfiguring => DebugStatus == DebugStatus.Configure;
 

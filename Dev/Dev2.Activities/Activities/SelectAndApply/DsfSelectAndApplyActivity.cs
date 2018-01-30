@@ -50,10 +50,8 @@ namespace Dev2.Activities.SelectAndApply
             return nextNodes;
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
+
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             metadata.AddDelegate(ApplyActivityFunc);
@@ -108,19 +106,13 @@ namespace Dev2.Activities.SelectAndApply
             throw new NotImplementedException();
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(Alias);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Alias);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Alias.Replace("*", ""));
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Alias.Replace("*", ""));
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -129,10 +121,7 @@ namespace Dev2.Activities.SelectAndApply
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
-        {
-            return _debugOutputs;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
         #endregion Get Debug Inputs/Outputs
 
@@ -324,10 +313,7 @@ namespace Dev2.Activities.SelectAndApply
             UniqueID = _originalUniqueID.ToString();
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.ForEach;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.ForEach;
         #endregion Overrides of DsfNativeActivity<bool>
 
         void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)

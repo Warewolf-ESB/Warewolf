@@ -18,10 +18,7 @@ namespace Dev2.Runtime.Hosting
     public static class ResourceUpgraderFactory
     {
 
-        public static IResourceUpgrader GetUpgrader()
-        {
-            return new ResourceUpgrader(CreateUpgradePath());
-        }
+        public static IResourceUpgrader GetUpgrader() => new ResourceUpgrader(CreateUpgradePath());
 
         static List<IUpgradePath> CreateUpgradePath()
         {

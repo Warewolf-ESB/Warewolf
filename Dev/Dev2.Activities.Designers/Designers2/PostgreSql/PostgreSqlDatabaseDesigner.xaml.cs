@@ -20,10 +20,7 @@ namespace Dev2.Activities.Designers2.PostgreSql
             InitializeComponent();
         }
 
-        protected override PostgreSqlDatabaseDesignerViewModel CreateViewModel()
-        {
-            return new PostgreSqlDatabaseDesignerViewModel(ModelItem, new AsyncWorker(), new ViewPropertyBuilder());
-        }
+        protected override PostgreSqlDatabaseDesignerViewModel CreateViewModel() => new PostgreSqlDatabaseDesignerViewModel(ModelItem, new AsyncWorker(), new ViewPropertyBuilder());
     }
 }
     

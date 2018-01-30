@@ -849,9 +849,9 @@ namespace System.Windows.Controls
             }
         }
         
-        protected override Size ArrangeOverride(Size finalSize)
+        protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            var r = base.ArrangeOverride(finalSize);
+            var r = base.ArrangeOverride(arrangeBounds);
             DropDownPopup?.Arrange();
             return r;
         }
@@ -1002,10 +1002,7 @@ namespace System.Windows.Controls
             }
         }
 
-        protected override AutomationPeer OnCreateAutomationPeer()
-        {
-            return new AutoCompleteBoxAutomationPeer(this);
-        }
+        protected override AutomationPeer OnCreateAutomationPeer() => new AutoCompleteBoxAutomationPeer(this);
 
         #region Focus
 

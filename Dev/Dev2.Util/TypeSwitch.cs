@@ -47,32 +47,23 @@ namespace Dev2.Studio.Core.Helpers
             }
         }
 
-        public static CaseInfo Case<T>(Action action)
+        public static CaseInfo Case<T>(Action action) => new CaseInfo
         {
-            return new CaseInfo
-            {
-                Action = x => action?.Invoke(),
-                Target = typeof (T)
-            };
-        }
+            Action = x => action?.Invoke(),
+            Target = typeof(T)
+        };
 
-        public static CaseInfo Case<T>(Action<T> action)
+        public static CaseInfo Case<T>(Action<T> action) => new CaseInfo
         {
-            return new CaseInfo
-            {
-                Action = x => action?.Invoke((T)x),
-                Target = typeof (T)
-            };
-        }
+            Action = x => action?.Invoke((T)x),
+            Target = typeof(T)
+        };
 
-        public static CaseInfo Default(Action action)
+        public static CaseInfo Default(Action action) => new CaseInfo
         {
-            return new CaseInfo
-            {
-                Action = x => action?.Invoke(),
-                IsDefault = true
-            };
-        }
+            Action = x => action?.Invoke(),
+            IsDefault = true
+        };
 
         public class CaseInfo
         {

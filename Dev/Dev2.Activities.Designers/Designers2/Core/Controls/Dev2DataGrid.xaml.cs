@@ -44,10 +44,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
             InitializeComponent();
         }
 
-        public DataGridColumnHeadersPresenter GetColumnHeadersPresenter()
-        {
-            return GetVisualChild<DataGridColumnHeadersPresenter>(this);
-        }
+        public DataGridColumnHeadersPresenter GetColumnHeadersPresenter() => GetVisualChild<DataGridColumnHeadersPresenter>(this);
 
         public bool SetFocusToInserted(DataGridRow row)
         {
@@ -72,10 +69,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
         public IInputElement GetFocusElement(int rowIndex) => GetFocusElement(rowIndex, 0);
         public IInputElement GetFocusElement() => GetFocusElement(0, 0);
 
-        public IInputElement GetFocusElement(DataGridRow row, int inputsToSkip)
-        {
-            return GetVisualChild(row, inputsToSkip: inputsToSkip);
-        }
+        public IInputElement GetFocusElement(DataGridRow row, int inputsToSkip) => GetVisualChild(row, inputsToSkip: inputsToSkip);
 
         bool SetFocus(Visual row)
         {
@@ -97,10 +91,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
             return row != null ? _getVisualChild(row) : null;
         }
 
-        public DataGridRow GetRow(int rowIndex)
-        {
-            return (DataGridRow)ItemContainerGenerator.ContainerFromItem(Items[rowIndex]);
-        }
+        public DataGridRow GetRow(int rowIndex) => (DataGridRow)ItemContainerGenerator.ContainerFromItem(Items[rowIndex]);
 
         void OnDataGridRowLoaded(object sender, RoutedEventArgs e)
         {

@@ -499,10 +499,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             SelectedTable = selectedTable;
         }
 
-        static string GetTableName(DbTable table)
-        {
-            return table?.FullName;
-        }
+        static string GetTableName(DbTable table) => table?.FullName;
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
@@ -649,14 +646,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         public IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             var ruleSet = new RuleSet();
-
-            switch (propertyName)
+            if (propertyName == "InputColumn")
             {
-                case "InputColumn":
-                    ruleSet.Add(new IsValidExpressionRule(() => datalist, GetDatalistString?.Invoke(), "1",new VariableUtils()));
-                    break;
-                default:
-                    break;
+                ruleSet.Add(new IsValidExpressionRule(() => datalist, GetDatalistString?.Invoke(), "1", new VariableUtils()));
             }
             return ruleSet;
         }
@@ -667,14 +659,11 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             return regions.Count > 0;
         }
 
-        IEnumerable<DataColumnMapping> GetInputMappings()
-        {
-            return ModelItemCollection.Select(mi => (DataColumnMapping)mi.GetCurrentValue());
-        }
+        IEnumerable<DataColumnMapping> GetInputMappings() => ModelItemCollection.Select(mi => (DataColumnMapping)mi.GetCurrentValue());
 
-        protected override void AddToCollection(IEnumerable<string> source, bool overWrite)
+        protected override void AddToCollection(IEnumerable<string> sources, bool overwrite)
         {
-            var newMappings = source.ToList();
+            var newMappings = sources.ToList();
             var max = Math.Min(newMappings.Count, ItemCount);
             for (var i = 0; i < max; i++)
             {
@@ -710,10 +699,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
         }
 
-        static string GetFieldName(DataColumnMapping dc)
-        {
-            return string.IsNullOrEmpty(dc.InputColumn) ? string.Empty : DataListUtil.ExtractFieldNameFromValue(dc.InputColumn);
-        }
+        static string GetFieldName(DataColumnMapping dc) => string.IsNullOrEmpty(dc.InputColumn) ? string.Empty : DataListUtil.ExtractFieldNameFromValue(dc.InputColumn);
 
         string GetRecordsetName(IEnumerable<DataColumnMapping> mappings)
         {

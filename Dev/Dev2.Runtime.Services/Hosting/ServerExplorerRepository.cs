@@ -105,10 +105,7 @@ namespace Dev2.Runtime.Hosting
             return _root;
         }
 
-        public IExplorerItem Load(string type, Guid workSpaceId)
-        {
-            return ExplorerItemFactory.CreateRootExplorerItem(type, EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
-        }
+        public IExplorerItem Load(string type, Guid workSpaceId) => ExplorerItemFactory.CreateRootExplorerItem(type, EnvironmentVariables.GetWorkspacePath(workSpaceId), workSpaceId);
 
         public IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId)
         {
@@ -245,10 +242,7 @@ namespace Dev2.Runtime.Hosting
             return Find(_root, predicate);
         }
 
-        public List<string> LoadDuplicate()
-        {
-            return ExplorerItemFactory.GetDuplicatedResourcesPaths();
-        }
+        public List<string> LoadDuplicate() => ExplorerItemFactory.GetDuplicatedResourcesPaths();
 
         public IExplorerItem Find(IExplorerItem item, Guid itemToFind)
         {
@@ -518,15 +512,8 @@ namespace Dev2.Runtime.Hosting
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
-        public static string DirectoryStructureFromPath(string path)
-        {
-            return Path.Combine(EnvironmentVariables.ResourcePath, path);
-        }
+        public static string DirectoryStructureFromPath(string path) => Path.Combine(EnvironmentVariables.ResourcePath, path);
 
-        public IExplorerItem Load(string type, string filter)
-        {
-            return ExplorerItemFactory.CreateRootExplorerItem(type, Path.Combine(EnvironmentVariables.GetWorkspacePath(Guid.Empty), filter), Guid.Empty);
-        }
-
+        public IExplorerItem Load(string type, string filter) => ExplorerItemFactory.CreateRootExplorerItem(type, Path.Combine(EnvironmentVariables.GetWorkspacePath(Guid.Empty), filter), Guid.Empty);
     }
 }

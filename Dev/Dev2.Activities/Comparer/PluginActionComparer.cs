@@ -6,37 +6,34 @@ namespace Dev2.Comparer
 {
     internal class PluginActionComparer : IEqualityComparer<IPluginAction>
     {
-        public bool Equals(IPluginAction p1, IPluginAction p2)
+        public bool Equals(IPluginAction x, IPluginAction y)
         {
-            if (p1 == null && p2 == null)
+            if (x == null && y == null)
             {
                 return true;
             }
 
-            if (p1 == null || p2 == null)
+            if (x == null || y == null)
             {
                 return false;
             }
 
-            var methodsAreEqual = string.Equals(p1.Method, p2.Method)
-                                 && string.Equals(p1.Dev2ReturnType, p2.Dev2ReturnType)
-                                 && string.Equals(p1.ErrorMessage, p2.ErrorMessage)
-                                 && string.Equals(p1.FullName, p2.FullName)
-                                 && string.Equals(p1.MethodResult, p2.MethodResult)
-                                 && string.Equals(p1.OutputVariable, p2.OutputVariable)
-                                 && p1.ReturnType == p2.ReturnType
-                                 && Equals(p1.HasError, p2.HasError)
-                                 && Equals(p1.IsObject, p2.IsObject)
-                                 && Equals(p1.IsProperty, p2.IsProperty)
-                                 && Equals(p1.IsVoid, p2.IsVoid)
-                                 && Equals(p1.ID, p2.ID)
-                                 && CommonEqualityOps.CollectionEquals(p1.Inputs, p2.Inputs, new ServiceInputComparer());
+            var methodsAreEqual = string.Equals(x.Method, y.Method)
+                                 && string.Equals(x.Dev2ReturnType, y.Dev2ReturnType)
+                                 && string.Equals(x.ErrorMessage, y.ErrorMessage)
+                                 && string.Equals(x.FullName, y.FullName)
+                                 && string.Equals(x.MethodResult, y.MethodResult)
+                                 && string.Equals(x.OutputVariable, y.OutputVariable)
+                                 && x.ReturnType == y.ReturnType
+                                 && Equals(x.HasError, y.HasError)
+                                 && Equals(x.IsObject, y.IsObject)
+                                 && Equals(x.IsProperty, y.IsProperty)
+                                 && Equals(x.IsVoid, y.IsVoid)
+                                 && Equals(x.ID, y.ID)
+                                 && CommonEqualityOps.CollectionEquals(x.Inputs, y.Inputs, new ServiceInputComparer());
             return methodsAreEqual;
         }
 
-        public int GetHashCode(IPluginAction obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(IPluginAction obj) => obj.GetHashCode();
     }
 }

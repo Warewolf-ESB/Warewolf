@@ -39,40 +39,43 @@ namespace Dev2.Data.Parsers
 
         #region Public Methods
 
-        public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> dataListParts)
+        public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> parts) => WrapAndClear(() =>
         {
-            return WrapAndClear(() =>
+            if (string.IsNullOrEmpty(expression) || parts == null)
             {
-                if (string.IsNullOrEmpty(expression) || dataListParts == null)
-                {
-                    return new List<IIntellisenseResult>();
-                }
-                var canCache = Regex.Matches(expression, "\\[\\[").Count == 1;
-                if (canCache && _expressionCache.ContainsKey(expression))
-                {
-                    return _expressionCache[expression];
-                }
+                return new List<IIntellisenseResult>();
+            }
+            var canCache = Regex.Matches(expression, "\\[\\[").Count == 1;
+            if (canCache && _expressionCache.ContainsKey(expression))
+            {
+                return _expressionCache[expression];
+            }
 
 
-                var result = PartsGeneration(expression, dataListParts, true);
-                if (result != null && canCache && result.All(a => a.Type != enIntellisenseResultType.Error))
+            var result = PartsGeneration(expression, parts, true);
+            if (result != null && canCache && result.All(a => a.Type != enIntellisenseResultType.Error))
+            {
+                try
                 {
-                    try
-                    {
-                        _expressionCache.TryAdd(expression, result);
-                    }
-                    
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Warn(e.Message, "Warewolf Warn");
-                    }
+                    _expressionCache.TryAdd(expression, result);
                 }
 
-                return result;
-            }, _expressionCache);
-        }
-        
-        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IIntellisenseFilterOpsTO filterTo = null, bool isFromIntellisense = false)
+                catch (Exception e)
+                {
+                    Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                }
+            }
+
+            return result;
+        }, _expressionCache);
+
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList) => ParseDataLanguageForIntellisense(payload, dataList, false, null, false);
+
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts) => ParseDataLanguageForIntellisense(payload, dataList, addCompleteParts, null, false);
+
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts, IIntellisenseFilterOpsTO filterTo) => ParseDataLanguageForIntellisense(payload, dataList, addCompleteParts, filterTo, false);
+
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts, IIntellisenseFilterOpsTO filterTo, bool isFromIntellisense)
         {
             return WrapAndClear(() =>
             {
@@ -222,7 +225,9 @@ namespace Dev2.Data.Parsers
             return result;
         }
 
-        public IList<IParseTO> MakeParts(string payload, bool addCompleteParts = false)
+        public IList<IParseTO> MakeParts(string payload) => MakeParts(payload, false);
+
+        public IList<IParseTO> MakeParts(string payload, bool addCompleteParts)
         {
             if (string.IsNullOrEmpty(payload))
             {

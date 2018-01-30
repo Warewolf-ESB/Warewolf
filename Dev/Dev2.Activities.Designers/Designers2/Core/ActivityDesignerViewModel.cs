@@ -331,10 +331,7 @@ namespace Dev2.Activities.Designers2.Core
         /// <summary>
         /// <remarks><strong>DO NOT</strong> bind to properties that use this - use <see cref="ModelItem"/>.PropertyName instead!</remarks>
         /// </summary>
-        protected T GetProperty<T>([CallerMemberName] string propertyName = null)
-        {
-            return _modelItem.GetProperty<T>(propertyName);
-        }
+        protected T GetProperty<T>([CallerMemberName] string propertyName = null) => _modelItem.GetProperty<T>(propertyName);
 
         /// <summary>
         /// <remarks><strong>DO NOT</strong> bind to properties that use this - use <see cref="ModelItem"/>.PropertyName instead!</remarks>

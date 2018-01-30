@@ -20,9 +20,6 @@ namespace Dev2.Studio.Diagnostics
         public DataTemplate ItemTemplate { get; set; }
         public DataTemplate GroupTemplate { get; set; }
 
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
-            return item is DebugLineGroup ? GroupTemplate : ItemTemplate;
-        }
+        public override DataTemplate SelectTemplate(object item, DependencyObject container) => item is DebugLineGroup ? GroupTemplate : ItemTemplate;
     }
 }

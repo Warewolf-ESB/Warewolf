@@ -59,10 +59,7 @@ namespace Dev2.Studio.Dock
         /// Creates an instance of the class
         /// </summary>
         /// <returns></returns>
-        protected override Freezable CreateInstanceCore()
-        {
-            return (ContainerFactoryBase)Activator.CreateInstance(GetType());
-        }
+        protected override Freezable CreateInstanceCore() => (ContainerFactoryBase)Activator.CreateInstance(GetType());
         #endregion //CreateInstanceCore
 
         #region FreezeCore
@@ -71,10 +68,7 @@ namespace Dev2.Studio.Dock
         /// </summary>
         /// <param name="isChecking">True if the ability to freeze is being checked or false when the object is being attempted to be made frozen</param>
         /// <returns>Returns false since this object cannot be frozen.</returns>
-        protected override bool FreezeCore(bool isChecking)
-        {
-            return false;
-        }
+        protected override bool FreezeCore(bool isChecking) => false;
         #endregion //FreezeCore
 
         #endregion //Base class overrides
@@ -186,10 +180,7 @@ namespace Dev2.Studio.Dock
         /// </summary>
         /// <param name="container">The container to evaluate</param>
         /// <returns>The item associated with the specified container.</returns>
-        public static object GetItemForContainer(DependencyObject container)
-        {
-            return container.GetValue(ItemForContainerProperty);
-        }
+        public static object GetItemForContainer(DependencyObject container) => container.GetValue(ItemForContainerProperty);
         #endregion //GetItemForContainer
 
         #endregion //Public Methods
@@ -254,10 +245,7 @@ namespace Dev2.Studio.Dock
         /// </summary>
         /// <param name="container">The container whose underlying item is being requested</param>
         /// <returns>The underlying item</returns>
-        protected object GetItemFromContainer(DependencyObject container)
-        {
-            return container.GetValue(ItemForContainerProperty);
-        }
+        protected object GetItemFromContainer(DependencyObject container) => container.GetValue(ItemForContainerProperty);
         #endregion //GetItemFromContainer
 
         #region IsContainerInUse
@@ -295,10 +283,7 @@ namespace Dev2.Studio.Dock
         /// </summary>
         /// <param name="item">The item to evaluate</param>
         /// <returns>Returns true to indicate that a container is needed</returns>
-        protected virtual bool IsItemItsOwnContainer(object item)
-        {
-            return true;
-        }
+        protected virtual bool IsItemItsOwnContainer(object item) => true;
         #endregion //IsItemItsOwnContainer
 
         #region OnItemInserted
@@ -678,10 +663,7 @@ namespace Dev2.Studio.Dock
         /// Invoked when an element needs to be generated for a given item.
         /// </summary>
         /// <returns>The element to represent the item</returns>
-        protected override ContentControl GetContainerForItem(object item)
-        {
-            return (ContentControl)Activator.CreateInstance(ContainerType);
-        }
+        protected override ContentControl GetContainerForItem(object item) => (ContentControl)Activator.CreateInstance(ContainerType);
         #endregion //GetContainerForItem
 
         #endregion //Base class overrides

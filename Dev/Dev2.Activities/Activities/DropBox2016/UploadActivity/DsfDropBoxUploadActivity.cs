@@ -97,10 +97,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
 
         #region Overrides of DsfActivity
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         #region Overrides of DsfBaseActivity
 

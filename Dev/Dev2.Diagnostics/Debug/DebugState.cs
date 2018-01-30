@@ -451,16 +451,10 @@ namespace Dev2.Diagnostics.Debug
         #endregion
 
 
-        public bool IsFinalStep()
-        {
-            return StateType == StateType.End && OriginalInstanceID == ID && (!ParentID.HasValue || ParentID == Guid.Empty);
-        }
+        public bool IsFinalStep() => StateType == StateType.End && OriginalInstanceID == ID && (!ParentID.HasValue || ParentID == Guid.Empty);
 
-        public bool IsFirstStep()
-        {
-            return StateType == StateType.Start &&
+        public bool IsFirstStep() => StateType == StateType.Start &&
                    OriginalInstanceID == ID;
-        }
 
         public bool IsDurationVisible
         {
@@ -541,15 +535,9 @@ namespace Dev2.Diagnostics.Debug
             }
         }
 
-        public static bool operator ==(DebugState left, DebugState right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(DebugState left, DebugState right) => Equals(left, right);
 
-        public static bool operator !=(DebugState left, DebugState right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(DebugState left, DebugState right) => !Equals(left, right);
 
         #endregion
 

@@ -169,15 +169,9 @@ namespace Dev2.TO
             }
         }
 
-        public bool CanRemove()
-        {
-            return string.IsNullOrEmpty(FieldName);
-        }
+        public bool CanRemove() => string.IsNullOrEmpty(FieldName);
 
-        public bool CanAdd()
-        {
-            return !string.IsNullOrEmpty(SearchType) && !string.IsNullOrEmpty(FieldName);
-        }
+        public bool CanAdd() => !string.IsNullOrEmpty(SearchType) && !string.IsNullOrEmpty(FieldName);
 
         public void ClearRow()
         {
@@ -224,10 +218,7 @@ namespace Dev2.TO
         }
         public bool Inserted { get; set; }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(SearchType) && string.IsNullOrEmpty(ValueToMatch);
-        }
+        public bool IsEmpty() => string.IsNullOrEmpty(SearchType) && string.IsNullOrEmpty(ValueToMatch);
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {

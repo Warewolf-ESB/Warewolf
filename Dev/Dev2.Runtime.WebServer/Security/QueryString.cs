@@ -26,15 +26,9 @@ namespace Dev2.Runtime.WebServer.Security
             _items = items;
         }
 
-        public IEnumerator<KeyValuePair<string, string>> GetEnumerator()
-        {
-            return _items.GetEnumerator();
-        }
+        public IEnumerator<KeyValuePair<string, string>> GetEnumerator() => _items.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public IEnumerable<string> GetValues(string key)
         {
@@ -52,10 +46,7 @@ namespace Dev2.Runtime.WebServer.Security
             return values;
         }
 
-        public string Get(string key)
-        {
-            return this[key];
-        }
+        public string Get(string key) => this[key];
 
         public string this[string key]
         {

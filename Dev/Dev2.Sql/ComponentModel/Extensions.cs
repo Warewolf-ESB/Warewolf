@@ -16,10 +16,7 @@ namespace Warewolf.ComponentModel
     {
         #region ToStringSafe
 
-        public static string ToStringSafe(this object obj)
-        {
-            return obj == null || Convert.IsDBNull(obj) ? string.Empty : obj.ToString();
-        }
+        public static string ToStringSafe(this object obj) => obj == null || Convert.IsDBNull(obj) ? string.Empty : obj.ToString();
 
         #endregion
     }

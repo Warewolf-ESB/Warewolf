@@ -60,11 +60,8 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        public bool Ping()
-        {
-            return true;
-        }
-        
+        public bool Ping() => true;
+
         public bool AddMessage(Guid workspaceId, IList<ICompileMessageTO> msgs)
         {
             if(msgs.Count == 0)

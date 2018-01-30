@@ -14,10 +14,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class IsGreaterThan : IDecisionOperation
     {
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsGreaterThan;
-        }
+        public Enum HandlesType() => enDecisionType.IsGreaterThan;
 
         public bool Invoke(string[] cols)
         {

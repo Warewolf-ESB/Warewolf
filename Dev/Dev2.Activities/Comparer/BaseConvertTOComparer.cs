@@ -19,9 +19,6 @@ namespace Dev2.Comparer
             return x.Equals(y);
         }
 
-        public int GetHashCode(BaseConvertTO obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(BaseConvertTO obj) => obj.GetHashCode();
     }
 }

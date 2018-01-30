@@ -26,9 +26,6 @@ namespace Dev2.Comparer
                 && x.Inserted.Equals(y.Inserted)
                 && x.IndexNumber.Equals(y.IndexNumber);
         }
-        public int GetHashCode(GatherSystemInformationTO obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(GatherSystemInformationTO obj) => 1;
     }
 }

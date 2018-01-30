@@ -24,21 +24,21 @@ namespace Dev2.PerformanceCounters.Management
         public IList<IPerformanceCounter> Counters { get; set; }
         public IList<IPerformanceCounter> DefaultCounters { get; set; }
 
-        public void RegisterCountersOnMachine(IList<IPerformanceCounter> counters,string category)
+        public void RegisterCountersOnMachine(IList<IPerformanceCounter> counters,string Category)
         {
             try
             {
-                if (!PerformanceCounterCategory.Exists(category))
+                if (!PerformanceCounterCategory.Exists(Category))
                 {
-                    CreateAllCounters(counters, category);
+                    CreateAllCounters(counters, Category);
                 }
                 else
                 {
-                    var cat = new PerformanceCounterCategory(category);
+                    var cat = new PerformanceCounterCategory(Category);
                     if (!counters.All(a => cat.CounterExists(a.Name)))
                     {
-                        PerformanceCounterCategory.Delete(category);
-                        CreateAllCounters(counters, category);
+                        PerformanceCounterCategory.Delete(Category);
+                        CreateAllCounters(counters, Category);
 
                     }
                 }

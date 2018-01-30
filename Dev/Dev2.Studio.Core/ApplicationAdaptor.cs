@@ -50,20 +50,11 @@ namespace Dev2.Studio.Core
 
         public IDictionary Properties => _realApp.Properties;
 
-        public object FindResource(object resourceKey)
-        {
-            return _realApp.FindResource(resourceKey);
-        }
+        public object FindResource(object resourceKey) => _realApp.FindResource(resourceKey);
 
-        public int Run(Window window)
-        {
-            return _realApp.Run(window);
-        }
+        public int Run(Window window) => _realApp.Run(window);
 
-        public int Run()
-        {
-            return _realApp.Run();
-        }
+        public int Run() => _realApp.Run();
 
         public void Shutdown()
         {
@@ -75,9 +66,6 @@ namespace Dev2.Studio.Core
             _realApp.Shutdown(exitCode);
         }
 
-        public object TryFindResource(object resourceKey)
-        {
-            return _realApp.TryFindResource(resourceKey);
-        }
+        public object TryFindResource(object resourceKey) => _realApp.TryFindResource(resourceKey);
     }
 }

@@ -78,10 +78,7 @@ namespace Dev2.Security
             }
         }
 
-        protected override List<WindowsGroupPermission> ReadPermissions()
-        {
-            return null;
-        }
+        protected override List<WindowsGroupPermission> ReadPermissions() => null;
 
         protected override void WritePermissions(List<WindowsGroupPermission> permissions)
         {

@@ -275,19 +275,16 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new ComActionRegion()
         {
-            return new ComActionRegion()
+            IsEnabled = IsEnabled,
+            SelectedAction = SelectedAction == null ? null : new PluginAction
             {
-                IsEnabled = IsEnabled,
-                SelectedAction = SelectedAction == null ? null : new PluginAction
-                {
-                    Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
-                    FullName = SelectedAction.FullName,
-                    Method = SelectedAction.Method
-                }
-            };
-        }
+                Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
+                FullName = SelectedAction.FullName,
+                Method = SelectedAction.Method
+            }
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {
@@ -338,10 +335,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        bool IsAPreviousValue(IPluginAction value)
-        {
-            return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
-        }
+        bool IsAPreviousValue(IPluginAction value) => value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
 
         public IList<string> Errors
         {

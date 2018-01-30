@@ -135,32 +135,14 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public RelayCommand SaveCommand
-        {
-            get
-            {
-                return _saveCommand ??
+        public RelayCommand SaveCommand => _saveCommand ??
                        (_saveCommand = new RelayCommand(param => Save(), parm => CanSaveConfig()));
-            }
-        }
 
-        public RelayCommand CancelCommand
-        {
-            get
-            {
-                return _cancelCommand ??
+        public RelayCommand CancelCommand => _cancelCommand ??
                        (_cancelCommand = new RelayCommand(param => Cancel(), parm => CanCancel()));
-            }
-        }
 
-        public RelayCommand ClearErrorsCommand
-        {
-            get
-            {
-                return _clearErrorsCommand ??
+        public RelayCommand ClearErrorsCommand => _clearErrorsCommand ??
                        (_clearErrorsCommand = new RelayCommand(param => ClearErrors()));
-            }
-        }
 
         public Settings.Configuration Configuration { get; private set; }
 
@@ -203,15 +185,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        bool CanSaveConfig()
-        {
-            return Configuration.HasChanges && !Configuration.HasError;
-        }
+        bool CanSaveConfig() => Configuration.HasChanges && !Configuration.HasError;
 
-        bool CanCancel()
-        {
-            return Configuration.HasChanges;
-        }
+        bool CanCancel() => Configuration.HasChanges;
 
         void Save()
         {

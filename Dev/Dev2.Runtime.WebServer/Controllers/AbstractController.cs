@@ -51,15 +51,9 @@ namespace Dev2.Runtime.WebServer.Controllers
             return context.ResponseMessage;
         }
 
-        protected virtual bool IsAuthenticated()
-        {
-            return User.IsAuthenticated();
-        }
+        protected virtual bool IsAuthenticated() => User.IsAuthenticated();
 
         protected virtual TRequestHandler CreateHandler<TRequestHandler>()
-            where TRequestHandler : class, IRequestHandler, new()
-        {
-            return Activator.CreateInstance<TRequestHandler>();
-        }
+            where TRequestHandler : class, IRequestHandler, new() => Activator.CreateInstance<TRequestHandler>();
     }
 }

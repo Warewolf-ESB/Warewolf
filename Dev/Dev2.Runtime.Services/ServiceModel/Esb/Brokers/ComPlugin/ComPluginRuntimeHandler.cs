@@ -54,11 +54,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             return pluginResult;
         }
-        public IOutputDescription Test(ComPluginInvokeArgs setupInfo, out string jsonResult)
+        public IOutputDescription Test(ComPluginInvokeArgs setupInfo, out string serializedResult)
         {
             try
             {
-                jsonResult = null;
+                serializedResult = null;
 
                 var methodToRun = ExecuteComPlugin(setupInfo, out object pluginResult);
 
@@ -71,11 +71,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                     if (pluginResult is KeyValuePair<bool, string>)
                     {
                         var pluginKeyValuePair = (KeyValuePair<bool, string>) pluginResult;
-                        jsonResult = "Exception: " + pluginKeyValuePair.Value;
+                        serializedResult = "Exception: " + pluginKeyValuePair.Value;
                     }
                     else
                     {
-                        jsonResult = pluginResult.ToString();
+                        serializedResult = pluginResult.ToString();
                     }
                     pluginResult = AdjustPluginResult(pluginResult);
                     var tmpData = dataBrowser.Map(pluginResult);
@@ -99,7 +99,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 }
 
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, GlobalConstants.WarewolfError);
-                jsonResult = null;
+                serializedResult = null;
                 return null;
             }
 

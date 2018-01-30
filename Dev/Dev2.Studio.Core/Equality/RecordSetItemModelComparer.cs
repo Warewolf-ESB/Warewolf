@@ -20,9 +20,6 @@ namespace Dev2.Studio.Core
             return x.Equals(y);
         }
 
-        public int GetHashCode(IRecordSetItemModel obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(IRecordSetItemModel obj) => 1;
     }
 }

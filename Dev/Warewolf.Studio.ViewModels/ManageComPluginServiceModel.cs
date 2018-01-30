@@ -34,40 +34,19 @@ namespace Warewolf.Studio.ViewModels
 
         public IStudioUpdateManager UpdateRepository => _updateRepository;
 
-        public ObservableCollection<IComPluginSource> RetrieveSources()
-        {
-            return new ObservableCollection<IComPluginSource>(_queryProxy.FetchComPluginSources());
-        }
+        public ObservableCollection<IComPluginSource> RetrieveSources() => new ObservableCollection<IComPluginSource>(_queryProxy.FetchComPluginSources());
 
-        public ICollection<IPluginAction> GetActions(IComPluginSource source, INamespaceItem ns)
-        {
-            return _queryProxy.PluginActions(source, ns).Where(a => a.Method != "GetType").ToList();
-        }
+        public ICollection<IPluginAction> GetActions(IComPluginSource source, INamespaceItem value) => _queryProxy.PluginActions(source, value).Where(a => a.Method != "GetType").ToList();
 
-        public ICollection<INamespaceItem> GetNameSpaces(IComPluginSource source)
-        {
-            return _queryProxy.FetchNamespaces(source);
-        }
+        public ICollection<INamespaceItem> GetNameSpaces(IComPluginSource source) => _queryProxy.FetchNamespaces(source);
 
-        public void CreateNewSource()
-        {
-            _shell.NewComPluginSource(string.Empty);
-        }
+        public void CreateNewSource() => _shell.NewComPluginSource(string.Empty);
 
-        public void EditSource(IComPluginSource selectedSource)
-        {
-            _shell.EditResource(selectedSource);
-        }
+        public void EditSource(IComPluginSource selectedSource) => _shell.EditResource(selectedSource);
 
-        public string TestService(IComPluginService inputValues)
-        {
-            return _updateRepository.TestPluginService(inputValues);
-        }
+        public string TestService(IComPluginService inputValues) => _updateRepository.TestPluginService(inputValues);
 
-        public IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IPluginAction action)
-        {
-            return new List<IServiceOutputMapping> { new ServiceOutputMapping("bob", "The", ""), new ServiceOutputMapping("dora", "The",""), new ServiceOutputMapping("Tree", "The","") };
-        }
+        public IEnumerable<IServiceOutputMapping> GetPluginOutputMappings(IPluginAction action) => new List<IServiceOutputMapping> { new ServiceOutputMapping("bob", "The", ""), new ServiceOutputMapping("dora", "The", ""), new ServiceOutputMapping("Tree", "The", "") };
 
         #endregion
     }

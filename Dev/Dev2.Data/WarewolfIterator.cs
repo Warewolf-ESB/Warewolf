@@ -87,10 +87,7 @@ namespace Dev2.Data
 
         #region Implementation of IWarewolfIterator
 
-        public int GetLength()
-        {
-            return _maxValue;
-        }
+        public int GetLength() => _maxValue;
 
         public string GetNextValue()
         {
@@ -147,10 +144,7 @@ namespace Dev2.Data
             return warewolfAtomToString;
         }
 
-        public bool HasMoreData()
-        {
-            return _currentValue <= _maxValue - 1;
-        }
+        public bool HasMoreData() => _currentValue <= _maxValue - 1;
         #endregion
     }
 }

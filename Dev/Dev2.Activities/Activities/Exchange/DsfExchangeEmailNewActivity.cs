@@ -75,10 +75,7 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public new string Result { get; set; }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         #region Overrides of DsfNativeActivity<string>
 
@@ -227,10 +224,7 @@ namespace Dev2.Activities.Exchange
             return indexToUpsertTo;
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -277,7 +271,7 @@ namespace Dev2.Activities.Exchange
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -286,7 +280,7 @@ namespace Dev2.Activities.Exchange
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -301,15 +295,9 @@ namespace Dev2.Activities.Exchange
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(To, Cc, Bcc, Subject, Attachments, Body);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(To, Cc, Bcc, Subject, Attachments, Body);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion
 

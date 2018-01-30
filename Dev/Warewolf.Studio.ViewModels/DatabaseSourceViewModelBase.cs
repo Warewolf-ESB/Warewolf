@@ -437,10 +437,7 @@ namespace Warewolf.Studio.ViewModels
             Header = DbSource == null ? ResourceName : DbSource.Name;
         }
 
-        public override bool CanSave()
-        {
-            return TestPassed && !string.IsNullOrEmpty(DatabaseName);
-        }
+        public override bool CanSave() => TestPassed && !string.IsNullOrEmpty(DatabaseName);
 
         IList<string> SetupProgressSpinner()
         {
@@ -529,10 +526,7 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
         }
-        bool CanCancelTest()
-        {
-            return Testing;
-        }
+        bool CanCancelTest() => Testing;
 
         void Reset()
         {

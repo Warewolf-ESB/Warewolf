@@ -60,12 +60,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string newPath, string newName)
+        public ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath)
         {
 
             try
             {
-                var item = SaveResource(resourceId, newPath, newName);
+                var item = SaveResource(resourceId, sourcePath, destinationPath);
                 return new ResourceCatalogDuplicateResult
                 {
                     Status = ExecStatus.Success,

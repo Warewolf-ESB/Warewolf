@@ -54,10 +54,7 @@ namespace Dev2.Common.Interfaces.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(IWebServiceSource other)
-        {
-            return Equals(other as WebServiceSourceDefinition);
-        }
+        public bool Equals(IWebServiceSource other) => Equals(other as WebServiceSourceDefinition);
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -102,15 +99,9 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(WebServiceSourceDefinition left, WebServiceSourceDefinition right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(WebServiceSourceDefinition left, WebServiceSourceDefinition right) => Equals(left, right);
 
-        public static bool operator !=(WebServiceSourceDefinition left, WebServiceSourceDefinition right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(WebServiceSourceDefinition left, WebServiceSourceDefinition right) => !Equals(left, right);
 
         #endregion
 

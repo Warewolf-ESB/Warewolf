@@ -15,9 +15,6 @@ namespace Dev2.Activities.Factories.Case
     public static class CaseConverterFactory
     {
         public static ICaseConvertTO CreateCaseConverterTO(string stringToConvert, string convertType, string result,
-            int indexNumber)
-        {
-            return new CaseConvertTO(stringToConvert, convertType, result, indexNumber);
-        }
+            int indexNumber) => new CaseConvertTO(stringToConvert, convertType, result, indexNumber);
     }
 }

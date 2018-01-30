@@ -77,15 +77,9 @@ namespace Warewolf.Core
             }
         }
 
-        public static bool operator ==(ServiceInput left, ServiceInput right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(ServiceInput left, ServiceInput right) => Equals(left, right);
 
-        public static bool operator !=(ServiceInput left, ServiceInput right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(ServiceInput left, ServiceInput right) => !Equals(left, right);
 
         #endregion
 

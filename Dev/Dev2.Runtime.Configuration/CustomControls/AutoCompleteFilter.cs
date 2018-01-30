@@ -32,22 +32,16 @@ namespace System.Windows.Controls
                     return null;
             }
         }
-        
-        public static bool StartsWith(string text, string value)
-        {
-            return value.StartsWith(text, StringComparison.CurrentCultureIgnoreCase);
-        }
-        
+
+        public static bool StartsWith(string text, string value) => value.StartsWith(text, StringComparison.CurrentCultureIgnoreCase);
+
         public static bool Contains(string text, string value)
         {
             return value.Contains(text, StringComparison.CurrentCultureIgnoreCase);
         }
-        
-        public static bool Equals(string text, string value)
-        {
-            return value.Equals(text, StringComparison.CurrentCultureIgnoreCase);
-        }
-        
+
+        public static bool Equals(string text, string value) => value.Equals(text, StringComparison.CurrentCultureIgnoreCase);
+
         public static bool EqualsCaseSensitive(string text, string value)
         {
             return value.Equals(text, StringComparison.CurrentCulture);

@@ -18,25 +18,14 @@ namespace Warewolf.MergeParser
             _activity = activity;
         }
 
-        public IEnumerable<IDev2Activity> GetNextNodes()
-        {
-            return _activity.NextNodes;
-        }
+        public IEnumerable<IDev2Activity> GetNextNodes() => _activity.NextNodes;
 
-        public IEnumerable<IDev2Activity> GetChildrenNodes()
-        {
-            return _activity.GetChildrenNodes();
-        }
+        public IEnumerable<IDev2Activity> GetChildrenNodes() => _activity.GetChildrenNodes();
+
         public ModelItem CurrentFlowStep { get; set; }
         public Point NodeLocation { get; set; }
         public int TreeIndex { get; set; }
 
-        public ModelItem CurrentActivity
-        {
-            get
-            {
-                return ModelItemUtils.CreateModelItem(_activity);
-            }
-        }
+        public ModelItem CurrentActivity => ModelItemUtils.CreateModelItem(_activity);
     }
 }

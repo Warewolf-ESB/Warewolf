@@ -224,9 +224,9 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        public override void FromModel(IComPluginSource pluginSource)
+        public override void FromModel(IComPluginSource source)
         {
-            var selectedDll = pluginSource.SelectedDll;
+            var selectedDll = source.SelectedDll;
             if (selectedDll != null)
             {
                 var dllListingModel = DllListings?.FirstOrDefault(model => model.Name == selectedDll.Name);
@@ -238,10 +238,10 @@ namespace Warewolf.Studio.ViewModels
                 }
             }
 
-            Name = pluginSource.ResourceName;
-            Path = pluginSource.ResourcePath;
-            Is32Bit = pluginSource.Is32Bit;
-            ClsId = pluginSource.ClsId;
+            Name = source.ResourceName;
+            Path = source.ResourcePath;
+            Is32Bit = source.Is32Bit;
+            ClsId = source.ClsId;
 
         }
 
@@ -316,10 +316,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override bool CanSave()
-        {
-            return _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && !string.IsNullOrEmpty(ClsId) && HasChanged;
-        }
+        public override bool CanSave() => _selectedDll != null && !string.IsNullOrEmpty(AssemblyName) && !string.IsNullOrEmpty(ClsId) && HasChanged;
 
         public override void UpdateHelpDescriptor(string helpText)
         {

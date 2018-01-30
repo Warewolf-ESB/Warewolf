@@ -33,10 +33,7 @@ namespace Dev2.Utils
     {
         #region Implementation of IResourceChangeHandlerFactory
 
-        public IResourceChangeHandler Create(IEventAggregator eventPublisher)
-        {
-            return new ResourceChangeHandler(eventPublisher);
-        }
+        public IResourceChangeHandler Create(IEventAggregator eventPublisher) => new ResourceChangeHandler(eventPublisher);
 
         #endregion
     }

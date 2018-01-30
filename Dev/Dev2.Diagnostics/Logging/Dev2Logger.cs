@@ -85,10 +85,7 @@ namespace Dev2.Common
             _log.Info(customMessage, exception);
         }
 
-        static string UpdateCustomMessage(object message, string executionId)
-        {
-            return $"[{executionId}] - {message}";
-        }
+        static string UpdateCustomMessage(object message, string executionId) => $"[{executionId}] - {message}";
 
         public static void UpdateLoggingConfig(string level)
         {

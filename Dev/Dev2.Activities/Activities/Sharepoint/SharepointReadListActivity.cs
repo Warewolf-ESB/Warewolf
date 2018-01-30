@@ -56,10 +56,7 @@ namespace Dev2.Activities.Sharepoint
         }
 
 
-        public override List<string> GetOutputs()
-        {
-            return ReadListItems.Select(to => to.VariableName).ToList();
-        }
+        public override List<string> GetOutputs() => ReadListItems.Select(to => to.VariableName).ToList();
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -69,20 +66,11 @@ namespace Dev2.Activities.Sharepoint
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.MixedActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
         int _indexCounter = 1;
 
@@ -307,7 +295,7 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -316,7 +304,7 @@ namespace Dev2.Activities.Sharepoint
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {

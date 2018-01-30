@@ -347,11 +347,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             return xElement;
         }
 
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
-        
+        public override string ToString() => JsonConvert.SerializeObject(this);
+
         public bool Equals(IResource other)
         {
             if (ReferenceEquals(null, other))
@@ -390,16 +387,10 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        public static bool operator ==(ResourceBase left, IResource right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(ResourceBase left, IResource right) => Equals(left, right);
 
-        public static bool operator !=(ResourceBase left, IResource right)
-        {
-            return !Equals(left, right);
-        }
-        
+        public static bool operator !=(ResourceBase left, IResource right) => !Equals(left, right);
+
         public XElement UpgradeXml(XElement xml, IResource resource)
         {
             if (IsUpgraded)
@@ -730,16 +721,13 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        static ResourceForTree CreateResourceForTree(Guid resourceId, Guid uniqueId, string resourceName, string resourceType)
+        static ResourceForTree CreateResourceForTree(Guid resourceId, Guid uniqueId, string resourceName, string resourceType) => new ResourceForTree
         {
-            return new ResourceForTree
-            {
-                UniqueID = uniqueId,
-                ResourceID = resourceId,
-                ResourceName = resourceName,
-                ResourceType = resourceType
-            };
-        }
+            UniqueID = uniqueId,
+            ResourceID = resourceId,
+            ResourceName = resourceName,
+            ResourceType = resourceType
+        };
 
         public static void ParseProperties(string s, Dictionary<string, string> properties)
         {

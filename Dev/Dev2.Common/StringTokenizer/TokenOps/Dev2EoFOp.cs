@@ -16,21 +16,11 @@ namespace Dev2.Common
 {
     class Dev2EoFOp : IDev2SplitOp
     {
-        public bool IsFinalOp()
-        {
-            //18.09.2012: Massimo.Guerrera - Changed to false because of bug, no executing the last op.
-            return false;
-        }
+        public bool IsFinalOp() => false;
 
-        public int OpLength()
-        {
-            return 0;
-        }
+        public int OpLength() => 0;
 
-        public bool CanUseEnumerator(bool isReversed)
-        {
-            return false;
-        }
+        public bool CanUseEnumerator(bool isReversed) => false;
 
         public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
         {
@@ -53,7 +43,7 @@ namespace Dev2.Common
             return result.ToString();
         }
 
-        public string ExecuteOperation(CharEnumerator candidate, int startIdx, int len, bool isReversed)
+        public string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed)
         {
             throw new NotImplementedException();
         }

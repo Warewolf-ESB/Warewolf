@@ -27,9 +27,6 @@ namespace Dev2.Comparer
                 && x.Timeout.Equals(y.Timeout);
         }
 
-        public int GetHashCode(EmailSource obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(EmailSource obj) => 1;
     }
 }

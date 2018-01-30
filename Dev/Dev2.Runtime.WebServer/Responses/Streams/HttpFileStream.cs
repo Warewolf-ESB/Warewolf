@@ -30,9 +30,6 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
             _openInputStream = openInputStream;
         }
 
-        protected override Stream OpenInputStream()
-        {
-            return _openInputStream();
-        }
+        protected override Stream OpenInputStream() => _openInputStream();
     }
 }

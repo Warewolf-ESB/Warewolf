@@ -365,14 +365,11 @@ namespace Dev2.Runtime
             return serviceTestModelTos;
         }
 
-        public List<IServiceTestModelTO> Fetch(Guid resourceId)
-        {
-            return Tests.GetOrAdd(resourceId, guid =>
-             {
-                 var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
-                 return GetTestList(dir);
-             });
-        }
+        public List<IServiceTestModelTO> Fetch(Guid resourceId) => Tests.GetOrAdd(resourceId, guid =>
+                                                                              {
+                                                                                  var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
+                                                                                  return GetTestList(dir);
+                                                                              });
 
         public void DeleteTest(Guid resourceID, string testName)
         {
@@ -403,7 +400,7 @@ namespace Dev2.Runtime
             }
         }
 
-        public void DeleteAllTests(List<string> testsToIgnore)
+        public void DeleteAllTests(List<string> testsToList)
         {
             var info = new DirectoryInfo(EnvironmentVariables.TestPath);
             if (!info.Exists)
@@ -412,7 +409,7 @@ namespace Dev2.Runtime
             }
 
             var fileInfos = info.GetDirectories();
-            foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToIgnore.Contains(fileInfo.Name.ToUpper())))
+            foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToList.Contains(fileInfo.Name.ToUpper())))
             {
                 DirectoryHelper.CleanUp(fileInfo.FullName);
             }

@@ -223,14 +223,11 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new ComNamespaceRegion
         {
-            return new ComNamespaceRegion
-            {
-                IsEnabled = IsEnabled,
-                SelectedNamespace = SelectedNamespace
-            };
-        }
+            IsEnabled = IsEnabled,
+            SelectedNamespace = SelectedNamespace
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {

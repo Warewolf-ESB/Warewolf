@@ -371,10 +371,8 @@ namespace Dev2.Scheduler
             return true;
         }
 
-        public override string ToString()
-        {
-            return String.Format("Name:{0} ResourceId:{1}", Name, ResourceId);
-        }
+        public override string ToString() => String.Format("Name:{0} ResourceId:{1}", Name, ResourceId);
+
         public Guid ResourceId { get; set; }
     }
 }

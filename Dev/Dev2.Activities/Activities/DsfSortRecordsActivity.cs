@@ -69,10 +69,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ExecuteTool(dataObject, 0);
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { SortField };
-        }
+        public override List<string> GetOutputs() => new List<string> { SortField };
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -202,15 +199,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(SortField);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(SortField);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(SortField);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(SortField);
 
         #endregion
 
@@ -219,16 +210,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return _debugOutputs;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
         #endregion
 

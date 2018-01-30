@@ -32,11 +32,6 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.PathOperations
 {
-    /// <summary>
-    /// PBI : 1172
-    /// Status : New
-    /// Purpose : To provide an activity that can move a file/folder via FTP, FTPS and file system
-    /// </summary>
     public abstract class DsfAbstractMultipleFilesActivity : DsfAbstractFileActivity,IEquatable<DsfAbstractMultipleFilesActivity>
     {
         protected DsfAbstractMultipleFilesActivity(string displayName)
@@ -52,62 +47,62 @@ namespace Dev2.Activities.PathOperations
 
         protected IWarewolfListIterator ColItr;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
   
-            allErrors = new ErrorResultTO();
+            error = new ErrorResultTO();
             ColItr = new WarewolfListIterator();
 
             //get all the possible paths for all the string variables          
-            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(InputPath, update));
+            var inputItr = new WarewolfIterator(context.Environment.Eval(InputPath, update));
             ColItr.AddVariableToIterateOn(inputItr);
 
            
-            var outputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath, update));
+            var outputItr = new WarewolfIterator(context.Environment.Eval(OutputPath, update));
             ColItr.AddVariableToIterateOn(outputItr);
 
            
-            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
+            var unameItr = new WarewolfIterator(context.Environment.Eval(Username, update));
             ColItr.AddVariableToIterateOn(unameItr);
 
             
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
+            var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword,update));
             ColItr.AddVariableToIterateOn(passItr);
 
-            var privateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(PrivateKeyFile, update));
+            var privateKeyItr = new WarewolfIterator(context.Environment.Eval(PrivateKeyFile, update));
             ColItr.AddVariableToIterateOn(privateKeyItr);
             
-            var desunameItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationUsername, update));
+            var desunameItr = new WarewolfIterator(context.Environment.Eval(DestinationUsername, update));
             ColItr.AddVariableToIterateOn(desunameItr);
 
             
-            var despassItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedDestinationPassword,update));
+            var despassItr = new WarewolfIterator(context.Environment.Eval(DecryptedDestinationPassword,update));
             ColItr.AddVariableToIterateOn(despassItr);
 
-            var destPrivateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(DestinationPrivateKeyFile, update));
+            var destPrivateKeyItr = new WarewolfIterator(context.Environment.Eval(DestinationPrivateKeyFile, update));
             ColItr.AddVariableToIterateOn(destPrivateKeyItr);
 
-            AddItemsToIterator(dataObject.Environment, update);
+            AddItemsToIterator(context.Environment, update);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
-            if(dataObject.IsDebugMode())
+            if(context.IsDebugMode())
             {
-                AddDebugInputItem(new DebugEvalResult(InputPath, "Source Path", dataObject.Environment, update));
-                AddDebugInputItemUserNamePassword(dataObject.Environment, update);
+                AddDebugInputItem(new DebugEvalResult(InputPath, "Source Path", context.Environment, update));
+                AddDebugInputItemUserNamePassword(context.Environment, update);
                 if(!string.IsNullOrEmpty(PrivateKeyFile))
                 {
-                    AddDebugInputItem(new DebugEvalResult(PrivateKeyFile, "Source Private Key File", dataObject.Environment, update));
+                    AddDebugInputItem(new DebugEvalResult(PrivateKeyFile, "Source Private Key File", context.Environment, update));
                 }
-                AddDebugInputItem(new DebugEvalResult(OutputPath, "Destination Path", dataObject.Environment, update));
-                AddDebugInputItemDestinationUsernamePassword(dataObject.Environment, DestinationPassword, DestinationUsername, update);
+                AddDebugInputItem(new DebugEvalResult(OutputPath, "Destination Path", context.Environment, update));
+                AddDebugInputItemDestinationUsernamePassword(context.Environment, DestinationPassword, DestinationUsername, update);
                 if(!string.IsNullOrEmpty(DestinationPrivateKeyFile))
                 {
-                    AddDebugInputItem(new DebugEvalResult(DestinationPrivateKeyFile, "Destination Private Key File", dataObject.Environment, update));
+                    AddDebugInputItem(new DebugEvalResult(DestinationPrivateKeyFile, "Destination Private Key File", context.Environment, update));
                 }
                 AddDebugInputItem(new DebugItemStaticDataParams(Overwrite.ToString(), "Overwrite"));
-                AddDebugInputItems(dataObject.Environment, update);
+                AddDebugInputItems(context.Environment, update);
             }
 
             while(ColItr.HasMoreData())
@@ -125,7 +120,7 @@ namespace Dev2.Activities.PathOperations
                 }
                 catch(IOException ioException)
                 {
-                    allErrors.AddError("Source: " + ioException.Message);
+                    error.AddError("Source: " + ioException.Message);
                     hasError = true;
                 }
                 try
@@ -137,7 +132,7 @@ namespace Dev2.Activities.PathOperations
                 }
                 catch(IOException ioException)
                 {
-                    allErrors.AddError("Destination:" + ioException.Message);
+                    error.AddError("Destination:" + ioException.Message);
                     hasError = true;
                 }
 
@@ -159,7 +154,7 @@ namespace Dev2.Activities.PathOperations
                 }
                 catch(Exception e)
                 {
-                    allErrors.AddError(e.Message);
+                    error.AddError(e.Message);
                     outputs[0].OutputStrings.Add(null);
                 }
             }
@@ -278,15 +273,9 @@ namespace Dev2.Activities.PathOperations
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(InputPath, OutputPath);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(InputPath, OutputPath);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion
 

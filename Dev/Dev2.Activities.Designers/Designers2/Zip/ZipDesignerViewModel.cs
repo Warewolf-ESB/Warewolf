@@ -75,7 +75,7 @@ namespace Dev2.Activities.Designers2.Zip
             ValidateArchivePassword(password, "Archive Password");
         }
 
-        string ArchivePassword { get { return GetProperty<string>(); } }
+        string ArchivePassword => GetProperty<string>();
 
         public override void UpdateHelpDescriptor(string helpText)
         {

@@ -88,10 +88,7 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         /// <returns>The first descendant of the specified type</returns>
         /// <remarks> usage: myWindow.FindChild<StackPanel>() </StackPanel></remarks>
         public static T FindChild<T>(this DependencyObject parent)
-            where T : DependencyObject
-        {
-            return parent.FindChild<T>(child => true);
-        }
+            where T : DependencyObject => parent.FindChild<T>(child => true);
 
         /// <summary>
         /// Find the first child of the specified type (the child must exist)

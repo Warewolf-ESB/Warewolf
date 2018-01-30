@@ -366,10 +366,7 @@ namespace Warewolf.Studio.ViewModels
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
         }
 
-        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
-        {
-            return new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
-        }
+        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel) => new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
 
         public override void Dispose()
         {

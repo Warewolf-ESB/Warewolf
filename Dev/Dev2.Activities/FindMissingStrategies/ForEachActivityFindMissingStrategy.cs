@@ -26,10 +26,7 @@ namespace Dev2.FindMissingStrategies
     {
         #region Implementation of ISpookyLoadable<Enum>
 
-        public Enum HandlesType()
-        {
-            return enFindMissingType.ForEach;
-        }
+        public Enum HandlesType() => enFindMissingType.ForEach;
 
         /// <summary>
         /// Gets all the fields for a specific activity

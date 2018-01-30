@@ -111,12 +111,12 @@ namespace Dev2.Studio.Core
             }
         }
         
-        public DataTable TestDbService(IDatabaseService service)
+        public DataTable TestDbService(IDatabaseService inputValues)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestDbService");
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(service));
+            comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(inputValues));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {
@@ -202,12 +202,12 @@ namespace Dev2.Studio.Core
             resource.IsSharepointOnline = output.IsSharepointOnline;
         }
 
-        public string TestWebService(IWebService service)
+        public string TestWebService(IWebService inputValues)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestWebService");
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("WebService", serialiser.SerializeToBuilder(service));
+            comsController.AddPayloadArgument("WebService", serialiser.SerializeToBuilder(inputValues));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {
@@ -276,12 +276,12 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public string TestPluginService(IPluginService plugin)
+        public string TestPluginService(IPluginService inputValues)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestPluginService");
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(plugin));
+            comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(inputValues));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {
@@ -296,13 +296,13 @@ namespace Dev2.Studio.Core
             return output.Message.ToString();
         }
 
-        public string TestComPluginService(IComPluginService plugin)
+        public string TestComPluginService(IComPluginService inputValues)
         {
 
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestComPluginService");
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("ComPluginService", serialiser.SerializeToBuilder(plugin));
+            comsController.AddPayloadArgument("ComPluginService", serialiser.SerializeToBuilder(inputValues));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {
@@ -357,12 +357,12 @@ namespace Dev2.Studio.Core
             return output.Message.ToString();
         }
 
-        public void SaveEmailServiceSource(IEmailServiceSource model, Guid serverWorkspaceID)
+        public void SaveEmailServiceSource(IEmailServiceSource emailServiceSource, Guid serverWorkspaceID)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveEmailServiceSource");
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("EmailServiceSource", serialiser.SerializeToBuilder(model));
+            comsController.AddPayloadArgument("EmailServiceSource", serialiser.SerializeToBuilder(emailServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {
@@ -374,12 +374,12 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public void SaveExchangeSource(IExchangeSource model, Guid serverWorkspaceID)
+        public void SaveExchangeSource(IExchangeSource exchangeSource, Guid serverWorkspaceID)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveExchangeServiceSource");
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("ExchangeSource", serialiser.SerializeToBuilder(model));
+            comsController.AddPayloadArgument("ExchangeSource", serialiser.SerializeToBuilder(exchangeSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
             {
@@ -421,12 +421,12 @@ namespace Dev2.Studio.Core
             return output.Message.ToString();
         }
 
-        public void SaveWcfSource(IWcfServerSource model, Guid serverWorkspaceID)
+        public void SaveWcfSource(IWcfServerSource wcfSource, Guid serverWorkspaceID)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveWcfServiceSource");
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("WcfSource", serialiser.SerializeToBuilder(model));
+            comsController.AddPayloadArgument("WcfSource", serialiser.SerializeToBuilder(wcfSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
             {
@@ -454,12 +454,12 @@ namespace Dev2.Studio.Core
             return output.Message.ToString();
         }
 
-        public string TestWcfService(IWcfService wcfService)
+        public string TestWcfService(IWcfService service)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestWcfService");
             var serialiser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("wcfService", serialiser.SerializeToBuilder(wcfService));
+            comsController.AddPayloadArgument("wcfService", serialiser.SerializeToBuilder(service));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
             {
@@ -476,14 +476,14 @@ namespace Dev2.Studio.Core
 
         #region Implementation of IUpdateManager
 
-        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
+        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironmentId)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("DirectDeploy");
             var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("resourceIDsToDeploy", serialiser.SerializeToBuilder(resourceIDsToDeploy));
             comsController.AddPayloadArgument("deployTests", new StringBuilder(deployTests.ToString()));
-            comsController.AddPayloadArgument("destinationEnvironmentId", serialiser.SerializeToBuilder(destinationEnvironment));
+            comsController.AddPayloadArgument("destinationEnvironmentId", serialiser.SerializeToBuilder(destinationEnvironmentId));
             var output = comsController.ExecuteCommand<List<IDeployResult>>(con, GlobalConstants.ServerWorkspaceID);
             return output;
         }

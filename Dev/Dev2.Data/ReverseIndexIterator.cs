@@ -71,9 +71,6 @@ namespace Dev2.Data.Binary_Objects
             return result;
         }
 
-        public int MaxIndex()
-        {
-            return IndexList.GetMaxIndex();
-        }
+        public int MaxIndex() => IndexList.GetMaxIndex();
     }
 }

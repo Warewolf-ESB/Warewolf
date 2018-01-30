@@ -125,19 +125,13 @@ namespace Dev2.Services.Security
             }
         }
 
-        public RelayCommand RemoveRow
-        {
-            get
-            {
-                return _removeRow ??
+        public RelayCommand RemoveRow => _removeRow ??
                        (_removeRow =
                        new RelayCommand(o =>
                            {
                                IsDeleted = !IsDeleted;
                                EnableCellEditing = !IsDeleted;
                            }, o => CanRemove));
-            }
-        }
 
         public bool CanRemove => !string.IsNullOrEmpty(WindowsGroup) && !IsBuiltInGuests && !IsBuiltInAdministrators;
 
@@ -214,23 +208,19 @@ namespace Dev2.Services.Security
             ? !string.IsNullOrEmpty(WindowsGroup)
             : !string.IsNullOrEmpty(WindowsGroup) && !string.IsNullOrEmpty(ResourceName);
 
-        public static WindowsGroupPermission CreateAdministrators()
+        public static WindowsGroupPermission CreateAdministrators() => new WindowsGroupPermission
         {
-            return new WindowsGroupPermission
-            {
-                IsServer = true,
-                WindowsGroup = BuiltInAdministratorsText,
-                View = true,
-                Execute = true,
-                Contribute = true,
-                DeployTo = true,
-                DeployFrom = true,
-                Administrator = true
+            IsServer = true,
+            WindowsGroup = BuiltInAdministratorsText,
+            View = true,
+            Execute = true,
+            Contribute = true,
+            DeployTo = true,
+            DeployFrom = true,
+            Administrator = true
 
-            };
-        }
+        };
 
-    
         public static WindowsGroupPermission CreateEveryone()
         {
             return new WindowsGroupPermission
@@ -247,20 +237,17 @@ namespace Dev2.Services.Security
 ;
         }
 
-        public static WindowsGroupPermission CreateGuests()
+        public static WindowsGroupPermission CreateGuests() => new WindowsGroupPermission
         {
-            return new WindowsGroupPermission
-            {
-                IsServer = true,
-                WindowsGroup = BuiltInGuestsText,
-                View = false,
-                Execute = false,
-                Contribute = false,
-                DeployTo = false,
-                DeployFrom = false,
-                Administrator = false
+            IsServer = true,
+            WindowsGroup = BuiltInGuestsText,
+            View = false,
+            Execute = false,
+            Contribute = false,
+            DeployTo = false,
+            DeployFrom = false,
+            Administrator = false
 
-            };
-        }
+        };
     }
 }
