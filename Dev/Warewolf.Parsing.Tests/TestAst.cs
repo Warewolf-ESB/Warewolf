@@ -166,8 +166,8 @@ namespace WarewolfParsingTest
 
             Assert.IsTrue(DataStorage.CompareAtoms(bob, string1) > 0);
             Assert.IsTrue(DataStorage.CompareAtoms(string1, bob) < 0);
-            Assert.ThrowsException<System.InvalidOperationException>(() => DataStorage.CompareAtoms(bob, int1));
-            Assert.ThrowsException<System.InvalidOperationException>(() => DataStorage.CompareAtoms(int1, bob));
+            Assert.ThrowsException<DataStorage.WarewolfInvalidComparisonException>(() => DataStorage.CompareAtoms(bob, int1));
+            Assert.ThrowsException<DataStorage.WarewolfInvalidComparisonException>(() => DataStorage.CompareAtoms(int1, bob));
             //------------Assert Results-------------------------
         }
     }

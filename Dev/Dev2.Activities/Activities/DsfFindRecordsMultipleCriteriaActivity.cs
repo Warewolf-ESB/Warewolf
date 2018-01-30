@@ -271,13 +271,57 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         Func<DataStorage.WarewolfAtom, bool> CombineFuncAnd(Func<DataStorage.WarewolfAtom, bool> func, string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
         {
             var func2 = CreateFuncFromOperator(searchType, values, from, to);
-            return a => func.Invoke(a) && func2.Invoke(a);
+
+            return a =>
+            {
+                try
+                {
+                    return func.Invoke(a) && func2.Invoke(a);
+                }
+                catch (DataStorage.WarewolfInvalidComparisonException ex)
+                {
+                    return false;
+                }
+            };
         }
 
         Func<DataStorage.WarewolfAtom, bool> CombineFuncOr(Func<DataStorage.WarewolfAtom, bool> func, string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
         {
             var func2 = CreateFuncFromOperator(searchType, values, from, to);
-            return a => func.Invoke(a) || func2.Invoke(a);
+            return a =>
+            {
+                bool CatchInvalidComparisons(Func<DataStorage.WarewolfAtom, bool> f)
+                {
+                    var ret = false;
+                    try
+                    {
+                        ret = f.Invoke(a);
+                        if (ret)
+                        {
+                            return ret;
+                        }
+                    }
+                    catch (DataStorage.WarewolfInvalidComparisonException ex)
+                    {
+                        ret = false;
+                    }
+                    return ret;
+                }
+                return CatchInvalidComparisons(func) || CatchInvalidComparisons(func2);
+
+                //try
+                //{
+                //    ret = func2.Invoke(a);
+                //    if (ret)
+                //    {
+                //        return ret;
+                //    }
+                //} catch (InvalidOperationException ex)
+                //{
+                //    ret = false;
+                //}
+                //return ret;
+            };
         }
 
 
@@ -285,7 +329,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
             var opt = FindRecsetOptions.FindMatch(searchType);
-            return opt.GenerateFunc(values, from, to, RequireAllFieldsToMatch);
+            return (a) =>
+            {
+                try
+                {
+                    return opt.GenerateFunc(values, from, to, RequireAllFieldsToMatch).Invoke(a);
+                } catch (DataStorage.WarewolfInvalidComparisonException ex)
+                {
+                    return false;
+                }
+            };
         }
 
         void ValidateRequiredFields(FindRecordsTO searchTo, out ErrorResultTO errors)
