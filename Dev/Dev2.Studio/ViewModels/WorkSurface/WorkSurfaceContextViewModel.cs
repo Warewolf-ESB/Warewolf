@@ -115,7 +115,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             set
             {
-                if (_dataListViewModel.Equals(value))
+                if (_dataListViewModel != null && _dataListViewModel.Equals(value))
                 {
                     return;
                 }
