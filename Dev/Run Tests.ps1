@@ -14,6 +14,7 @@ Param(
   [string]$DotCoverPath,
   [string]$ServerUsername,
   [string]$ServerPassword,
+  [string]$JobNames="",
   [string]$JobName="",
   [switch]$RunAllJobs,
   [switch]$Cleanup,
@@ -29,7 +30,7 @@ Param(
   [string]$sendRecordedMediaForPassedTestCase="false",
   [switch]$StartServerContainer,
   [string]$ServerContainerVersion,
-  [switch]$JobContainer
+  [switch]$JobContainers
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -181,13 +182,17 @@ $StudioPathSpecs += "Bin\Studio\" + $StudioExeName
 $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
-if ($JobName.Contains(" DotCover")) {
+if ($JobNames.Contains(" DotCover")) {
     [bool]$ApplyDotCover = $True
-    $JobName = $JobName.Replace(" DotCover", "")
+    $JobNames = $JobNames.Replace(" DotCover", "")
 } else {
     [bool]$ApplyDotCover = $DotCoverPath -ne ""
 }
 
+if ($JobName -ne "") {
+    $JobNames = $JobName
+    $JobName = ""
+}
 
 If (!(Test-Path "$TestsResultsPath")) {
     New-Item "$TestsResultsPath" -ItemType Directory
@@ -326,11 +331,32 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
         exit 1
     }
 
-    if ("$JobName" -eq "") {
-        $JobName = "Test Run"
+    if ("$JobNames" -eq "") {
+        $JobNames = "Test Run"
     }
-    Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Resources" "Server Resources $JobName"
-    Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobName"
+    Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Resources" "Server Resources $JobNames"
+    Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobNames"
+}
+
+function Cleanup-JobContainers() {
+    foreach ($Job in $JobNames.Split(",")) {
+		$JobContainerName = $Job.Replace(" ", "_") + "_Container"
+        if (($(docker container ls) | ConvertFrom-String | % { $_.P7 -eq $JobContainerName }) -eq $true) {
+            Write-Host Waiting for $JobContainerName
+            docker wait $JobContainerName
+        }
+        if (($(docker container ls -a) | ConvertFrom-String | % { $_.P7 -eq $JobContainerName }) -eq $true) {
+            if ($TestsPath.EndsWith("\")) {
+                $ResultsDirectory = $TestsPath + $JobContainerName
+            } else {
+                $ResultsDirectory = $TestsPath + "\" + $JobContainerName
+            }
+		    docker cp $($JobContainerName + ":C:\Build\TestResults\") "$ResultsDirectory"
+		    docker container rm $JobContainerName
+        }
+	}
+    docker ps -a -q | % { docker rm $_ }
+    docker images | ConvertFrom-String | ? { $_.P2 -eq "jobsenvironment" -or $_.P2 -eq "<none>" } | % { docker rmi $_.P3 }
 }
 
 function Wait-For-FileUnlock([string]$FilePath) {
@@ -425,24 +451,24 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
             }
         }
         $PlayList += "</Playlist>"
-        $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
+        $OutPlaylistPath = $TestsResultsPath + "\" + $JobNames + " Failures.playlist"
         Copy-On-Write $OutPlaylistPath
         $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
         Write-Host Playlist file written to `"$OutPlaylistPath`".
     }
 
     if ($Studio) {
-        Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobName Studio.log"
+        Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobNames Studio.log"
     }
     if ($Studio -and $DotCover) {
         $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
-        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
+        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobNames Studio DotCover.dcvr
         $exists = Wait-For-FileExist $StudioSnapshot
         if ($exists) {
             $locked = Wait-For-FileUnlock $StudioSnapshot
             if (!($locked)) {
-                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
-                Move-Item $StudioSnapshot "$TestsResultsPath\$JobName Studio DotCover.dcvr" -force
+                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobNames Studio DotCover.dcvr
+                Move-Item $StudioSnapshot "$TestsResultsPath\$JobNames Studio DotCover.dcvr" -force
             } else {
                 Write-Host Studio Coverage Snapshot File is locked.
             }
@@ -450,39 +476,39 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
 		    Write-Error -Message "Studio coverage snapshot not found at $StudioSnapshot"
         }
         if (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log") {
-            Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$JobName Studio DotCover.log"
+            Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$JobNames Studio DotCover.log"
         }
     }
     if ($Server) {
-        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
-        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io Server.log"
-        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobName my.warewolf.io Server Errors.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobNames Server.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobNames my.warewolf.io Server.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobNames my.warewolf.io Server Errors.log"
     }
     if ($Server -and $DotCover) {
         $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
-        Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
+        Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobNames Server DotCover.dcvr
         $exists = Wait-For-FileExist $ServerSnapshot
         if ($exists) {
             $locked = Wait-For-FileUnlock $ServerSnapshot
             if (!($locked)) {
-                Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
-                Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
+                Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobNames Server DotCover.dcvr
+                Move-File-To-TestResults $ServerSnapshot "$JobNames Server DotCover.dcvr"
             } else {
                 Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
             }
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\dotCover.log") {
-            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$JobName Server DotCover.log"
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$JobNames Server DotCover.log"
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log") {
-            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io.log"
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobNames my.warewolf.io.log"
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log") {
-            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobName my.warewolf.io Errors.log"
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobNames my.warewolf.io Errors.log"
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr") "$TestsResultsPath\$JobName Merged Server and Studio DotCover" "$TestsResultsPath\ServerAndStudioDotCoverSnapshot"
+        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobNames Server DotCover.dcvr", "$TestsResultsPath\$JobNames Studio DotCover.dcvr") "$TestsResultsPath\$JobNames Merged Server and Studio DotCover" "$TestsResultsPath\ServerAndStudioDotCoverSnapshot"
     }
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
@@ -588,11 +614,11 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 </AnalyseParams>
 "@
 
-        if (!$JobName) {
+        if (!$JobNames) {
 			if ($ProjectName) {
-				$JobName = $ProjectName
+				$JobNames = $ProjectName
 			} else {
-				$JobName = "Manual Tests"
+				$JobNames = "Manual Tests"
 			}
         }
         $DotCoverRunnerXMLPath = "$TestsResultsPath\Server DotCover Runner.xml"
@@ -845,14 +871,14 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
 }
 
 #Unpack jobs
-$JobNames = @()
+$JobNamesList = @()
 $JobAssemblySpecs = @()
 $JobCategories = @()
-if ($JobName -ne $null -and $JobName -ne "" -and $MergeDotCoverSnapshotsInDirectory -eq "" -and $Cleanup.IsPresent -eq $false) {
-    foreach ($Job in $JobName.Split(",")) {
+if ($JobNames -ne $null -and $JobNames -ne "" -and $MergeDotCoverSnapshotsInDirectory -eq "" -and $Cleanup.IsPresent -eq $false) {
+    foreach ($Job in $JobNames.Split(",")) {
         $Job = $Job.TrimEnd("1234567890 ")
         if ($JobSpecs.ContainsKey($Job)) {
-            $JobNames += $Job
+            $JobNamesList += $Job
             if ($JobSpecs[$Job].Count -eq 1) {
                 $JobAssemblySpecs += $JobSpecs[$Job]
                 $JobCategories += ""
@@ -866,7 +892,7 @@ if ($JobName -ne $null -and $JobName -ne "" -and $MergeDotCoverSnapshotsInDirect
     }
 }
 if ($ProjectName) {
-    $JobNames += $ProjectName
+    $JobNamesList += $ProjectName
     $JobAssemblySpecs += $ProjectName
     if ($Category -ne $null -and $Category -ne "") {
         $JobCategories += $Category
@@ -874,7 +900,7 @@ if ($ProjectName) {
         $JobCategories += ""
     }
 }
-$TotalNumberOfJobsToRun = $JobNames.length
+$TotalNumberOfJobsToRun = $JobNamesList.length
 if ($TotalNumberOfJobsToRun -gt 0) {
     if ($VSTestPath -ne "" -and !(Test-Path "$VSTestPath" -ErrorAction SilentlyContinue)) {
         if (Test-Path $VSTestPath.Replace("Enterprise", "Professional")) {
@@ -893,7 +919,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
     }
 
-    if(!$JobContainer.IsPresent) {
+    if(!$JobContainers.IsPresent) {
         if (!(Test-Path $VSTestPath) -and !(Test-Path $MSTestPath)) {
             Write-Error -Message "Error cannot find VSTest.console.exe or MSTest.exe. Use either -VSTestPath `'`' or -MSTestPath `'`' parameters to pass paths to one of those files."
             sleep 30
@@ -957,8 +983,31 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
         }
     }
+    if ($JobContainers.IsPresent) {
+        Cleanup-JobContainers
+        if (($(docker images) | ConvertFrom-String | ? {  $_.P1 -eq "warewolftestenvironment" }) -eq $null) {
+            Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
+FROM microsoft/windowsservercore
+SHELL ["powershell"]
+
+# Install MSTest
+RUN Invoke-WebRequest "https://aka.ms/vs/15/release/vs_TestAgent.exe" -OutFile "`$env:TEMP\vs_TestAgent.exe" -UseBasicParsing
+RUN & "`$env:TEMP\vs_TestAgent.exe" /quiet | echo "Installing VSTest."
+RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe\")) {Write-Host VSTest did not install correctly; exit 1}
+"@
+            docker build -t warewolftestenvironment "$TestsPath"
+        }
+        Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
+FROM warewolftestenvironment
+SHELL ["powershell"]
+
+RUN New-Item -Path Build -ItemType Directory
+ADD . Build
+"@
+        docker build -t jobsenvironment "$TestsPath"
+    }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
-        $JobName = $JobNames[$_].ToString()
+        $JobName = $JobNamesList[$_].ToString()
         $ProjectSpec = $JobAssemblySpecs[$_].ToString()
         $TestCategories = $JobCategories[$_].ToString()
         $TestAssembliesList = ""
@@ -982,24 +1031,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 }
             }
         }
-        if ($JobContainer.IsPresent) {
-            Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
-FROM microsoft/windowsservercore
-SHELL ["powershell"]
-RUN New-Item -Path Build -ItemType Directory
-ADD . Build
-
-# Install MSTest
-RUN Invoke-WebRequest "https://download.microsoft.com/download/8/A/F/8AFFDD5A-53D9-46EB-98D7-B61BBCAF0DE6/vstf_testagent.exe" -OutFile "`$env:TEMP\vstf_testagent.exe" -UseBasicParsing
-RUN & "`$env:TEMP\vstf_testagent.exe" /quiet | echo "Installing MSTest."
-RUN if (!(Test-Path \"`$env:vs140comntools..\IDE\MSTest.exe\")) {Write-Host MSTest did not install correctly; exit 1}
-RUN $env:vs140comntools
-
-# Run Tests
-RUN &('.\Build\Run Tests.ps1') -JobName '$JobName' -TestList '$TestList' -MSTestPath '`$env:vs140comntools..\IDE\MSTest.exe'
-"@
-            docker build -t jobcontainer "$TestsPath"
-            docker cp jobcontainer:C:\Build\TestResults $TestsPath\TestResults
+        if ($JobContainers.IsPresent) {
+            $JobContainerName = $JobName.Replace(" ", "_") + "_Container"
+            docker run --name $JobContainerName -di jobsenvironment powershell `&`(`'.\Build\Run Tests.ps1`'`) -JobName `'$JobName`' -TestList `'$TestList`' -VSTest -VSTestPath `'`C:\Program Files `(x86`)\Microsoft Visual Studio 14.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe`'
         } else {
             if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
 	            Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
@@ -1188,6 +1222,10 @@ RUN &('.\Build\Run Tests.ps1') -JobName '$JobName' -TestList '$TestList' -MSTest
             Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
         }
     }
+}
+
+if ($JobContainers.IsPresent) {
+	Cleanup-JobContainers
 }
 
 if ($AssemblyFileVersionsTest.IsPresent) {
@@ -1399,10 +1437,10 @@ if ($RunWarewolfServiceTests.IsPresent) {
 
 if ($MergeDotCoverSnapshotsInDirectory -ne "") {
     $DotCoverSnapshots = Get-ChildItem $MergeDotCoverSnapshotsInDirectory\*.dcvr -Recurse
-    if ($JobName -eq "") {
-        $JobName = "DotCover"
+    if ($JobNames -eq "") {
+        $JobNames = "DotCover"
     }
-    $MergedSnapshotFileName = $JobName.Split(",")[0]
+    $MergedSnapshotFileName = $JobNames.Split(",")[0]
     $MergedSnapshotFileName = "Merged $MergedSnapshotFileName Snapshots"
     Merge-DotCover-Snapshots $DotCoverSnapshots "$MergeDotCoverSnapshotsInDirectory\$MergedSnapshotFileName" "$MergeDotCoverSnapshotsInDirectory\DotCover"
 }
@@ -1413,24 +1451,17 @@ if ($Cleanup.IsPresent) {
     } else {
         Cleanup-ServerStudio
     }
-	if (!$JobName) {
+	if (!$JobNames) {
 		if ($ProjectName) {
-			$JobName = $ProjectName
+			$JobNames = $ProjectName
 		} else {
-			$JobName = "Manual Tests"
+			$JobNames = "Manual Tests"
 		}
 	}
     Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
 }
 
-if ($RunAllJobs.IsPresent) {
-    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$UnitTestJobNames'")
-    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ServerTestJobNames' -StartServer -ResourcesType ServerTests")
-    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$ReleaseResourcesJobNames' -StartServer -ResourcesType Release")
-    Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
-}
-
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "" -and !$StartServerContainer.IsPresent) {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobNames -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "" -and !$StartServerContainer.IsPresent) {
     Start-my.warewolf.io
     Start-Container
     if (!${Startmy.warewolf.io}.IsPresent) {
