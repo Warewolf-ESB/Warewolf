@@ -1,4 +1,6 @@
-﻿using Dev2.Activities.Specs.BaseTypes;
+﻿using Dev2.Activities.PathOperations;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
@@ -11,7 +13,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Remoting;
 using TechTalk.SpecFlow;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.MergeParser;
 using Warewolf.Studio.ViewModels;
 
@@ -198,6 +203,36 @@ namespace Dev2.Activities.Specs.Merge
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
             var a = mergeVm.Conflicts.AsEnumerable().Count(p => p.HasConflict);
             Assert.AreEqual(expectedConflicts, a);
+        }
+
+        [Given(@"I Load All tools and expect all tools to be mapped")]
+        public void GivenILoadAllToolsAndExpectAllToolsToBeMapped()
+        {
+            var dev2ActivityIOMapping = typeof(IDev2ActivityIOMapping);
+            Type[] excludedTypes = { typeof(DsfBaseActivity),
+                                     typeof(DsfActivityAbstract<>),
+                                     typeof(DsfMethodBasedActivity),
+                                     typeof(DsfWebActivityBase),
+                                     typeof(DsfFlowNodeActivity<>),
+                                     typeof(DsfNativeActivity<>),
+                                     typeof(DsfAbstractFileActivity),
+                                     typeof(DsfFlowDecisionActivity),
+                                     typeof(DsfFlowSwitchActivity),
+                                     typeof(DsfDotNetDllActivity),
+                                     typeof(DsfDatabaseActivity),
+                                     typeof(IDev2ActivityIOMapping),
+                                     typeof(DsfWorkflowActivity),
+                                     typeof(TestMockStep),
+                                     typeof(TestMockDecisionStep),
+                                     typeof(TestMockSwitchStep),
+                                     typeof(DsfAbstractMultipleFilesActivity)};
+            var allActivityTypes = dev2ActivityIOMapping.Assembly.GetTypes().Where(t => dev2ActivityIOMapping.IsAssignableFrom(t) && (!excludedTypes.Contains(t)));
+
+            var countOfAllTools = allActivityTypes.Count();
+            var currentDesignerTools = DesignerAttributeMap.DesignerAttributes.Count;
+            Assert.AreEqual(countOfAllTools, currentDesignerTools, "Count mismatch between the assembly activities and the mapped activities in DesignerAttributeMap class");
+            var allActivitiesAreMapped = allActivityTypes.All(t => DesignerAttributeMap.DesignerAttributes.ContainsKey(t));
+            Assert.IsTrue(allActivitiesAreMapped, "Not all activities are mapped in the DesignerAttributeMap class");
         }
 
         [AfterScenario]
