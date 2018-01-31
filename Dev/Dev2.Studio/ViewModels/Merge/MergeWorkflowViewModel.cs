@@ -101,28 +101,26 @@ namespace Dev2.ViewModels.Merge
         List<IConflict> BuildConflicts(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, (List<ConflictTreeNode> current, List<ConflictTreeNode> diff) currentChanges)
         {
             var conflicts = new List<IConflict>();
-
-            var currentTree = currentChanges.current;
-            var diffTree = currentChanges.diff;
             var armConnectorConflicts = new List<IArmConnectorConflict>();
-            var currentCount = currentTree.Count;
-            var diffCount = diffTree.Count;
-            var maxItems = currentCount >= diffCount ? currentCount : diffCount;
-            for (int i = 0; i < maxItems; i++)
+
+            var current = currentChanges.current.AsEnumerable();
+            var diff = currentChanges.diff.AsEnumerable();
+            var distinctOrderedList = current.Union(diff).DistinctBy(o => o.UniqueId).ToList();
+
+            foreach (var distinctItem in distinctOrderedList)
             {
-                if (i < currentCount)
+                var currentItem = current.FirstOrDefault(o => o.UniqueId == distinctItem.UniqueId);
+                if (currentItem != null)
                 {
-                    ProcessCurrentItem(currentResourceModel, conflicts, armConnectorConflicts, currentTree[i]);
+                    ProcessCurrentItem(currentResourceModel, conflicts, armConnectorConflicts, currentItem);
                 }
-                if (i < diffCount)
+                var diffItem = diff.FirstOrDefault(o => o.UniqueId == distinctItem.UniqueId);
+                if (diffItem != null)
                 {
-                    ProcessDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, diffTree[i]);
-                }
-                else
-                {
-                    ShowArmConnectors(conflicts, armConnectorConflicts);
+                    ProcessDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, diffItem);
                 }
             }
+            ShowArmConnectors(conflicts, armConnectorConflicts);
             return conflicts;
         }
 

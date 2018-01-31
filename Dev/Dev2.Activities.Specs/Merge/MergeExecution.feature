@@ -117,3 +117,6 @@ Scenario: Merge Workflow Containing Switch tool
 	 And I select Current Tool
 	 And I select Current Arm
 	 Then Save is enabled
+
+Scenario: Merge Validate All tools are mapped
+	 Given I Load All tools and expect all tools to be mapped

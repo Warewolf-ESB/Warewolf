@@ -91,12 +91,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.Decision;
 using Dev2.Activities.Designers2.Switch;
 using Dev2.Activities.DateAndTime;
+using Dev2.Activities.Designers2.ExchangeNewEmail;
+using Dev2.Activities.Designers2.ReadFolderNew;
 
 namespace Dev2
 {
     public static class DesignerAttributeMap
     {
-
         public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
             {
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesignerViewModel) },
@@ -129,7 +130,8 @@ namespace Dev2
                 { typeof(DsfPathDelete), typeof(DeleteDesignerViewModel) },
                 { typeof(DsfFileRead), typeof(ReadFileDesignerViewModel) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesignerViewModel) },
-                { typeof(DsfFolderRead), typeof(ReadFolderDesignerViewModel) },                
+                { typeof(DsfFolderRead), typeof(ReadFolderDesignerViewModel) },
+                { typeof(DsfFolderReadActivity), typeof(ReadFolderNewDesignerViewModel) },
                 { typeof(DsfPathRename), typeof(RenameDesignerViewModel) },
                 { typeof(DsfUnZip), typeof(UnzipDesignerViewModel) },
                 { typeof(DsfZip), typeof(ZipDesignerViewModel) },
@@ -157,9 +159,10 @@ namespace Dev2
                 { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesignerViewModel) },
                 { typeof(DsfMySqlDatabaseActivity), typeof(MySqlDatabaseDesignerViewModel) },
                 { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesignerViewModel) },
-                  { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesignerViewModel) },
-                  { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesignerViewModel) },
-                {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesignerViewModel) },
+                { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesignerViewModel) },
+                { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesignerViewModel) },
+                { typeof(DsfExchangeEmailActivity), typeof(ExchangeEmailDesignerViewModel) },
+                { typeof(DsfExchangeEmailNewActivity), typeof(ExchangeNewEmailDesignerViewModel) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllEnhancedViewModel) },
                 { typeof(DsfComDllActivity), typeof(ComDllViewModel) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetViewModel) },
@@ -168,8 +171,8 @@ namespace Dev2
                 { typeof(DsfWebPutActivity), typeof(WebServicePutViewModel) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadViewModel) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadViewModel) },
-                 { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteViewModel) },
-                 { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesignerViewModel) },
+                { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteViewModel) },
+                { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesignerViewModel) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesignerViewModel) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesignerViewModel) },
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesignerViewModel) },
@@ -187,7 +190,7 @@ namespace Dev2
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesignerViewModel) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesignerViewModel) },
                 { typeof(DsfDecision), typeof(DecisionDesignerViewModel) },
-                { typeof(DsfSwitch), typeof(SwitchDesignerViewModel) },
+                { typeof(DsfSwitch), typeof(SwitchDesignerViewModel) }
             };
     }
 }
