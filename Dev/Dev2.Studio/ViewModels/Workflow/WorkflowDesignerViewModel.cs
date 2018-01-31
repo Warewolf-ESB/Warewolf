@@ -596,7 +596,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             get => _dataListViewModel;
             set
             {
-                if (_dataListViewModel.Equals(value))
+                if (_dataListViewModel != null && _dataListViewModel.Equals(value))
                 {
                     return;
                 }
