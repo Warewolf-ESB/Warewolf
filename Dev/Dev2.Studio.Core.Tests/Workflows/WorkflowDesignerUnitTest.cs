@@ -1881,7 +1881,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Description("WorkflowDesigner assigns new unique id on copy paste of an activity/tool")]
         [Owner("Ashley Lewis")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithUniqueID_NewIDAssigned()
         {
             var notExpected = Guid.NewGuid().ToString();
@@ -1945,7 +1944,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Description("WorkflowDesigner assigns new unique id on copy paste of an activity/tool")]
         [Owner("Ashley Lewis")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithUniqueID_NotPaste_ShouldKeepID()
         {
             var expectedId = Guid.NewGuid().ToString();
@@ -2010,7 +2008,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Description("WorkflowDesigner assigns new unique id on copy paste of an activity/tool")]
         [Owner("Ashley Lewis")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithUniqueID_Paste_ShouldNotKeepID()
         {
             var expectedId = Guid.NewGuid().ToString();
@@ -2074,7 +2071,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithDsfDecision_DecisionHandled()
 
         {
@@ -2144,7 +2140,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithDsfSwitch_SwitchHandled()
 
         {
@@ -2212,7 +2207,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithServiceName_FlowStepHandled()
 
         {
@@ -2276,7 +2270,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithoutServiceName_FlowStepHandled()
 
         {
@@ -2350,7 +2343,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ApplyForDrop_DropNotHandled()
 
         {
