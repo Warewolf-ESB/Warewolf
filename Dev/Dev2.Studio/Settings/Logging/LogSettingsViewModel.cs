@@ -321,7 +321,7 @@ namespace Dev2.Settings.Logging
 
         protected override void CloseHelp()
         {
-            throw new NotImplementedException();
+            //Implement if help is done for the log settings.
         }
     }
 }
