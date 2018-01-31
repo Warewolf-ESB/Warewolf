@@ -117,6 +117,8 @@ namespace Dev2.ViewModels
                                 ViewModel.Save();
                             }
                             break;
+                        default:
+                            break;
                     }
                 }
             }

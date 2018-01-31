@@ -78,7 +78,7 @@ namespace Dev2.Tests
             excEmailSender.Setup(p => p.Send(It.IsAny<ExchangeService>(), It.IsAny<EmailMessage>()));
             sender.SetupGet(emailSender => emailSender.ExchangeService).Returns(new ExchangeService());
             sender.SetupGet(emailSender => emailSender.EmailSender).Returns(excEmailSender.Object);
-            sender.Setup(q => q.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
+            sender.Setup(q => q.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR, It.IsAny<bool>()))
                 .Returns("Succes");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(sender);

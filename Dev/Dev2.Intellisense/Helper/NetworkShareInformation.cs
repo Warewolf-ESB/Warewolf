@@ -19,7 +19,7 @@ namespace Dev2.Intellisense.Helper
     [Flags]
     public enum ShareType
     {
-        Disk,
+        None,
         Device,
         IPC,
         Special = -2147483648

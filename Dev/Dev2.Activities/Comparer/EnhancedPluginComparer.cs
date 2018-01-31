@@ -8,8 +8,15 @@ namespace Dev2.Comparer
     {
         public bool Equals(IEnhancedPlugin p1, IEnhancedPlugin p2)
         {
-            if (p1 == null && p2 == null) return true;
-            if (p1 == null || p2 == null) return false;
+            if (p1 == null && p2 == null)
+            {
+                return true;
+            }
+
+            if (p1 == null || p2 == null)
+            {
+                return false;
+            }
 
             bool nameSpacesAreEqual;
 

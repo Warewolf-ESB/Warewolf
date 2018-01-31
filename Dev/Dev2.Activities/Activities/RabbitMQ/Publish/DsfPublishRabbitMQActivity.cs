@@ -126,8 +126,16 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         public bool Equals(DsfPublishRabbitMQActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(RabbitMQSource,other.RabbitMQSource);
             return base.Equals(other)
                 && RabbitMQSourceResourceId.Equals(other.RabbitMQSourceResourceId)
@@ -142,9 +150,21 @@ namespace Dev2.Activities.RabbitMQ.Publish
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfPublishRabbitMQActivity)obj);
         }
 

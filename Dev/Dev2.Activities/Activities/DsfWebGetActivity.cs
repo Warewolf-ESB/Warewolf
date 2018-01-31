@@ -138,8 +138,16 @@ namespace Dev2.Activities
 
         public bool Equals(DsfWebGetActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var headersAreEqual = CommonEqualityOps.CollectionEquals(Headers, other.Headers, new NameValueComparer());
             return base.Equals(other)
                 && headersAreEqual
@@ -149,9 +157,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfWebGetActivity)obj);
         }
 

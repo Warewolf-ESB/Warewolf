@@ -31,15 +31,7 @@ using Warewolf.Storage;
 
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
-
-    /// <summary>
-    /// PBI : 1172
-    /// Status : New
-    /// Purpose : To provide an activity that can read a folder's contents via FTP, FTPS and file system
-    /// </summary>
-    [ToolDescriptorInfo("FileFolder-ReadFolder", "Read Folder", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
     public class DsfFolderRead : DsfAbstractFileActivity, IPathInput,IEquatable<DsfFolderRead>
     {
 
@@ -202,6 +194,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
+		protected override bool AssignEmptyOutputsToRecordSet {get{
+			return true;
+		}}
+		
         #endregion Properties
 
         #region Private Methods
@@ -255,8 +251,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(DsfFolderRead other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && IsFilesSelected == other.IsFilesSelected
                 && IsFoldersSelected == other.IsFoldersSelected 
@@ -266,9 +270,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfFolderRead) obj);
         }
 

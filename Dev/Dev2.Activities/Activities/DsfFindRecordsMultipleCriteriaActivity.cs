@@ -521,8 +521,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(DsfFindRecordsMultipleCriteriaActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var resultsCollectionsAreEqual = CommonEqualityOps.CollectionEquals(ResultsCollection, other.ResultsCollection, new FindRecordsTOComparer());
             return base.Equals(other)
                 && string.Equals(FieldsToSearch, other.FieldsToSearch)
@@ -536,9 +544,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfFindRecordsMultipleCriteriaActivity) obj);
         }
 

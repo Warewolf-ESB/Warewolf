@@ -185,7 +185,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         {
             var provider = new Dev2TrieSugggestionProvider();
             provider.VariableList = new ObservableCollection<string>(ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
-            var filterType = ScenarioContext.Current["filterType"] is enIntellisensePartType ? (enIntellisensePartType)ScenarioContext.Current["filterType"] : enIntellisensePartType.All;
+            var filterType = ScenarioContext.Current["filterType"] is enIntellisensePartType ? (enIntellisensePartType)ScenarioContext.Current["filterType"] : enIntellisensePartType.None;
             var caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
             var options = provider.GetSuggestions(ScenarioContext.Current["inputText"].ToString(), caretpos, true,filterType);
             var selected = p0.Split(new char[] { ',' });

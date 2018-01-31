@@ -7,8 +7,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(EmailSource x, EmailSource y)
         {
-            if (x == null && y == null) return true;
-            if ((x != null && y == null) || (x == null && y != null)) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if ((x != null && y == null) || (x == null && y != null))
+            {
+                return false;
+            }
+
             return string.Equals(x.Host, y.Host)
                 && string.Equals(x.UserName, y.UserName)
                 && string.Equals(x.Password, y.Password)
