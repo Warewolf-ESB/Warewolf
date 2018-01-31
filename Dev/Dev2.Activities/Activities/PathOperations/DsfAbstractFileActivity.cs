@@ -107,9 +107,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        if (AssignEmptyOutputsToRecordSet)
                         {
-                            dataObject.Environment.Assign(region, "", update);
+                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                            {
+                                dataObject.Environment.Assign(region, "", update);
+                            }
                         }
                     }
                     if (dataObject.IsDebugMode())
@@ -190,6 +193,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+
+        protected abstract bool AssignEmptyOutputsToRecordSet {get;}
 
         /// <summary>
         /// Gets or sets the username.
@@ -290,8 +295,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(DsfAbstractFileActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var passWordsCompare = CommonEqualityOps.PassWordsCompare(Password, other.Password);
             return base.Equals(other)
                 && string.Equals(Username, other.Username)
@@ -304,9 +317,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfAbstractFileActivity)obj);
         }
 

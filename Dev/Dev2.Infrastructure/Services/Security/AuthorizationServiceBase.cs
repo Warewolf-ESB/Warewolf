@@ -267,11 +267,6 @@ namespace Dev2.Services.Security
                             }
                             else
                             {
-
-                                if (AreAdministratorsMembersOfWarewolfAdministrators1.Invoke())
-                                {
-                                    isInRole = principal.IsInRole(sid.Value);
-                                }
                                 isInRole = principal.IsInRole(sid.Value);
                             }
                         }

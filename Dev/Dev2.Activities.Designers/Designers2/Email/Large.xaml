@@ -12,9 +12,10 @@
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+                               xmlns:customcontrols="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                Width="350"
                                MinWidth="350"
-                               MinHeight="500"
+                               MinHeight="530"
                                MaxWidth="Infinity"
                                MaxHeight="Infinity"                               
                                mc:Ignorable="d"
@@ -28,7 +29,7 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
-    
+
     <core:ActivityDesignerTemplate.RightButtons>
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
@@ -57,43 +58,52 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Mail Source" />
-        <Grid Grid.Column="1" Grid.Row="0">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{Binding ElementName=txtFromAddress, Path=ActualWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-
-            <ComboBox x:Name="InitialFocusElement"
-                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}" 
-                      SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ItemsSource="{Binding EmailSources}"
+            <TextBlock Grid.Column="0" x:Name="SourceLabel" Text="Source" />
+            <ComboBox Grid.Column="1" 
+                      x:Name="SourcesComboBox"
+                      DisplayMemberPath="ResourceName" 
                       Margin="{StaticResource ControlBorderRight}"
-                      ToolTip="{x:Static languages:Tooltips.EmailToolTipMailSource}"
-                      DisplayMemberPath="ResourceName"
-                      attachedProperties:FocusSetter.IsFocused="{Binding IsEmailSourceFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                      ToolTip="{Binding SourceRegion.SourcesTooltip}"
+                      SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding EmailSources}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpMailSource}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="SelectedEmailSource"
-                                         SourcePropertyValue="{Binding SelectedEmailSource, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
-            <Button Grid.Column="1"
+            <Button Grid.Column="2" 
+                    x:Name="SourceEditButton" 
+                    Margin="{StaticResource ControlBorderRight}"
                     Content="..."
-                    Command="{Binding EditEmailSourceCommand}"
-                    ToolTip="Edit Email Source"
-                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_EditEmailSourceBtn_AutoID}">
+                    ToolTip="{Binding SourceRegion.EditSourceTooltip}"
+                    Command="{Binding EditEmailSourceCommand}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.EditEmailSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
+            <Button Grid.Column="3" 
+                    x:Name="SourceNewButton" 
+                    Content="{x:Static languages:Core.New}" 
+                    Width="Auto"
+                    Style="{StaticResource ButtonOrangeStyle}" 
+                    ToolTip="{Binding SourceRegion.NewSourceTooltip}"
+                    Command="{Binding NewEmailSourceCommand}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.NewEmailSourceHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
         </Grid>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="From Address" Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock x:Name="txtFromAddress" Grid.Column="0" Grid.Row="1" Text="From Address" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"                                
                                 DefaultText="Account or email address"
@@ -114,37 +124,23 @@
         </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Password" Margin="{StaticResource ControlBorderTop}" />
-        <Grid Grid.Column="1" Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
-            <PasswordBox Grid.Column="0"
-                         x:Name="ThePasswordBox"
-                         ToolTip="{x:Static languages:Tooltips.EmailToolTipPassword}"
-                         PasswordChanged="OnPasswordChanged"
-                         Margin="{StaticResource ControlBorderTopRight}"
-                         attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Password_AutoID}">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpPassword}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
+
+        <PasswordBox Grid.Column="1"
+                     Grid.Row="2"
+                     x:Name="ThePasswordBox"
+                     ToolTip="{x:Static languages:Tooltips.EmailToolTipPassword}"
+                     PasswordChanged="OnPasswordChanged"
+                     Margin="{StaticResource ControlBorderTop}"
+                     attachedProperties:FocusSetter.IsFocused="{Binding IsPasswordFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Password_AutoID}">
+            <i:Interaction.Behaviors>
+                <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpPassword}" DataContext="{Binding}" />
+                <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="ModelItem.Password"
                                          SourcePropertyValue="{Binding ModelItem.Password, UpdateSourceTrigger=PropertyChanged}"
                                          Target="{Binding}" />
-                </i:Interaction.Behaviors>
-            </PasswordBox>
-            <Button Grid.Column="1"
-                    Width="40"
-                    Content="Test"
-                    Margin="{StaticResource ControlBorderTop}"
-                    Command="{Binding TestEmailAccountCommand}"
-                    ToolTip="Test Password">
-                <i:Interaction.Behaviors>
-                    <core1:HelpSetter Text="{x:Static languages:HelpText.TestEmailAccountHelp}" DataContext="{Binding}" />
-                </i:Interaction.Behaviors>
-            </Button>
-        </Grid>
+            </i:Interaction.Behaviors>
+        </PasswordBox>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="To" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"
@@ -276,6 +272,7 @@
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
+
         <TextBlock Grid.Column="0" Grid.Row="9" Text="Html Body" Margin="0,-1,0,0" />
         <CheckBox Grid.Column="1" Grid.Row="9" IsChecked="{Binding  ModelItem.IsHtml}" Margin="-6,-1,0,0"
                   ToolTip="{x:Static languages:Tooltips.EmailTooltipBodyCheckbox}">
@@ -283,6 +280,7 @@
                 <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpBodyCheckbox}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </CheckBox>
+
         <TextBlock Grid.Column="0" Grid.Row="10" Text="Body"/>
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="10"
@@ -314,9 +312,35 @@
 
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="11" Text="Result" />
+        <StackPanel Grid.Column="1"
+                    Grid.Row="11"
+                    Orientation="Horizontal" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Center"
+                    Margin="{StaticResource ControlBorderTop}">
+
+            <TextBlock Style="{StaticResource ErrorTextBlockStyle}" 
+                       TextAlignment="Right" 
+                       Margin="{StaticResource ControlBorderRight}"
+                       Text="{Binding Path=StatusMessage}"></TextBlock>
+            <customcontrols:CircularProgressBar Width="14" 
+                                                Height="14" 
+                                                Margin="{StaticResource ControlBorderRight}" 
+                                                Visibility="{Binding Path=Testing,Converter={StaticResource BoolToVisibilityConverter}}" />
+            <Button Width="40"
+                    HorizontalAlignment="Right"
+                    Content="Test"
+                    Command="{Binding TestEmailAccountCommand}"
+                    ToolTip="Test Email">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.TestEmailAccountHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+        </StackPanel>
+
+        <TextBlock Grid.Column="0" Grid.Row="12" Text="Result" />
         <ui:IntellisenseTextBox Grid.Column="1"
-                                Grid.Row="11"
+                                Grid.Row="12"
                                 DefaultText="[[EmailSuccess]]"
                                 AllowUserInsertLine="False"
                                 WrapInBrackets="True"
@@ -335,6 +359,6 @@
         </ui:IntellisenseTextBox>
 
 
-        <errors:OnError Grid.Row="12" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <errors:OnError Grid.Row="13" Grid.Column="0" Grid.ColumnSpan="2"/>
     </Grid>
 </core:ActivityDesignerTemplate>

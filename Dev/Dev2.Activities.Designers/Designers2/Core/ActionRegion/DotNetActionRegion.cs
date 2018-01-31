@@ -110,10 +110,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public ICollection<IPluginAction> Actions
         {
-            get
-            {
-                return _actions;
-            }
+            get => _actions;
             set
             {
                 _actions = value;
@@ -123,10 +120,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public ICommand RefreshActionsCommand { get; set; }
         public bool IsActionEnabled
         {
-            get
-            {
-                return _isActionEnabled;
-            }
+            get => _isActionEnabled;
             set
             {
                 _isActionEnabled = value;
@@ -135,10 +129,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
         public bool IsRefreshing
         {
-            get
-            {
-                return _isRefreshing;
-            }
+            get => _isRefreshing;
             set
             {
                 _isRefreshing = value;
@@ -152,10 +143,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             {
                 return _sourceChangedAction ?? (() => { });
             }
-            set
-            {
-                _sourceChangedAction = value;
-            }
+            set => _sourceChangedAction = value;
         }
         public event SomethingChanged SomethingChanged;
 
@@ -259,10 +247,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IPluginAction SavedAction
         {
-            get
-            {
-                return _modelItem.GetProperty<IPluginAction>("SavedAction");
-            }
+            get => _modelItem.GetProperty<IPluginAction>("SavedAction");
             set
             {
                 _modelItem.SetProperty("SavedAction", value);

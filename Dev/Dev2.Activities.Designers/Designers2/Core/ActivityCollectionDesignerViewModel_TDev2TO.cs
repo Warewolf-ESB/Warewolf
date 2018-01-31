@@ -360,7 +360,9 @@ namespace Dev2.Activities.Designers2.Core
                     var parentContentPane = FindDependencyParent.FindParent<DesignerView>(parent.View);
                     var dataContext = parentContentPane?.DataContext;
                     if (dataContext != null && (dataContext.GetType().Name == "ServiceTestViewModel"))
+                    {
                         canAdd = false;
+                    }
                 }
 
                 if (canAdd)

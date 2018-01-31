@@ -19,6 +19,6 @@ namespace Dev2.Activities.Designers2.Email
             InitializeComponent();
         }
 
-        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
+        protected override IInputElement GetInitialFocusElement() => this;
     }
 }

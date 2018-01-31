@@ -1072,7 +1072,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) return false; return true; };
+            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("All", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
@@ -1123,7 +1123,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) return false; return true; };
+            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 //---------------Assert Precondition----------------
@@ -1172,7 +1172,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) return false; return true; };
+            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             currentResourceModel.Setup(p => p.Environment.ExplorerRepository.UpdateManagerProxy.Rename(It.IsAny<Guid>(), It.IsAny<string>()));
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
@@ -1224,7 +1224,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) return false; return true; };
+            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             currentResourceModel.Setup(p => p.Environment.ExplorerRepository.UpdateManagerProxy.Rename(It.IsAny<Guid>(), It.IsAny<string>()));
             var currentFactory = new Mock<IConflictModelFactory>();
             currentFactory.Setup(p => p.DataListViewModel.WriteToResourceModel()).Verifiable();
@@ -1285,7 +1285,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) return false; return true; };
+            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             currentResourceModel.Setup(p => p.Environment.ExplorerRepository.UpdateManagerProxy.Rename(It.IsAny<Guid>(), It.IsAny<string>()));
             var currentFactory = new Mock<IConflictModelFactory>();
             var diffFactory = new Mock<IConflictModelFactory>();
@@ -1345,7 +1345,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) return false; return true; };
+            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             currentResourceModel.Setup(p => p.Environment.ExplorerRepository.UpdateManagerProxy.Rename(It.IsAny<Guid>(), It.IsAny<string>())).Throws(new Exception());
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
@@ -1398,7 +1398,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) return false; return true; };
+            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");

@@ -292,16 +292,36 @@ namespace Dev2.Activities.PathOperations
 
         public bool Equals(DsfAbstractMultipleFilesActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) && string.Equals(DestinationPassword, other.DestinationPassword) && Overwrite == other.Overwrite && string.Equals(InputPath, other.InputPath) && string.Equals(OutputPath, other.OutputPath) && string.Equals(DestinationUsername, other.DestinationUsername) && string.Equals(DestinationPrivateKeyFile, other.DestinationPrivateKeyFile);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfAbstractMultipleFilesActivity) obj);
         }
 

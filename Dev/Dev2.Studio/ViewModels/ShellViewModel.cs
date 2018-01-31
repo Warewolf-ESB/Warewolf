@@ -1118,7 +1118,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IPluginSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey)
         {
             var view = _factory.GetViewGivenServerResourceType("PluginSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
@@ -1126,7 +1126,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IWebServiceSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey)
         {
             var view = _factory.GetViewGivenServerResourceType("WebSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
@@ -1134,7 +1134,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IEmailServiceSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey workSurfaceKey)
         {
             var view = _factory.GetViewGivenServerResourceType("EmailSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
@@ -1142,7 +1142,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IExchangeSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey workSurfaceKey)
         {
             var view = _factory.GetViewGivenServerResourceType("ExchangeSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
@@ -1150,7 +1150,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IRabbitMQServiceSourceDefinition selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey workSurfaceKey)
         {
             var view = _factory.GetViewGivenServerResourceType("RabbitMQSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
@@ -1158,7 +1158,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IWcfServerSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey workSurfaceKey)
         {
             var view = _factory.GetViewGivenServerResourceType("WcfSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
@@ -1166,7 +1166,7 @@ namespace Dev2.Studio.ViewModels
 
         public void EditResource(IComPluginSource selectedSource) => EditResource(selectedSource, null);
 
-        public void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey = null)
+        public void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey workSurfaceKey)
         {
             var view = _factory.GetViewGivenServerResourceType("ComPluginSource");
             _worksurfaceContextManager.EditResource(selectedSource, view, workSurfaceKey);
