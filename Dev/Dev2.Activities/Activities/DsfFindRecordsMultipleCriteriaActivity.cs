@@ -112,47 +112,58 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ExecuteTool(dataObject, 0);
         }
 
-        class B : A
-        {
-            public B(DsfFindRecordsMultipleCriteriaActivity activity, bool RequireAllFieldsToMatch, bool RequireAllTrue)
-                : base(activity, RequireAllFieldsToMatch, RequireAllTrue)
-            {
-            }
-
-            public override void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, ref ErrorResultTO errorTos, int update)
-            {
-                activity.AddDebugInputValues(dataObject, toSearch, ref errorTos, update);
-            }
-
-            public override void AddDebugOutputItem(DebugOutputBase debugItem)
-            {
-                activity.AddDebugOutputItem(debugItem);
-            }
-
-            public override void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update)
-            {
-                activity.DispatchDebugState(dataObject, stateType, update);
-            }
-
-            public override void InitializeDebug(IDSFDataObject dataObject)
-            {
-                activity.InitializeDebug(dataObject);
-            }
-
-            protected override void DisplayAndWriteError(string serviceName, IErrorResultTO errors)
-            {
-                
-            }
-        }
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            var b = new B(this, RequireAllFieldsToMatch, RequireAllTrue)
-            {
-                Result = Result
-            };
+            var searchQuery = new SearchQuery(this, Result, RequireAllFieldsToMatch, RequireAllTrue);
 
-            //(Result, _errorsTo) = b.GetResult();
-            b.Execute(dataObject, update);
+            var allErrors = new ErrorResultTO();
+            try
+            {
+                InitializeDebug(dataObject);
+                var searchContext = new SearchContext(this);
+                if (dataObject.IsDebugMode()) { AddDebugInputValues(dataObject, searchContext.ToSearch, ref allErrors, update); }
+
+                searchQuery.Execute(searchContext, allErrors, dataObject, update);
+
+                if (dataObject.IsDebugMode())
+                {
+                    if (DataListUtil.IsValueRecordset(Result))
+                    {
+                        var recVar = DataListUtil.ReplaceRecordsetBlankWithStar(Result);
+                        AddDebugOutputItem(new DebugEvalResult(recVar, "", dataObject.Environment, update));
+                    }
+                    else
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+                Dev2Logger.Error("DSFRecordsMultipleCriteria", exception, GlobalConstants.WarewolfError);
+                allErrors.AddError(exception.Message);
+            }
+            finally
+            {
+                var hasErrors = allErrors.HasErrors();
+                if (hasErrors)
+                {
+                    DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
+                    var errorString = allErrors.MakeDisplayReady();
+                    dataObject.Environment.AddError(errorString);
+                    dataObject.Environment.Assign(Result, "-1", update);
+                    if (dataObject.IsDebugMode())
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                    }
+                }
+
+                if (dataObject.IsDebugMode())
+                {
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
         }
 
         internal void SetErrorsTO(ErrorResultTO errorTo)
@@ -457,32 +468,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     }
 
 
-    abstract class A_Debug
+    class SearchQuery
     {
-        public virtual void InitializeDebug(IDSFDataObject dataObject) { }
-        public virtual void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, ref ErrorResultTO errorTos, int update) { }
-        public virtual void AddDebugOutputItem(DebugOutputBase debugItem) { }
-        protected virtual void DisplayAndWriteError(string serviceName, Dev2.Common.Interfaces.Data.TO.IErrorResultTO errors) { }
-        public virtual void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update) { }
-    }
-
-    abstract class A : A_Debug
-    {
-        public string Result;
         public readonly bool RequireAllFieldsToMatch;
         public readonly bool RequireAllTrue;
         protected DsfFindRecordsMultipleCriteriaActivity activity;
+        protected readonly string Result;
 
-        protected A(DsfFindRecordsMultipleCriteriaActivity activity, bool RequireAllFieldsToMatch, bool RequireAllTrue)
+
+        public SearchQuery(DsfFindRecordsMultipleCriteriaActivity activity, string Result, bool RequireAllFieldsToMatch, bool RequireAllTrue)
         {
             this.activity = activity;
+            this.Result = Result;
             this.RequireAllFieldsToMatch = RequireAllFieldsToMatch;
             this.RequireAllTrue = RequireAllTrue;
         }
 
 
-
-        public string Execute(IDSFDataObject dataObject, int update)
+        public void Execute(SearchContext searchContext, ErrorResultTO errorResult, IDSFDataObject dataObject, int update)
         {
             var env = dataObject.Environment;
 
@@ -522,11 +525,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         tovalue = env.EvalAsList(criteria.To, update);
                     }
-                    func = BuildQueryExpression(ref func, criteria, right, from, tovalue);
+                    func = BuildQueryExpression(func, criteria, right, from, tovalue);
                 }
                 return env.EvalWhere(env.ToStar(searchvar), func, update);
             }
-            List<int> GetResults(SearchContext searchContext)
+            List<int> GetResults()
             {
                 var hasEvaled = false;
                 var results = new List<int>();
@@ -547,83 +550,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return results;
             }
 
-            ref Func<DataStorage.WarewolfAtom, bool> BuildQueryExpression(ref Func<DataStorage.WarewolfAtom, bool> func, FindRecordsTO criteria, IEnumerable<DataStorage.WarewolfAtom> right, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> tovalue)
+            Func<DataStorage.WarewolfAtom, bool> BuildQueryExpression(Func<DataStorage.WarewolfAtom, bool> func, FindRecordsTO criteria, IEnumerable<DataStorage.WarewolfAtom> right, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> tovalue)
             {
-                if (func == null)
-                {
-                    func = CreateFuncFromOperator(criteria.SearchType, right, @from, tovalue);
-                }
-                else if (RequireAllTrue)
-                {
-                    func = CombineFuncAnd(func, criteria.SearchType, right, @from, tovalue);
-                }
-                else
-                {
-                    func = CombineFuncOr(func, criteria.SearchType, right, @from, tovalue);
-                }
-
-                return ref func;
+                return func == null ?
+                    CreateFuncFromOperator(criteria.SearchType, right, @from, tovalue) :
+                    RequireAllTrue ?
+                        CombineFuncAnd(func, criteria.SearchType, right, @from, tovalue) :
+                        CombineFuncOr(func, criteria.SearchType, right, @from, tovalue);
             }
 
             
             #endregion
+            
+            searchContext.Validate(errorResult);
 
-            InitializeDebug(dataObject);
-            var allErrors = new ErrorResultTO();
 
-            try
-            {
-                var searchContext = new SearchContext(activity);
-                var errorsTo = new ErrorResultTO();
-                searchContext.Validate(errorsTo);
-                activity.SetErrorsTO(errorsTo);
-
-                if (dataObject.IsDebugMode()) { AddDebugInputValues(dataObject, searchContext.ToSearch, ref allErrors, update); }
-
-                var results = GetResults(searchContext);
-                ApplyResultsToEnvironment(results);
-
-                if (dataObject.IsDebugMode())
-                {
-                    if (DataListUtil.IsValueRecordset(Result))
-                    {
-                        var recVar = DataListUtil.ReplaceRecordsetBlankWithStar(Result);
-                        AddDebugOutputItem(new DebugEvalResult(recVar, "", dataObject.Environment, update));
-                    }
-                    else
-                    {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                    }
-                }
-            }
-            catch (Exception exception)
-            {
-                Dev2Logger.Error("DSFRecordsMultipleCriteria", exception, GlobalConstants.WarewolfError);
-                allErrors.AddError(exception.Message);
-            }
-            finally
-            {
-                var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
-                {
-                    DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
-                    dataObject.Environment.Assign(Result, "-1", update);
-                    if (dataObject.IsDebugMode())
-                    {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", env, update));
-                    }
-                }
-
-                if (dataObject.IsDebugMode())
-                {
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
-                }
-            }
-
-            return Result;
+            var queryResults = GetResults();
+            ApplyResultsToEnvironment(queryResults);
         }
 
 
@@ -667,20 +610,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     return ret;
                 }
                 return CatchInvalidComparisons(func) || CatchInvalidComparisons(func2);
-
-            //try
-            //{
-            //    ret = func2.Invoke(a);
-            //    if (ret)
-            //    {
-            //        return ret;
-            //    }
-            //} catch (InvalidOperationException ex)
-            //{
-            //    ret = false;
-            //}
-            //return ret;
-        };
+            };
         }
 
 
