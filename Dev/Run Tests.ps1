@@ -988,11 +988,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if (($(docker images) | ConvertFrom-String | ? {  $_.P1 -eq "warewolftestenvironment" }) -eq $null) {
             Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
 FROM microsoft/windowsservercore
-SHELL ["powershell"]
 
-# Install MSTest
-RUN Invoke-WebRequest "https://aka.ms/vs/15/release/vs_TestAgent.exe" -OutFile "`$env:TEMP\vs_TestAgent.exe" -UseBasicParsing
-RUN & "`$env:TEMP\vs_TestAgent.exe" /quiet | echo "Installing VSTest."
+ENV chocolateyUseWindowsCompression=false
+RUN @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+
+RUN choco install visualstudio2017testagent --package-parameters "--passive --locale en-US --includeOptional" --confirm --limit-output --timeout 216000
+
+SHELL ["powershell"]
 RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe\")) {Write-Host VSTest did not install correctly; exit 1}
 "@
             docker build -t warewolftestenvironment "$TestsPath"
