@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="SonarQube - Warewolf-ESB Sonar way" Description="This rule set was automatically generated from SonarQube.&#xD;&#xA;http://rsaklfsvrtfsbld.dev2.local:9000/profiles/show?key=cs-sonar-way-07953" ToolsVersion="15.0">
+<RuleSet Name="SonarQube - Warewolf-ESB Sonar way" Description="This rule set was automatically generated from SonarQube.&#xD;&#xA;http://rsaklfsvrtfsbld:9000/profiles/show?key=cs-sonar-way-07953" ToolsVersion="15.0">
   <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
     <Rule Id="S100" Action="Warning" />
     <Rule Id="S1006" Action="Warning" />
@@ -339,7 +339,7 @@
     <Rule Id="CC0037" Action="None" />
     <Rule Id="CC0038" Action="Warning" />
     <Rule Id="CC0039" Action="None" />
-    <Rule Id="CC0042" Action="Warning" />
+    <Rule Id="CC0042" Action="None" />
     <Rule Id="CC0043" Action="None" />
     <Rule Id="CC0044" Action="Warning" />
     <Rule Id="CC0045" Action="None" />
@@ -365,7 +365,7 @@
     <Rule Id="CC0073" Action="Warning" />
     <Rule Id="CC0074" Action="Warning" />
     <Rule Id="CC0075" Action="Warning" />
-    <Rule Id="CC0076" Action="Warning" />
+    <Rule Id="CC0076" Action="None" />
     <Rule Id="CC0079" Action="None" />
     <Rule Id="CC0081" Action="None" />
     <Rule Id="CC0082" Action="Warning" />
