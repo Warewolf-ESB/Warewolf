@@ -114,10 +114,10 @@ namespace Dev2.UI
                 }
 
                 e.Handled = true;
-            }            
+            }
             else if (e.Key == Key.Home || e.Key == Key.End)
             {
-                CloseDropDown(true,false);
+                CloseDropDown(true, false);
             }
             else if (e.Key == Key.V && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
             {
@@ -201,14 +201,14 @@ namespace Dev2.UI
                         try
                         {
                             Text = currentProvider.PerformResultInsertion(appendText, context);
-                        }                        
-                        catch                        
+                        }
+                        catch
                         {
                             //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                             //This catch is intentionally blanks since if a provider throws an exception the intellisense
                             //box should simply ignore that provider.
                         }
-                        
+
                         TextBox?.Select(context.CaretPosition, 0);
                         IsDropDownOpen = false;
                         appendText = null;
@@ -216,12 +216,18 @@ namespace Dev2.UI
                     else
                     {
                         var foundMinimum = -1;
-                        for (int i = index - 1; i >= 0 && foundMinimum == -1 && appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) != -1; i--)
+                        for (int i = index - 1; i >= 0; i--)
                         {
                             if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
                             {
                                 foundMinimum = i;
                                 foundLength = index - i;
+                            }
+                            else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
+                            {
+#pragma warning disable S127 // "for" loop stop conditions should be invariant
+                                i = -1;
+#pragma warning restore S127 // "for" loop stop conditions should be invariant
                             }
                         }
 
@@ -356,7 +362,7 @@ namespace Dev2.UI
             }
             return false;
         }
-        
+
         protected override void OnTextChanged(RoutedEventArgs e)
         {
             var text = Text ?? string.Empty;
@@ -364,7 +370,7 @@ namespace Dev2.UI
             {
                 return;
             }
-            
+
             ItemsSource = IntellisenseResults;
             base.OnTextChanged(e);
             EnsureErrorStatus();
@@ -495,9 +501,9 @@ namespace Dev2.UI
                         results = provider.GetIntellisenseResults(context);
                         _intellisenseResults = results.ToList();
                     }
-                    
+
                     catch
-                    
+
                     {
                         //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                         //This catch is intentionally blanks since if a provider throws an exception the intellisense
@@ -707,7 +713,7 @@ namespace Dev2.UI
 
         protected virtual void OnAllowMultilinePasteChanged(bool oldValue, bool newValue)
         {
-            if(TextBox != null)
+            if (TextBox != null)
             {
                 TextBox.AcceptsReturn = newValue;
             }
@@ -729,7 +735,7 @@ namespace Dev2.UI
             }
         }
 
-       
+
         public static readonly DependencyProperty IsInCalculateModeProperty = DependencyProperty.Register("IsInCalculateMode", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false, OnIsInCalculateModeChanged));
 
         public bool IsInCalculateMode
@@ -770,7 +776,7 @@ namespace Dev2.UI
         }
 
 
-       
+
 
         public static readonly DependencyProperty FilterTypeProperty = DependencyProperty.Register("FilterType", typeof(enIntellisensePartType), typeof(IntellisenseTextBox), new UIPropertyMetadata(enIntellisensePartType.None));
 
@@ -865,7 +871,7 @@ namespace Dev2.UI
             if (!result.EndsWith("]]"))
             {
                 result = string.Concat(result, !expression.EndsWith("]") ? "]]" : "]");
-            }            
+            }
             if (FilterType == enIntellisensePartType.JsonObject && !result.Contains("@"))
             {
                 result = result.Insert(2, "@");
