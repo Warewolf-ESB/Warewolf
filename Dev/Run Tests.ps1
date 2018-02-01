@@ -341,17 +341,17 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
 function Cleanup-JobContainers() {
     foreach ($Job in $JobNames.Split(",")) {
 		$JobContainerName = $Job.Replace(" ", "_") + "_Container"
-        if (($(docker container ls) | ConvertFrom-String | % { $_.P7 -eq $JobContainerName }) -eq $true) {
+        if ($(docker container ls --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
             Write-Host Waiting for $JobContainerName
             docker wait $JobContainerName
         }
-        if (($(docker container ls -a) | ConvertFrom-String | % { $_.P7 -eq $JobContainerName }) -eq $true) {
+        if ($(docker container ls -a --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
             if ($TestsPath.EndsWith("\")) {
-                $ResultsDirectory = $TestsPath + $JobContainerName
+                $ResultsDirectory = $TestsPath + "TestResults\" + $JobContainerName
             } else {
-                $ResultsDirectory = $TestsPath + "\" + $JobContainerName
+                $ResultsDirectory = $TestsPath + "\TestResults\" + $JobContainerName
             }
-		    docker cp $($JobContainerName + ":C:\Build\TestResults\") "$ResultsDirectory"
+		    docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory"
 		    docker container rm $JobContainerName
         }
 	}
@@ -1006,6 +1006,11 @@ SHELL ["powershell"]
 RUN New-Item -Path Build -ItemType Directory
 ADD . Build
 "@
+        Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject @"
+dockerfile
+TestResults/**/*
+TestResults
+"@
         docker build -t jobsenvironment "$TestsPath"
     }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
@@ -1035,7 +1040,7 @@ ADD . Build
         }
         if ($JobContainers.IsPresent) {
             $JobContainerName = $JobName.Replace(" ", "_") + "_Container"
-            docker run --name $JobContainerName -di jobsenvironment powershell `&`(`'.\Build\Run Tests.ps1`'`) -JobName `'$JobName`' -TestList `'$TestList`' -VSTest -VSTestPath `'`C:\Program Files `(x86`)\Microsoft Visual Studio 14.0\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe`'
+            docker run --name $JobContainerName -di jobsenvironment powershell `&`(`'.\Build\Run Tests.ps1`'`) -JobName `'$JobName`' -TestList `'$TestList`' -VSTest -VSTestPath `'`C:\Program Files `(x86`)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe`'
         } else {
             if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
 	            Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
