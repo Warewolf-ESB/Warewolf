@@ -201,38 +201,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("-1", actual[0]);
         }
 
-
-        [TestMethod]
-        public void FindRecordsMulitpleCriteriaActivity_FindWithStringVersusNumber_Expected_NoResults()
-        {
-            TestStartNode = new FlowStep
-            {
-                Action = new DsfFindRecordsMultipleCriteriaActivity
-                {
-                    FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
-                    
-                    ResultsCollection = new List<FindRecordsTO> { new FindRecordsTO("bob", ">", 1) },
-                    StartIndex = "",
-                    RequireAllTrue = true,
-                    Result = "[[Result().res]]"
-                }
-            };
-
-            const string data = @"<ADL>
-  <Recset>
-	<Field1>32</Field1>
-  </Recset>
-</ADL>";
-
-            TestData = "<root>" + data + "</root>";
-            var result = ExecuteProcess();
-            
-            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out IList<string> actual, out string error);
-
-            Assert.AreEqual(1, actual.Count);
-            Assert.AreEqual("1", actual[0]);
-        }
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfFindRecordsMultipleCriteriaActivity_UpdateForEachInputs")]
