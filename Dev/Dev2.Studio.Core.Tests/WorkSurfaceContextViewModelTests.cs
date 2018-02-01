@@ -636,7 +636,7 @@ namespace Dev2.Core.Tests
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
             //------------Assert---------------------------------
             mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
-            mockRepository.Verify(m => m.SaveToServer(It.IsAny<IResourceModel>(), It.IsAny<string>()), Times.Once());
+            mockRepository.Verify(m => m.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
         }
 
 
