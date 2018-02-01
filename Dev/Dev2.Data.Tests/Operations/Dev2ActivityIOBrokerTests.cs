@@ -92,7 +92,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
-            var obj = new PrivateObject(activityOperationsBroker);
+            var obj = new PrivateType(activityOperationsBroker.GetType());
             var mockEndpoint = new Mock<IActivityIOOperationsEndPoint>();
             var mockActIo = new Mock<IActivityIOPath>();
             const string path = "C:\\Home\\txt\\a.srx";
@@ -101,7 +101,7 @@ namespace Dev2.Data.Tests.Operations
             mockEndpoint.Setup(point => point.IOPath).Returns(mockActIo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var pathReturned = obj.Invoke("GetFileNameFromEndPoint", mockEndpoint.Object);
+            var pathReturned = obj.InvokeStatic("GetFileNameFromEndPoint", mockEndpoint.Object);
             //---------------Test Result -----------------------
             Assert.AreEqual(path, pathReturned);
         }
@@ -112,7 +112,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
-            var obj = new PrivateObject(activityOperationsBroker);
+            var prType = new PrivateType(activityOperationsBroker.GetType());
             var mockEndpoint = new Mock<IActivityIOOperationsEndPoint>();
             var mockActIo = new Mock<IActivityIOPath>();
             const string path = "C:\\Home\\txt\\a.srx";
@@ -121,7 +121,11 @@ namespace Dev2.Data.Tests.Operations
             mockEndpoint.Setup(point => point.IOPath).Returns(mockActIo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var pathReturned = obj.Invoke("GetFileNameFromEndPoint", mockEndpoint.Object, mockActIo.Object);
+            var args = new object[]
+            {
+                mockEndpoint.Object, mockActIo.Object
+            };
+            var pathReturned = prType.InvokeStatic("GetFileNameFromEndPoint", args);
             //---------------Test Result -----------------------
             Assert.AreEqual(path, pathReturned);
         }
