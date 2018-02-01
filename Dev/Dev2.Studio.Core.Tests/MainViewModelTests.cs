@@ -64,7 +64,7 @@ using Dev2.Common.Interfaces.Studio.Controller;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    public class MainViewModelTest : MainViewModelBase
+    public class MainViewModelTests : MainViewModelBase
     {
         [TestInitialize]
         public void Initialize()
@@ -4105,21 +4105,20 @@ namespace Dev2.Core.Tests
             popupController.Verify(p => p.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl));
         }
 
-        private interface IEnvironmentRepository
+        public class IEnvironmentRepository
         {
-            object Source { get; set; }
-
-            object All();
-            object Get(Guid guid);
+            public object Source { get; set; }
+            public object All() { return null; }
+            public object Get(Guid guid) { return Guid.Empty; }
         }
 
-        private interface IEnvironmentModel
+        public class IEnvironmentModel
         {
-            object ResourceRepository { get; set; }
-            object Connection { get; set; }
+            public object ResourceRepository { get; set; }
+            public object Connection { get; set; }
         }
 
-        private class MainViewModelPersistenceMock
+        public class MainViewModelPersistenceMock
         {
             private IEnvironmentRepository object1;
             private IAsyncWorker object2;

@@ -330,10 +330,9 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region LoadInternal
-
-        protected virtual void LoadInternal() => LoadInternal(false);
-
-        protected virtual void LoadInternal(bool force)
+#pragma warning disable S2360 // Optional parameters should not be used
+        protected virtual void LoadInternal(bool force = false)
+#pragma warning restore S2360 // Optional parameters should not be used
         {
             lock (RestoreLock)
             {
