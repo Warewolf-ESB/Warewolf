@@ -98,9 +98,6 @@ namespace Dev2.PathOperations
         public static bool IsStarWildCard(string path)
         {
             var result = false;
-
-            var uri = new Uri(path);
-
             var fileName = Path.GetFileName(path);
 
             if (fileName.Contains(@"*") || fileName.Contains(@"?"))
