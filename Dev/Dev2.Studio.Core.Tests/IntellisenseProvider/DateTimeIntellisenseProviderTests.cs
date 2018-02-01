@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.IsFalse(provider.HandlesResultInsertion);
             Assert.AreEqual(IntellisenseProviderType.NonDefault, provider.IntellisenseProviderType);
             Assert.IsNotNull(provider.IntellisenseResults);
-            Assert.AreEqual(30, provider.IntellisenseResults.Count);
+            Assert.AreEqual(32, provider.IntellisenseResults.Count);
             Assert.IsFalse(provider.Optional);
         }
 
