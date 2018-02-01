@@ -160,6 +160,8 @@
     <Compile Include="OptomizedObservableCollection.cs" />
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
+    <Compile Include="PathOperations\Interfaces\IDev2LogonProvider.cs" />
+    <Compile Include="PathOperations\LogonProvider.cs" />
     <Compile Include="PathOperations\TO\Dev2PutOperationTOFactory.cs" />
     <Compile Include="PulseLogger.cs" />
     <Compile Include="RecordSet.cs" />
@@ -354,7 +356,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interfaces\" />
-    <Folder Include="PathOperations\Interfaces\" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.Common.dll" />

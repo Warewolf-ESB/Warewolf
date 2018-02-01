@@ -708,13 +708,13 @@ namespace Dev2.PathOperations
             }
         }
 
-        string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint)
+        static string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint)
         {
             var pathSeperator = endPoint.PathSeperator();
             return endPoint.IOPath.Path.Split(pathSeperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Last();
         }
 
-        string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint, IActivityIOPath path)
+        static string GetFileNameFromEndPoint(IActivityIOOperationsEndPoint endPoint, IActivityIOPath path)
         {
             var pathSeperator = endPoint.PathSeperator();
             return path.Path.Split(pathSeperator.ToCharArray(), StringSplitOptions.RemoveEmptyEntries).Last();

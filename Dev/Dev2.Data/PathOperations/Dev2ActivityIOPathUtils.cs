@@ -101,7 +101,7 @@ namespace Dev2.PathOperations
 
             var uri = new Uri(path);
 
-            var fileName = Path.GetFileName(uri.LocalPath);
+            var fileName = Path.GetFileName(path);
 
             if (fileName.Contains(@"*") || fileName.Contains(@"?"))
             {
