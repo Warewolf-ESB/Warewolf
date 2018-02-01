@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core
         static volatile IServerRepository _instance;
 
         static readonly object SyncInstance = new Object();
-        
+
         public static IServerRepository Instance
         {
             get
@@ -154,7 +154,10 @@ namespace Dev2.Studio.Core
             LoadInternal();
         }
 
-        public IServer Get(Guid id) => All().FirstOrDefault(e => e.EnvironmentID == id);
+        public IServer Get(Guid id)
+        {
+            return All().FirstOrDefault(e => e.EnvironmentID == id);
+        }
 
         #endregion
 
@@ -227,9 +230,9 @@ namespace Dev2.Studio.Core
 
                 var tryReadFile = File.Exists(path) ? File.ReadAllText(path) : null;
 
-                
+
                 var xml = new XElement("Environments");
-                
+
                 var result = new List<Guid>();
 
                 if (!string.IsNullOrEmpty(tryReadFile))
@@ -245,12 +248,12 @@ namespace Dev2.Studio.Core
                                 result.Add(guid);
                             }
                         }
-                    }                    
+                    }
                     catch (Exception e)
                     {
                         Dev2Logger.Warn(e.Message, "Warewolf Warn");
                     }
-                    
+
                 }
 
                 return result;
@@ -377,7 +380,10 @@ namespace Dev2.Studio.Core
             }
         }
 
-        bool ValidateIfEnvironmentExists(IServer newEnv) => Environments.Contains(newEnv);
+        bool ValidateIfEnvironmentExists(IServer newEnv)
+        {
+            return Environments.Contains(newEnv);
+        }
 
         protected virtual void LoadComplete()
         {
@@ -444,9 +450,9 @@ namespace Dev2.Studio.Core
             {
                 defaultEnvironment.Connect();
             }
-            
+
             catch (Exception err)
-            
+
             {
                 Dev2Logger.Info(err, "Warewolf Info");
                 //Swallow exception for localhost connection
@@ -595,7 +601,10 @@ namespace Dev2.Studio.Core
 
         #region GetEnvironmentsFilePath
 
-        public static string GetEnvironmentsFilePath() => Path.Combine(GetEnvironmentsDirectory(), "Environments.xml");
+        public static string GetEnvironmentsFilePath()
+        {
+            return Path.Combine(GetEnvironmentsDirectory(), "Environments.xml");
+        }
 
         #endregion
 
