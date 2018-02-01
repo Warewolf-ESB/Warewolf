@@ -216,16 +216,12 @@ namespace Dev2.UI
                     else
                     {
                         var foundMinimum = -1;
-                        for (int i = index - 1; i >= 0; i--)
+                        for (int i = index - 1; i >= 0 && foundMinimum == -1 && appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) != -1; i--)
                         {
                             if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
                             {
                                 foundMinimum = i;
                                 foundLength = index - i;
-                            }
-                            else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
-                            {
-                                i = -1;
                             }
                         }
 
