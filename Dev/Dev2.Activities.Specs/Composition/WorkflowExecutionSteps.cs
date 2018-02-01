@@ -251,15 +251,23 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
+            var resourceId = Guid.NewGuid();
             var environmentModel = LocalEnvModel;
             EnsureEnvironmentConnected(environmentModel, EnvironmentConnectionTimeout);
-            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
+            var resourceModel = new ResourceModel(environmentModel)
+            {
+                ID = resourceId,
+                ResourceName = workflowName,
+                Category = "Acceptance Tests\\" + workflowName,
+                ResourceType = ResourceType.WorkflowService
+            };
 
             environmentModel.ResourceRepository.Add(resourceModel);
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
 
             _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
             Add(workflowName, resourceModel);
+            Add("resourceId", resourceId);
             Add("parentWorkflowName", workflowName);
             Add("environment", environmentModel);
             Add("resourceRepo", environmentModel.ResourceRepository);
@@ -1017,6 +1025,16 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string workflowName)
         {
+            var resourceModel = SaveWorkflow(workflowName);
+            ExecuteWorkflow(resourceModel);
+        }
+
+        [When(@"""(.*)"" is Saved")]
+        private IContextualResourceModel SaveWorkflow(string parentName)
+        {
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
+
             Get<List<IDebugState>>("debugStates").Clear();
             BuildDataList();
 
@@ -1055,7 +1073,7 @@ namespace Dev2.Activities.Specs.Composition
             repository.Save(resourceModel);
             repository.SaveToServer(resourceModel);
 
-            ExecuteWorkflow(resourceModel);
+            return resourceModel;
         }
 
 
@@ -3165,6 +3183,8 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenCountOnInto(string parentName, string activityName, string recordSet, string result)
         {
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
             _commonSteps.AddVariableToVariableList(result);
 
             var countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
@@ -4259,7 +4279,54 @@ namespace Dev2.Activities.Specs.Composition
             var vm = new Mock<IMergeWorkflowViewModel>();
             var wdvm = new Mock<IWorkflowDesignerViewModel>();
             vm.Setup(p => p.WorkflowDesignerViewModel).Returns(wdvm.Object);
+        }
+
+        [Given(@"I select and deploy resource from remote server")]
+        [When(@"I select and deploy resource from remote server")]
+        [Then(@"I select and deploy resource from remote server")]
+        public void ThenISelectAndDeployResourceFromRemoteServer()
+        {
+            TryGetValue("resourceId", out Guid resourceId);
+            var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
+            var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var destConnection = new Connection
+            {
+                Address = localhost.Connection.AppServerUri.ToString(),
+                AuthenticationType = localhost.Connection.AuthenticationType,
+                UserName = localhost.Connection.UserName,
+                Password = localhost.Connection.Password
+            };
+            remoteServer.UpdateRepository.Deploy(new List<Guid> { resourceId }, false, destConnection);
+        }
+        
+        [When(@"I rename ""(.*)"" from Remote to ""(.*)"" and re deploy to localhost")]
+        public void WhenIRenameFromRemoteToAndReDeployToLocalhost(string parentName, string newName)
+        {
+            TryGetValue("resourceId", out Guid resourceId);
+            var someothername = newName.Replace(parentName, newName);
+            Add("newName", newName);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+
+            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+
+            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            destinationServer.ExplorerRepository.UpdateManagerProxy.Rename(resourceModel.ID, someothername);
             
+            var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
+            resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceModel.ID, newName);
+        }
+
+        [When(@"I rename ""(.*)"" to ""(.*)"" and re deploy")]
+        public void WhenIRenameToAndReDeploy(string parentName, string newName)
+        {
+            TryGetValue("resourceId", out Guid resourceId);
+            Add("newName", newName);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
+            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
+            resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceModel.ID, newName);
         }
     }
 }
