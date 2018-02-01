@@ -2004,6 +2004,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_EditSqlServerSource")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public void MainViewModel_EditSqlServerSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2062,6 +2064,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_EditPostgreSqlSource")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public void MainViewModel_EditPostgreSqlSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2090,6 +2094,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_EditOracleSource")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public void MainViewModel_EditOracleSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2118,6 +2124,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("MainViewModel_EditOdbcSource")]
+        [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
+        [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public void MainViewModel_EditOdbcSource_Handle_Result()
         {
             //------------Setup for test--------------------------
