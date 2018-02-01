@@ -2036,6 +2036,7 @@ namespace Dev2.Core.Tests
         [TestCategory("MainViewModel_EditMySqlSource")]
         [DeploymentItem("Warewolf.Studio.Themes.Luna.dll")]
         [DeploymentItem("InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll")]
+        [DeploymentItem("InfragisticsWPF4.DataPresenter.v15.1.dll")]
         public void MainViewModel_EditMySqlSource_Handle_Result()
         {
             //------------Setup for test--------------------------
@@ -2058,7 +2059,7 @@ namespace Dev2.Core.Tests
             ShellViewModel.WorksurfaceContextManager = mockWM.Object;
             ShellViewModel.WorksurfaceContextManager.EditMySqlResource(source.Object, view.Object);
             mockWM.Verify(manager => manager.EditMySqlResource(It.IsAny<IDbSource>(), view.Object));
-            System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(System.Windows.Threading.DispatcherPriority.Send, new System.Action(() => ShellViewModel.EditMySqlResource(source.Object)));
+            ShellViewModel.EditMySqlResource(source.Object);
         }
 
         [TestMethod]
