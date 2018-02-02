@@ -118,5 +118,31 @@ Scenario: Merge Workflow Containing Switch tool
 	 And I select Current Arm
 	 Then Save is enabled
 
+Scenario: Merge Workflow Containing Position Change tools
+	 Given I Load workflow "MergePositionChange" from "localhost"
+	 And I Load workflow version "1" of "MergePositionChange" from "localhost"	 
+	 When Merge Window is opened with local "MergePositionChange"
+	 Then Current workflow contains "3" tools
+	 And Different workflow contains "3" tools
+	 And Merge conflicts count is "3"
+	 And Merge variable conflicts is false
+	 And conflict "0" Current matches tool "Data Merge (0)"
+	 And conflict "0" Different matches tool "Assign (0)"
+	 And conflict "1" Current matches tool "Assign (0)"
+	 And conflict "1" Different matches tool "Data Merge (0)"
+	 And conflict "2" Current Connector matches tool "Data Merge (0) -> Assign (0)"
+	 And conflict "2" Different Connector matches tool "Assign (0) -> Data Merge (0)"
+	 And I select Current Tool
+	 Then conflict "1" Current tool is enabled
+	 And conflict "1" Different tool is disabled
+	 And conflict "2" Different tool connector is disabled
+	 And I select Current Tool
+	 Then conflict "1" Different tool is disabled
+	 And conflict "2" Different tool connector is disabled
+	 Then conflict "2" Current tool connector is enabled
+	 And I select Current Arm
+	 Then Save is enabled
+	 
+
 Scenario: Merge Validate All tools are mapped
 	 Given I Load All tools and expect all tools to be mapped
