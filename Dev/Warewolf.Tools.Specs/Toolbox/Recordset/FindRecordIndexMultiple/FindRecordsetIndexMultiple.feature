@@ -440,7 +440,7 @@ Scenario: Find an index of data in a recordset search type is Greater Than
 	And field to search is "[[rs().field]]"
 	And search the recordset with type ">" and criteria is "3"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1,2,3,5,6
+	Then the find records index multiple result should be 1
 	And the execution has "NO" error
 	And the debug inputs as
 	| #           |                            | # |   |   |  | And | Require All Fields To Match | Require All Matches To Be True |
@@ -452,14 +452,14 @@ Scenario: Find an index of data in a recordset search type is Greater Than
 	|             | [[rs(6).field]] = user     | 1 | > | 3 |  |     | NO                          | NO                             |
 	And the debug output as
 	|                 |
-	| [[result]] = 1,2,3,5,6 |
+	| [[result]] = 1 |
 
 Scenario: Find an index of data in a recordset search type is Greater Than multiple results
 	Given I have the following recordset to search for multiple criteria
 	| rs         | value |
 	| rs().field | 4     |
 	| rs().field | You   |
-	| rs().field | are   |
+	| rs().field | 123   |
 	| rs().field | the   |
 	| rs().field | best  |
 	| rs().field | 2     |
@@ -467,20 +467,20 @@ Scenario: Find an index of data in a recordset search type is Greater Than multi
 	And field to search is "[[rs().field]]"
 	And search the recordset with type ">" and criteria is "3"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1,2,3,4,5,7
+	Then the find records index multiple result should be 1,3
 	And the execution has "NO" error
 	And the debug inputs as
 	| #           |                        | # |   |   |  | And | Require All Fields To Match | Require All Matches To Be True |
 	| In Field(s) | [[rs(1).field]] = 4    |   |   |   |  |     |                             |                                |
 	|             | [[rs(2).field]] = You  |   |   |   |  |     |                             |                                |
-	|             | [[rs(3).field]] = are  |   |   |   |  |     |                             |                                |
+	|             | [[rs(3).field]] = 123  |   |   |   |  |     |                             |                                |
 	|             | [[rs(4).field]] = the  |   |   |   |  |     |                             |                                |
 	|             | [[rs(5).field]] = best |   |   |   |  |     |                             |                                |
 	|             | [[rs(6).field]] = 2    |   |   |   |  |     |                             |                                |
 	|             | [[rs(7).field]] = user | 1 | > | 3 |  |     | NO                          | NO                             |
 	And the debug output as
 	|                   |
-	| [[result]] = 1,2,3,4,5,7|
+	| [[result]] = 1,3|
 
 Scenario: Find an index of data in a recordset search type is Greater Than result doesnt exist
 	Given I have the following recordset to search for multiple criteria
@@ -678,7 +678,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	And field to search is "[[rs().field]]"
 	And search the recordset with type ">=" and criteria is "4"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 2,3,4,5,6
+	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
 	| #           |                        | # |    |   |  | And | Require All Fields To Match | Require All Matches To Be True |
@@ -690,7 +690,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	|             | [[rs(6).field]] = user | 1 | >= | 4 |  |     | NO                          | NO                             |
 	And the debug output as
 	|                  |
-	| [[result]] = 2,3,4,5,6  |
+	| [[result]] = 5  |
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To multiple results
 	Given I have the following recordset to search for multiple criteria
