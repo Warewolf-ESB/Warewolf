@@ -58,7 +58,7 @@ namespace Dev2.Activities.Specs.Sources
             catch (WarewolfSaveException e)
             {
                 ScenarioContext.Current.Add("result", e.Message);
-                System.Diagnostics.Debug.WriteLine(e.StackTrace);
+                Console.WriteLine(e.StackTrace);
                 return;
             }
             var queryManagerProxy = buildManageNewServerSourceModel.Item3;
@@ -77,7 +77,7 @@ namespace Dev2.Activities.Specs.Sources
             var manageNewServerSourceModel = BuildManageNewServerSourceModel().Item1;
             var resourceModel = ScenarioContext.Current.Get<IResourceModel>("resourceModel");
             var resourceModelWorkflowXaml = resourceModel.WorkflowXaml;
-            System.Diagnostics.Debug.WriteLine(resourceModelWorkflowXaml);
+            Console.WriteLine(resourceModelWorkflowXaml);
             var source = manageNewServerSourceModel.FetchSource(resourceModel.ID);
             manageNewServerSourceModel.TestConnection(source);
             ScenarioContext.Current.Add("result", "success");
