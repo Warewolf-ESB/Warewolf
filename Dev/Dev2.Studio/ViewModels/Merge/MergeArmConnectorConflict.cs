@@ -26,7 +26,6 @@ namespace Dev2.ViewModels.Merge
         public string Key { get; set; }
         bool _isChecked;
         bool _isArmSelectionAllowed;
-        bool _isArmConnectorVisible;
 
         public string Grouping => SourceUniqueId + Key ?? "";
 
