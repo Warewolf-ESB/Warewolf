@@ -2075,7 +2075,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 442
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 443
- testRunner.Then("the find records index multiple result should be 1,2,3,5,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the find records index multiple result should be 1", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 444
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -2155,7 +2155,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table60.AddRow(new string[] {
-                        "[[result]] = 1,2,3,5,6"});
+                        "[[result]] = 1"});
 #line 453
  testRunner.And("the debug output as", ((string)(null)), table60, "And ");
 #line hidden
@@ -2185,7 +2185,7 @@ this.ScenarioSetup(scenarioInfo);
                         "You"});
             table61.AddRow(new string[] {
                         "rs().field",
-                        "are"});
+                        "123"});
             table61.AddRow(new string[] {
                         "rs().field",
                         "the"});
@@ -2207,7 +2207,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 469
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 470
- testRunner.Then("the find records index multiple result should be 1,2,3,4,5,7", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the find records index multiple result should be 1,3", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 471
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -2243,7 +2243,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table62.AddRow(new string[] {
                         "",
-                        "[[rs(3).field]] = are",
+                        "[[rs(3).field]] = 123",
                         "",
                         "",
                         "",
@@ -2297,7 +2297,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table63 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table63.AddRow(new string[] {
-                        "[[result]] = 1,2,3,4,5,7"});
+                        "[[result]] = 1,3"});
 #line 481
  testRunner.And("the debug output as", ((string)(null)), table63, "And ");
 #line hidden
@@ -3254,7 +3254,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 680
  testRunner.When("the find records index multiple tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 681
- testRunner.Then("the find records index multiple result should be 2,3,4,5,6", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the find records index multiple result should be 5", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 682
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -3334,7 +3334,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table87 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table87.AddRow(new string[] {
-                        "[[result]] = 2,3,4,5,6"});
+                        "[[result]] = 5"});
 #line 691
  testRunner.And("the debug output as", ((string)(null)), table87, "And ");
 #line hidden
