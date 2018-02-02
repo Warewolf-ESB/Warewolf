@@ -458,13 +458,15 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
                 DisplayName = DisplayName.Remove(index);
             }
 
-            if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+            var displayName2 = DisplayName;
+
+            if (!string.IsNullOrEmpty(displayName2) && displayName2.Contains("Dsf"))
             {
-                DisplayName = displayName;
+                DisplayName = displayName2;
             }
             if (!string.IsNullOrWhiteSpace(displayName))
             {
-                DisplayName = displayName + displayName;
+                DisplayName = displayName2 + displayName;
             }
         }
 
