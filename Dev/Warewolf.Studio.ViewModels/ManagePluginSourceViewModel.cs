@@ -270,18 +270,18 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_pluginSource == null)
             {
-                var res = RequestServiceNameViewModel.ShowSaveDialog();
+                var res = GetRequestServiceNameViewModel().ShowSaveDialog();
 
                 if (res == MessageBoxResult.OK)
                 {
-                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;
+                    ResourceName = GetRequestServiceNameViewModel().ResourceName.Name;
                     var src = ToModel();
                     src.Id = SelectedGuid;
-                    src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
+                    src.Path = GetRequestServiceNameViewModel().ResourceName.Path ?? GetRequestServiceNameViewModel().ResourceName.Name;
                     Save(src);
-                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    if (GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel != null)
                     {
-                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                        AfterSave(GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     }
 
                     Path = src.Path;
@@ -366,30 +366,28 @@ namespace Warewolf.Studio.ViewModels
             Id = _pluginSource?.Id ?? Guid.NewGuid()
         };
 
-        public IRequestServiceNameViewModel RequestServiceNameViewModel
+        public IRequestServiceNameViewModel GetRequestServiceNameViewModel()
         {
-            get
+            if (_requestServiceNameViewModel != null)
             {
-                if (_requestServiceNameViewModel != null)
+                _requestServiceNameViewModel.Wait();
+                if (_requestServiceNameViewModel.Exception == null)
                 {
-                    _requestServiceNameViewModel.Wait();
-                    if (_requestServiceNameViewModel.Exception == null)
-                    {
-                        return _requestServiceNameViewModel.Result;
-                    }
-                    
-                    else
-                    {
-                        throw _requestServiceNameViewModel.Exception;
-                    }
+                    return _requestServiceNameViewModel.Result;
                 }
-                return null;
+
+                else
+                {
+                    throw _requestServiceNameViewModel.Exception;
+                }
             }
-            set
-            {
-                _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
-                _requestServiceNameViewModel.Start();
-            }
+            return null;
+        }
+
+        public void SetRequestServiceNameViewModel(IRequestServiceNameViewModel value)
+        {
+            _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
+            _requestServiceNameViewModel.Start();
         }
 
         public ICommand OkCommand { get; set; }
@@ -408,7 +406,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected override void OnDispose()
         {
-            RequestServiceNameViewModel?.Dispose();
+            GetRequestServiceNameViewModel()?.Dispose();
             DisposeManagePluginSourceViewModel(true);
         }
         
