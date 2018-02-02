@@ -485,8 +485,8 @@ namespace Dev2.UI
                 {
                     var provider = IntellisenseProvider;
                     var context = new IntellisenseProviderContext { FilterType = FilterType, DesiredResultSet = desiredResultSet, InputText = text, CaretPosition = CaretIndex };
-
-                    if ((context.IsInCalculateMode = calculateMode) && AllowUserCalculateMode)
+                    context.IsInCalculateMode = calculateMode;
+                    if ((context.IsInCalculateMode) && AllowUserCalculateMode)
                     {
                         if (CaretIndex > 0)
                         {
