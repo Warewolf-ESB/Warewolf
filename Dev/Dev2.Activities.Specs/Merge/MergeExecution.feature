@@ -19,9 +19,9 @@ Scenario: Merge VersionHelloWorld Workflow
 	 Given I Load workflow "MergeHelloWorld" from "localhost"
 	 And I Load workflow "VersionHelloWorld" from "Remote Connection Integration"	 
 	 When Merge Window is opened with remote "VersionHelloWorld"
-	 Then Current workflow contains "8" tools
-	 And Different workflow contains "8" tools
-	 And Merge conflicts count is "8"
+	 Then Current workflow contains "9" tools
+	 And Different workflow contains "9" tools
+	 And Merge conflicts count is "9"
 	 And Merge variable conflicts is false
 	 And Merge window has "2" Conflicting tools
 
@@ -86,9 +86,9 @@ Scenario: Merge Workflow Containing Same tools But disconnected Arms
 	 Given I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "localhost"
 	 And I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "Remote Connection Integration"	 
 	 When Merge Window is opened with remote "WorkflowWithAssignToolsWithDisconnectedArms"
-	 Then Current workflow contains "1" tools
-	 And Different workflow contains "1" tools
-	 And Merge conflicts count is "1"
+	 Then Current workflow contains "2" tools
+	 And Different workflow contains "2" tools
+	 And Merge conflicts count is "2"
 	 And Merge variable conflicts is false
 
 Scenario: Merge Workflow Containing Removed tool with same Variable List

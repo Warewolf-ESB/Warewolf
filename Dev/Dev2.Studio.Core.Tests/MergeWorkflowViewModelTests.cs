@@ -170,7 +170,7 @@ namespace Dev2.Core.Tests
                 Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
                 Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
                 //---------------Test Result -----------------------
-                Assert.AreEqual(13, mergeWorkflowViewModel.Conflicts.Count);
+                Assert.AreEqual(18, mergeWorkflowViewModel.Conflicts.Count);
             }
         }
 
@@ -557,7 +557,7 @@ namespace Dev2.Core.Tests
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("AddDiffArmConnectors", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-                var nextMethodToRun = typeof(MergeWorkflowViewModel).GetMethod("GetMatchingConflictParent", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var nextMethodToRun = typeof(MergeWorkflowViewModel).GetMethod("SetMatchingArmState", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 //---------------Assert Precondition----------------
                 Assert.IsNotNull(methodToRun);
                 Assert.IsNotNull(nextMethodToRun);

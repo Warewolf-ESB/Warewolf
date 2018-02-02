@@ -36,6 +36,7 @@ namespace Dev2.ViewModels.Merge
         FlowNode _flowNode;
         IMergeToolModel _parent;
         string _nodeArmDescription;
+        bool _isCurrent;
 
         public MergeToolModel()
         {
@@ -75,15 +76,22 @@ namespace Dev2.ViewModels.Merge
 
                 if (_isMergeChecked)
                 {
-                    RemovePreviousActivity();
-                    AddActivity();
                     SomethingModelToolChanged?.Invoke(current, this);
                 }
                 OnPropertyChanged(() => IsMergeChecked);
             }
         }
+        public bool IsCurrent
+        {
+            get => _isCurrent;
+            set
+            {
+                _isCurrent = value;
+                OnPropertyChanged(() => IsCurrent);
+            }
+        }
 
-        void RemovePreviousActivity()
+        public void RemovePreviousContainerActivity()
         {
             if (Container?.CurrentViewModel == this)
             {
@@ -95,9 +103,9 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        void AddActivity()
+        public void AddActivity()
         {
-            if (Container != null && Container.IsStartNode)
+            if (Container.IsStartNode)
             {
                 WorkflowDesignerViewModel?.RemoveStartNodeConnection();
             }
