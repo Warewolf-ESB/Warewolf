@@ -29,11 +29,6 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Runtime.ESB.Control
 {
-
-    /// <summary>
-    /// Amended as per PBI 7913
-    /// </summary>
-    /// IEsbActivityChannel
     public class EsbServicesEndpoint :  IEsbWorkspaceChannel
     {
         public EsbServicesEndpoint(IEnvironmentOutputMappingManager environmentOutputMappingManager)
@@ -49,14 +44,7 @@ namespace Dev2.Runtime.ESB.Control
         readonly IEnvironmentOutputMappingManager _environmentOutputMappingManager;
         static WorkspaceRepository wRepository => WorkspaceRepository.Instance;
         static ResourceCatalog rCatalog => ResourceCatalog.Instance;
-        /// <summary>
-        /// Executes the request.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="request"></param>
-        /// <param name="workspaceId">The workspace ID.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
+        
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
 
@@ -112,25 +100,20 @@ namespace Dev2.Runtime.ESB.Control
             }
             return resultID;
         }
-
-
+        
         static IResource GetResource(Guid workspaceId, Guid resourceId)
         {
             var resource = rCatalog.GetResource(workspaceId, resourceId) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
 
             return resource;
         }
-
-
-
+        
         static IResource GetResource(Guid workspaceId, string resourceName)
         {
             var resource = rCatalog.GetResource(workspaceId, resourceName) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
             return resource;
         }
-
-
-
+        
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update)
         {
             errors = null;
@@ -139,22 +122,8 @@ namespace Dev2.Runtime.ESB.Control
             executionContainer.PerformLogExecution(uri, update);
         }
 
-        RemoteWorkflowExecutionContainer CreateExecutionContainer(IDSFDataObject dataObject, IWorkspace theWorkspace)
-        {
-            return new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
-        }
-
-        /// <summary>
-        /// Executes the sub request.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="inputDefs">The input defs.</param>
-        /// <param name="outputDefs">The output defs.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="update"></param>
-        /// <param name="handleErrors"> buble up errors or not</param>
-        /// <returns></returns>
+        RemoteWorkflowExecutionContainer CreateExecutionContainer(IDSFDataObject dataObject, IWorkspace theWorkspace) => new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
+        
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool handleErrors)
         {
             var wasTestExecution = dataObject.IsServiceTestExecution;
@@ -308,10 +277,6 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace)
-        {
-            return new EsbServiceInvoker(this, theWorkspace);
-        }
-
+        protected virtual IEsbServiceInvoker CreateEsbServicesInvoker(IWorkspace theWorkspace) => new EsbServiceInvoker(this, theWorkspace);
     }
 }

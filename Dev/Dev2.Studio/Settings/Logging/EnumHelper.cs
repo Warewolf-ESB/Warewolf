@@ -48,9 +48,6 @@ namespace Dev2.Settings.Logging
             throw new Exception();
         }
 
-        public static IEnumerable<string> GetDiscriptionsAsList(Type type)
-        {
-            return type.GetEnumNames().Select(GetEnumDescription).ToList();
-        }
+        public static IEnumerable<string> GetDiscriptionsAsList(Type type) => type.GetEnumNames().Select(GetEnumDescription).ToList();
     }
 }

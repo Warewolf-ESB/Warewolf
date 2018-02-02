@@ -28,12 +28,9 @@ namespace Dev2.Common.Interfaces.Core
             }
             return string.Equals(EndpointUrl, other.EndpointUrl);
         }
-        
-        public bool Equals(IWcfServerSource other)
-        {
-            return Equals(other as WcfServiceSourceDefinition);
-        }
-                
+
+        public bool Equals(IWcfServerSource other) => Equals(other as WcfServiceSourceDefinition);
+
         public override int GetHashCode()
         {
             unchecked

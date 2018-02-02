@@ -17,12 +17,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class IntEnsureMinConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            // Convert from view model int property to text
-
-            return value; // nothing to be done - this convert is about ensuring valid min input - see ConvertBack
-        }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => value;
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {

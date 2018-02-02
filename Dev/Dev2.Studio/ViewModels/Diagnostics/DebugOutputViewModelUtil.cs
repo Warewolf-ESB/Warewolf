@@ -51,9 +51,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             Dev2Logger.Debug("Debug line item is null, did not proceed", "Warewolf Debug");
             return true;
         }
-        public bool IsItemMoreLinkValid(IDebugLineItem item)
-        {
-            return !string.IsNullOrEmpty(item.MoreLink);
-        }
+        public bool IsItemMoreLinkValid(IDebugLineItem item) => !string.IsNullOrEmpty(item.MoreLink);
     }
 }

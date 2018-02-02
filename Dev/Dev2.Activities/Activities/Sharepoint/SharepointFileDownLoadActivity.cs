@@ -33,7 +33,7 @@ namespace Dev2.Activities.Sharepoint
             ServerInputPath = string.Empty;
             LocalInputPath = string.Empty;
         }
-
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         /// <summary>
         /// Gets or sets the input path.
         /// </summary>
@@ -81,25 +81,18 @@ namespace Dev2.Activities.Sharepoint
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
-        {
-           
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
+        {           
             _debugInputs = new List<DebugItem>();
-            allErrors = new ErrorResultTO();
+            error = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
             var colItr = new WarewolfListIterator();
 
-            var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+            var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(context.WorkspaceID, SharepointServerResourceId);
             if (sharepointSource == null)
             {
                 sharepointSource = SharepointSource;
@@ -108,16 +101,16 @@ namespace Dev2.Activities.Sharepoint
 
             ValidateRequest();
 
-            var serverInputItr = new WarewolfIterator(dataObject.Environment.Eval(ServerInputPath, update));
+            var serverInputItr = new WarewolfIterator(context.Environment.Eval(ServerInputPath, update));
             colItr.AddVariableToIterateOn(serverInputItr);
 
-            var localInputItr = new WarewolfIterator(dataObject.Environment.Eval(LocalInputPath, update));
+            var localInputItr = new WarewolfIterator(context.Environment.Eval(LocalInputPath, update));
             colItr.AddVariableToIterateOn(localInputItr);
 
-            if (dataObject.IsDebugMode())
+            if (context.IsDebugMode())
             {
-                AddDebugInputItem(ServerInputPath, "ServerInput Path", dataObject.Environment, update);
-                AddDebugInputItem(LocalInputPath, "LocalInput Path", dataObject.Environment, update);
+                AddDebugInputItem(ServerInputPath, "ServerInput Path", context.Environment, update);
+                AddDebugInputItem(LocalInputPath, "LocalInput Path", context.Environment, update);
             }
 
             while (colItr.HasMoreData())
@@ -170,7 +163,7 @@ namespace Dev2.Activities.Sharepoint
                 catch (Exception e)
                 {
                     outputs.Add(DataListFactory.CreateOutputTO(null));
-                    allErrors.AddError(e.Message);
+                    error.AddError(e.Message);
                     break;
                 }
             }
@@ -200,7 +193,7 @@ namespace Dev2.Activities.Sharepoint
             return new List<string> { newPath };
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -209,7 +202,7 @@ namespace Dev2.Activities.Sharepoint
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -220,8 +213,16 @@ namespace Dev2.Activities.Sharepoint
 
         public bool Equals(SharepointFileDownLoadActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SharepointSource, other.SharepointSource);
             return base.Equals(other)
                 && string.Equals(ServerInputPath, other.ServerInputPath) 
@@ -233,9 +234,21 @@ namespace Dev2.Activities.Sharepoint
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((SharepointFileDownLoadActivity) obj);
         }
 

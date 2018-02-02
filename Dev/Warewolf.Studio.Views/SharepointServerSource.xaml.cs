@@ -119,19 +119,10 @@ namespace Warewolf.Studio.Views
             PasswordTextBox.Password = password;
         }
 
-        public string GetUsername()
-        {
-            return UserNameTextBox.Text;
-        }
+        public string GetUsername() => UserNameTextBox.Text;
 
-        public string GetPassword()
-        {
-            return PasswordTextBox.Password;
-        }
+        public string GetPassword() => PasswordTextBox.Password;
 
-        public string GetAddress()
-        {
-            return ServerName.Text;
-        }
+        public string GetAddress() => ServerName.Text;
     }
 }

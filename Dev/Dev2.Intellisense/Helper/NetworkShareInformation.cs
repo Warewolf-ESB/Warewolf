@@ -19,7 +19,7 @@ namespace Dev2.Intellisense.Helper
     [Flags]
     public enum ShareType
     {
-        Disk,
+        None,
         Device,
         IPC,
         Special = -2147483648
@@ -68,10 +68,7 @@ namespace Dev2.Intellisense.Helper
 
         public ShareType ShareType => _shareType;
 
-        public override string ToString()
-        {
-            return $@"\\{(string.IsNullOrEmpty(_shareServer) ? Environment.MachineName : _shareServer)}\{_networkName}";
-        }
+        public override string ToString() => $@"\\{(string.IsNullOrEmpty(_shareServer) ? Environment.MachineName : _shareServer)}\{_networkName}";
     }
 
     public class ShareCollection : ReadOnlyCollectionBase

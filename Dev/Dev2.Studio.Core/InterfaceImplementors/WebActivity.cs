@@ -70,14 +70,7 @@ namespace Dev2.Studio.Core
 
         public object WebActivityObject { get; set; }
 
-        public Type UnderlyingWebActivityObjectType
-        {
-            get
-            {
-                return (WebActivityObject as ModelItem)?.ItemType;
-            }
-        }
-
+        public Type UnderlyingWebActivityObjectType => (WebActivityObject as ModelItem)?.ItemType;
 
         public IContextualResourceModel ResourceModel { get; set; }
 
@@ -99,9 +92,6 @@ namespace Dev2.Studio.Core
                 modelItem.Properties[propertyName].SetValue(value);
             }
         }
-        public bool IsNotAvailable()
-        {
-            return !ResourceModel.Environment.IsLocalHost && !ResourceModel.Environment.IsConnected;
-        }
+        public bool IsNotAvailable() => !ResourceModel.Environment.IsLocalHost && !ResourceModel.Environment.IsConnected;
     }
 }

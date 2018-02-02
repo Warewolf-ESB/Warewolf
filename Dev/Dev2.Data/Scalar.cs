@@ -74,20 +74,11 @@ namespace Dev2.Data
         /// <returns>
         /// A hash code for the current object.
         /// </returns>
-        public override int GetHashCode()
-        {
-            return Name?.GetHashCode() ?? 0;
-        }
+        public override int GetHashCode() => Name?.GetHashCode() ?? 0;
 
-        public static bool operator ==(Scalar left, Scalar right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(Scalar left, Scalar right) => Equals(left, right);
 
-        public static bool operator !=(Scalar left, Scalar right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(Scalar left, Scalar right) => !Equals(left, right);
 
         #endregion
 
@@ -116,10 +107,7 @@ namespace Dev2.Data
                 return string.Equals(x.Name, y.Name);
             }
 
-            public int GetHashCode(IScalar obj)
-            {
-                return obj.Name?.GetHashCode() ?? 0;
-            }
+            public int GetHashCode(IScalar obj) => obj.Name?.GetHashCode() ?? 0;
         }
 
         static readonly IEqualityComparer<IScalar> ComparerInstance = new ComparerEqualityComparer();

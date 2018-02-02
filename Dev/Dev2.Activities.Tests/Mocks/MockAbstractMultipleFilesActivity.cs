@@ -25,6 +25,7 @@ namespace Dev2.Tests.Activities.Mocks
             ExecuteBrokerCalled = false;
             MoveRemainingIteratorsCalled = false;
         }
+        protected override bool AssignEmptyOutputsToRecordSet => true;
 
         #region Overrides of DsfAbstractMultipleFilesActivity
         public bool ExecuteBrokerCalled { get; set; }

@@ -50,10 +50,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         ILocalPathManager _localPathManager;
         IDropboxClientWrapper _dropboxClientWrapper;
 
-        public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
-        {
-            return singleExecutor;
-        }
+        public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor) => singleExecutor;
 
         public virtual ILocalPathManager LocalPathManager
         {
@@ -67,11 +64,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
         }
 
-        public virtual ILocalPathManager GetLocalPathManager()
-        {
-            return _localPathManager;
-        }
-                
+        public virtual ILocalPathManager GetLocalPathManager() => _localPathManager;
+
         public OauthSource SelectedSource { get; set; }
                 
         [Inputs("Path in the user's Dropbox")]
@@ -101,10 +95,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         #region Overrides of DsfActivity
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         #region Overrides of DsfBaseActivity
 
@@ -181,8 +172,16 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         public bool Equals(DsfDropBoxDownloadActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SelectedSource, other.SelectedSource);
             return base.Equals(other) 
                 && isSourceEqual
@@ -194,9 +193,21 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfDropBoxDownloadActivity) obj);
         }
 

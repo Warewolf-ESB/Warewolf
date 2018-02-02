@@ -849,9 +849,9 @@ namespace System.Windows.Controls
             }
         }
         
-        protected override Size ArrangeOverride(Size finalSize)
+        protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            var r = base.ArrangeOverride(finalSize);
+            var r = base.ArrangeOverride(arrangeBounds);
             DropDownPopup?.Arrange();
             return r;
         }
@@ -1002,10 +1002,7 @@ namespace System.Windows.Controls
             }
         }
 
-        protected override AutomationPeer OnCreateAutomationPeer()
-        {
-            return new AutoCompleteBoxAutomationPeer(this);
-        }
+        protected override AutomationPeer OnCreateAutomationPeer() => new AutoCompleteBoxAutomationPeer(this);
 
         #region Focus
 
@@ -1369,7 +1366,7 @@ namespace System.Windows.Controls
             OnPopulated(populated);
 
             
-            if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
+            if(SelectionAdapter != null && !SelectionAdapter.ItemsSource.Equals(_view))
             {
                 SelectionAdapter.ItemsSource = _view;
             }
@@ -1529,7 +1526,7 @@ namespace System.Windows.Controls
         {
             _items = newValue == null ? null : new List<object>(newValue.Cast<object>().ToList());
             ClearView();
-            if (SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
+            if (SelectionAdapter != null && !SelectionAdapter.ItemsSource.Equals(_view))
             {
                 SelectionAdapter.ItemsSource = _view;
             }

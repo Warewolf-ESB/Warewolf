@@ -14,13 +14,8 @@ namespace Dev2.Common.Wrappers
 {
     public class FilePathWrapper : IFilePath
     {
-        public string GetFileName(string filePath)
-        {
-            return Path.GetFileName(filePath);
-        }
-        public string Combine(params string[] paths)
-        {
-            return System.IO.Path.Combine(paths);
-        }
+        public string GetFileName(string path) => Path.GetFileName(path);
+
+        public string Combine(params string[] paths) => System.IO.Path.Combine(paths);
     }
 }

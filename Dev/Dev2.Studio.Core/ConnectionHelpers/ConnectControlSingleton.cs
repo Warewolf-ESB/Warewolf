@@ -28,13 +28,7 @@ namespace Dev2.ConnectionHelpers
         public event EventHandler<ConnectionStatusChangedEventArg> ConnectedStatusChanged;
         public event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
         public event EventHandler<ConnectedServerChangedEvent> AfterReload;
-        public static IConnectControlSingleton Instance
-        {
-            get
-            {
-                return _instance ?? (_instance = new ConnectControlSingleton(ServerProvider.Instance, CustomContainer.Get<IServerRepository>()));
-            }
-        }
+        public static IConnectControlSingleton Instance => _instance ?? (_instance = new ConnectControlSingleton(ServerProvider.Instance, CustomContainer.Get<IServerRepository>()));
 
         public ConnectControlSingleton(IEnvironmentModelProvider serverProvider, IServerRepository serverRepository)
         {
@@ -154,13 +148,10 @@ namespace Dev2.ConnectionHelpers
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentId, false));
         }
 
-        ConnectControlEnvironment CreateNewRemoteServerEnvironment()
+        ConnectControlEnvironment CreateNewRemoteServerEnvironment() => new ConnectControlEnvironment
         {
-            return new ConnectControlEnvironment
-            {
-                Server = new Server(Guid.NewGuid(), new ServerProxy(new Uri("http://localhost:3142"))) { Name = NewServerText }
-            };
-        }
+            Server = new Server(Guid.NewGuid(), new ServerProxy(new Uri("http://localhost:3142"))) { Name = NewServerText }
+        };
 
         public void ReloadServer()
         {

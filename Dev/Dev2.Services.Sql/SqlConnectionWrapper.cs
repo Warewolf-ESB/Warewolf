@@ -37,25 +37,16 @@ namespace Dev2.Services.Sql
 
         public ConnectionState State => _connection.State;
 
-        public IDbTransaction BeginTransaction()
-        {
-            return _connection.BeginTransaction();
-        }
+        public IDbTransaction BeginTransaction() => _connection.BeginTransaction();
 
         public void Open()
         {
             _connection.Open();
         }
 
-        public DataTable GetSchema(string table)
-        {
-            return _connection.GetSchema(table);
-        }
+        public DataTable GetSchema(string table) => _connection.GetSchema(table);
 
-        public IDbCommand CreateCommand()
-        {
-            return _connection.CreateCommand();
-        }
+        public IDbCommand CreateCommand() => _connection.CreateCommand();
 
         public void SetInfoMessage(SqlInfoMessageEventHandler a)
         {

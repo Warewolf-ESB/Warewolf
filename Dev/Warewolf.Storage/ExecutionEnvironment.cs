@@ -89,16 +89,12 @@ namespace Warewolf.Storage
             }
         }
 
-        public void AddToJsonObjects(string name, JContainer jContainer)
+        public void AddToJsonObjects(string exp, JContainer jContainer)
         {
-            _env = WarewolfDataEvaluationCommon.addToJsonObjects(_env, name, jContainer);
+            _env = WarewolfDataEvaluationCommon.addToJsonObjects(_env, exp, jContainer);
         }
 
-
-        public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
-        {
-            return DataMergeFunctions.evalForDataMerge(_env, update, exp);
-        }
+        public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update) => DataMergeFunctions.evalForDataMerge(_env, update, exp);
 
         public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update)
         {
@@ -173,10 +169,7 @@ namespace Warewolf.Storage
             }
         }
 
-        public int GetLength(string recordSetName)
-        {
-            return _env.RecordSets[recordSetName.Trim()].LastIndex;
-        }
+        public int GetLength(string recordSetName) => _env.RecordSets[recordSetName.Trim()].LastIndex;
 
         public int GetObjectLength(string recordSetName)
         {
@@ -185,15 +178,9 @@ namespace Warewolf.Storage
             return count;
         }
 
-        public int GetCount(string recordSetName)
-        {
-            return _env.RecordSets[recordSetName.Trim()].Count;
-        }
+        public int GetCount(string recordSetName) => _env.RecordSets[recordSetName.Trim()].Count;
 
-        public IList<int> EvalRecordSetIndexes(string recordsetName, int update)
-        {
-            return PublicFunctions.GetIndexes(recordsetName, update, _env).ToList();
-        }
+        public IList<int> EvalRecordSetIndexes(string recordsetName, int update) => PublicFunctions.GetIndexes(recordsetName, update, _env).ToList();
 
         public bool HasRecordSet(string recordsetName)
         {
@@ -244,15 +231,9 @@ namespace Warewolf.Storage
                 return x.Select(WarewolfAtomToString).ToList();
             }
         }
-        public static string WarewolfAtomToString(DataStorage.WarewolfAtom a)
-        {
-            return a?.ToString() ?? string.Empty;
-        }
+        public static string WarewolfAtomToString(DataStorage.WarewolfAtom a) => a?.ToString() ?? string.Empty;
 
-        public static string WarewolfAtomToStringNullAsNothing(DataStorage.WarewolfAtom a)
-        {
-            return a == null ? null : (a.IsNothing ? null : a.ToString());
-        }
+        public static string WarewolfAtomToStringNullAsNothing(DataStorage.WarewolfAtom a) => a == null ? null : (a.IsNothing ? null : a.ToString());
 
         public static string WarewolfAtomToStringErrorIfNull(DataStorage.WarewolfAtom a)
         {
@@ -378,11 +359,11 @@ namespace Warewolf.Storage
             _env = PublicFunctions.EvalAssignFromList(assignValue, item, _env, update, shouldUseLast);
         }
 
-        public void EvalAssignFromNestedNumeric(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
+        public void EvalAssignFromNestedNumeric(string rawValue, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
             if (recsetResult.Item.Any())
             {
-                AssignWithFrame(new AssignValue(exp, WarewolfAtomToString(recsetResult.Item.Last())), update);
+                AssignWithFrame(new AssignValue(rawValue, WarewolfAtomToString(recsetResult.Item.Last())), update);
             }
         }
 
@@ -467,10 +448,7 @@ namespace Warewolf.Storage
             return x?.ToList();
         }
 
-        public IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update)
-        {
-            return PublicFunctions.EvalWhere(expression, _env, update, clause);
-        }
+        public IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update) => PublicFunctions.EvalWhere(expression, _env, update, clause);
 
         public void ApplyUpdate(string expression, Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> clause, int update)
         {
@@ -493,20 +471,11 @@ namespace Warewolf.Storage
             _env = env;
         }
 
-        public string FetchErrors()
-        {
-            return string.Join(Environment.NewLine, AllErrors.Union(Errors));
-        }
+        public string FetchErrors() => string.Join(Environment.NewLine, AllErrors.Union(Errors));
 
-        public bool HasErrors()
-        {
-            return Errors.Count(s => !string.IsNullOrEmpty(s)) + AllErrors.Count(s => !string.IsNullOrEmpty(s)) > 0;
-        }
+        public bool HasErrors() => Errors.Count(s => !string.IsNullOrEmpty(s)) + AllErrors.Count(s => !string.IsNullOrEmpty(s)) > 0;
 
-        public string EvalToExpression(string exp, int update)
-        {
-            return string.IsNullOrEmpty(exp) ? string.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
-        }
+        public string EvalToExpression(string exp, int update) => string.IsNullOrEmpty(exp) ? string.Empty : EvaluationFunctions.evalToExpression(_env, update, exp);
 
         public static string ConvertToIndex(string outputVar, int i)
         {
@@ -548,10 +517,7 @@ namespace Warewolf.Storage
             }
         }
 
-        public static bool IsNothing(CommonFunctions.WarewolfEvalResult evalInp1)
-        {
-            return CommonFunctions.isNothing(evalInp1);
-        }
+        public static bool IsNothing(CommonFunctions.WarewolfEvalResult evalInp1) => CommonFunctions.isNothing(evalInp1);
 
         public static string GetPositionColumnExpression(string recordset)
         {
@@ -567,10 +533,7 @@ namespace Warewolf.Storage
             return $"[[{index}(*).{EvaluationFunctions.PositionColumn}]]";
         }
 
-        public static bool IsValidRecordSetIndex(string exp)
-        {
-            return PublicFunctions.IsValidRecsetExpression(exp);
-        }
+        public static bool IsValidRecordSetIndex(string exp) => PublicFunctions.IsValidRecsetExpression(exp);
 
         public void AssignJson(IEnumerable<IAssignValue> values, int update)
         {

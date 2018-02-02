@@ -72,9 +72,6 @@ namespace Dev2.Activities.SqlBulkInsert
             writer.Close();
         }
 
-        static string QuoteValue(string value)
-        {
-            return value;
-        }
+        static string QuoteValue(string value) => value;
     }
 }

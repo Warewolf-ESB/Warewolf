@@ -32,10 +32,7 @@ namespace Dev2.Activities
             DisplayName = "POST Web Method";
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
@@ -163,16 +160,36 @@ namespace Dev2.Activities
 
         public bool Equals(DsfWebPostActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) && Equals(Headers, other.Headers) && string.Equals(QueryString, other.QueryString) && Equals(OutputDescription, other.OutputDescription) && string.Equals(PostData, other.PostData);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfWebPostActivity) obj);
         }
 

@@ -14,15 +14,8 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class IsDate : IDecisionOperation
     {
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsDate;
-        }
+        public Enum HandlesType() => enDecisionType.IsDate;
 
-        public bool Invoke(string[] cols)
-        {
-
-            return DateTime.TryParse(cols[0], out DateTime date);
-        }
+        public bool Invoke(string[] cols) => DateTime.TryParse(cols[0], out DateTime date);
     }
 }

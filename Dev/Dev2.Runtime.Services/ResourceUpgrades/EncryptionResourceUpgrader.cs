@@ -75,24 +75,13 @@ namespace Dev2.Runtime.ResourceUpgrades
 
         #endregion
 
-        public string EncryptSourceConnectionStrings(string xml)
-        {
-            return StringTransform.TransformAllMatches(xml, new List<StringTransform> { _replacements["Source"] });
-        }
+        public string EncryptSourceConnectionStrings(string xml) => StringTransform.TransformAllMatches(xml, new List<StringTransform> { _replacements["Source"] });
 
-        public string EncryptDsfFileWritePasswords(string xml)
-        {
-            return StringTransform.TransformAllMatches(xml, new List<StringTransform> { _replacements["DsfAbstractFileActivity"] });
-        }
+        public string EncryptDsfFileWritePasswords(string xml) => StringTransform.TransformAllMatches(xml, new List<StringTransform> { _replacements["DsfAbstractFileActivity"] });
 
-        public string EncryptPasswordsAndConnectionStrings(string xml)
-        {
-            return EncryptSourceConnectionStrings(
+        public string EncryptPasswordsAndConnectionStrings(string xml) => EncryptSourceConnectionStrings(
                 EncryptDsfFileWritePasswords(
                 xml)
                 );
-        }
-
-
     }
 }

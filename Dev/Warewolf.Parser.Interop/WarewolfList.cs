@@ -127,12 +127,9 @@ namespace WarewolfParserInterop
           return x.Current;
       }
 
-      IEnumerator<T> GetCurrentEnumerator()
-      {
-          return _currentEnumerator ?? (_currentEnumerator = GetEnumerator());
-      }
+        IEnumerator<T> GetCurrentEnumerator() => _currentEnumerator ?? (_currentEnumerator = GetEnumerator());
 
-      public void ResetCurrentEnumerator()
+        public void ResetCurrentEnumerator()
       {
           _currentEnumerator?.Reset();
       }
@@ -147,13 +144,7 @@ namespace WarewolfParserInterop
           return true;
       }
 
-      public IEnumerator<T> GetEnumerator()
-        {
-            return _values.Take(_count).ToList().GetEnumerator();
-        }
-
-
-      
+        public IEnumerator<T> GetEnumerator() => _values.Take(_count).ToList().GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator()
         {

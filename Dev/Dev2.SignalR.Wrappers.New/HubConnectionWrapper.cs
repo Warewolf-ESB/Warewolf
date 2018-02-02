@@ -33,10 +33,7 @@ namespace Dev2.SignalR.Wrappers.New
         {
         }
 
-        public IHubProxyWrapper CreateHubProxy(string hubName)
-        {
-           return new HubProxyWrapper(_wrapped.CreateHubProxy(hubName));
-        }
+        public IHubProxyWrapper CreateHubProxy(string hubName) => new HubProxyWrapper(_wrapped.CreateHubProxy(hubName));
 
         public event Action<Exception> Error
         {

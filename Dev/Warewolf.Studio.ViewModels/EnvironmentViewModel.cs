@@ -75,7 +75,18 @@ namespace Warewolf.Studio.ViewModels
             _connectControlSingleton = connectControlSingleton ?? ConnectControlSingleton.Instance;
         }
 
-        public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
+        public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel)
+            : this(server, shellViewModel, false, null)
+        {
+        }
+
+
+        public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog)
+            : this(server, shellViewModel, isDialog, null)
+        {
+        }
+
+        public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog, Action<IExplorerItemViewModel> selectAction)
             : this()
         {
             Server = server ?? throw new ArgumentNullException(nameof(server));
@@ -198,7 +209,7 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = server.DisplayName;
             RefreshCommand = new DelegateCommand(async () =>
             {
-                await RefreshAsync();
+                await RefreshAsync().ConfigureAwait(true);
             });
             IsServerIconVisible = true;
             SelectAction = selectAction ?? (a => { });
@@ -209,7 +220,6 @@ namespace Warewolf.Studio.ViewModels
                     IsExpanded = !IsExpanded;
                 }
             });
-            //server.Connect();
             IsConnected = server.IsConnected;
 
             server.NetworkStateChanged += (args, server1) =>
@@ -219,7 +229,7 @@ namespace Warewolf.Studio.ViewModels
                  {
                      Application.Current.Dispatcher.Invoke(async () =>
                      {
-                         await RefreshAsync();
+                         await RefreshAsync().ConfigureAwait(true);
                      }, DispatcherPriority.Background);
 
                  }
@@ -254,7 +264,7 @@ namespace Warewolf.Studio.ViewModels
         async Task RefreshAsync()
         {
             var isDeploy = Children.Any(a => AllowResourceCheck);
-            await LoadAsync(isDeploy, true);
+            await LoadAsync(isDeploy, true).ConfigureAwait(true);
             if (isDeploy)
             {
                 ShowContextMenu = false;
@@ -477,13 +487,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void SelectItem(string path, Action<IExplorerItemViewModel> foundAction)
+        public void SelectItem(string selectedPath, Action<IExplorerItemViewModel> foundAction)
         {
             foreach (var explorerItemViewModel in Children)
             {
                 explorerItemViewModel.Apply(a =>
                 {
-                    if (a.ResourcePath.Replace("\\", "\\\\") == path)
+                    if (a.ResourcePath.Replace("\\", "\\\\") == selectedPath)
                     {
                         a.IsExpanded = true;
                         foundAction?.Invoke(a);
@@ -865,9 +875,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async Task<bool> LoadAsync() => await LoadAsync(false, false);
+        public async Task<bool> LoadAsync() => await LoadAsync(false, false).ConfigureAwait(true);
 
-        public async Task<bool> LoadAsync(bool isDeploy) => await LoadAsync(isDeploy, false);
+        public async Task<bool> LoadAsync(bool isDeploy) => await LoadAsync(isDeploy, false).ConfigureAwait(true);
 
         public async Task<bool> LoadAsync(bool isDeploy, bool reloadCatalogue)
         {
@@ -876,7 +886,7 @@ namespace Warewolf.Studio.ViewModels
                 try
                 {
                     IsLoading = true;
-                    var result = await LoadDialogAsync(null, isDeploy, reloadCatalogue);
+                    var result = await LoadDialogAsync(null, isDeploy, reloadCatalogue).ConfigureAwait(true);
                     ReloadConnectControl(isDeploy);
                     return result;
                 }
@@ -887,8 +897,9 @@ namespace Warewolf.Studio.ViewModels
             }
             return false;
         }
+        public void ReloadConnectControl() => ReloadConnectControl(false);
 
-        public void ReloadConnectControl(bool isDeploy = false)
+        public void ReloadConnectControl(bool isDeploy)
         {
             if (!isDeploy)
             {
@@ -939,17 +950,17 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsLoading { get; set; }
 
-        public async Task<bool> LoadDialogAsync(string selectedPath) => await LoadDialogAsync(selectedPath, false, false).ConfigureAwait(false);
+        public async Task<bool> LoadDialogAsync(string selectedId) => await LoadDialogAsync(selectedId, false, false).ConfigureAwait(false);
 
-        public async Task<bool> LoadDialogAsync(string selectedPath, bool isDeploy, bool reloadCatalogue)
+        public async Task<bool> LoadDialogAsync(string selectedId, bool isDeploy, bool reloadCatalogue)
         {
             if (IsConnected && Server.IsConnected)
             {
                 IsConnecting = true;
-                var explorerItems = await Server.LoadExplorer(reloadCatalogue);
+                var explorerItems = await Server.LoadExplorer(reloadCatalogue).ConfigureAwait(true);
                 if (explorerItems != null)
                 {
-                    CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, isDeploy);
+                    CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedId != null, isDeploy);
                 }
                 IsResourceCheckedEnabled = isDeploy;
                 IsLoaded = true;
@@ -966,7 +977,7 @@ namespace Warewolf.Studio.ViewModels
             if (IsConnected)
             {
                 IsConnecting = true;
-                var explorerItems = await Server.LoadExplorer();
+                var explorerItems = await Server.LoadExplorer().ConfigureAwait(true);
                 if (explorerItems != null)
                 {
                     CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != Guid.Empty);
@@ -1027,15 +1038,9 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Children);
         }
 
-        public ICollection<IExplorerItemViewModel> AsList()
-        {
-            return AsList(Children);
-        }
+        public ICollection<IExplorerItemViewModel> AsList() => AsList(Children);
 
-        ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection)
-        {
-            return rootCollection.Union(rootCollection.SelectMany(a => a.AsList())).ToList();
-        }
+        ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection) => rootCollection.Union(rootCollection.SelectMany(a => a.AsList())).ToList();
 
         public bool IsServerIconVisible
         {
@@ -1071,7 +1076,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
+        public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent) => CreateExplorerItemsSync(explorerItems, server, parent, false, false);
+
+        public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog) => CreateExplorerItemsSync(explorerItems, server, parent, isDialog, false);
+
+        public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy)
         {
             if (explorerItems == null)
             {

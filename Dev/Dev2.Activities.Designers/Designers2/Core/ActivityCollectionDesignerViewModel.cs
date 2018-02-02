@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public abstract void InsertAt(int indexNumber);
 
-        protected abstract void AddToCollection(IEnumerable<string> source, bool overWrite);
+        protected abstract void AddToCollection(IEnumerable<string> sources, bool overwrite);
 
         public QuickVariableInputViewModel QuickVariableInputViewModel
         {

@@ -20,9 +20,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             InitializeComponent();
         }
 
-        protected override WebServicePutViewModel CreateViewModel()
-        {
-            return new WebServicePutViewModel(ModelItem);
-        }
+        protected override WebServicePutViewModel CreateViewModel() => new WebServicePutViewModel(ModelItem);
     }
 }

@@ -31,10 +31,7 @@ namespace Dev2.Providers.Events
         public int Count => _subjects.Count;
 
         public bool RemoveEvent<TEvent>()
-            where TEvent : class, new()
-        {
-            return _subjects.TryRemove(typeof(TEvent), out object value);
-        }
+            where TEvent : class, new() => _subjects.TryRemove(typeof(TEvent), out object value);
 
         public IObservable<TEvent> GetEvent<TEvent>()
             where TEvent : class, new()

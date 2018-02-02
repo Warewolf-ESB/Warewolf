@@ -29,7 +29,7 @@ namespace Dev2.Runtime.Hosting
 
         #region Implementation of IResourceUpgrader
 
-        public XElement UpgradeResource(XElement sourceVersion, Version destinationVersion, Action<XElement> onUpgrade)
+        public XElement UpgradeResource(XElement sourceVersion, Version destinationVersion, Action<XElement> OnUpgrade)
         {
             var available = AvailableUpgrades.Where(a => a.CanUpgrade(sourceVersion)).OrderBy(a=>a.UpgradesFrom).Select(a=>a.Upgrade.UpgradeFunc).ToList();
             if (available.Any())
@@ -38,7 +38,7 @@ namespace Dev2.Runtime.Hosting
                 
                 var output =  outputLang(sourceVersion);
                 output.SetAttributeValue("ServerVersion",GetVersion());
-                onUpgrade?.Invoke(output);
+                OnUpgrade?.Invoke(output);
                 return output;
             }
           

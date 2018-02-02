@@ -23,7 +23,7 @@ namespace Dev2.DataList
 
         public override int ArgumentCount => 2;
 
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
             if (all)
             {
@@ -32,9 +32,6 @@ namespace Dev2.DataList
 
             return a => values.Any(x => DataStorage.CompareAtoms(a, x) != 0);
         }
-        public override string HandlesType()
-        {
-            return "<> (Not Equal)";
-        }
+        public override string HandlesType() => "<> (Not Equal)";
     }
 }

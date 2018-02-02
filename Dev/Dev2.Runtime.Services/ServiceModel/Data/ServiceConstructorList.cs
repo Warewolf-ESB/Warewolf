@@ -7,9 +7,6 @@ namespace Dev2.Runtime.ServiceModel.Data
     [Serializable]
     public class ServiceConstructorList : List<ServiceConstructor>
     {
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this);
     }
 }

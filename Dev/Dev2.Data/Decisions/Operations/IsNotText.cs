@@ -25,9 +25,6 @@ namespace Dev2.Data.Decisions.Operations
             return true; // blank is not Text
         }
 
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsNotText;
-        }
+        public Enum HandlesType() => enDecisionType.IsNotText;
     }
 }

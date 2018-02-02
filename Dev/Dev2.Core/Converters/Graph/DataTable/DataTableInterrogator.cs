@@ -15,11 +15,7 @@ namespace Dev2.Converters.Graph.DataTable
 {
     public class DataTableInterrogator : IInterrogator
     {
-        public IMapper CreateMapper(object data)
-        {
-            return new DataTableMapper();
-        }
-
+        public IMapper CreateMapper(object data) => new DataTableMapper();
         public INavigator CreateNavigator(object data, Type pathType) => throw new NotImplementedException();
     }
 }

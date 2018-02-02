@@ -123,10 +123,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
             return knownTypes;
         }
 
-        static string StripKnownLegacyTags(string data)
-        {
-            return data.Replace("<Dev2XMLResult>", null).Replace("</Dev2XMLResult>", null).Replace("<JSON />", null);
-        }
+        static string StripKnownLegacyTags(string data) => data.Replace("<Dev2XMLResult>", null).Replace("</Dev2XMLResult>", null).Replace("<JSON />", null);
 
         #endregion Private Methods
     }

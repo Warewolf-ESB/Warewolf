@@ -52,17 +52,19 @@ namespace Dev2.Runtime.Hosting
 
         public static ResourceCatalog Instance => LazyCat.Value;
 
-        [ExcludeFromCodeCoverage]//used by tests for constructor injection
-        public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
+        public ResourceCatalog() 
+            : this(null)
+        {
+        }
+
+        public ResourceCatalog(IEnumerable<DynamicService> managementServices)
         {
             InitializeWorkspaceResources();
             _serverVersionRepository = new ServerVersionRepository(new VersionStrategy(), this, _directoryWrapper, EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper());
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
-            
-            
-           
         }
+
         IServerVersionRepository _serverVersionRepository;
         IDirectory _directoryWrapper = new DirectoryWrapper();
         public void CleanUpOldVersionControlStructure()
@@ -115,10 +117,10 @@ namespace Dev2.Runtime.Hosting
             => _catalogPluginContainer.LoadProvider.GetDynamicObjects<TServiceType>(workspaceID, resourceID);
         public List<DynamicServiceObjectBase> GetDynamicObjects(IResource resource) => _catalogPluginContainer.LoadProvider.GetDynamicObjects(resource);
         public List<IResource> GetResources(Guid workspaceID) => _catalogPluginContainer.LoadProvider.GetResources(workspaceID);
-        public virtual IResource GetResource(Guid workspaceID, Guid serviceID) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, serviceID);
+        public virtual IResource GetResource(Guid workspaceID, Guid resourceID) => _catalogPluginContainer.LoadProvider.GetResource(workspaceID, resourceID);
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResource<T>(workspaceID, serviceID);
         public T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new() => _catalogPluginContainer.LoadProvider.GetResource<T>(workspaceID, resourceName);
-        public string GetResourcePath(Guid workspaceID, Guid resourceId) => _catalogPluginContainer.LoadProvider.GetResourcePath(workspaceID, resourceId);
+        public string GetResourcePath(Guid workspaceID, Guid id) => _catalogPluginContainer.LoadProvider.GetResourcePath(workspaceID, id);
         public List<Guid> GetDependants(Guid workspaceID, Guid? resourceId) => _catalogPluginContainer.LoadProvider.GetDependants(workspaceID, resourceId);
         public List<ResourceForTree> GetDependentsAsResourceForTrees(Guid workspaceID, Guid resourceId) => _catalogPluginContainer.LoadProvider.GetDependentsAsResourceForTrees(workspaceID, resourceId);
         public IList<IResource> GetResourceList(Guid workspaceId) => _catalogPluginContainer.LoadProvider.GetResources(workspaceId);
@@ -291,18 +293,13 @@ namespace Dev2.Runtime.Hosting
             return resources;
         }
 
-        public IList<DuplicateResource> GetDuplicateResources()
-        {
-
-            return DuplicateResources;
-        }        
-
+        public IList<DuplicateResource> GetDuplicateResources() => DuplicateResources;
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resourceXml, savedPath, reason, user);
         public string SetResourceFilePath(Guid workspaceID, IResource resource, ref string savedPath) => _catalogPluginContainer.SaveProvider.SetResourceFilePath(workspaceID, resource, ref savedPath);
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, savedPath, "", "");
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason = "", string user = "") => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, savedPath, reason, user);
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string savedPath, string reason, string user) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, savedPath, reason, user);
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, contents, savedPath, "", "");
         public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason, string user) => _catalogPluginContainer.SaveProvider.SaveResource(workspaceID, resource, contents, savedPath, reason, user);
 
@@ -404,11 +401,7 @@ namespace Dev2.Runtime.Hosting
         static ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
         bool _loading;
 
-        public IDev2Activity Parse(Guid workspaceID, Guid resourceID)
-        {
-            return Parse(workspaceID, resourceID, "");
-
-        }
+        public IDev2Activity Parse(Guid workspaceID, Guid resourceID) => Parse(workspaceID, resourceID, "");
 
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId)
         {

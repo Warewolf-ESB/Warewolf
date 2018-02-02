@@ -5,7 +5,7 @@ namespace Dev2.Runtime.Interfaces
 {
     public interface IResourceDuplicateProvider
     {
-        ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string destinationPath, string newName);
+        ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath);
         ResourceCatalogDuplicateResult DuplicateFolder(string sourcePath, string destinationPath, string newName, bool fixRefences);
 
     }

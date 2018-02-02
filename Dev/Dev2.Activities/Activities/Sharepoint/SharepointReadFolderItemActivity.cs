@@ -31,11 +31,9 @@ namespace Dev2.Activities.Sharepoint
             ServerInputPath = string.Empty;
         }
 
+
+        protected override bool AssignEmptyOutputsToRecordSet => true;
         
-        
-        /// <summary>
-        /// Gets or sets the files option.
-        /// </summary>
         [Inputs("Files")]
         [FindMissing]
 
@@ -44,10 +42,7 @@ namespace Dev2.Activities.Sharepoint
             get;
             set;
         }
-
-        /// <summary>
-        /// Gets or sets the folders otion.
-        /// </summary>
+        
         [Inputs("Folders")]
         [FindMissing]
         public bool IsFoldersSelected
@@ -101,26 +96,19 @@ namespace Dev2.Activities.Sharepoint
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
            
             _debugInputs = new List<DebugItem>();
-            allErrors = new ErrorResultTO();
+            error = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
             var colItr = new WarewolfListIterator();
            
-            var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId); 
+            var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(context.WorkspaceID, SharepointServerResourceId); 
             if (sharepointSource == null)
             {
                 sharepointSource = SharepointSource;
@@ -129,12 +117,12 @@ namespace Dev2.Activities.Sharepoint
 
             ValidateRequest();
 
-            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(ServerInputPath, update));
+            var inputItr = new WarewolfIterator(context.Environment.Eval(ServerInputPath, update));
             colItr.AddVariableToIterateOn(inputItr);
 
-            if (dataObject.IsDebugMode())
+            if (context.IsDebugMode())
             {
-                AddDebugInputItem(ServerInputPath, "Input Path", dataObject.Environment, update);
+                AddDebugInputItem(ServerInputPath, "Input Path", context.Environment, update);
             }
 
             while (colItr.HasMoreData())
@@ -265,7 +253,7 @@ namespace Dev2.Activities.Sharepoint
                 catch (Exception e)
                 {
                     outputs.Add(DataListFactory.CreateOutputTO(null));
-                    allErrors.AddError(e.Message);
+                    error.AddError(e.Message);
                     break;
                 }
             }
@@ -295,7 +283,7 @@ namespace Dev2.Activities.Sharepoint
             return folders;
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -304,7 +292,7 @@ namespace Dev2.Activities.Sharepoint
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -315,16 +303,36 @@ namespace Dev2.Activities.Sharepoint
 
         public bool Equals(SharepointReadFolderItemActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) && IsFilesSelected == other.IsFilesSelected && IsFoldersSelected == other.IsFoldersSelected && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected && string.Equals(ServerInputPath, other.ServerInputPath) && Equals(SharepointSource, other.SharepointSource) && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((SharepointReadFolderItemActivity) obj);
         }
 

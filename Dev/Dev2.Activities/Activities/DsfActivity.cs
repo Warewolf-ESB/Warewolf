@@ -418,10 +418,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IList<DsfForEachItem> GetForEachOutputs() => throw new NotImplementedException();
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DsfActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DsfActivity;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -605,7 +602,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var variableName = serviceInput.Value;
                             if (DataListUtil.IsValueRecordset(variableName))
                             {
-                                //variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
                                 AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
                             }
                             else
@@ -744,8 +740,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(DsfActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var inputsEqual = CommonEqualityOps.CollectionEquals(Inputs, other.Inputs, new ServiceInputComparer());
             var outputsEqual = CommonEqualityOps.CollectionEquals(Outputs, other.Outputs, new ServiceOutputMappingComparer());
             return base.Equals(other)
@@ -760,9 +764,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfActivity) obj);
         }
 

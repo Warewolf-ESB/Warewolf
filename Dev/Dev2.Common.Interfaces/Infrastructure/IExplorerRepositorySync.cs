@@ -14,6 +14,6 @@ namespace Dev2.Common.Interfaces.Infrastructure
 {
     public interface IExplorerRepositorySync
     {
-        void AddItemMessage(IExplorerItem itemToRename);
+        void AddItemMessage(IExplorerItem addedItem);
     }
 }

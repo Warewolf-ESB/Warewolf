@@ -182,10 +182,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-        public List<string> FetchDatabases()
-        {
-            return GetDSN();
-        }
+        public List<string> FetchDatabases() => GetDSN();
 
         public DataTable FetchDataTable(IDbCommand command)
         {

@@ -152,25 +152,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #endregion public properties
 
-        public ICommand CancelCommand
-        {
-            get
-            {
-                return _cancelComand ?? (_cancelComand = new RelayCommand(param => Cancel(), param => true));
-            }
-        }
+        public ICommand CancelCommand => _cancelComand ?? (_cancelComand = new RelayCommand(param => Cancel(), param => true));
 
-        public ICommand SendErrorCommand
-        {
-            get
-            {
-                return _sendErrorCommand ?? (_sendErrorCommand = new RelayCommand(param =>
-                {
-                    Testing = true;
-                    SendError();
-                }, param => true));
-            }
-        }
+        public ICommand SendErrorCommand => _sendErrorCommand ?? (_sendErrorCommand = new RelayCommand(param =>
+                                                          {
+                                                              Testing = true;
+                                                              SendError();
+                                                          }, param => true));
 
         public string EmailAddress
         {

@@ -22,13 +22,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         public abstract StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace);
         public abstract DynamicService CreateServiceEntry();
         public abstract string HandlesType();
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
+
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Any;
     }
 }

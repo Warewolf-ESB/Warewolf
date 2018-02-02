@@ -19,9 +19,9 @@ namespace Dev2.Common.Interfaces.Infrastructure
         IExplorerItem Load(Guid workSpaceId, bool reload);
         IExplorerItem Load(Guid workSpaceId);
         IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId);
-        IExplorerRepositoryResult DeleteItem(IExplorerItem itemToRename, Guid workSpaceId);
-        IExplorerRepositoryResult AddItem(IExplorerItem itemToRename, Guid workSpaceId);
-        IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid empty);
+        IExplorerRepositoryResult DeleteItem(IExplorerItem itemToDelete, Guid workSpaceId);
+        IExplorerRepositoryResult AddItem(IExplorerItem itemToAdd, Guid workSpaceId);
+        IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId);
     }
 
     public interface IExplorerRepositoryResult

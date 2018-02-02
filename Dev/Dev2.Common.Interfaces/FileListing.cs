@@ -16,10 +16,7 @@ namespace Dev2.Common.Interfaces
         }
         #region Equality members
 
-        public bool Equals(IFileListing other)
-        {
-            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
-        }
+        public bool Equals(IFileListing other) => string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -63,15 +60,9 @@ namespace Dev2.Common.Interfaces
             }
         }
 
-        public static bool operator ==(FileListing left, FileListing right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(FileListing left, FileListing right) => Equals(left, right);
 
-        public static bool operator !=(FileListing left, FileListing right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(FileListing left, FileListing right) => !Equals(left, right);
 
         #endregion
 

@@ -11,7 +11,11 @@ namespace Dev2.Studio.Core
         public static IToolDescriptor GetDescriptorFromAttribute(this Type type)
         {
             var isAssignableFrom = !type.IsAssignableFrom(typeof(IDev2Activity));
-            if (!isAssignableFrom) return default(IToolDescriptor);
+            if (!isAssignableFrom)
+            {
+                return default(IToolDescriptor);
+            }
+
             var info = (ToolDescriptorInfo)type.GetCustomAttributes(typeof(ToolDescriptorInfo)).First();
             var descriptor = new ToolDescriptor(info.Id, info.Designer
                 , new WarewolfType(type.FullName, type.Assembly.GetName().Version, type.Assembly.Location)

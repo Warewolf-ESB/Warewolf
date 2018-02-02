@@ -23,15 +23,9 @@ namespace Dev2.Common
 
         public int ToIndex { get; private set; }
 
-        public bool IsFinalOp()
-        {
-            return false;
-        }
+        public bool IsFinalOp() => false;
 
-        public bool CanUseEnumerator(bool isReversed)
-        {
-            return false;
-        }
+        public bool CanUseEnumerator(bool isReversed) => false;
 
         public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
         {
@@ -65,14 +59,8 @@ namespace Dev2.Common
             return result.ToString();
         }
 
-        public string ExecuteOperation(CharEnumerator candidate, int startIdx, int len, bool isReversed)
-        {
-            throw new NotImplementedException();
-        }
+        public string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed) => throw new NotImplementedException();
 
-        public int OpLength()
-        {
-            return 0;
-        }
+        public int OpLength() => 0;
     }
 }

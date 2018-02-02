@@ -873,14 +873,11 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static ServiceTestStep CreateMockChildStep(Guid uniqueId, IServiceTestStep parent, string typeName, string displayName)
+        static ServiceTestStep CreateMockChildStep(Guid uniqueId, IServiceTestStep parent, string typeName, string displayName) => new ServiceTestStep(uniqueId, typeName, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
         {
-            return new ServiceTestStep(uniqueId, typeName, new ObservableCollection<IServiceTestOutput>(), StepType.Mock)
-            {
-                StepDescription = displayName,
-                Parent = parent
-            };
-        }
+            StepDescription = displayName,
+            Parent = parent
+        };
 
         void ProcessSelectAndApply(ModelItem modelItem)
         {
@@ -1715,10 +1712,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        bool CanDeleteTest(IServiceTestModel selectedTestModel)
-        {
-            return GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled && IsServerConnected();
-        }
+        bool CanDeleteTest(IServiceTestModel selectedTestModel) => GetPermissions() && selectedTestModel != null && !selectedTestModel.Enabled && IsServerConnected();
 
         IAsyncWorker AsyncWorker { get; }
         IEventAggregator EventPublisher { get; }
@@ -1797,10 +1791,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanSave { get; set; }
 
-        static bool GetPermissions()
-        {
-            return true;
-        }
+        static bool GetPermissions() => true;
 
         bool IsValidName()
         {
@@ -1860,10 +1851,7 @@ namespace Warewolf.Studio.ViewModels
             }
             return true;
         }
-        static bool NameHasInvalidCharacters(string name)
-        {
-            return Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
-        }
+        static bool NameHasInvalidCharacters(string name) => Regex.IsMatch(name, @"[^a-zA-Z0-9._\s-]");
 
         public string ErrorMessage
         {
@@ -2037,55 +2025,46 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static IServiceTestModelTO CreateServiceTestModelTO(IServiceTestModel model)
+        static IServiceTestModelTO CreateServiceTestModelTO(IServiceTestModel model) => new ServiceTestModelTO
         {
-            return new ServiceTestModelTO
-            {
-                TestName = model.TestName,
-                ResourceId = model.ParentId,
-                AuthenticationType = model.AuthenticationType,
-                Enabled = model.Enabled,
-                ErrorExpected = model.ErrorExpected,
-                NoErrorExpected = model.NoErrorExpected,
-                ErrorContainsText = model.ErrorContainsText,
-                TestSteps = model.TestSteps?.Select(step => CreateServiceTestStepTO(step, null)).ToList() ?? new List<IServiceTestStep>(),
-                Inputs = model.Inputs?.Select(CreateServiceTestInputsTO).ToList() ?? new List<IServiceTestInput>(),
-                Outputs = model.Outputs?.Select(CreateServiceTestOutputTO).ToList() ?? new List<IServiceTestOutput>(),
-                LastRunDate = model.LastRunDate,
-                OldTestName = model.OldTestName,
-                Password = model.Password,
-                IsDirty = model.IsDirty,
-                TestPending = model.TestPending,
-                UserName = model.UserName,
-                TestFailing = model.TestFailing,
-                TestInvalid = model.TestInvalid,
-                TestPassed = model.TestPassed
-            };
-        }
+            TestName = model.TestName,
+            ResourceId = model.ParentId,
+            AuthenticationType = model.AuthenticationType,
+            Enabled = model.Enabled,
+            ErrorExpected = model.ErrorExpected,
+            NoErrorExpected = model.NoErrorExpected,
+            ErrorContainsText = model.ErrorContainsText,
+            TestSteps = model.TestSteps?.Select(step => CreateServiceTestStepTO(step, null)).ToList() ?? new List<IServiceTestStep>(),
+            Inputs = model.Inputs?.Select(CreateServiceTestInputsTO).ToList() ?? new List<IServiceTestInput>(),
+            Outputs = model.Outputs?.Select(CreateServiceTestOutputTO).ToList() ?? new List<IServiceTestOutput>(),
+            LastRunDate = model.LastRunDate,
+            OldTestName = model.OldTestName,
+            Password = model.Password,
+            IsDirty = model.IsDirty,
+            TestPending = model.TestPending,
+            UserName = model.UserName,
+            TestFailing = model.TestFailing,
+            TestInvalid = model.TestInvalid,
+            TestPassed = model.TestPassed
+        };
 
-        static IServiceTestOutput CreateServiceTestOutputTO(IServiceTestOutput output)
+        static IServiceTestOutput CreateServiceTestOutputTO(IServiceTestOutput output) => new ServiceTestOutputTO
         {
-            return new ServiceTestOutputTO
-            {
-                Variable = output.Variable,
-                Value = output.Value,
-                From = output.From,
-                To = output.To,
-                AssertOp = output.AssertOp,
-                HasOptionsForValue = output.HasOptionsForValue,
-                OptionsForValue = output.OptionsForValue
-            };
-        }
+            Variable = output.Variable,
+            Value = output.Value,
+            From = output.From,
+            To = output.To,
+            AssertOp = output.AssertOp,
+            HasOptionsForValue = output.HasOptionsForValue,
+            OptionsForValue = output.OptionsForValue
+        };
 
-        static IServiceTestInput CreateServiceTestInputsTO(IServiceTestInput input)
+        static IServiceTestInput CreateServiceTestInputsTO(IServiceTestInput input) => new ServiceTestInputTO
         {
-            return new ServiceTestInputTO
-            {
-                Variable = input.Variable,
-                Value = input.Value,
-                EmptyIsNull = input.EmptyIsNull
-            };
-        }
+            Variable = input.Variable,
+            Value = input.Value,
+            EmptyIsNull = input.EmptyIsNull
+        };
 
         static IServiceTestStep CreateServiceTestStepTO(IServiceTestStep step, IServiceTestStep parent)
         {
@@ -2105,19 +2084,16 @@ namespace Warewolf.Studio.ViewModels
             return serviceTestStepTO;
         }
 
-        static IServiceTestOutput CreateServiceTestStepOutputsTO(IServiceTestOutput output)
+        static IServiceTestOutput CreateServiceTestStepOutputsTO(IServiceTestOutput output) => new ServiceTestOutputTO
         {
-            return new ServiceTestOutputTO
-            {
-                Variable = output.Variable,
-                Value = output.Value,
-                From = output.From,
-                To = output.To,
-                AssertOp = output.AssertOp,
-                HasOptionsForValue = output.HasOptionsForValue,
-                OptionsForValue = output.OptionsForValue
-            };
-        }
+            Variable = output.Variable,
+            Value = output.Value,
+            From = output.From,
+            To = output.To,
+            AssertOp = output.AssertOp,
+            HasOptionsForValue = output.HasOptionsForValue,
+            OptionsForValue = output.OptionsForValue
+        };
 
         void UpdateTestsFromResourceUpdate()
         {

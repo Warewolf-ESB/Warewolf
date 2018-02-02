@@ -13,36 +13,15 @@ using Dev2.Data.Interfaces;
 
 
 namespace Dev2.DataList.Contract
-
 {
     public interface IDev2DataLanguageParser
     {
-        /// <summary>
-        /// Parses the data language for intellisense.
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <param name="dataList">The data list.</param>
-        /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
-        /// <param name="filterTo">The filter TO.</param>
-        /// <param name="isFromIntellisense"></param>
-        /// <returns></returns>
-        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IIntellisenseFilterOpsTO filterTo = null, bool isFromIntellisense = false);
-
-        /// <summary>
-        /// Makes the parts.
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <param name="addCompleteParts">Allows open regions for intellisense</param>
-        /// <returns></returns>
-        IList<IParseTO> MakeParts(string payload, bool addCompleteParts = false);
-
-        /// <summary>
-        /// Parses the expression into parts.
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <param name="parts"></param>
-        /// <returns></returns>
+        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList);
+        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts);
+        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts, IIntellisenseFilterOpsTO filterTo);
+        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts, IIntellisenseFilterOpsTO filterTo, bool isFromIntellisense);
+        IList<IParseTO> MakeParts(string payload);
+        IList<IParseTO> MakeParts(string payload, bool addCompleteParts);
         IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> parts);
-
     }
 }

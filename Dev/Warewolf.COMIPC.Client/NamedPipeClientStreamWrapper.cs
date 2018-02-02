@@ -13,10 +13,7 @@ namespace WarewolfCOMIPC.Client
             _pipeClientStream = new NamedPipeClientStream(v, token, inOut);
         }
 
-        public Stream GetInternalStream()
-        {
-            return _pipeClientStream;
-        }
+        public Stream GetInternalStream() => _pipeClientStream;
 
         public void Connect()
         {

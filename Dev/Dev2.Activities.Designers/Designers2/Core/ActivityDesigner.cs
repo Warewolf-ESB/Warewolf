@@ -37,13 +37,11 @@ using FontAwesome.WPF;
 namespace Dev2.Activities.Designers2.Core
 {
     [ActivityDesignerOptions(AllowDrillIn = false, AlwaysCollapseChildren = true)]
-    public class ActivityDesigner<TViewModel> : ActivityDesigner, IDisposable, IUpdatesHelp, IErrorsSource
+    public class ActivityDesigner<TViewModel> : ActivityDesigner, IUpdatesHelp, IErrorsSource
         where TViewModel : ActivityDesignerViewModel
     {
         bool _isInitialFocusDone;
         readonly AdornerControl _errorsAdorner;
-        bool _isDisposed;
-        DependencyPropertyDescriptor _zIndexProperty;
 
         protected TViewModel _dataContext;
 
@@ -54,7 +52,6 @@ namespace Dev2.Activities.Designers2.Core
         {
             _errorsAdorner = new ErrorsAdorner(this);
             Loaded += OnRoutedEventHandler;
-            Unloaded += ActivityDesignerUnloaded;
             AllowDrop = true;
             PreviewKeyDown += OnPreviewKeyDown;
         }
@@ -283,74 +280,27 @@ namespace Dev2.Activities.Designers2.Core
 
         void ApplyEventHandlers(TViewModel viewModel)
         {
-            _zIndexProperty = DependencyPropertyDescriptor.FromProperty(ActivityDesignerViewModel.ZIndexPositionProperty, typeof(TViewModel));
+            var _zIndexProperty = DependencyPropertyDescriptor.FromProperty(ActivityDesignerViewModel.ZIndexPositionProperty, typeof(TViewModel));
             _zIndexProperty.AddValueChanged(viewModel, OnZIndexPositionChanged);
-
             Context?.Items.Subscribe<Selection>(OnSelectionChanged);
         }
 
         void OnZIndexPositionChanged(object sender, EventArgs args)
         {
             var viewModel = (TViewModel)sender;
-
             var element = Parent as FrameworkElement;
             element?.SetZIndex(viewModel.ZIndexPosition);
         }
 
-        void OnSelectionChanged(Selection item)
-        {
-            ViewModel.IsSelected = item.SelectedObjects.Any(modelItem => modelItem == ModelItem);
-        }
+        void OnSelectionChanged(Selection item) => ViewModel.IsSelected = item.SelectedObjects.Any(modelItem => modelItem == ModelItem);
 
-        protected override void OnPreviewDragEnter(DragEventArgs e)
-        {
-            ActivityHelper.HandleDragEnter(e);
-        }
+        protected override void OnPreviewDragEnter(DragEventArgs e) => ActivityHelper.HandleDragEnter(e);
 
         #region IDisposable Members
 
+        public void UpdateHelpDescriptor(string helpText) => ViewModel?.UpdateHelpDescriptor(helpText);
 
-        ~ActivityDesigner()
-        {
-            // Do not re-create Dispose clean-up code here.
-            // Calling Dispose(false) is optimal in terms of
-            // readability and maintainability.
-            Dispose(false);
-        }
-
-        public void UpdateHelpDescriptor(string helpText)
-        {
-            ViewModel?.UpdateHelpDescriptor(helpText);
-        }
-
-        void OnRoutedEventHandler(object sender, RoutedEventArgs args)
-        {
-            Application.Current?.Dispatcher?.InvokeAsync(OnLoaded, DispatcherPriority.Background);
-        }
-
-        void ActivityDesignerUnloaded(object sender, RoutedEventArgs e)
-        {
-            OnUnloaded();
-            Dispose();
-        }
-
-        protected virtual void OnUnloaded()
-        {
-
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                _isDisposed = true;
-            }
-        }
+        void OnRoutedEventHandler(object sender, RoutedEventArgs args) => Application.Current?.Dispatcher?.InvokeAsync(OnLoaded, DispatcherPriority.Background);
 
         #endregion
 
@@ -386,26 +336,19 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     base.OnContextMenuOpening(e);
 
-                    if (ViewModel != null && ViewModel.HasLargeView)
+                    if (ViewModel != null && ViewModel.HasLargeView && !ViewModel.ShowSmall && ViewModel.ShowSmall)
                     {
-                        var header = "Collapse Large View";
-                        var fontAwesomeIcon = FontAwesomeIcon.Compress;
-                        if (ViewModel.ShowSmall)
+                        var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
+                        var icon = new Image
                         {
-                            fontAwesomeIcon = FontAwesomeIcon.Expand;
-                            header = "Show Large View";
-                        }
-                        else
-                        {
-                            if (ViewModel.ShowSmall)
-                            {
-                                var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
-                                var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
-                                _showCollapseLargeView.Header = "Show Large View";
-                                _showCollapseLargeView.Icon = icon;
-                            }
-                        }
+                            Source = imageSource,
+                            Height = 14,
+                            Width = 14
+                        };
+                        _showCollapseLargeView.Header = "Show Large View";
+                        _showCollapseLargeView.Icon = icon;
                     }
+
                 }
             }
         }

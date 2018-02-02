@@ -34,9 +34,6 @@ namespace Dev2.Data.Decisions.Operations
             return String.Compare(cols[0], cols[1], StringComparison.Ordinal) == 0;
         }
 
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsEqual;
-        }
+        public Enum HandlesType() => enDecisionType.IsEqual;
     }
 }

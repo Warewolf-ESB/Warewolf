@@ -99,10 +99,7 @@ namespace Dev2.Settings.Security
             InitializePermissions(securitySettings?.WindowsGroupPermissions);
         }
 
-        static bool CanPickWindowsGroup(IEnumerable<WindowsGroupPermission> permissions)
-        {
-            return permissions != null;
-        }
+        static bool CanPickWindowsGroup(IEnumerable<WindowsGroupPermission> permissions) => permissions != null;
 
         public ObservableCollection<WindowsGroupPermission> ServerPermissions
         {
@@ -330,10 +327,7 @@ namespace Dev2.Settings.Security
             return DialogResult.Cancel;
         }
 
-        public virtual DirectoryObject[] GetSelectedObjectsFromDirectoryObjectPickerDialog()
-        {
-            return _directoryObjectPicker.SelectedObjects;
-        }
+        public virtual DirectoryObject[] GetSelectedObjectsFromDirectoryObjectPickerDialog() => _directoryObjectPicker.SelectedObjects;
 
         void RegisterPropertyChanged(WindowsGroupPermission permission)
         {

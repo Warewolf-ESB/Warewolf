@@ -1756,6 +1756,62 @@ Scenario: Workflow Assign and Find Record index
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |	 	 
 	  
+Scenario: Workflow Assign and Find Record index expected not greater than
+      Given I have a workflow "WFWithAssignandFindRecordindexTool"
+	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
+      | # | variable        | value |
+      | # | [[rec(1).Name]] | 1Bob  |
+	  And "WFWithAssignandFindRecordindexTool" contains Find Record Index "FindRecord0" into result as "[[asdf]]"
+      | # | In Field       | # | Match Type | Match | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().Name]] | 1 | >          | 1     | YES                            | NO                          |
+	  When "WFWithAssignandFindRecordindexTool" is executed
+	  Then the workflow execution has "" error
+	  And the "Record" in WorkFlow "WFWithAssignandFindRecordindexTool" debug inputs as 
+	  | # | Variable          | New Value |
+	  | 1 | [[rec(1).Name]] = | 1Bob      |
+	  And the "Record" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
+	  | # |                                 |
+	  | 1 | [[rec(1).Name]]         =  1Bob |
+	  And the "FindRecord0" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
+	  |                        |
+	  | [[asdf]]         =  -1 |
+	  
+Scenario: Workflow Assign and Find Record index expected not less than
+      Given I have a workflow "WFWithAssignandFindRecordindexTool"
+	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
+      | # | variable        | value |
+      | # | [[rec(1).Name]] | 1Bob  |
+	  And "WFWithAssignandFindRecordindexTool" contains Find Record Index "FindRecord0" into result as "[[asdf]]"
+      | # | In Field       | # | Match Type | Match | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().Name]] | 1 | <          | 1     | YES                            | NO                          |
+	  When "WFWithAssignandFindRecordindexTool" is executed
+	  Then the workflow execution has "" error
+	  And the "Record" in WorkFlow "WFWithAssignandFindRecordindexTool" debug inputs as 
+	  | # | Variable          | New Value |
+	  | 1 | [[rec(1).Name]] = | 1Bob      |
+	  And the "Record" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
+	  | # |                                 |
+	  | 1 | [[rec(1).Name]]         =  1Bob |
+	  And the "FindRecord0" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
+	  |                        |
+	  | [[asdf]]         =  -1 |
+
+Scenario: Workflow Assign and Find Record index expected is greater than
+      Given I have a workflow "WFWithAssignandFindRecordindexTool"
+	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
+      | variable       | value |
+      | [[rec().Name]] | 1Bob  |
+      | [[rec().Age]]  | 2     |
+      | [[rec().Name]] | 2Bob  |
+      | [[rec().Age]]  | 23    |
+	  And "WFWithAssignandFindRecordindexTool" contains Find Record Index "FindRecord0" into result as "[[expectedResult]]"
+      | # | In Field                     | # | Match Type | Match | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().Name]],[[rec().Age]] | 1 | >          | 2     | NO                             | NO                          |
+	  When "WFWithAssignandFindRecordindexTool" is executed
+	  Then the workflow execution has "" error
+	  And the "FindRecord0" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
+	  |                       |
+	  | [[expectedResult]]         =  2 |
 
 Scenario Outline: Testing Length with two variables in Result field
       Given I have a workflow "WorkflowforLength"

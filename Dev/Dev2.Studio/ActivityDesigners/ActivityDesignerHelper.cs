@@ -45,6 +45,7 @@ using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
 using Dev2.Activities.Designers2.ReadFolder;
+using Dev2.Activities.Designers2.ReadFolderNew;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
@@ -135,7 +136,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPathDelete), typeof(DeleteDesigner) },
                 { typeof(DsfFileRead), typeof(ReadFileDesigner) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
-                { typeof(DsfFolderRead), typeof(ReadFolderDesigner) },
+                { typeof(DsfFolderRead), typeof(Activities.Designers2.ReadFolder.ReadFolderDesigner) },
+                { typeof(DsfFolderReadActivity), typeof(Activities.Designers2.ReadFolderNew.ReadFolderDesigner) },
                 { typeof(DsfPathRename), typeof(RenameDesigner) },
                 { typeof(DsfUnZip), typeof(UnzipDesigner) },
                 { typeof(DsfZip), typeof(ZipDesigner) },
@@ -162,6 +164,7 @@ namespace Dev2.Studio.ActivityDesigners
                   { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
                   { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
                 {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
+                {typeof(DsfExchangeEmailNewActivity),typeof(Activities.Designers2.ExchangeNewEmail.ExchangeEmailDesigner) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },

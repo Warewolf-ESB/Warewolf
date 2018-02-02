@@ -14,14 +14,8 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class NotContains : IDecisionOperation
     {
-        public Enum HandlesType()
-        {
-            return enDecisionType.NotContain;
-        }
+        public Enum HandlesType() => enDecisionType.NotContain;
 
-        public bool Invoke(string[] cols)
-        {
-            return !cols[0].Contains(cols[1]);
-        }
+        public bool Invoke(string[] cols) => !cols[0].Contains(cols[1]);
     }
 }

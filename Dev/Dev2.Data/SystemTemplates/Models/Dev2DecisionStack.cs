@@ -54,10 +54,7 @@ namespace Dev2.Data.SystemTemplates.Models
             TheStack.Add(item);
         }
 
-        public Dev2Decision GetModelItem(int idx)
-        {
-            return idx < TotalDecisions ? TheStack[idx] : null;
-        }
+        public Dev2Decision GetModelItem(int idx) => idx < TotalDecisions ? TheStack[idx] : null;
 
         public string ToVBPersistableModel()
         {
@@ -94,11 +91,7 @@ namespace Dev2.Data.SystemTemplates.Models
             return result.ToString();
         }
 
-        public static string FromVBPersitableModelToJSON(string val)
-
-        {
-            return val.Replace("!", "\"");
-        }
+        public static string FromVBPersitableModelToJSON(string val) => val.Replace("!", "\"");
 
         /// <summary>
         /// Extracts the model from workflow persisted data.
@@ -170,8 +163,16 @@ namespace Dev2.Data.SystemTemplates.Models
         }
         public bool Equals(Dev2DecisionStack other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var collectionEquals = CommonEqualityOps.CollectionEquals(TheStack, other.TheStack, new Dev2DecisionComparer());
             return collectionEquals
                 && Mode == other.Mode
@@ -182,9 +183,21 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
             return Equals((Dev2DecisionStack) obj);
         }
 

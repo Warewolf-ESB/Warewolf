@@ -25,32 +25,28 @@ using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
-
-    /// <summary>
-    /// Handler that invokes a plugin in its own app domain
-    /// </summary>
     public partial class PluginRuntimeHandler : MarshalByRefObject, IRuntime
     {
 
-        public PluginExecutionDto CreateInstance(PluginInvokeArgs setupInfo)
+        public PluginExecutionDto CreateInstance(PluginInvokeArgs constructor)
         {
-            VerifyArgument.IsNotNull("setupInfo", setupInfo);
-            var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly);
+            VerifyArgument.IsNotNull("setupInfo", constructor);
+            var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(constructor.AssemblyLocation, constructor.AssemblyName, out Assembly loadedAssembly);
             if (!tryLoadAssembly)
             {
-                throw new Exception(setupInfo.AssemblyName + "Not found");
+                throw new Exception(constructor.AssemblyName + "Not found");
             }
 
             var constructorArgs = new List<object>();
-            var type = loadedAssembly.GetType(setupInfo.Fullname);
+            var type = loadedAssembly.GetType(constructor.Fullname);
             if (type.IsAbstract)//IsStatic
             {
-                return new PluginExecutionDto(string.Empty) { IsStatic = true, Args = setupInfo };
+                return new PluginExecutionDto(string.Empty) { IsStatic = true, Args = constructor };
             }
-            if (setupInfo.PluginConstructor.Inputs != null)
+            if (constructor.PluginConstructor.Inputs != null)
             {
                 
-                foreach (var constructorArg in setupInfo.PluginConstructor.Inputs)
+                foreach (var constructorArg in constructor.PluginConstructor.Inputs)
                 {
                     var setupValuesForParameters = SetupValuesForParameters(constructorArg.Value, constructorArg.TypeName, constructorArg.EmptyToNull, loadedAssembly);
                     if (setupValuesForParameters != null && setupValuesForParameters.Any())
@@ -60,13 +56,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
             }
 
-            var instance = BuildInstance(setupInfo, type, constructorArgs, loadedAssembly);
+            var instance = BuildInstance(constructor, type, constructorArgs, loadedAssembly);
             var serializeToJsonString = instance.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { type } });
             
-            setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
+            constructor.PluginConstructor.ReturnObject = serializeToJsonString;
             return new PluginExecutionDto(serializeToJsonString)
             {
-                Args = setupInfo,
+                Args = constructor,
             };
         }
 

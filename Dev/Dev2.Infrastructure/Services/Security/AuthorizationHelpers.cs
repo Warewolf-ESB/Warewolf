@@ -35,18 +35,10 @@ namespace Dev2.Services.Security
             return String.IsNullOrEmpty(attribute?.Reason) ? null : attribute.Reason;
         }
 
-        public static bool IsContributor(this Permissions permissions)
-        {
-            return permissions.HasFlag(Permissions.Contribute) || permissions.HasFlag(Permissions.Administrator);
+        public static bool IsContributor(this Permissions permissions) => permissions.HasFlag(Permissions.Contribute) || permissions.HasFlag(Permissions.Administrator);
 
-        }
-
-
-        public static bool CanDebug(this Permissions permissions)
-        {
-            return permissions.IsContributor() ||
+        public static bool CanDebug(this Permissions permissions) => permissions.IsContributor() ||
                    permissions.HasFlag(Permissions.View) && permissions.HasFlag(Permissions.Execute);
-        }
 
         public static Permissions ToPermissions(this AuthorizationContext context)
         {

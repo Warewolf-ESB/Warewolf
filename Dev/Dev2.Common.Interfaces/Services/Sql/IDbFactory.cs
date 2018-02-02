@@ -16,7 +16,7 @@ namespace Dev2.Common.Interfaces.Services.Sql
     {
         IDbConnection CreateConnection(string connectionString);
 
-        IDbCommand CreateCommand(IDbConnection connection, CommandType text, string format);
+        IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText);
 
         DataTable GetSchema(IDbConnection connection, string collectionName);
 

@@ -227,6 +227,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
+
         [When(@"the exchange email tool is executed ""(.*)""")]
         public void WhenTheExchangeEmailToolIsExecuted(string p0)
         {

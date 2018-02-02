@@ -182,10 +182,7 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName)
-        {
-            return !string.IsNullOrEmpty(serviceName) && (serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx") && (returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX);
-        }
+        static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName) => !string.IsNullOrEmpty(serviceName) && (serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx") && (returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX);
 
         public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
         {
@@ -301,7 +298,7 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        static List<IServiceTestModelTO> RunAllTestsForWorkflow(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, string testsResourceId = null)
+        static List<IServiceTestModelTO> RunAllTestsForWorkflow(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog)
         {
             var allTests = testCatalog.Fetch(dataObject.ResourceID) ?? new List<IServiceTestModelTO>();
             var taskList = new List<Task>();

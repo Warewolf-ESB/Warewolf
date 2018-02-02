@@ -19,15 +19,9 @@ namespace Dev2.Services.Sql
         IDbConnection _connection;
         IDbTransaction _transaction;
 
-        public bool IsConnected
-        {   
-            get { return _connection != null && _connection.State == ConnectionState.Open; }
-        }
+        public bool IsConnected => _connection != null && _connection.State == ConnectionState.Open;
 
-        public string ConnectionString
-        {   
-            get { return _connection == null ? null : _connection.ConnectionString; }
-        }
+        public string ConnectionString => _connection == null ? null : _connection.ConnectionString;
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
 

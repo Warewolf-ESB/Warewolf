@@ -13,10 +13,6 @@ namespace Dev2.Activities.DropBox2016.Result
             _listFolderResult = listFolderResult;
         }
 
-        public virtual ListFolderResult GetListFolderResulResult()
-        {
-            return _listFolderResult;
-        }
-
+        public virtual ListFolderResult GetListFolderResulResult() => _listFolderResult;
     }
 }

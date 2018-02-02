@@ -56,29 +56,15 @@ namespace Dev2.Runtime.WebServer.Hubs
         }
 
         #region Implementation of IDebugWriter
-
-        /// <summary>
-        ///     Writes the given state.
-        ///     <remarks>
-        ///         This must implement the one-way (fire and forget) message exchange pattern.
-        ///     </remarks>
-        /// </summary>
-        /// <param name="debugState">The state to be written.</param>
+        
         public void Write(IDebugState debugState)
         {
             SendDebugState(debugState as DebugState);
         }
         
-        /// <summary>
-        ///     Writes the given state.
-        ///     <remarks>
-        ///         This must implement the one-way (fire and forget) message exchange pattern.
-        ///     </remarks>
-        /// </summary>
-        /// <param name="serializedState">The state to be written.</param>
-        public void Write(string serializedState)
+        public void Write(string serializeObject)
         {
-            var debugState = _serializer.Deserialize<DebugState>(serializedState);
+            var debugState = _serializer.Deserialize<DebugState>(serializeObject);
             SendDebugState(debugState);
         }
 

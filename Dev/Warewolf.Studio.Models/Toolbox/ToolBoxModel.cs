@@ -29,19 +29,13 @@ namespace Warewolf.Studio.Models.Toolbox
         /// gets the description of tools from the connected server
         /// </summary>
         /// <returns></returns>
-        public IList<IToolDescriptor> GetTools()
-        {
-            return Server.LoadTools();
-        }
+        public IList<IToolDescriptor> GetTools() => Server.LoadTools();
 
         /// <summary>
         /// Is connected.
         /// </summary>
         /// <returns></returns>
-        public bool IsEnabled()
-        {
-            return Server.IsConnected && _localServer.IsConnected; 
-        }
+        public bool IsEnabled() => Server.IsConnected && _localServer.IsConnected;
 
 #pragma warning disable 0067
         public event ServerDisconnected OnserverDisconnected;

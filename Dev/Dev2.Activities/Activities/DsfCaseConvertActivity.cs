@@ -157,10 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         void BuildStringToConvert(int i, List<string> targetList, List<string> resultList)
         {
@@ -308,7 +305,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.Empty;
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment environment, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -317,7 +314,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment environment, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -386,10 +383,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
         }
 
-        public int GetCollectionCount()
-        {
-            return ConvertCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
-        }
+        public int GetCollectionCount() => ConvertCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
@@ -403,15 +397,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return ConvertCollection.Select(to => to.Result).ToList();
-        }
+        public override List<string> GetOutputs() => ConvertCollection.Select(to => to.Result).ToList();
 
         public bool Equals(DsfCaseConvertActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var collectionEquals = CommonEqualityOps.CollectionEquals(ConvertCollection, other.ConvertCollection, new CaseConvertToComparer());
             
             return base.Equals(other) && collectionEquals;
@@ -419,9 +418,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfCaseConvertActivity) obj);
         }
 

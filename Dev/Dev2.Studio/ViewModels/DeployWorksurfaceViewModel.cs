@@ -32,10 +32,7 @@ namespace Dev2.ViewModels
             };
         }
 
-        public override object GetView(object context = null)
-        {
-            return View;
-        }
+        public override object GetView(object context = null) => View;
 
         protected override void OnViewAttached(object view, object context)
         {

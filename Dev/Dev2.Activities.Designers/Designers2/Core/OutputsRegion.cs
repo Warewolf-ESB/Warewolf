@@ -310,21 +310,12 @@ namespace Dev2.Activities.Designers2.Core
 
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
-        public RelayCommand ViewObjectResult
-        {
-            get
-            {
-                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
-                {
-                    ViewJsonObjects();
-                }, CanRunCommand));
-            }
-        }
+        public RelayCommand ViewObjectResult => _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                                                              {
+                                                                  ViewJsonObjects();
+                                                              }, CanRunCommand));
 
-        static bool CanRunCommand(object obj)
-        {
-            return true;
-        }
+        static bool CanRunCommand(object obj) => true;
 
         void ViewJsonObjects()
         {

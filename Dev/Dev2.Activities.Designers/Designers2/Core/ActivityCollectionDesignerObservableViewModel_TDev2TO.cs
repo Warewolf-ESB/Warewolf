@@ -100,15 +100,9 @@ namespace Dev2.Activities.Designers2.Core
 
         protected abstract IEnumerable<IActionableErrorInfo> ValidateCollectionItem(IDev2TOFn mi);
 
-        public override bool CanRemoveAt(int indexNumber)
-        {
-            return ItemCount > 2 && indexNumber < ItemCount;
-        }
+        public override bool CanRemoveAt(int indexNumber) => ItemCount > 2 && indexNumber < ItemCount;
 
-        public override bool CanInsertAt(int indexNumber)
-        {
-            return ItemCount > 2 && indexNumber < ItemCount;
-        }
+        public override bool CanInsertAt(int indexNumber) => ItemCount > 2 && indexNumber < ItemCount;
 
         public override void RemoveAt(int indexNumber)
         {
@@ -142,7 +136,7 @@ namespace Dev2.Activities.Designers2.Core
             UpdateDisplayName();
         }
 
-        protected override void AddToCollection(IEnumerable<string> source, bool overwrite)
+        protected override void AddToCollection(IEnumerable<string> sources, bool overwrite)
         {
             var firstModelItem = Collection.FirstOrDefault();
             if(firstModelItem != null)
@@ -153,7 +147,7 @@ namespace Dev2.Activities.Designers2.Core
             var indexNumber = GetIndexForAdd(overwrite);
 
             // Always insert items before blank row
-            foreach(var s in source.Where(s => !string.IsNullOrWhiteSpace(s)))
+            foreach(var s in sources.Where(s => !string.IsNullOrWhiteSpace(s)))
             {
                 AddDto(indexNumber, s);
                 indexNumber++;
@@ -201,10 +195,7 @@ namespace Dev2.Activities.Designers2.Core
             return indexNumber;
         }
 
-        IDev2TOFn GetModelItem(int indexNumber)
-        {
-            return Collection[indexNumber - 1];
-        }
+        IDev2TOFn GetModelItem(int indexNumber) => Collection[indexNumber - 1];
 
         TDev2TOFn GetDto(int indexNumber)
         {
@@ -212,10 +203,7 @@ namespace Dev2.Activities.Designers2.Core
             return item as TDev2TOFn;
         }
 
-        TDev2TOFn GetLastDto()
-        {
-            return GetDto(ItemCount);
-        }
+        TDev2TOFn GetLastDto() => GetDto(ItemCount);
 
         void AddBlankRow()
         {
@@ -262,10 +250,7 @@ namespace Dev2.Activities.Designers2.Core
         {
         }
 
-        protected virtual IDev2TOFn CreateDto(int indexNumber, string initializeWith)
-        {
-            return DTOFactory.CreateNewDTO(_initialDto, indexNumber, false, initializeWith);
-        }
+        protected virtual IDev2TOFn CreateDto(int indexNumber, string initializeWith) => DTOFactory.CreateNewDTO(_initialDto, indexNumber, false, initializeWith);
 
         void RemoveDto(TDev2TOFn dto, int indexNumber)
         {

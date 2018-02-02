@@ -187,10 +187,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
-        {
-            return Equals(currentItem.Server, explorerItemViewModel.Server);
-        }
+        static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel) => Equals(currentItem.Server, explorerItemViewModel.Server);
 
         public void Calculate(IList<IExplorerTreeItem> items)
         {
@@ -286,10 +283,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public Action CalculateAction { get; set; }
 
-        bool IsSource(string res)
-        {
-            return res.Contains(@"Source") || res.Contains(@"Server");
-        }
+        bool IsSource(string res) => res.Contains(@"Source") || res.Contains(@"Server");
     }
 
     public class ConflictEqualityComparer : IEqualityComparer<Conflict>
@@ -303,9 +297,6 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        public int GetHashCode(Conflict obj)
-        {
-            return 0;
-        }
+        public int GetHashCode(Conflict obj) => 0;
     }
 }

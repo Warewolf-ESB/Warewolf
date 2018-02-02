@@ -17,12 +17,7 @@ using Warewolf.Resource.Errors;
 
 
 namespace Dev2.MathOperations
-
 {
-
-    // PBI 1214: This class is used to create a dev2 function used by the Calculate Tool
-    //           This contains a set of values that can fully describe a function
-    //           from it's Name, to the Argument List, to the description of what the function actually does.
     public class Function : IFunction
     {
 
@@ -66,7 +61,7 @@ namespace Dev2.MathOperations
 
         #region Public Methods
 
-        public void CreateCustomFunction(string functionName, List<string> args, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
+        public void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description, Func<double[], double> function, IDev2CalculationManager calcManager)
         {
             if (CreateCustomFunction(functionName, function, out CustomCalculationFunction calcFunction))
             {
@@ -74,7 +69,7 @@ namespace Dev2.MathOperations
                 {
                     calcManager.RegisterUserDefinedFunction(calcFunction);
                     SetFunctionName(functionName);
-                    SetArguments(args);
+                    SetArguments(arguments);
                     SetArgumentDescriptions(argumentDescriptions);
                     SetDescription(description);
                 }

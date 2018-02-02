@@ -280,20 +280,11 @@ namespace Warewolf.Sharepoint
             return "Success";
         }
 
-        string GetFileName(string serverPath)
-        {
-            return Path.GetFileName(serverPath);
-        }
+        string GetFileName(string serverPath) => Path.GetFileName(serverPath);
 
-        string GetFileExtention(string localPath)
-        {
-            return Path.GetExtension(localPath);
-        }
+        string GetFileExtention(string localPath) => Path.GetExtension(localPath);
 
-        bool CheckIfFileExist(string localPath)
-        {
-            return System.IO.File.Exists(localPath);
-        }
+        bool CheckIfFileExist(string localPath) => System.IO.File.Exists(localPath);
 
         void CreateFolderIfNotExist(string localPath)
         {

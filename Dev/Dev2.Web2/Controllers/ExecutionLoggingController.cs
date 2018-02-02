@@ -89,10 +89,7 @@ namespace Dev2.Web2.Controllers
         }
 
         // GET: ExecutionLogging/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+        public ActionResult Create() => View();
 
         // POST: ExecutionLogging/Create
         [HttpPost]
@@ -111,10 +108,7 @@ namespace Dev2.Web2.Controllers
         }
 
         // GET: ExecutionLogging/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
+        public ActionResult Edit(int id) => View();
 
         // POST: ExecutionLogging/Edit/5
         [HttpPost]
@@ -133,10 +127,7 @@ namespace Dev2.Web2.Controllers
         }
 
         // GET: ExecutionLogging/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
+        public ActionResult Delete(int id) => View();
 
         // POST: ExecutionLogging/Delete/5
         [HttpPost]

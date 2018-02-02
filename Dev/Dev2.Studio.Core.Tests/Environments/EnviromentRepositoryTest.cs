@@ -518,8 +518,7 @@ namespace Dev2.Core.Tests.Environments
             // DO NOT use mock as test requires IEquatable of IEnvironmentModel
             var c1 = CreateMockConnection();
             c1.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
-
-            //var wizard = new Mock<IWizardEngine>();
+            
             var e1 = new Server(Guid.NewGuid(), c1.Object);
 
             var source = new Mock<IServer>();

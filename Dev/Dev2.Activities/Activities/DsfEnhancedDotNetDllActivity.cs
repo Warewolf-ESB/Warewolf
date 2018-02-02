@@ -48,12 +48,12 @@ namespace Dev2.Activities
         }
 
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            errors = new ErrorResultTO();
+            tmpErrors = new ErrorResultTO();
             if (Namespace == null)
             {
-                errors.AddError(ErrorResource.NoNamespaceSelected);
+                tmpErrors.AddError(ErrorResource.NoNamespaceSelected);
                 return;
             }
 
@@ -62,7 +62,7 @@ namespace Dev2.Activities
                 Constructor = new PluginConstructor();
             }
 
-            ExecuteService(update, out errors, Constructor, Namespace, dataObject);
+            ExecuteService(update, out tmpErrors, Constructor, Namespace, dataObject);
         }
 
         void ExecuteService(int update, out ErrorResultTO errors, IPluginConstructor constructor, INamespaceItem namespaceItem, IDSFDataObject dataObject)
@@ -645,15 +645,20 @@ namespace Dev2.Activities
 
         #endregion
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(DsfEnhancedDotNetDllActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var comparer = new EnhancedPluginComparer();
             var @equals = comparer.Equals(this, other);
             return base.Equals(other) && @equals;
@@ -661,9 +666,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfEnhancedDotNetDllActivity)obj);
         }
 

@@ -21,10 +21,7 @@ namespace Dev2.Data.Decisions.Operations
     public class IsBetween : IDecisionOperation
     {
 
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsBetween;
-        }
+        public Enum HandlesType() => enDecisionType.IsBetween;
 
         public bool Invoke(string[] cols)
         {

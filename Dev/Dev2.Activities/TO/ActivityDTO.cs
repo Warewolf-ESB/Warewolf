@@ -132,10 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public List<string> OutList { get; set; }
 
-        public OutputTO ConvertToOutputTo()
-        {
-            return DataListFactory.CreateOutputTO(FieldName, OutList);
-        }
+        public OutputTO ConvertToOutputTo() => DataListFactory.CreateOutputTO(FieldName, OutList);
 
         /// <summary>
         /// Validates the property name with the default rule set in <value>ActivityDTO</value>
@@ -205,10 +202,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return body.Member.Name;
         }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
-        }
+        public bool IsEmpty() => string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
@@ -240,8 +234,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         
         public bool Equals(ActivityDTO other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return string.Equals(FieldName, other.FieldName) 
                 && string.Equals(FieldValue, other.FieldValue) 
                 && IndexNumber == other.IndexNumber
@@ -256,9 +258,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((ActivityDTO) obj);
         }
 

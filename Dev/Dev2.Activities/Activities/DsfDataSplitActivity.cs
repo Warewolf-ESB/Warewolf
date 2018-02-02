@@ -299,15 +299,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.MixedActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
-        static bool ArePureScalarTargets(IEnumerable<DataSplitDTO> args)
-        {
-            return args.All(arg => !DataListUtil.IsValueRecordset(arg.OutputVariable));
-        }
+        static bool ArePureScalarTargets(IEnumerable<DataSplitDTO> args) => args.All(arg => !DataListUtil.IsValueRecordset(arg.OutputVariable));
 
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
@@ -587,7 +581,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -596,7 +590,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -662,10 +656,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetForEachItems(items);
         }
 
-        public int GetCollectionCount()
-        {
-            return ResultsCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
-        }
+        public int GetCollectionCount() => ResultsCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
@@ -679,15 +670,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return ResultsCollection.Select(dto => dto.OutputVariable).ToList();
-        }
+        public override List<string> GetOutputs() => ResultsCollection.Select(dto => dto.OutputVariable).ToList();
 
         public bool Equals(DsfDataSplitActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var resultsCollectionsAreEqual = CommonEqualityOps.CollectionEquals(ResultsCollection.OrderBy(dto => dto.IndexNumber), other.ResultsCollection.OrderBy(dto => dto.IndexNumber), new DataSplitDTOComparer());
             return base.Equals(other) 
                 && string.Equals(SourceString, other.SourceString) 
@@ -699,9 +695,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfDataSplitActivity) obj);
         }
 

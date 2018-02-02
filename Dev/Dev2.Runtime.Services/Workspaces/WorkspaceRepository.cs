@@ -203,7 +203,7 @@ namespace Dev2.Workspaces
             lock(_readLock)
             {
                 
-                var filesToIgnore = servicesToIgnore.Select(s => s += ".bite").ToList();
+                var filesToIgnore = servicesToIgnore.Select(s => s + ".bite").ToList();
                 
                 var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
                 _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
@@ -329,17 +329,11 @@ namespace Dev2.Workspaces
 
         #region GetFileName
 
-        string GetFileName(Guid workspaceID)
-        {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".bite");
-        }
+        string GetFileName(Guid workspaceID) => Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".bite");
 
         #endregion
 
-        static string GetUserMapFileName()
-        {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
-        }
+        static string GetUserMapFileName() => Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
 
         static ConcurrentDictionary<string, Guid> ReadUserMap()
         {
@@ -385,9 +379,6 @@ namespace Dev2.Workspaces
 
         #endregion
 
-        public ICollection<Guid> GetWorkspaceGuids()
-        {
-            return _items.Keys;
-        }
+        public ICollection<Guid> GetWorkspaceGuids() => _items.Keys;
     }
 }

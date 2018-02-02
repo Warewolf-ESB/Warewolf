@@ -7,7 +7,7 @@ namespace Dev2.Common.Interfaces
     {
         #region Public Methods
 
-        IEnumerable<string> GetSuggestions(string filter, int caretPosition, bool tokenise, enIntellisensePartType type);
+        IEnumerable<string> GetSuggestions(string orignalText, int caretPosition, bool tokenise, enIntellisensePartType type);
 
         #endregion Public Methods
 

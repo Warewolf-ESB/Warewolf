@@ -33,10 +33,7 @@ namespace Dev2.Activities.DropBox2016
             return directoryInfo.FullName;
         }
 
-        bool DirectoryExists()
-        {
-            return IsValid() && Directory.Exists(GetDirectoryName());
-        }
+        bool DirectoryExists() => IsValid() && Directory.Exists(GetDirectoryName());
 
         public string GetDirectoryName()
         {
@@ -59,10 +56,7 @@ namespace Dev2.Activities.DropBox2016
             return fullFileName;
         }
 
-        public bool FileExist()
-        {
-            return File.Exists(GetFullFileName());
-        }
+        public bool FileExist() => File.Exists(GetFullFileName());
     }
 
 }

@@ -116,10 +116,7 @@ namespace Dev2.TO
             _isInitializing = false;
         }
 
-        public bool CanDelete(object obj)
-        {
-            return !IsLast;
-        }
+        public bool CanDelete(object obj) => !IsLast;
 
         public bool IsLast
         {
@@ -284,10 +281,7 @@ namespace Dev2.TO
             return false;
         }
 
-        public bool CanAdd()
-        {
-            return !string.IsNullOrEmpty(MatchValue) || !string.IsNullOrEmpty(SearchCriteria);
-        }
+        public bool CanAdd() => !string.IsNullOrEmpty(MatchValue) || !string.IsNullOrEmpty(SearchCriteria);
 
         public void ClearRow()
         {
@@ -298,10 +292,7 @@ namespace Dev2.TO
 
         public bool Inserted { get; set; }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(SearchType) && string.IsNullOrEmpty(SearchCriteria);
-        }
+        public bool IsEmpty() => string.IsNullOrEmpty(SearchType) && string.IsNullOrEmpty(SearchCriteria);
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {

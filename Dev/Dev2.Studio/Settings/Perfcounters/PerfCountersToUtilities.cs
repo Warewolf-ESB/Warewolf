@@ -115,10 +115,7 @@ namespace Dev2.Settings.Perfcounters
         /// <returns>
         /// true if the specified objects are equal; otherwise, false.
         /// </returns>
-        public bool Equals(IResourcePerformanceCounter x, IResourcePerformanceCounter y)
-        {
-            return x.ResourceId == y.ResourceId && x.PerfCounterType == y.PerfCounterType;
-        }
+        public bool Equals(IResourcePerformanceCounter x, IResourcePerformanceCounter y) => x.ResourceId == y.ResourceId && x.PerfCounterType == y.PerfCounterType;
 
         /// <summary>
         /// Returns a hash code for the specified object.
@@ -127,10 +124,7 @@ namespace Dev2.Settings.Perfcounters
         /// A hash code for the specified object.
         /// </returns>
         /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
-        public int GetHashCode(IResourcePerformanceCounter obj)
-        {
-            return obj.ResourceId.GetHashCode() ^obj.PerfCounterType.GetHashCode()  ;
-        }
+        public int GetHashCode(IResourcePerformanceCounter obj) => obj.ResourceId.GetHashCode() ^ obj.PerfCounterType.GetHashCode();
 
         #endregion
 

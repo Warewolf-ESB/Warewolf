@@ -29,10 +29,7 @@ namespace Dev2.FindMissingStrategies
     public class DataGridActivityFindMissingStrategy : IFindMissingStrategy
     {
 
-        public Enum HandlesType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public Enum HandlesType() => enFindMissingType.DataGridActivity;
 
         /// <summary>
         /// Gets all the fields for a specific activity

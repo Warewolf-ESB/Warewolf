@@ -158,22 +158,13 @@ namespace Dev2.TO
             }
         }
 
-        public int MaxCount
-        {
-            get
-            {
-                return Evaluations.Select(x => x.Count).Max();
-            }
-        }
+        public int MaxCount => Evaluations.Select(x => x.Count).Max();
 
         public string DestinationName => Compound.DestinationName;
 
-        public object EvaluatedResultIndexed(int i)
-        {
-            return i < MaxCount ?
+        public object EvaluatedResultIndexed(int i) => i < MaxCount ?
                 Evaluations.First().EvalResultAsObject :
                 Evaluations.First().EvalResult.IsWarewolfAtomListresult ? new object[] { null } : null;
-        }
 
         public object ComplexEvaluatedResultIndexed(int i)
         {
@@ -338,15 +329,8 @@ namespace Dev2.TO
             return null;
         }
 
-        public bool HasRecordSetInCompound
-        {
-            get
-            {
-                return
-                    IsCompound &&
+        public bool HasRecordSetInCompound => IsCompound &&
                     Evaluations.Any(x =>
-                    FsInteropFunctions.ParseLanguageExpression(x.Simple.SourceName,0).IsRecordSetNameExpression);
-            }
-        }
+                    FsInteropFunctions.ParseLanguageExpression(x.Simple.SourceName, 0).IsRecordSetNameExpression);
     }
 }
