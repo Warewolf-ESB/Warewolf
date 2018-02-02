@@ -414,7 +414,7 @@ function Merge-DotCover-Snapshots($DotCoverSnapshots, [string]$DestinationFilePa
     }
 }
 
-function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio) {
+function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$Studio, [string]$JobName) {
     if (Test-Path "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx") {
         Move-Item "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\TestResults\*.trx" "$TestsResultsPath"
         Write-Host Moved loose TRX files from VS install directory into TestResults.
@@ -451,24 +451,24 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
             }
         }
         $PlayList += "</Playlist>"
-        $OutPlaylistPath = $TestsResultsPath + "\" + $JobNames + " Failures.playlist"
+        $OutPlaylistPath = $TestsResultsPath + "\" + $JobName + " Failures.playlist"
         Copy-On-Write $OutPlaylistPath
         $PlayList | Out-File -LiteralPath $OutPlaylistPath -Encoding utf8 -Force
         Write-Host Playlist file written to `"$OutPlaylistPath`".
     }
 
     if ($Studio) {
-        Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobNames Studio.log"
+        Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log" "$JobName Studio.log"
     }
     if ($Studio -and $DotCover) {
         $StudioSnapshot = "$env:LocalAppData\Warewolf\Studio Logs\dotCover.dcvr"
-        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobNames Studio DotCover.dcvr
+        Write-Host Trying to move Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
         $exists = Wait-For-FileExist $StudioSnapshot
         if ($exists) {
             $locked = Wait-For-FileUnlock $StudioSnapshot
             if (!($locked)) {
-                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobNames Studio DotCover.dcvr
-                Move-Item $StudioSnapshot "$TestsResultsPath\$JobNames Studio DotCover.dcvr" -force
+                Write-Host Moving Studio coverage snapshot file from $StudioSnapshot to $TestsResultsPath\$JobName Studio DotCover.dcvr
+                Move-Item $StudioSnapshot "$TestsResultsPath\$JobName Studio DotCover.dcvr" -force
             } else {
                 Write-Host Studio Coverage Snapshot File is locked.
             }
@@ -476,39 +476,39 @@ function Move-Artifacts-To-TestResults([bool]$DotCover, [bool]$Server, [bool]$St
 		    Write-Error -Message "Studio coverage snapshot not found at $StudioSnapshot"
         }
         if (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log") {
-            Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$JobNames Studio DotCover.log"
+            Move-File-To-TestResults "$env:LocalAppData\Warewolf\Studio Logs\dotCover.log" "$JobName Studio DotCover.log"
         }
     }
     if ($Server) {
-        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobNames Server.log"
-        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobNames my.warewolf.io Server.log"
-        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobNames my.warewolf.io Server Errors.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log" "$JobName Server.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io Server.log"
+        Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobName my.warewolf.io Server Errors.log"
     }
     if ($Server -and $DotCover) {
         $ServerSnapshot = "$env:ProgramData\Warewolf\Server Log\dotCover.dcvr"
-        Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobNames Server DotCover.dcvr
+        Write-Host Trying to move Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
         $exists = Wait-For-FileExist $ServerSnapshot
         if ($exists) {
             $locked = Wait-For-FileUnlock $ServerSnapshot
             if (!($locked)) {
-                Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobNames Server DotCover.dcvr
-                Move-File-To-TestResults $ServerSnapshot "$JobNames Server DotCover.dcvr"
+                Write-Host Moving Server coverage snapshot file from $ServerSnapshot to $TestsResultsPath\$JobName Server DotCover.dcvr
+                Move-File-To-TestResults $ServerSnapshot "$JobName Server DotCover.dcvr"
             } else {
                 Write-Host Server Coverage Snapshot File still locked after retrying for 2 minutes.
             }
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\dotCover.log") {
-            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$JobNames Server DotCover.log"
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\dotCover.log" "$JobName Server DotCover.log"
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log") {
-            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobNames my.warewolf.io.log"
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.log" "$JobName my.warewolf.io.log"
         }
         if (Test-Path "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log") {
-            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobNames my.warewolf.io Errors.log"
+            Move-File-To-TestResults "$env:ProgramData\Warewolf\Server Log\my.warewolf.io.errors.log" "$JobName my.warewolf.io Errors.log"
         }
     }
     if ($Server -and $Studio -and $DotCover) {
-        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobNames Server DotCover.dcvr", "$TestsResultsPath\$JobNames Studio DotCover.dcvr") "$TestsResultsPath\$JobNames Merged Server and Studio DotCover" "$TestsResultsPath\ServerAndStudioDotCoverSnapshot"
+        Merge-DotCover-Snapshots @("$TestsResultsPath\$JobName Server DotCover.dcvr", "$TestsResultsPath\$JobName Studio DotCover.dcvr") "$TestsResultsPath\$JobName Merged Server and Studio DotCover" "$TestsResultsPath\ServerAndStudioDotCoverSnapshot"
     }
     if ($RecordScreen.IsPresent) {
         Move-ScreenRecordings-To-TestResults
@@ -1222,7 +1222,7 @@ TestResults
                         Cleanup-ServerStudio (!$ApplyDotCover)
                     }
                 }
-                Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
+                Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent $JobName
             }
         }
         if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1) {
@@ -1458,14 +1458,14 @@ if ($Cleanup.IsPresent) {
     } else {
         Cleanup-ServerStudio
     }
-	if (!$JobNames) {
+	if (!$JobNames -or $JobNames.Contains(",")) {
 		if ($ProjectName) {
 			$JobNames = $ProjectName
 		} else {
 			$JobNames = "Manual Tests"
 		}
 	}
-    Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log")
+    Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log") $JobNames
 }
 
 if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobNames -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "" -and !$StartServerContainer.IsPresent) {

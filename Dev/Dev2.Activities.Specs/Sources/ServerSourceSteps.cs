@@ -75,20 +75,12 @@ namespace Dev2.Activities.Specs.Sources
         public void WhenITest(string p0)
         {
             var manageNewServerSourceModel = BuildManageNewServerSourceModel().Item1;
-            try
-            {
-                var resourceModel = ScenarioContext.Current.Get<IResourceModel>("resourceModel");
-                var resourceModelWorkflowXaml = resourceModel.WorkflowXaml;
-                System.Diagnostics.Debug.WriteLine(resourceModelWorkflowXaml);
-
-                var source = manageNewServerSourceModel.FetchSource(resourceModel.ID);
-                manageNewServerSourceModel.TestConnection(source);
-                ScenarioContext.Current.Add("result", "success");
-            }
-            catch (Exception exception)
-            {
-                Assert.Fail(exception.Message);
-            }
+            var resourceModel = ScenarioContext.Current.Get<IResourceModel>("resourceModel");
+            var resourceModelWorkflowXaml = resourceModel.WorkflowXaml;
+            System.Diagnostics.Debug.WriteLine(resourceModelWorkflowXaml);
+            var source = manageNewServerSourceModel.FetchSource(resourceModel.ID);
+            manageNewServerSourceModel.TestConnection(source);
+            ScenarioContext.Current.Add("result", "success");
         }
 
         static Tuple<ManageNewServerSourceModel, IServer, QueryManagerProxy> BuildManageNewServerSourceModel()
