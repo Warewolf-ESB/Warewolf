@@ -143,7 +143,7 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        if (!path.Contains(@"."))
+                        if (!HasExtension(path))
                         {
                             result = true;
                         }
