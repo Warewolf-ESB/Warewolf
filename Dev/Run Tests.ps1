@@ -182,16 +182,16 @@ $StudioPathSpecs += "Bin\Studio\" + $StudioExeName
 $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
+if ($JobName -ne "") {
+    $JobNames = $JobName
+    $JobName = ""
+}
+
 if ($JobNames.Contains(" DotCover")) {
     [bool]$ApplyDotCover = $True
     $JobNames = $JobNames.Replace(" DotCover", "")
 } else {
     [bool]$ApplyDotCover = $DotCoverPath -ne ""
-}
-
-if ($JobName -ne "") {
-    $JobNames = $JobName
-    $JobName = ""
 }
 
 If (!(Test-Path "$TestsResultsPath")) {
