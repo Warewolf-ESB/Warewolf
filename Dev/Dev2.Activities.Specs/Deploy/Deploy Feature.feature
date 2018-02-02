@@ -4,7 +4,6 @@ In order to schedule workflows
 	As a Warewolf user
 	I want to setup schedules
 
-@ignore
 Scenario: Create and Deploy a renamed resource to localhost
 	Given localhost and destination server "localwarewolfservercontainer" are connected
 	And I have a workflow "OriginalName"

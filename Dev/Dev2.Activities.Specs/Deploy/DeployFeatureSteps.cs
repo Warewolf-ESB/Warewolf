@@ -11,6 +11,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using System.Linq;
 using System.IO;
+using tar_cs;
+using System.Net;
 
 namespace Dev2.Activities.Specs.Deploy
 {
@@ -37,6 +39,7 @@ namespace Dev2.Activities.Specs.Deploy
                 Name = destinationServer
             };
             ScenarioContext.Current.Add("destinationServer", remoteServer);
+            ConnectToRemoteServerContainer();
             remoteServer.Connect();
             var previousVersions = remoteServer.ProxyLayer.GetVersions(_resourceId);
             if (previousVersions != null && previousVersions.Count > 0)
@@ -46,6 +49,16 @@ namespace Dev2.Activities.Specs.Deploy
             var localhost = ServerRepository.Instance.Source;
             ScenarioContext.Current.Add("sourceServer", localhost);
             localhost.Connect();
+        }
+
+        private void ConnectToRemoteServerContainer()
+        {
+            var arg = @"E:\Repos\SalamiArmyWarewolf\Dev\Dev2.Server\bin\Debug";
+            using (var archUsTar = WebRequest.Create("http://localhost:2375/build").GetRequestStream())
+            using (var tar = new TarWriter(archUsTar))
+            {
+                tar.WriteDirectoryEntry(arg);
+            }
         }
 
         [Then(@"And the destination resource is ""(.*)""")]
@@ -74,6 +87,7 @@ namespace Dev2.Activities.Specs.Deploy
             var loadContextualResourceModel = remoteServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
             ScenarioContext.Current["serverResource"] = loadContextualResourceModel;
         }
+
         [Given(@"I reload the source resources")]
         [When(@"I reload the source resources")]
         [Then(@"I reload the source resources")]
