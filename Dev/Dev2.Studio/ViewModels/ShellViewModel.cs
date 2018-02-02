@@ -1454,7 +1454,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public bool _continueShutDown;
+        bool _continueShutDown;
 
         public void ResetMainView()
         {
@@ -1478,10 +1478,8 @@ namespace Dev2.Studio.ViewModels
             }
             SetActiveServer(item.Environment);
         }
-
-#pragma warning disable IDE1006 // Naming Styles
-        public Action<WorkSurfaceContextViewModel> ActiveItemChanged;
-#pragma warning restore IDE1006 // Naming Styles
+        
+        internal Action<WorkSurfaceContextViewModel> ActiveItemChanged;
 
         bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
         {
