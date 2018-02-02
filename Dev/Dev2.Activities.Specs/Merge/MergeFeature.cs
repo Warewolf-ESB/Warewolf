@@ -181,6 +181,92 @@ namespace Dev2.Activities.Specs.Merge
             Assert.IsFalse(a);
         }
 
+        IToolConflict GetToolConflictFromRow(int conflictRow)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var conflict = mergeVm.Conflicts.ToList()[conflictRow];
+            var toolConflict = conflict as IToolConflict;
+            return toolConflict;
+        }
+        
+        [Then(@"conflict ""(.*)"" Current matches tool ""(.*)""")]
+        public void ThenConflictCurrentMatchesTool(int conflictRow, string mergeToolDescription)
+        {
+            var toolConflict = GetToolConflictFromRow(conflictRow);
+            Assert.AreEqual(mergeToolDescription, toolConflict.CurrentViewModel.MergeDescription);
+        }
+
+        [Then(@"conflict ""(.*)"" Different matches tool ""(.*)""")]
+        public void ThenConflictDifferentMatchesTool(int conflictRow, string mergeToolDescription)
+        {
+            var toolConflict = GetToolConflictFromRow(conflictRow);
+            Assert.AreEqual(mergeToolDescription, toolConflict.DiffViewModel.MergeDescription);
+        }
+
+        [Then(@"conflict ""(.*)"" Different tool is disabled")]
+        public void ThenConflictDifferentToolIsDisabled(int conflictRow)
+        {
+            var toolConflict = GetToolConflictFromRow(conflictRow);
+            Assert.IsFalse(toolConflict.DiffViewModel.IsMergeEnabled, "Expected " + toolConflict.DiffViewModel.MergeDescription + "to be disabled.");
+        }
+
+        [Then(@"conflict ""(.*)"" Different tool is enabled")]
+        public void ThenConflictDifferentToolIsEnabled(int conflictRow)
+        {
+            var toolConflict = GetToolConflictFromRow(conflictRow);
+            Assert.IsTrue(toolConflict.DiffViewModel.IsMergeEnabled, "Expected " + toolConflict.DiffViewModel.MergeDescription + "to be enabled.");
+        }
+
+        [Then(@"conflict ""(.*)"" Current tool is disabled")]
+        public void ThenConflictCurrentToolIsDisabled(int conflictRow)
+        {
+            var toolConflict = GetToolConflictFromRow(conflictRow);
+            Assert.IsFalse(toolConflict.CurrentViewModel.IsMergeEnabled, "Expected " + toolConflict.CurrentViewModel.MergeDescription + "to be disabled.");
+        }
+
+        [Then(@"conflict ""(.*)"" Current tool is enabled")]
+        public void ThenConflictCurrentToolIsEnabled(int conflictRow)
+        {
+            var toolConflict = GetToolConflictFromRow(conflictRow);
+            Assert.IsTrue(toolConflict.CurrentViewModel.IsMergeEnabled, "Expected " + toolConflict.CurrentViewModel.MergeDescription + "to be enabled.");
+        }
+
+        IArmConnectorConflict GetArmConnectorFromRow(int conflictRow)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var conflict = mergeVm.Conflicts.ToList()[conflictRow];
+            var toolConflict = conflict as IArmConnectorConflict;
+            return toolConflict;
+        }
+
+        [Then(@"conflict ""(.*)"" Current Connector matches tool ""(.*)""")]
+        public void ThenConflictCurrentConnectorMatchesTool(int conflictRow, string connectorDescription)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.AreEqual(connectorDescription, connector.CurrentArmConnector.ArmDescription);
+        }
+
+        [Then(@"conflict ""(.*)"" Different Connector matches tool ""(.*)""")]
+        public void ThenConflictDifferentConnectorMatchesTool(int conflictRow, string connectorDescription)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.AreEqual(connectorDescription, connector.DifferentArmConnector.ArmDescription);
+        }
+
+        [Then(@"conflict ""(.*)"" Different tool connector is disabled")]
+        public void ThenConflictDifferentToolConnectorIsDisabled(int conflictRow)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.IsFalse(connector.DifferentArmConnector.IsArmSelectionAllowed, "Expected " + connector.DifferentArmConnector.ArmDescription + "to be disabled.");
+        }
+
+        [Then(@"conflict ""(.*)"" Current tool connector is enabled")]
+        public void ThenConflictCurrentToolConnectorIsEnabled(int conflictRow)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.IsTrue(connector.CurrentArmConnector.IsArmSelectionAllowed, "Expected " + connector.CurrentArmConnector.ArmDescription + "to be enabled.");
+        }
+
         [Then(@"Merge variable conflicts is true")]
         public void ThenMergeVariableConflictsIsTrue()
         {
