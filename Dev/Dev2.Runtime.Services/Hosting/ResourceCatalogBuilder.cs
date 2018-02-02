@@ -41,7 +41,7 @@ namespace Dev2.Runtime.Hosting
         private readonly IResourceUpgrader _resourceUpgrader;
         private readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
         private readonly object _addLock = new object();
-        List<string> _convertToBiteExtension = new List<string>();
+        readonly List<string> _convertToBiteExtension = new List<string>();
 
 
         public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)

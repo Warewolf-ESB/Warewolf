@@ -2998,9 +2998,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return nodes;
             }
         }
-
-        private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
-        IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
+        
         protected bool _isPaste;
 
         public void AddItem(IMergeToolModel model)

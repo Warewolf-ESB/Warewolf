@@ -107,9 +107,9 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand _schedulerCommand;
         private ICommand _showCommunityPageCommand;
         readonly IAsyncWorker _asyncWorker;
-        private readonly IViewFactory _factory;
-        private IFile _file;
-        private Common.Interfaces.Wrappers.IFilePath _filePath;
+        readonly IViewFactory _factory;
+        readonly IFile _file;
+        readonly Common.Interfaces.Wrappers.IFilePath _filePath;
         private ICommand _showStartPageCommand;
         IContextualResourceModel _contextualResourceModel;
         bool _canDebug = true;
