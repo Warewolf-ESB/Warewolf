@@ -704,7 +704,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	And field to search is "[[rs().field]]"
 	And search the recordset with type ">=" and criteria is "4"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be 1,2,3,4,5,6
+	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
 	| #           |                            | # |    |   |  | And | Require All Fields To Match | Require All Matches To Be True |
@@ -716,7 +716,7 @@ Scenario: Find an index of data in a recordset search type is Greater Or Equal T
 	|             | [[rs(6).field]] = 4        | 1 | >= | 4 |  |     | NO                          | NO                             |
 	And the debug output as
 	|                   |
-	| [[result]] = 1,2,3,4,5,6 |
+	| [[result]] = 1,6 |
 
 Scenario: Find an index of data in a recordset search type is Greater Or Equal To result doesnt exist
 	Given I have the following recordset to search for multiple criteria
