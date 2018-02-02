@@ -22,7 +22,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
     [Binding]
     public class ReadFolderNewSteps : FileToolsBase
     {
-        readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext _scenarioContext;
 
         public ReadFolderNewSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -32,7 +32,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
                 throw new ArgumentNullException("scenarioContext");
             }
 
-            this.scenarioContext = scenarioContext;
+            this._scenarioContext = scenarioContext;
         }
 
         [When(@"the new read folder file tool is executed")]
@@ -40,14 +40,14 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
         {
             BuildDataList();
             var result = ExecuteProcess(isDebug: true, throwException: false);
-            scenarioContext.Add("result", result);
+            _scenarioContext.Add("result", result);
         }
 
         protected override void BuildDataList()
         {
             BuildShapeAndTestData();
 
-            var readtype = scenarioContext.Get<string>("readType");
+            var readtype = _scenarioContext.Get<string>("readType");
             var isFileSelected = false;
             var isFolderSelected = false;
             var isFileOrFolder = false;
@@ -65,18 +65,18 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
                     break;
             }
 
-            var x = scenarioContext.Get<string>(CommonSteps.SourceHolder);
+            var x = _scenarioContext.Get<string>(CommonSteps.SourceHolder);
 
             var folderRead = new DsfFolderRead
             {
-                InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
-                Username = scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
-                Password = scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
-                Result = scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
+                InputPath = _scenarioContext.Get<string>(CommonSteps.SourceHolder),
+                Username = _scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
+                Password = _scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
+                Result = _scenarioContext.Get<string>(CommonSteps.ResultVariableHolder),
                 IsFilesAndFoldersSelected = isFileOrFolder,
                 IsFoldersSelected = isFolderSelected,
                 IsFilesSelected = isFileSelected,
-                PrivateKeyFile = scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
+                PrivateKeyFile = _scenarioContext.Get<string>(CommonSteps.SourcePrivatePublicKeyFile)
             };
 
             TestStartNode = new FlowStep
@@ -84,11 +84,11 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.ReadFolderNew
                 Action = folderRead
             };
 
-            scenarioContext.Add("activity", folderRead);
+            _scenarioContext.Add("activity", folderRead);
             var viewModel = new ReadFolderNewDesignerViewModel(ModelItemUtils.CreateModelItem(folderRead));
-            if (!scenarioContext.ContainsKey("viewModel"))
+            if (!_scenarioContext.ContainsKey("viewModel"))
             {
-                scenarioContext.Add("viewModel", viewModel);
+                _scenarioContext.Add("viewModel", viewModel);
             }
         }
     }
