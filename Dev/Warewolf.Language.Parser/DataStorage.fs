@@ -72,6 +72,8 @@ type WarewolfColumnData = WarewolfParserInterop.WarewolfAtomList<WarewolfAtomRec
 ///Name of a Column
 type WarewolfColumnHeader = string
 
+exception WarewolfInvalidComparisonException of string
+
 /// A Recordset is a dictionary od strings to lists of attoms
 /// Last index is maintained as well as the count
 [<ExcludeFromCodeCoverage>]
@@ -112,6 +114,38 @@ and tryFloatParseAtom (data : string) =
             else Float(System.Convert.ToDouble(value))
         else DataString data
     else DataString data
+
+
+let CompareDataStringWithAtom(x : WarewolfAtom) (y : WarewolfAtom) =
+    let mutable stringValue = 0.0m : decimal
+    match (x, y) with
+    | (DataString a, Int b) ->
+        let hasDecimalValue = System.Decimal.TryParse(a, &stringValue)
+        if (hasDecimalValue) then
+            stringValue.CompareTo(decimal b)
+        else
+            raise (WarewolfInvalidComparisonException "incompatible types in comparison")
+    | (DataString a, Float b) ->
+        let hasDecimalValue = System.Decimal.TryParse(a, &stringValue)
+        if (hasDecimalValue) then
+            stringValue.CompareTo(decimal b)
+        else
+            raise (WarewolfInvalidComparisonException "incompatible types in comparison")
+    | (Float a, DataString b) ->
+        let hasDecimalValue = System.Decimal.TryParse(b, &stringValue)
+        if (hasDecimalValue) then
+            (decimal a).CompareTo(stringValue)
+        else
+            raise (WarewolfInvalidComparisonException "incompatible types in comparison")
+    | (Int a, DataString b) ->
+        let hasDecimalValue = System.Decimal.TryParse(b, &stringValue)
+        if (hasDecimalValue) then
+            (decimal a).CompareTo(stringValue)
+        else
+            raise (WarewolfInvalidComparisonException "incompatible types in comparison")
+    | (a, b) -> failwith "unexpected datastring comparison"
+
+
 /// Comparison between atoms
 let CompareAtoms (x : WarewolfAtom) (y : WarewolfAtom) = 
     match (x, y) with
@@ -119,14 +153,13 @@ let CompareAtoms (x : WarewolfAtom) (y : WarewolfAtom) =
     | (DataString b, Nothing) when System.String.IsNullOrEmpty(b) -> 0
     | (Int a, Int b) -> a.CompareTo(b)
     | (Float a, Float b) -> a.CompareTo(b)
-    | (Int a, Float b) -> System.Double.Parse(a.ToString()).CompareTo(b)
-    | (Float a, Int b) -> a.CompareTo(System.Double.Parse((b.ToString())))
-    | (Int a, DataString b) -> a.ToString().CompareTo(b)
-    | (Float a, DataString b) -> a.ToString().CompareTo(b)
+    | (Int a, Float b) -> (float a).CompareTo(b)
+    | (Float a, Int b) -> a.CompareTo(float b)
+    | (Int a, DataString b) -> (CompareDataStringWithAtom x y)
+    | (Float a, DataString b) -> (CompareDataStringWithAtom x y)
     | (DataString a, DataString b) -> a.ToLower().CompareTo(b.ToLower())
-    | (DataString a, Float b) -> a.CompareTo(b.ToString())
-    | (DataString a, Int b) -> a.CompareTo(b.ToString())
+    | (DataString a, Float b) -> (CompareDataStringWithAtom x y)
+    | (DataString a, Int b) -> (CompareDataStringWithAtom x y)
     | (Nothing, Nothing) -> 0
     | (Nothing, _) -> -1
     | (a, b) -> (a.ToString()).CompareTo(b.ToString())
-
