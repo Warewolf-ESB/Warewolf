@@ -14,10 +14,8 @@ namespace Warewolf.Studio.ViewModels
 {
     public class DummyServiceTest : IServiceTestModel, INewServiceResource
     {
-#pragma warning disable 649
-        readonly bool _isNewTest;
+        bool _isNewTest;
         ICommand _newCommand;
-#pragma warning restore 649
 
         public DummyServiceTest(Action<bool> createNewAction)
         {
@@ -61,10 +59,7 @@ namespace Warewolf.Studio.ViewModels
         public bool IsNewTest
         {
             get => _isNewTest;
-            set
-            {
-
-            }
+            set => _isNewTest = value;
         }
         public bool NewTest { get; set; }
         public bool IsTestRunning { get; set; }

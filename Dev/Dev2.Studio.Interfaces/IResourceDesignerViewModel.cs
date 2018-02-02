@@ -17,7 +17,7 @@ namespace Dev2.Studio.Interfaces
     {
 
         IServer Server { get; }
-        StringBuilder ServiceDefinition { get; set; }
+        StringBuilder ServiceDefinition { get; }
         IContextualResourceModel ResourceModel { get; set; }
     }
 }

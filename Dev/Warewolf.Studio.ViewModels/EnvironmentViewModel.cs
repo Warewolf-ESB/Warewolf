@@ -512,7 +512,6 @@ namespace Warewolf.Studio.ViewModels
             CanDeploy = permissions.DeployFrom;
             CanRename = false;
             CanRollback = false;
-            CanShowVersions = false;
             ShowContextMenu = true;
         }
 
@@ -535,7 +534,6 @@ namespace Warewolf.Studio.ViewModels
                 CanDelete = false;
                 CanRename = false;
                 CanRollback = false;
-                CanShowVersions = false;
                 CanCreateWorkflowService = true;
                 ShowContextMenu = true;
             }
@@ -616,7 +614,6 @@ namespace Warewolf.Studio.ViewModels
         public bool IsExpanderVisible
         {
             get => Children.Count > 0;
-            set { }
         }
 
         public bool CanCreateSource
@@ -659,7 +656,6 @@ namespace Warewolf.Studio.ViewModels
         public bool CanShowVersions
         {
             get => false;
-            set { }
         }
 
         public bool CanRollback { get; set; }
@@ -1203,7 +1199,6 @@ namespace Warewolf.Studio.ViewModels
             itemCreated.CanCreateWorkflowService = false;
             itemCreated.ShowContextMenu = false;
             itemCreated.CanDeploy = false;
-            itemCreated.CanShowVersions = false;
             itemCreated.CanEdit = false;
             itemCreated.CanView = false;
             itemCreated.CanExecute = false;

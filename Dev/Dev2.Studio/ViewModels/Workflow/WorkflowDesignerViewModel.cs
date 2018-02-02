@@ -85,14 +85,12 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
-using System.Collections.Concurrent;
 using Dev2.ViewModels.Merge;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using System.IO;
 
 namespace Dev2.Studio.ViewModels.Workflow
-
 {
     public class FromToolBox
     {
@@ -707,7 +705,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder DesignerText => ServiceDefinition;
 
-        public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(_modelService); } set { } }
+        public StringBuilder ServiceDefinition
+        {
+            get => _workflowHelper.SerializeWorkflow(_modelService);
+        }
 
         public ICommand CollapseAllCommand => _collapseAllCommand ?? (_collapseAllCommand = new DelegateCommand(param =>
                                                             {
@@ -2586,41 +2587,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 CEventHelper.RemoveAllEventHandlers(_wd);
             }
-
-            catch
+            catch(Exception e)
             {
+                Dev2Logger.Warn("Error disposing Workflow Designer View Model: " + e.Message, GlobalConstants.WarewolfWarn);
             }
 
             _debugSelectionChangedService?.Unsubscribe();
             base.OnDispose();
         }
-
-        /// <summary>
-        /// Gets the work surface context.
-        /// </summary>
-        /// <value>
-        /// The work surface context.
-        /// </value>
+        
         public override WorkSurfaceContext WorkSurfaceContext => ResourceModel?.ResourceType.ToWorkSurfaceContext() ?? WorkSurfaceContext.Unknown;
-
-
-        /// <summary>
-        /// Gets the environment model.
-        /// </summary>
-        /// <value>
-        /// The environment model.
-        /// </value>
-        /// <exception cref="System.NotImplementedException"></exception>
+        
         public IServer Server => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
         public ModelItem SelectedItem
         {
             get => _selectedItem;
-            set
-            {
-                _selectedItem = value;
-            }
+            set => _selectedItem = value;
         }
         public bool WorkspaceSave => _workspaceSave;
 

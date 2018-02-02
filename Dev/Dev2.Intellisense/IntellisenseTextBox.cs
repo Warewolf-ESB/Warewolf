@@ -143,10 +143,7 @@ namespace Dev2.UI
         {
             if (e.Key != Key.Tab)
             {
-                if ((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
-                {
-                }
-                else
+                if (!((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn))
                 {
                     e.Handled = true;
                 }

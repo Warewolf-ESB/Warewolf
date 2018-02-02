@@ -256,7 +256,6 @@ namespace Dev2.Core.Tests.Workflows
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
-            //var expected = "{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}";
             var expected = "[[a]]";
             var actualResult = actual[0];
             FixBreaks(ref expected, ref actualResult);
@@ -290,7 +289,6 @@ namespace Dev2.Core.Tests.Workflows
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
-            //Assert.AreEqual("{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}", actual[0], "Find missing found an invalid variable in a decision");
             Assert.AreEqual("[[a]]", actual[0], "Find missing found an invalid variable in a decision");
         }
 
@@ -1417,7 +1415,6 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            // not necessary to invoke:  viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
 
@@ -1480,7 +1477,6 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            // not necessary to invoke:  viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
 
@@ -1607,9 +1603,9 @@ namespace Dev2.Core.Tests.Workflows
                 {
                     Application.Current.MainWindow = null;
                 }
-                catch (InvalidOperationException)
+                catch (InvalidOperationException e)
                 {
-
+                    Console.WriteLine(e.Message);
                 }
             }
             var repo = new Mock<IResourceRepository>();
@@ -2546,7 +2542,6 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            //viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
 
@@ -2614,7 +2609,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x/>"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = new StringBuilder("<x/>") };
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
 
             Assert.AreEqual(viewModel.DesignerText, viewModel.ServiceDefinition);
             #endregion
@@ -2688,7 +2683,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
 
             #endregion
 
@@ -2760,7 +2755,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
 
             #endregion
 
@@ -2831,7 +2826,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
 
             #endregion
 
@@ -2967,14 +2962,18 @@ namespace Dev2.Core.Tests.Workflows
             return repo;
         }
 
-        public static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel, IEventAggregator eventAggregator = null)
+        public static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel) => CreateDataListViewModel(mockResourceModel, null);
+
+        public static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel, IEventAggregator eventAggregator)
         {
             var dataListViewModel = new DataListViewModel(eventAggregator ?? new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
             return dataListViewModel;
         }
 
-        public static WorkflowDesignerViewModel CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(IContextualResourceModel resourceModel, IEventAggregator eventPublisher = null)
+        public static WorkflowDesignerViewModel CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(IContextualResourceModel resourceModel) => CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(resourceModel, null);
+
+        public static WorkflowDesignerViewModel CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(IContextualResourceModel resourceModel, IEventAggregator eventPublisher)
         {
             var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, new WorkflowHelper(), false);
 
