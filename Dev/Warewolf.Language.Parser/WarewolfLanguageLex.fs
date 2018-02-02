@@ -1,4 +1,4 @@
-# 1 "WarewolfLanguageLex.fsl"
+# 1 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
  
 
 module Lexer
@@ -80,72 +80,72 @@ and tokenstream  (lexbuf : Microsoft.FSharp.Text.Lexing.LexBuffer<_>) = _fslex_t
 and _fslex_tokenstream  _fslex_state lexbuf =
   match _fslex_tables.Interpret(_fslex_state,lexbuf) with
   | 0 -> ( 
-# 34 "WarewolfLanguageLex.fsl"
+# 34 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                               OPENLANGUAGE 
 # 85 "WarewolfLanguageLex.fs"
           )
   | 1 -> ( 
-# 35 "WarewolfLanguageLex.fsl"
+# 35 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                                CLOSELANGAUGE 
 # 90 "WarewolfLanguageLex.fs"
           )
   | 2 -> ( 
-# 36 "WarewolfLanguageLex.fsl"
+# 36 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                          OPENBRACKET 
 # 95 "WarewolfLanguageLex.fs"
           )
   | 3 -> ( 
-# 37 "WarewolfLanguageLex.fsl"
+# 37 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                          CLOSEDBRACKET 
 # 100 "WarewolfLanguageLex.fs"
           )
   | 4 -> ( 
-# 38 "WarewolfLanguageLex.fsl"
+# 38 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                          DOT 
 # 105 "WarewolfLanguageLex.fs"
           )
   | 5 -> ( 
-# 39 "WarewolfLanguageLex.fsl"
+# 39 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                          STAR 
 # 110 "WarewolfLanguageLex.fs"
           )
   | 6 -> ( 
-# 40 "WarewolfLanguageLex.fsl"
+# 40 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                          ATIDF 
 # 115 "WarewolfLanguageLex.fs"
           )
   | 7 -> ( 
-# 41 "WarewolfLanguageLex.fsl"
+# 41 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                                  INT( LexBuffer<char>.LexemeString(lexbuf) ) 
 # 120 "WarewolfLanguageLex.fs"
           )
   | 8 -> ( 
-# 42 "WarewolfLanguageLex.fsl"
+# 42 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                                  FLOAT(LexBuffer<char>.LexemeString(lexbuf)) 
 # 125 "WarewolfLanguageLex.fs"
           )
   | 9 -> ( 
-# 43 "WarewolfLanguageLex.fsl"
+# 43 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                                       VARNAME (LexBuffer<char>.LexemeString(lexbuf) )
 # 130 "WarewolfLanguageLex.fs"
           )
   | 10 -> ( 
-# 44 "WarewolfLanguageLex.fsl"
+# 44 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                                  STRING (LexBuffer<char>.LexemeString(lexbuf) )
 # 135 "WarewolfLanguageLex.fs"
           )
   | 11 -> ( 
-# 46 "WarewolfLanguageLex.fsl"
+# 46 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                          tokenstream lexbuf 
 # 140 "WarewolfLanguageLex.fs"
           )
   | 12 -> ( 
-# 49 "WarewolfLanguageLex.fsl"
+# 49 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                           STRING (LexBuffer<char>.LexemeString(lexbuf)) 
 # 145 "WarewolfLanguageLex.fs"
           )
   | 13 -> ( 
-# 50 "WarewolfLanguageLex.fsl"
+# 50 "..\WarewolfLanguageParser\WarewolfLanguageLex.fsl"
                           EOF 
 # 150 "WarewolfLanguageLex.fs"
           )
