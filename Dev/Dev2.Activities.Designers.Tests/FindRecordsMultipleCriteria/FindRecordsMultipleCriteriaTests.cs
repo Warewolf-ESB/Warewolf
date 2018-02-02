@@ -392,7 +392,59 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
             StringAssert.Contains(viewModel.Errors[4].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsToNotNullErrorTest);
             Verify_IsFocused(dtoModelItem6, viewModel.Errors[4].Do, "IsToFocused");
         }
-        
+
+
+
+        [TestMethod]
+        [Owner("Robin van den Heever")]
+        [TestCategory("FindRecordsMultipleCriteriaDesignerViewModel_ValidateCollectionItem")]
+        public void FindRecordsMultipleCriteriaDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfTO_StarInRecordSetShouldNotError()
+        {
+            //------------Setup for test--------------------------
+            var mi = ModelItemUtils.CreateModelItem(new DsfFindRecordsMultipleCriteriaActivity());
+            mi.SetProperty("DisplayName", "Find");
+            mi.SetProperty("FieldsToSearch", "[[rec(*).set]]");
+            mi.SetProperty("Result", "[[a]]");
+
+            var dto1 = new FindRecordsTO("", "Starts With", 0);
+            var dto2 = new FindRecordsTO("", "Ends With", 1);
+            var dto3 = new FindRecordsTO("", "Doesn't Start With", 2);
+            var dto4 = new FindRecordsTO("", "Doesn't End With", 3);
+            var dto5 = new FindRecordsTO("", "Is Between", 4);
+            var dto6 = new FindRecordsTO("", "Is Not Between", 5);
+
+
+            var miCollection = mi.Properties["ResultsCollection"].Collection;
+            var dtoModelItem1 = miCollection.Add(dto1);
+            var dtoModelItem2 = miCollection.Add(dto2);
+            var dtoModelItem3 = miCollection.Add(dto3);
+            var dtoModelItem4 = miCollection.Add(dto4);
+            var dtoModelItem5 = miCollection.Add(dto5);
+            var dtoModelItem6 = miCollection.Add(dto6);
+
+
+            var viewModel = new FindRecordsMultipleCriteriaDesignerViewModel(mi);
+            SetDataListString(viewModel);
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, viewModel.Errors.Count);
+
+             
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsFromNotNullErrorTest);
+            Verify_IsFocused(dtoModelItem5, viewModel.Errors[0].Do, "IsFromFocused");
+
+            StringAssert.Contains(viewModel.Errors[1].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsToNotNullErrorTest);
+            Verify_IsFocused(dtoModelItem5, viewModel.Errors[1].Do, "IsToFocused");
+
+            StringAssert.Contains(viewModel.Errors[2].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsFromNotNullErrorTest);
+            Verify_IsFocused(dtoModelItem6, viewModel.Errors[2].Do, "IsFromFocused");
+
+            StringAssert.Contains(viewModel.Errors[3].Message, Warewolf.Resource.Errors.ErrorResource.FindRecordsToNotNullErrorTest);
+            Verify_IsFocused(dtoModelItem6, viewModel.Errors[3].Do, "IsToFocused");
+        }
+
         static void SetDataListString(FindRecordsMultipleCriteriaDesignerViewModel viewModel)
         {
             viewModel.GetDatalistString = () =>
