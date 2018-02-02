@@ -604,7 +604,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var vm = new ManageComPluginSourceViewModel();
             var ns = new Mock<IRequestServiceNameViewModel>();
 
-            vm.RequestServiceNameViewModel = ns.Object;
+            vm.SetRequestServiceNameViewModel(ns.Object);
 
             vm.Dispose();
             ns.Verify(a => a.Dispose());
@@ -638,8 +638,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedValueMock = new Mock<IRequestServiceNameViewModel>();
 
             //act
-            _target.RequestServiceNameViewModel = expectedValueMock.Object;
-            var value = _target.RequestServiceNameViewModel;
+            _target.SetRequestServiceNameViewModel(expectedValueMock.Object);
+            var value = _target.GetRequestServiceNameViewModel();
 
             //asert
             Assert.AreSame(expectedValueMock.Object, value);
@@ -649,7 +649,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestRequestServiceNameViewModelNull()
         {
             //act
-            var value = _targetPluginSource.RequestServiceNameViewModel;
+            var value = _targetPluginSource.GetRequestServiceNameViewModel();
 
             //asert
             Assert.IsNull(value);
@@ -659,7 +659,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestRequestServiceNameViewModelNotNull()
         {
             //act
-            var value = _targetRequestServiceNameViewModel.RequestServiceNameViewModel;
+            var value = _targetRequestServiceNameViewModel.GetRequestServiceNameViewModel();
 
             //asert
             Assert.AreSame(_requestServiceNameViewModelMock.Object, value);
