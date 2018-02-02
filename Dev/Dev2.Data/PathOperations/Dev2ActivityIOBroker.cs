@@ -26,7 +26,7 @@ using Ionic.Zip;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.PathOperations
-{    
+{
     class Dev2ActivityIOBroker : IActivityOperationsBroker
     {
         readonly IFile _fileWrapper;
@@ -135,7 +135,7 @@ namespace Dev2.PathOperations
                         var newArgs = new Dev2CRUDOperationTO(true);
                         CreateEndPoint(dst, newArgs, true);
                         var path = dst.IOPath.Path;
-                        WriteDataToFile(args, path);                       
+                        dst.WriteDataToFile(args, path, _fileWrapper);
                     }
                 }
             }
@@ -610,7 +610,7 @@ namespace Dev2.PathOperations
                 throw new Exception(message, e);
             }
         }
-        
+
         void ValidateSourceAndDestinationContents(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
             if (!args.Overwrite)
@@ -820,7 +820,7 @@ namespace Dev2.PathOperations
             return tempFilename;
         }
 
-        string TransferTempZipFileToDestination(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, 
+        string TransferTempZipFileToDestination(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
             IDev2ZipOperationTO args, string tmpZip)
         {
             string result;
