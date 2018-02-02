@@ -24,6 +24,7 @@ using Dev2.PathOperations;
 using Renci.SshNet;
 using Warewolf.Resource.Errors;
 using System.Globalization;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Data.PathOperations
 {
@@ -1035,6 +1036,11 @@ namespace Dev2.Data.PathOperations
         bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
+        }
+
+        public void WriteDataToFile(IDev2PutRawOperationTO args, string path, IFile fileWrapper)
+        {
+            throw new NotImplementedException();
         }
         #endregion Private Methods
     }

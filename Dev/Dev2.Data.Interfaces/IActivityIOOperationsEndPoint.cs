@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces.Enums;
 using System.Collections.Generic;
 using System.IO;
@@ -41,5 +42,7 @@ namespace Dev2.Data.Interfaces
         IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src);
         
         IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src);
+        void WriteDataToFile(IDev2PutRawOperationTO args, string path, IFile fileWrapper);
+
     }
 }

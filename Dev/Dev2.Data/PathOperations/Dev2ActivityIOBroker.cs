@@ -26,7 +26,7 @@ using Ionic.Zip;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.PathOperations
-{    
+{
     class Dev2ActivityIOBroker : IActivityOperationsBroker
     {
         readonly IFile _fileWrapper;
@@ -97,22 +97,21 @@ namespace Dev2.PathOperations
                             }
                             break;
                         default:
-                            _fileWrapper.AppendAllText(tmp, args.FileContents);
+                            WriteDataToFile(args, tmp);
                             break;
                     }
                     result = MoveTmpFileToDestination(dst, tmp, result);
                 }
                 else
                 {
-                    if (dst.PathExist(dst.IOPath))
+                    if (_fileWrapper.Exists(dst.IOPath.Path))
                     {
                         var tmp = CreateTmpFile();
                         switch (args.WriteType)
                         {
                             case WriteType.AppendBottom:
-                                var fileContent = Encoding.ASCII.GetBytes(args.FileContents);
-                                var putResult = PerformPut(fileContent,dst,false);                                          
-                                result = putResult ? ResultOk:ResultBad;
+                                _fileWrapper.AppendAllText(dst.IOPath.Path, args.FileContents);
+                                result = ResultOk;
                                 break;
                             case WriteType.AppendTop:
                                 using (var s = dst.Get(dst.IOPath, _filesToDelete))
@@ -123,9 +122,10 @@ namespace Dev2.PathOperations
                                 }
                                 break;
                             case WriteType.Overwrite:
+                                break;
                             default:
-                                var res = WriteDataToFile(args, dst);
-                                result = res ? ResultOk : ResultBad;
+                                WriteDataToFile(args, tmp);
+                                result = MoveTmpFileToDestination(dst, tmp, result);
                                 break;
                         }
                         RemoveTmpFile(tmp);
@@ -134,7 +134,8 @@ namespace Dev2.PathOperations
                     {
                         var newArgs = new Dev2CRUDOperationTO(true);
                         CreateEndPoint(dst, newArgs, true);
-                        WriteDataToFile(args, dst);                       
+                        var path = dst.IOPath.Path;
+                        dst.WriteDataToFile(args, path, _fileWrapper);
                     }
                 }
             }
@@ -150,31 +151,16 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        private bool PerformPut(byte[] fileContent,IActivityIOOperationsEndPoint dst,bool overwrite)
-        {
-            var result = false;
-            using (Stream s = new MemoryStream(fileContent))
-            {
-                var putOperation = dst.Put(s, dst.IOPath, new Dev2CRUDOperationTO(overwrite), null, new List<string>());
-                if (putOperation >= 0)
-                {
-                    result = true;
-                }
-            }
-            return result;
-        }
-
-        bool WriteDataToFile(IDev2PutRawOperationTO args, IActivityIOOperationsEndPoint dst)
+        void WriteDataToFile(IDev2PutRawOperationTO args, string path)
         {
             if (IsBase64(args.FileContents))
             {
                 var data = GetBytesFromBase64String(args);
-                return PerformPut(data, dst, true);
+                _fileWrapper.WriteAllBytes(path, data);
             }
             else
             {
-                var fileContent = Encoding.ASCII.GetBytes(args.FileContents);
-                return PerformPut(fileContent, dst, true);
+                _fileWrapper.WriteAllText(path, args.FileContents);
             }
         }
 
@@ -624,7 +610,7 @@ namespace Dev2.PathOperations
                 throw new Exception(message, e);
             }
         }
-        
+
         void ValidateSourceAndDestinationContents(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, IDev2CRUDOperationTO args)
         {
             if (!args.Overwrite)
@@ -834,7 +820,7 @@ namespace Dev2.PathOperations
             return tempFilename;
         }
 
-        string TransferTempZipFileToDestination(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst, 
+        string TransferTempZipFileToDestination(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
             IDev2ZipOperationTO args, string tmpZip)
         {
             string result;
