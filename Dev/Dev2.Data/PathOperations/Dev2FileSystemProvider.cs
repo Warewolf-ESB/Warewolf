@@ -19,6 +19,7 @@ using System.Security.Principal;
 using System.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations;
@@ -183,6 +184,7 @@ namespace Dev2.PathOperations
                                             File.WriteAllBytes(dst.Path, src.ToByteArray());
                                             result = (int)src.Length;
                                         }
+
                                         // remove impersonation now
                                         impersonatedUser.Undo();
                                     }
@@ -666,5 +668,50 @@ namespace Dev2.PathOperations
             }
             return Directory.EnumerateFileSystemEntries(path, pattern);
         }
+
+        public void WriteDataToFile(IDev2PutRawOperationTO args, string path, IFile fileWrapper)
+        {
+            // handle UNC path
+            var loginOk = _logOnprovider.DoLogon(ExtractUserName(IOPath), ExtractDomain(IOPath), IOPath.Password, out SafeTokenHandle safeTokenHandle);
+
+            if (loginOk)
+            {
+                using (safeTokenHandle)
+                {
+
+                    var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                    using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                    {
+                        // Do the operation here
+
+                        try
+                        {
+                            if (IsBase64(args.FileContents))
+                            {
+                                var data = GetBytesFromBase64String(args);
+                                fileWrapper.WriteAllBytes(path, data);
+                            }
+                            else
+                            {
+                                fileWrapper.WriteAllText(path, args.FileContents);
+                            }
+
+                        }
+                        catch (Exception)
+                        {
+                            throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, IOPath.Username));
+                        }
+
+                        // remove impersonation now
+                        impersonatedUser.Undo();
+                        newID.Dispose();
+                    }
+                }
+            }
+        }
+
+        static byte[] GetBytesFromBase64String(IDev2PutRawOperationTO args) => Convert.FromBase64String(args.FileContents.Replace(@"Content-Type:BASE64", @""));
+        static bool IsBase64(string fileContents) => fileContents.StartsWith(@"Content-Type:BASE64");
     }
 }
+
