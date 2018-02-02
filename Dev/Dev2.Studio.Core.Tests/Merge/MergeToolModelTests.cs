@@ -446,7 +446,7 @@ namespace Dev2.Core.Tests.Merge
 
             mergeToolModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
 
-            var methodToRun = typeof(MergeToolModel).GetMethod("RemovePreviousActivity", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var methodToRun = typeof(MergeToolModel).GetMethod("RemovePreviousContainerActivity", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodToRun);
             //---------------Execute Test ----------------------
@@ -482,7 +482,7 @@ namespace Dev2.Core.Tests.Merge
 
             mergeToolModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
 
-            var methodToRun = typeof(MergeToolModel).GetMethod("AddActivity", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var methodToRun = typeof(MergeToolModel).GetMethod("AddActivity", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodToRun);
             //---------------Execute Test ----------------------
