@@ -97,21 +97,22 @@ namespace Dev2.PathOperations
                             }
                             break;
                         default:
-                            WriteDataToFile(args, tmp);
+                            _fileWrapper.AppendAllText(tmp, args.FileContents);
                             break;
                     }
                     result = MoveTmpFileToDestination(dst, tmp, result);
                 }
                 else
                 {
-                    if (_fileWrapper.Exists(dst.IOPath.Path))
+                    if (dst.PathExist(dst.IOPath))
                     {
                         var tmp = CreateTmpFile();
                         switch (args.WriteType)
                         {
                             case WriteType.AppendBottom:
-                                _fileWrapper.AppendAllText(dst.IOPath.Path, args.FileContents);
-                                result = ResultOk;
+                                var fileContent = Encoding.ASCII.GetBytes(args.FileContents);
+                                var putResult = PerformPut(fileContent,dst,false);                                          
+                                result = putResult ? ResultOk:ResultBad;
                                 break;
                             case WriteType.AppendTop:
                                 using (var s = dst.Get(dst.IOPath, _filesToDelete))
@@ -122,10 +123,9 @@ namespace Dev2.PathOperations
                                 }
                                 break;
                             case WriteType.Overwrite:
-                                break;
                             default:
-                                WriteDataToFile(args, tmp);
-                                result = MoveTmpFileToDestination(dst, tmp, result);
+                                var res = WriteDataToFile(args, dst);
+                                result = res ? ResultOk : ResultBad;
                                 break;
                         }
                         RemoveTmpFile(tmp);
@@ -134,8 +134,7 @@ namespace Dev2.PathOperations
                     {
                         var newArgs = new Dev2CRUDOperationTO(true);
                         CreateEndPoint(dst, newArgs, true);
-                        var path = dst.IOPath.Path;
-                        WriteDataToFile(args, path);                       
+                        WriteDataToFile(args, dst);                       
                     }
                 }
             }
@@ -151,16 +150,31 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        void WriteDataToFile(IDev2PutRawOperationTO args, string path)
+        private bool PerformPut(byte[] fileContent,IActivityIOOperationsEndPoint dst,bool overwrite)
+        {
+            var result = false;
+            using (Stream s = new MemoryStream(fileContent))
+            {
+                var putOperation = dst.Put(s, dst.IOPath, new Dev2CRUDOperationTO(overwrite), null, new List<string>());
+                if (putOperation >= 0)
+                {
+                    result = true;
+                }
+            }
+            return result;
+        }
+
+        bool WriteDataToFile(IDev2PutRawOperationTO args, IActivityIOOperationsEndPoint dst)
         {
             if (IsBase64(args.FileContents))
             {
                 var data = GetBytesFromBase64String(args);
-                _fileWrapper.WriteAllBytes(path, data);
+                return PerformPut(data, dst, true);
             }
             else
             {
-                _fileWrapper.WriteAllText(path, args.FileContents);
+                var fileContent = Encoding.ASCII.GetBytes(args.FileContents);
+                return PerformPut(fileContent, dst, true);
             }
         }
 
