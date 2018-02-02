@@ -58,6 +58,7 @@ namespace Dev2.ViewModels.Merge
                     Model = firstConflict?.CurrentViewModel ?? new MergeToolModel
                     {
                         IsMergeEnabled = false,
+                        IsCurrent = true,
                         WorkflowDesignerViewModel = WorkflowDesignerViewModel
                     },
                     WorkflowName = currentResourceModel.ResourceName,
@@ -75,6 +76,7 @@ namespace Dev2.ViewModels.Merge
                     Model = firstConflict?.DiffViewModel ?? new MergeToolModel
                     {
                         IsMergeEnabled = false,
+                        IsCurrent = false,
                         WorkflowDesignerViewModel = WorkflowDesignerViewModel
                     },
                     WorkflowName = differenceResourceModel.ResourceName,
@@ -114,14 +116,47 @@ namespace Dev2.ViewModels.Merge
                 {
                     ProcessCurrentItem(currentResourceModel, conflicts, armConnectorConflicts, currentItem);
                 }
-                var diffItem = diff.FirstOrDefault(o => o.UniqueId == distinctItem.UniqueId);
-                if (diffItem != null)
+
+                var currentIndex = current.ToList().IndexOf(currentItem);
+                var diffIndex = diff.ToList().IndexOf(currentItem);
+                if (diffIndex != currentIndex)
                 {
-                    ProcessDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, diffItem);
+                    var diffItm = diff.ToList()[currentIndex];
+                    if (diffItm != null)
+                    {
+                        ProcessExistingDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, diffItm, currentItem.UniqueId);
+                    }
+                }
+                else
+                {
+                    var diffItem = diff.FirstOrDefault(o => o.UniqueId == distinctItem.UniqueId);
+                    if (diffItem != null)
+                    {
+                        ProcessDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, diffItem);
+                    }
                 }
             }
             ShowArmConnectors(conflicts, armConnectorConflicts);
             return conflicts;
+        }
+
+        void ProcessExistingDiffItem(IContextualResourceModel differenceResourceModel, List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem, string foundId)
+        {
+            IToolConflict conflict = null;
+            var node = treeItem;
+            var foundConflict = conflicts.Where(s => s is IToolConflict).Cast<IToolConflict>().FirstOrDefault(t => t.UniqueId.ToString() == foundId);
+            var id = Guid.Parse(foundId);
+            foundConflict.HasConflict = true;
+            conflict = foundConflict;
+            var conflictTreeNode = node;
+            var currentFactory = new ConflictModelFactory(differenceResourceModel, conflictTreeNode, WorkflowDesignerViewModel);
+            conflict.DiffViewModel = currentFactory.Model;
+            conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+            conflict.DiffViewModel.Container = conflict;
+            conflict.DiffViewModel.IsCurrent = false;
+            conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
+            AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
+            ShowArmConnectors(conflicts, armConnectorConflicts);
         }
 
         void ProcessDiffItem(IContextualResourceModel differenceResourceModel, List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem)
@@ -135,10 +170,11 @@ namespace Dev2.ViewModels.Merge
                 conflict = new ToolConflict
                 {
                     UniqueId = id,
-                    CurrentViewModel = EmptyConflictViewModel(id, WorkflowDesignerViewModel)
+                    CurrentViewModel = EmptyConflictViewModel(id, WorkflowDesignerViewModel),
                 };
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.CurrentViewModel.Container = conflict;
+                conflict.CurrentViewModel.IsCurrent = true;
                 conflicts.Add(conflict);
             }
             else
@@ -150,6 +186,7 @@ namespace Dev2.ViewModels.Merge
             conflict.DiffViewModel = currentFactory.Model;
             conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
             conflict.DiffViewModel.Container = conflict;
+            conflict.DiffViewModel.IsCurrent = false;
             conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
             AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
             ShowArmConnectors(conflicts, armConnectorConflicts);
@@ -166,30 +203,32 @@ namespace Dev2.ViewModels.Merge
             conflict.CurrentViewModel = modelFactory.Model;
             conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
             conflict.CurrentViewModel.Container = conflict;
+            conflict.CurrentViewModel.IsCurrent = true;
             conflict.DiffViewModel.Container = conflict;
+            conflict.DiffViewModel.IsCurrent = false;
             conflict.HasConflict = treeItem.IsInConflict;
             ShowArmConnectors(conflicts, armConnectorConflicts);
             conflicts.Add(conflict);
             AddArmConnectors(armConnectorConflicts, treeItem, id);
         }
 
-        void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
+        void SourceOnConflictModelChanged(object sender, IConflictModelFactory conflictModel)
         {
             try
             {
                 if (!HasMergeStarted)
                 {
-                    HasMergeStarted = args.IsWorkflowNameChecked || args.IsVariablesChecked;
+                    HasMergeStarted = conflictModel.IsWorkflowNameChecked || conflictModel.IsVariablesChecked;
                 }
-                if (!args.IsVariablesChecked)
+                if (!conflictModel.IsVariablesChecked)
                 {
                     return;
                 }
 
                 IsVariablesEnabled = HasVariablesConflict;
-                if (args.IsVariablesChecked)
+                if (conflictModel.IsVariablesChecked)
                 {
-                    DataListViewModel = args.DataListViewModel;
+                    DataListViewModel = conflictModel.DataListViewModel;
                 }
                 var completeConflict = Conflicts.First.Value as IToolConflict;
                 completeConflict.IsMergeExpanderEnabled = completeConflict.HasConflict;
@@ -214,7 +253,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        void SourceOnModelToolChanged(object sender, IMergeToolModel args)
+        void SourceOnModelToolChanged(object sender, IMergeToolModel mergeToolModel)
         {
             try
             {
@@ -222,17 +261,30 @@ namespace Dev2.ViewModels.Merge
                 {
                     HasMergeStarted = true;
                 }
-                ResetToolEvents(args);
+                ResetToolEvents(mergeToolModel);
 
-                var container = args.Container;
+                var container = mergeToolModel.Container;
                 RemovePreviousToolArm(container);
 
-                container.IsChecked = args.IsMergeChecked;
-                container.IsEmptyItemSelected = args.ModelItem == null;
-                var conflict = UpdateNextEnabledState(args.Container);
+                if (mergeToolModel.IsMergeChecked)
+                {
+                    var model = mergeToolModel as MergeToolModel;
+                    model.RemovePreviousContainerActivity();
+                }
+
+                container.IsChecked = mergeToolModel.IsMergeChecked;
+                container.IsEmptyItemSelected = mergeToolModel.ModelItem == null;
+                var conflict = UpdateNextEnabledState(mergeToolModel.Container);
+
                 if (conflict is IToolConflict nextConflict)
                 {
                     UpdateNextToolState(nextConflict);
+                    RemoveMatchingActivity(mergeToolModel, container, nextConflict);
+                }
+                if (mergeToolModel.IsMergeChecked)
+                {
+                    var model = mergeToolModel as MergeToolModel;
+                    model.AddActivity();
                 }
                 if (conflict is IArmConnectorConflict nextArmConflict)
                 {
@@ -245,6 +297,37 @@ namespace Dev2.ViewModels.Merge
                 Dev2Logger.Error(ex, ex.Message);
             }
         }
+
+        void RemoveMatchingActivity(IMergeToolModel args, IToolConflict container, IToolConflict nextConflict)
+        {
+            if (args.IsCurrent)
+            {
+                foreach (var conf in _conflicts)
+                {
+                    var confl = conf as IToolConflict;
+                    container.DiffViewModel.IsMergeChecked = false;
+                    nextConflict.DiffViewModel.IsMergeEnabled = false;
+                    WorkflowDesignerViewModel?.RemoveItem(confl.DiffViewModel);
+                    if (confl.DiffViewModel.UniqueId == args.UniqueId)
+                    {
+                        break;
+                    }
+                }
+                return;
+            }
+            foreach (var conf in _conflicts)
+            {
+                var confl = conf as IToolConflict;
+                container.CurrentViewModel.IsMergeChecked = false;
+                nextConflict.CurrentViewModel.IsMergeEnabled = false;
+                WorkflowDesignerViewModel?.RemoveItem(confl.CurrentViewModel);
+                if (confl.CurrentViewModel.UniqueId == args.UniqueId)
+                {
+                    break;
+                }
+            }
+        }
+
         static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
         {
             nextArmConflict.IsMergeExpanderEnabled = nextArmConflict.HasConflict;
@@ -438,13 +521,33 @@ namespace Dev2.ViewModels.Merge
                 s.IsMergeExpanderEnabled = false;
                 if ((foundCurrentDestination && foundCurrentSource) || s.CurrentArmConnector.ArmDescription == null)
                 {
-                    s.CurrentArmConnector.IsArmSelectionAllowed = true;
-                    s.IsMergeExpanderEnabled = true;
+                    var currSourceConflict = _conflicts.FirstOrDefault(t => t is IToolConflict && t.UniqueId.ToString() == s.CurrentArmConnector.SourceUniqueId) as ToolConflict;
+
+                    if (currSourceConflict == null)
+                    {
+                        s.CurrentArmConnector.IsArmSelectionAllowed = true;
+                        s.IsMergeExpanderEnabled = true;
+                    }
+                    if (currSourceConflict.CurrentViewModel.UniqueId.ToString() == s.CurrentArmConnector.SourceUniqueId && currSourceConflict.CurrentViewModel.IsMergeChecked)
+                    {
+                        s.CurrentArmConnector.IsArmSelectionAllowed = true;
+                        s.IsMergeExpanderEnabled = true;
+                    }
                 }
                 if ((foundDiffDestination && foundDiffSource) || s.DifferentArmConnector.ArmDescription == null)
                 {
-                    s.DifferentArmConnector.IsArmSelectionAllowed = true;
-                    s.IsMergeExpanderEnabled = true;
+                    var diffDestConflict = _conflicts.FirstOrDefault(t => t is IToolConflict && t.UniqueId.ToString() == s.DifferentArmConnector.DestinationUniqueId) as ToolConflict;
+
+                    if (diffDestConflict == null)
+                    {
+                        s.DifferentArmConnector.IsArmSelectionAllowed = true;
+                        s.IsMergeExpanderEnabled = true;
+                    }
+                    if (diffDestConflict.DiffViewModel.UniqueId.ToString() == s.DifferentArmConnector.SourceUniqueId && diffDestConflict.DiffViewModel.IsMergeChecked)
+                    {
+                        s.DifferentArmConnector.IsArmSelectionAllowed = true;
+                        s.IsMergeExpanderEnabled = true;
+                    }
                 }
             }
         }
@@ -460,7 +563,8 @@ namespace Dev2.ViewModels.Merge
             conflicts.AddRange(itemsToAdd);
         }
 
-        static IEnumerable<IArmConnectorConflict> ShouldShowArmConnector(IEnumerable<string> toolIds, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => {
+        static IEnumerable<IArmConnectorConflict> ShouldShowArmConnector(IEnumerable<string> toolIds, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s =>
+        {
             var foundCurrentDestination = FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, toolIds);
             var foundDiffDestination = FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, toolIds);
             var foundCurrentSource = FindMatchingConnector(s.CurrentArmConnector.SourceUniqueId, toolIds);
@@ -541,7 +645,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     UniqueId = id,
                     Key = Key,
-                    HasConflict = true 
+                    HasConflict = true
                 };
                 var mergeArmConnectorConflict = new MergeArmConnectorConflict(Description, SourceUniqueId, DestinationUniqueId, Key, armConnector)
                 {
