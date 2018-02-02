@@ -54,10 +54,7 @@ namespace Dev2.Activities.Sharepoint
         }
 
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -68,20 +65,11 @@ namespace Dev2.Activities.Sharepoint
 
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.MixedActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
         int _indexCounter = 1;
 
@@ -196,7 +184,7 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -205,7 +193,7 @@ namespace Dev2.Activities.Sharepoint
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -220,8 +208,15 @@ namespace Dev2.Activities.Sharepoint
 
         public bool Equals(SharepointCreateListItemActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
 
             return base.Equals(other)
                    && string.Equals(Result, other.Result)
@@ -233,9 +228,21 @@ namespace Dev2.Activities.Sharepoint
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((SharepointCreateListItemActivity)obj);
         }
 

@@ -376,11 +376,8 @@ namespace Dev2.Runtime.ServiceModel
                     }
             }
         }
-        
-        protected virtual SqlDatabaseBroker CreateDatabaseBroker()
-        {
-            return new SqlDatabaseBroker();
-        }
+
+        protected virtual SqlDatabaseBroker CreateDatabaseBroker() => new SqlDatabaseBroker();
 
         public RecordsetList WcfTest(WcfService args, Guid workspaceId, Guid dataListId)
         {

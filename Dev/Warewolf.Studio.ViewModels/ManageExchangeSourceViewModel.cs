@@ -94,12 +94,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override void FromModel(IExchangeSource emailServiceSource)
+        public override void FromModel(IExchangeSource source)
         {
-            AutoDiscoverUrl = emailServiceSource.AutoDiscoverUrl;
-            UserName = emailServiceSource.UserName;
-            Password = emailServiceSource.Password;
-            Timeout = emailServiceSource.Timeout;
+            AutoDiscoverUrl = source.AutoDiscoverUrl;
+            UserName = source.UserName;
+            Password = source.Password;
+            Timeout = source.Timeout;
         }
 
         void SetupHeaderTextFromExisting()
@@ -111,10 +111,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override bool CanSave()
-        {
-            return !string.IsNullOrWhiteSpace(AutoDiscoverUrl);
-        }
+        public override bool CanSave() => !string.IsNullOrWhiteSpace(AutoDiscoverUrl);
 
         public bool CanTest()
         {

@@ -31,10 +31,7 @@ namespace Warewolf.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(ServiceOutputMapping other)
-        {
-            return false;
-        }
+        public bool Equals(ServiceOutputMapping other) => false;
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -66,20 +63,11 @@ namespace Warewolf.Core
         /// <returns>
         /// A hash code for the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override int GetHashCode()
-        {
-            return 397 ^ MappedFrom.GetHashCode() ^ MappedTo.GetHashCode();
-        }
+        public override int GetHashCode() => 397 ^ MappedFrom.GetHashCode() ^ MappedTo.GetHashCode();
 
-        public static bool operator ==(ServiceOutputMapping left, ServiceOutputMapping right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(ServiceOutputMapping left, ServiceOutputMapping right) => Equals(left, right);
 
-        public static bool operator !=(ServiceOutputMapping left, ServiceOutputMapping right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(ServiceOutputMapping left, ServiceOutputMapping right) => !Equals(left, right);
 
         public ServiceOutputMapping(string mappedFrom, string mapping, string recordsetName)
         {

@@ -68,9 +68,6 @@ namespace Dev2.Providers.Validation.Rules
             return true;
         }
 
-        static bool HasIllegalCharacters(IEnumerable<char> invalidChars, string path)
-        {
-            return path.Any(pathChar => invalidChars.Any(invalidChar => pathChar == invalidChar));
-        }
+        static bool HasIllegalCharacters(IEnumerable<char> invalidChars, string path) => path.Any(pathChar => invalidChars.Any(invalidChar => pathChar == invalidChar));
     }
 }

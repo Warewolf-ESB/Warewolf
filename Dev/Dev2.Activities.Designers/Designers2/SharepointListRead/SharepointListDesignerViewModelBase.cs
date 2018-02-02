@@ -202,7 +202,8 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         public ObservableCollection<SharepointListTo> Lists { get; set; }
         public ObservableCollection<SharepointSource> SharepointServers { get; set; }
 
-        protected void RefreshSharepointSources(bool isInitializing = false)
+        protected void RefreshSharepointSources() => RefreshSharepointSources(false);
+        protected void RefreshSharepointSources(bool isInitializing)
         {
             IsRefreshing = true;
             if (isInitializing)
@@ -227,8 +228,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 });
             });
         }
+        protected void RefreshSharepointSourcesForFileActions() => RefreshSharepointSourcesForFileActions(false);
 
-         protected void RefreshSharepointSourcesForFileActions(bool isInitializing = false)
+         protected void RefreshSharepointSourcesForFileActions(bool isInitializing)
         {
             IsRefreshing = true;
             if (isInitializing)
@@ -346,10 +348,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             IsRefreshing = false;
         }
 
-        static string GetListName(SharepointListTo table)
-        {
-            return table?.FullName;
-        }
+        static string GetListName(SharepointListTo table) => table?.FullName;
 
         protected void OnSharepointServerChanged()
         {
@@ -502,10 +501,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         #region Overrides of ActivityCollectionDesignerViewModel<SharepointSearchTo>
 
-        public override bool CanRemoveAt(int indexNumber)
-        {
-            return ModelItemCollection != null && ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count;
-        }
+        public override bool CanRemoveAt(int indexNumber) => ModelItemCollection != null && ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count;
 
         public override void RemoveAt(int indexNumber)
         {

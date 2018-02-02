@@ -17,9 +17,6 @@ namespace Dev2.Session
         ///     Create a new studio session broker
         /// </summary>
         /// <returns></returns>
-        public static IDev2StudioSessionBroker CreateBroker()
-        {
-            return new Dev2StudioSessionBroker();
-        }
+        public static IDev2StudioSessionBroker CreateBroker() => new Dev2StudioSessionBroker();
     }
 }

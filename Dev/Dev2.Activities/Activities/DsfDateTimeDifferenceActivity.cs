@@ -95,11 +95,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
-        
+        public override List<string> GetOutputs() => new List<string> { Result };
+
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary>       
@@ -255,16 +252,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="evaledInputFormat">The evaled input format.</param>
         /// <param name="outputType">Type of the output.</param>
         /// <returns></returns>
-        static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType)
-        {
-            return DateTimeConverterFactory.CreateDateTimeDiffTO(input1, input2, evaledInputFormat, outputType);
-        }
+        static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType) => DateTimeConverterFactory.CreateDateTimeDiffTO(input1, input2, evaledInputFormat, outputType);
 
         #endregion Private Methods
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -273,7 +267,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -320,20 +314,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(Input1, Input2, InputFormat);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Input1, Input2, InputFormat);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         public bool Equals(DsfDateTimeDifferenceActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && string.Equals(Input1, other.Input1) 
                 && string.Equals(Input2, other.Input2) 
@@ -344,9 +340,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfDateTimeDifferenceActivity) obj);
         }
 

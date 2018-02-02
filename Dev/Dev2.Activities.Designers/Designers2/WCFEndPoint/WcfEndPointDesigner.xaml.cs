@@ -17,9 +17,6 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
         {
             InitializeComponent();
         }
-        protected override WcfEndPointViewModel CreateViewModel()
-        {
-            return new WcfEndPointViewModel(ModelItem);
-        }
+        protected override WcfEndPointViewModel CreateViewModel() => new WcfEndPointViewModel(ModelItem);
     }
 }

@@ -25,10 +25,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("Services/{*__name__}")]
-        public HttpResponseMessage ExecuteService(string __name__)
-        {
-            return ExecuteWorkflow(__name__, false);
-        }
+        public HttpResponseMessage ExecuteService(string __name__) => ExecuteWorkflow(__name__, false);
 
         HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic)
         {
@@ -118,10 +115,7 @@ namespace Dev2.Runtime.WebServer.Controllers
         [HttpGet]
         [HttpPost]
         [Route("internal/getlogfile")]
-        public HttpResponseMessage ExecuteGetLogFile()
-        {
-            return ProcessRequest<GetLogFileServiceHandler>();
-        }
+        public HttpResponseMessage ExecuteGetLogFile() => ProcessRequest<GetLogFileServiceHandler>();
 
         [HttpGet]
         [HttpPost]

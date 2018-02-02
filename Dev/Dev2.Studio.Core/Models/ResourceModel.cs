@@ -188,10 +188,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public bool IsAuthorized(AuthorizationContext authorizationContext)
-        {
-            return (UserPermissions & authorizationContext.ToPermissions()) != 0;
-        }
+        public bool IsAuthorized(AuthorizationContext authorizationContext) => (UserPermissions & authorizationContext.ToPermissions()) != 0;
 
         public Version Version
         {
@@ -402,10 +399,7 @@ namespace Dev2.Studio.Core.Models
             OnDesignValidationReceived?.Invoke(this, memo);
         }
 
-        public IView GetView(Func<IView> view)
-        {
-            return view.Invoke();
-        }
+        public IView GetView(Func<IView> view) => view.Invoke();
 
         public void ClearErrors()
         {
@@ -422,10 +416,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public IList<IErrorInfo> GetErrors(Guid instanceId)
-        {
-            return _errors.Where(e => e.InstanceID == instanceId).ToList();
-        }
+        public IList<IErrorInfo> GetErrors(Guid instanceId) => _errors.Where(e => e.InstanceID == instanceId).ToList();
 
         public void AddError(IErrorInfo error)
         {

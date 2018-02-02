@@ -160,11 +160,8 @@ namespace Dev2.Scheduler
             }
         }
 
-        IExecAction BuildAction(IScheduledResource resource)
-        {
-            return ConvertorFactory.CreateExecAction(WarewolfAgentPath,
+        IExecAction BuildAction(IScheduledResource resource) => ConvertorFactory.CreateExecAction(WarewolfAgentPath,
                 $"\"Workflow:{resource.WorkflowName.Trim()}\" \"TaskName:{resource.Name.Trim()}\" \"ResourceId:{resource.ResourceId}\"");
-        }
 
         IScheduledResource CreateScheduledResource(IDev2Task arg)
         {
@@ -327,10 +324,7 @@ namespace Dev2.Scheduler
             return serializer.Deserialize<List<IDebugState>>(FileHelper.ReadAllText(file)).Last().HasError;
         }
 
-        bool DebugHistoryExists(string debugHistoryPath, string correlationId)
-        {
-            return DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
-        }
+        bool DebugHistoryExists(string debugHistoryPath, string correlationId) => DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
 
         string GetUserName(string debugHistoryPath, string correlationId)
         {

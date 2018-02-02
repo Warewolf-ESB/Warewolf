@@ -106,18 +106,12 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        public ICommand RemoveRow
-        {
-            get
-            {
-                return _removeRow ??
+        public ICommand RemoveRow => _removeRow ??
                        (_removeRow =
                        new RelayCommand(o =>
                        {
                            IsDeleted = !IsDeleted;
                        }, o => CanRemove));
-            }
-        }
 
         public bool CanRemove => !string.IsNullOrEmpty(CounterName);
 

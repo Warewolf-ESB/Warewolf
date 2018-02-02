@@ -19,10 +19,7 @@ namespace Dev2.Activities.Designers2.ODBC
             InitializeComponent();
         }
 
-        protected override ODBCDatabaseDesignerViewModel CreateViewModel()
-        {
-            return new ODBCDatabaseDesignerViewModel(ModelItem);
-        }
+        protected override ODBCDatabaseDesignerViewModel CreateViewModel() => new ODBCDatabaseDesignerViewModel(ModelItem);
     }
 }
 

@@ -14,14 +14,8 @@ namespace Warewolf.Studio.Views
             _convertor = new BoolToVisibilityConverter();
         }
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return _convertor.Convert( value != null && !(bool)value,targetType,parameter,culture);
-        }
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture) => _convertor.Convert(value != null && !(bool)value, targetType, parameter, culture);
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return _convertor.Convert(value != null && !(bool)value, targetType, parameter, culture);
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => _convertor.Convert(value != null && !(bool)value, targetType, parameter, culture);
     }
 }

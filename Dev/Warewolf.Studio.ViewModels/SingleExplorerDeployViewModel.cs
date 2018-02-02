@@ -335,16 +335,13 @@ namespace Warewolf.Studio.ViewModels
             return supportsDirectServerDeploy;
         }
 
-        static Connection CreateNewConnection(IServer destEnv)
+        static Connection CreateNewConnection(IServer destEnv) => new Connection
         {
-            return new Connection
-            {
-                Address = destEnv.Connection.AppServerUri.ToString(),
-                AuthenticationType = destEnv.Connection.AuthenticationType,
-                UserName = destEnv.Connection.UserName,
-                Password = destEnv.Connection.Password
-            };
-        }
+            Address = destEnv.Connection.AppServerUri.ToString(),
+            AuthenticationType = destEnv.Connection.AuthenticationType,
+            UserName = destEnv.Connection.UserName,
+            Password = destEnv.Connection.Password
+        };
 
         List<Guid> GetNotFoldersList()
         {

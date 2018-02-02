@@ -65,10 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.View;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.View;
 
         [ExcludeFromCodeCoverage]
         public FetchResourceDefinition()
@@ -111,11 +108,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
-        {
-            return Cleaner.DecryptAllPasswords(stringBuilder);
-        }
-
+        public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder) => Cleaner.DecryptAllPasswords(stringBuilder);
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public string HandlesType() => @"FetchResourceDefinitionService";

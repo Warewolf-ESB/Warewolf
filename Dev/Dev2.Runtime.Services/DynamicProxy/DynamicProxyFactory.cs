@@ -341,21 +341,12 @@ namespace Dev2.Runtime.DynamicProxy
             return matchingEndpoint;
         }
 
-        bool ContractNameMatch(ContractDescription cDesc, string name)
-        {
-            return (string.Compare(cDesc.Name, name, true) == 0);
-        }
+        bool ContractNameMatch(ContractDescription cDesc, string name) => (string.Compare(cDesc.Name, name, true) == 0);
 
-        bool ContractNsMatch(ContractDescription cDesc, string ns)
-        {
-            return ((ns == null) ||
+        bool ContractNsMatch(ContractDescription cDesc, string ns) => ((ns == null) ||
                     (string.Compare(cDesc.Namespace, ns, true) == 0));
-        }
 
-        public DynamicProxy CreateProxy(string contractName)
-        {
-            return CreateProxy(contractName, null);
-        }
+        public DynamicProxy CreateProxy(string contractName) => CreateProxy(contractName, null);
 
         public DynamicProxy CreateProxy(string contractName,
                 string contractNamespace)
@@ -515,7 +506,7 @@ namespace Dev2.Runtime.DynamicProxy
 
                 return importErrStr.ToString();
             }
-            return null;
+            return string.Empty;
         }
 
         public static string ToString(IEnumerable<CompilerError> compilerErrors)
@@ -530,7 +521,7 @@ namespace Dev2.Runtime.DynamicProxy
 
                 return builder.ToString();
             }
-            return null;
+            return string.Empty;
         }
 
         static IEnumerable<CompilerError> ToEnumerable(

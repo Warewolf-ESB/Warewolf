@@ -52,24 +52,12 @@ namespace Dev2.Studio.ViewModels.Administration
         public string HyperlinkText { get; private set; }
         public Visibility HyperlinkVisibility { get; private set; }
 
-        public ICommand HyperLinkCommand
-        {
-            get
-            {
-                return _hyperLink ?? (_hyperLink = new RelayCommand(p => Hyperlink_OnMouseDown()));
-            }
-        }
+        public ICommand HyperLinkCommand => _hyperLink ?? (_hyperLink = new RelayCommand(p => Hyperlink_OnMouseDown()));
 
-        public ICommand OkCommand
-        {
-            get
-            {
-                return _okClicked ?? (_okClicked = new RelayCommand(p =>
-                {
-                    OnOkClick?.Invoke(this, null);
-                }, p => true));
-            }
-        }
+        public ICommand OkCommand => _okClicked ?? (_okClicked = new RelayCommand(p =>
+                                                   {
+                                                       OnOkClick?.Invoke(this, null);
+                                                   }, p => true));
 
         #endregion Properties
 

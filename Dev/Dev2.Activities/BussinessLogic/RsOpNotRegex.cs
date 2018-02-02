@@ -21,7 +21,7 @@ namespace Dev2.DataList
 
     public class RsOpNotRegex : AbstractRecsetSearchValidation
     {
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
 
 
@@ -43,10 +43,8 @@ namespace Dev2.DataList
             });
 
         }
-        public override string HandlesType()
-        {
-            return "Not Regex";
-        }
+        public override string HandlesType() => "Not Regex";
+
         public override int ArgumentCount => 2;
     }
 }

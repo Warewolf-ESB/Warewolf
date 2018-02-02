@@ -83,26 +83,14 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        protected SqlDatabaseBroker CreateDatabaseBroker()
-        {
-            return new SqlDatabaseBroker();
-        }
-        protected MySqlDatabaseBroker CreateMySqlDatabaseBroker()
-        {
-            return new MySqlDatabaseBroker();
-        }
-        protected OracleDatabaseBroker CreateOracleDatabaseBroker()
-        {
-            return new OracleDatabaseBroker();
-        }
-        protected ODBCDatabaseBroker CreateODBCDatabaseBroker()
-        {
-            return new ODBCDatabaseBroker();
-        }
+        protected SqlDatabaseBroker CreateDatabaseBroker() => new SqlDatabaseBroker();
 
-        protected PostgreSqlDataBaseBroker CreatePostgreDatabaseBroker()
-        {
-            return new PostgreSqlDataBaseBroker();
-        }
+        protected MySqlDatabaseBroker CreateMySqlDatabaseBroker() => new MySqlDatabaseBroker();
+
+        protected OracleDatabaseBroker CreateOracleDatabaseBroker() => new OracleDatabaseBroker();
+
+        protected ODBCDatabaseBroker CreateODBCDatabaseBroker() => new ODBCDatabaseBroker();
+
+        protected PostgreSqlDataBaseBroker CreatePostgreDatabaseBroker() => new PostgreSqlDataBaseBroker();
     }
 }

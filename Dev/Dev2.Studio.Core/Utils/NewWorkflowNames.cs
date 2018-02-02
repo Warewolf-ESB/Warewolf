@@ -85,10 +85,7 @@ namespace Dev2.Studio.Core.Utils
         /// </summary>
         /// <param name="nameToCheck"></param>
         /// <returns>Does the HashSet contain the string</returns>
-        public bool Contains(string nameToCheck)
-        {
-            return _workflowNamesHashSet.Contains(nameToCheck);
-        }
+        public bool Contains(string nameToCheck) => _workflowNamesHashSet.Contains(nameToCheck);
 
         /// <summary>
         /// Add a used name to the WorkflowNamesHashSet

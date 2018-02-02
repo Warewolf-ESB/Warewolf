@@ -220,10 +220,7 @@ namespace Warewolf.Studio.ViewModels
             ViewModelUtils.RaiseCanExecuteChanged(OkCommand);
         }
 
-        public override bool CanSave()
-        {
-            return TestPassed;
-        }
+        public override bool CanSave() => TestPassed;
 
         void GetLoadComputerNamesTask(Action additionalUiAction)
         {
@@ -311,18 +308,15 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        IServerSource ToNewSource()
+        IServerSource ToNewSource() => new ServerSource
         {
-            return new ServerSource
-            {
-                AuthenticationType = AuthenticationType,
-                Address = GetAddressName(),
-                Password = Password,
-                UserName = UserName,
-                Name = ResourceName,
-                ID = _serverSource?.ID ?? Guid.NewGuid()
-            };
-        }
+            AuthenticationType = AuthenticationType,
+            Address = GetAddressName(),
+            Password = Password,
+            UserName = UserName,
+            Name = ResourceName,
+            ID = _serverSource?.ID ?? Guid.NewGuid()
+        };
 
         IServerSource ToSource()
         {
@@ -367,10 +361,7 @@ namespace Warewolf.Studio.ViewModels
             return true;
         }
 
-        bool CanCancelTest()
-        {
-            return Testing;
-        }
+        bool CanCancelTest() => Testing;
 
         void CancelTest()
         {
@@ -554,10 +545,7 @@ namespace Warewolf.Studio.ViewModels
             return addressName;
         }
 
-        string GetAddressName(string protocol, string serverName, string port)
-        {
-            return protocol + "://" + serverName + ":" + port;
-        }
+        string GetAddressName(string protocol, string serverName, string port) => protocol + "://" + serverName + ":" + port;
 
         public string ResourceName
         {
@@ -678,10 +666,7 @@ namespace Warewolf.Studio.ViewModels
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
-        public override string ToString()
-        {
-            return _headerText;
-        }
+        public override string ToString() => _headerText;
 
         void CheckVersionConflict()
         {

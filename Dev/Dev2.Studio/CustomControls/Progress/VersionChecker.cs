@@ -139,10 +139,7 @@ namespace Dev2.Studio.Core.Helpers
 
         #region GetCurrentVersion
 
-        protected virtual Version GetCurrentVersion()
-        {
-            return _versionGetter();
-        }
+        protected virtual Version GetCurrentVersion() => _versionGetter();
 
         #endregion
     }

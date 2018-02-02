@@ -28,9 +28,6 @@ namespace Dev2.Data.Decisions.Operations
             return false;
         }
 
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsNotHex;
-        }
+        public Enum HandlesType() => enDecisionType.IsNotHex;
     }
 }

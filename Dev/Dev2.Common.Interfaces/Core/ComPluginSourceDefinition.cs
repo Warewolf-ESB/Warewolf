@@ -21,11 +21,7 @@ namespace Dev2.Common.Interfaces.Core
                 Is32Bit = db.Is32Bit;
                 ResourceName = db.ResourceName;
         }
-        public bool Equals(IComPluginSource other)
-        {
-            
-            return string.Equals(ResourceName, other.ResourceName) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && Is32Bit == other.Is32Bit && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(Name, ((ComPluginSourceDefinition)other).Name);
-        }
+        public bool Equals(IComPluginSource other) => string.Equals(ResourceName, other.ResourceName) && Id.Equals(other.Id) && Equals(ClsId, other.ClsId) && Is32Bit == other.Is32Bit && Id.Equals(other.Id) && Equals(SelectedDll, other.SelectedDll) && string.Equals(Name, ((ComPluginSourceDefinition)other).Name);
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -70,15 +66,9 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(ComPluginSourceDefinition left, ComPluginSourceDefinition right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(ComPluginSourceDefinition left, ComPluginSourceDefinition right) => Equals(left, right);
 
-        public static bool operator !=(ComPluginSourceDefinition left, ComPluginSourceDefinition right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(ComPluginSourceDefinition left, ComPluginSourceDefinition right) => !Equals(left, right);
 
         #endregion
 

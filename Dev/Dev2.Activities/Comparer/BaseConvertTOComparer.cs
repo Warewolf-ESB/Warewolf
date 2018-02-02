@@ -6,14 +6,19 @@ namespace Dev2.Comparer
     {
         public bool Equals(BaseConvertTO x, BaseConvertTO y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return x.Equals(y);
         }
 
-        public int GetHashCode(BaseConvertTO obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(BaseConvertTO obj) => obj.GetHashCode();
     }
 }

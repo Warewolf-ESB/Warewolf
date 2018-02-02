@@ -167,10 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
-        public bool CanAdd()
-        {
-            return !string.IsNullOrEmpty(SearchType);
-        }
+        public bool CanAdd() => !string.IsNullOrEmpty(SearchType);
 
         public void ClearRow()
         {
@@ -180,10 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Inserted { get; set; }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(SearchType) && string.IsNullOrEmpty(SearchCriteria);
-        }
+        public bool IsEmpty() => string.IsNullOrEmpty(SearchType) && string.IsNullOrEmpty(SearchCriteria);
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {

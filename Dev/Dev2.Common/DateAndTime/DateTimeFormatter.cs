@@ -152,128 +152,56 @@ namespace Dev2.Common.DateAndTime
             TimeModifierTypes = new List<string>(TimeModifiers.Keys);
         }
 
-        private static string Format_yy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("yy");
-        }
+        private static string Format_yy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("yy");
 
-        static string Format_yyyy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("yyyy");
-        }
+        static string Format_yyyy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("yyyy");
 
-        static string Format_mm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("MM");
-        }
+        static string Format_mm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("MM");
 
-        static string Format_m(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("%M");
-        }
+        static string Format_m(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("%M");
 
-        static string Format_MM(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("MMMM");
-        }
+        static string Format_MM(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("MMMM");
 
-        static string Format_M(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("MMM");
-        }
+        static string Format_M(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("MMM");
 
-        static string Format_d(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("%d");
-        }
+        static string Format_d(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("%d");
 
-        static string Format_dd(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("dd");
-        }
+        static string Format_dd(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("dd");
 
-        static string Format_DW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("dddd");
-        }
+        static string Format_DW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("dddd");
 
-        static string Format_dW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("ddd");
-        }
+        static string Format_dW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("ddd");
 
-        static string Format_dw(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return DateTimeParserHelper.GetDayOfWeekInt(dateTime.DayOfWeek).ToString(CultureInfo.InvariantCulture);
-        }
+        static string Format_dw(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => DateTimeParserHelper.GetDayOfWeekInt(dateTime.DayOfWeek).ToString(CultureInfo.InvariantCulture);
 
-        static string Format_dy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.DayOfYear.ToString(CultureInfo.InvariantCulture);
-        }
+        static string Format_dy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.DayOfYear.ToString(CultureInfo.InvariantCulture);
 
-        static string Format_w(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday)
+        static string Format_w(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday)
                     .ToString(CultureInfo.InvariantCulture);
-        }
 
-        static string Format_ww(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday)
+        static string Format_ww(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(dateTime, CalendarWeekRule.FirstDay, DayOfWeek.Sunday)
                     .ToString(CultureInfo.InvariantCulture)
                     .PadLeft(2, '0');
-        }
 
-        static string Format_24h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("HH");
-        }
+        static string Format_24h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("HH");
 
-        static string Format_12h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("hh");
-        }
+        static string Format_12h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("hh");
 
-        static string Format_min(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("mm");
-        }
+        static string Format_min(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("mm");
 
-        static string Format_ss(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("ss");
-        }
+        static string Format_ss(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("ss");
 
-        static string Format_sp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.Millisecond.ToString(CultureInfo.InvariantCulture);
-        }
+        static string Format_sp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.Millisecond.ToString(CultureInfo.InvariantCulture);
 
-        static string Format_am_pm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("tt");
-        }
+        static string Format_am_pm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("tt");
 
-        static string Format_Z(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTimeResultTO.TimeZone.ShortName;
-        }
+        static string Format_Z(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTimeResultTO.TimeZone.ShortName;
 
-        static string Format_ZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTimeResultTO.TimeZone.Name;
-        }
+        static string Format_ZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTimeResultTO.TimeZone.Name;
 
-        static string Format_ZZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTimeResultTO.TimeZone.LongName;
-        }
+        static string Format_ZZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTimeResultTO.TimeZone.LongName;
 
-        static string Format_Era(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
-        {
-            return dateTime.ToString("gg");
-        }
+        static string Format_Era(IDateTimeResultTO dateTimeResultTO, DateTime dateTime) => dateTime.ToString("gg");
 
         private static DateTime AddYears(DateTime inputDateTime, int amountToAdd)
         {

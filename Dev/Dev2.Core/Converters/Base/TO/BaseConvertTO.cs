@@ -118,15 +118,9 @@ namespace Dev2
 
         public int IndexNumber { get; set; }
 
-        public bool CanRemove()
-        {
-            return string.IsNullOrWhiteSpace(FromExpression);
-        }
+        public bool CanRemove() => string.IsNullOrWhiteSpace(FromExpression);
 
-        public bool CanAdd()
-        {
-            return !string.IsNullOrWhiteSpace(FromExpression);
-        }
+        public bool CanAdd() => !string.IsNullOrWhiteSpace(FromExpression);
 
         public void ClearRow()
         {
@@ -157,8 +151,16 @@ namespace Dev2
 
         public bool Equals(BaseConvertTO other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var collectionEquals = CommonEqualityOps.CollectionEquals(Expressions, other.Expressions, StringComparer.Ordinal);
             return string.Equals(FromExpression, other.FromExpression)
                    && string.Equals(FromType, other.FromType)
@@ -172,9 +174,21 @@ namespace Dev2
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((BaseConvertTO) obj);
         }
 

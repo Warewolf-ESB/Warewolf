@@ -56,10 +56,7 @@ namespace Warewolf.Studio.Views
             ServiceNameTextBox.Text = serviceName;            
         }
 
-        public bool IsSaveButtonEnabled()
-        {
-            return OkButton.Command.CanExecute(null);
-        }
+        public bool IsSaveButtonEnabled() => OkButton.Command.CanExecute(null);
 
         public string GetValidationMessage()
         {

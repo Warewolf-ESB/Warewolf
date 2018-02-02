@@ -94,10 +94,7 @@ namespace Dev2.Threading
         /// <returns></returns>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/08/08</date>
-        public Task Start(Action backgroundAction)
-        {
-            return Task.Run(backgroundAction);
-        }
+        public Task Start(Action backgroundAction) => Task.Run(backgroundAction);
 
         /// <summary>
         /// Starts the specified background function and continues with the UI action 

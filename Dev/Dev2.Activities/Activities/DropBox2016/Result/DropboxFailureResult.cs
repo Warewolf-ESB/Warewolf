@@ -12,9 +12,6 @@ namespace Dev2.Activities.DropBox2016.Result
         {
             _exception = exception;
         }
-        public virtual Exception GetException()
-        {
-            return _exception;
-        }
+        public virtual Exception GetException() => _exception;
     }
 }

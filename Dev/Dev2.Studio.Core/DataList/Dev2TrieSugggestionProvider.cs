@@ -207,9 +207,9 @@ namespace Dev2.Studio.Core.DataList
         }
 
        
-        public IEnumerable<string> GetSuggestions(string orignalText, int caretIndex, bool tokenise, enIntellisensePartType type)
+        public IEnumerable<string> GetSuggestions(string orignalText, int caretPosition, bool tokenise, enIntellisensePartType type)
         {
-            if (caretIndex < 0)
+            if (caretPosition < 0)
             {
                 return new List<string>();
             }
@@ -217,12 +217,12 @@ namespace Dev2.Studio.Core.DataList
             string filter;
             if (tokenise)
             {
-                if (caretIndex > orignalText.Length)
+                if (caretPosition > orignalText.Length)
                 {
-                    caretIndex = orignalText.Length;
+                    caretPosition = orignalText.Length;
                 }
 
-                var texttrimmedRight = orignalText.Substring(0, caretIndex);
+                var texttrimmedRight = orignalText.Substring(0, caretPosition);
                 var start = texttrimmedRight.LastIndexOf(texttrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
                 filter = texttrimmedRight.Substring(start);
             }
@@ -234,7 +234,7 @@ namespace Dev2.Studio.Core.DataList
             switch (type)
             {
                 case enIntellisensePartType.RecordsetsOnly:
-                    if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretIndex)
+                    if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretPosition)
                     {
                         trie = PatriciaTrie;
                     }
@@ -254,7 +254,7 @@ namespace Dev2.Studio.Core.DataList
                     break;
 
                 case enIntellisensePartType.RecordsetFields:
-                    if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretIndex)
+                    if (orignalText.Contains("(") && orignalText.IndexOf("(", StringComparison.Ordinal) < caretPosition)
                     {
                         trie = PatriciaTrie;
                     }
@@ -264,7 +264,7 @@ namespace Dev2.Studio.Core.DataList
                     }
 
                     break;
-                case enIntellisensePartType.All:
+                case enIntellisensePartType.None:
                     break;
                 default:
                     break;
@@ -297,10 +297,7 @@ namespace Dev2.Studio.Core.DataList
             return suffixes;
         }
 
-        string TitleCase(string input)
-        {
-            return input?[0].ToString().ToUpper() + input?.Substring(1).ToLower();
-        }
+        string TitleCase(string input) => input?[0].ToString().ToUpper() + input?.Substring(1).ToLower();
 
         string ReverseCase(string input)
         {

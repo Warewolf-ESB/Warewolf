@@ -40,21 +40,34 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
         public bool Equals(IDataSourceShape other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var collectionEquals = CommonEqualityOps.CollectionEquals(Paths, other.Paths, EqualityFactory.GetEqualityComparer<IPath>(EqualsMethod, GetHashCodeMethod));
             return collectionEquals;
         }
 
-        private int GetHashCodeMethod(IPath path)
-        {
-            return path.GetHashCode();
-        }
+        private int GetHashCodeMethod(IPath path) => path.GetHashCode();
 
         private bool EqualsMethod(IPath path, IPath path1)
         {
-            if (path == null && path1 == null) return true;
-            if (path == null || path1 == null) return false;
+            if (path == null && path1 == null)
+            {
+                return true;
+            }
+
+            if (path == null || path1 == null)
+            {
+                return false;
+            }
+
             var equalTypes = path.GetType() == path1.GetType();
             var equals = string.Equals(path.ActualPath, path1.ActualPath)
                 && string.Equals(path.DisplayPath, path1.DisplayPath)
@@ -66,15 +79,24 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((IDataSourceShape)obj);
         }
 
-        public override int GetHashCode()
-        {
-            return (Paths != null ? Paths.GetHashCode() : 0);
-        }
+        public override int GetHashCode() => (Paths != null ? Paths.GetHashCode() : 0);
     }
 }

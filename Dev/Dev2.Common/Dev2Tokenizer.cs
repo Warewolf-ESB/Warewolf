@@ -95,23 +95,16 @@ namespace Dev2.Common
 
         #endregion Private Method
 
-        public bool HasMoreOps()
-        {
-            return _hasMoreOps;
-        }
-        
-        public string NextToken()
-        {
-            string result;
-            
-            // we can be smart about the operations ;)
-            result = _useEnumerator ? _ops[_opPointer].ExecuteOperation(_charEnumerator, _startIdx, _masterLen, _isReversed) : _ops[_opPointer].ExecuteOperation(_tokenParts, _startIdx, _isReversed);
+        public bool HasMoreOps() => _hasMoreOps;
 
+        public string NextToken()
+        {    
+            // we can be smart about the operations ;)
+            string result = _useEnumerator ? _ops[_opPointer].ExecuteOperation(_charEnumerator, _startIdx, _masterLen, _isReversed) : _ops[_opPointer].ExecuteOperation(_tokenParts, _startIdx, _isReversed);
             MoveStartIndex(result.Length + _ops[_opPointer].OpLength());
             MoveOpPointer();
             // check to see if there is data to fetch still?
-            _hasMoreOps = !_ops[_opPointer].IsFinalOp() & HasMoreData();
-
+            _hasMoreOps = !_ops[_opPointer].IsFinalOp() && HasMoreData();
             return result;
         }
 

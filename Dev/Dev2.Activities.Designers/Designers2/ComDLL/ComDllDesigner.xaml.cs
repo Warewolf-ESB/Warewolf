@@ -17,9 +17,6 @@ namespace Dev2.Activities.Designers2.ComDLL
         {
             InitializeComponent();
         }
-        protected override ComDllViewModel CreateViewModel()
-        {
-            return new ComDllViewModel(ModelItem);
-        }
+        protected override ComDllViewModel CreateViewModel() => new ComDllViewModel(ModelItem);
     }
 }

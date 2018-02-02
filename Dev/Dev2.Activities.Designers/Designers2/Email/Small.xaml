@@ -39,36 +39,44 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Column="0" Grid.Row="0" Text="Mail Source" />
-
-        <Grid Grid.Column="1" Grid.Row="0">
+        <Grid Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="{Binding ElementName=BodyTextBox, Path=ActualWidth}"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-
-            <ComboBox x:Name="InitialFocusElement"
-                      ItemContainerStyle="{StaticResource ComboBoxItemStyle}"
-                      SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ItemsSource="{Binding EmailSources}"
+            <TextBlock Grid.Column="0" x:Name="SourceLabel" Text="Source" />
+            <ComboBox Grid.Column="1" 
+                      x:Name="SourcesComboBox"
+                      DisplayMemberPath="ResourceName" 
                       Margin="{StaticResource ControlBorderRight}"
-                      ToolTip="{x:Static languages:Tooltips.EmailToolTipMailSource}"
-                      DisplayMemberPath="ResourceName">
+                      ToolTip="{Binding SourceRegion.SourcesTooltip}"
+                      SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                      ItemsSource="{Binding EmailSources}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.EmailHelpMailSource}" DataContext="{Binding}" />
-                    <errors:ErrorsSetter Source="{Binding}"
-                                         SourcePropertyName="TheSelectedEmailSource"
-                                         SourcePropertyValue="{Binding SelectedEmailSource, UpdateSourceTrigger=PropertyChanged}"
-                                         Target="{Binding}" />
                 </i:Interaction.Behaviors>
             </ComboBox>
-            <Button Grid.Column="1"
+            <Button Grid.Column="2" 
+                    x:Name="SourceEditButton" 
+                    Margin="{StaticResource ControlBorderRight}"
                     Content="..."
-                    Command="{Binding EditEmailSourceCommand}"
-                    ToolTip="Edit Email Source"
-                    Style="{StaticResource ButtonStyle}" >
+                    ToolTip="{Binding SourceRegion.EditSourceTooltip}"
+                    Command="{Binding EditEmailSourceCommand}">
                 <i:Interaction.Behaviors>
                     <core1:HelpSetter Text="{x:Static languages:HelpText.EditEmailSourceHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <Button Grid.Column="3" 
+                    x:Name="SourceNewButton" 
+                    Content="{x:Static languages:Core.New}" 
+                    Width="Auto"
+                    Style="{StaticResource ButtonOrangeStyle}" 
+                    ToolTip="{Binding SourceRegion.NewSourceTooltip}"
+                    Command="{Binding NewEmailSourceCommand}">
+                <i:Interaction.Behaviors>
+                    <core1:HelpSetter Text="{x:Static languages:HelpText.NewEmailSourceHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
             </Button>
         </Grid>
@@ -111,7 +119,7 @@
             </i:Interaction.Behaviors>
         </ui:IntellisenseTextBox>
 
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="Body" Margin="{StaticResource ControlBorderTop}" />
+        <TextBlock x:Name="BodyTextBox" Grid.Column="0" Grid.Row="3" Text="Body" Margin="{StaticResource ControlBorderTop}" />
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="3"
                                 ToolTip="{x:Static languages:Tooltips.EmailToolTipBody}"

@@ -144,7 +144,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                     EmptyIsNull = parameter.EmptyToNull,
                     RequiredField = parameter.IsRequired,
                     TypeName = parameter.TypeName,
-                    IntellisenseFilter = parameter.IsObject ? enIntellisensePartType.JsonObject : enIntellisensePartType.All,
+                    IntellisenseFilter = parameter.IsObject ? enIntellisensePartType.JsonObject : enIntellisensePartType.None,
                     IsObject = parameter.IsObject,
                     Dev2ReturnType = parameter.Dev2ReturnType,
                     ShortTypeName = parameter.ShortTypeName,
@@ -157,17 +157,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         }
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
-        public RelayCommand ViewObjectResult
-        {
-            get
-            {
-                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
-                {
-                    var serviceInput = item as IServiceInput;
-                    ViewJsonObjects(serviceInput);
-                },o => true));
-            }
-        }
+        public RelayCommand ViewObjectResult => _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                                                              {
+                                                                  var serviceInput = item as IServiceInput;
+                                                                  ViewJsonObjects(serviceInput);
+                                                              }, o => true));
+
         void ViewJsonObjects(IServiceInput input)
         {
             JsonObjectsView?.ShowJsonString(JSONUtils.Format(JSONUtils.Format(input.Dev2ReturnType)));

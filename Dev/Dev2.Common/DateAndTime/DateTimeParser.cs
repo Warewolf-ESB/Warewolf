@@ -24,9 +24,6 @@ namespace Dev2.Common.DateAndTime
 {
     public abstract class DateTimeParser : IDateTimeParser
     {
-        /// <summary>
-        ///     used to describe the position of the parser relative to escaped regions
-        /// </summary>
         public enum LiteralRegionStates
         {
             OutsideLiteralRegion,
@@ -79,23 +76,9 @@ namespace Dev2.Common.DateAndTime
             _dateTimeFormatPartOptionsForDotNet = dateTimeFormatPartsForDotNet.DateTimeFormatPartOptionsForDotNet;
         }
 
-        /// <summary>
-        ///     Creates a DateTime instance from a specified string and format.
-        /// </summary>
-        public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
-        {
-            var nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
+        public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO parsedDateTime, out string error) => TryParse(dateTime, inputFormat, false, out parsedDateTime, out error);
 
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Creates a TimeSpan instance from a specified string and format.
-        /// </summary>
-        public bool TryParseTime(string time, string inputFormat, out IDateTimeResultTO parsedTime, out string error)
-        {
-            return TryParse(time, inputFormat, true, out parsedTime, out error);
-        }
+        public bool TryParseTime(string time, string inputFormat, out IDateTimeResultTO parsedTime, out string error) => TryParse(time, inputFormat, true, out parsedTime, out error);
 
         public string TranslateDotNetToDev2Format(string originalFormat, out string error)
         {
@@ -147,19 +130,10 @@ namespace Dev2.Common.DateAndTime
             return currentPartList;
         }
 
-        /// <summary>
-        ///     Breaks a date time format up into parts
-        /// </summary>
         public bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts,
-            out string error)
-        {
-            return TryGetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions,
+            out string error) => TryGetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions,
                 out formatParts, out error);
-        }
 
-        /// <summary>
-        ///     Breaks a date time format up into parts
-        /// </summary>
         bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
         {
             var nothingDied = true;
@@ -386,9 +360,7 @@ namespace Dev2.Common.DateAndTime
             return inputFormat;
         }
 
-        static bool IsBlankResult(IDateTimeResultTO result)
-        {
-            return result.AmPm == DateTimeAmPm.am &&
+        static bool IsBlankResult(IDateTimeResultTO result) => result.AmPm == DateTimeAmPm.am &&
                    result.Days == 0 &&
                    result.DaysOfWeek == 0 || result.DaysOfWeek == 1 &&
                    result.DaysOfYear == 0 &&
@@ -401,8 +373,6 @@ namespace Dev2.Common.DateAndTime
                    result.Seconds == 0 &&
                    result.Weeks == 0 &&
                    result.Years == 0;
-        }
-
 
         bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {

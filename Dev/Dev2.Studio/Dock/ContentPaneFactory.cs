@@ -235,15 +235,12 @@ namespace Dev2.Studio.Dock
             DependencyProperty.RegisterAttached("PaneFactory", typeof(ContentPaneFactory), typeof(ContentPaneFactory),
                 new FrameworkPropertyMetadata(null,
                     OnPaneFactoryChanged));
-        
+
         [AttachedPropertyBrowsableForType(typeof(DocumentContentHost))]
         [AttachedPropertyBrowsableForType(typeof(TabGroupPane))]
         [AttachedPropertyBrowsableForType(typeof(SplitPane))]
-        public static ContentPaneFactory GetPaneFactory(DependencyObject d)
-        {
-            return (ContentPaneFactory)d.GetValue(PaneFactoryProperty);
-        }
-        
+        public static ContentPaneFactory GetPaneFactory(DependencyObject d) => (ContentPaneFactory)d.GetValue(PaneFactoryProperty);
+
         public static void SetPaneFactory(DependencyObject d, ContentPaneFactory value)
         {
             d.SetValue(PaneFactoryProperty, value);

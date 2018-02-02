@@ -143,16 +143,25 @@ namespace Dev2.Data.ServiceModel
 
         #endregion
 
-        protected bool Equals(Connection other)
-        {
-            return base.Equals(other) && string.Equals(Address, other.Address) && AuthenticationType == other.AuthenticationType && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && WebServerPort == other.WebServerPort;
-        }
+        protected bool Equals(Connection other) => base.Equals(other) && string.Equals(Address, other.Address) && AuthenticationType == other.AuthenticationType && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && WebServerPort == other.WebServerPort;
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((Connection) obj);
         }
 

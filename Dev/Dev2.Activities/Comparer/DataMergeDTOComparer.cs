@@ -7,8 +7,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(DataMergeDTO x, DataMergeDTO y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return string.Equals(x.Alignment, y.Alignment)
                 && string.Equals(x.At, y.At)
                 && string.Equals(x.Error, y.Error)
@@ -23,9 +31,6 @@ namespace Dev2.Comparer
                 && Equals(x.Path,y.Path);
         }
 
-        public int GetHashCode(DataMergeDTO obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(DataMergeDTO obj) => 1;
     }
 }

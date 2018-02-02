@@ -34,8 +34,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
-        // BUG 9304 - 2013.05.08 - TWR - Added this constructor for testing purposes
-        protected DsfFlowNodeActivity(string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false)
+        protected DsfFlowNodeActivity(string displayName, IDebugDispatcher debugDispatcher) 
+            : this(displayName, debugDispatcher, false)
+        {
+        }
+
+        protected DsfFlowNodeActivity(string displayName, IDebugDispatcher debugDispatcher, bool isAsync)
             : base(displayName, debugDispatcher, isAsync)
         {
             _expression = new CSharpValue<TResult>();
@@ -95,40 +99,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
         #region Get Debug Inputs/Outputs
-        
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return _debugInputs;
-        }
-        
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
-        {
-            return _debugOutputs;
-        }
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
         #endregion
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(ExpressionText);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(ExpressionText);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(_theResult.ToString());
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(_theResult.ToString());
 
         #endregion
 
         #region Overrides of DsfNativeActivity<TResult>
-        
+
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfFlowNodeActivity<TResult>) obj);
         }
 

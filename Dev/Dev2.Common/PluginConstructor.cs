@@ -17,10 +17,7 @@ namespace Dev2.Common
         public string ReturnObject { get; set; }
         public string ConstructorName { get; set; }
 
-        public string GetIdentifier()
-        {
-            return ConstructorName;
-        }
+        public string GetIdentifier() => ConstructorName;
 
         #endregion
 
@@ -72,20 +69,11 @@ namespace Dev2.Common
                 return ((Inputs?.GetHashCode() ?? 0) * 397) ^ (ConstructorName?.GetHashCode() ?? 0);
             }
         }
-        public static bool operator ==(PluginConstructor left, PluginConstructor right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(PluginConstructor left, PluginConstructor right) => Equals(left, right);
 
-        public static bool operator !=(PluginConstructor left, PluginConstructor right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(PluginConstructor left, PluginConstructor right) => !Equals(left, right);
 
-        public override string ToString()
-        {
-            return ConstructorName;
-        }
+        public override string ToString() => ConstructorName;
 
         #region Implementation of IPluginConstructor
 

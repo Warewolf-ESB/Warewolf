@@ -89,14 +89,14 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public override void FromModel(IEmailServiceSource emailServiceSource)
+        public override void FromModel(IEmailServiceSource source)
         {
-            if (emailServiceSource != null)
+            if (source != null)
             {
-                HostName = emailServiceSource.HostName;
-                UserName = emailServiceSource.UserName;
-                Password = emailServiceSource.Password;
-                EnableSsl = emailServiceSource.EnableSsl;
+                HostName = source.HostName;
+                UserName = source.UserName;
+                Password = source.Password;
+                EnableSsl = source.EnableSsl;
                 if (EnableSsl)
                 {
                     EnableSslYes = EnableSsl;
@@ -105,11 +105,11 @@ namespace Warewolf.Studio.ViewModels
                 {
                     EnableSslNo = true;
                 }
-                Port = emailServiceSource.Port;
-                Timeout = emailServiceSource.Timeout;
-                EmailFrom = emailServiceSource.EmailFrom;
-                EmailTo = emailServiceSource.EmailTo;
-                ResourceName = emailServiceSource.ResourceName;
+                Port = source.Port;
+                Timeout = source.Timeout;
+                EmailFrom = source.EmailFrom;
+                EmailTo = source.EmailTo;
+                ResourceName = source.ResourceName;
             }
         }
 
@@ -144,6 +144,8 @@ namespace Warewolf.Studio.ViewModels
                             errorMessage = "Timeout cannot be blank.";
                         }
                         break;
+                    default:
+                        break;
                 }
                 return errorMessage;
             }
@@ -166,10 +168,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override bool CanSave()
-        {
-            return !string.IsNullOrWhiteSpace(HostName);
-        }
+        public override bool CanSave() => !string.IsNullOrWhiteSpace(HostName);
 
         public bool CanTest()
         {
@@ -568,21 +567,18 @@ namespace Warewolf.Studio.ViewModels
             _updateManager.TestConnection(ToNewSource());
         }
 
-        IEmailServiceSource ToNewSource()
+        IEmailServiceSource ToNewSource() => new EmailServiceSourceDefinition
         {
-            return new EmailServiceSourceDefinition
-            {
-                HostName = HostName,
-                Password = Password,
-                UserName = UserName,
-                Port = Port,
-                Timeout = Timeout,
-                EnableSsl = EnableSsl,
-                EmailFrom = EmailFrom,
-                EmailTo = EmailTo,
-                Id = _emailServiceSource?.Id ?? Guid.NewGuid()
-            };
-        }
+            HostName = HostName,
+            Password = Password,
+            UserName = UserName,
+            Port = Port,
+            Timeout = Timeout,
+            EnableSsl = EnableSsl,
+            EmailFrom = EmailFrom,
+            EmailTo = EmailTo,
+            Id = _emailServiceSource?.Id ?? Guid.NewGuid()
+        };
 
         IEmailServiceSource ToSource()
         {

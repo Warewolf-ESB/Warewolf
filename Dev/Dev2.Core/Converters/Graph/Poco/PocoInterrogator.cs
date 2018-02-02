@@ -18,10 +18,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
     {
         #region Methods
 
-        public IMapper CreateMapper(object data)
-        {
-            return new PocoMapper();
-        }
+        public IMapper CreateMapper(object data) => new PocoMapper();
 
         public INavigator CreateNavigator(object data, Type pathType)
         {

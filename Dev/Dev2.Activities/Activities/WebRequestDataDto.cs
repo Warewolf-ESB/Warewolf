@@ -15,15 +15,12 @@ namespace Dev2.Activities
         {
 
         }
-        public static WebRequestDataDto CreateRequestDataDto(WebRequestMethod requestMethod, InArgument<string> type, string displayName)
+        public static WebRequestDataDto CreateRequestDataDto(WebRequestMethod requestMethod, InArgument<string> type, string displayName) => new WebRequestDataDto()
         {
-            return new WebRequestDataDto()
-            {
-                WebRequestMethod = requestMethod,
-                DisplayName = displayName,
-                Type = type
-            };
-        }
+            WebRequestMethod = requestMethod,
+            DisplayName = displayName,
+            Type = type
+        };
 
         public WebRequestMethod WebRequestMethod { get; set; }
         public string DisplayName { get; set; }

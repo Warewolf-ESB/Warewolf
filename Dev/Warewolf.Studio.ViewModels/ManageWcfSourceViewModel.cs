@@ -111,10 +111,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool CanCancelTest()
-        {
-            return Testing;
-        }
+        public bool CanCancelTest() => Testing;
 
         public IAsyncWorker AsyncWorker { get; set; }
 
@@ -275,16 +272,13 @@ namespace Warewolf.Studio.ViewModels
             _updateManager.TestConnection(wcfServerSource);
         }
 
-        public IWcfServerSource ToNewSource()
+        public IWcfServerSource ToNewSource() => new WcfServiceSourceDefinition
         {
-            return new WcfServiceSourceDefinition
-            {
-                EndpointUrl = EndpointUrl,
-                ResourceType = "WcfSource",
-                Type = enSourceType.WcfSource,
-                Id = _wcfServerSource?.Id ?? Guid.NewGuid()
-            };
-        }
+            EndpointUrl = EndpointUrl,
+            ResourceType = "WcfSource",
+            Type = enSourceType.WcfSource,
+            Id = _wcfServerSource?.Id ?? Guid.NewGuid()
+        };
 
         public string Path { get; set; }
         public override IWcfServerSource ToModel()
@@ -385,16 +379,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override void FromModel(IWcfServerSource service)
+        public override void FromModel(IWcfServerSource source)
         {
-            ResourceName = service.Name;
-            EndpointUrl = service.EndpointUrl;            
+            ResourceName = source.Name;
+            EndpointUrl = source.EndpointUrl;            
         }
 
-        public override bool CanSave()
-        {
-            return TestPassed;
-        }
+        public override bool CanSave() => TestPassed;
 
         public override void UpdateHelpDescriptor(string helpText)
         {

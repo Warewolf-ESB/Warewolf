@@ -283,7 +283,7 @@ namespace Dev2.Network
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start();
+                    await HubConnection.Start().ConfigureAwait(true);
                     if (HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
                         if (!IsLocalHost)
@@ -295,7 +295,7 @@ namespace Dev2.Network
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connecting)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start();
+                    await HubConnection.Start().ConfigureAwait(true);
                     if (HubConnection.State == ConnectionStateWrapped.Disconnected)
                     {
                         if (!IsLocalHost)
@@ -366,10 +366,7 @@ namespace Dev2.Network
             });
         }
 
-        bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
-        {
-            return true;
-        }
+        bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
 
         void HandleConnectError(Exception e)
         {
@@ -627,32 +624,32 @@ namespace Dev2.Network
             handler?.Invoke(this, e);
         }
 
-        public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId)
+        public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId)
         {
-            if (payload == null || payload.Length == 0)
+            if (xmlRequest == null || xmlRequest.Length == 0)
             {
-                throw new ArgumentNullException(nameof(payload));
+                throw new ArgumentNullException(nameof(xmlRequest));
             }
 
-            var result = Task.Run(async () => await ExecuteCommandAsync(payload, workspaceId).ConfigureAwait(true)).Result;
+            var result = Task.Run(async () => await ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true)).Result;
             return result;
         }
 
-        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
+        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId)
         {
-            if (payload == null || payload.Length == 0)
+            if (xmlRequest == null || xmlRequest.Length == 0)
             {
-                throw new ArgumentNullException(nameof(payload));
+                throw new ArgumentNullException(nameof(xmlRequest));
             }
 
-            Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]", "Warewolf Debug");
+            Dev2Logger.Debug("Execute Command Payload [ " + xmlRequest + " ]", "Warewolf Debug");
 
             var messageId = Guid.NewGuid();
             var envelope = new Envelope
             {
                 PartID = 0,
                 Type = typeof(Envelope),
-                Content = payload.ToString()
+                Content = xmlRequest.ToString()
             };
 
             var result = new StringBuilder();

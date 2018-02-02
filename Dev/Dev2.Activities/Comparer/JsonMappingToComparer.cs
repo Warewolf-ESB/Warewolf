@@ -7,8 +7,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(JsonMappingTo x, JsonMappingTo y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return string.Equals(x.DestinationName, y.DestinationName)
                 && x.IndexNumber.Equals(y.IndexNumber)
                 && x.Inserted.Equals(y.Inserted)
@@ -18,9 +26,6 @@ namespace Dev2.Comparer
             ;
         }
 
-        public int GetHashCode(JsonMappingTo obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(JsonMappingTo obj) => 1;
     }
 }

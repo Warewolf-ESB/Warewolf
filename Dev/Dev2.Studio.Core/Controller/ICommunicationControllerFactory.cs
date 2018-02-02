@@ -18,9 +18,6 @@ namespace Dev2.Controller
 
     public class CommunicationControllerFactory : ICommunicationControllerFactory
     {
-        public ICommunicationController CreateController(string serviceName)
-        {
-            return new CommunicationController { ServiceName = serviceName };
-        }
+        public ICommunicationController CreateController(string serviceName) => new CommunicationController { ServiceName = serviceName };
     }
 }

@@ -36,14 +36,14 @@ namespace Dev2.Webs.Callbacks
 
         #region Overrides of WebsiteCallbackHandler
 
-        protected override void Save(IServer server, dynamic jsonObj)
+        protected override void Save(IServer server, dynamic jsonArgs)
         {
             try
             {
-                string resName = jsonObj.resourceName;
-                bool loadingFromServer = jsonObj.resourceLoadingFromServer;
-                string originalPath = jsonObj.OriginalPath;
-                var resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
+                string resName = jsonArgs.resourceName;
+                bool loadingFromServer = jsonArgs.resourceLoadingFromServer;
+                string originalPath = jsonArgs.OriginalPath;
+                var resCat = HelperUtils.SanitizePath((string)jsonArgs.resourcePath, resName);
                 if (_resourceModel != null)
                 {
                     EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager, loadingFromServer, originalPath));
@@ -55,7 +55,7 @@ namespace Dev2.Webs.Callbacks
             {
                 var e1 = new Exception("There was a problem saving. Please try again.", e);
 
-                Dev2Logger.Info(e.Message + Environment.NewLine + " Stacktrace : " + e.StackTrace + Environment.NewLine + " jsonObj: " + jsonObj.ToString(), "Warewolf Info");
+                Dev2Logger.Info(e.Message + Environment.NewLine + " Stacktrace : " + e.StackTrace + Environment.NewLine + " jsonObj: " + jsonArgs.ToString(), "Warewolf Info");
 
                 throw e1;
             }

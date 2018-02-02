@@ -239,7 +239,6 @@ namespace Dev2.Studio
             });
             var activityBuilder = new WorkflowHelper().CreateWorkflow("DummyWF");
             workflowDesigner.Load(activityBuilder);
-            workflowDesigner = null;
         }
 
         async void CheckForDuplicateResources()

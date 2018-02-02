@@ -238,10 +238,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public virtual string GetDisplayName()
-        {
-            return DisplayName;
-        }
+        public virtual string GetDisplayName() => DisplayName;
+
         void PerformStopWorkflow(IDSFDataObject dataObject)
         {
             dataObject.StopExecution = true;
@@ -310,16 +308,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public abstract void UpdateForEachInputs(IList<Tuple<string, string>> updates);
         public abstract void UpdateForEachOutputs(IList<Tuple<string, string>> updates);
 
-        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return DebugItem.EmptyList;
-        }
+        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
 
-        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return DebugItem.EmptyList;
-        }
-
+        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update) => DispatchDebugState(dataObject, stateType, update, null, null, false);
 
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime) => DispatchDebugState(dataObject, stateType, update, startTime, null, false);
@@ -913,10 +904,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DispatchDebugState(dataObject, before, update);
         }
 
-        protected string GetServerName()
-        {
-            return _debugState?.Server;
-        }
+        protected string GetServerName() => _debugState?.Server;
 
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
         {
@@ -1022,10 +1010,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }).ToList();
         }
 
-        public virtual enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public virtual enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         public virtual IDev2Activity Execute(IDSFDataObject data, int update)
         {
@@ -1076,11 +1061,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var flowStep = new FlowStep { Action = this as Activity };
             return flowStep;
         }
-                                     
-        public virtual IEnumerable<IDev2Activity> GetNextNodes()
-        {
-            return NextNodes ?? new List<IDev2Activity>();
-        }
+
+        public virtual IEnumerable<IDev2Activity> GetNextNodes() => NextNodes ?? new List<IDev2Activity>();
 
         public virtual List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
@@ -1131,24 +1113,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
-    
-        public IDebugState GetDebugState()
-        {
-            return _debugState;
-        }
 
-    
+        public IDebugState GetDebugState() => _debugState;
+
         public Guid GetWorkSurfaceMappingId()
         {
             return WorkSurfaceMappingId;
         }
 
-    
-        public virtual IList<IActionableErrorInfo> PerformValidation()
-        {
-            return new List<IActionableErrorInfo>();
-        }
-        
+
+        public virtual IList<IActionableErrorInfo> PerformValidation() => new List<IActionableErrorInfo>();
+
         public bool Equals(DsfNativeActivity<T> other)
         {
             if (ReferenceEquals(null, other))
@@ -1178,20 +1153,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return Equals((DsfNativeActivity<T>)obj);
         }
-        
-        public override int GetHashCode()
-        {
-            return UniqueID?.GetHashCode() ?? 0;
-        }
 
-        public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right)
-        {
-            return Equals(left, right);
-        }
+        public override int GetHashCode() => UniqueID?.GetHashCode() ?? 0;
 
-        public static bool operator !=(DsfNativeActivity<T> left, DsfNativeActivity<T> right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right) => Equals(left, right);
+
+        public static bool operator !=(DsfNativeActivity<T> left, DsfNativeActivity<T> right) => !Equals(left, right);
     }
 }

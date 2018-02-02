@@ -40,22 +40,19 @@ namespace Dev2.Communication
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects,
             };
-        public string Serialize<T>(T message)
+        public string Serialize<T>(T obj) => JsonConvert.SerializeObject(obj, Formatting, _serializerSettings);
+
+        public T Deserialize<T>(string obj)
         {
-            return JsonConvert.SerializeObject(message, Formatting, _serializerSettings);
+            VerifyArgument.IsNotNull("message", obj);
+            return JsonConvert.DeserializeObject<T>(obj, _deSerializerSettings);
         }
 
-        public T Deserialize<T>(string message)
+        public object Deserialize(string obj, Type type)
         {
-            VerifyArgument.IsNotNull("message", message);
-            return JsonConvert.DeserializeObject<T>(message, _deSerializerSettings);
-        }
-
-        public object Deserialize(string message, Type type)
-        {
-            VerifyArgument.IsNotNull("message", message);
+            VerifyArgument.IsNotNull("message", obj);
             VerifyArgument.IsNotNull("type", type);
-            return JsonConvert.DeserializeObject(message, type, _deSerializerSettings);
+            return JsonConvert.DeserializeObject(obj, type, _deSerializerSettings);
         }
 
         public StringBuilder SerializeToBuilder(object obj)

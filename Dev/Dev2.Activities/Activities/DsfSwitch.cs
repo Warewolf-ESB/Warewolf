@@ -42,10 +42,7 @@ namespace Dev2.Activities
 
         public DsfSwitch() { }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
         public override FlowNode GetFlowNode()
         {
@@ -53,18 +50,12 @@ namespace Dev2.Activities
             return swt;
         }
 
-        public IFlowNodeActivity GetInnerNode()
-        {
-            return Inner;
-        }
+        public IFlowNodeActivity GetInnerNode() => Inner;
 
         public Dictionary<string, IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
 
-        public override string GetDisplayName()
-        {
-            return !string.IsNullOrWhiteSpace(Switch) ? Switch : DisplayName;
-        }
+        public override string GetDisplayName() => !string.IsNullOrWhiteSpace(Switch) ? Switch : DisplayName;
 
         public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
@@ -118,15 +109,9 @@ namespace Dev2.Activities
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
@@ -243,15 +228,9 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return _debugOutputs;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
         public bool Equals(DsfSwitch other)
         {
@@ -311,10 +290,7 @@ namespace Dev2.Activities
             UniqueID = _dsfSwitch.UniqueID;
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
         public string ConditionToUse { get; set; }
 
@@ -332,15 +308,9 @@ namespace Dev2.Activities
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

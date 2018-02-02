@@ -62,11 +62,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ExecuteTool(dataObject, 0);
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { CountNumber };
-        }
-
+        public override List<string> GetOutputs() => new List<string> { CountNumber };
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -147,12 +143,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -190,22 +183,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(RecordsetName);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(RecordsetName);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(CountNumber);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(CountNumber);
 
         #endregion
 
         public bool Equals(DsfCountRecordsetActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && string.Equals(RecordsetName, other.RecordsetName) 
                 && string.Equals(DisplayName, other.DisplayName) 
@@ -214,9 +209,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfCountRecordsetActivity) obj);
         }
 

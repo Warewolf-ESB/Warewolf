@@ -15,10 +15,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class IsXml : IDecisionOperation
     {
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsXML;
-        }
+        public Enum HandlesType() => enDecisionType.IsXML;
 
         public bool Invoke(string[] cols)
         {

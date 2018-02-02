@@ -40,12 +40,9 @@ namespace Dev2.Runtime.ServiceModel
             _fetchComputers = fetchComputersFn;
             _hubFactory = hubFactory;
         }
-        
-        public List<string> GetNames()
-        {
-            return _fetchComputers.Invoke();
-        }
-        
+
+        public List<string> GetNames() => _fetchComputers.Invoke();
+
         public ValidationResult CanConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             var result = new ValidationResult
@@ -57,7 +54,6 @@ namespace Dev2.Runtime.ServiceModel
             {
                 // Validate URI, ports, etc...
                 new Uri(connection.Address);
-
 
                 var connectResult = ConnectToServer(connection);
                 if (!string.IsNullOrEmpty(connectResult))

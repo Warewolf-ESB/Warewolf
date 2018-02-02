@@ -90,10 +90,7 @@ namespace Dev2.Activities
         }
 
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { CommandResult };
-        }
+        public override List<string> GetOutputs() => new List<string> { CommandResult };
         #region Overrides of DsfNativeActivity<string>
 
         public DsfExecuteCommandLineActivity()
@@ -447,7 +444,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -456,7 +453,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -465,15 +462,9 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(CommandFileName, CommandPriority.ToString());
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(CommandFileName, CommandPriority.ToString());
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(CommandResult);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(CommandResult);
 
         public void Dispose()
         {
@@ -486,8 +477,16 @@ namespace Dev2.Activities
 
         public bool Equals(DsfExecuteCommandLineActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && string.Equals(CommandFileName, other.CommandFileName) 
                 && string.Equals(CommandResult, other.CommandResult)
@@ -496,9 +495,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfExecuteCommandLineActivity) obj);
         }
 

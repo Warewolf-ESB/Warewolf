@@ -20,11 +20,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             InitializeComponent();
         }
 
-        protected override SqlServerDatabaseDesignerViewModel CreateViewModel()
-        {
-            return new SqlServerDatabaseDesignerViewModel(ModelItem,new AsyncWorker(), new ViewPropertyBuilder());
-        }
-
+        protected override SqlServerDatabaseDesignerViewModel CreateViewModel() => new SqlServerDatabaseDesignerViewModel(ModelItem, new AsyncWorker(), new ViewPropertyBuilder());
     }
 }
     

@@ -164,8 +164,16 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public bool Equals(IDbColumn other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return SqlDataType == other.SqlDataType
                    && string.Equals(ColumnName, other.ColumnName)
                    && IsNullable == other.IsNullable
@@ -176,9 +184,21 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((IDbColumn) obj);
         }
 

@@ -56,15 +56,9 @@ namespace Dev2.Collections
 
         #region Implementation of IEnumerable
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return _list.GetEnumerator();
-        }
+        public IEnumerator<T> GetEnumerator() => _list.GetEnumerator();
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 
@@ -80,20 +74,14 @@ namespace Dev2.Collections
             _list.Clear();
         }
 
-        public bool Contains(T item)
-        {
-            return _list.Contains(item);
-        }
+        public bool Contains(T item) => _list.Contains(item);
 
         public void CopyTo(T[] array, int arrayIndex)
         {
             _list.CopyTo(array, arrayIndex);
         }
 
-        public bool Remove(T item)
-        {
-            return _list.Remove(item);
-        }
+        public bool Remove(T item) => _list.Remove(item);
 
         public int Count => _list.Count;
 
@@ -103,10 +91,7 @@ namespace Dev2.Collections
 
         #region Implementation of IReadOnlyList<out T>
 
-        public int IndexOf(T item)
-        {
-            return _list.IndexOf(item);
-        }
+        public int IndexOf(T item) => _list.IndexOf(item);
 
         public void Insert(int index, T item)
         {

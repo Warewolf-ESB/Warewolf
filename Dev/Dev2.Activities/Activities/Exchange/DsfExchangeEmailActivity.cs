@@ -27,7 +27,6 @@ using Warewolf.Exchange.Email.Wrapper;
 
 namespace Dev2.Activities.Exchange
 {
-    [ToolDescriptorInfo("Utility-SendMail", "Exchange Send", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Email_Exchange_Send")]
     public class DsfExchangeEmailActivity : DsfActivityAbstract<string>,IEquatable<DsfExchangeEmailActivity>
     {
         readonly IDev2EmailSender _emailSender;
@@ -49,13 +48,8 @@ namespace Dev2.Activities.Exchange
             _emailSender = emailSender;
         }
 
-        #region Fields
-
         IDSFDataObject _dataObject;
 
-        #endregion
-
-        
         public IExchangeSource SavedSource { get; set; }
 
         [FindMissing]
@@ -64,8 +58,6 @@ namespace Dev2.Activities.Exchange
         public string Cc { get; set; }
         [FindMissing]
         public string Bcc { get; set; }
-
-        
         [FindMissing]
         public string Subject { get; set; }
         [FindMissing]
@@ -73,19 +65,13 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public string Body { get; set; }
 
-
         /// <summary>
         /// The property that holds the result string the user enters into the "Result" box
         /// </summary>
         [FindMissing]
         public new string Result { get; set; }
 
-
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
-
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         #region Overrides of DsfNativeActivity<string>
 
@@ -106,10 +92,8 @@ namespace Dev2.Activities.Exchange
         /// <param name="context">The context to be used.</param>
 
         protected override void OnExecute(NativeActivityContext context)
-        
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-
             ExecuteTool(dataObject, 0);
         }
 
@@ -143,8 +127,6 @@ namespace Dev2.Activities.Exchange
 
                 var ccItr = new WarewolfIterator(dataObject.Environment.Eval(Cc, update));
                 colItr.AddVariableToIterateOn(ccItr);
-
-
 
                 var bccItr = new WarewolfIterator(dataObject.Environment.Eval(Bcc, update));
                 colItr.AddVariableToIterateOn(bccItr);
@@ -196,7 +178,6 @@ namespace Dev2.Activities.Exchange
             finally
             {
                 // Handle Errors
-
                 if (allErrors.HasErrors())
                 {
                     foreach (var err in allErrors.FetchErrors())
@@ -224,7 +205,6 @@ namespace Dev2.Activities.Exchange
             {
                 return;
             }
-
             AddDebugInputItem(DataListUtil.IsEvaluated(value) ? new DebugItemStaticDataParams("", value, label) : new DebugItemStaticDataParams(value, label));
         }
 
@@ -240,10 +220,7 @@ namespace Dev2.Activities.Exchange
             return indexToUpsertTo;
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -275,7 +252,6 @@ namespace Dev2.Activities.Exchange
                     {
                         Body = t.Item2;
                     }
-
                 }
             }
         }
@@ -291,7 +267,7 @@ namespace Dev2.Activities.Exchange
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -300,7 +276,7 @@ namespace Dev2.Activities.Exchange
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -315,28 +291,30 @@ namespace Dev2.Activities.Exchange
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(To, Cc, Bcc, Subject, Attachments, Body);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(To, Cc, Bcc, Subject, Attachments, Body);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion
 
         public bool Equals(DsfExchangeEmailActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual(SavedSource, other.SavedSource);
-            return base.Equals(other) 
+            return base.Equals(other)
                 && isSourceEqual
-                && string.Equals(To, other.To) 
-                && string.Equals(Cc, other.Cc) 
-                && string.Equals(Bcc, other.Bcc) 
+                && string.Equals(To, other.To)
+                && string.Equals(Cc, other.Cc)
+                && string.Equals(Bcc, other.Bcc)
                 && string.Equals(Subject, other.Subject)
                 && string.Equals(Attachments, other.Attachments)
                 && string.Equals(Body, other.Body)
@@ -346,9 +324,21 @@ namespace Dev2.Activities.Exchange
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfExchangeEmailActivity) obj);
         }
 

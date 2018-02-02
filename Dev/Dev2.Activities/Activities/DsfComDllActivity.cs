@@ -32,17 +32,17 @@ namespace Dev2.Activities
         }
 
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            errors = new ErrorResultTO();
+            tmpErrors = new ErrorResultTO();
             if (Method == null)
             {
-                errors.AddError(ErrorResource.NoMethodSelected);
+                tmpErrors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
 
 
-            ExecuteService(update, out errors, Method, dataObject);
+            ExecuteService(update, out tmpErrors, Method, dataObject);
         }
 
         protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, IDSFDataObject dataObject)
@@ -118,15 +118,20 @@ namespace Dev2.Activities
         }
 
         public IResponseManager ResponseManager { get; set; }
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(ISimpePlugin other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var comparer = new SimplePluginComparer();
             var equals = comparer.Equals(this, other);
             return base.Equals(other) && equals;
@@ -134,9 +139,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((ISimpePlugin)obj);
         }
 

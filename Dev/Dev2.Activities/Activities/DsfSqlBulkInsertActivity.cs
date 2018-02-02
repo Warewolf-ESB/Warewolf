@@ -85,10 +85,7 @@ namespace Dev2.Activities
 
         public string BatchSize { get; set; }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         internal ISqlBulkInserter SqlBulkInserter
         {
@@ -104,10 +101,7 @@ namespace Dev2.Activities
 
         public bool IgnoreBlankRows { get; set; }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.MixedActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
         #region Overrides of DsfNativeActivity<string>
 
@@ -602,15 +596,10 @@ namespace Dev2.Activities
             return dataTableToInsert;
         }
 
-        List<Type> GETTypesFromMappingTypes()
-        {
-            return InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
-        }
+        List<Type> GETTypesFromMappingTypes() => InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
 
-        List<string> GetNamesFromMappings()
-        {
-            return InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.ColumnName).ToList();
-        }
+        List<string> GetNamesFromMappings() => InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.ColumnName).ToList();
+
         DataTable BuildDataTableToInsertMySql()
         {
             if (InputMappings == null)
@@ -714,15 +703,12 @@ namespace Dev2.Activities
             return GetForEachItems(items);
         }
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
         #endregion
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -735,7 +721,7 @@ namespace Dev2.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {

@@ -7,14 +7,19 @@ namespace Dev2.Studio.Core.Equality
     {
         public bool Equals(IDataListViewModel x, IDataListViewModel y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return x.Equals(y);
         }
 
-        public int GetHashCode(IDataListViewModel obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(IDataListViewModel obj) => 1;
     }
 }

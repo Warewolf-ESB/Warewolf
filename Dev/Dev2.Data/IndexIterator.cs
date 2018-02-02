@@ -109,11 +109,8 @@ namespace Dev2.Data
 
             return result;
         }
-        
-        public int MaxIndex()
-        {
-            return IndexList.GetMaxIndex();
-        }
+
+        public int MaxIndex() => IndexList.GetMaxIndex();
     }
 
     public class IndexListIndexIterator:IIndexIterator
@@ -132,21 +129,10 @@ namespace Dev2.Data
 
         public bool IsEmpty => _values.Count == 0;
 
-        public bool HasMore()
-        {
-            return _current < Count;
-        }
+        public bool HasMore() => _current < Count;
 
-        public int FetchNextIndex()
-        {
-            
-            return _values[_current++];
-            
-        }
+        public int FetchNextIndex() => _values[_current++];
 
-        public int MaxIndex()
-        {
-            return _values.Max();
-        }
+        public int MaxIndex() => _values.Max();
     }
 }

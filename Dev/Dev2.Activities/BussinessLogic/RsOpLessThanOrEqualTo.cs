@@ -21,7 +21,7 @@ namespace Dev2.DataList
     public class RsOpLessThanOrEqualTo : AbstractRecsetSearchValidation
     {
         // Bug 8725 - Fixed to be double rather than int
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
             if (all)
             {
@@ -30,10 +30,8 @@ namespace Dev2.DataList
 
             return a => values.Any(x => DataStorage.CompareAtoms(a, x) <= 0);
         }
-        public override string HandlesType()
-        {
-            return "<=";
-        }
+        public override string HandlesType() => "<=";
+
         public override int ArgumentCount => 1;
     }
 }

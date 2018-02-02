@@ -54,10 +54,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public Guid ResourceId { get; set; }
         public Guid VersionId { get; set; }
 
-        public override string ToString()
-        {
-            return $"ResourceId:{ResourceId} Version:{VersionId} ";
-        }
+        public override string ToString() => $"ResourceId:{ResourceId} Version:{VersionId} ";
 
         #endregion
     }

@@ -127,10 +127,7 @@ namespace Dev2.Runtime.ESB.Execution
             return Guid.Empty;
         }
 
-        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
-        {
-            return true;
-        }
+        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext) => true;
 
         string ExecutePostRequest(Connection connection, string serviceName, string payload, bool isDebugMode = true)
         {
@@ -158,10 +155,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
-        {
-            return null;
-        }
+        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
         protected virtual IList<IDebugState> FetchRemoteDebugItems(Connection connection)
         {
@@ -202,7 +196,9 @@ namespace Dev2.Runtime.ESB.Execution
             return false;
         }
 
-        protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload, bool isDebugMode = true)
+        protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload) => ExecuteGetRequest(connection, serviceName, payload, true);
+
+        protected virtual string ExecuteGetRequest(Connection connection, string serviceName, string payload, bool isDebugMode)
         {
             var result = string.Empty;
 
@@ -229,10 +225,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        static string GetServiceToExecute(Connection connection, string serviceName)
-        {
-            return connection.WebAddress + "Secure/" + serviceName + ".json";
-        }
+        static string GetServiceToExecute(Connection connection, string serviceName) => connection.WebAddress + "Secure/" + serviceName + ".json";
 
         WebRequest BuildPostRequest(string serviceToExecute, string payload, AuthenticationType authenticationType, string userName, string password, bool isDebug)
         {

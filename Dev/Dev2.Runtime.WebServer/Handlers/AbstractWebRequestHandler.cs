@@ -77,7 +77,9 @@ namespace Dev2.Runtime.WebServer.Handlers
 #pragma warning restore S3010
         }
 
-        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
+        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers) => CreateForm(webRequest, serviceName, workspaceId, headers, null);
+
+        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user)
         {
             var executePayload = "";
 
@@ -176,17 +178,14 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         }
 
-        static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid)
+        static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid) => _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
         {
-            return _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
-            {
-                IsFromWebServer = true,
-                ExecutingUser = user,
-                ServiceName = serviceName,
-                WorkspaceID = workspaceGuid,
-                ExecutionID = Guid.NewGuid()
-            };
-        }
+            IsFromWebServer = true,
+            ExecutingUser = user,
+            ServiceName = serviceName,
+            WorkspaceID = workspaceGuid,
+            ExecutionID = Guid.NewGuid()
+        };
 
         static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
         {
@@ -361,50 +360,23 @@ namespace Dev2.Runtime.WebServer.Handlers
             return string.Empty;
         }
 
-        protected static string GetServiceName(ICommunicationContext ctx)
-        {
-            return ctx.GetServiceName();
-        }
+        protected static string GetServiceName(ICommunicationContext ctx) => ctx.GetServiceName();
 
-        
-        protected static string GetWorkspaceID(ICommunicationContext ctx)
-        {
-            return ctx.GetWorkspaceID();
-        }
 
-        protected static string GetDataListID(ICommunicationContext ctx)
-        {
-            return ctx.GetDataListID();
-        }
+        protected static string GetWorkspaceID(ICommunicationContext ctx) => ctx.GetWorkspaceID();
 
-        protected static string GetBookmark(ICommunicationContext ctx)
-        {
-            return ctx.GetBookmark();
-        }
+        protected static string GetDataListID(ICommunicationContext ctx) => ctx.GetDataListID();
 
-        protected static string GetInstanceID(ICommunicationContext ctx)
-        {
-            return ctx.GetInstanceID();
-        }
+        protected static string GetBookmark(ICommunicationContext ctx) => ctx.GetBookmark();
 
-        protected static string GetWebsite(ICommunicationContext ctx)
-        {
-            return ctx.GetWebsite();
-        }
+        protected static string GetInstanceID(ICommunicationContext ctx) => ctx.GetInstanceID();
 
-        protected static string GetPath(ICommunicationContext ctx)
-        {
-            return ctx.GetPath();
-        }
+        protected static string GetWebsite(ICommunicationContext ctx) => ctx.GetWebsite();
 
-        protected static string GetClassName(ICommunicationContext ctx)
-        {
-            return ctx.GetClassName();
-        }
+        protected static string GetPath(ICommunicationContext ctx) => ctx.GetPath();
 
-        protected static string GetMethodName(ICommunicationContext ctx)
-        {
-            return ctx.GetMethodName();
-        }
+        protected static string GetClassName(ICommunicationContext ctx) => ctx.GetClassName();
+
+        protected static string GetMethodName(ICommunicationContext ctx) => ctx.GetMethodName();
     }
 }

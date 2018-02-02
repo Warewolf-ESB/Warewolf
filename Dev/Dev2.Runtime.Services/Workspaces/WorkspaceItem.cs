@@ -173,10 +173,7 @@ namespace Dev2.Workspaces
             return item != null && Equals(item);
         }
 
-        public override int GetHashCode()
-        {
-            return ID.GetHashCode();
-        }
+        public override int GetHashCode() => ID.GetHashCode();
 
         #endregion
 

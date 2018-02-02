@@ -24,7 +24,7 @@ namespace ConsoleApplicationToTestNetwork
     {
         private static void Main(string[] args)
         {
-            string uri = "http://sandbox-dev2:3142";  //"http://sandbox-1:3142"; //"http://localHost:3142/";
+            string uri = "http://sandbox-dev2:3142";
             List<string> timings = new List<string>();
             float incrementingFactor = 1.125f;
             int roundsPerPacketStep = 10,

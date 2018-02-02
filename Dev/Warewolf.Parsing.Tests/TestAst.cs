@@ -109,29 +109,65 @@ namespace WarewolfParsingTest
         public void DataStorage_AtomEquality_TestEqualityAtoms()
         {
             //------------Setup for test--------------------------
-            var a = DataStorage.WarewolfAtom.NewDataString("1") ;
-            var b = DataStorage.WarewolfAtom.NewDataString("1") ;
-            var c = DataStorage.WarewolfAtom.NewInt(1) ;
-            var d = DataStorage.WarewolfAtom.NewInt(1) ;
-            var e = DataStorage.WarewolfAtom.NewFloat(1.1) ;
-            var f = DataStorage.WarewolfAtom.NewFloat(1.1) ;
-            var g = DataStorage.WarewolfAtom.NewFloat(1) ;
+            var string1 = DataStorage.WarewolfAtom.NewDataString("123");
+            var string2 = DataStorage.WarewolfAtom.NewDataString("123");
+            var int1 = DataStorage.WarewolfAtom.NewInt(123);
+            var int2 = DataStorage.WarewolfAtom.NewInt(123);
+            var float1 = DataStorage.WarewolfAtom.NewFloat(1.1);
+            var float2 = DataStorage.WarewolfAtom.NewFloat(1.1);
+            var stringFloat = DataStorage.WarewolfAtom.NewDataString("1.1");
+            var intFloat = DataStorage.WarewolfAtom.NewFloat(123);
             //------------Execute Test---------------------------
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(a,b));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(c,d));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(e,f));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(e,f));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(g,a));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(a, g));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(a,c));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(c, a));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(d, c));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(a,c));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(c,g));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(g, d));
-            Assert.IsTrue(0 == DataStorage.CompareAtoms(a,c));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(string1, string2));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(int1, int2));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(float1, float2));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(float1, float2));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(float1, stringFloat));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(intFloat, string1));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(string1, intFloat));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(string1, int1));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(int1, string1));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(int2, int1));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(string1, int1));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(int1, intFloat));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(intFloat, int2));
+            Assert.IsTrue(0 == DataStorage.CompareAtoms(string1, int1));
             Assert.IsTrue(0 == DataStorage.CompareAtoms(DataStorage.WarewolfAtom.Nothing, DataStorage.WarewolfAtom.Nothing));
             Assert.IsTrue(-1 == DataStorage.CompareAtoms(DataStorage.WarewolfAtom.Nothing, DataStorage.WarewolfAtom.NewFloat(1)));
+            //------------Assert Results-------------------------
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DataStorage_AtomComparison")]
+        public void DataStorage_AtomComparison_TestComparisonAtoms()
+        {
+            //------------Setup for test--------------------------
+            var string1 = DataStorage.WarewolfAtom.NewDataString("123");
+            var int1 = DataStorage.WarewolfAtom.NewInt(12);
+            var float1 = DataStorage.WarewolfAtom.NewFloat(1.1);
+            var stringFloat = DataStorage.WarewolfAtom.NewDataString("1.23");
+            var intFloat = DataStorage.WarewolfAtom.NewFloat(321.123);
+            var bob = DataStorage.WarewolfAtom.NewDataString("bob");
+
+            //------------Execute Test---------------------------
+            Assert.IsTrue(DataStorage.CompareAtoms(string1, float1) > 0);
+            Assert.IsTrue(DataStorage.CompareAtoms(float1, string1) < 0);
+
+            Assert.IsTrue(DataStorage.CompareAtoms(string1, int1) > 0);
+            Assert.IsTrue(DataStorage.CompareAtoms(int1, string1) < 0);
+
+            Assert.IsTrue(DataStorage.CompareAtoms(string1, stringFloat) > 0);
+            Assert.IsTrue(DataStorage.CompareAtoms(stringFloat, string1) < 0);
+
+            Assert.IsTrue(DataStorage.CompareAtoms(string1, intFloat) < 0);
+            Assert.IsTrue(DataStorage.CompareAtoms(intFloat, string1) > 0);
+
+            Assert.IsTrue(DataStorage.CompareAtoms(bob, string1) > 0);
+            Assert.IsTrue(DataStorage.CompareAtoms(string1, bob) < 0);
+            Assert.ThrowsException<DataStorage.WarewolfInvalidComparisonException>(() => DataStorage.CompareAtoms(bob, int1));
+            Assert.ThrowsException<DataStorage.WarewolfInvalidComparisonException>(() => DataStorage.CompareAtoms(int1, bob));
             //------------Assert Results-------------------------
         }
     }

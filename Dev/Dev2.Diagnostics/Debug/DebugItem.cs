@@ -80,10 +80,7 @@ namespace Dev2.Diagnostics
 
         #region Contains
 
-        public bool Contains(string filterText)
-        {
-            return ResultsList.Any(r => r.Value.ContainsSafe(filterText) || r.GroupName.ContainsSafe(filterText));
-        }
+        public bool Contains(string filterText) => ResultsList.Any(r => r.Value.ContainsSafe(filterText) || r.GroupName.ContainsSafe(filterText));
 
         #endregion
 
@@ -149,10 +146,7 @@ namespace Dev2.Diagnostics
             }
         }
 
-        public IList<IDebugItemResult> FetchResultsList()
-        {
-            return ResultsList;
-        }
+        public IList<IDebugItemResult> FetchResultsList() => ResultsList;
 
         #region TryCache
 

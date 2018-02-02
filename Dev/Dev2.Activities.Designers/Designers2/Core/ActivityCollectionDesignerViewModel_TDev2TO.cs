@@ -146,15 +146,9 @@ namespace Dev2.Activities.Designers2.Core
 
         protected abstract IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi);
 
-        public override bool CanRemoveAt(int indexNumber)
-        {
-            return ModelItemCollection != null && (ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count);
-        }
+        public override bool CanRemoveAt(int indexNumber) => ModelItemCollection != null && (ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count);
 
-        public override bool CanInsertAt(int indexNumber)
-        {
-            return ModelItemCollection != null && (ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count);
-        }
+        public override bool CanInsertAt(int indexNumber) => ModelItemCollection != null && (ModelItemCollection.Count > 2 && indexNumber < ModelItemCollection.Count);
 
         public override void RemoveAt(int indexNumber)
         {
@@ -269,10 +263,7 @@ namespace Dev2.Activities.Designers2.Core
             return item.GetCurrentValue() as TDev2TOFn;
         }
 
-        TDev2TOFn GetLastDto()
-        {
-            return GetDto(ItemCount);
-        }
+        TDev2TOFn GetLastDto() => GetDto(ItemCount);
 
         void AddBlankRow(bool overwrite = false)
         {
@@ -321,10 +312,7 @@ namespace Dev2.Activities.Designers2.Core
             RunValidation(idx);
         }
 
-        protected virtual IDev2TOFn CreateDto(int indexNumber, string initializeWith)
-        {
-            return DTOFactory.CreateNewDTO(_initialDto, indexNumber, false, initializeWith);
-        }
+        protected virtual IDev2TOFn CreateDto(int indexNumber, string initializeWith) => DTOFactory.CreateNewDTO(_initialDto, indexNumber, false, initializeWith);
 
         protected virtual void RemoveDto(IDev2TOFn dto, int indexNumber)
         {
@@ -360,7 +348,9 @@ namespace Dev2.Activities.Designers2.Core
                     var parentContentPane = FindDependencyParent.FindParent<DesignerView>(parent.View);
                     var dataContext = parentContentPane?.DataContext;
                     if (dataContext != null && (dataContext.GetType().Name == "ServiceTestViewModel"))
+                    {
                         canAdd = false;
+                    }
                 }
 
                 if (canAdd)

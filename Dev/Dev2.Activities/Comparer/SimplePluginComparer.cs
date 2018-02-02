@@ -5,45 +5,52 @@ namespace Dev2.Comparer
 {
     internal class SimplePluginComparer : IEqualityComparer<ISimpePlugin>
     {
-        public bool Equals(ISimpePlugin p1, ISimpePlugin p2)
+        public bool Equals(ISimpePlugin x, ISimpePlugin y)
         {
-            if (p1 == null && p2 == null) return true;
-            if (p1 == null || p2 == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
 
             bool methodsAreEqual;
             bool nameSpacesAreEqual;
             bool outPutsEqual;
 
 
-            if (p1.Method != null && p2.Method != null)
+            if (x.Method != null && y.Method != null)
             {
                 var actionComparer = new PluginActionComparer();
-                methodsAreEqual= actionComparer.Equals(p1.Method, p2.Method);}
+                methodsAreEqual= actionComparer.Equals(x.Method, y.Method);}
             else
             {
-                methodsAreEqual = p1.Method == null && p2.Method == null;
+                methodsAreEqual = x.Method == null && y.Method == null;
             }
 
-            if (p1.Namespace != null && p2.Namespace != null)
+            if (x.Namespace != null && y.Namespace != null)
             {
-                nameSpacesAreEqual = string.Equals(p1.Namespace.AssemblyLocation, p2.Namespace.AssemblyLocation)
-                                     && string.Equals(p1.Namespace.AssemblyName, p2.Namespace.AssemblyName)
-                                     && string.Equals(p1.Namespace.FullName, p2.Namespace.FullName)
-                                     && string.Equals(p1.Namespace.JsonObject, p2.Namespace.JsonObject)
-                                     && string.Equals(p1.Namespace.MethodName, p2.Namespace.MethodName);
+                nameSpacesAreEqual = string.Equals(x.Namespace.AssemblyLocation, y.Namespace.AssemblyLocation)
+                                     && string.Equals(x.Namespace.AssemblyName, y.Namespace.AssemblyName)
+                                     && string.Equals(x.Namespace.FullName, y.Namespace.FullName)
+                                     && string.Equals(x.Namespace.JsonObject, y.Namespace.JsonObject)
+                                     && string.Equals(x.Namespace.MethodName, y.Namespace.MethodName);
             }
             else
             {
-                nameSpacesAreEqual = p1.Namespace == null && p2.Namespace == null; ;
+                nameSpacesAreEqual = x.Namespace == null && y.Namespace == null; ;
             }
 
-            if (p1.OutputDescription != null && p2.OutputDescription != null)
+            if (x.OutputDescription != null && y.OutputDescription != null)
             {
-                outPutsEqual = p1.OutputDescription.Equals(p2.OutputDescription);
+                outPutsEqual = x.OutputDescription.Equals(y.OutputDescription);
             }
             else
             {
-                outPutsEqual = p1.OutputDescription == null && p2.OutputDescription == null;
+                outPutsEqual = x.OutputDescription == null && y.OutputDescription == null;
             }
             return methodsAreEqual && nameSpacesAreEqual && outPutsEqual;
         }

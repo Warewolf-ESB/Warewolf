@@ -111,10 +111,7 @@ namespace Dev2.Studio.Core.DataList
             CheckForFixedEmptyRecordsets();
         }
 
-        bool RecordSetHasChildren(IRecordSetItemModel model)
-        {
-            return model.Children != null && model.Children.Count > 0;
-        }
+        bool RecordSetHasChildren(IRecordSetItemModel model) => model.Children != null && model.Children.Count > 0;
 
         void CheckForEmptyRecordset()
         {
@@ -419,9 +416,6 @@ namespace Dev2.Studio.Core.DataList
         }
 
 
-        static string BuildErrorMessage(IDataListItemModel model)
-        {
-            return DataListUtil.AddBracketsToValueIfNotExist(model.DisplayName) + " : " + model.ErrorMessage;
-        }
+        static string BuildErrorMessage(IDataListItemModel model) => DataListUtil.AddBracketsToValueIfNotExist(model.DisplayName) + " : " + model.ErrorMessage;
     }
 }

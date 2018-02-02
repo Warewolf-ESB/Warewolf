@@ -96,10 +96,10 @@ namespace Warewolf.Studio.ViewModels
                 false, true, false, false, false, false);
         }
 
-        public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest, int testNumber)
+        public IServiceTestModel DuplicateTest(IServiceTestModel selectedTests, int testNumber)
         {
-            var clone = selectedTest.Clone();
-            clone.TestName = selectedTest.TestName + " " + (testNumber == 0 ? 1 : testNumber);
+            var clone = selectedTests.Clone();
+            clone.TestName = selectedTests.TestName + " " + (testNumber == 0 ? 1 : testNumber);
             clone.OldTestName = clone.TestName;
             clone.Enabled = true;
             clone.IsTestSelected = true;
@@ -278,14 +278,14 @@ namespace Warewolf.Studio.ViewModels
             processExecutor?.OpenInBrowser(new Uri(runSelectedTestUrl));
         }
 
-        public void RunAllTestsInBrowser(bool isDirty, string runAllUrl, IExternalProcessExecutor processExecutor)
+        public void RunAllTestsInBrowser(bool isDirty, string runAllTestUrl, IExternalProcessExecutor processExecutor)
         {
             if (isDirty)
             {
                 ShowRunAllUnsavedError();
                 return;
             }
-            processExecutor?.OpenInBrowser(new Uri(runAllUrl));
+            processExecutor?.OpenInBrowser(new Uri(runAllTestUrl));
         }
     }
 }

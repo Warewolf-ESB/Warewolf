@@ -19,24 +19,12 @@ namespace Dev2.Common.Wrappers
 
         public Task<FileMetadata> UploadAsync(string path) => UploadAsync(path, null, false, null, false, null);
 
-        public Task<FileMetadata> UploadAsync(string path, WriteMode mode, bool autorename, DateTime? clientModified, bool mute, Stream body)
-        {
-            return _client.Files.UploadAsync(path, mode, autorename, clientModified, mute, body);
-        }
+        public Task<FileMetadata> UploadAsync(string path, WriteMode mode, bool autorename, DateTime? clientModified, bool mute, Stream body) => _client.Files.UploadAsync(path, mode, autorename, clientModified, mute, body);
 
-        public Task<Metadata> DeleteAsync(string path)
-        {
-            return _client.Files.DeleteAsync(path);
-        }
+        public Task<Metadata> DeleteAsync(string path) => _client.Files.DeleteAsync(path);
 
-        public Task<IDownloadResponse<FileMetadata>> DownloadAsync(DownloadArg downloadArg)
-        {
-            return _client.Files.DownloadAsync(downloadArg);
-        }
+        public Task<IDownloadResponse<FileMetadata>> DownloadAsync(DownloadArg downloadArg) => _client.Files.DownloadAsync(downloadArg);
 
-        public Task<ListFolderResult> ListFolderAsync(ListFolderArg listFolderArg)
-        {
-            return _client.Files.ListFolderAsync(listFolderArg);
-        }
+        public Task<ListFolderResult> ListFolderAsync(ListFolderArg listFolderArg) => _client.Files.ListFolderAsync(listFolderArg);
     }
 }

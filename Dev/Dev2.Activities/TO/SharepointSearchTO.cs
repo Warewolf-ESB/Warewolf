@@ -169,15 +169,9 @@ namespace Dev2.TO
             }
         }
 
-        public bool CanRemove()
-        {
-            return string.IsNullOrEmpty(FieldName);
-        }
+        public bool CanRemove() => string.IsNullOrEmpty(FieldName);
 
-        public bool CanAdd()
-        {
-            return !string.IsNullOrEmpty(SearchType) && !string.IsNullOrEmpty(FieldName);
-        }
+        public bool CanAdd() => !string.IsNullOrEmpty(SearchType) && !string.IsNullOrEmpty(FieldName);
 
         public void ClearRow()
         {
@@ -224,10 +218,7 @@ namespace Dev2.TO
         }
         public bool Inserted { get; set; }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(SearchType) && string.IsNullOrEmpty(ValueToMatch);
-        }
+        public bool IsEmpty() => string.IsNullOrEmpty(SearchType) && string.IsNullOrEmpty(ValueToMatch);
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
@@ -258,8 +249,16 @@ namespace Dev2.TO
 
         public bool Equals(SharepointSearchTo other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return IndexNumber == other.IndexNumber
                 && string.Equals(SearchType, other.SearchType)
                 && IsSearchCriteriaEnabled == other.IsSearchCriteriaEnabled
@@ -278,9 +277,21 @@ namespace Dev2.TO
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((SharepointSearchTo)obj);
         }
 

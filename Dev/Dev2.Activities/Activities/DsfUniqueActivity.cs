@@ -84,11 +84,7 @@ namespace Dev2.Activities
         }
 
 
-        public override List<string> GetOutputs()
-        {
-            return Result.Split(',').ToList();
-        }
-
+        public override List<string> GetOutputs() => Result.Split(',').ToList();
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -216,10 +212,7 @@ namespace Dev2.Activities
 
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -250,7 +243,7 @@ namespace Dev2.Activities
         }
 
         #region Overrides of DsfNativeActivity<string>
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -259,7 +252,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -278,23 +271,25 @@ namespace Dev2.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(InFields, ResultFields);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(InFields, ResultFields);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion
 
 
         public bool Equals(DsfUniqueActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && string.Equals(InFields, other.InFields) 
                 && string.Equals(ResultFields, other.ResultFields) 
@@ -303,9 +298,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfUniqueActivity) obj);
         }
 

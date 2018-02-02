@@ -51,10 +51,8 @@ namespace Dev2.ViewModels
             ViewModel?.Dispose();
         }
 
-        public override object GetView(object context = null)
-        {
-            return View;
-        }
+        public override object GetView(object context = null) => View;
+
         [ExcludeFromCodeCoverage]
         protected override void OnViewAttached(object view, object context)
         {
@@ -116,6 +114,8 @@ namespace Dev2.ViewModels
                             {
                                 ViewModel.Save();
                             }
+                            break;
+                        default:
                             break;
                     }
                 }

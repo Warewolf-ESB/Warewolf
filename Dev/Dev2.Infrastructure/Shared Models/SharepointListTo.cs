@@ -17,10 +17,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
-        public override string ToString()
-        {
-            return FullName;
-        }
+        public override string ToString() => FullName;
 
         #endregion
     }
