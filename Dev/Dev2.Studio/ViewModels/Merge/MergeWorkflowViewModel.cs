@@ -507,23 +507,24 @@ namespace Dev2.ViewModels.Merge
             var toolIds = _conflicts.Where(s => s is IToolConflict && s.IsChecked && !s.IsEmptyItemSelected).Select(a => a.UniqueId.ToString());
             foreach (var connectorConflict in connectorConflicts)
             {
-                var expectedExpanderValue = false;
+                var currentExpanderValue = false;
+                var differentExpanderValue = false;
 
                 var foundCurrentSource = FindMatchingConnector(connectorConflict.CurrentArmConnector.SourceUniqueId, toolIds);
                 var foundCurrentDestination = FindMatchingConnector(connectorConflict.CurrentArmConnector.DestinationUniqueId, toolIds);
                 if ((foundCurrentDestination && foundCurrentSource) || connectorConflict.CurrentArmConnector.ArmDescription == null)
                 {
-                    expectedExpanderValue = UpdateCurrentArmState(connectorConflict);
+                    currentExpanderValue = UpdateCurrentArmState(connectorConflict);
                 }
 
                 var foundDiffSource = FindMatchingConnector(connectorConflict.DifferentArmConnector.SourceUniqueId, toolIds);
                 var foundDiffDestination = FindMatchingConnector(connectorConflict.DifferentArmConnector.DestinationUniqueId, toolIds);
                 if ((foundDiffDestination && foundDiffSource) || connectorConflict.DifferentArmConnector.ArmDescription == null)
                 {
-                    expectedExpanderValue = UpdateDifferentArmState(connectorConflict);
+                    differentExpanderValue = UpdateDifferentArmState(connectorConflict);
                 }
 
-                connectorConflict.IsMergeExpanderEnabled = expectedExpanderValue;
+                connectorConflict.IsMergeExpanderEnabled = currentExpanderValue || differentExpanderValue;
             }
         }
 
