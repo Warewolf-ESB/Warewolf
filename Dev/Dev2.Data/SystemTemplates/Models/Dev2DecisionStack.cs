@@ -23,7 +23,7 @@ namespace Dev2.Data.SystemTemplates.Models
 {
     public class Dev2DecisionStack : IDev2FlowModel, IEquatable<Dev2DecisionStack>
     {
-        string _ver = "1.0.0";
+        readonly string _ver = "1.0.0";
 
         public IList<Dev2Decision> TheStack { get; set; }
 
