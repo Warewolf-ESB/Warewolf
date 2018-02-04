@@ -72,14 +72,16 @@ namespace Dev2.Activities.Specs.Deploy
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create and Deploy a renamed resource to localhost")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy Feature")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void CreateAndDeployARenamedResourceToLocalhost()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create and Deploy a renamed resource to localhost", ((string[])(null)));
-#line 7
-this.ScenarioSetup(scenarioInfo);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create and Deploy a renamed resource to localhost", new string[] {
+                        "ignore"});
 #line 8
- testRunner.Given("localhost and destination server \"localwarewolfservercontainer\" are connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 9
+ testRunner.Given("localhost and destination server \"localwarewolfservercontainer\" are connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 10
  testRunner.And("I have a workflow \"OriginalName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
@@ -91,19 +93,19 @@ this.ScenarioSetup(scenarioInfo);
             table1.AddRow(new string[] {
                         "[[rec().a]]",
                         "no"});
-#line 10
+#line 11
  testRunner.And("\"OriginalName\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table1, "And ");
-#line 14
- testRunner.And("\"OriginalName\" contains Count Record \"CountRec\" on \"[[rec()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.When("\"OriginalName\" is Saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("\"OriginalName\" contains Count Record \"CountRec\" on \"[[rec()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
- testRunner.And("I select and deploy resource from source server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("\"OriginalName\" is Saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 17
- testRunner.When("I rename \"OriginalName\" to \"RenamedResource\" and re deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I select and deploy resource from source server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
- testRunner.Then("I select and deploy resource from remote server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.When("I rename \"OriginalName\" to \"RenamedResource\" and re deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 19
+ testRunner.Then("I select and deploy resource from remote server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 20
  testRunner.Then("Remote server has updated name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
