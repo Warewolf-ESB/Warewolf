@@ -136,7 +136,10 @@ namespace Dev2.Activities
             {
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SourceId.GetHashCode());
-                hashCode = (hashCode * 397) ^ (ProcedureName.GetHashCode());
+                if (ProcedureName != null)
+                {
+                    hashCode = (hashCode * 397) ^ (ProcedureName.GetHashCode());
+                }
                 return hashCode;
             }
         }
