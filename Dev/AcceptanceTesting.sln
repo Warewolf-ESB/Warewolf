@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -286,8 +286,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Exchange.Email.Wrapper", "Warewolf.Exchange.Email.Wrapper\Warewolf.Exchange.Email.Wrapper.csproj", "{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrieNet", "TrieNet\TrieNet.csproj", "{17125877-2CF0-42B2-89D3-418E40BDE5D0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tar-cs", "tar-cs\tar-cs.csproj", "{B9189786-191B-42C7-8029-244E0DA8DA21}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -1106,14 +1104,6 @@ Global
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|x86.ActiveCfg = Release|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|x86.Build.0 = Release|Any CPU
-		{B9189786-191B-42C7-8029-244E0DA8DA21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B9189786-191B-42C7-8029-244E0DA8DA21}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B9189786-191B-42C7-8029-244E0DA8DA21}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B9189786-191B-42C7-8029-244E0DA8DA21}.Debug|x86.Build.0 = Debug|Any CPU
-		{B9189786-191B-42C7-8029-244E0DA8DA21}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B9189786-191B-42C7-8029-244E0DA8DA21}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B9189786-191B-42C7-8029-244E0DA8DA21}.Release|x86.ActiveCfg = Release|Any CPU
-		{B9189786-191B-42C7-8029-244E0DA8DA21}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
