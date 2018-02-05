@@ -119,7 +119,8 @@ namespace Dev2.ViewModels.Merge
 
                 var currentIndex = current.ToList().IndexOf(currentItem);
                 var diffIndex = diff.ToList().IndexOf(currentItem);
-                if (diffIndex != currentIndex && (diffIndex + 1) <= current.Count())
+
+                if (diffIndex != -1 && diffIndex != currentIndex && (diffIndex + 1) <= current.Count())
                 {
                     var diffItm = diff.ToList()[currentIndex];
                     if (diffItm != null)
@@ -312,13 +313,13 @@ namespace Dev2.ViewModels.Merge
                 if (mergeToolModel.IsCurrent)
                 {
                     container.DiffViewModel.IsMergeChecked = false;
-                    nextConflict.DiffViewModel.IsMergeEnabled = false;
+                    nextConflict.DiffViewModel.IsMergeEnabled = nextConflict.CurrentViewModel.ModelItem == null && nextConflict.HasConflict;
                     WorkflowDesignerViewModel?.RemoveItem(confl.DiffViewModel);
                 }
                 else
                 {
                     container.CurrentViewModel.IsMergeChecked = false;
-                    nextConflict.CurrentViewModel.IsMergeEnabled = false;
+                    nextConflict.CurrentViewModel.IsMergeEnabled = nextConflict.CurrentViewModel.ModelItem == null && nextConflict.HasConflict;
                     WorkflowDesignerViewModel?.RemoveItem(confl.CurrentViewModel);
                 }
             }
