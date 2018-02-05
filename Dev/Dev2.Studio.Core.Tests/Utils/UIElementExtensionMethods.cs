@@ -33,7 +33,6 @@ namespace Dev2.Core.Tests.Utils
                 var w = f.CreateSerializerWriter(s);
                 w.Write(fixedDoc);
             }
-
         }
     }
 }
