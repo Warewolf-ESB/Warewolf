@@ -69,7 +69,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="Composition\AssignWorkflowExecution.cs">
+    <Compile Include="Composition\AssignWorkflowExecution.feature.cs">
       <DependentUpon>AssignWorkflowExecution.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -360,7 +360,7 @@
     </None>
     <None Include="Composition\AssignWorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>AssignWorkflowExecution.cs</LastGenOutput>
+      <LastGenOutput>AssignWorkflowExecution.feature.cs</LastGenOutput>
     </None>
     <None Include="Merge\MergeExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
