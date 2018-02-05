@@ -10,7 +10,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using System.Linq;
-using System.Net;
 using System.IO;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
@@ -63,7 +62,6 @@ namespace Dev2.Activities.Specs.Deploy
 
         private void CreateTarGZ(string tgzFilename, string sourceDirectory)
         {
-
             Stream outStream = File.Create(tgzFilename);
             Stream gzoStream = new GZipOutputStream(outStream);
             TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzoStream);
