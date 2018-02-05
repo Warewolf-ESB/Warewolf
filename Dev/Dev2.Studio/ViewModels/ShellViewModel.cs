@@ -174,7 +174,10 @@ namespace Dev2.Studio.ViewModels
         internal async Task<bool> LoadWorkflowAsync(string e)
         {
             _contextualResourceModel = null;
-            if (!File.Exists(e)) { return false; }
+            if (!File.Exists(e))
+            {
+                return false;
+            }
             ActiveServer.ResourceRepository.Load();
             var fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(e);
@@ -454,7 +457,10 @@ namespace Dev2.Studio.ViewModels
         public void ShowDependencies(Guid resourceId, IServer server, bool isSource)
         {
             var environmentModel = ServerRepository.Get(server.EnvironmentID);
-            if (environmentModel == null) { return; }
+            if (environmentModel == null)
+            {
+                return;
+            }
             if (!isSource)
             {
                 environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);

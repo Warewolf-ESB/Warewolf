@@ -15,36 +15,25 @@ namespace Dev2.Common.DateAndTime
 {
     public class DateTimeConverterFactory
     {
-        /// <summary>
-        ///     Instantiates a concreate implementation of the IDateTimeFormatter
-        /// </summary>
+        protected DateTimeConverterFactory()
+        {
+        }
+
         public static IDateTimeFormatter CreateFormatter() => new DateTimeFormatter();
 
         public static IDateTimeFormatter CreateStandardFormatter() => new StandardDateTimeFormatter();
-
-        /// <summary>
-        ///     Instantiates a concreate implementation of the IDateTimeParser
-        /// </summary>
+        
         public static IDateTimeParser CreateParser() => new Dev2DateTimeParser();
 
         public static IDateTimeParser CreateStandardParser() => new StandardDateTimeParser();
-
-        /// <summary>
-        ///     Instantiates a concreate implementation of the IDateTimeComparer
-        /// </summary>
+        
         public static IDateTimeComparer CreateComparer() => new DateTimeComparer();
 
         public static IDateTimeComparer CreateStandardComparer() => new StandardDateTimeComparer();
-
-        /// <summary>
-        ///     Instantiates a concreate implementation of the DateTimeDiffTO
-        /// </summary>
+        
         public static IDateTimeDiffTO CreateDateTimeDiffTO(string input1, string input2, string inputFormat,
             string outputType) => new DateTimeDiffTO(input1, input2, inputFormat, outputType);
-
-        /// <summary>
-        ///     Instantiates a concreate implementation of the DateTimeTO
-        /// </summary>
+        
         public static IDateTimeOperationTO CreateDateTimeTO(string dateTime, string inputFormat, string outputFormat,
             string timeModifierType, int timeModifierAmount, string result) => new DateTimeOperationTO(dateTime, inputFormat, outputFormat, timeModifierType, timeModifierAmount,
                 result);

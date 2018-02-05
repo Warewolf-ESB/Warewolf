@@ -146,11 +146,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             : this(EventPublishers.Aggregator, resource, workflowHelper, createDesigner)
         {
         }
-        
-        WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper)
-            : this(eventPublisher, resource, workflowHelper, true)
-        {
-        }
 
         WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner)
             : this(eventPublisher, resource, workflowHelper,
@@ -689,7 +684,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage]
         public virtual object SelectedModelItem => _wd?.Context?.Items.GetValue<Selection>().SelectedObjects.FirstOrDefault();
 
-        public IContextualResourceModel ResourceModel { get { return _resourceModel; } set { _resourceModel = value; } }
+        public IContextualResourceModel ResourceModel
+        {
+            get => _resourceModel;
+            set => _resourceModel = value;
+        }
 
         public string WorkflowName => _resourceModel.ResourceName;
 

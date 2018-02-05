@@ -146,8 +146,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         readonly Variable<string> _origInput = new Variable<string>("origInput");
         readonly Variable<string> _origOutput = new Variable<string>("origOutput");
-
-        readonly object _forEachExecutionObject = new object();
+        
         string _childUniqueID;
         Guid _originalUniqueID;
 
@@ -197,22 +196,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
             UniqueID = isNestedForEach ? Guid.NewGuid().ToString() : UniqueID;
         }
+        
+        protected override void OnBeforeExecute(NativeActivityContext context) => throw new NotImplementedException();
 
-
-        protected override void OnBeforeExecute(NativeActivityContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        protected override void OnExecute(NativeActivityContext context)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IterateIOMapping(int idx)
-        {
-            throw new NotImplementedException();
-        }
+        protected override void OnExecute(NativeActivityContext context) => throw new NotImplementedException();
 
         ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors, int update)
         {

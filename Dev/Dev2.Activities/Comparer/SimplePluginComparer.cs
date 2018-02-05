@@ -41,7 +41,7 @@ namespace Dev2.Comparer
             }
             else
             {
-                nameSpacesAreEqual = x.Namespace == null && y.Namespace == null; ;
+                nameSpacesAreEqual = x.Namespace == null && y.Namespace == null;
             }
 
             if (x.OutputDescription != null && y.OutputDescription != null)

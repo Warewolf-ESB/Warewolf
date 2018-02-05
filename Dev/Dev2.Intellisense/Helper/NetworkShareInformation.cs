@@ -175,11 +175,7 @@ namespace Dev2.Intellisense.Helper
 
             public readonly ShareType ShareType;
         }
-
-        /// <summary>Share information, NT, level 2</summary>
-        /// <remarks>
-        ///     Requires admin rights to work.
-        /// </remarks>
+        
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         struct ShareInfo2
         {
@@ -190,9 +186,6 @@ namespace Dev2.Intellisense.Helper
 
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Remark;
-            public int Permissions;
-            public int MaxUsers;
-            public int CurrentUsers;
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Path;
 

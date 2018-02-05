@@ -213,8 +213,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         IErrorInfo WorstDesignError
         {
-            
-            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)
@@ -224,6 +222,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     WorstError = value?.ErrorType ?? ErrorType.None;
                 }
             }
+            get => _worstDesignError;
         }
 
         public int LabelWidth { get; set; }
