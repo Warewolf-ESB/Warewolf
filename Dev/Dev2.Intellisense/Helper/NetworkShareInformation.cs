@@ -75,13 +75,8 @@ namespace Dev2.Intellisense.Helper
     {
         const int NoError = 0;
         const int ErrorAccessDenied = 5;
-
-        /// <summary>The name of the server this collection represents</summary>
         readonly string _server;
-
-        /// <summary>
-        ///     Default constructor - local machine
-        /// </summary>
+        
         internal ShareCollection()
         {
             _server = string.Empty;
@@ -145,10 +140,7 @@ namespace Dev2.Intellisense.Helper
             }
         }
 
-        protected static void EnumerateShares(string server, ShareCollection shares)
-        {
-            EnumerateSharesNT(server, shares);
-        }
+        protected static void EnumerateShares(string server, ShareCollection shares) => EnumerateSharesNT(server, shares);
 
         [DllImport("netapi32", CharSet = CharSet.Unicode)]
         protected static extern int NetShareEnum(string lpServerName, int dwLevel,
@@ -158,15 +150,8 @@ namespace Dev2.Intellisense.Helper
         [DllImport("netapi32")]
         protected static extern int NetApiBufferFree(IntPtr lpBuffer);
 
-        protected void Add(string netName, ShareType shareType)
-        {
-            InnerList.Add(new Share(_server, netName, shareType));
-        }
+        protected void Add(string netName, ShareType shareType) => InnerList.Add(new Share(_server, netName, shareType));
 
-        /// <summary>Share information, NT, level 1</summary>
-        /// <remarks>
-        ///     Fallback when no admin rights.
-        /// </remarks>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         struct ShareInfo1
         {
@@ -175,17 +160,20 @@ namespace Dev2.Intellisense.Helper
 
             public readonly ShareType ShareType;
         }
-        
+
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        struct ShareInfo2
+        public struct ShareInfo2
         {
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string NetName;
-
             public readonly ShareType ShareType;
 
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Remark;
+            public int Permissions;
+            public int MaxUsers;
+            public int CurrentUsers;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Path;
 
