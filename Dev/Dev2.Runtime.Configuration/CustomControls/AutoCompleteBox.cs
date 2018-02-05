@@ -814,6 +814,50 @@ namespace System.Windows.Controls
             return r;
         }
 
+        void OnTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            OnKeyDown(e);
+        }
+
+        public override void OnApplyTemplate()
+        {
+            if (TextBox != null)
+            {
+                TextBox.PreviewKeyDown -= OnTextBoxPreviewKeyDown;
+            }
+            if (DropDownPopup != null)
+            {
+                DropDownPopup.Closed -= DropDownPopupClosed;
+                DropDownPopup.FocusChanged -= OnDropDownFocusChanged;
+                DropDownPopup.UpdateVisualStates -= OnDropDownPopupUpdateVisualStates;
+                DropDownPopup.BeforeOnApplyTemplate();
+                DropDownPopup = null;
+            }
+
+            base.OnApplyTemplate();
+
+            if (GetTemplateChild(ElementPopup) is Popup popup)
+            {
+                DropDownPopup = new PopupHelper(this, popup) { MaxDropDownHeight = MaxDropDownHeight };
+                DropDownPopup.AfterOnApplyTemplate();
+                DropDownPopup.Closed += DropDownPopupClosed;
+                DropDownPopup.FocusChanged += OnDropDownFocusChanged;
+                DropDownPopup.UpdateVisualStates += OnDropDownPopupUpdateVisualStates;
+            }
+            SelectionAdapter = GetSelectionAdapterPart();
+            TextBox = GetTemplateChild(ElementTextBox) as TextBox;
+            if (TextBox != null)
+            {
+                TextBox.PreviewKeyDown += OnTextBoxPreviewKeyDown;
+            }
+            Interaction.OnApplyTemplateBase();
+
+            if (IsDropDownOpen && DropDownPopup != null && !DropDownPopup.IsOpen)
+            {
+                OpeningDropDown(false);
+            }
+        }
+
         void OnDropDownPopupUpdateVisualStates(object sender, EventArgs e)
         {
             UpdateVisualState(true);
