@@ -22,6 +22,10 @@ namespace Dev2.Common.Common
     {
         static List<string> _currentComputerNames;
 
+        protected GetComputerNames()
+        {
+        }
+
         public static List<string> ComputerNames
         {
             get

@@ -145,7 +145,10 @@ namespace Dev2.Runtime.Hosting
                     {
                         //TODO: Remove this after V1 is released. All will be updated.
                         #region old typing to be removed after V1
-                        if (!IsWarewolfResource(xml)) { return; }
+                        if (!IsWarewolfResource(xml))
+                        {
+                            return;
+                        }
                         if (typeName == "Unknown")
                         {
                             var servertype = xml.AttributeSafe("ResourceType");

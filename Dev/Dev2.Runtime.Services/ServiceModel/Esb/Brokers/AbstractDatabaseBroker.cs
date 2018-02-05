@@ -26,9 +26,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         where TDbServer : class, IDbServer, new()
     {
         #region TheCache
-        
+
+#pragma warning disable S2743 // Static fields should not be used in generic types
         public static ConcurrentDictionary<string, ServiceMethodList> TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
-        
+#pragma warning restore S2743 // Static fields should not be used in generic types
+
         #endregion
 
         public virtual List<string> GetDatabases(DbSource dbSource)
