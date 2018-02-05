@@ -60,10 +60,7 @@ namespace Dev2.Settings.Scheduler
         protected IClientSchedulerFactory SchedulerFactory { get; }
         public TriggerEditDialog TriggerEditDialog
         {
-            get
-            {
-                return _triggerEditDialog;
-            }
+            get => _triggerEditDialog;
             private set
             {
                 _triggerEditDialog = value;
@@ -72,10 +69,8 @@ namespace Dev2.Settings.Scheduler
         }
         public EnvironmentViewModel Source
         {
-            set
-            {
-                _source = value;
-            }
+            set => _source = value;
+            get => _source;
         }
 
         [ExcludeFromCodeCoverage]

@@ -47,8 +47,7 @@ namespace Dev2.Activities.Designers2.Service
     public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
     {
         readonly IEventAggregator _eventPublisher;
-
-        bool _isDisposed;
+        
         const string DoneText = "Done";
         const string FixText = "Fix";
 
@@ -430,13 +429,21 @@ namespace Dev2.Activities.Designers2.Service
 
         public Guid ResourceID => GetProperty<Guid>();
         public Guid UniqueID => GetProperty<Guid>();
-        public string OutputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        public string InputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        public string OutputMapping
+        {
+            get => GetProperty<string>();
+            set => SetProperty(value);
+        }
+        public string InputMapping
+        {
+            get => GetProperty<string>();
+            set => SetProperty(value);
+        }
 
         public string ButtonDisplayValue
         {
             get => (string)GetValue(ButtonDisplayValueProperty);
-            set { SetValue(ButtonDisplayValueProperty, value); }
+            set => SetValue(ButtonDisplayValueProperty, value);
         }
 
         public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));

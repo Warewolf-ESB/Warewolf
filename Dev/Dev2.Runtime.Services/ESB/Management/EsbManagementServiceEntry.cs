@@ -17,6 +17,10 @@ namespace Dev2.Runtime.ESB.Management
 {
     class EsbManagementServiceEntry
     {
+        protected EsbManagementServiceEntry()
+        {
+        }
+
         public static DynamicService CreateESBManagementServiceEntry(string HandleType, string DataListSpecification)
         {
             var findServices = new DynamicService

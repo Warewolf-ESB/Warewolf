@@ -6,7 +6,9 @@ namespace Dev2.Diagnostics.Debug
 {
     public abstract class DebugMessegaBase<T> where T : class, new()
     {
+#pragma warning disable S2743 // Static fields should not be used in generic types
         static T _instance;
+#pragma warning restore S2743 // Static fields should not be used in generic types
         public static T Instance => _instance ?? (_instance = new T());
         protected readonly object Lock = new object();
         protected readonly IDictionary<Tuple<Guid, Guid>, IList<IDebugState>> Data = new Dictionary<Tuple<Guid, Guid>, IList<IDebugState>>();
