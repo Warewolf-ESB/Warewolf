@@ -15,14 +15,8 @@ namespace Dev2.Services.Security.MoqInstallerActions
     public static class MoqInstallerActionFactory
     {
 
-        public static IMoqInstallerActions CreateInstallerActions()
-        {
-            return new InstallerActionsForDevelopment();
-        }
+        public static IMoqInstallerActions CreateInstallerActions() => new InstallerActionsForDevelopment();
 
-        public static IWarewolfSecurityOperations CreateSecurityOperationsObject()
-        {
-            return new WarewolfSecurityOperationsImpl();
-        }
+        public static IWarewolfSecurityOperations CreateSecurityOperationsObject() => new WarewolfSecurityOperationsImpl();
     }
 }

@@ -316,51 +316,25 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public ICommand ClearSearchTextCommand { get; private set; }
 
-        public RelayCommand SortCommand
-        {
-            get
-            {
-                return _sortCommand ??
+        public RelayCommand SortCommand => _sortCommand ??
                        (_sortCommand = new RelayCommand(method => SortItems(), p => CanSortItems));
-            }
-        }
 
-        public IRelayCommand FindUnusedAndMissingCommand
-        {
-            get
-            {
-                return _findUnusedAndMissingDataListItems ??
+        public IRelayCommand FindUnusedAndMissingCommand => _findUnusedAndMissingDataListItems ??
                        (_findUnusedAndMissingDataListItems = new RelayCommand(method => RemoveUnusedDataListItems(), o => HasAnyUnusedItems()));
-            }
-        }
 
-        public RelayCommand DeleteCommand
-        {
-            get
-            {
-                return _deleteCommand ?? (_deleteCommand = new RelayCommand(item =>
-                {
-                    RemoveDataListItem(item as IDataListItemModel);
-                    WriteToResourceModel();
-                    FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
-                    DeleteCommand.RaiseCanExecuteChanged();
-                    UpdateIntellisenseList();
-                }, CanDelete));
-            }
-        }
+        public RelayCommand DeleteCommand => _deleteCommand ?? (_deleteCommand = new RelayCommand(item =>
+                                                           {
+                                                               RemoveDataListItem(item as IDataListItemModel);
+                                                               WriteToResourceModel();
+                                                               FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
+                                                               DeleteCommand.RaiseCanExecuteChanged();
+                                                               UpdateIntellisenseList();
+                                                           }, CanDelete));
 
-        public RelayCommand ViewComplexObjectsCommand
-        {
-            get
-            {
-                return _viewComplexObjectsCommand ?? (_viewComplexObjectsCommand = new RelayCommand(item =>
-                {
-                    ViewJsonObjects(item as IComplexObjectItemModel);
-                }, CanViewComplexObjects));
-            }
-        }
-
-
+        public RelayCommand ViewComplexObjectsCommand => _viewComplexObjectsCommand ?? (_viewComplexObjectsCommand = new RelayCommand(item =>
+                                                                       {
+                                                                           ViewJsonObjects(item as IComplexObjectItemModel);
+                                                                       }, CanViewComplexObjects));
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
         {
@@ -939,10 +913,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _helper.AddItemToBuilder(result, item);
         }
 
-        bool HasItems()
-        {
-            return (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
-        }
+        bool HasItems() => (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
 
         protected override void OnDispose()
         {
@@ -1005,13 +976,13 @@ namespace Dev2.Studio.ViewModels.DataList
             return missingDataParts;
         }
 
-        public List<IDataListVerifyPart> UpdateDataListItems(IResourceModel resourceModel, IList<IDataListVerifyPart> workflowFields)
+        public List<IDataListVerifyPart> UpdateDataListItems(IResourceModel contextualResourceModel, IList<IDataListVerifyPart> workflowFields)
         {
             IList<IDataListVerifyPart> removeParts = MissingWorkflowItems(workflowFields);
             var filteredDataListParts = MissingDataListParts(workflowFields);
-            ShowUnusedDataListVariables(resourceModel, removeParts, workflowFields);
+            ShowUnusedDataListVariables(contextualResourceModel, removeParts, workflowFields);
             ViewModelUtils.RaiseCanExecuteChanged(DeleteCommand);
-            if (resourceModel != Resource)
+            if (contextualResourceModel != Resource)
             {
                 return new List<IDataListVerifyPart>();
             }
@@ -1051,10 +1022,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public ISuggestionProvider Provider { get; set; }
 
-        static string BuildErrorMessage(IDataListItemModel model)
-        {
-            return DataListUtil.AddBracketsToValueIfNotExist(model.DisplayName) + " : " + model.ErrorMessage;
-        }
+        static string BuildErrorMessage(IDataListItemModel model) => DataListUtil.AddBracketsToValueIfNotExist(model.DisplayName) + " : " + model.ErrorMessage;
 
         public bool Equals(IDataListViewModel other)
         {

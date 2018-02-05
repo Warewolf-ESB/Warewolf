@@ -18,10 +18,7 @@ namespace Warewolf.Studio.ViewModels
             _shell = shell;
             shell.SetActiveServer(server.EnvironmentID);
         }
-        public ObservableCollection<IExchangeSource> RetrieveSources()
-        {
-            return new ObservableCollection<IExchangeSource>(_queryProxy.FetchExchangeSources());
-        }
+        public ObservableCollection<IExchangeSource> RetrieveSources() => new ObservableCollection<IExchangeSource>(_queryProxy.FetchExchangeSources());
 
         public void CreateNewSource()
         {

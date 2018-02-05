@@ -50,9 +50,6 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        public override string ToString()
-        {
-            return DisplayName;
-        }
+        public override string ToString() => DisplayName;
     }
 }

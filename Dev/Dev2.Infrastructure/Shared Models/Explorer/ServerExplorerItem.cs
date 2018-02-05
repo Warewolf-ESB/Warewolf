@@ -94,19 +94,10 @@ namespace Dev2.Explorer
         }
 
 
-        protected bool Equals(ServerExplorerItem other)
-        {
-            return ResourceId.Equals(other.ResourceId);
-        }
+        protected bool Equals(ServerExplorerItem other) => ResourceId.Equals(other.ResourceId);
 
-        public override int GetHashCode()
-        {
-            return ResourceId.GetHashCode();
-        }
+        public override int GetHashCode() => ResourceId.GetHashCode();
 
-        public override string ToString()
-        {
-            return $"Name:{DisplayName} Path:{ResourcePath} Id:{ResourceId}";
-        }
+        public override string ToString() => $"Name:{DisplayName} Path:{ResourcePath} Id:{ResourceId}";
     }
 }

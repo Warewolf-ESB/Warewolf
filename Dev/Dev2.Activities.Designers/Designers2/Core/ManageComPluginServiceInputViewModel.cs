@@ -252,10 +252,7 @@ namespace Dev2.Activities.Designers2.Core
         public IList<IToolRegion> Dependants { get; set; }
         public IList<string> Errors { get; private set; }
 
-        public IToolRegion CloneRegion()
-        {
-            return this;
-        }
+        public IToolRegion CloneRegion() => this;
 
         public void RestoreRegion(IToolRegion toRestore)
         {
@@ -381,21 +378,11 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
-        public IGenerateOutputArea OutputArea
-        {
-            get
-            {
-                return _generateOutputArea;
-            }
-        }
+        public IGenerateOutputArea OutputArea => _generateOutputArea;
+
         public IOutputDescription Description { get; set; }
-        public IGenerateInputArea InputArea
-        {
-            get
-            {
-                return _generateInputArea;
-            }
-        }
+        public IGenerateInputArea InputArea => _generateInputArea;
+
         public bool PasteResponseVisible
         {
             get

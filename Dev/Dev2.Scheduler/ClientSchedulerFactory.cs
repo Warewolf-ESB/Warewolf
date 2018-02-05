@@ -32,11 +32,8 @@ namespace Dev2.Scheduler
 
 
 
-        public IScheduleTrigger CreateTrigger(TaskState state, ITrigger trigger)
-        {
-            return new ScheduleTrigger(state, trigger, _service, _serviceConvertorFactory);
-        }
-    
+        public IScheduleTrigger CreateTrigger(TaskState state, ITrigger trigger) => new ScheduleTrigger(state, trigger, _service, _serviceConvertorFactory);
+
         public IScheduleTrigger CreateTrigger(Trigger trigger)
         {
             switch (trigger.TriggerType)

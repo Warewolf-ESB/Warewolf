@@ -45,10 +45,7 @@ namespace Dev2.Activities
             _inner = inner;
             UniqueID = _inner.UniqueID;
         }
-        public override string GetDisplayName()
-        {
-            return Conditions.DisplayText;
-        }
+        public override string GetDisplayName() => Conditions.DisplayText;
 
         public override IEnumerable<IDev2Activity> GetNextNodes()
         {
@@ -102,15 +99,9 @@ namespace Dev2.Activities
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
         {
@@ -213,15 +204,9 @@ namespace Dev2.Activities
             return null;
         }
 
-        public override FlowNode GetFlowNode()
-        {
-            return new FlowDecision(_inner);
-        }
+        public override FlowNode GetFlowNode() => new FlowDecision(_inner);
 
-        public IFlowNodeActivity GetInnerNode()
-        {
-            return _inner;
-        }
+        public IFlowNodeActivity GetInnerNode() => _inner;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -253,10 +238,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
@@ -317,10 +299,7 @@ namespace Dev2.Activities
             return val;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return _debugOutputs;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
@@ -414,10 +393,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
         public bool And { get; set; }
 
@@ -505,15 +481,9 @@ namespace Dev2.Activities
         {
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => null;
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return null;
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -558,9 +528,6 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
     }
 }

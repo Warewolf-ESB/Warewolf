@@ -76,10 +76,7 @@ namespace Dev2.Activities.Designers2.Core.Adorners
             }
         }
 
-        protected override Visual GetVisualChild(Int32 index)
-        {
-            return Content;
-        }
+        protected override Visual GetVisualChild(Int32 index) => Content;
 
         protected override Size MeasureOverride(Size constraint)
         {

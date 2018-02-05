@@ -33,10 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         ITestCatalog _testCatalog;
 
@@ -92,9 +89,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public string HandlesType()
-        {
-            return "FetchTests";
-        }
+        public string HandlesType() => "FetchTests";
     }
 }

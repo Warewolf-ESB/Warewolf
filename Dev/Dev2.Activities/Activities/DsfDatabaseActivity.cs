@@ -22,12 +22,12 @@ namespace Dev2.Activities
 
         #region Overrides of DsfActivity
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             var execErrors = new ErrorResultTO();
 
-            errors = new ErrorResultTO();
-            errors.MergeErrors(execErrors);
+            tmpErrors = new ErrorResultTO();
+            tmpErrors.MergeErrors(execErrors);
 
             if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
             {
@@ -41,7 +41,7 @@ namespace Dev2.Activities
                 dataObject.Environment.Errors.Add(error);
             }
             
-            errors.MergeErrors(execErrors);
+            tmpErrors.MergeErrors(execErrors);
 
         }
 

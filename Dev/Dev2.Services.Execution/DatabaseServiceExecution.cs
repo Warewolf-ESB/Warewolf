@@ -71,10 +71,7 @@ namespace Dev2.Services.Execution
             return server;
         }
 
-        public bool SourceIsNull()
-        {
-            return Source == null;
-        }
+        public bool SourceIsNull() => Source == null;
 
         public override void BeforeExecution(ErrorResultTO errors)
         {
@@ -464,10 +461,8 @@ namespace Dev2.Services.Execution
             }
             return false;
         }
-        public string OdbcMethod(string command)
-        {
-            return ODBCParameterIterators(0, command);
-        }
+        public string OdbcMethod(string command) => ODBCParameterIterators(0, command);
+
         static List<OdbcParameter> GetOdbcParameters(ICollection<IServiceInput> methodParameters)
         {
             var sqlParameters = new List<OdbcParameter>();

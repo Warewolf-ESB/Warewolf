@@ -58,13 +58,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region DeserializeService
 
-    
-        protected virtual Service DeserializeService(string args)
-        {
-            return JsonConvert.DeserializeObject<WebService>(args);
-        }
 
-    
+        protected virtual Service DeserializeService(string args) => JsonConvert.DeserializeObject<WebService>(args);
+
         protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
             return xml == null ? new WebService() : new WebService(xml);
@@ -194,10 +190,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region SetParameters
 
-        static string SetParameters(IEnumerable<MethodParameter> parameters, string s)
-        {
-            return parameters.Aggregate(s ?? "", (current, parameter) => current.Replace(DataListUtil.AddBracketsToValueIfNotExist(parameter.Name), parameter.Value));
-        }
+        static string SetParameters(IEnumerable<MethodParameter> parameters, string s) => parameters.Aggregate(s ?? "", (current, parameter) => current.Replace(DataListUtil.AddBracketsToValueIfNotExist(parameter.Name), parameter.Value));
 
         #endregion
 

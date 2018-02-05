@@ -234,11 +234,6 @@ namespace Dev2.Activities.Designers2.Email
             {
                 return;
             }
-            //var uri = new Uri(new Uri(AppUsageStats.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
-            //var jsonData = testSource.ToString();
-
-            //var requestInvoker = CreateWebRequestInvoker();
-            //requestInvoker.ExecuteRequest("POST", uri.ToString(), jsonData, null, OnTestCompleted);
 
             SendEmail(ToNewSource(testSource));
         }
@@ -328,10 +323,7 @@ namespace Dev2.Activities.Designers2.Email
             }
         }
 
-        protected virtual IWebRequestInvoker CreateWebRequestInvoker()
-        {
-            return new WebRequestInvoker();
-        }
+        protected virtual IWebRequestInvoker CreateWebRequestInvoker() => new WebRequestInvoker();
 
         protected virtual void OnSelectedEmailSourceChanged()
         {
@@ -379,10 +371,7 @@ namespace Dev2.Activities.Designers2.Email
             });
         }
 
-        IEnumerable<EmailSource> GetEmailSources()
-        {
-            return _server.ResourceRepository.FindSourcesByType<EmailSource>(_server, enSourceType.EmailSource);
-        }
+        IEnumerable<EmailSource> GetEmailSources() => _server.ResourceRepository.FindSourcesByType<EmailSource>(_server, enSourceType.EmailSource);
 
         void ChooseAttachments()
         {

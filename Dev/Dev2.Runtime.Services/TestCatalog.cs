@@ -42,32 +42,32 @@ namespace Dev2.Runtime
 
         public ConcurrentDictionary<Guid, List<IServiceTestModelTO>> Tests { get; private set; }
 
-        public void SaveTests(Guid resourceId, List<IServiceTestModelTO> serviceTestModelTos)
+        public void SaveTests(Guid resourceID, List<IServiceTestModelTO> serviceTestModelTos)
         {
             if (serviceTestModelTos != null && serviceTestModelTos.Count > 0)
             {
                 foreach (var serviceTestModelTo in serviceTestModelTos)
                 {
-                    SaveTestToDisk(resourceId, serviceTestModelTo);
+                    SaveTestToDisk(resourceID, serviceTestModelTo);
                 }
-                var dir = Path.Combine(EnvironmentVariables.TestPath, resourceId.ToString());
-                Tests.AddOrUpdate(resourceId, GetTestList(dir), (id, list) => GetTestList(dir));
+                var dir = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
+                Tests.AddOrUpdate(resourceID, GetTestList(dir), (id, list) => GetTestList(dir));
             }
         }
 
-        public void SaveTest(Guid resourceId, IServiceTestModelTO serviceTestModelTo)
+        public void SaveTest(Guid resourceID, IServiceTestModelTO test)
         {
-            SaveTestToDisk(resourceId, serviceTestModelTo);
-            var existingTests = Tests.GetOrAdd(resourceId, new List<IServiceTestModelTO>());
-            var found = existingTests.FirstOrDefault(to => to.TestName.Equals(serviceTestModelTo.TestName, StringComparison.CurrentCultureIgnoreCase));
+            SaveTestToDisk(resourceID, test);
+            var existingTests = Tests.GetOrAdd(resourceID, new List<IServiceTestModelTO>());
+            var found = existingTests.FirstOrDefault(to => to.TestName.Equals(test.TestName, StringComparison.CurrentCultureIgnoreCase));
             if (found == null)
             {
-                existingTests.Add(serviceTestModelTo);
+                existingTests.Add(test);
             }
             else
             {
                 existingTests.Remove(found);
-                existingTests.Add(serviceTestModelTo);
+                existingTests.Add(test);
             }
         }
 
@@ -365,14 +365,11 @@ namespace Dev2.Runtime
             return serviceTestModelTos;
         }
 
-        public List<IServiceTestModelTO> Fetch(Guid resourceId)
-        {
-            return Tests.GetOrAdd(resourceId, guid =>
-             {
-                 var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
-                 return GetTestList(dir);
-             });
-        }
+        public List<IServiceTestModelTO> Fetch(Guid resourceId) => Tests.GetOrAdd(resourceId, guid =>
+                                                                              {
+                                                                                  var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
+                                                                                  return GetTestList(dir);
+                                                                              });
 
         public void DeleteTest(Guid resourceID, string testName)
         {
@@ -403,7 +400,7 @@ namespace Dev2.Runtime
             }
         }
 
-        public void DeleteAllTests(List<string> testsToIgnore)
+        public void DeleteAllTests(List<string> testsToList)
         {
             var info = new DirectoryInfo(EnvironmentVariables.TestPath);
             if (!info.Exists)
@@ -412,7 +409,7 @@ namespace Dev2.Runtime
             }
 
             var fileInfos = info.GetDirectories();
-            foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToIgnore.Contains(fileInfo.Name.ToUpper())))
+            foreach (var fileInfo in fileInfos.Where(fileInfo => !testsToList.Contains(fileInfo.Name.ToUpper())))
             {
                 DirectoryHelper.CleanUp(fileInfo.FullName);
             }

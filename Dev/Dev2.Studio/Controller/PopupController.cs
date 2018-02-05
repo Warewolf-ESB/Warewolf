@@ -42,10 +42,7 @@ namespace Dev2.Studio.Controller
         public bool DeleteAnyway { get; private set; }
         public bool ApplyToAll { get; private set; }
 
-        public MessageBoxResult Show(IPopupMessage popupMessage)
-        {
-            return Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, popupMessage.Image, popupMessage.DontShowAgainKey, popupMessage.IsDependenciesButtonVisible, popupMessage.IsError, popupMessage.IsInfo, popupMessage.IsQuestion);
-        }
+        public MessageBoxResult Show(IPopupMessage popupMessage) => Show(popupMessage.Description, popupMessage.Header, popupMessage.Buttons, popupMessage.Image, popupMessage.DontShowAgainKey, popupMessage.IsDependenciesButtonVisible, popupMessage.IsError, popupMessage.IsInfo, popupMessage.IsQuestion);
 
         public MessageBoxResult Show()
         {
@@ -132,11 +129,11 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
-        public MessageBoxResult ShowResourcesConflict(List<string> duplicateResource)
+        public MessageBoxResult ShowResourcesConflict(List<string> resourceDuplicates)
         {
             Buttons = MessageBoxButton.OK;
             Header = "Duplicated Resources";
-            UrlsFound = duplicateResource;
+            UrlsFound = resourceDuplicates;
             Description = "Duplicate resources found. Please resolve the files on File Explorer. \nTo view the resource, click on the individual items below.";
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
@@ -534,31 +531,24 @@ namespace Dev2.Studio.Controller
 
         #region Implementation of IPopupMessages
 
-        public IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted)
+        public IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted) => new PopupMessage
         {
-            return new PopupMessage
-            {
-                Buttons = MessageBoxButton.YesNo,
-                Header = Warewolf.Studio.Resources.Languages.Core.GenericConfirmation,
-                Description = string.Format(Warewolf.Studio.Resources.Languages.Core.DeleteConfirmation, nameOfItemBeingDeleted),
-                Image = MessageBoxImage.Warning,
-                IsInfo = true,
-                IsError = false,
-                IsQuestion = false
-            };
-        }
+            Buttons = MessageBoxButton.YesNo,
+            Header = Warewolf.Studio.Resources.Languages.Core.GenericConfirmation,
+            Description = string.Format(Warewolf.Studio.Resources.Languages.Core.DeleteConfirmation, nameOfItemBeingDeleted),
+            Image = MessageBoxImage.Warning,
+            IsInfo = true,
+            IsError = false,
+            IsQuestion = false
+        };
 
         #endregion
 
-        public IPopupMessage GetDuplicateMessage(string name)
+        public IPopupMessage GetDuplicateMessage(string name) => new PopupMessage
         {
-            return new PopupMessage
-            {
-                Buttons = MessageBoxButton.OK,
-                Header = Warewolf.Studio.Resources.Languages.Core.InvalidPermissionHeader,
-                Description = $"The name {name} already exists. Please choose a different name."
-            };
-        }
-
+            Buttons = MessageBoxButton.OK,
+            Header = Warewolf.Studio.Resources.Languages.Core.InvalidPermissionHeader,
+            Description = $"The name {name} already exists. Please choose a different name."
+        };
     }
 }

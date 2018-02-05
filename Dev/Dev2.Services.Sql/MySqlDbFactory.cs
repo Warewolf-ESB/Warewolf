@@ -23,21 +23,13 @@ namespace Dev2.Services.Sql
             return new MySqlConnection(connectionString);
         }
 
-        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)
+        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText) => new MySqlCommand(commandText, connection as MySqlConnection)
         {
-            return new MySqlCommand(commandText, connection as MySqlConnection)
-            {
-                CommandType = commandType,
-                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
-            };
-        }
+            CommandType = commandType,
+            CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
+        };
 
-        public DataTable GetSchema(IDbConnection connection, string collectionName)
-        {
-
-            return GetMySqlServerSchema(connection);
-
-        }
+        public DataTable GetSchema(IDbConnection connection, string collectionName) => GetMySqlServerSchema(connection);
 
         DataTable GetMySqlServerSchema(IDbConnection connection)
         {

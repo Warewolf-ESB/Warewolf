@@ -54,15 +54,9 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return string.Equals(ColumnName, other.ColumnName) && string.Equals(ColumnDescription, other.ColumnDescription) && IsEditable == other.IsEditable && ColumnIODirection == other.ColumnIODirection;
         }
 
-        public static bool operator ==(Dev2Column left, Dev2Column right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(Dev2Column left, Dev2Column right) => Equals(left, right);
 
-        public static bool operator !=(Dev2Column left, Dev2Column right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(Dev2Column left, Dev2Column right) => !Equals(left, right);
 
         #endregion
 

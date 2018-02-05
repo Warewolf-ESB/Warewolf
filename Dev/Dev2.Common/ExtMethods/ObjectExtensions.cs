@@ -21,10 +21,7 @@ namespace Dev2.Common.ExtMethods
 
         public IList<Type> KnownTypes { get; set; }
 
-        public Type BindToType(string assemblyName, string typeName)
-        {
-            return KnownTypes.SingleOrDefault(t => t.FullName == typeName);
-        }
+        public Type BindToType(string assemblyName, string typeName) => KnownTypes.SingleOrDefault(t => t.FullName == typeName);
 
         public void BindToName(Type serializedType, out string assemblyName, out string typeName)
         {
@@ -53,20 +50,12 @@ namespace Dev2.Common.ExtMethods
 
         };
 
-        static T Deserialize<T>(string message)
-        {
-            return JsonConvert.DeserializeObject<T>(message, DeSerializerSettings);
-        }
+        static T Deserialize<T>(string message) => JsonConvert.DeserializeObject<T>(message, DeSerializerSettings);
 
-        static T Deserialize<T>(StringBuilder message)
-        {
-            return JsonConvert.DeserializeObject<T>(message.ToString(), DeSerializerSettings);
-        }
+        static T Deserialize<T>(StringBuilder message) => JsonConvert.DeserializeObject<T>(message.ToString(), DeSerializerSettings);
 
-        static string Serialize<T>(T message)
-        {
-            return JsonConvert.SerializeObject(message, Formatting, SerializerSettings);
-        }
+        static string Serialize<T>(T message) => JsonConvert.SerializeObject(message, Formatting, SerializerSettings);
+
         public static T DeepCopy<T>(T other) where T : new()
         {
             try

@@ -57,17 +57,17 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            errors = new ErrorResultTO();
+            tmpErrors = new ErrorResultTO();
             if (Headers == null)
             {
-                errors.AddError(ErrorResource.HeadersAreNull);
+                tmpErrors.AddError(ErrorResource.HeadersAreNull);
                 return;
             }
             if (QueryString == null)
             {
-                errors.AddError(ErrorResource.QueryIsNull);
+                tmpErrors.AddError(ErrorResource.QueryIsNull);
                 return;
             }
             var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval(a.Value, update))));
@@ -131,10 +131,7 @@ namespace Dev2.Activities
             DisplayName = "GET Web Method";
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(DsfWebGetActivity other)
         {

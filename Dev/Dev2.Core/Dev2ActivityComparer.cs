@@ -20,9 +20,6 @@ namespace Dev2
             return @equals;
         }
 
-        public int GetHashCode(IDev2Activity obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(IDev2Activity obj) => 1;
     }
 }

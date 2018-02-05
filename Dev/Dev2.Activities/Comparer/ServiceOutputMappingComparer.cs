@@ -19,10 +19,7 @@ namespace Dev2.Comparer
 
             return x.Equals(y);
         }
-        
-        public int GetHashCode(IServiceOutputMapping obj)
-        {
-            return obj.GetHashCode();
-        }
+
+        public int GetHashCode(IServiceOutputMapping obj) => obj.GetHashCode();
     }
 }

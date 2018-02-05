@@ -24,9 +24,6 @@ namespace Dev2.Comparer
             return @equals && typesAreEqual && directionIsTheSame;
         }
 
-        public int GetHashCode(DelegateArgument obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(DelegateArgument obj) => 1;
     }
 }

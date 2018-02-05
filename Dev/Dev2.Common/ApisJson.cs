@@ -64,15 +64,9 @@ namespace Dev2.Common
             }
         }
 
-        public static bool operator ==(ApisJson left, ApisJson right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(ApisJson left, ApisJson right) => Equals(left, right);
 
-        public static bool operator !=(ApisJson left, ApisJson right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(ApisJson left, ApisJson right) => !Equals(left, right);
 
         public string Name { get; set; }
         public string Description { get; set; }

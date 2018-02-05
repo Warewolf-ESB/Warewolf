@@ -168,12 +168,16 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public bool IsAttachmentsFocused { get => (bool)GetValue(IsAttachmentsFocusedProperty); set => SetValue(IsAttachmentsFocusedProperty, value); }
         public static readonly DependencyProperty IsAttachmentsFocusedProperty = DependencyProperty.Register("IsAttachmentsFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
-        string To { get { return GetProperty<string>(); } }
-        string Cc { get { return GetProperty<string>(); } }
-        string Bcc { get { return GetProperty<string>(); } }
+        string To => GetProperty<string>();
+
+        string Cc => GetProperty<string>();
+
+        string Bcc => GetProperty<string>();
+
         string Attachments { get => GetProperty<string>(); set => SetProperty(value); }
-        string Subject { get { return GetProperty<string>(); } }
-        string Body { get { return GetProperty<string>(); } }
+        string Subject => GetProperty<string>();
+
+        string Body => GetProperty<string>();
 
         public bool CanTestEmailAccount
         {

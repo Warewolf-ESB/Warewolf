@@ -76,10 +76,7 @@ namespace Dev2.Security
             return x;
         }
 
-        public override bool IsAuthorized(IAuthorizationRequest request)
-        {
-            return false;
-        }
+        public override bool IsAuthorized(IAuthorizationRequest request) => false;
 
         protected override void OnDisposed()
         {

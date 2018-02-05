@@ -85,11 +85,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         public DrawingImage Icon => _icon ?? (_icon= GetImage(Tool.Icon, Tool.IconUri));
 
-        DrawingImage GetImage(string icon,string iconUri)
-        {
-           return (DrawingImage)((ResourceDictionary)Application.LoadComponent(new Uri(iconUri,
+        DrawingImage GetImage(string icon, string iconUri) => (DrawingImage)((ResourceDictionary)Application.LoadComponent(new Uri(iconUri,
                UriKind.RelativeOrAbsolute)))[icon];
-        }
 
         public IWarewolfType Designer => Tool.Designer;
 

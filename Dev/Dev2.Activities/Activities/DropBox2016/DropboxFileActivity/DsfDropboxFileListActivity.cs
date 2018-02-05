@@ -101,10 +101,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             base.ExecuteTool(dataObject, update);
         }
 
-        public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
-        {
-            return singleExecutor;
-        }
+        public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor) => singleExecutor;
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
@@ -157,10 +154,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             }
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         #region Overrides of DsfBaseActivity
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)

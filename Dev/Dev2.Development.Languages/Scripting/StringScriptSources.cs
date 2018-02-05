@@ -18,11 +18,8 @@ public class StringScriptSources : IStringScriptSources
             _fileScriptSources.Add(fileScriptSource);
         }
     }
-    
-    public IList<FileScriptSource> GetFileScriptSources()
-    {
-        return _fileScriptSources;
-    }
+
+    public IList<FileScriptSource> GetFileScriptSources() => _fileScriptSources;
 }
 
 public interface IStringScriptSources

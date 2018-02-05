@@ -60,10 +60,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { RecordsLength };
-        }
+        public override List<string> GetOutputs() => new List<string> { RecordsLength };
 
         public bool TreatNullAsZero { get; set; }
 
@@ -186,7 +183,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -199,7 +196,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetDebugOutputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -231,15 +228,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(RecordsetName);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(RecordsetName);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(RecordsLength);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(RecordsLength);
 
         #endregion
 

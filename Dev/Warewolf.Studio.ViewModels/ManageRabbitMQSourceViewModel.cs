@@ -107,14 +107,14 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override void FromModel(IRabbitMQServiceSourceDefinition rabbitMQServiceSource)
+        public override void FromModel(IRabbitMQServiceSourceDefinition source)
         {
-            HostName = rabbitMQServiceSource.HostName;
-            Port = rabbitMQServiceSource.Port;
-            UserName = rabbitMQServiceSource.UserName;
-            Password = rabbitMQServiceSource.Password;
-            VirtualHost = rabbitMQServiceSource.VirtualHost;
-            ResourceName = rabbitMQServiceSource.ResourceName;
+            HostName = source.HostName;
+            Port = source.Port;
+            UserName = source.UserName;
+            Password = source.Password;
+            VirtualHost = source.VirtualHost;
+            ResourceName = source.ResourceName;
         }
 
         public override IRabbitMQServiceSourceDefinition ToModel()
@@ -137,10 +137,7 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        public override bool CanSave()
-        {
-            return TestPassed;
-        }
+        public override bool CanSave() => TestPassed;
 
         public bool CanTest()
         {
@@ -251,19 +248,16 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        IRabbitMQServiceSourceDefinition ToNewSource()
+        IRabbitMQServiceSourceDefinition ToNewSource() => new RabbitMQServiceSourceDefinition
         {
-            return new RabbitMQServiceSourceDefinition
-            {
-                ResourceName = ResourceName,
-                HostName = HostName,
-                Port = Port,
-                UserName = UserName,
-                Password = Password,
-                VirtualHost = VirtualHost,
-                ResourceID = _rabbitMQServiceSource?.ResourceID ?? Guid.NewGuid()
-            };
-        }
+            ResourceName = ResourceName,
+            HostName = HostName,
+            Port = Port,
+            UserName = UserName,
+            Password = Password,
+            VirtualHost = VirtualHost,
+            ResourceID = _rabbitMQServiceSource?.ResourceID ?? Guid.NewGuid()
+        };
 
         public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
 

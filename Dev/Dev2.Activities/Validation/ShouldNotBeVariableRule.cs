@@ -20,9 +20,6 @@ namespace Dev2.Validation
             return IsVariable(value) ? CreatError() : null;
         }
 
-        static bool IsVariable(string value)
-        {
-            return DataListUtil.IsFullyEvaluated(value);
-        }
+        static bool IsVariable(string value) => DataListUtil.IsFullyEvaluated(value);
     }
 }

@@ -61,7 +61,7 @@ namespace Dev2.Studio.Interfaces
 
         Task<bool> LoadDialogAsync(string selectedId);
 
-        Task<bool> LoadDialogAsync(string selectedId, bool b, bool reloadCatalogue);
+        Task<bool> LoadDialogAsync(string selectedId, bool isDeploy, bool reloadCatalogue);
 
         Task<bool> LoadDialogAsync(Guid selectedPath);
         IExplorerTreeItem FindByPath(string path);

@@ -32,10 +32,7 @@ namespace Dev2.Services
             PopupController = popupController;
         }
 
-        public bool IsServiceRunning()
-        {
-            return ServiceManager.IsRunning();
-        }
+        public bool IsServiceRunning() => ServiceManager.IsRunning();
 
         public bool PromptUserToStartService()
         {

@@ -61,10 +61,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        public void DeployResources(IServer sourceEnviroment, IServer targetEnviroment, IDeployDto dto)
+        public void DeployResources(IServer targetEnviroment, IServer sourceEnviroment, IDeployDto dto)
         {
             Dev2Logger.Info($"Deploy Resources. Source:{sourceEnviroment.DisplayName} Destination:{targetEnviroment.Name}", GlobalConstants.WarewolfInfo);
-            _deployService.Deploy(dto, sourceEnviroment, targetEnviroment);
+            _deployService.Deploy(dto, targetEnviroment, sourceEnviroment);
         }
 
         public void Load()
@@ -215,9 +215,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression) => FindSingle(expression, false, false);
 
-        public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchPayload) => FindSingle(expression, fetchPayload, false);
+        public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition) => FindSingle(expression, fetchDefinition, false);
 
-        public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchPayload, bool prepairForDeployment)
+        public IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition, bool prepairForDeployment)
         {
             var func = expression?.Compile();
             if (func?.Method == null)
@@ -226,7 +226,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
             var result = _resourceModels.Find(func.Invoke);
 
-            if (result != null && (result.ResourceType == ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0 || fetchPayload))
+            if (result != null && (result.ResourceType == ResourceType.Service && result.WorkflowXaml != null && result.WorkflowXaml.Length > 0 || fetchDefinition))
             {
                 var msg = FetchResourceDefinition(_server, GlobalConstants.ServerWorkspaceID, result.ID, prepairForDeployment);
                 if (msg != null && !msg.HasError)
@@ -254,7 +254,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        public ExecuteMessage SaveToServer(IResourceModel instanceObj, string reason = "Save")
+        public ExecuteMessage SaveToServer(IResourceModel instanceObj) => SaveToServer(instanceObj, "Save");
+        public ExecuteMessage SaveToServer(IResourceModel instanceObj, string reason)
         {
             AddResourceIfNotExist(instanceObj);
             var saveResource = SaveResource(_server, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID, instanceObj.GetSavePath(), reason);
@@ -395,9 +396,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, _server.Connection.WorkspaceID);
         }
 
-        public void Add(IResourceModel instanceObj)
+        public void Add(IResourceModel resource)
         {
-            _resourceModels.Insert(_resourceModels.Count, instanceObj);
+            _resourceModels.Insert(_resourceModels.Count, resource);
         }
 
         public void ForceLoad()
@@ -437,10 +438,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return comsController;
         }
 
-        public bool IsInCache(Guid id)
-        {
-            return _cachedServices.Contains(id);
-        }
+        public bool IsInCache(Guid id) => _cachedServices.Contains(id);
 
         void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverId)
         {
@@ -569,14 +567,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return result;
         }
 
-        public TestSaveResult SaveTests(IResourceModel resource, List<IServiceTestModelTO> tests)
+        public TestSaveResult SaveTests(IResourceModel resourceId, List<IServiceTestModelTO> tests)
         {
             var comsController = GetCommunicationController?.Invoke("SaveTests");
             var serializer = new Dev2JsonSerializer();
             var message = new CompressedExecuteMessage();
             message.SetMessage(serializer.Serialize(tests));
-            comsController.AddPayloadArgument("resourceID", resource.ID.ToString());
-            comsController.AddPayloadArgument("resourcePath", string.IsNullOrEmpty(resource.Category) ? resource.ResourceName : resource.Category);
+            comsController.AddPayloadArgument("resourceID", resourceId.ID.ToString());
+            comsController.AddPayloadArgument("resourcePath", string.IsNullOrEmpty(resourceId.Category) ? resourceId.ResourceName : resourceId.Category);
             comsController.AddPayloadArgument("testDefinitions", serializer.SerializeToBuilder(message));
             var result = comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
             var res = serializer.Deserialize<TestSaveResult>(result?.Message);
@@ -822,12 +820,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var sources = comController.ExecuteCommand<List<T>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
             return sources;
         }
-        public List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list, bool onlyEditableFields)
+        public List<ISharepointFieldTo> GetSharepointListFields(ISharepointSource source, SharepointListTo list, bool onlyEditable)
         {
             var comController = new CommunicationController { ServiceName = "GetSharepointListFields" };
             comController.AddPayloadArgument("SharepointServer", _serializer.Serialize(source));
             comController.AddPayloadArgument("ListName", _serializer.Serialize(list.FullName));
-            comController.AddPayloadArgument("OnlyEditable", _serializer.Serialize(onlyEditableFields));
+            comController.AddPayloadArgument("OnlyEditable", _serializer.Serialize(onlyEditable));
             var fields = comController.ExecuteCommand<List<ISharepointFieldTo>>(_server.Connection, GlobalConstants.ServerWorkspaceID);
             return fields;
         }

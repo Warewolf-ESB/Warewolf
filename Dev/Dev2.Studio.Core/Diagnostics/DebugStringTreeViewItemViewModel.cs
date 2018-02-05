@@ -7,7 +7,7 @@ namespace Dev2.Studio.Core
             IsExpanded = false;
         }
 
-        protected override void Initialize(string content)
+        protected override void Initialize(string value)
         {
         }
     }

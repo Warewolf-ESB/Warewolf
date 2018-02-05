@@ -79,10 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return toReturn;
         }
 
-        DateTime GetDate(string key, Dictionary<string, StringBuilder> values)
-        {
-            return ParseDate(GetValue(key, values));
-        }
+        DateTime GetDate(string key, Dictionary<string, StringBuilder> values) => ParseDate(GetValue(key, values));
 
         StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
         {
@@ -104,13 +101,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        static DateTime ParseDate(string s)
-        {
-            return !string.IsNullOrEmpty(s) ?
+        static DateTime ParseDate(string s) => !string.IsNullOrEmpty(s) ?
                 DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) :
                 new DateTime();
-        }
-
 
         string GetUser(string message)
         {

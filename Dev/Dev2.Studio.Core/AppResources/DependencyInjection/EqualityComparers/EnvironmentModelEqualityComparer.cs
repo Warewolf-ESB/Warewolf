@@ -39,10 +39,7 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
             return x.Equals(y);
         }
 
-        public int GetHashCode(IServer obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(IServer obj) => obj.GetHashCode();
 
         #endregion Methods
 

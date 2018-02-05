@@ -21,16 +21,9 @@ namespace Dev2.DataList
 
     public class RsOpIsEmail : AbstractRecsetSearchValidation
     {
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
-        {
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => a => values.All(x => a.ToString().IsEmail());
 
-            return a => values.All(x => a.ToString().IsEmail());
-
-        }
-        public override string HandlesType()
-        {
-            return "Is Email";
-        }
+        public override string HandlesType() => "Is Email";
 
         public override int ArgumentCount => 1;
     }

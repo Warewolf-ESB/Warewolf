@@ -47,11 +47,11 @@ namespace Dev2.Models
             return controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, workSpaceId);
         }
 
-        public IExplorerRepositoryResult DeleteItem(IExplorerItem itemToRename, Guid workSpaceId)
+        public IExplorerRepositoryResult DeleteItem(IExplorerItem itemToDelete, Guid workSpaceId)
         {
             var controller = CommunicationControllerFactory.CreateController("DeleteItemService");
             var serializer = new Dev2JsonSerializer();
-            controller.AddPayloadArgument("itemToDelete", serializer.SerializeToBuilder(itemToRename).ToString());
+            controller.AddPayloadArgument("itemToDelete", serializer.SerializeToBuilder(itemToDelete).ToString());
             return controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, workSpaceId);
         }
 

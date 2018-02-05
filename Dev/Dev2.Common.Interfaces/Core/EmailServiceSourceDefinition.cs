@@ -51,10 +51,7 @@ namespace Dev2.Common.Interfaces.Core
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public bool Equals(IEmailServiceSource other)
-        {
-            return Equals(other as EmailServiceSourceDefinition);
-        }
+        public bool Equals(IEmailServiceSource other) => Equals(other as EmailServiceSourceDefinition);
 
         /// <summary>
         /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -97,15 +94,9 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(EmailServiceSourceDefinition left, EmailServiceSourceDefinition right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(EmailServiceSourceDefinition left, EmailServiceSourceDefinition right) => Equals(left, right);
 
-        public static bool operator !=(EmailServiceSourceDefinition left, EmailServiceSourceDefinition right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(EmailServiceSourceDefinition left, EmailServiceSourceDefinition right) => !Equals(left, right);
 
         #endregion
 

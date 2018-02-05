@@ -108,7 +108,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             Timeout = Int32.TryParse(properties["Timeout"], out int timeout) ? timeout : DefaultTimeout;
         }
 
-        public void Send(IExchangeEmailSender emailSender, ExchangeTestMessage testMessage, bool isHtml = true)
+        public void Send(IExchangeEmailSender emailSender, ExchangeTestMessage testMessage) => Send(emailSender, testMessage, true);
+        public void Send(IExchangeEmailSender emailSender, ExchangeTestMessage testMessage, bool isHtml)
         {
             InitializeService();
 
@@ -194,10 +195,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion ToXml
 
-        public bool Equals(IExchangeSource other)
-        {
-            return true;
-        }
+        public bool Equals(IExchangeSource other) => true;
     }
 
     public class ExchangeTestMessage

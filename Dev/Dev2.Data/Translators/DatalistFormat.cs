@@ -71,10 +71,7 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Overrides
-        public override string ToString()
-        {
-            return "Datalist Format [" + _formatName + "]";
-        }
+        public override string ToString() => "Datalist Format [" + _formatName + "]";
         #endregion
     }
 }

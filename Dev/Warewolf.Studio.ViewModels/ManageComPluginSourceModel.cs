@@ -29,21 +29,17 @@ namespace Warewolf.Studio.ViewModels
 
         public string ServerName { get; private set; }
 
-        public IList<IFileListing> GetComDllListings(IFileListing listing)
-        {
-            return _queryProxy.GetComDllListings(listing);
-        }
+        public IList<IFileListing> GetComDllListings(IFileListing listing) => _queryProxy.GetComDllListings(listing);
 
-        public void Save(IComPluginSource source)
+        public void Save(IComPluginSource toDbSource)
         {
-            _updateRepository.Save(source);
+            _updateRepository.Save(toDbSource);
         }
 
         public IComPluginSource FetchSource(Guid pluginSourceId)
         {
             var xaml = _queryProxy.FetchResourceXaml(pluginSourceId);
             var db = new ComPluginSource(xaml.ToXElement());
-
             var def = new ComPluginSourceDefinition(db);
             return def;
         }

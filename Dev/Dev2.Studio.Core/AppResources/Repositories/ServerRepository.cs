@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core
         static volatile IServerRepository _instance;
 
         static readonly object SyncInstance = new Object();
-        
+
         public static IServerRepository Instance
         {
             get
@@ -163,25 +163,25 @@ namespace Dev2.Studio.Core
 
         #region Save
 
-        public void Save(ICollection<IServer> environments)
+        public void Save(ICollection<IServer> instanceObjs)
         {
-            if (environments == null || environments.Count == 0)
+            if (instanceObjs == null || instanceObjs.Count == 0)
             {
                 return;
             }
-            foreach (var environmentModel in environments)
+            foreach (var environmentModel in instanceObjs)
             {
                 AddInternal(environmentModel);
             }
         }
 
-        public string Save(IServer environment)
+        public string Save(IServer instanceObj)
         {
-            if (environment == null)
+            if (instanceObj == null)
             {
                 return "Not Saved";
             }
-            AddInternal(environment);
+            AddInternal(instanceObj);
             return "Saved";
         }
 
@@ -189,13 +189,13 @@ namespace Dev2.Studio.Core
 
         #region Remove
 
-        public void Remove(ICollection<IServer> environments)
+        public void Remove(ICollection<IServer> instanceObjs)
         {
-            if (environments == null || environments.Count == 0)
+            if (instanceObjs == null || instanceObjs.Count == 0)
             {
                 return;
             }
-            foreach (var environmentModel in environments)
+            foreach (var environmentModel in instanceObjs)
             {
                 RemoveInternal(environmentModel);
             }
@@ -205,13 +205,13 @@ namespace Dev2.Studio.Core
             //
         }
 
-        public void Remove(IServer environment)
+        public void Remove(IServer instanceObj)
         {
-            if (environment == null)
+            if (instanceObj == null)
             {
                 return;
             }
-            RemoveInternal(environment);
+            RemoveInternal(instanceObj);
             //
             // NOTE: This should NEVER remove the environment source from the server 
             //       as this is done by the user via the explorer
@@ -230,9 +230,9 @@ namespace Dev2.Studio.Core
 
                 var tryReadFile = File.Exists(path) ? File.ReadAllText(path) : null;
 
-                
+
                 var xml = new XElement("Environments");
-                
+
                 var result = new List<Guid>();
 
                 if (!string.IsNullOrEmpty(tryReadFile))
@@ -248,12 +248,12 @@ namespace Dev2.Studio.Core
                                 result.Add(guid);
                             }
                         }
-                    }                    
+                    }
                     catch (Exception e)
                     {
                         Dev2Logger.Warn(e.Message, "Warewolf Warn");
                     }
-                    
+
                 }
 
                 return result;
@@ -330,7 +330,9 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region LoadInternal
+#pragma warning disable S2360 // Optional parameters should not be used
         protected virtual void LoadInternal(bool force = false)
+#pragma warning restore S2360 // Optional parameters should not be used
         {
             lock (RestoreLock)
             {
@@ -447,9 +449,9 @@ namespace Dev2.Studio.Core
             {
                 defaultEnvironment.Connect();
             }
-            
+
             catch (Exception err)
-            
+
             {
                 Dev2Logger.Info(err, "Warewolf Info");
                 //Swallow exception for localhost connection

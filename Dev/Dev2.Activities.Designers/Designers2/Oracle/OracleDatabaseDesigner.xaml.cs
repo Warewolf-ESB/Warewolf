@@ -21,11 +21,7 @@ namespace Dev2.Activities.Designers2.Oracle
             InitializeComponent();
         }
 
-        protected override OracleDatabaseDesignerViewModel CreateViewModel()
-        {
-            return new OracleDatabaseDesignerViewModel(ModelItem,new AsyncWorker(), new ViewPropertyBuilder());
-        }
-
+        protected override OracleDatabaseDesignerViewModel CreateViewModel() => new OracleDatabaseDesignerViewModel(ModelItem, new AsyncWorker(), new ViewPropertyBuilder());
     }
 }
 

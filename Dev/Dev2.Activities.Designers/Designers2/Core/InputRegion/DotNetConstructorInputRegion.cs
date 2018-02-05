@@ -157,17 +157,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         }
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
 
-        public RelayCommand ViewObjectResult
-        {
-            get
-            {
-                return _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
-                {
-                    var serviceInput = item as IServiceInput;
-                    ViewJsonObjects(serviceInput);
-                },o => true));
-            }
-        }
+        public RelayCommand ViewObjectResult => _viewObjectResult ?? (_viewObjectResult = new RelayCommand(item =>
+                                                              {
+                                                                  var serviceInput = item as IServiceInput;
+                                                                  ViewJsonObjects(serviceInput);
+                                                              }, o => true));
+
         void ViewJsonObjects(IServiceInput input)
         {
             JsonObjectsView?.ShowJsonString(JSONUtils.Format(JSONUtils.Format(input.Dev2ReturnType)));

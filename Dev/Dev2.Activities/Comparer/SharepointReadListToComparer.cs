@@ -20,9 +20,6 @@ namespace Dev2.Comparer
             return x.Equals(y);
         }
 
-        public int GetHashCode(ISharepointReadListTo obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(ISharepointReadListTo obj) => obj.GetHashCode();
     }
 }

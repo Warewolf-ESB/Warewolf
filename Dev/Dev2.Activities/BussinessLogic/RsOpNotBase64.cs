@@ -19,16 +19,10 @@ namespace Dev2.BussinessLogic
 
     public class RsOpNotBase64 : AbstractRecsetSearchValidation
     {
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
-        {
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => a => values.All(x => !a.ToString().IsBase64());
 
-            return a => values.All(x =>! a.ToString().IsBase64());
+        public override string HandlesType() => "Not Base64";
 
-        }
-        public override string HandlesType()
-        {
-            return "Not Base64";
-        }
         public override int ArgumentCount => 1;
     }
 }

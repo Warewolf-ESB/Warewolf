@@ -35,15 +35,9 @@ namespace Dev2.Common
             _escapeChar = escape;
         }
 
-        public bool IsFinalOp()
-        {
-            return false;
-        }
+        public bool IsFinalOp() => false;
 
-        public bool CanUseEnumerator(bool isReversed)
-        {
-            return !isReversed && _tokenParts.Length == 1;
-        }
+        public bool CanUseEnumerator(bool isReversed) => !isReversed && _tokenParts.Length == 1;
 
         public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
         {
@@ -112,7 +106,7 @@ namespace Dev2.Common
             return result.ToString();
         }
 
-        public string ExecuteOperation(CharEnumerator canidate, int startIdx, int len, bool isReversed)
+        public string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed)
         {
             var result = new StringBuilder();
 
@@ -123,8 +117,8 @@ namespace Dev2.Common
                     char tmp;
 
                     // fetch next value while
-                    while (canidate.MoveNext() &&
-                           ((tmp = canidate.Current) != _tokenParts[0] || SkipDueToEscapeChar(result.ToString())))
+                    while (parts.MoveNext() &&
+                           ((tmp = parts.Current) != _tokenParts[0] || SkipDueToEscapeChar(result.ToString())))
                     {
                         result.Append(tmp);
                     }

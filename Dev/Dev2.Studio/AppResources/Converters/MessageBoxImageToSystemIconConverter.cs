@@ -65,9 +65,6 @@ namespace Dev2.Studio.AppResources.Converters
             throw new NotImplementedException();
         }
 
-        BitmapSource BitmapSourceFromIcon(Icon icon)
-        {
-            return Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
-        }
+        BitmapSource BitmapSourceFromIcon(Icon icon) => Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
     }
 }

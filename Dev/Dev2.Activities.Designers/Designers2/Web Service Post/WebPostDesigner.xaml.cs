@@ -17,9 +17,6 @@ namespace Dev2.Activities.Designers2.Web_Service_Post
         {
             InitializeComponent();
         }
-        protected override WebServicePostViewModel CreateViewModel()
-        {
-            return new WebServicePostViewModel(ModelItem);
-        }
+        protected override WebServicePostViewModel CreateViewModel() => new WebServicePostViewModel(ModelItem);
     }
 }

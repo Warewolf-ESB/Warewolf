@@ -76,10 +76,7 @@ namespace Dev2.Data.Util
         /// <param name="exp">The exp.</param>
         /// <param name="idx">The idx.</param>
         /// <returns></returns>
-        public static string ReplaceStarWithFixedIndex(string exp, int idx)
-        {
-            return idx > 0 ? exp.Replace("(*)", RecordsetIndexOpeningBracket + idx + RecordsetIndexClosingBracket) : exp;
-        }
+        public static string ReplaceStarWithFixedIndex(string exp, int idx) => idx > 0 ? exp.Replace("(*)", RecordsetIndexOpeningBracket + idx + RecordsetIndexClosingBracket) : exp;
 
         /// <summary>
         ///
@@ -162,10 +159,7 @@ namespace Dev2.Data.Util
         /// </summary>
         /// <param name="val">The value.</param>
         /// <returns></returns>
-        public static string RemoveLanguageBrackets(string val)
-        {
-            return val.Replace("[", string.Empty).Replace("]", string.Empty);
-        }
+        public static string RemoveLanguageBrackets(string val) => val.Replace("[", string.Empty).Replace("]", string.Empty);
 
         /// <summary>
         /// Used to determine if a tag is a system tag or not
@@ -336,10 +330,7 @@ namespace Dev2.Data.Util
             return true;
         }
 
-        public static bool NotEncrypted(string value)
-        {
-            return string.IsNullOrEmpty(value) || IsFullyEvaluated(value);
-        }
+        public static bool NotEncrypted(string value) => string.IsNullOrEmpty(value) || IsFullyEvaluated(value);
 
         /// <summary>
         /// Is the expression evaluated
@@ -370,11 +361,7 @@ namespace Dev2.Data.Util
             return isXml && !isFragment && !isHtml;
         }
 
-        public static bool IsXml(string data, out bool isFragment)
-        {
-
-            return XmlHelper.IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
-        }
+        public static bool IsXml(string data, out bool isFragment) => XmlHelper.IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
 
         public static bool IsJson(string data)
         {
@@ -387,10 +374,7 @@ namespace Dev2.Data.Util
             return false;
         }
 
-        public static bool IsXmlOrJson(string data)
-        {
-            return IsJson(data) || IsXml(data);
-        }
+        public static bool IsXmlOrJson(string data) => IsJson(data) || IsXml(data);
 
         public static IList<string> GetAllPossibleExpressionsForFunctionOperations(string expression, IExecutionEnvironment env, out ErrorResultTO errors, int update)
         {
@@ -540,12 +524,9 @@ namespace Dev2.Data.Util
 
         public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
 
-        internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection)
-        {
-            return ioDirection == dev2ColumnArgumentDirection ||
+        internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection) => ioDirection == dev2ColumnArgumentDirection ||
                    ioDirection == enDev2ColumnArgumentDirection.Both &&
                    (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
-        }
 
         internal static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
         {

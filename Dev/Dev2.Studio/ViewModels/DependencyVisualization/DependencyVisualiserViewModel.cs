@@ -265,10 +265,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
         }
 
         public bool TextVisibility { get; set; }
-        public override object GetView(object context = null)
-        {
-            return _view;
-        }
+        public override object GetView(object context = null) => _view;
 
         protected override void OnViewLoaded(object view)
         {

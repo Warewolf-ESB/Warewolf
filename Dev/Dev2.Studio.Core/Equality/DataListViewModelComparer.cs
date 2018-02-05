@@ -20,9 +20,6 @@ namespace Dev2.Studio.Core.Equality
             return x.Equals(y);
         }
 
-        public int GetHashCode(IDataListViewModel obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(IDataListViewModel obj) => 1;
     }
 }

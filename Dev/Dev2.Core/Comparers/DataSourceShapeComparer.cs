@@ -20,9 +20,6 @@ namespace Dev2.Comparers
             return x.Equals(y);
         }
 
-        public int GetHashCode(IDataSourceShape obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(IDataSourceShape obj) => obj.GetHashCode();
     }
 }

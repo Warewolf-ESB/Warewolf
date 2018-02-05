@@ -83,11 +83,7 @@ namespace Dev2.Development.Languages.Scripting
 
         public ScriptRuntimeSetup RuntimeSetup { get; set; }
 
-        public enScriptType HandlesType()
-        {
-            return enScriptType.Ruby;
-        }
-
+        public enScriptType HandlesType() => enScriptType.Ruby;
 
         [AttributeUsage(AttributeTargets.Method)]
         [Serializable]
@@ -158,15 +154,9 @@ namespace Dev2.Development.Languages.Scripting
                     set { cwd = value; }
                 }
 
-                public override bool FileExists(string path)
-                {
-                    return false;
-                }
+                public override bool FileExists(string path) => false;
 
-                public override bool DirectoryExists(string path)
-                {
-                    return false;
-                }
+                public override bool DirectoryExists(string path) => false;
             }
         }
     }

@@ -32,10 +32,7 @@ namespace Dev2.Activities
             DisplayName = "POST Web Method";
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {

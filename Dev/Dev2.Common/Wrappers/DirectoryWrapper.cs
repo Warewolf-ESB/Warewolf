@@ -36,34 +36,17 @@ namespace Dev2.Common.Wrappers
             return path;
         }
 
-        public string[] GetLogicalDrives()
-        {
-            return Directory.GetLogicalDrives();
-        }
+        public string[] GetLogicalDrives() => Directory.GetLogicalDrives();
 
-        public bool Exists(string path)
-        {
-            return Directory.Exists(path);
-        }
+        public bool Exists(string path) => Directory.Exists(path);
 
-        public string[] GetFileSystemEntries(string path)
-        {
-            return Directory.GetFileSystemEntries(path);
-        }
+        public string[] GetFileSystemEntries(string path) => Directory.GetFileSystemEntries(path);
 
-        public string[] GetFileSystemEntries(string path, string searchPattern)
-        {
-            return Directory.GetFileSystemEntries(path, searchPattern);
-        }
+        public string[] GetFileSystemEntries(string path, string searchPattern) => Directory.GetFileSystemEntries(path, searchPattern);
 
-        public string[] GetDirectories(string path)
-        {
-            return Directory.GetDirectories(path);
-        }
-        public string[] GetDirectories(string path, string pattern)
-        {
-            return Directory.GetDirectories(path, pattern, System.IO.SearchOption.AllDirectories);
-        }
+        public string[] GetDirectories(string workspacePath) => Directory.GetDirectories(workspacePath);
+
+        public string[] GetDirectories(string path, string pattern) => Directory.GetDirectories(path, pattern, System.IO.SearchOption.AllDirectories);
 
         public static string GetDirectoryName(string path)
         {

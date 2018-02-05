@@ -54,12 +54,9 @@ namespace Dev2.Common.ExtMethods
 
             return result;
         }
-        
-        public static bool IsWholeNumber(this string payload)
-        {
-            return IsWholeNumber(payload, out int value);
-        }
-        
+
+        public static bool IsWholeNumber(this string payload) => IsWholeNumber(payload, out int value);
+
         public static bool IsWholeNumber(this string payload, out int value)
         {
             if (int.TryParse(payload, out value))
@@ -71,12 +68,9 @@ namespace Dev2.Common.ExtMethods
             }
             return false;
         }
-        
-        public static bool IsRealNumber(this string payload, out int value)
-        {
-            return int.TryParse(payload, out value);
-        }
-        
+
+        public static bool IsRealNumber(this string payload, out int value) => int.TryParse(payload, out value);
+
         public static bool IsNumeric(this string payload)
         {
             return IsNumeric(payload, out decimal value);
@@ -107,13 +101,10 @@ namespace Dev2.Common.ExtMethods
 
             return decimal.TryParse(payload, out value);
         }
-        
-        public static bool IsAlphaNumeric(this string payload)
-        {
-            return !string.IsNullOrEmpty(payload) &&
+
+        public static bool IsAlphaNumeric(this string payload) => !string.IsNullOrEmpty(payload) &&
                    (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload));
-        }
-        
+
         public static bool IsEmail(this string payload)
         {
             if (string.IsNullOrEmpty(payload))
@@ -125,12 +116,9 @@ namespace Dev2.Common.ExtMethods
 
             return result;
         }
-        
-        public static bool IsBinary(this string payload)
-        {
-            return IsBinaryField.IsMatch(payload);
-        }
-        
+
+        public static bool IsBinary(this string payload) => IsBinaryField.IsMatch(payload);
+
         public static bool IsBase64(this string payload)
         {
             var result = false;

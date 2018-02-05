@@ -34,7 +34,8 @@ namespace Dev2.Studio.Interfaces
         void UpdateServer(IServer server);
         bool IsLoaded { get; }
         bool DoesResourceExistInRepo(IResourceModel resource);
-        ExecuteMessage SaveToServer(IResourceModel instanceObj, string reason = "Save");
+        ExecuteMessage SaveToServer(IResourceModel instanceObj);
+        ExecuteMessage SaveToServer(IResourceModel instanceObj, string reason);
         void DeployResources(IServer targetEnviroment, IServer sourceEnviroment, IDeployDto dto);
         ExecuteMessage FetchResourceDefinition(IServer targetEnv, Guid workspaceId, Guid resourceModelId, bool prepaireForDeployment);
         List<T> FindSourcesByType<T>(IServer targetEnvironment, enSourceType sourceType);

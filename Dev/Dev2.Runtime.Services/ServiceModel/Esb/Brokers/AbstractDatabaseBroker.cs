@@ -124,28 +124,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return result;
         }
 
-        protected virtual TDbServer CreateDbServer(DbSource dbSource)
-        {
-            return new TDbServer();
-        }
+        protected virtual TDbServer CreateDbServer(DbSource dbSource) => new TDbServer();
 
-        protected virtual string NormalizeXmlPayload(string payload)
-        {
-            return payload.Replace("&lt;", "<").Replace("&gt;", ">");
-        }
+        protected virtual string NormalizeXmlPayload(string payload) => payload.Replace("&lt;", "<").Replace("&gt;", ">");
 
-        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode, string executeAction)
-        {
-            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction);
-        }
+        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode, string executeAction) => new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction);
 
-        protected static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
+        protected static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter) => new MethodParameter
         {
-            return new MethodParameter
-            {
-                Name = parameter.ParameterName.Replace("@", "")
-            };
-        }
+            Name = parameter.ParameterName.Replace("@", "")
+        };
 
         protected static IDbCommand CommandFromServiceMethod(TDbServer server, ServiceMethod serviceMethod)
         {

@@ -114,12 +114,12 @@ namespace Dev2.Studio.Core.DataList
             return accList;
         }
 
-        public void RemoveUnusedChildComplexObjects(IComplexObjectItemModel parentItemModel, IComplexObjectItemModel itemToRemove)
+        public void RemoveUnusedChildComplexObjects(IComplexObjectItemModel parentItemModel, IComplexObjectItemModel complexObjectItemModel)
         {
             for (int index = parentItemModel.Children.Count - 1; index >= 0; index--)
             {
-                RemoveUnusedChildComplexObjects(parentItemModel.Children[index], itemToRemove);
-                parentItemModel.Children.Remove(itemToRemove);
+                RemoveUnusedChildComplexObjects(parentItemModel.Children[index], complexObjectItemModel);
+                parentItemModel.Children.Remove(complexObjectItemModel);
             }
         }
 
@@ -373,10 +373,7 @@ namespace Dev2.Studio.Core.DataList
             return equals;
         }
 
-        public int GetHashCode(string obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(string obj) => 1;
 
         #endregion
     }

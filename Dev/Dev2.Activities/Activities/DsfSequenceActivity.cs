@@ -67,16 +67,10 @@ namespace Dev2.Activities
             set;
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
-        {
-            return DebugItem.EmptyList;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
 
         #endregion Get Inputs/Outputs
 
@@ -293,10 +287,7 @@ namespace Dev2.Activities
             dataObject.ForEachNestingLevel--;
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.Sequence;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.Sequence;
 
         #endregion
 

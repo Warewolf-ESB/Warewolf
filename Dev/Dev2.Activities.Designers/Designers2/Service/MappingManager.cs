@@ -220,10 +220,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        ErrorInfo CreateMappingIsRequiredMessage()
-        {
-            return new ErrorInfo { ErrorType = ErrorType.Critical, FixData = CreateFixedData(), FixType = FixType.IsRequiredChanged, InstanceID = _serviceDesignerViewModel.UniqueID };
-        }
+        ErrorInfo CreateMappingIsRequiredMessage() => new ErrorInfo { ErrorType = ErrorType.Critical, FixData = CreateFixedData(), FixType = FixType.IsRequiredChanged, InstanceID = _serviceDesignerViewModel.UniqueID };
 
         string CreateFixedData()
         {

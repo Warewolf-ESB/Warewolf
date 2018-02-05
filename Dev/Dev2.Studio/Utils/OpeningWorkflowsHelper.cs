@@ -59,20 +59,14 @@ namespace Dev2.Utils
         /// Fetches the opening keys.
         /// </summary>
         /// <returns></returns>
-        public static List<WorkSurfaceKey> FetchOpeningKeys()
-        {
-            return _resourcesCurrentlyInOpeningState;
-        }
+        public static List<WorkSurfaceKey> FetchOpeningKeys() => _resourcesCurrentlyInOpeningState;
 
         /// <summary>
         /// Determines whether [is workflow waitingfor designer load] [the specified work surface key].
         /// </summary>
         /// <param name="workSurfaceKey">The work surface key.</param>
         /// <returns></returns>
-        public static bool IsWorkflowWaitingforDesignerLoad(WorkSurfaceKey workSurfaceKey)
-        {
-            return _resourcesCurrentlyInOpeningStateWaitingForLoad.Contains(workSurfaceKey);
-        }
+        public static bool IsWorkflowWaitingforDesignerLoad(WorkSurfaceKey workSurfaceKey) => _resourcesCurrentlyInOpeningStateWaitingForLoad.Contains(workSurfaceKey);
 
         /// <summary>
         /// Removes the workflow waiting for first focus loss.

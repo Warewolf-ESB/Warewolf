@@ -126,14 +126,11 @@ namespace Dev2.Runtime.Hosting
             return new StringBuilder(_file.ReadAllText(v));
         }
 
-        static IExplorerItem CreateVersionFromFilePath(string path, IResource resource, string resourcePath)
+        static IExplorerItem CreateVersionFromFilePath(string path, IResource resource, string resourcePath) => new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, "Version", new List<IExplorerItem>(), Permissions.View, resourcePath)
         {
-            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, "Version", new List<IExplorerItem>(), Permissions.View, resourcePath)
-            {
-                VersionInfo = CreateVersionInfoFromFilePath(path, resource.ResourceID),
-                IsResourceVersion = true
-            };
-        }
+            VersionInfo = CreateVersionInfoFromFilePath(path, resource.ResourceID),
+            IsResourceVersion = true
+        };
 
         static IVersionInfo CreateVersionInfoFromFilePath(string path, Guid resourceId)
         {
@@ -267,10 +264,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        static string GetDateString(DateTime dateTimeStamp)
-        {
-            return dateTimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
-        }
+        static string GetDateString(DateTime dateTimeStamp) => dateTimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
 
         public void CleanUpOldVersionControlStructure(IDirectory directory)
         {

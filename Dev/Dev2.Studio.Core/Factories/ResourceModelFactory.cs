@@ -24,13 +24,10 @@ namespace Dev2.Studio.Core.Factories
 {
     public static class ResourceModelFactory
     {
-        public static IContextualResourceModel CreateResourceModel(IServer environment)
+        public static IContextualResourceModel CreateResourceModel(IServer environment) => new ResourceModel(environment)
         {
-            return new ResourceModel(environment)
-            {
-                UserPermissions = Permissions.Contribute
-            };
-        }
+            UserPermissions = Permissions.Contribute
+        };
 
         public static IContextualResourceModel CreateResourceModel(IServer environment, IResource resource, XDocument xElement)
         {
@@ -48,10 +45,7 @@ namespace Dev2.Studio.Core.Factories
             return null;
         }
 
-        public static IContextualResourceModel CreateResourceModel(IServer environment, string resourceType, string displayName)
-        {
-            return CreateResourceModel(environment, resourceType, "", displayName);
-        }
+        public static IContextualResourceModel CreateResourceModel(IServer environment, string resourceType, string displayName) => CreateResourceModel(environment, resourceType, "", displayName);
 
         public static IContextualResourceModel CreateResourceModel(IServer environment, string resourceType, string resourceName, string displayName)
         {

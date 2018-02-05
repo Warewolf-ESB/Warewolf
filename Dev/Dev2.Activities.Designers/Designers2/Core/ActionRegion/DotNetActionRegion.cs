@@ -65,13 +65,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                if (!Equals(value, _selectedAction) && _selectedAction != null)
+                if (!Equals(value, _selectedAction) && _selectedAction != null && !string.IsNullOrEmpty(_selectedAction.Method))
                 {
-                    if (!string.IsNullOrEmpty(_selectedAction.Method))
-                    {
-                        StorePreviousValues(_selectedAction.GetIdentifier());
-                    }
+                    StorePreviousValues(_selectedAction.GetIdentifier());
                 }
+
                 if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
@@ -164,19 +162,16 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new DotNetActionRegion
         {
-            return new DotNetActionRegion
+            IsEnabled = IsEnabled,
+            SelectedAction = SelectedAction == null ? null : new PluginAction
             {
-                IsEnabled = IsEnabled,
-                SelectedAction = SelectedAction == null ? null : new PluginAction
-                {
-                    Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
-                    FullName = SelectedAction.FullName,
-                    Method = SelectedAction.Method
-                }
-            };
-        }
+                Inputs = SelectedAction?.Inputs.Select(a => new ServiceInput(a.Name, a.Value) as IServiceInput).ToList(),
+                FullName = SelectedAction.FullName,
+                Method = SelectedAction.Method
+            }
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {
@@ -227,10 +222,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        bool IsAPreviousValue(IPluginAction value)
-        {
-            return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
-        }
+        bool IsAPreviousValue(IPluginAction value) => value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
 
         public IList<string> Errors
         {

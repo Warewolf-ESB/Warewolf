@@ -706,18 +706,15 @@ namespace Dev2.ViewModels.Merge
             };
         }
 
-        static MergeToolModel EmptyConflictViewModel(Guid uniqueId, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        static MergeToolModel EmptyConflictViewModel(Guid uniqueId, IWorkflowDesignerViewModel workflowDesignerViewModel) => new MergeToolModel
         {
-            return new MergeToolModel
-            {
-                ModelItem = null,
-                WorkflowDesignerViewModel = workflowDesignerViewModel,
-                NodeLocation = new Point(),
-                IsMergeEnabled = false,
-                IsMergeVisible = false,
-                UniqueId = uniqueId
-            };
-        }
+            ModelItem = null,
+            WorkflowDesignerViewModel = workflowDesignerViewModel,
+            NodeLocation = new Point(),
+            IsMergeEnabled = false,
+            IsMergeVisible = false,
+            UniqueId = uniqueId
+        };
 
         bool All(Func<IConflict, bool> check)
         {

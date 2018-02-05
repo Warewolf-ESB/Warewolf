@@ -79,20 +79,11 @@ namespace Dev2.Activities.Specs.Permissions
 
         }
 
-        static string GetUserGroup()
-        {
-            return ConfigurationManager.AppSettings["userGroup"];
-        }
+        static string GetUserGroup() => ConfigurationManager.AppSettings["userGroup"];
 
-        static string GetSecuritySpecsPassword()
-        {
-            return ConfigurationManager.AppSettings["SecuritySpecsPassword"];
-        }
+        static string GetSecuritySpecsPassword() => ConfigurationManager.AppSettings["SecuritySpecsPassword"];
 
-        static string GetSecuritySpecsUser()
-        {
-            return ConfigurationManager.AppSettings["SecuritySpecsUser"];
-        }
+        static string GetSecuritySpecsUser() => ConfigurationManager.AppSettings["SecuritySpecsUser"];
 
         [Given(@"it has ""(.*)"" with ""(.*)""")]
         public void GivenItHasWith(string groupName, string groupRights)

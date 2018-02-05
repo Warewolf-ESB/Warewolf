@@ -272,11 +272,8 @@ namespace Dev2.Studio.Core.Models.DataList
         #endregion
 
         #region Overrides of DataListItemModel
-        
-        public override string ToString()
-        {
-            return DisplayName;
-        }
+
+        public override string ToString() => DisplayName;
 
         #endregion
 
@@ -312,9 +309,6 @@ namespace Dev2.Studio.Core.Models.DataList
             return Equals((IComplexObjectItemModel)obj);
         }
 
-        public override int GetHashCode()
-        {
-            return 1;
-        }
+        public override int GetHashCode() => 1;
     }
 }

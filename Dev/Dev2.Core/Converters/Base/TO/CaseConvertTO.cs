@@ -109,15 +109,9 @@ namespace Dev2
             OnPropertyChanged("CanAdd");
         }
 
-        public bool CanRemove()
-        {
-            return string.IsNullOrWhiteSpace(StringToConvert);
-        }
+        public bool CanRemove() => string.IsNullOrWhiteSpace(StringToConvert);
 
-        public bool CanAdd()
-        {
-            return !string.IsNullOrWhiteSpace(StringToConvert);
-        }
+        public bool CanAdd() => !string.IsNullOrWhiteSpace(StringToConvert);
 
         public void ClearRow()
         {

@@ -121,13 +121,13 @@ namespace Warewolf.Studio.ViewModels
         {
         }
 
-        public override void FromModel(IPluginSource pluginSource)
+        public override void FromModel(IPluginSource source)
         {
-            Name = pluginSource.Name;
-            Path = pluginSource.Path;
-            FileSystemAssemblyName = pluginSource.FileSystemAssemblyName;
-            ConfigFilePath = pluginSource.ConfigFilePath;
-            GACAssemblyName = pluginSource.GACAssemblyName;
+            Name = source.Name;
+            Path = source.Path;
+            FileSystemAssemblyName = source.FileSystemAssemblyName;
+            ConfigFilePath = source.ConfigFilePath;
+            GACAssemblyName = source.GACAssemblyName;
         }
 
         public string FileSystemAssemblyName
@@ -356,19 +356,15 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        IPluginSource ToNewSource()
+        IPluginSource ToNewSource() => new PluginSourceDefinition
         {
-            return new PluginSourceDefinition
-            {
-                Name = ResourceName,
-                Path = Path,
-                FileSystemAssemblyName = _fileSystemAssemblyName,
-                ConfigFilePath = _configFilePath,
-                GACAssemblyName = _gacAssemblyName,
-                Id = _pluginSource?.Id ?? Guid.NewGuid()
-            };
-
-        }
+            Name = ResourceName,
+            Path = Path,
+            FileSystemAssemblyName = _fileSystemAssemblyName,
+            ConfigFilePath = _configFilePath,
+            GACAssemblyName = _gacAssemblyName,
+            Id = _pluginSource?.Id ?? Guid.NewGuid()
+        };
 
         public IRequestServiceNameViewModel RequestServiceNameViewModel
         {

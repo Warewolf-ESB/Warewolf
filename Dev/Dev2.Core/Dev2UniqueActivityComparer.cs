@@ -19,9 +19,6 @@ namespace Dev2
             return x.UniqueID.Equals(y.UniqueID);
         }
 
-        public int GetHashCode(IDev2Activity obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(IDev2Activity obj) => obj.GetHashCode();
     }
 }

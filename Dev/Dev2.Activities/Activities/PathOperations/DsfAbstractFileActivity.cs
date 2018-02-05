@@ -31,14 +31,7 @@ using Warewolf.Storage.Interfaces;
 
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
-
 {
-    /// <summary>
-    /// PBI : 1172
-    /// Status : New
-    /// Purpose : To provide a base activity for all file activities to inherit from
-    /// </summary>
     public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify, IEquatable<DsfAbstractFileActivity>
     {
 
@@ -153,15 +146,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
-
-        /// <summary>
-        /// Status : New
-        /// Purpose : To provide an overidable concrete method to execute an activity's logic through
-        /// </summary>
-        /// <param name="context">The context.</param>
-        /// <param name="error">The error.</param>
-        /// <param name="update"></param>
-        /// <returns></returns>
+        
         protected abstract IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
 
         #region Properties
@@ -222,10 +207,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             set;
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
+
         /// <summary>
         /// Gets or sets a value indicating whether this instance is not cert verifiable.
         /// </summary>
@@ -241,7 +224,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -250,7 +233,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
 
             foreach (IDebugItem debugOutput in _debugOutputs)
@@ -288,10 +271,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             AddDebugInputItem(new DebugItemStaticDataParams(GetBlankedOutPassword(password), label));
         }
 
-        static string GetBlankedOutPassword(string password)
-        {
-            return "".PadRight((password ?? "").Length, '*');
-        }
+        static string GetBlankedOutPassword(string password) => "".PadRight((password ?? "").Length, '*');
 
         public bool Equals(DsfAbstractFileActivity other)
         {

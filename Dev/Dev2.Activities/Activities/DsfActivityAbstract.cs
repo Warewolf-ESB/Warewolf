@@ -62,12 +62,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
-        protected DsfActivityAbstract(string displayName, bool isAsync = false)
+        protected DsfActivityAbstract(string displayName)
+            : this(displayName, false)
+        {
+        }
+
+        protected DsfActivityAbstract(string displayName, bool isAsync)
             : this(displayName, DebugDispatcher.Instance, isAsync)
         {
         }
 
-        protected DsfActivityAbstract(string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false)
+        protected DsfActivityAbstract(string displayName, IDebugDispatcher debugDispatcher, bool isAsync)
             : base(isAsync, displayName, debugDispatcher)
         {
 
@@ -92,11 +97,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
 
 
-        public Activity Create(DependencyObject target)
-        {
-            return this;
-        }
-        
+        public Activity Create(DependencyObject target) => this;
+
         public virtual void Resumed(NativeActivityContext context, Bookmark bookmark, object value)
         {
 

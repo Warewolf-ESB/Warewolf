@@ -31,9 +31,6 @@ namespace Dev2.Comparer
                 && Equals(x.Path,y.Path);
         }
 
-        public int GetHashCode(DataMergeDTO obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(DataMergeDTO obj) => 1;
     }
 }

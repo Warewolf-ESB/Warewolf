@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers2.Decision
 
         public void DeleteRow(DecisionTO row)
         {
-            if (row != Collection.Last())
+            if (!row.Equals(Collection.Last()))
             {
                 Collection.Remove(row);
                 UpdateDecisionDisplayName((DecisionTO)Tos[0]);

@@ -134,7 +134,9 @@ namespace Dev2.ViewModels.Merge
         public IDataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
 
-        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, IWorkflowDesignerViewModel workflowDesignerViewModel, string parentLabelDescription = "")
+        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, IWorkflowDesignerViewModel workflowDesignerViewModel) => GetModel(modelItem, node, parentItem, workflowDesignerViewModel, "");
+
+        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, IWorkflowDesignerViewModel workflowDesignerViewModel, string parentLabelDescription)
         {
             if (modelItem == null || node == null || node.Activity == null)
             {

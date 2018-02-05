@@ -28,22 +28,12 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.Hosting
 {
-
-    /// <summary>
-    /// Transfer FileStream and ResourcePath together
-    /// </summary>
-
     class ResourceBuilderTO
-
     {
         internal string FilePath;
         internal FileStream FileStream;
     }
 
-
-    /// <summary>
-    /// Used to build up the resource catalog ;)
-    /// </summary>
     public class ResourceCatalogBuilder
     {
         private readonly List<IResource> _resources = new List<IResource>();
@@ -150,7 +140,7 @@ namespace Dev2.Runtime.Hosting
                     var result = xml?.ToStringBuilder();
 
                     var isValid = result != null && HostSecurityProvider.Instance.VerifyXml(result);
-                    var typeName = xml.AttributeSafe("Type");
+                    var typeName = xml?.AttributeSafe("Type");
                     if (isValid)
                     {
                         //TODO: Remove this after V1 is released. All will be updated.

@@ -33,22 +33,22 @@ namespace Dev2.Activities
         }
 
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            errors = new ErrorResultTO();
+            tmpErrors = new ErrorResultTO();
             if (Namespace == null)
             {
-                errors.AddError(ErrorResource.NoNamespaceSelected);
+                tmpErrors.AddError(ErrorResource.NoNamespaceSelected);
                 return;
             }
             if (Method == null)
             {
-                errors.AddError(ErrorResource.NoMethodSelected);
+                tmpErrors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
 
                 
-            ExecuteService(update, out errors, Method, Namespace, dataObject);
+            ExecuteService(update, out tmpErrors, Method, Namespace, dataObject);
         }
 
         protected void ExecuteService(int update, out ErrorResultTO errors, IPluginAction method, INamespaceItem namespaceItem, IDSFDataObject dataObject)
@@ -110,10 +110,7 @@ namespace Dev2.Activities
         }
 
         public IResponseManager ResponseManager { get; set; }
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(ISimpePlugin other)
         {

@@ -30,13 +30,7 @@ using Warewolf.Storage;
 
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
-    /// <summary>
-    /// PBI : 1172
-    /// Status : New
-    /// Purpose : To provide an activity that can write a file and its contents via FTP, FTPS and file system
-    /// </summary>
     [ToolDescriptorInfo("FileFolder-Write", "Write File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Write_File")]
     public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite,IEquatable<DsfFileWrite>
     {
@@ -49,42 +43,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         protected override bool AssignEmptyOutputsToRecordSet => true;
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject dataObject, out ErrorResultTO allErrors, int update)
+        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
 
-            allErrors = new ErrorResultTO();
+            error = new ErrorResultTO();
             var colItr = new WarewolfListIterator();
 
             //get all the possible paths for all the string variables
-            var inputItr = new WarewolfIterator(dataObject.Environment.Eval(OutputPath, update));
+            var inputItr = new WarewolfIterator(context.Environment.Eval(OutputPath, update));
             colItr.AddVariableToIterateOn(inputItr);
 
-            var unameItr = new WarewolfIterator(dataObject.Environment.Eval(Username, update));
+            var unameItr = new WarewolfIterator(context.Environment.Eval(Username, update));
             colItr.AddVariableToIterateOn(unameItr);
 
-            var passItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
+            var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword,update));
             colItr.AddVariableToIterateOn(passItr);
 
-            var privateKeyItr = new WarewolfIterator(dataObject.Environment.Eval(PrivateKeyFile, update));
+            var privateKeyItr = new WarewolfIterator(context.Environment.Eval(PrivateKeyFile, update));
             colItr.AddVariableToIterateOn(privateKeyItr);
 
-            var contentItr =new WarewolfIterator(dataObject.Environment.Eval(FileContents, update));
+            var contentItr =new WarewolfIterator(context.Environment.Eval(FileContents, update));
             colItr.AddVariableToIterateOn(contentItr);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
 
-            if(dataObject.IsDebugMode())
+            if(context.IsDebugMode())
             {
-                AddDebugInputItem(OutputPath, "Output Path", dataObject.Environment, update);
+                AddDebugInputItem(OutputPath, "Output Path", context.Environment, update);
                 AddDebugInputItem(new DebugItemStaticDataParams(GetMethod(), "Method"));
-                AddDebugInputItemUserNamePassword(dataObject.Environment, update);
+                AddDebugInputItemUserNamePassword(context.Environment, update);
                 if (!string.IsNullOrEmpty(PrivateKeyFile))
                 {
-                    AddDebugInputItem(PrivateKeyFile, "Private Key File", dataObject.Environment, update);
+                    AddDebugInputItem(PrivateKeyFile, "Private Key File", context.Environment, update);
                 }
-                AddDebugInputItem(FileContents, "File Contents", dataObject.Environment, update);
+                AddDebugInputItem(FileContents, "File Contents", context.Environment, update);
             }
 
             while(colItr.HasMoreData())
@@ -100,7 +94,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 try
                 {
-                    if(allErrors.HasErrors())
+                    if(error.HasErrors())
                     {
                         outputs[0].OutputStrings.Add(null);
                     }
@@ -113,7 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 catch(Exception e)
                 {
                     outputs[0].OutputStrings.Add(null);
-                    allErrors.AddError(e.Message);
+                    error.AddError(e.Message);
                     break;
                 }
             }
@@ -201,10 +195,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        string GetMethod()
-        {
-            return GetCorrectWriteType().GetDescription();
-        }
+        string GetMethod() => GetCorrectWriteType().GetDescription();
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -235,15 +226,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(OutputPath, FileContents);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(OutputPath, FileContents);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         public bool Equals(DsfFileWrite other)
         {

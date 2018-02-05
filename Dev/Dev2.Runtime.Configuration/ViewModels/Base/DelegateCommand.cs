@@ -48,10 +48,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         /// true if this command can be executed; otherwise, false.
         /// </returns>
         /// <param name="parameter">Data used by the command.  If the command does not require data to be passed, this object can be set to null.</param>
-        public bool CanExecute(object parameter)
-        {
-            return _canExecute == null || _canExecute(parameter);
-        }
+        public bool CanExecute(object parameter) => _canExecute == null || _canExecute(parameter);
 
         /// <summary>
         /// Defines the method to be called when the command is invoked.

@@ -26,11 +26,8 @@ namespace Dev2.Common.Interfaces.Core
         #endregion
 
         #region Implementation of IEquatable<IServerSource>
-        
-        public bool Equals(IServerSource other)
-        {
-            return Equals(other as ServerSource);
-        }
+
+        public bool Equals(IServerSource other) => Equals(other as ServerSource);
 
         #endregion
 

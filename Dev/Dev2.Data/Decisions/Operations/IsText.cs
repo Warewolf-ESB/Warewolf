@@ -26,9 +26,6 @@ namespace Dev2.Data.Decisions.Operations
 
         }
 
-        public Enum HandlesType()
-        {
-            return enDecisionType.IsText;
-        }
+        public Enum HandlesType() => enDecisionType.IsText;
     }
 }
