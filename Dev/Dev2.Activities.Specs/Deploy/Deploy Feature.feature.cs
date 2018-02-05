@@ -78,33 +78,7 @@ namespace Dev2.Activities.Specs.Deploy
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("localhost and destination server \"localwarewolfservercontainer\" are connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
- testRunner.And("I have a workflow \"OriginalName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "variable",
-                        "value"});
-            table1.AddRow(new string[] {
-                        "[[rec().a]]",
-                        "yes"});
-            table1.AddRow(new string[] {
-                        "[[rec().a]]",
-                        "no"});
-#line 10
- testRunner.And("\"OriginalName\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table1, "And ");
-#line 14
- testRunner.And("\"OriginalName\" contains Count Record \"CountRec\" on \"[[rec()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
- testRunner.When("\"OriginalName\" is Saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 16
- testRunner.And("I select and deploy resource from source server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
- testRunner.When("I rename \"OriginalName\" to \"RenamedResource\" and re deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 18
- testRunner.Then("I select and deploy resource from remote server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 19
- testRunner.Then("Remote server has updated name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("localhost and destination server \"remotewarewolfservercontainer\" are connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }
