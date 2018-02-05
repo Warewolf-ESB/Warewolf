@@ -95,9 +95,9 @@ Scenario: Merge Workflow Containing Removed tool with same Variable List
 	 Given I Load workflow "MergeRemovedTool" from "localhost"
 	 And I Load workflow version "1" of "MergeRemovedTool" from "localhost"	 
 	 When Merge Window is opened with local "MergeRemovedTool"
-	 Then Current workflow contains "5" tools
-	 And Different workflow contains "5" tools
-	 And Merge conflicts count is "5"
+	 Then Current workflow contains "6" tools
+	 And Different workflow contains "6" tools
+	 And Merge conflicts count is "6"
 	 And Merge variable conflicts is false
 	 And I select Current Tool
 	 And I select Current Arm
