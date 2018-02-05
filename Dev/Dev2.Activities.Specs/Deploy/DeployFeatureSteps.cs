@@ -54,10 +54,11 @@ namespace Dev2.Activities.Specs.Deploy
 
         private void ConnectToRemoteServerContainer()
         {
-            var arg = @"E:\Repos\SalamiArmyWarewolf\Dev\Dev2.Server\bin\Debug";
-            var tempTarFilePath = @"c:\gzip-server.tar.gz";
+            var arg = @"C:\Program Files (x86)\Warewolf\Server";
+            var tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
             if (!File.Exists(tempTarFilePath)) CreateTarGZ(tempTarFilePath, arg);
-            Upload("http://localhost:2375/build", File.ReadAllBytes(tempTarFilePath));
+            var result = Upload("http://test-load:2375/build", File.ReadAllBytes(tempTarFilePath));
+            Assert.IsNotNull(result);
         }
 
         private void CreateTarGZ(string tgzFilename, string sourceDirectory)
