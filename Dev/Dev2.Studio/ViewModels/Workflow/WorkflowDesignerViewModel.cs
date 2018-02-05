@@ -2883,10 +2883,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    var cases = parentNodeProperty?.Dictionary;
-                    cases.Remove(key);
-                    cases.Add(key, nodeItem);
-                    parentNodeProperty.SetValue(cases);
+                    if (parentNodeProperty != null)
+                    {
+                        var cases = parentNodeProperty.Dictionary;
+                        cases.Remove(key);
+                        cases.Add(key, nodeItem);
+                        parentNodeProperty.SetValue(cases);
+                    }
                 }
             }
             else

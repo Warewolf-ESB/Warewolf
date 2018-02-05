@@ -554,31 +554,45 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         ExecuteMessage SaveResource(IServer targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath, string reason)
         {
-            var comsController = GetCommunicationController?.Invoke("SaveResourceService");
-            var message = new CompressedExecuteMessage();
-            message.SetMessage(resourceDefinition.ToString());
-            var ser = new Dev2JsonSerializer();
-            comsController.AddPayloadArgument("savePath", savePath);
-            comsController.AddPayloadArgument("ResourceXml", ser.SerializeToBuilder(message));
-            comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
-            comsController.AddPayloadArgument("Reason", reason);
-            var con = targetEnvironment.Connection;
-            var result = comsController.ExecuteCommand<ExecuteMessage>(con, con.WorkspaceID);
-            return result;
+            if (GetCommunicationController != null)
+            {
+                var comsController = GetCommunicationController.Invoke("SaveResourceService");
+                var message = new CompressedExecuteMessage();
+                message.SetMessage(resourceDefinition.ToString());
+                var ser = new Dev2JsonSerializer();
+                comsController.AddPayloadArgument("savePath", savePath);
+                comsController.AddPayloadArgument("ResourceXml", ser.SerializeToBuilder(message));
+                comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
+                comsController.AddPayloadArgument("Reason", reason);
+                var con = targetEnvironment.Connection;
+                var result = comsController.ExecuteCommand<ExecuteMessage>(con, con.WorkspaceID);
+                return result;
+            }
+            else
+            {
+                throw new NullReferenceException("Cannot save resource. Cannot get Communication Controller.");
+            }
         }
 
         public TestSaveResult SaveTests(IResourceModel resourceId, List<IServiceTestModelTO> tests)
         {
-            var comsController = GetCommunicationController?.Invoke("SaveTests");
-            var serializer = new Dev2JsonSerializer();
-            var message = new CompressedExecuteMessage();
-            message.SetMessage(serializer.Serialize(tests));
-            comsController.AddPayloadArgument("resourceID", resourceId.ID.ToString());
-            comsController.AddPayloadArgument("resourcePath", string.IsNullOrEmpty(resourceId.Category) ? resourceId.ResourceName : resourceId.Category);
-            comsController.AddPayloadArgument("testDefinitions", serializer.SerializeToBuilder(message));
-            var result = comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
-            var res = serializer.Deserialize<TestSaveResult>(result?.Message);
-            return res;
+            if (GetCommunicationController != null)
+            {
+                var comsController = GetCommunicationController.Invoke("SaveTests");
+                var serializer = new Dev2JsonSerializer();
+                var message = new CompressedExecuteMessage();
+                message.SetMessage(serializer.Serialize(tests));
+                comsController.AddPayloadArgument("resourceID", resourceId.ID.ToString());
+                comsController.AddPayloadArgument("resourcePath", string.IsNullOrEmpty(resourceId.Category) ? resourceId.ResourceName : resourceId.Category);
+                comsController.AddPayloadArgument("testDefinitions", serializer.SerializeToBuilder(message));
+                var result = comsController.ExecuteCommand<ExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var res = serializer.Deserialize<TestSaveResult>(result?.Message);
+                return res;
+            }
+            else
+            {
+                throw new NullReferenceException("Cannot save tests. Cannot get Communication Controller.");
+            }
         }
 
         public IServiceTestModelTO ExecuteTest(IContextualResourceModel resourceModel, string testName)
@@ -608,90 +622,125 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void ReloadResourceTests()
         {
-            var comsController = GetCommunicationController?.Invoke("ReloadTestsService");
-            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
-            var serializer = new Dev2JsonSerializer();
-            var message = executeCommand.GetDecompressedMessage();
-            if (executeCommand.HasError)
+            if (GetCommunicationController != null)
             {
-                var msg = serializer.Deserialize<StringBuilder>(message);
-                throw new Exception(msg.ToString());
+                var comsController = GetCommunicationController.Invoke("ReloadTestsService");
+                var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                var message = executeCommand.GetDecompressedMessage();
+                if (executeCommand.HasError)
+                {
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
+            }
+            else
+            {
+                throw new NullReferenceException("Cannot reload resource tests. Cannot get Communication Controller.");
             }
         }
 
         public void DeleteAlltests(List<string> ignoreList)
         {
-            var serializer = new Dev2JsonSerializer();
-            var serializeToBuilder = serializer.SerializeToBuilder(ignoreList);
-            var comsController = GetCommunicationController?.Invoke("DeleteAllTestsService");
-            comsController.AddPayloadArgument("excludeList", serializeToBuilder);
-            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
-            var message = executeCommand.GetDecompressedMessage();
-            if (executeCommand.HasError)
+            if (GetCommunicationController != null)
             {
-                throw new Exception(message);
+                var serializer = new Dev2JsonSerializer();
+                var serializeToBuilder = serializer.SerializeToBuilder(ignoreList);
+                var comsController = GetCommunicationController.Invoke("DeleteAllTestsService");
+                comsController.AddPayloadArgument("excludeList", serializeToBuilder);
+                var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var message = executeCommand.GetDecompressedMessage();
+                if (executeCommand.HasError)
+                {
+                    throw new Exception(message);
+                }
+            }
+            else
+            {
+                throw new NullReferenceException("Cannot delete all tests. Cannot get Communication Controller.");
             }
         }
 
         public List<IServiceTestModelTO> LoadResourceTests(Guid resourceId)
         {
-            var comsController = GetCommunicationController?.Invoke("FetchTests");
-            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
-            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
-            var serializer = new Dev2JsonSerializer();
-            var message = executeCommand.GetDecompressedMessage();
-            if (executeCommand.HasError)
+            if (GetCommunicationController != null)
             {
-                var msg = serializer.Deserialize<StringBuilder>(message);
-                throw new Exception(msg.ToString());
+                var comsController = GetCommunicationController?.Invoke("FetchTests");
+                comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+                var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                var message = executeCommand.GetDecompressedMessage();
+                if (executeCommand.HasError)
+                {
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
+                var testsTO = serializer.Deserialize<List<IServiceTestModelTO>>(message);
+                if (testsTO != null)
+                {
+                    return testsTO;
+                }
+                return new List<IServiceTestModelTO>();
             }
-            var testsTO = serializer.Deserialize<List<IServiceTestModelTO>>(message);
-            if (testsTO != null)
+            else
             {
-                return testsTO;
+                throw new NullReferenceException("Cannot load resource tests. Cannot get Communication Controller.");
             }
-            return new List<IServiceTestModelTO>();
         }
 
         public List<IServiceTestModelTO> LoadResourceTestsForDeploy(Guid resourceId)
         {
-            var comsController = GetCommunicationController?.Invoke("FetchTestsForDeploy");
-            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
-            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
-            var serializer = new Dev2JsonSerializer();
-            var message = executeCommand.GetDecompressedMessage();
-            if (executeCommand.HasError)
+            if (GetCommunicationController != null)
             {
-                var msg = serializer.Deserialize<StringBuilder>(message);
-                throw new Exception(msg.ToString());
+                var comsController = GetCommunicationController?.Invoke("FetchTestsForDeploy");
+                comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+                var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                var message = executeCommand.GetDecompressedMessage();
+                if (executeCommand.HasError)
+                {
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
+                var testsTO = serializer.Deserialize<List<IServiceTestModelTO>>(message);
+                if (testsTO != null)
+                {
+                    return testsTO;
+                }
+                return new List<IServiceTestModelTO>();
             }
-            var testsTO = serializer.Deserialize<List<IServiceTestModelTO>>(message);
-            if (testsTO != null)
+            else
             {
-                return testsTO;
+                throw new NullReferenceException("Cannot load resource tests for deploy. Cannot get Communication Controller.");
             }
-            return new List<IServiceTestModelTO>();
         }
         public void DeleteResourceTest(Guid resourceId, string testName)
         {
-            var comsController = GetCommunicationController?.Invoke("DeleteTest");
-            comsController.AddPayloadArgument("resourceID", resourceId.ToString());
-            comsController.AddPayloadArgument("testName", testName);
-            if (string.IsNullOrEmpty(testName))
+            if (GetCommunicationController != null)
             {
-                throw new ArgumentNullException(nameof(testName));
+                var comsController = GetCommunicationController?.Invoke("DeleteTest");
+                comsController.AddPayloadArgument("resourceID", resourceId.ToString());
+                comsController.AddPayloadArgument("testName", testName);
+                if (string.IsNullOrEmpty(testName))
+                {
+                    throw new ArgumentNullException(nameof(testName));
+                }
+                if (resourceId == Guid.Empty)
+                {
+                    throw new ArgumentNullException(nameof(resourceId));
+                }
+                var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                if (executeCommand.HasError)
+                {
+                    var message = executeCommand.GetDecompressedMessage();
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
             }
-            if (resourceId == Guid.Empty)
+            else
             {
-                throw new ArgumentNullException(nameof(resourceId));
-            }
-            var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
-            var serializer = new Dev2JsonSerializer();
-            if (executeCommand.HasError)
-            {
-                var message = executeCommand.GetDecompressedMessage();
-                var msg = serializer.Deserialize<StringBuilder>(message);
-                throw new Exception(msg.ToString());
+                throw new NullReferenceException("Cannot delete resource test. Cannot get Communication Controller.");
             }
         }
 
