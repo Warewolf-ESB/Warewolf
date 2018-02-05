@@ -69,7 +69,7 @@ namespace Dev2.Runtime.WebServer
         public static DataListFormat ExecuteTests(string serviceName, IDSFDataObject dataObject, DataListFormat formatter,
             IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, ref string executePayload)
         {
-            if (dataObject.TestsResourceIds?.Any() ?? serviceName == "*")
+            if ((dataObject.TestsResourceIds?.Any() ?? false) && serviceName == "*")
             {
                 if (dataObject.ReturnType == Web.EmitionTypes.TEST)
                 {
