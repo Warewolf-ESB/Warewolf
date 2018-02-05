@@ -46,10 +46,17 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult Show()
         {
-            var dev2MessageBoxViewModel = ShowDev2MessageBox?.Invoke(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion, UrlsFound, IsDeleteAnywayButtonVisible, ApplyToAll);
-            DeleteAnyway = dev2MessageBoxViewModel.IsDeleteAnywaySelected;
-            ApplyToAll = dev2MessageBoxViewModel.ApplyToAll;
-            return dev2MessageBoxViewModel.Result;
+            if (ShowDev2MessageBox != null)
+            {
+                var dev2MessageBoxViewModel = ShowDev2MessageBox.Invoke(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion, UrlsFound, IsDeleteAnywayButtonVisible, ApplyToAll);
+                DeleteAnyway = dev2MessageBoxViewModel.IsDeleteAnywaySelected;
+                ApplyToAll = dev2MessageBoxViewModel.ApplyToAll;
+                return dev2MessageBoxViewModel.Result;
+            }
+            else
+            {
+                throw new NullReferenceException("Cannot show popup dialog. Show Message Box function is null.");
+            }
         }
 
         public MessageBoxResult Show(string description) => Show(description, "", MessageBoxButton.OK, MessageBoxImage.Asterisk, null, false, false, false, false, false, false);
