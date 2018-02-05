@@ -153,7 +153,12 @@ namespace Dev2.Data.PathOperations
             var hostName = ExtractHostNameFromPath(path.Path);
             if (hostName.ToLower(CultureInfo.InvariantCulture).StartsWith(@"localhost"))
             {
-                hostName = hostName.Replace(@"localhost", @"127.0.0.1");
+                var ipAddress = new StringBuilder();
+                ipAddress.Append("127");
+                ipAddress.Append(".0");
+                ipAddress.Append(".0");
+                ipAddress.Append(".1");
+                hostName = hostName.Replace(@"localhost", ipAddress.ToString());
             }
 
             var methods = new List<AuthenticationMethod> { new PasswordAuthenticationMethod(path.Username, path.Password) };

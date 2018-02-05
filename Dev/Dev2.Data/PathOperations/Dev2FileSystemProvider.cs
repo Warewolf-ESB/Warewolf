@@ -37,7 +37,7 @@ namespace Dev2.PathOperations
 
     public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        SafeTokenHandle()
+        public SafeTokenHandle()
             : base(true)
         {
         }
