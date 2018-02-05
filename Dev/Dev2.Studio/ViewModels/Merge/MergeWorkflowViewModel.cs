@@ -119,7 +119,7 @@ namespace Dev2.ViewModels.Merge
 
                 var currentIndex = current.ToList().IndexOf(currentItem);
                 var diffIndex = diff.ToList().IndexOf(currentItem);
-                if (diffIndex != currentIndex)
+                if (diffIndex != currentIndex && (diffIndex + 1) <= current.Count())
                 {
                     var diffItm = diff.ToList()[currentIndex];
                     if (diffItm != null)
@@ -535,10 +535,22 @@ namespace Dev2.ViewModels.Merge
 
             var expectedCurrentValue = currSourceConflict == null;
             expectedExpanderValue = currSourceConflict == null;
-            if (!expectedCurrentValue && currSourceConflict.CurrentViewModel.UniqueId.ToString() == connectorConflict.CurrentArmConnector.SourceUniqueId)
+
+            var sourceMatch = currSourceConflict.CurrentViewModel.UniqueId.ToString() == connectorConflict.CurrentArmConnector.SourceUniqueId;
+            var destinationMatch = currSourceConflict.CurrentViewModel.UniqueId.ToString() == connectorConflict.CurrentArmConnector.DestinationUniqueId;
+
+            if (!expectedCurrentValue && (sourceMatch || destinationMatch))
             {
-                expectedCurrentValue = currSourceConflict.CurrentViewModel.IsMergeChecked;
-                expectedExpanderValue = currSourceConflict.CurrentViewModel.IsMergeChecked;
+                if (currSourceConflict.HasConflict)
+                {
+                    expectedCurrentValue = currSourceConflict.CurrentViewModel.IsMergeChecked;
+                    expectedExpanderValue = currSourceConflict.CurrentViewModel.IsMergeChecked;
+                }
+                else
+                {
+                    expectedCurrentValue = currSourceConflict.IsChecked;
+                    expectedExpanderValue = currSourceConflict.IsChecked;
+                }
             }
             connectorConflict.CurrentArmConnector.IsArmSelectionAllowed = expectedCurrentValue;
             return expectedExpanderValue;
@@ -551,10 +563,22 @@ namespace Dev2.ViewModels.Merge
 
             var expectedDifferentValue = diffDestConflict == null;
             expectedExpanderValue = diffDestConflict == null;
-            if (!expectedDifferentValue && diffDestConflict.DiffViewModel.UniqueId.ToString() == connnectorConflict.DifferentArmConnector.SourceUniqueId)
+
+            var sourceMatch = diffDestConflict.DiffViewModel.UniqueId.ToString() == connnectorConflict.DifferentArmConnector.SourceUniqueId;
+            var destinationMatch = diffDestConflict.DiffViewModel.UniqueId.ToString() == connnectorConflict.DifferentArmConnector.DestinationUniqueId;
+
+            if (!expectedDifferentValue && (sourceMatch || destinationMatch))
             {
-                expectedDifferentValue = diffDestConflict.DiffViewModel.IsMergeChecked;
-                expectedExpanderValue = diffDestConflict.DiffViewModel.IsMergeChecked;
+                if (diffDestConflict.HasConflict)
+                {
+                    expectedDifferentValue = diffDestConflict.DiffViewModel.IsMergeChecked;
+                    expectedExpanderValue = diffDestConflict.DiffViewModel.IsMergeChecked;
+                }
+                else
+                {
+                    expectedDifferentValue = diffDestConflict.IsChecked;
+                    expectedExpanderValue = diffDestConflict.IsChecked;
+                }
             }
             connnectorConflict.DifferentArmConnector.IsArmSelectionAllowed = expectedDifferentValue;
             return expectedExpanderValue;
