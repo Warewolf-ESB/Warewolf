@@ -439,7 +439,9 @@ namespace System.Windows.Controls
             }
 
             source?.OnSelectionChanged(new SelectionChangedEventArgs(
+#if !SILVERLIGHT
                 SelectionChangedEvent,
+#endif
                 removed,
                 added));
         }
@@ -698,7 +700,10 @@ namespace System.Windows.Controls
                 SetValue(HasErrorProperty, value);
             }
         }
-        
+
+#if SILVERLIGHT
+        public event RoutedEventHandler TextChanged;
+#else
         public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AutoCompleteBox));
         
         public event RoutedEventHandler TextChanged
@@ -706,7 +711,11 @@ namespace System.Windows.Controls
             add { AddHandler(TextChangedEvent, value); }
             remove { RemoveHandler(TextChangedEvent, value); }
         }
+#endif
         
+#if SILVERLIGHT
+        public event PopulatingEventHandler Populating;
+#else
         public static readonly RoutedEvent PopulatingEvent = EventManager.RegisterRoutedEvent("Populating", RoutingStrategy.Bubble, typeof(PopulatingEventHandler), typeof(AutoCompleteBox));
         
         public event PopulatingEventHandler Populating
@@ -714,7 +723,11 @@ namespace System.Windows.Controls
             add { AddHandler(PopulatingEvent, value); }
             remove { RemoveHandler(PopulatingEvent, value); }
         }
-
+#endif
+        
+#if SILVERLIGHT
+        public event PopulatedEventHandler Populated;
+#else
         public static readonly RoutedEvent PopulatedEvent = EventManager.RegisterRoutedEvent("Populated", RoutingStrategy.Bubble, typeof(PopulatedEventHandler), typeof(AutoCompleteBox));
         
         public event PopulatedEventHandler Populated
@@ -722,7 +735,11 @@ namespace System.Windows.Controls
             add { AddHandler(PopulatedEvent, value); }
             remove { RemoveHandler(PopulatedEvent, value); }
         }
-
+#endif
+        
+#if SILVERLIGHT
+        public event RoutedPropertyChangingEventHandler<bool> DropDownOpening;
+#else
         public static readonly RoutedEvent DropDownOpeningEvent = EventManager.RegisterRoutedEvent("DropDownOpening", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
         
         public event RoutedPropertyChangingEventHandler<bool> DropDownOpening
@@ -730,7 +747,11 @@ namespace System.Windows.Controls
             add { AddHandler(PopulatedEvent, value); }
             remove { RemoveHandler(PopulatedEvent, value); }
         }
-
+#endif
+        
+#if SILVERLIGHT
+        public event RoutedPropertyChangedEventHandler<bool> DropDownOpened;
+#else
         public static readonly RoutedEvent DropDownOpenedEvent = EventManager.RegisterRoutedEvent("DropDownOpened", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
         
         public event RoutedPropertyChangedEventHandler<bool> DropDownOpened
@@ -738,7 +759,11 @@ namespace System.Windows.Controls
             add { AddHandler(DropDownOpenedEvent, value); }
             remove { RemoveHandler(DropDownOpenedEvent, value); }
         }
-
+#endif
+        
+#if SILVERLIGHT
+        public event RoutedPropertyChangingEventHandler<bool> DropDownClosing;
+#else
         public static readonly RoutedEvent DropDownClosingEvent = EventManager.RegisterRoutedEvent("DropDownClosing", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
         
         public event RoutedPropertyChangingEventHandler<bool> DropDownClosing
@@ -746,7 +771,11 @@ namespace System.Windows.Controls
             add { AddHandler(DropDownClosingEvent, value); }
             remove { RemoveHandler(DropDownClosingEvent, value); }
         }
-
+#endif
+        
+#if SILVERLIGHT
+        public event RoutedPropertyChangedEventHandler<bool> DropDownClosed;
+#else
         public static readonly RoutedEvent DropDownClosedEvent = EventManager.RegisterRoutedEvent("DropDownClosed", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
         
         public event RoutedPropertyChangedEventHandler<bool> DropDownClosed
@@ -754,7 +783,11 @@ namespace System.Windows.Controls
             add { AddHandler(DropDownClosedEvent, value); }
             remove { RemoveHandler(DropDownClosedEvent, value); }
         }
-
+#endif
+        
+#if SILVERLIGHT
+        public event SelectionChangedEventHandler SelectionChanged;
+#else
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(AutoCompleteBox));
         
         public event SelectionChangedEventHandler SelectionChanged
@@ -762,6 +795,7 @@ namespace System.Windows.Controls
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
+#endif
         
         public Binding ValueMemberBinding
         {
@@ -789,6 +823,14 @@ namespace System.Windows.Controls
 
         public ObservableCollection<object> View => _view;
 
+#if !SILVERLIGHT
+
+        static AutoCompleteBox()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(AutoCompleteBox), new FrameworkPropertyMetadata(typeof(AutoCompleteBox)));
+        }
+#endif
+
         public AutoCompleteBox()
         {
 #if SILVERLIGHT  
@@ -813,19 +855,16 @@ namespace System.Windows.Controls
             DropDownPopup?.Arrange();
             return r;
         }
-
-        void OnTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            OnKeyDown(e);
-        }
-
+        
         public override void OnApplyTemplate()
         {
-            if (TextBox != null)
+#if !SILVERLIGHT
+            if(TextBox != null)
             {
                 TextBox.PreviewKeyDown -= OnTextBoxPreviewKeyDown;
             }
-            if (DropDownPopup != null)
+#endif
+            if(DropDownPopup != null)
             {
                 DropDownPopup.Closed -= DropDownPopupClosed;
                 DropDownPopup.FocusChanged -= OnDropDownFocusChanged;
@@ -835,7 +874,7 @@ namespace System.Windows.Controls
             }
 
             base.OnApplyTemplate();
-
+            
             if (GetTemplateChild(ElementPopup) is Popup popup)
             {
                 DropDownPopup = new PopupHelper(this, popup) { MaxDropDownHeight = MaxDropDownHeight };
@@ -846,13 +885,15 @@ namespace System.Windows.Controls
             }
             SelectionAdapter = GetSelectionAdapterPart();
             TextBox = GetTemplateChild(ElementTextBox) as TextBox;
-            if (TextBox != null)
+#if !SILVERLIGHT
+            if(TextBox != null)
             {
                 TextBox.PreviewKeyDown += OnTextBoxPreviewKeyDown;
             }
+#endif
             Interaction.OnApplyTemplateBase();
-
-            if (IsDropDownOpen && DropDownPopup != null && !DropDownPopup.IsOpen)
+            
+            if(IsDropDownOpen && DropDownPopup != null && !DropDownPopup.IsOpen)
             {
                 OpeningDropDown(false);
             }
@@ -935,6 +976,15 @@ namespace System.Windows.Controls
             peer?.RaiseExpandCollapseAutomationEvent(oldValue, newValue);
         }
 
+#if !SILVERLIGHT
+
+        void OnTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            OnKeyDown(e);
+        }
+
+#endif
+
         void DropDownPopupClosed(object sender, EventArgs e)
         {
             if (IsDropDownOpen)
@@ -990,6 +1040,15 @@ namespace System.Windows.Controls
             base.OnGotFocus(e);
             FocusChanged(HasFocus());
         }
+
+#if !SILVERLIGHT
+    
+        protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnIsKeyboardFocusWithinChanged(e);
+            FocusChanged((bool)e.NewValue);
+        }
+#endif
         
         protected override void OnLostFocus(RoutedEventArgs e)
         {
