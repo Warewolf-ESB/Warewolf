@@ -3,7 +3,7 @@ using System;
 
 namespace Dev2
 {
-    public class Startup
+    public static class Startup
     {
         [STAThread]
         public static void Main(string[] args)

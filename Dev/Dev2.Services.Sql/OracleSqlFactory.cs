@@ -55,14 +55,12 @@ namespace Dev2.Services.Sql
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "OracleCommand"));
             }
 
-            using (var dataSet = new DataSet())
+            var dataSet = new DataSet();
+            using (var adapter = new OracleDataAdapter(command as OracleCommand))
             {
-                using (var adapter = new OracleDataAdapter(command as OracleCommand))
-                {
-                    adapter.Fill(dataSet);
-                }
-                return dataSet;
+                adapter.Fill(dataSet);
             }
+            return dataSet;
         }
 
         #endregion

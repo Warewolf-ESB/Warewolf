@@ -65,8 +65,8 @@ namespace Dev2.Runtime.Hosting
             _catalogPluginContainer.Build(this);
         }
 
-        IServerVersionRepository _serverVersionRepository;
-        IDirectory _directoryWrapper = new DirectoryWrapper();
+        readonly IServerVersionRepository _serverVersionRepository;
+        readonly IDirectory _directoryWrapper = new DirectoryWrapper();
         public void CleanUpOldVersionControlStructure()
         {
             _serverVersionRepository.CleanUpOldVersionControlStructure(_directoryWrapper);

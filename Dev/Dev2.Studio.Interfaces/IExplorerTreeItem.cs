@@ -23,7 +23,7 @@ namespace Dev2.Studio.Interfaces
         Guid ResourceId { get; set; }
         int ChildrenCount { get; }
 
-        bool IsExpanderVisible { get; set; }
+        bool IsExpanderVisible { get; }
         bool CanDrop { get; set; }
         bool CanDrag { get; set; }
         bool CanCreateSource { get; set; }
@@ -31,7 +31,7 @@ namespace Dev2.Studio.Interfaces
         bool CanDelete { get; set; }
         bool CanCreateFolder { get; set; }
         bool CanDeploy { get; set; }
-        bool CanShowVersions { get; set; }
+        bool CanShowVersions { get; }
         bool CanRollback { get; }
         bool IsExpanded { get; set; }
         bool ForcedRefresh { get; set; }

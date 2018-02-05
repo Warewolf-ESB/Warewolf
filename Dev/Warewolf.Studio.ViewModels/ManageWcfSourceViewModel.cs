@@ -298,37 +298,35 @@ namespace Warewolf.Studio.ViewModels
         }
 
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
-        public IRequestServiceNameViewModel RequestServiceNameViewModel
+
+        public IRequestServiceNameViewModel GetRequestServiceNameViewModel()
         {
-            get
+            _requestServiceNameViewModel.Wait();
+            if (_requestServiceNameViewModel.Exception == null)
             {
-                _requestServiceNameViewModel.Wait();
-                if (_requestServiceNameViewModel.Exception == null)
-                {
-                    return _requestServiceNameViewModel.Result;
-                }
-                
-                else
-                {
-                    throw _requestServiceNameViewModel.Exception;
-                }
+                return _requestServiceNameViewModel.Result;
+            }
+
+            else
+            {
+                throw _requestServiceNameViewModel.Exception;
             }
         }
         void SaveConnection()
         {
             if (_wcfServerSource == null)
             {
-                var res = RequestServiceNameViewModel.ShowSaveDialog();
+                var res = GetRequestServiceNameViewModel().ShowSaveDialog();
 
                 if (res == MessageBoxResult.OK)
                 {
                     var src = ToSource();
-                    src.Name = RequestServiceNameViewModel.ResourceName.Name;
-                    src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
+                    src.Name = GetRequestServiceNameViewModel().ResourceName.Name;
+                    src.Path = GetRequestServiceNameViewModel().ResourceName.Path ?? GetRequestServiceNameViewModel().ResourceName.Name;
                     Save(src);
-                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    if (GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel != null)
                     {
-                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                        AfterSave(GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     }
 
                     Item = src;

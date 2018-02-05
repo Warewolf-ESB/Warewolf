@@ -205,17 +205,17 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_sharePointServiceSource == null)
             {
-                var res = RequestServiceNameViewModel.ShowSaveDialog();
+                var res = GetRequestServiceNameViewModel().ShowSaveDialog();
 
                 if (res == MessageBoxResult.OK)
                 {
-                    ResourceName = RequestServiceNameViewModel.ResourceName.Name;
+                    ResourceName = GetRequestServiceNameViewModel().ResourceName.Name;
                     var src = ToSource();
-                    src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
+                    src.Path = GetRequestServiceNameViewModel().ResourceName.Path ?? GetRequestServiceNameViewModel().ResourceName.Name;
                     Save(src);
-                    if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    if (GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel != null)
                     {
-                        AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                        AfterSave(GetRequestServiceNameViewModel().SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                     }
 
                     Item = src;
@@ -331,20 +331,17 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        IRequestServiceNameViewModel RequestServiceNameViewModel
+        private IRequestServiceNameViewModel GetRequestServiceNameViewModel()
         {
-            get
+            _requestServiceNameViewModel.Wait();
+            if (_requestServiceNameViewModel.Exception == null)
             {
-                _requestServiceNameViewModel.Wait();
-                if (_requestServiceNameViewModel.Exception == null)
-                {
-                    return _requestServiceNameViewModel.Result;
-                }
-                
-                else
-                {
-                    throw _requestServiceNameViewModel.Exception;
-                }
+                return _requestServiceNameViewModel.Result;
+            }
+
+            else
+            {
+                throw _requestServiceNameViewModel.Exception;
             }
         }
 
