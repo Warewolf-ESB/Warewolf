@@ -22,10 +22,7 @@ namespace Dev2.Studio.Core.Factories
     public class InstanceWebActivityFactory : IWebActivityFactory
     {
         public IWebActivity CreateWebActivity(object webActivityWrappingObject, IContextualResourceModel resourceModel,
-                                              string serviceName)
-        {
-            return WebActivityFactory.CreateWebActivity(webActivityWrappingObject, resourceModel, serviceName);
-        }
+                                              string serviceName) => WebActivityFactory.CreateWebActivity(webActivityWrappingObject, resourceModel, serviceName);
     }
 
     public static class WebActivityFactory

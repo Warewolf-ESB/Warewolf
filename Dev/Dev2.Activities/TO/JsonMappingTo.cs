@@ -81,13 +81,10 @@ namespace Dev2.TO
         public bool IsSourceNameFocused { get => _isSourceNameFocused; set => OnPropertyChanged(ref _isSourceNameFocused, value); }
 
         public bool IsDestinationNameFocused { get => _isDestinationNameFocused; set => OnPropertyChanged(ref _isDestinationNameFocused, value); }
-        
-        public bool CanRemove()
-        {
-            return string.IsNullOrEmpty(DestinationName) && string.IsNullOrEmpty(SourceName);
-        }
 
-		public bool CanAdd()
+        public bool CanRemove() => string.IsNullOrEmpty(DestinationName) && string.IsNullOrEmpty(SourceName);
+
+        public bool CanAdd()
 		{
 			return !CanRemove();
 		}

@@ -18,10 +18,6 @@ namespace Dev2.Studio.Core
 {
     public class StudioResourceUpdateManager : IStudioUpdateManager
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        /// <exception cref="ArgumentNullException"><paramref name="controllerFactory"/> is <see langword="null" />.</exception>
         public StudioResourceUpdateManager(ICommunicationControllerFactory controllerFactory, IEnvironmentConnection environmentConnection)
         {
             if (controllerFactory == null)
@@ -55,86 +51,41 @@ namespace Dev2.Studio.Core
             FireServerSaved(serverSource.ID);
         }
 
-        public void Save(IPluginSource source)
-        {
-            UpdateManagerProxy.SavePluginSource(source, GlobalConstants.ServerWorkspaceID);
-        }
+        public void Save(IPluginSource source) => UpdateManagerProxy.SavePluginSource(source, GlobalConstants.ServerWorkspaceID);
 
-        public void Save(IComPluginSource source)
-        {
-            UpdateManagerProxy.SaveComPluginSource(source, GlobalConstants.ServerWorkspaceID);
-        }
+        public void Save(IComPluginSource source) => UpdateManagerProxy.SaveComPluginSource(source, GlobalConstants.ServerWorkspaceID);
 
-        public void Save(IOAuthSource source)
-        {
-            UpdateManagerProxy.SaveOAuthSource(source, GlobalConstants.ServerWorkspaceID);
-        }
+        public void Save(IOAuthSource sharePointServiceSource) => UpdateManagerProxy.SaveOAuthSource(sharePointServiceSource, GlobalConstants.ServerWorkspaceID);
 
-        public void Save(IEmailServiceSource emailServiceSource)
-        {
-            UpdateManagerProxy.SaveEmailServiceSource(emailServiceSource, GlobalConstants.ServerWorkspaceID);
-        }
+        public void Save(IEmailServiceSource emailServiceSource) => UpdateManagerProxy.SaveEmailServiceSource(emailServiceSource, GlobalConstants.ServerWorkspaceID);
 
+        public void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource) => UpdateManagerProxy.SaveRabbitMQServiceSource(rabbitMqServiceSource, GlobalConstants.ServerWorkspaceID);
 
-        public void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource)
-        {
-            UpdateManagerProxy.SaveRabbitMQServiceSource(rabbitMqServiceSource, GlobalConstants.ServerWorkspaceID);
-        }
-        public void Save(IExchangeSource exchangeSource)
-        {
-            UpdateManagerProxy.SaveExchangeSource(exchangeSource, GlobalConstants.ServerWorkspaceID);
-        }
+        public void Save(IExchangeSource emailServiceSource) => UpdateManagerProxy.SaveExchangeSource(emailServiceSource, GlobalConstants.ServerWorkspaceID);
 
-        public void TestConnection(IServerSource serverSource)
-        {
-            UpdateManagerProxy.TestConnection(serverSource);
-        }
+        public void TestConnection(IServerSource serverSource) => UpdateManagerProxy.TestConnection(serverSource);
 
-        public string TestConnection(IEmailServiceSource emailServiceSource)
-        {
-            return UpdateManagerProxy.TestEmailServiceSource(emailServiceSource);
-        }
+        public string TestConnection(IEmailServiceSource emailServiceSource) => UpdateManagerProxy.TestEmailServiceSource(emailServiceSource);
 
+        public string TestConnection(IRabbitMQServiceSourceDefinition rabbitMqServiceSource) => UpdateManagerProxy.TestRabbitMQServiceSource(rabbitMqServiceSource);
 
-        public string TestConnection(IRabbitMQServiceSourceDefinition rabbitMqServiceSource)
-        {
-            return UpdateManagerProxy.TestRabbitMQServiceSource(rabbitMqServiceSource);
-        }
-        public string TestConnection(IExchangeSource emailServiceSourceSource)
-        {
-            return UpdateManagerProxy.TestExchangeServiceSource(emailServiceSourceSource);
-        }
+        public string TestConnection(IExchangeSource emailServiceSource) => UpdateManagerProxy.TestExchangeServiceSource(emailServiceSource);
 
-        public void TestConnection(IWebServiceSource resource)
-        {
-            UpdateManagerProxy.TestConnection(resource);
-        }
+        public void TestConnection(IWebServiceSource serverSource) => UpdateManagerProxy.TestConnection(serverSource);
 
-        public void TestConnection(ISharepointServerSource resource)
-        {
-            UpdateManagerProxy.TestConnection(resource);
-        }
+        public void TestConnection(ISharepointServerSource sharePointServiceSource) => UpdateManagerProxy.TestConnection(sharePointServiceSource);
 
-        public IList<string> TestDbConnection(IDbSource serverSource)
-        {
-            return UpdateManagerProxy.TestDbConnection(serverSource);
-        }
+        public IList<string> TestDbConnection(IDbSource serverSource) => UpdateManagerProxy.TestDbConnection(serverSource);
 
-        public void Save(IDbSource toDbSource)
-        {
-            UpdateManagerProxy.SaveDbSource(toDbSource, GlobalConstants.ServerWorkspaceID);
-        }
+        public void Save(IDbSource toDbSource) => UpdateManagerProxy.SaveDbSource(toDbSource, GlobalConstants.ServerWorkspaceID);
 
-        public void Save(IWebService model)
-        {
-            UpdateManagerProxy.SaveWebservice(model, GlobalConstants.ServerWorkspaceID);
-        }
+        public void Save(IWebService model) => UpdateManagerProxy.SaveWebservice(model, GlobalConstants.ServerWorkspaceID);
 
-        public void Save(IWebServiceSource resource)
+        public void Save(IWebServiceSource model)
         {
             try
             {
-                UpdateManagerProxy.SaveWebserviceSource(resource, GlobalConstants.ServerWorkspaceID);
+                UpdateManagerProxy.SaveWebserviceSource(model, GlobalConstants.ServerWorkspaceID);
             }
             catch (Exception)
             {
@@ -142,11 +93,11 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public void Save(ISharepointServerSource resource)
+        public void Save(ISharepointServerSource sharePointServiceSource)
         {
             try
             {
-                UpdateManagerProxy.SaveSharePointServiceSource(resource, GlobalConstants.ServerWorkspaceID);
+                UpdateManagerProxy.SaveSharePointServiceSource(sharePointServiceSource, GlobalConstants.ServerWorkspaceID);
             }
             catch (Exception)
             {
@@ -154,54 +105,27 @@ namespace Dev2.Studio.Core
             }
         }
 
-        public void Save(IDatabaseService toDbSource)
-        {
-            UpdateManagerProxy.SaveDbService(toDbSource);
-        }
+        public void Save(IDatabaseService toDbSource) => UpdateManagerProxy.SaveDbService(toDbSource);
 
-        public DataTable TestDbService(IDatabaseService inputValues)
-        {
-            return UpdateManagerProxy.TestDbService(inputValues);
-        }
+        public DataTable TestDbService(IDatabaseService inputValues) => UpdateManagerProxy.TestDbService(inputValues);
 
-        public string TestWebService(IWebService inputValues)
-        {
-            return UpdateManagerProxy.TestWebService(inputValues);
-        }
+        public string TestWebService(IWebService inputValues) => UpdateManagerProxy.TestWebService(inputValues);
 
-        public string TestPluginService(IPluginService inputValues)
-        {
-            return UpdateManagerProxy.TestPluginService(inputValues);
-        }
+        public string TestPluginService(IPluginService inputValues) => UpdateManagerProxy.TestPluginService(inputValues);
 
-        public string TestPluginService(IComPluginService inputValues)
-        {
-            return UpdateManagerProxy.TestComPluginService(inputValues);
-        }
+        public string TestPluginService(IComPluginService inputValues) => UpdateManagerProxy.TestComPluginService(inputValues);
 
-        public void Save(IWcfServerSource wcfSource)
-        {
-            UpdateManagerProxy.SaveWcfSource(wcfSource, GlobalConstants.ServerWorkspaceID);
-        }
+        public void Save(IWcfServerSource wcfSource) => UpdateManagerProxy.SaveWcfSource(wcfSource, GlobalConstants.ServerWorkspaceID);
 
-        public string TestWcfService(IWcfService inputValues)
-        {
-            return UpdateManagerProxy.TestWcfService(inputValues);
-        }
+        public string TestWcfService(IWcfService inputValues) => UpdateManagerProxy.TestWcfService(inputValues);
 
-        public string TestConnection(IWcfServerSource wcfServerSource)
-        {
-            return UpdateManagerProxy.TestWcfServiceSource(wcfServerSource);
-        }
+        public string TestConnection(IWcfServerSource wcfServerSource) => UpdateManagerProxy.TestWcfServiceSource(wcfServerSource);
 
         public Action<Guid, bool> ServerSaved { get; set; }
 
         #region Implementation of IStudioUpdateManager
 
-        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment)
-        {
-            return UpdateManagerProxy.Deploy(resourceIDsToDeploy, deployTests, destinationEnvironment);
-        }
+        public List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment) => UpdateManagerProxy.Deploy(resourceIDsToDeploy, deployTests, destinationEnvironment);
 
         #endregion
     }

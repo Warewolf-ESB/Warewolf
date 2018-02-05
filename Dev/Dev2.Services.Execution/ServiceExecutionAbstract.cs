@@ -39,18 +39,15 @@ namespace Dev2.Services.Execution
         where TSource : Resource, new()
     {
         // Plugins need to handle formatting inside the RemoteObjectHandler 
-        // and NOT here otherwise serialization issues occur!
+        // and NOT here otherwise serialization issues occur ;)
         protected readonly ErrorResultTO _errorResult;
 
-        /// <summary>
-        ///     Construction for ServiceExecution
-        /// </summary>
-        /// <param name="dataObj">DataObject to execute against</param>
-        /// <param name="handlesOutputFormatting">
-        ///     Does the ServiceExecution handle its own output formatting i.e. is it formatted
-        ///     as part of its execution or must it be formatted before merging into the Datalist
-        /// </param>
-        protected ServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = true)
+        protected ServiceExecutionAbstract(IDSFDataObject dataObj)
+            : this(dataObj, true)
+        {
+        }
+
+        protected ServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting)
         {
             _errorResult = new ErrorResultTO();
             DataObj = dataObj;
@@ -525,10 +522,7 @@ namespace Dev2.Services.Execution
 
         #region GetOutputFormatter
 
-        IOutputFormatter GetOutputFormatter(TService service)
-        {
-            return OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
-        }
+        IOutputFormatter GetOutputFormatter(TService service) => OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
 
         #endregion
     }

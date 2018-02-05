@@ -204,9 +204,6 @@ namespace System.Windows.Controls
             IgnoringSelectionChanged = false;
         }
 
-        public AutomationPeer CreateAutomationPeer()
-        {
-            return _selector != null ? UIElementAutomationPeer.CreatePeerForElement(_selector) : null;
-        }
+        public AutomationPeer CreateAutomationPeer() => _selector != null ? UIElementAutomationPeer.CreatePeerForElement(_selector) : null;
     }
 }

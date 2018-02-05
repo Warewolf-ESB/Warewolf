@@ -132,10 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public List<string> OutList { get; set; }
 
-        public OutputTO ConvertToOutputTo()
-        {
-            return DataListFactory.CreateOutputTO(FieldName, OutList);
-        }
+        public OutputTO ConvertToOutputTo() => DataListFactory.CreateOutputTO(FieldName, OutList);
 
         /// <summary>
         /// Validates the property name with the default rule set in <value>ActivityDTO</value>
@@ -205,10 +202,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return body.Member.Name;
         }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
-        }
+        public bool IsEmpty() => string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {

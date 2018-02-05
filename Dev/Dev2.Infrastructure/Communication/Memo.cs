@@ -41,15 +41,9 @@ namespace Dev2.Communication
             return InstanceID == other.InstanceID;
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as IMemo);
-        }
+        public override bool Equals(object obj) => Equals(obj as IMemo);
 
-        public override int GetHashCode()
-        {
-            return InstanceID.GetHashCode();
-        }
+        public override int GetHashCode() => InstanceID.GetHashCode();
 
         #endregion
     }

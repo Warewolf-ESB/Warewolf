@@ -45,7 +45,9 @@ namespace Warewolf.Exchange.Email.Wrapper
         public IExchangeEmailSender EmailSender { get; set; }
         public ExchangeService ExchangeService { get; set; }
 
-        public string SendEmail(IExchange runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors, bool isHtml = true)
+        public string SendEmail(IExchange runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors) => SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors, true);
+
+        public string SendEmail(IExchange runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors, bool isHtml)
         {
             InitializeService();
             errors = new ErrorResultTO();

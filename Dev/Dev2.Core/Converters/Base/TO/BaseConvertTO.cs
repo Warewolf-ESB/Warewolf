@@ -118,15 +118,9 @@ namespace Dev2
 
         public int IndexNumber { get; set; }
 
-        public bool CanRemove()
-        {
-            return string.IsNullOrWhiteSpace(FromExpression);
-        }
+        public bool CanRemove() => string.IsNullOrWhiteSpace(FromExpression);
 
-        public bool CanAdd()
-        {
-            return !string.IsNullOrWhiteSpace(FromExpression);
-        }
+        public bool CanAdd() => !string.IsNullOrWhiteSpace(FromExpression);
 
         public void ClearRow()
         {

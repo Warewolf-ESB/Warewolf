@@ -58,9 +58,6 @@ namespace Dev2.Data.Binary_Objects
             return _curValue;
         }
 
-        public int MaxIndex()
-        {
-            return IndexList.GetMaxIndex();
-        }
+        public int MaxIndex() => IndexList.GetMaxIndex();
     }
 }

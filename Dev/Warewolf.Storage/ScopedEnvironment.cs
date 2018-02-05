@@ -27,16 +27,9 @@ namespace Warewolf.Storage
 
         public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists) => Eval(exp, update, throwsifnotexists, false);
 
-        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists, bool shouldEscape)
-        {
-            return _inner.Eval(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update, throwsifnotexists,shouldEscape);
-        }
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists, bool shouldEscape) => _inner.Eval(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update, throwsifnotexists, shouldEscape);
 
-        public CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update)
-        {
-
-            return _inner.EvalStrict(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update);
-        }
+        public CommonFunctions.WarewolfEvalResult EvalStrict(string exp, int update) => _inner.EvalStrict(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update);
 
         public void Assign(string exp, string value, int update)
         {
@@ -44,10 +37,7 @@ namespace Warewolf.Storage
             _inner.Assign(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), 0);
         }
 
-        string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp)
-        {
-            return exp.Replace(_alias, datasource);
-        }
+        string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp) => exp.Replace(_alias, datasource);
 
         string UpdateDataSourceWithIterativeValue(string datasource, int update, string exp)
         {
@@ -56,10 +46,10 @@ namespace Warewolf.Storage
 
         }
 
-        public void AssignWithFrame(IAssignValue value, int update)
+        public void AssignWithFrame(IAssignValue values, int update)
         {
-            var name = UpdateDataSourceWithIterativeValue(_datasource, update, value.Name);
-            var valuerep = UpdateDataSourceWithIterativeValue(_datasource, update, value.Value);
+            var name = UpdateDataSourceWithIterativeValue(_datasource, update, values.Name);
+            var valuerep = UpdateDataSourceWithIterativeValue(_datasource, update, values.Value);
             _inner.AssignWithFrame(new AssignValue(name, valuerep), update);
         }
 
@@ -70,31 +60,15 @@ namespace Warewolf.Storage
             _inner.AssignStrict(name, valuerep, update);
         }
 
-        public int GetLength(string recordSetName)
-        {
-            return _inner.GetLength(recordSetName);
-        }
+        public int GetLength(string recordSetName) => _inner.GetLength(recordSetName);
 
-        public int GetCount(string recordSetName)
-        {
-            return _inner.GetCount(recordSetName);
-        }
+        public int GetCount(string recordSetName) => _inner.GetCount(recordSetName);
 
-        public IList<int> EvalRecordSetIndexes(string recordsetName, int update)
-        {
+        public IList<int> EvalRecordSetIndexes(string recordsetName, int update) => _inner.EvalRecordSetIndexes(UpdateDataSourceWithIterativeValue(_datasource, update, recordsetName), 0);
 
-            return _inner.EvalRecordSetIndexes(UpdateDataSourceWithIterativeValue(_datasource, update, recordsetName), 0);
-        }
+        public bool HasRecordSet(string recordsetName) => _inner.HasRecordSet(recordsetName);
 
-        public bool HasRecordSet(string recordsetName)
-        {
-            return _inner.HasRecordSet(recordsetName);
-        }
-
-        public IList<string> EvalAsListOfStrings(string expression, int update)
-        {
-            return _inner.EvalAsListOfStrings(UpdateDataSourceWithIterativeValue(_datasource, update, expression), 0);
-        }
+        public IList<string> EvalAsListOfStrings(string expression, int update) => _inner.EvalAsListOfStrings(UpdateDataSourceWithIterativeValue(_datasource, update, expression), 0);
 
         public void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
         {
@@ -131,24 +105,12 @@ namespace Warewolf.Storage
             _inner.SortRecordSet(UpdateDataSourceWithIterativeValue(_datasource, update, sortField), descOrder, 0);
         }
 
-        public string ToStar(string expression)
-        {
-            return _inner.ToStar(expression.Replace(_alias, _datasource));
-        }
+        public string ToStar(string expression) => _inner.ToStar(expression.Replace(_alias, _datasource));
+        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update) => EvalAsList(expression, update, false);
 
-        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string searchCriteria, int update) => EvalAsList(searchCriteria, update, false);
+        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists) => _inner.EvalAsList(UpdateDataSourceWithIterativeValue(_datasource, update, expression), 0, throwsifnotexists);
 
-        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists)
-        {
-
-            return _inner.EvalAsList(UpdateDataSourceWithIterativeValue(_datasource, update, searchCriteria), 0, throwsifnotexists);
-        }
-
-        public IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update)
-        {
-
-            return _inner.EvalWhere(UpdateDataSourceWithIterativeValue(_datasource, update, expression), clause, 0);
-        }
+        public IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update) => _inner.EvalWhere(UpdateDataSourceWithIterativeValue(_datasource, update, expression), clause, 0);
 
         public void ApplyUpdate(string expression, Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> clause, int update)
         {
@@ -185,26 +147,13 @@ namespace Warewolf.Storage
             _inner.AssignDataShape(p.Replace(_alias, _datasource));
         }
 
-        public string FetchErrors()
-        {
-            return _inner.FetchErrors();
-        }
+        public string FetchErrors() => _inner.FetchErrors();
 
-        public bool HasErrors()
-        {
-            return _inner.HasErrors();
-        }
+        public bool HasErrors() => _inner.HasErrors();
 
-        public string EvalToExpression(string exp, int update)
-        {
+        public string EvalToExpression(string exp, int update) => _inner.EvalToExpression(exp, 0);
 
-            return _inner.EvalToExpression(exp, 0);
-        }
-
-        public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update)
-        {
-            return _inner.EvalForDataMerge(UpdateDataSourceWithIterativeValue(_datasource, update, exp), 0);
-        }
+        public IEnumerable<CommonFunctions.WarewolfEvalResult> EvalForDataMerge(string exp, int update) => _inner.EvalForDataMerge(UpdateDataSourceWithIterativeValue(_datasource, update, exp), 0);
 
         public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update)
         {
@@ -213,10 +162,7 @@ namespace Warewolf.Storage
 
         public CommonFunctions.WarewolfEvalResult EvalForJson(string exp) => EvalForJson(exp, false);
 
-        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp, bool shouldEscape)
-        {
-            return _inner.EvalForJson(exp.Replace(_alias, _datasource), shouldEscape);
-        }
+        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp, bool shouldEscape) => _inner.EvalForJson(exp.Replace(_alias, _datasource), shouldEscape);
 
         public void AddToJsonObjects(string exp, JContainer jContainer)
         {
@@ -233,20 +179,11 @@ namespace Warewolf.Storage
             _inner.AssignJson(value, update);
         }
 
-        public JContainer EvalJContainer(string exp)
-        {
-            return _inner.EvalJContainer(exp);
-        }
+        public JContainer EvalJContainer(string exp) => _inner.EvalJContainer(exp);
 
-        public List<string> GetIndexes(string exp)
-        {
-           return _inner.GetIndexes(exp);
-        }
+        public List<string> GetIndexes(string exp) => _inner.GetIndexes(exp);
 
-        public int GetObjectLength(string recordSetName)
-        {
-            return _inner.GetObjectLength(recordSetName);
-        }
+        public int GetObjectLength(string recordSetName) => _inner.GetObjectLength(recordSetName);
 
         #endregion
 

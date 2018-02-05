@@ -106,10 +106,7 @@ namespace Dev2.Studio.Interfaces
             _endIndex = endIndex;
         }
 
-        public override string ToString()
-        {
-            return _name;
-        }
+        public override string ToString() => _name;
     }
 
     public sealed class IntellisenseProviderContext

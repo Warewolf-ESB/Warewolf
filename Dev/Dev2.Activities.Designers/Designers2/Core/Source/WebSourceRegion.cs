@@ -155,10 +155,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        public bool CanEditSource()
-        {
-            return SelectedSource != null;
-        }
+        public bool CanEditSource() => SelectedSource != null;
 
         public ICommand EditSourceCommand { get; set; }
 
@@ -194,13 +191,10 @@ namespace Dev2.Activities.Designers2.Core.Source
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new WebSourceRegion
         {
-            return new WebSourceRegion
-            {
-                SelectedSource = SelectedSource
-            };
-        }
+            SelectedSource = SelectedSource
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {
@@ -297,10 +291,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        bool IsAPreviousValue(IWebServiceSource value)
-        {
-            return _previousRegions.Keys.Any(a => a == value.Id);
-        }
+        bool IsAPreviousValue(IWebServiceSource value) => _previousRegions.Keys.Any(a => a == value.Id);
 
         public ICollection<IWebServiceSource> Sources
         {

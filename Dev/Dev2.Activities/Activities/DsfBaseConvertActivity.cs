@@ -50,10 +50,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ConvertCollection = new List<BaseConvertTO>();
         }
 
-        public override List<string> GetOutputs()
-        {
-            return ConvertCollection.Select(to => to.ToExpression).ToList();
-        }
+        public override List<string> GetOutputs() => ConvertCollection.Select(to => to.ToExpression).ToList();
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
@@ -143,41 +140,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
-        Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> TryConvertFunc(BaseConvertTO item, IExecutionEnvironment env, int update)
-        {
-            return a =>
-            {
-                var from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
-                var to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
-                var broker = _fac.CreateBroker(@from, to);
-                var value = a.ToString();
-                if (a.IsNothing)
-                {
-                    throw new Exception(string.Format(ErrorResource.NullScalarValue, item.FromExpression));
-                }
-                if (String.IsNullOrEmpty(value))
-                {
-                    return DataStorage.WarewolfAtom.NewDataString("");
-                }
-                var upper = broker.Convert(value);
-                var evalled = env.Eval(upper, update);
-                if (evalled.IsWarewolfAtomResult)
-                {
-                    if (evalled is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
-                    {
-                        return warewolfAtomResult.Item;
-                    }
-                    return DataStorage.WarewolfAtom.Nothing;
-                }
-                return DataStorage.WarewolfAtom.NewDataString(CommonFunctions.evalResultToString(evalled));
-            };
-        }
-
+        Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> TryConvertFunc(BaseConvertTO item, IExecutionEnvironment env, int update) => a =>
+                                                                                                                                                        {
+                                                                                                                                                            var from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
+                                                                                                                                                            var to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
+                                                                                                                                                            var broker = _fac.CreateBroker(@from, to);
+                                                                                                                                                            var value = a.ToString();
+                                                                                                                                                            if (a.IsNothing)
+                                                                                                                                                            {
+                                                                                                                                                                throw new Exception(string.Format(ErrorResource.NullScalarValue, item.FromExpression));
+                                                                                                                                                            }
+                                                                                                                                                            if (String.IsNullOrEmpty(value))
+                                                                                                                                                            {
+                                                                                                                                                                return DataStorage.WarewolfAtom.NewDataString("");
+                                                                                                                                                            }
+                                                                                                                                                            var upper = broker.Convert(value);
+                                                                                                                                                            var evalled = env.Eval(upper, update);
+                                                                                                                                                            if (evalled.IsWarewolfAtomResult)
+                                                                                                                                                            {
+                                                                                                                                                                if (evalled is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
+                                                                                                                                                                {
+                                                                                                                                                                    return warewolfAtomResult.Item;
+                                                                                                                                                                }
+                                                                                                                                                                return DataStorage.WarewolfAtom.Nothing;
+                                                                                                                                                            }
+                                                                                                                                                            return DataStorage.WarewolfAtom.NewDataString(CommonFunctions.evalResultToString(evalled));
+                                                                                                                                                        };
 
         void CleanArgs()
         {

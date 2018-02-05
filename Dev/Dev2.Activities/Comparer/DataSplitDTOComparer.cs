@@ -35,9 +35,6 @@ namespace Dev2.Comparer
             ;
         }
 
-        public int GetHashCode(DataSplitDTO obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(DataSplitDTO obj) => 1;
     }
 }

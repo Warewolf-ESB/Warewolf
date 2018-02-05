@@ -32,9 +32,6 @@ namespace System.Windows.Controls
         /// <param name="value">The string value to search for.</param>
         /// <param name="comparison">The string comparison type.</param>
         /// <returns>Returns true when the substring is found.</returns>
-        public static bool Contains(this string s, string value, StringComparison comparison)
-        {
-            return s.IndexOf(value, comparison) >= 0;
-        }
+        public static bool Contains(this string s, string value, StringComparison comparison) => s.IndexOf(value, comparison) >= 0;
     }
 }

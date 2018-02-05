@@ -390,11 +390,11 @@ namespace Dev2.Studio.Core
         }
 
 
-        public IList<IFileListing> FetchFiles(IFileListing root)
+        public IList<IFileListing> FetchFiles(IFileListing file)
         {
             var serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("GetFiles");
-            comsController.AddPayloadArgument("fileListing", serializer.Serialize(root));
+            comsController.AddPayloadArgument("fileListing", serializer.Serialize(file));
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (result.HasError)
@@ -643,11 +643,11 @@ namespace Dev2.Studio.Core
             return serializer.Deserialize<List<IWcfServerSource>>(result.Message.ToString());
         }
 
-        public IList<IWcfAction> WcfActions(IWcfServerSource wcfSource)
+        public IList<IWcfAction> WcfActions(IWcfServerSource source)
         {
             var serializer = new Dev2JsonSerializer();
             var comsController = CommunicationControllerFactory.CreateController("FetchWcfAction");
-            comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(wcfSource));
+            comsController.AddPayloadArgument("WcfSource", serializer.SerializeToBuilder(source));
             var workspaceId = Connection.WorkspaceID;
             var payload = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
             if (payload == null || payload.HasError)

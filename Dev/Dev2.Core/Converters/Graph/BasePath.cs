@@ -49,10 +49,7 @@ namespace Unlimited.Framework.Converters.Graph
 
         #region Override Methods
 
-        public override string ToString()
-        {
-            return ActualPath;
-        }
+        public override string ToString() => ActualPath;
 
         #endregion Override Methods
 

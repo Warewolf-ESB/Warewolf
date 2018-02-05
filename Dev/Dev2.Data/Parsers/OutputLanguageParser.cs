@@ -31,17 +31,9 @@ namespace Dev2.Data.Parsers
         #endregion
 
         #region Methods
-        public IList<IDev2Definition> Parse(string OutputDefinition)
-        {
-            return base.Parse(OutputDefinition);
-        }
+        public IList<IDev2Definition> Parse(string OutputDefinition) => base.Parse(OutputDefinition);
 
-        public IList<IDev2Definition> ParseAndAllowBlanks(string OutputDefinition)
-        {
-            
-            return base.Parse(OutputDefinition, false);
-            
-        }
+        public IList<IDev2Definition> ParseAndAllowBlanks(string OutputDefinition) => base.Parse(OutputDefinition, false);
         #endregion
     }
 }

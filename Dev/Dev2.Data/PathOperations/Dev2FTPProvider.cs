@@ -64,10 +64,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        static bool IsStandardFtp(IActivityIOPath path)
-        {
-            return path.PathType == enActivityIOPathType.FTP || path.PathType == enActivityIOPathType.FTPES || path.PathType == enActivityIOPathType.FTPS;
-        }
+        static bool IsStandardFtp(IActivityIOPath path) => path.PathType == enActivityIOPathType.FTP || path.PathType == enActivityIOPathType.FTPES || path.PathType == enActivityIOPathType.FTPS;
 
         void ReadFromFtp(IActivityIOPath path, ref Stream result)
         {
@@ -152,7 +149,7 @@ namespace Dev2.Data.PathOperations
             var hostName = ExtractHostNameFromPath(path.Path);
             if (hostName.ToLower(CultureInfo.InvariantCulture).StartsWith(@"localhost"))
             {
-                hostName = hostName.Replace(@"localhost", @"127.0.0.1");
+                hostName = hostName.Replace(@"localhost", IPAddress.Loopback.ToString());
             }
 
             var methods = new List<AuthenticationMethod> { new PasswordAuthenticationMethod(path.Username, path.Password) };
@@ -347,10 +344,7 @@ namespace Dev2.Data.PathOperations
             return true;
         }
 
-        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src)
-        {
-            return IsStandardFtp(src) ? ListDirectoryStandardFtp(src) : ListDirectorySftp(src);
-        }
+        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src) => IsStandardFtp(src) ? ListDirectoryStandardFtp(src) : ListDirectorySftp(src);
 
         IList<IActivityIOPath> ListDirectoryStandardFtp(IActivityIOPath src)
         {
@@ -529,10 +523,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        public bool RequiresLocalTmpStorage()
-        {
-            return true;
-        }
+        public bool RequiresLocalTmpStorage() => true;
 
         public bool HandlesType(enActivityIOPathType type)
         {
@@ -551,10 +542,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        public string PathSeperator()
-        {
-            return @"/";
-        }
+        public string PathSeperator() => @"/";
 
         public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
         {
@@ -762,15 +750,9 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        static bool IsDirectory(string part)
-        {
-            return Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower(CultureInfo.InvariantCulture).Contains(@"<dir>");
-        }
+        static bool IsDirectory(string part) => Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower(CultureInfo.InvariantCulture).Contains(@"<dir>");
 
-        static bool IsFile(string part)
-        {
-            return !IsDirectory(part);
-        }
+        static bool IsFile(string part) => !IsDirectory(part);
 
         static string[] GetParts(string payload)
         {
@@ -788,10 +770,7 @@ namespace Dev2.Data.PathOperations
             return parts;
         }
 
-        bool DeleteOp(IList<IActivityIOPath> src)
-        {
-            return src.All(IsStandardFtp) ? DeleteUsingStandardFtp(src) : DeleteUsingSftp(src);
-        }
+        bool DeleteOp(IList<IActivityIOPath> src) => src.All(IsStandardFtp) ? DeleteUsingStandardFtp(src) : DeleteUsingSftp(src);
 
         bool DeleteUsingStandardFtp(IList<IActivityIOPath> src)
         {
@@ -1032,10 +1011,7 @@ namespace Dev2.Data.PathOperations
             return isAlive;
         }
 
-        bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors)
-        {
-            return true;
-        }
+        bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors) => true;
         #endregion Private Methods
     }
 }

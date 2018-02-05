@@ -74,11 +74,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
 
-        public IOutputDescription Test(PluginInvokeArgs setupInfo, out string jsonResult)
+        public IOutputDescription Test(PluginInvokeArgs setupInfo, out string serializedResult)
         {
             try
             {
-                jsonResult = null;
+                serializedResult = null;
                 _assemblyLocation = setupInfo.AssemblyLocation;
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
                 if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly))
@@ -94,7 +94,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                 if (pluginResult != null)
                 {
-                    jsonResult = JsonConvert.SerializeObject(pluginResult);
+                    serializedResult = JsonConvert.SerializeObject(pluginResult);
                     pluginResult = AdjustPluginResult(pluginResult, methodToRun);
                     var tmpData = dataBrowser.Map(pluginResult);
                     dataSourceShape.Paths.AddRange(tmpData);
@@ -108,7 +108,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             catch (Exception e)
             {
                 Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, GlobalConstants.WarewolfError);
-                jsonResult = null;
+                serializedResult = null;
                 return null;
             }
         }

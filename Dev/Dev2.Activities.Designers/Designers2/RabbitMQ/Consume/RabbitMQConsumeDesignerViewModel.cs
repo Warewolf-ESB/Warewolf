@@ -108,13 +108,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             }
         }
 
-        public bool IsRabbitMQSourceSelected
-        {
-            get
-            {
-                return SelectedRabbitMQSource != null;
-            }
-        }
+        public bool IsRabbitMQSourceSelected => SelectedRabbitMQSource != null;
 
         Guid RabbitMQSourceResourceId
         {

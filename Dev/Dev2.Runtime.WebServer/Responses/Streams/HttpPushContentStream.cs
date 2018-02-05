@@ -26,7 +26,12 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
         readonly MediaTypeHeaderValue _contentType;
         readonly int _chunkSize;
 
-        protected HttpPushContentStream(HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize = DefaultChunkSize)
+        protected HttpPushContentStream(HttpResponseMessage response, MediaTypeHeaderValue contentType)
+            : this(response, contentType, DefaultChunkSize)
+        {
+        }
+
+        protected HttpPushContentStream(HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize)
         {
             VerifyArgument.IsNotNull("response", response);
             VerifyArgument.IsNotNull("mediaType", contentType);

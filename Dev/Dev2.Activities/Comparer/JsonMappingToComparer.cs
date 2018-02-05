@@ -26,9 +26,6 @@ namespace Dev2.Comparer
             ;
         }
 
-        public int GetHashCode(JsonMappingTo obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(JsonMappingTo obj) => 1;
     }
 }

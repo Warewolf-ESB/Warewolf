@@ -175,11 +175,9 @@ namespace Dev2.Core.Tests
             var xamlBuilder = new StringBuilder("abc");
 
             var workflowHelper = new Mock<IWorkflowHelper>();
-
-            //var ok2 = false;
+            
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() =>
             {
-                //ok2 = true;
                 return workflow;
             });
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
@@ -572,8 +570,7 @@ namespace Dev2.Core.Tests
 
 
         }
-
-
+        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("WorkSurfaceContextViewModel_GetServiceInputDataFromUser")]
@@ -588,7 +585,6 @@ namespace Dev2.Core.Tests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            //workSurfaceContextViewModel.WorkSurfaceViewModel = new Mock<IWorkSurfaceViewModel>().Object;
             //------------Execute Test---------------------------
             var mockServiceDebugInfoModel = new Mock<IServiceDebugInfoModel>();
             mockServiceDebugInfoModel.SetupGet(p => p.ServiceInputData).Returns(It.IsAny<string>);
@@ -599,10 +595,7 @@ namespace Dev2.Core.Tests
             mockResourceModel.SetupGet(p => p.WorkflowXaml).Returns(It.IsAny<StringBuilder>);
             mockResourceModel.SetupGet(p => p.ID).Returns(It.IsAny<Guid>);
             mockResourceModel.SetupGet(p => p.ServerID).Returns(It.IsAny<Guid>);
-
             mockServiceDebugInfoModel.SetupGet(p => p.ResourceModel).Returns(mockResourceModel.Object);
-            //------------Assert---------------------------------
-            //mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
         }
 
         [TestMethod]
@@ -636,7 +629,7 @@ namespace Dev2.Core.Tests
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
             //------------Assert---------------------------------
             mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
-            mockRepository.Verify(m => m.SaveToServer(It.IsAny<IResourceModel>(), It.IsAny<string>()), Times.Once());
+            mockRepository.Verify(m => m.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
         }
 
 
@@ -785,8 +778,6 @@ namespace Dev2.Core.Tests
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
             var popup = new Mock<IPopupController>();
 
-            //  bool called = false;
-
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b, c) => { });
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
@@ -798,10 +789,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Dispose();
             Assert.IsTrue(workSurfaceContextViewModel.IsDisposed);
-
         }
-
-
 
         static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(IServer server, bool isConnected, Mock<IContextualResourceModel> ResourceModel = null)
         {
@@ -1221,7 +1209,7 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
-        public void LinkTools(string sourceUniqueId, string destionationUniqueId, string key)
+        public void LinkTools(string sourceUniqueId, string destinationUniqueId, string key)
         {
 
         }
@@ -1238,7 +1226,7 @@ namespace Dev2.Core.Tests
 
         public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel) => throw new NotImplementedException();
 
-        public void DeLinkTools(string sourceUniqueId, string destionationUniqueId, string key)
+        public void DeLinkTools(string sourceUniqueId, string destinationUniqueId, string key)
         {
             throw new NotImplementedException();
         }

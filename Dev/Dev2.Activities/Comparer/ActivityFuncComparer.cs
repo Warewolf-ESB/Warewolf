@@ -32,9 +32,6 @@ namespace Dev2.Comparer
 
         }
 
-        public int GetHashCode(ActivityFunc<string, bool> obj)
-        {
-            return obj.GetHashCode();
-        }
+        public int GetHashCode(ActivityFunc<string, bool> obj) => obj.GetHashCode();
     }
 }

@@ -49,20 +49,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             }
         }
 
-        public ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName)
-        {
-            return PluginServiceExecutionFactory.GetMethods(assemblyLocation, assemblyName, fullName);
-        }
+        public ServiceMethodList GetMethods(string assemblyLocation, string assemblyName, string fullName) => PluginServiceExecutionFactory.GetMethods(assemblyLocation, assemblyName, fullName);
 
-        public ServiceMethodList GetMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
-        {
-            return PluginServiceExecutionFactory.GetMethodsWithReturns(assemblyLocation, assemblyName, fullName);
-        }
+        public ServiceMethodList GetMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName) => PluginServiceExecutionFactory.GetMethodsWithReturns(assemblyLocation, assemblyName, fullName);
 
-        public ServiceConstructorList GetConstructors(string assemblyLocation, string assemblyName, string fullName)
-        {
-            return PluginServiceExecutionFactory.GetConstructors(assemblyLocation, assemblyName, fullName); 
-        }
+        public ServiceConstructorList GetConstructors(string assemblyLocation, string assemblyName, string fullName) => PluginServiceExecutionFactory.GetConstructors(assemblyLocation, assemblyName, fullName);
 
         public IOutputDescription TestPlugin(PluginService pluginService)
         {

@@ -38,10 +38,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IWebServiceModel
 
-        public ICollection<IWebServiceSource> RetrieveSources()
-        {
-            return new List<IWebServiceSource>(QueryProxy.FetchWebServiceSources());
-        }
+        public ICollection<IWebServiceSource> RetrieveSources() => new List<IWebServiceSource>(QueryProxy.FetchWebServiceSources());
 
         public void CreateNewSource()
         {
@@ -53,10 +50,7 @@ namespace Warewolf.Studio.ViewModels
             _shell.EditResource(selectedSource);
         }
 
-        public string TestService(IWebService inputValues)
-        {
-            return UpdateRepository != null ? UpdateRepository.TestWebService(inputValues) : "Error";
-        }
+        public string TestService(IWebService inputValues) => UpdateRepository != null ? UpdateRepository.TestWebService(inputValues) : "Error";
 
         #endregion
     }

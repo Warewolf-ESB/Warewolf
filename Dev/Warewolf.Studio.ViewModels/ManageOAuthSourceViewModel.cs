@@ -94,15 +94,9 @@ namespace Warewolf.Studio.ViewModels
             }, CanTest);
         }
 
-        public override bool CanSave()
-        {
-            return TestPassed && !string.IsNullOrEmpty(AccessToken);
-        }
+        public override bool CanSave() => TestPassed && !string.IsNullOrEmpty(AccessToken);
 
-        bool CanTest()
-        {
-            return SelectedOAuthProvider != null && !string.IsNullOrWhiteSpace(AppKey);
-        }
+        bool CanTest() => SelectedOAuthProvider != null && !string.IsNullOrWhiteSpace(AppKey);
 
         void SetupAuthorizeUri()
         {

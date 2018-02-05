@@ -83,20 +83,11 @@ namespace Dev2.Activities.Factories.Case
 
         #region Convert Methods
 
-        static string ConvertToAllUpper(string stringToConvert)
-        {
-            return stringToConvert.ToUpper();
-        }
+        static string ConvertToAllUpper(string stringToConvert) => stringToConvert.ToUpper();
 
-        static string ConvertToAllLower(string stringToConvert)
-        {
-            return stringToConvert.ToLower();
-        }
+        static string ConvertToAllLower(string stringToConvert) => stringToConvert.ToLower();
 
-        static string ConvertToFirstUpper(string stringToConvert)
-        {
-            return MakeFirstLetterUpper(stringToConvert);
-        }
+        static string ConvertToFirstUpper(string stringToConvert) => MakeFirstLetterUpper(stringToConvert);
 
         static string ConvertToAllFirstUpper(string stringToConvert)
         {

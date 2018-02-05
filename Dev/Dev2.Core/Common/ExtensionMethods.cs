@@ -46,15 +46,9 @@ namespace Dev2
             return false;
         }
 
-        public static string ToBase64String(this Stream stream)
-        {
-            return Convert.ToBase64String(GetByteArray(stream));
-        }
+        public static string ToBase64String(this Stream stream) => Convert.ToBase64String(GetByteArray(stream));
 
-        public static byte[] ToByteArray(this Stream stream)
-        {
-            return GetByteArray(stream);
-        }
+        public static byte[] ToByteArray(this Stream stream) => GetByteArray(stream);
 
         public static byte[] GetByteArray(Stream stream)
         {
@@ -76,10 +70,7 @@ namespace Dev2
         /// </summary>
         /// <param name="tag">The string to be returned as tags</param>
         /// <returns>a set of tags in the form <tag>,</tag> as a string array</returns>
-        public static string[] ReturnAsTagSet(this string tag)
-        {
-            return new string[] { "<" + tag + ">", "</" + tag + ">" };
-        }
+        public static string[] ReturnAsTagSet(this string tag) => new string[] { "<" + tag + ">", "</" + tag + ">" };
 
         public static string GetPropertyName<T, TReturn>(this Expression<Func<T, TReturn>> expression)
         {

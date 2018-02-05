@@ -54,10 +54,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
             return collectionEquals;
         }
 
-        private int GetHashCodeMethod(IPath path)
-        {
-            return path.GetHashCode();
-        }
+        private int GetHashCodeMethod(IPath path) => path.GetHashCode();
 
         private bool EqualsMethod(IPath path, IPath path1)
         {
@@ -100,9 +97,6 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
             return Equals((IDataSourceShape)obj);
         }
 
-        public override int GetHashCode()
-        {
-            return (Paths != null ? Paths.GetHashCode() : 0);
-        }
+        public override int GetHashCode() => (Paths != null ? Paths.GetHashCode() : 0);
     }
 }

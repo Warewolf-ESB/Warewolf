@@ -54,10 +54,7 @@ namespace Dev2.Data.SystemTemplates.Models
             TheStack.Add(item);
         }
 
-        public Dev2Decision GetModelItem(int idx)
-        {
-            return idx < TotalDecisions ? TheStack[idx] : null;
-        }
+        public Dev2Decision GetModelItem(int idx) => idx < TotalDecisions ? TheStack[idx] : null;
 
         public string ToVBPersistableModel()
         {
@@ -94,11 +91,7 @@ namespace Dev2.Data.SystemTemplates.Models
             return result.ToString();
         }
 
-        public static string FromVBPersitableModelToJSON(string val)
-
-        {
-            return val.Replace("!", "\"");
-        }
+        public static string FromVBPersitableModelToJSON(string val) => val.Replace("!", "\"");
 
         /// <summary>
         /// Extracts the model from workflow persisted data.

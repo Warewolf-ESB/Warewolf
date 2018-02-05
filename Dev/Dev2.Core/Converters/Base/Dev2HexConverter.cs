@@ -62,9 +62,6 @@ namespace Dev2.Converters
             return result;
         }
 
-        public Enum HandlesType()
-        {
-            return enDev2BaseConvertType.Hex;
-        }
+        public Enum HandlesType() => enDev2BaseConvertType.Hex;
     }
 }

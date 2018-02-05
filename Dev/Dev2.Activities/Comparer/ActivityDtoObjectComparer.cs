@@ -20,9 +20,6 @@ namespace Dev2.Comparer
             return x.Equals(y);
         }
 
-        public int GetHashCode(AssignObjectDTO obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(AssignObjectDTO obj) => 1;
     }
 }

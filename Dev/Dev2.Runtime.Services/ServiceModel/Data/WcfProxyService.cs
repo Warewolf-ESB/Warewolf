@@ -89,10 +89,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             return result;
         }
 
-        MethodInfo GetMethod(string method, DynamicProxy.DynamicProxy proxy)
-        {
-            return proxy.ProxyType.GetMethods().First(n => n.Name == method);
-        }
+        MethodInfo GetMethod(string method, DynamicProxy.DynamicProxy proxy) => proxy.ProxyType.GetMethods().First(n => n.Name == method);
 
         object AdjustPluginResult(object result, MethodInfo methodToRun)
         {

@@ -63,15 +63,9 @@ namespace Dev2.Common.Interfaces
             }
         }
 
-        public static bool operator ==(NameValue left, NameValue right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(NameValue left, NameValue right) => Equals(left, right);
 
-        public static bool operator !=(NameValue left, NameValue right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(NameValue left, NameValue right) => !Equals(left, right);
 
         #endregion
 
@@ -131,10 +125,7 @@ namespace Dev2.Common.Interfaces
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
-        public override string ToString()
-        {
-            return Name;
-        }
+        public override string ToString() => Name;
 
         #endregion
 

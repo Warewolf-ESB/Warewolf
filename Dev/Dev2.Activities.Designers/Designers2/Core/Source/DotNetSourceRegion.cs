@@ -169,10 +169,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        public bool CanEditSource()
-        {
-            return SelectedSource != null;
-        }
+        public bool CanEditSource() => SelectedSource != null;
 
         public ICommand EditSourceCommand { get; set; }
 
@@ -207,14 +204,11 @@ namespace Dev2.Activities.Designers2.Core.Source
         }
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new DotNetSourceRegion
         {
-            return new DotNetSourceRegion
-            {
-                IsEnabled = IsEnabled,
-                SelectedSource = SelectedSource
-            };
-        }
+            IsEnabled = IsEnabled,
+            SelectedSource = SelectedSource
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {

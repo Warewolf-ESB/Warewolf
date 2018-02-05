@@ -95,10 +95,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         #region Overrides of AbstractDatabaseBroker<ODBCServer>
 
-        protected override ODBCServer CreateDbServer(DbSource dbSource)
-        {
-            return new ODBCServer();
-        }
+        protected override ODBCServer CreateDbServer(DbSource dbSource) => new ODBCServer();
 
         #endregion
 

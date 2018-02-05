@@ -41,10 +41,7 @@ namespace Dev2.PathOperations
         [return: MarshalAs(UnmanagedType.Bool)]
         static extern bool CloseHandle(IntPtr handle);
 
-        protected override bool ReleaseHandle()
-        {
-            return CloseHandle(handle);
-        }
+        protected override bool ReleaseHandle() => CloseHandle(handle);
     }
     
     [Serializable]
@@ -245,10 +242,7 @@ namespace Dev2.PathOperations
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src)
-        {
-            return ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
-        }
+        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool PathExist(IActivityIOPath dst)
@@ -432,17 +426,9 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        public bool RequiresLocalTmpStorage()
-        {
-            return false;
-        }
+        public bool RequiresLocalTmpStorage() => false;
 
-
-        public bool HandlesType(enActivityIOPathType type)
-        {
-
-            return type == enActivityIOPathType.FileSystem;
-        }
+        public bool HandlesType(enActivityIOPathType type) => type == enActivityIOPathType.FileSystem;
 
         public enPathType PathIs(IActivityIOPath path)
         {
@@ -482,28 +468,19 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        public string PathSeperator()
-        {
-            return "\\";
-        }
+        public string PathSeperator() => "\\";
 
         /// <summary>
         /// Get folder listing for source
         /// </summary>
         /// <returns></returns>
-        public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
-        {
-            return ListDirectoriesAccordingToType(src, ReadTypes.Folders);
-        }
+        public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.Folders);
 
         /// <summary>
         /// Get folder listing for source
         /// </summary>
         /// <returns></returns>
-        public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src)
-        {
-            return ListDirectoriesAccordingToType(src, ReadTypes.Files);
-        }
+        public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.Files);
 
         #region Private Methods
 

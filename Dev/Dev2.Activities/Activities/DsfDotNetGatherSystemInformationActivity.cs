@@ -50,10 +50,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return SystemInformationCollection.Select(to => to.Result).ToList();
-        }
+        public override List<string> GetOutputs() => SystemInformationCollection.Select(to => to.Result).ToList();
 
         public DsfDotNetGatherSystemInformationActivity()
             : base("Gather System Information")
@@ -277,10 +274,7 @@ namespace Dev2.Activities
             return GetForEachItems(enumerable.ToArray());
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -316,12 +310,9 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -406,10 +397,7 @@ namespace Dev2.Activities
             return string.Empty;
         }
 
-        public int GetCollectionCount()
-        {
-            return SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
-        }
+        public int GetCollectionCount() => SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {

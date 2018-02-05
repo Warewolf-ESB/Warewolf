@@ -30,7 +30,8 @@ namespace Dev2.Providers.Validation.Rules
             var fields = value.Split(',');
             for (int i = 0; i < fields.Length; i++)
             {
-                if(!string.IsNullOrEmpty(ExtractIndexRegionFromRecordset(fields[i])))
+                var indexValue = ExtractIndexRegionFromRecordset(fields[i]);
+                if (!string.IsNullOrEmpty(indexValue) && indexValue!="*")
                 {
                     return CreatError();
                 }

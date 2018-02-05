@@ -36,10 +36,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         #region ICommand Members
 
-        public bool CanExecute(object parameter)
-        {
-            return _canHandlingMethodExecute == null || _canHandlingMethodExecute(parameter);
-        }
+        public bool CanExecute(object parameter) => _canHandlingMethodExecute == null || _canHandlingMethodExecute(parameter);
 
         public event EventHandler CanExecuteChanged;
 
@@ -95,12 +92,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         #region ICommand Members
 
-        public bool CanExecute(object parameter)
-        {
-            
-            return _canExecute?.Invoke((T)parameter) ?? true;
-            
-        }
+        public bool CanExecute(object parameter) => _canExecute?.Invoke((T)parameter) ?? true;
 
         public event EventHandler CanExecuteChanged;
 

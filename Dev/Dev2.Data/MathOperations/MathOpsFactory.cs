@@ -16,22 +16,14 @@ namespace Dev2.Data.MathOperations
 {
     public static class MathOpsFactory
     {
-        public static IFunctionEvaluator CreateFunctionEvaluator() {
-            return new FunctionEvaluator();
-        }
+        public static IFunctionEvaluator CreateFunctionEvaluator() => new FunctionEvaluator();
 
-        public static IFunction CreateFunction(string functionName, IList<string> arguments, IList<string> argumentDescriptions, string description) {
-            return new Function(functionName, arguments, argumentDescriptions, description);
-        }
+        public static IFunction CreateFunction(string functionName, IList<string> arguments, IList<string> argumentDescriptions, string description) => new Function(functionName, arguments, argumentDescriptions, description);
 
-        public static IFunction CreateFunction() {
-            return new Function();
-        }
+        public static IFunction CreateFunction() => new Function();
 
-        public static IFrameworkRepository<IFunction> FunctionRepository() {
-            return new FunctionRepository();
-        }
-    
+        public static IFrameworkRepository<IFunction> FunctionRepository() => new FunctionRepository();
+
         public static IEvaluationFunction CreateEvaluationFunctionTO(string functionName) {
             return new EvaluationFunctionTO(functionName);
         }

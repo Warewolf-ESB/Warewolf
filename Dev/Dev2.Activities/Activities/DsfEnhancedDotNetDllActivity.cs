@@ -48,12 +48,12 @@ namespace Dev2.Activities
         }
 
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            errors = new ErrorResultTO();
+            tmpErrors = new ErrorResultTO();
             if (Namespace == null)
             {
-                errors.AddError(ErrorResource.NoNamespaceSelected);
+                tmpErrors.AddError(ErrorResource.NoNamespaceSelected);
                 return;
             }
 
@@ -62,7 +62,7 @@ namespace Dev2.Activities
                 Constructor = new PluginConstructor();
             }
 
-            ExecuteService(update, out errors, Constructor, Namespace, dataObject);
+            ExecuteService(update, out tmpErrors, Constructor, Namespace, dataObject);
         }
 
         void ExecuteService(int update, out ErrorResultTO errors, IPluginConstructor constructor, INamespaceItem namespaceItem, IDSFDataObject dataObject)
@@ -645,10 +645,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(DsfEnhancedDotNetDllActivity other)
         {

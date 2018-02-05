@@ -49,11 +49,11 @@ namespace Dev2.PathOperations
             _filesToDelete = new List<string>();
         }
 
-        public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
+        public string Get(IActivityIOOperationsEndPoint path) => Get(path, false);
+        public string Get(IActivityIOOperationsEndPoint path, bool deferredRead)
         {
             try
             {
-
                 byte[] bytes;
                 using (var s = path.Get(path.IOPath, _filesToDelete))
                 {
@@ -432,10 +432,7 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        bool IsBase64(string payload)
-        {
-            return payload.StartsWith(@"Content-Type:BASE64");
-        }
+        bool IsBase64(string payload) => payload.StartsWith(@"Content-Type:BASE64");
 
         IList<string> MakeDirectoryParts(IActivityIOPath path, string splitter)
         {

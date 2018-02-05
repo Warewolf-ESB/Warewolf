@@ -23,9 +23,6 @@ namespace Dev2.Comparer
                 && string.Equals(x.DisplayName, y.DisplayName)
                 && string.Equals(x.ExpressionText, y.ExpressionText);
         }
-        public int GetHashCode(DsfFlowSwitchActivity obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(DsfFlowSwitchActivity obj) => 1;
     }
 }

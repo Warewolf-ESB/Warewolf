@@ -58,10 +58,7 @@ namespace Dev2.Studio.Core.Activities.Utils
         }
 
 
-        public static ModelItem CreateModelItem()
-        {
-            return CreateModelItem(new object());
-        }
+        public static ModelItem CreateModelItem() => CreateModelItem(new object());
 
         public static ModelItem CreateModelItem(object objectToMakeModelItem)
         {
@@ -106,10 +103,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             return modelProperty?.ComputedValue;
         }
 
-        public static object GetProperty(this ModelItem modelItem, string propertyName)
-        {
-            return GetProperty(propertyName, modelItem);
-        }
+        public static object GetProperty(this ModelItem modelItem, string propertyName) => GetProperty(propertyName, modelItem);
 
         public static Guid GetUniqueID(ModelItem modelItem)
         {

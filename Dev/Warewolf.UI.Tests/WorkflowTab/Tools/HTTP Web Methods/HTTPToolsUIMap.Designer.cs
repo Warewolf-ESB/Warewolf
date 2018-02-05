@@ -42,19 +42,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClass
             Assert.AreEqual(this.Open_Tools_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void AssertMethod1()
-        {
-            #region Variable Declarations
-            WpfEdit uITextEdit = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebPut.LargeView.OutputsGridTable.UIItemRow.UIItemWarewolfCoreServCell.UIThedefaultvaluetobeuComboBox.UITextEdit;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'Text' text box equals 'Edit'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.UITextEditControlType, uITextEdit.ControlType.ToString());
-        }
-        
         #region Properties
         public virtual Open_Tools_UI_Map_Designer_To_FlowchartParams Open_Tools_UI_Map_Designer_To_FlowchartParams
         {
@@ -65,18 +52,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClass
                     this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams = new Open_Tools_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
-            }
-        }
-        
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
-        {
-            get
-            {
-                if ((this.mAssertMethod1ExpectedValues == null))
-                {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
-                }
-                return this.mAssertMethod1ExpectedValues;
             }
         }
         
@@ -108,8 +83,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClass
         #region Fields
         private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
-        
         private MainStudioWindow mMainStudioWindow;
         
         private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
@@ -128,21 +101,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.HTTPWebMethods.HTTPToolsUIMapClass
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class AssertMethod1ExpectedValues
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'Text' text box equals 'Edit'
-        /// </summary>
-        public string UITextEditControlType = "Edit";
         #endregion
     }
     

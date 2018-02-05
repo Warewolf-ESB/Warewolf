@@ -108,10 +108,7 @@ namespace Dev2.Util
 
         public string Path => _path;
 
-        public override string ToString()
-        {
-            return Path + " = " + Value;
-        }
+        public override string ToString() => Path + " = " + Value;
     }
 
     public sealed class JsonPathContext
@@ -160,10 +157,7 @@ namespace Dev2.Util
             return output;
         }
 
-        static Regex RegExp(string pattern)
-        {
-            return new Regex(pattern, RegexOptions.ECMAScript);
-        }
+        static Regex RegExp(string pattern) => new Regex(pattern, RegexOptions.ECMAScript);
 
         static string Normalize(string expr)
         {
@@ -376,10 +370,7 @@ namespace Dev2.Util
                 }
             }
 
-            object Index(object obj, string member)
-            {
-                return _system.GetMemberValue(obj, member);
-            }
+            object Index(object obj, string member) => _system.GetMemberValue(obj, member);
 
             delegate void WalkCallback(object member, string loc, string expr, object value, string path);
         }

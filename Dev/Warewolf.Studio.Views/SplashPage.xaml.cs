@@ -32,9 +32,9 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        public void CloseSplash(bool studioShutDown)
+        public void CloseSplash(bool studioShutdown)
         {
-            if (studioShutDown)
+            if (studioShutdown)
             {
                 _studioShutdown = true;
                 Dispatcher.BeginInvoke(new Action(() => {

@@ -101,13 +101,9 @@ namespace Dev2.Data.Util
             return clvl;
         }
 
-        public bool IsNotFtpTypePath(IActivityIOPath src)
-        {
-            return
-                !src.Path.ToUpper().StartsWith("ftp://".ToUpper())
+        public bool IsNotFtpTypePath(IActivityIOPath src) => !src.Path.ToUpper().StartsWith("ftp://".ToUpper())
                 && !src.Path.ToUpper().StartsWith("ftps://".ToUpper())
                 && !src.Path.ToUpper().StartsWith("sftp://".ToUpper());
-        }
 
         public void ValidateSourceAndDestinationPaths(IActivityIOOperationsEndPoint src,
                                                         IActivityIOOperationsEndPoint dst)
@@ -153,10 +149,7 @@ namespace Dev2.Data.Util
             }
         }
 
-        public bool IsUncFileTypePath(IActivityIOPath src)
-        {
-            return src.Path.StartsWith(@"\\");
-        }
+        public bool IsUncFileTypePath(IActivityIOPath src) => src.Path.StartsWith(@"\\");
 
         public void AddMissingFileDirectoryParts(IActivityIOOperationsEndPoint src,
                                                  IActivityIOOperationsEndPoint dst)

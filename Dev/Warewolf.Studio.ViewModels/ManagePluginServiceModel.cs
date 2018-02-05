@@ -42,35 +42,17 @@ namespace Warewolf.Studio.ViewModels
 
         public IStudioUpdateManager UpdateRepository => _updateRepository;
 
-        public ObservableCollection<IPluginSource> RetrieveSources()
-        {
-            return new ObservableCollection<IPluginSource>(_queryProxy.FetchPluginSources());
-        }
+        public ObservableCollection<IPluginSource> RetrieveSources() => new ObservableCollection<IPluginSource>(_queryProxy.FetchPluginSources());
 
-        public ICollection<IPluginAction> GetActions(IPluginSource source, INamespaceItem ns)
-        {
-            return _queryProxy.PluginActions(source, ns).Where(a => a.Method != "GetType").ToList();
-        }
+        public ICollection<IPluginAction> GetActions(IPluginSource source, INamespaceItem value) => _queryProxy.PluginActions(source, value).Where(a => a.Method != "GetType").ToList();
 
-        public ICollection<IPluginAction> GetActionsWithReturns(IPluginSource source, INamespaceItem ns)
-        {
-            return _queryProxy.PluginActionsWithReturns(source, ns).Where(a => a.Method != "GetType").ToList();
-        }
+        public ICollection<IPluginAction> GetActionsWithReturns(IPluginSource source, INamespaceItem ns) => _queryProxy.PluginActionsWithReturns(source, ns).Where(a => a.Method != "GetType").ToList();
 
-        public ICollection<IPluginConstructor> GetConstructors(IPluginSource source, INamespaceItem ns)
-        {
-            return _queryProxy.PluginConstructors(source, ns).ToList();
-        }
+        public ICollection<IPluginConstructor> GetConstructors(IPluginSource source, INamespaceItem value) => _queryProxy.PluginConstructors(source, value).ToList();
 
-        public ICollection<INamespaceItem> GetNameSpaces(IPluginSource source)
-        {
-            return _queryProxy.FetchNamespaces(source);
-        }
+        public ICollection<INamespaceItem> GetNameSpaces(IPluginSource source) => _queryProxy.FetchNamespaces(source);
 
-        public ICollection<INamespaceItem> GetNameSpacesWithJsonRetunrs(IPluginSource source)
-        {
-            return _queryProxy.FetchNamespacesWithJsonRetunrs(source);
-        }
+        public ICollection<INamespaceItem> GetNameSpacesWithJsonRetunrs(IPluginSource source) => _queryProxy.FetchNamespacesWithJsonRetunrs(source);
 
         public void CreateNewSource()
         {
@@ -82,10 +64,7 @@ namespace Warewolf.Studio.ViewModels
             _shell.EditResource(selectedSource);
         }
 
-        public string TestService(IPluginService inputValues)
-        {
-            return _updateRepository.TestPluginService(inputValues);
-        }
+        public string TestService(IPluginService inputValues) => _updateRepository.TestPluginService(inputValues);
 
         #endregion
     }

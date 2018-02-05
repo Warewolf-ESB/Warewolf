@@ -304,7 +304,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        public IIntellisenseResult AddErrorToResults(bool isRs, string part, IDev2DataLangaugeParseError e, bool isOpen)
+        public IIntellisenseResult AddErrorToResults(bool isRs, string part, IDev2DataLangaugeParseError dev2DataLanguageParseError, bool isOpen)
         {
             // add error
             IDataListVerifyPart pTo;
@@ -323,7 +323,7 @@ namespace Dev2.Data.Util
                 pTo = IntellisenseFactory.CreateDataListValidationScalarPart(part.Replace("]", ""));
             }
 
-            return IntellisenseFactory.CreateErrorResult(e.StartIndex, e.EndIndex, pTo, e.Message, e.ErrorCode, isOpen);
+            return IntellisenseFactory.CreateErrorResult(dev2DataLanguageParseError.StartIndex, dev2DataLanguageParseError.EndIndex, pTo, dev2DataLanguageParseError.Message, dev2DataLanguageParseError.ErrorCode, isOpen);
         }
 
         #endregion

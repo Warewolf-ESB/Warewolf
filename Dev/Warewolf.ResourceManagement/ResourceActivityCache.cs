@@ -19,7 +19,7 @@ namespace Warewolf.ResourceManagement
 
         public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid) => Parse(activity, resourceIdGuid, false);
 
-        public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid, bool failOnException)
+        public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid, bool failOnError)
         {
             if(HasActivityInCache(resourceIdGuid))
             {
@@ -49,7 +49,7 @@ namespace Warewolf.ResourceManagement
                 catch(Exception err) //errors caught inside                    
                 {
                     Dev2Logger.Error(err, "Warewolf Error");
-                    if(failOnException)
+                    if(failOnError)
                     {
                         throw;
                     }
@@ -58,15 +58,9 @@ namespace Warewolf.ResourceManagement
             return null;
         }
 
-        public IDev2Activity GetActivity(Guid resourceIdGuid)
-        {
-            return _cache[resourceIdGuid];
-        }
+        public IDev2Activity GetActivity(Guid resourceIdGuid) => _cache[resourceIdGuid];
 
-        public bool HasActivityInCache(Guid resourceIdGuid)
-        {
-            return _cache.ContainsKey(resourceIdGuid);
-        }
+        public bool HasActivityInCache(Guid resourceIdGuid) => _cache.ContainsKey(resourceIdGuid);
 
         public void RemoveFromCache(Guid resourceID)
         {

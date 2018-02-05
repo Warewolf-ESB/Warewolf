@@ -262,7 +262,8 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName = null)
+        protected void OnPropertyChanged() => OnPropertyChanged(null);
+        protected void OnPropertyChanged(string propertyName)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));

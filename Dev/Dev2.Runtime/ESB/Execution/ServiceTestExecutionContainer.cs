@@ -170,10 +170,7 @@ namespace Dev2.Runtime.ESB.Execution
         }
 
 
-        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
-        {
-            return true;
-        }
+        public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext) => true;
 
         static void AddRecordsetsInputs(IEnumerable<IServiceTestInput> recSets, IExecutionEnvironment environment)
         {
@@ -641,15 +638,9 @@ namespace Dev2.Runtime.ESB.Execution
             return failureMessage;
         }
 
-        static bool TestPassedBasedOnSteps(bool hasPendingSteps, bool hasInvalidSteps, bool hasFailingSteps)
-        {
-            return !hasPendingSteps && !hasInvalidSteps && !hasFailingSteps;
-        }
+        static bool TestPassedBasedOnSteps(bool hasPendingSteps, bool hasInvalidSteps, bool hasFailingSteps) => !hasPendingSteps && !hasInvalidSteps && !hasFailingSteps;
 
-        static bool TestPassedBasedOnOutputs(bool pending, bool invalid, bool failing)
-        {
-            return !pending && !invalid && !failing;
-        }
+        static bool TestPassedBasedOnOutputs(bool pending, bool invalid, bool failing) => !pending && !invalid && !failing;
 
         static IList<IServiceTestOutput> GetOutputs(IEnumerable<IServiceTestOutput> pendingOutputs, IEnumerable<IServiceTestOutput> invalidOutputs, IEnumerable<IServiceTestOutput> failingOutputs, out IList<IServiceTestOutput> invalidTestOutputs, out IList<IServiceTestOutput> failingTestOutputs)
         {
@@ -824,10 +815,7 @@ namespace Dev2.Runtime.ESB.Execution
             return ret;
         }
 
-        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity)
-        {
-            return null;
-        }
+        public override IDSFDataObject Execute(IDSFDataObject inputs, IDev2Activity activity) => null;
 
         static void EvalInner(IDSFDataObject dsfDataObject, IDev2Activity resource, int update, List<IServiceTestStep> testSteps)
         {

@@ -112,10 +112,7 @@ namespace Dev2.Studio.Core.Models
 
         public Guid EnvironmentID { get; private set; }
 
-        public bool IsLocalHostCheck()
-        {
-            return Connection.IsLocalHost;
-        }
+        public bool IsLocalHostCheck() => Connection.IsLocalHost;
 
         public bool IsLocalHost => IsLocalHostCheck();
         public bool HasLoadedResources { get; private set; }
@@ -332,15 +329,9 @@ namespace Dev2.Studio.Core.Models
             return isEqual;
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as IServer);
-        }
+        public override bool Equals(object obj) => Equals(obj as IServer);
 
-        public override int GetHashCode()
-        {
-            return EnvironmentID.GetHashCode();
-        }
+        public override int GetHashCode() => EnvironmentID.GetHashCode();
 
         #endregion IEquatable
 
@@ -445,10 +436,7 @@ namespace Dev2.Studio.Core.Models
             return result;
         }
 
-        public Permissions GetPermissions(Guid resourceID)
-        {
-            return AuthorizationService.GetResourcePermissions(resourceID);
-        }
+        public Permissions GetPermissions(Guid resourceID) => AuthorizationService.GetResourcePermissions(resourceID);
 
         public Dictionary<string, string> GetServerInformation()
         {

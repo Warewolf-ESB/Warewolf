@@ -395,10 +395,7 @@ namespace Dev2.DynamicServices
             return result;
         }
 
-        public bool IsDebugMode()
-        {
-            return (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
-        }
+        public bool IsDebugMode() => (IsDebug || WorkflowLoggger.ShouldLog(ResourceID) || RemoteInvoke) && !RunWorkflowAsync;
 
         #endregion
 

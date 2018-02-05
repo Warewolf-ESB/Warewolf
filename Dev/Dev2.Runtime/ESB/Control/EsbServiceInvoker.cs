@@ -204,9 +204,9 @@ namespace Dev2.Runtime.ESB
 
         public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke) => GenerateInvokeContainer(dataObject, serviceId, isLocalInvoke, default(Guid));
 
-        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke, Guid masterDataListId)
+        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocal, Guid masterDataListId)
         {
-            if (isLocalInvoke)
+            if (isLocal)
             {
                 ServiceAction sa;
                 if (_cache.ContainsKey(dataObject.ResourceID))

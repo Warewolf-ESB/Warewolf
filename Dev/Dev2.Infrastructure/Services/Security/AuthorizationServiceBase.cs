@@ -152,15 +152,9 @@ namespace Dev2.Services.Security
             _permissionsModifedHandler?.Invoke(this, e);
         }
 
-        protected bool IsAuthorizedToConnect(IPrincipal principal)
-        {
-            return IsAuthorized(AuthorizationContext.Any, principal, () => GetGroupPermissions(principal));
-        }
+        protected bool IsAuthorizedToConnect(IPrincipal principal) => IsAuthorized(AuthorizationContext.Any, principal, () => GetGroupPermissions(principal));
 
-        public bool IsAuthorized(IPrincipal principal, AuthorizationContext context, string resource)
-        {
-            return IsAuthorized(context,principal, () => GetGroupPermissions(principal, resource));
-        }
+        public bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource) => IsAuthorized(context, user, () => GetGroupPermissions(user, resource));
 
         protected void DumpPermissionsOnError(IPrincipal principal)
         {

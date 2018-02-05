@@ -165,12 +165,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Inserted { get; set; }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(OutputVariable) && SplitType == SplitTypeIndex && string.IsNullOrEmpty(At)
+        public bool IsEmpty() => string.IsNullOrEmpty(OutputVariable) && SplitType == SplitTypeIndex && string.IsNullOrEmpty(At)
                    || string.IsNullOrEmpty(OutputVariable) && SplitType == SplitTypeChars && string.IsNullOrEmpty(At)
                    || string.IsNullOrEmpty(OutputVariable) && SplitType == SplitTypeNone && string.IsNullOrEmpty(At);
-        }
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {

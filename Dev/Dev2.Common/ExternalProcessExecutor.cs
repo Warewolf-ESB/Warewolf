@@ -37,10 +37,7 @@ namespace Dev2.Common
             }
         }
 
-        public Process Start(ProcessStartInfo startInfo)
-        {
-            return Process.Start(startInfo);
-        }
+        public Process Start(ProcessStartInfo startInfo) => Process.Start(startInfo);
 
         #endregion Implementation of IExternalProcessExecutor
     }

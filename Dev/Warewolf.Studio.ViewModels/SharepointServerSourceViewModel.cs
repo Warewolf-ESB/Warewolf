@@ -124,15 +124,9 @@ namespace Warewolf.Studio.ViewModels
             Header = (_sharePointServiceSource == null ? ResourceName : _sharePointServiceSource.Name).Trim();
         }
 
-        public override bool CanSave()
-        {
-            return TestPassed;
-        }
+        public override bool CanSave() => TestPassed;
 
-        bool CanCancelTest()
-        {
-            return Testing;
-        }
+        bool CanCancelTest() => Testing;
 
         void CancelTest()
         {
@@ -176,26 +170,20 @@ namespace Warewolf.Studio.ViewModels
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        public override void FromModel(ISharepointServerSource sharepointServerSource)
+        public override void FromModel(ISharepointServerSource source)
         {
-            ResourceName = sharepointServerSource.Name;
-            AuthenticationType = sharepointServerSource.AuthenticationType;
-            UserName = sharepointServerSource.UserName;
-            ServerName = sharepointServerSource.Server;
-            Password = sharepointServerSource.Password;
-            IsSharepointOnline = sharepointServerSource.IsSharepointOnline;
+            ResourceName = source.Name;
+            AuthenticationType = source.AuthenticationType;
+            UserName = source.UserName;
+            ServerName = source.Server;
+            Password = source.Password;
+            IsSharepointOnline = source.IsSharepointOnline;
         }
 
         public override string Name
         {
-            get
-            {
-                return ResourceName;
-            }
-            set
-            {
-                ResourceName = value;
-            }
+            get => ResourceName;
+            set => ResourceName = value;
         }
 
         public string ResourceName
@@ -286,18 +274,15 @@ namespace Warewolf.Studio.ViewModels
             IsSharepointOnline = sharepointServerSource.IsSharepointOnline;
         }
 
-        ISharepointServerSource ToNewSource()
+        ISharepointServerSource ToNewSource() => new SharePointServiceSourceDefinition
         {
-            return new SharePointServiceSourceDefinition
-            {
-                AuthenticationType = AuthenticationType,
-                Server = ServerName,
-                Password = Password,
-                UserName = UserName,
-                Name = ResourceName,
-                Id = _sharePointServiceSource?.Id ?? Guid.NewGuid()
-            };
-        }
+            AuthenticationType = AuthenticationType,
+            Server = ServerName,
+            Password = Password,
+            UserName = UserName,
+            Name = ResourceName,
+            Id = _sharePointServiceSource?.Id ?? Guid.NewGuid()
+        };
 
         ISharepointServerSource ToSource()
         {

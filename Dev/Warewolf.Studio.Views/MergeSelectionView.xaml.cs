@@ -36,10 +36,7 @@ namespace Warewolf.Studio.Views
             Close();
         }
 
-        public bool IsMergeButtonEnabled()
-        {
-            return MergeButton.Command.CanExecute(null);
-        }
+        public bool IsMergeButtonEnabled() => MergeButton.Command.CanExecute(null);
 
         public void Cancel()
         {

@@ -209,11 +209,7 @@ namespace Dev2.Utilities
             }
         }
 
-        public StringBuilder SanitizeXaml(StringBuilder workflowXaml)
-        {
-            // Clearing the following element resolves the issue
-            return RemoveNodeValue(workflowXaml, "<sads:DebugSymbol.Symbol>");
-        }
+        public StringBuilder SanitizeXaml(StringBuilder workflowXaml) => RemoveNodeValue(workflowXaml, "<sads:DebugSymbol.Symbol>");
 
         StringBuilder RemoveNodeValue(StringBuilder xml, string nodeName)
         {

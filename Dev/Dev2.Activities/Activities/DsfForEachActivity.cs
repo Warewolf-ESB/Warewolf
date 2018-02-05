@@ -309,7 +309,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -318,18 +318,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
-        {
-            return DebugItem.EmptyList;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
 
         #endregion Get Inputs/Outputs
 
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -341,10 +335,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             throw new NotImplementedException();
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.ForEach;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.ForEach;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -509,15 +500,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(ForEachElementName);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(ForEachElementName);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(ForEachElementName.Replace("*", ""));
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(ForEachElementName.Replace("*", ""));
 
         #endregion
 

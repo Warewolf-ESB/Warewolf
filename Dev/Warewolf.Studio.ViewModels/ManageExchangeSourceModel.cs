@@ -27,10 +27,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of IManageDatabaseSourceModel
 
-        public string TestConnection(IExchangeSource resource)
-        {
-            return _updateRepository.TestConnection(resource);
-        }
+        public string TestConnection(IExchangeSource resource) => _updateRepository.TestConnection(resource);
 
         public void Save(IExchangeSource toDbSource)
         {

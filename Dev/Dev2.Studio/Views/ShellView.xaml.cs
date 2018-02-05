@@ -44,10 +44,7 @@ namespace Dev2.Studio.Views
 
         #region Constructor
 
-        public static ShellView GetInstance()
-        {
-            return _this;
-        }
+        public static ShellView GetInstance() => _this;
 
         public ShellView()
         {

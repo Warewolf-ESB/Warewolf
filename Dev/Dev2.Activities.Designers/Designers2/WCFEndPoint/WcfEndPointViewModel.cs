@@ -449,7 +449,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
             }
         }
 
-        public void SetDisplayName(string outputFieldName)
+        public void SetDisplayName(string displayName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
@@ -458,15 +458,15 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
                 DisplayName = DisplayName.Remove(index);
             }
 
-            var displayName = DisplayName;
+            var displayName2 = DisplayName;
 
-            if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+            if (!string.IsNullOrEmpty(displayName2) && displayName2.Contains("Dsf"))
             {
-                DisplayName = displayName;
+                DisplayName = displayName2;
             }
-            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            if (!string.IsNullOrWhiteSpace(displayName))
             {
-                DisplayName = displayName + outputFieldName;
+                DisplayName = displayName2 + displayName;
             }
         }
 

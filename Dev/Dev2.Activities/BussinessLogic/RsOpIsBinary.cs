@@ -19,17 +19,9 @@ namespace Dev2.BussinessLogic
 
     public class RsOpIsBinary : AbstractRecsetSearchValidation
     {
-        public override string HandlesType()
-        {
-            return "Is Binary";
-        }
+        public override string HandlesType() => "Is Binary";
 
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
-        {
-
-            return a => values.All(x => a.ToString().IsBinary());
-
-        }
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => a => values.All(x => a.ToString().IsBinary());
 
         public override int ArgumentCount => 1;
     }

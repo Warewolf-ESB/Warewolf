@@ -101,15 +101,10 @@ namespace Dev2.Network
             }
         }
 
-        public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId)
-        {
-            return _wrappedConnection.ExecuteCommand(xmlRequest,workspaceId);
-        }
+        public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId) => _wrappedConnection.ExecuteCommand(xmlRequest, workspaceId);
 
-        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId)
-        {
-            return await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true);
-        }
+        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId) => await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true);
+
         public IHubProxyWrapper EsbProxy => _wrappedConnection.EsbProxy;
 
         public bool IsConnected => _wrappedConnection.IsConnected;
@@ -265,14 +260,8 @@ namespace Dev2.Network
             return isEqual;
         }
 
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as IEnvironmentConnection);
-        }
+        public override bool Equals(object obj) => Equals(obj as IEnvironmentConnection);
 
-        public override int GetHashCode()
-        {
-            return ID.GetHashCode();
-        }
+        public override int GetHashCode() => ID.GetHashCode();
     }
 }

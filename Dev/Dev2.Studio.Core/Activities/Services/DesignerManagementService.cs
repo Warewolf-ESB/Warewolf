@@ -78,10 +78,7 @@ namespace Dev2.Studio.Core.Activities.Services
 
         #region Methods
 
-        public IContextualResourceModel GetRootResourceModel()
-        {
-            return _rootModel;
-        }
+        public IContextualResourceModel GetRootResourceModel() => _rootModel;
 
         public void RequestExpandAll()
         {

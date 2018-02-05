@@ -27,10 +27,7 @@ namespace Dev2.Studio.Core.Models.QuickVariableInput
             _activity = activity;
         }
 
-        public int GetCollectionCount()
-        {
-            return _activity.GetCollectionCount();
-        }
+        public int GetCollectionCount() => _activity.GetCollectionCount();
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite)
         {

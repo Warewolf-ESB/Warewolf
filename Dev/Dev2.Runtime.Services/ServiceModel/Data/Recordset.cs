@@ -118,10 +118,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region ToString
 
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this);
 
         #endregion
 

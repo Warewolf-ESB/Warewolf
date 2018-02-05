@@ -19,16 +19,10 @@ namespace Dev2.BussinessLogic
 
     public class RsOpNotBinary : AbstractRecsetSearchValidation
     {
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
-        {
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => a => values.All(x => !a.ToString().IsBinary());
 
-            return a => values.All(x => !a.ToString().IsBinary());
+        public override string HandlesType() => "Not Binary";
 
-        }
-        public override string HandlesType()
-        {
-            return "Not Binary";
-        }
         public override int ArgumentCount => 1;
     }
 }

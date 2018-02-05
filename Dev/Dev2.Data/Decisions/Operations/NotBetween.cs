@@ -17,10 +17,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class NotBetween : IDecisionOperation
     {
-        public Enum HandlesType()
-        {
-            return enDecisionType.NotBetween;
-        }
+        public Enum HandlesType() => enDecisionType.NotBetween;
 
         public bool Invoke(string[] cols)
         {

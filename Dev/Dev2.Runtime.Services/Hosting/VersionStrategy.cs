@@ -21,9 +21,9 @@ namespace Dev2.Runtime.Hosting
     {
         #region Implementation of IVersionStrategy
 
-        public IVersionInfo GetNextVersion(IResource newResource, IResource oldResource, string userName , string reason )
+        public IVersionInfo GetNextVersion(IResource newResource, IResource oldresource, string userName , string reason )
         {
-            if (oldResource == null)
+            if (oldresource == null)
             {
                 if(newResource.VersionInfo == null)
                 {
@@ -32,17 +32,17 @@ namespace Dev2.Runtime.Hosting
             }
             else if (reason == "Rename")
             {
-                if (oldResource.VersionInfo != null)
+                if (oldresource.VersionInfo != null)
                 {
-                    return new VersionInfo(DateTime.Now, reason, userName, oldResource.VersionInfo.VersionNumber, oldResource.ResourceID, oldResource.VersionInfo.VersionId);
+                    return new VersionInfo(DateTime.Now, reason, userName, oldresource.VersionInfo.VersionNumber, oldresource.ResourceID, oldresource.VersionInfo.VersionId);
                 }
             }
 
             else
             {
-                if(oldResource.VersionInfo != null)
+                if(oldresource.VersionInfo != null)
                 {
-                    return new VersionInfo(DateTime.Now, reason, userName, (1 + int.Parse(oldResource.VersionInfo.VersionNumber)).ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, oldResource.VersionInfo.VersionId);
+                    return new VersionInfo(DateTime.Now, reason, userName, (1 + int.Parse(oldresource.VersionInfo.VersionNumber)).ToString(CultureInfo.InvariantCulture), oldresource.ResourceID, oldresource.VersionInfo.VersionId);
                 }
             }
             return new VersionInfo(DateTime.Now, reason, userName, "1", newResource.ResourceID, Guid.NewGuid());
@@ -60,14 +60,14 @@ namespace Dev2.Runtime.Hosting
             return new VersionInfo(DateTime.Now, reason, userName, (1 + int.Parse(oldresource.VersionNumber)).ToString(CultureInfo.InvariantCulture), oldresource.ResourceId, oldresource.VersionId);
         }
 
-        public IVersionInfo GetCurrentVersion(IResource newResource, IResource oldResource, string userName, string reason)
+        public IVersionInfo GetCurrentVersion(IResource newResource, IResource oldresource, string userName, string reason)
         {
-            if (oldResource != null && oldResource.VersionInfo == null)
+            if (oldresource != null && oldresource.VersionInfo == null)
             {
-                return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), oldResource.ResourceID, Guid.NewGuid());
+                return new VersionInfo(DateTime.Now, reason, userName, 1.ToString(CultureInfo.InvariantCulture), oldresource.ResourceID, Guid.NewGuid());
             }
 
-            return oldResource?.VersionInfo;            
+            return oldresource?.VersionInfo;            
         }
     }
 }

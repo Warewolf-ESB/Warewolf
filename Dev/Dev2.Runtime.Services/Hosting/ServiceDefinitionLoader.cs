@@ -242,10 +242,7 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
-        bool IsSource(StringBuilder serviceData)
-        {
-            return serviceData.IndexOf("<Source ", 0, false) == 0;
-        }
+        bool IsSource(StringBuilder serviceData) => serviceData.IndexOf("<Source ", 0, false) == 0;
 
         bool IsWorkflow(StringBuilder serviceData)
         {

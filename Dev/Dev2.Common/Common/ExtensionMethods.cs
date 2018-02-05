@@ -41,15 +41,12 @@ namespace Dev2.Common.Common
         }
 
         public static IEnumerable<TSource> FromHierarchy<TSource>(this TSource source, Func<TSource, TSource> nextItem)
-            where TSource : class
-        {
-            return FromHierarchy(source, nextItem, s => s != null);
-        }
+            where TSource : class => FromHierarchy(source, nextItem, s => s != null);
 
         #endregion Exception Unrolling
 
         #region StringBuilder Methods
-        
+
         public static StringBuilder CleanEncodingHeaderForXmlSave(this StringBuilder sb)
         {
             var removeStartIdx = sb.IndexOf("<?", 0, false);
@@ -113,16 +110,10 @@ namespace Dev2.Common.Common
             }
         }
 
-        public static bool IsNullOrEmpty(this StringBuilder sb)
-        {
-            return string.IsNullOrEmpty(sb?.ToString());
-        }
+        public static bool IsNullOrEmpty(this StringBuilder sb) => string.IsNullOrEmpty(sb?.ToString());
 
-        public static StringBuilder ToStringBuilder(this string str)
-        {
-            return new StringBuilder(str);
-        }
-        
+        public static StringBuilder ToStringBuilder(this string str) => new StringBuilder(str);
+
         public static Stream EncodeForXmlDocument(this StringBuilder sb)
         {
             try
@@ -209,12 +200,9 @@ namespace Dev2.Common.Common
             }
             return unescapedString;
         }
-        
-        public static bool Contains(this StringBuilder sb, string value)
-        {
-            return IndexOf(sb, value, 0, false) >= 0;
-        }
-        
+
+        public static bool Contains(this StringBuilder sb, string value) => IndexOf(sb, value, 0, false) >= 0;
+
         public static string Substring(this StringBuilder sb, int startIdx, int length)
         {
             return sb.ToString(startIdx, length);
@@ -434,10 +422,7 @@ namespace Dev2.Common.Common
             return false;
         }
 
-        public static byte[] ToByteArray(this Stream stream)
-        {
-            return GetByteArray(stream);
-        }
+        public static byte[] ToByteArray(this Stream stream) => GetByteArray(stream);
 
         public static byte[] GetByteArray(Stream stream)
         {

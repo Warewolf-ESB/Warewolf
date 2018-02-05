@@ -4,23 +4,18 @@ namespace Dev2.Runtime.Hosting
 {
     static class ResourceCatalogResultBuilder
     {
-        public static ResourceCatalogResult CreateSuccessResult(string msg)
+        public static ResourceCatalogResult CreateSuccessResult(string msg) => new ResourceCatalogResult()
         {
-            return new ResourceCatalogResult()
-            {
-                Status = ExecStatus.Success,
-                Message = msg
-            };
-        }
-        public static ResourceCatalogResult CreateFailResult(string msg)
+            Status = ExecStatus.Success,
+            Message = msg
+        };
+
+        public static ResourceCatalogResult CreateFailResult(string msg) => new ResourceCatalogResult()
         {
-            return new ResourceCatalogResult()
-            {
-                Status = ExecStatus.Fail,
-                Message = msg
-            };
-        }
-    
+            Status = ExecStatus.Fail,
+            Message = msg
+        };
+
         public static ResourceCatalogResult CreateAccessViolationResult(string msg)
         {
             return new ResourceCatalogResult()
@@ -29,29 +24,22 @@ namespace Dev2.Runtime.Hosting
                 Message = msg
             };
         }
-        public static ResourceCatalogResult CreateDuplicateMatchResult(string msg)
+        public static ResourceCatalogResult CreateDuplicateMatchResult(string msg) => new ResourceCatalogResult
         {
-            return new ResourceCatalogResult
-            {
-                Status = ExecStatus.DuplicateMatch,
-                Message = msg
-            };
-        }
-        public static ResourceCatalogResult CreateNoMatchResult(string msg)
+            Status = ExecStatus.DuplicateMatch,
+            Message = msg
+        };
+
+        public static ResourceCatalogResult CreateNoMatchResult(string msg) => new ResourceCatalogResult
         {
-            return new ResourceCatalogResult
-            {
-                Status = ExecStatus.NoMatch,
-                Message = msg
-            };
-        }
-        public static ResourceCatalogResult CreateNoWildcardsAllowedhResult(string msg)
+            Status = ExecStatus.NoMatch,
+            Message = msg
+        };
+
+        public static ResourceCatalogResult CreateNoWildcardsAllowedhResult(string msg) => new ResourceCatalogResult
         {
-            return new ResourceCatalogResult
-            {
-                Status = ExecStatus.NoWildcardsAllowed,
-                Message = msg
-            };
-        }
+            Status = ExecStatus.NoWildcardsAllowed,
+            Message = msg
+        };
     }
 }

@@ -32,10 +32,7 @@ namespace Dev2.Communication
             Message.Append(message);
         }
 
-        public string GetDecompressedMessage()
-        {
-            return Message.ToString();
-        }
+        public string GetDecompressedMessage() => Message.ToString();
     }
 
     public class CompressedExecuteMessage : IExecuteMessage
@@ -111,9 +108,6 @@ namespace Dev2.Communication
             }
         }
 
-        public string GetDecompressedMessage()
-        {
-            return Decompress(_message.ToString());
-        }
+        public string GetDecompressedMessage() => Decompress(_message.ToString());
     }
 }

@@ -42,10 +42,12 @@ namespace Dev2.Activities.Designers2.WriteFile
             
         }
 
-        string FileContents { get { return GetProperty<string>(); } }
+        string FileContents => GetProperty<string>();
+
         bool Overwrite { set => SetProperty(value); get => GetProperty<bool>(); }
-        bool AppendTop { get { return GetProperty<bool>(); } }
-        bool AppendBottom { get { return GetProperty<bool>(); } }
+        bool AppendTop => GetProperty<bool>();
+
+        bool AppendBottom => GetProperty<bool>();
 
         public override void UpdateHelpDescriptor(string helpText)
         {

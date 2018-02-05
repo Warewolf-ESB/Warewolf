@@ -21,33 +21,13 @@ namespace Dev2
 {
     public interface IEsbChannel
     {
-        /// <summary>
-        ///     Executes the request placing it into a transactional scope
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="request">The request.</param>
-        /// <param name="workspaceId">The workspace ID.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
         Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId,
             out ErrorResultTO errors);
-
-        /// <summary>
-        ///     Executes the sub request.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <param name="inputDefs">The input defs.</param>
-        /// <param name="outputDefs">The output defs.</param>
-        /// <param name="errors">The errors.</param>
-        /// <param name="update"></param>
-        /// <param name="b"></param>
-        /// <returns></returns>
-        IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool b);
+        
+        IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors, int update, bool handleErrors);
 
         void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update);
-
-
+        
         IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors);
 
         void CreateNewEnvironmentFromInputMappings(IDSFDataObject dataObject, string inputDefs, int update);

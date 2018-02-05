@@ -161,21 +161,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> {CountNumber};
-        }
+        public override List<string> GetOutputs() => new List<string> { CountNumber };
 
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -213,15 +207,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(RecordsetName);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(RecordsetName);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(CountNumber);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(CountNumber);
 
         #endregion
 
