@@ -51,6 +51,9 @@ namespace Dev2.ViewModels.Merge
             Conflicts = new LinkedList<IConflict>(conflictList.Conflicts);
             var firstConflict = Conflicts.FirstOrDefault();
             SetupBindings(currentResourceModel, differenceResourceModel, firstConflict as IToolConflict);
+
+            var stateApplier = new StateApplier();
+            stateApplier.SetConnectorSelectionsToCurrentState(conflictList);
         }
 
         void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, IToolConflict firstConflict)
@@ -699,24 +702,15 @@ namespace Dev2.ViewModels.Merge
 
     public class StateApplier
     {
-        private int[] ToolsAndConnectors;
-
-        public StateApplier(int[] ToolsAndConnectors)
+        public void SetConnectorSelectionsToCurrentState(ConflictList conflicts)
         {
-            this.ToolsAndConnectors = ToolsAndConnectors;
+            foreach (var conflict in conflicts)
+            {
+                if (conflict is ICheckable check)
+                {
+                    check.IsCurrentChecked = true;
+                }
+            }
         }
-
-        /// <summary>
-        /// Set the selection of each connector option to
-        /// CurrentWorkFlow's connector state
-        /// </summary>
-        /// <param name="WorkFlow">Which workflow to treat as current</param>
-        public void SetConnectorSelectionsToCurrentState(int WorkFlow)
-        {
-        }
-
-
-
-
     }
 }

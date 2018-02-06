@@ -16,7 +16,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class ToolConflict : BindableBase, IToolConflict
+    public class ToolConflict : BindableBase, IToolConflict, ICheckable
     {
         bool _isMergeExpanded;
         bool _hasConflict;
@@ -97,6 +97,12 @@ namespace Dev2.ViewModels.Merge
                 _isEmptyItemSelected = value;
                 OnPropertyChanged(() => IsEmptyItemSelected);
             }
+        }
+
+        public bool IsCurrentChecked
+        {
+            get { return CurrentViewModel.IsMergeChecked; }
+            set { CurrentViewModel.IsMergeChecked = value; }
         }
 
         public IToolConflict GetNextConflict()
