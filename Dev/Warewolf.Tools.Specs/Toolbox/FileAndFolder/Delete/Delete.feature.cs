@@ -91,25 +91,25 @@ this.ScenarioSetup(scenarioInfo);
 #line 15
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table767 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Path",
                         "Username",
                         "Password",
                         "Private Key File"});
-            table767.AddRow(new string[] {
+            table1.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String",
                         string.Format("{0}", sourcePrivateKeyFile)});
 #line 16
- testRunner.And("the debug inputs as", ((string)(null)), table767, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table1, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table768 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table768.AddRow(new string[] {
+            table2.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 19
- testRunner.And("the debug output as", ((string)(null)), table768, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table2, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -473,23 +473,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 65
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table769 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Path",
                         "Username",
                         "Password"});
-            table769.AddRow(new string[] {
+            table3.AddRow(new string[] {
                         string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                         string.Format("{0}", username),
                         "String"});
 #line 66
- testRunner.And("the debug inputs as", ((string)(null)), table769, "And ");
+ testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table770 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table770.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
 #line 69
- testRunner.And("the debug output as", ((string)(null)), table770, "And ");
+ testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1086,31 +1086,6 @@ this.DeleteFileValidation("23", "[[sourcePath]]", "", "", "", "\"\"", "[[result]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\filetodelete1.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[$#]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Failure\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Variable name [[$#]] contains invalid character(s)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[$#]] contains invalid character(s)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_24()
-        {
-#line 50
-this.DeleteFileValidation("24", "[[sourcePath]]", "", "", "c:\\filetodelete1.txt", "[[$#]]", "[[result]]", "\"Failure\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)", "1.Username - Variable name [[$#]] contains invalid character(s)", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 25")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
             "e1.txt")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[a]]\\[[b]]")]
@@ -1121,20 +1096,20 @@ this.DeleteFileValidation("24", "[[sourcePath]]", "", "", "c:\\filetodelete1.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_25()
+        public virtual void DeleteFileValidation_24()
         {
 #line 50
-this.DeleteFileValidation("25", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+this.DeleteFileValidation("24", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
                     "e1.txt", "[[a]]\\[[b]]", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1148,11 +1123,36 @@ this.DeleteFileValidation("25", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\Fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[index]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        public virtual void DeleteFileValidation_25()
+        {
+#line 50
+this.DeleteFileValidation("25", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+                    "todelete2.txt", "[[rec([[index]]).a]]", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[index]]", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]].txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\filetodelete2.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[rec([[index&]]).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Recordset name [[indexx&]] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "Username - Recordset name [[indexx&]] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_26()
         {
 #line 50
-this.DeleteFileValidation("26", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
-                    "todelete2.txt", "[[rec([[index]]).a]]", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[index]]", "", ((string[])(null)));
+this.DeleteFileValidation("26", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[rec([[index&]]).a]]", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[indexx&]] contains invalid character(s)", "Username - Recordset name [[indexx&]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1166,18 +1166,18 @@ this.DeleteFileValidation("26", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\Fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\filetodelete2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[rec([[index&]]).a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[a]]*]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Recordset name [[indexx&]] contains invalid character(s)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "Username - Recordset name [[indexx&]] contains invalid character(s)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\"t match")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public virtual void DeleteFileValidation_27()
         {
 #line 50
-this.DeleteFileValidation("27", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[rec([[index&]]).a]]", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[indexx&]] contains invalid character(s)", "Username - Recordset name [[indexx&]] contains invalid character(s)", "", ((string[])(null)));
+this.DeleteFileValidation("27", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[a]]*]]", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", "", ((string[])(null)));
 #line hidden
         }
         
@@ -1187,31 +1187,6 @@ this.DeleteFileValidation("27", "[[sourcePath]].txt", "", "", "c:\\filetodelete2
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "28")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "28")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]].txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\filetodelete2.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "[[a]]*]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:ValidationResult", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Username - Invalid expression: opening and closing brackets don\"t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\"t match")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_28()
-        {
-#line 50
-this.DeleteFileValidation("28", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[a]]*]]", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 29")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1224,19 +1199,19 @@ this.DeleteFileValidation("28", "[[sourcePath]].txt", "", "", "c:\\filetodelete2
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "The result field only allows a single result")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.The result field only allows a single result")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_29()
+        public virtual void DeleteFileValidation_28()
         {
 #line 50
-this.DeleteFileValidation("29", "[[sourcePath]]", "", "", "c:\\filetodelete1.txt", "\"\"", "\"\"", "\"\"", "AN", "True", "The result field only allows a single result", "1.The result field only allows a single result", "", ((string[])(null)));
+this.DeleteFileValidation("28", "[[sourcePath]]", "", "", "c:\\filetodelete1.txt", "\"\"", "\"\"", "\"\"", "AN", "True", "The result field only allows a single result", "1.The result field only allows a single result", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "30")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1250,20 +1225,20 @@ this.DeleteFileValidation("29", "[[sourcePath]]", "", "", "c:\\filetodelete1.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - The Result field only allows single result")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - The Result field only allows single result")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_30()
+        public virtual void DeleteFileValidation_29()
         {
 #line 50
-this.DeleteFileValidation("30", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
+this.DeleteFileValidation("29", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelet" +
                     "e1.txt", "\"\"", "[[a]]*]]", "\"\"", "AN", "True", "Result - The Result field only allows single result", "1.Result - The Result field only allows single result", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 31")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "31")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "30")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1277,20 +1252,20 @@ this.DeleteFileValidation("30", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\Fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_31()
+        public virtual void DeleteFileValidation_30()
         {
 #line 50
-this.DeleteFileValidation("31", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
+this.DeleteFileValidation("30", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Secure\\file" +
                     "todelete2.txt", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 32")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "32")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "31")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "31")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1303,19 +1278,19 @@ this.DeleteFileValidation("31", "[[sourcePath]]", "", "", "\\\\RSAKLFSVRPDC\\Fil
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_32()
+        public virtual void DeleteFileValidation_31()
         {
 #line 50
-this.DeleteFileValidation("32", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt", "\"\"", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", "", ((string[])(null)));
+this.DeleteFileValidation("31", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt", "\"\"", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 33")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "33")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "32")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "32")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1328,19 +1303,19 @@ this.DeleteFileValidation("32", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_33()
+        public virtual void DeleteFileValidation_32()
         {
 #line 50
-this.DeleteFileValidation("33", "[[sourcePath]]", "", "", "c:\\filetodelete3.txt", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
+this.DeleteFileValidation("32", "[[sourcePath]]", "", "", "c:\\filetodelete3.txt", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 34")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "34")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "33")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "33")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1353,19 +1328,19 @@ this.DeleteFileValidation("33", "[[sourcePath]]", "", "", "c:\\filetodelete3.txt
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_34()
+        public virtual void DeleteFileValidation_33()
         {
 #line 50
-this.DeleteFileValidation("34", "[[sourcePath]]", "", "", "c:\\filetodelete13.txt", "\"\"", "[[var[[a]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
+this.DeleteFileValidation("33", "[[sourcePath]]", "", "", "c:\\filetodelete13.txt", "\"\"", "[[var[[a]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 35")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "35")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "34")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "34")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1378,19 +1353,19 @@ this.DeleteFileValidation("34", "[[sourcePath]]", "", "", "c:\\filetodelete13.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var.a]]contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var.a]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_35()
+        public virtual void DeleteFileValidation_34()
         {
 #line 50
-this.DeleteFileValidation("35", "[[sourcePath]]", "", "", "c:\\filetodelete14.txt", "\"\"", "[[var.a]]", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", "", ((string[])(null)));
+this.DeleteFileValidation("34", "[[sourcePath]]", "", "", "c:\\filetodelete14.txt", "\"\"", "[[var.a]]", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 36")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "36")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "35")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "35")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1403,19 +1378,19 @@ this.DeleteFileValidation("35", "[[sourcePath]]", "", "", "c:\\filetodelete14.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[@var]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[@var]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_36()
+        public virtual void DeleteFileValidation_35()
         {
 #line 50
-this.DeleteFileValidation("36", "[[sourcePath]]", "", "", "c:\\filetodelete15.txt", "\"\"", "[[@var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", "", ((string[])(null)));
+this.DeleteFileValidation("35", "[[sourcePath]]", "", "", "c:\\filetodelete15.txt", "\"\"", "[[@var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 37")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "37")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "36")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "36")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1428,19 +1403,19 @@ this.DeleteFileValidation("36", "[[sourcePath]]", "", "", "c:\\filetodelete15.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Variable name [[var 1]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var 1]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_37()
+        public virtual void DeleteFileValidation_36()
         {
 #line 50
-this.DeleteFileValidation("37", "[[sourcePath]]", "", "", "c:\\filetodelete16.txt", "\"\"", "[[var 1]]", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", "", ((string[])(null)));
+this.DeleteFileValidation("36", "[[sourcePath]]", "", "", "c:\\filetodelete16.txt", "\"\"", "[[var 1]]", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 38")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "38")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "37")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "37")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1453,19 +1428,19 @@ this.DeleteFileValidation("37", "[[sourcePath]]", "", "", "c:\\filetodelete16.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_38()
+        public virtual void DeleteFileValidation_37()
         {
 #line 50
-this.DeleteFileValidation("38", "[[sourcePath]]", "", "", "c:\\filetodelete17.txt", "\"\"", "[[rec(1).[[rec().1]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
+this.DeleteFileValidation("37", "[[sourcePath]]", "", "", "c:\\filetodelete17.txt", "\"\"", "[[rec(1).[[rec().1]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 39")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "39")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "38")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "38")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1478,19 +1453,19 @@ this.DeleteFileValidation("38", "[[sourcePath]]", "", "", "c:\\filetodelete17.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Recordset index [[@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset index [[@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_39()
+        public virtual void DeleteFileValidation_38()
         {
 #line 50
-this.DeleteFileValidation("39", "[[sourcePath]]", "", "", "c:\\filetodelete18.txt", "\"\"", "[[rec(@).a]]", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", "", ((string[])(null)));
+this.DeleteFileValidation("38", "[[sourcePath]]", "", "", "c:\\filetodelete18.txt", "\"\"", "[[rec(@).a]]", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 40")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "40")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "39")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "39")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1503,19 +1478,19 @@ this.DeleteFileValidation("39", "[[sourcePath]]", "", "", "c:\\filetodelete18.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_40()
+        public virtual void DeleteFileValidation_39()
         {
 #line 50
-this.DeleteFileValidation("40", "[[sourcePath]]", "", "", "c:\\filetodelete19.txt", "\"\"", "[[rec\"()\".a]]", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "", ((string[])(null)));
+this.DeleteFileValidation("39", "[[sourcePath]]", "", "", "c:\\filetodelete19.txt", "\"\"", "[[rec\"()\".a]]", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 41")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "41")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "40")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "40")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[sourcePath]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1528,19 +1503,19 @@ this.DeleteFileValidation("40", "[[sourcePath]]", "", "", "c:\\filetodelete19.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:DesignValidation", "Result - Invalid Region [[rec([[[[b]]]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_41()
+        public virtual void DeleteFileValidation_40()
         {
 #line 50
-this.DeleteFileValidation("41", "[[sourcePath]]", "", "", "c:\\filetodelete20.txt", "\"\"", "[[rec([[[[b]]]]).a]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", "", ((string[])(null)));
+this.DeleteFileValidation("40", "[[sourcePath]]", "", "", "c:\\filetodelete20.txt", "\"\"", "[[rec([[[[b]]]]).a]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 42")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file Validation: 41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "42")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "41")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "41")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:File or Folder", "[[var@]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val1", "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Val2", "")]
@@ -1555,10 +1530,10 @@ this.DeleteFileValidation("41", "[[sourcePath]]", "", "", "c:\\filetodelete20.tx
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Varia" +
             "ble name [[var@]] contains invalid character(s)")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public virtual void DeleteFileValidation_42()
+        public virtual void DeleteFileValidation_41()
         {
 #line 50
-this.DeleteFileValidation("42", "[[var@]]", "", "", "", "[[var@]]", "[[var@]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)   Result - Variable" +
+this.DeleteFileValidation("41", "[[var@]]", "", "", "", "[[var@]]", "[[var@]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)   Result - Variable" +
                     " name [[var@]] contains invalid character(s)", "1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Varia" +
                     "ble name [[var@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
@@ -1567,38 +1542,38 @@ this.DeleteFileValidation("42", "[[var@]]", "", "", "", "[[var@]]", "[[var@]]", 
         public virtual void DeleteFileAtLocationWithIncorrectDirectories(string name, string source, string sourceLocation, string username, string password, string resultVar, string result, string errorOccured, string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location with incorrect directories", exampleTags);
-#line 117
+#line 116
 this.ScenarioSetup(scenarioInfo);
-#line 118
+#line 117
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 119
+#line 118
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 120
+#line 119
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 121
+#line 120
  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 122
+#line 121
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 123
+#line 122
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table771 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input Path",
                         "Username",
                         "Password"});
-            table771.AddRow(new string[] {
+            table5.AddRow(new string[] {
                         string.Format("{0} = {1}", source, sourceLocation),
                         string.Format("{0}", username),
                         "String"});
-#line 124
- testRunner.And("the debug inputs as", ((string)(null)), table771, "And ");
+#line 123
+ testRunner.And("the debug inputs as", ((string)(null)), table5, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table772 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table772.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         string.Format("{0} = {1}", resultVar, result)});
-#line 127
- testRunner.And("the debug output as", ((string)(null)), table772, "And ");
+#line 126
+ testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1618,7 +1593,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public virtual void DeleteFileAtLocationWithIncorrectDirectories_Local()
         {
-#line 117
+#line 116
 this.DeleteFileAtLocationWithIncorrectDirectories("Local", "1234", "c:\\filetodelete.txt", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", ((string[])(null)));
 #line hidden
         }
@@ -1638,7 +1613,7 @@ this.DeleteFileAtLocationWithIncorrectDirectories("Local", "1234", "c:\\filetode
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public virtual void DeleteFileAtLocationWithIncorrectDirectories_UNC()
         {
-#line 117
+#line 116
 this.DeleteFileAtLocationWithIncorrectDirectories("UNC", "[[var]]", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", ((string[])(null)));
 #line hidden
         }
@@ -1658,7 +1633,7 @@ this.DeleteFileAtLocationWithIncorrectDirectories("UNC", "[[var]]", "", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public virtual void DeleteFileAtLocationWithIncorrectDirectories_UNCSecure()
         {
-#line 117
+#line 116
 this.DeleteFileAtLocationWithIncorrectDirectories("UNC Secure", "[[variable]]", "\"\"", "dev2.local\\IntegrationTester", "I73573r0", "[[result]]", "\"\"", "AN", ((string[])(null)));
 #line hidden
         }
