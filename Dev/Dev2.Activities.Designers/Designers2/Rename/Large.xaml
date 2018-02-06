@@ -90,11 +90,8 @@
         <ui:IntellisenseTextBox Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="{StaticResource ActivityBorderTop}"
-                                DefaultText="[[Username]]"
-                                WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Tooltips.RenameToolTipUsername}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
             <i:Interaction.Behaviors>

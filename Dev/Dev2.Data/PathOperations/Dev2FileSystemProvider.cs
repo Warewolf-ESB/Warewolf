@@ -141,35 +141,31 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public int Put(Stream src, IActivityIOPath dst, IDev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
         {
+            var destination = dst;
             var result = -1;
             using (src)
             {
-                if (!Path.IsPathRooted(dst.Path))
+                if (!Path.IsPathRooted(destination.Path) && whereToPut != null)
                 {
-                    //get just the directory path to put into
-                    if (whereToPut != null)
-                    {
-                        //Make the destination directory equal to that directory
-                        dst = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + dst.Path, dst.Username, dst.Password, dst.PrivateKeyFile);
-                    }
+                    destination = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + destination.Path, destination.Username, destination.Password, destination.PrivateKeyFile);
                 }
-                if (args.Overwrite || !args.Overwrite && !FileExist(dst))
+                if (args.Overwrite || !args.Overwrite && !FileExist(destination))
                 {
                     _fileLock.EnterWriteLock();
                     try
                     {
-                        if (!RequiresAuth(dst))
+                        if (!RequiresAuth(destination))
                         {
                             using (src)
                             {
-                                File.WriteAllBytes(dst.Path, src.ToByteArray());
+                                File.WriteAllBytes(destination.Path, src.ToByteArray());
                                 result = (int)src.Length;
                             }
                         }
                         else
                         {
                             // handle UNC path
-                            var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, out SafeTokenHandle safeTokenHandle);
+                            var loginOk = _logOnprovider.DoLogon(ExtractUserName(destination), ExtractDomain(destination), destination.Password, out SafeTokenHandle safeTokenHandle);
 
                             if (loginOk)
                             {
@@ -181,7 +177,7 @@ namespace Dev2.PathOperations
                                         // Do the operation here
                                         using (src)
                                         {
-                                            File.WriteAllBytes(dst.Path, src.ToByteArray());
+                                            File.WriteAllBytes(destination.Path, src.ToByteArray());
                                             result = (int)src.Length;
                                         }
 
@@ -193,7 +189,7 @@ namespace Dev2.PathOperations
                             else
                             {
                                 // login failed
-                                throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
+                                throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, destination.Username, destination.Path));
                             }
                         }
                     }
