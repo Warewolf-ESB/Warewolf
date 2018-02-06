@@ -21,6 +21,29 @@ namespace Dev2.ViewModels.Merge.Utils
         public int Count => conflicts.Count;
         public int IndexOf(IConflict conflict) => conflicts.IndexOf(conflict);
 
+        public IConflict GetNextConflict(IConflict conflict)
+        {
+            var idx = conflicts.IndexOf(conflict);
+            var nextConflict = MoveNext(idx);
+            while (nextConflict != null)
+            {
+                idx = idx + 1;
+                nextConflict = MoveNext(idx);
+            }
+            return nextConflict;
+        }
+
+        public IConflict MoveNext(int index)
+        {
+            var nextIndex = index + 1;
+            if (nextIndex >= conflicts.Count)
+            {
+                return null;
+            }
+            var nextConflict = conflicts[nextIndex];
+            return nextConflict;
+        }
+
         public IConflict GetNextConlictToUpdate(IConflict container)
         {
             var index = conflicts.IndexOf(container) + 1;
