@@ -5,7 +5,7 @@ using System.Collections;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
-    class ConflictList : IEnumerable<IConflict>
+    public class ConflictList : IEnumerable<IConflict>
     {
         private List<IConflict> conflicts;
         public List<IConflict> Conflicts

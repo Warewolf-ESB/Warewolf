@@ -12,6 +12,10 @@ using System;
 
 namespace Dev2.Common.Interfaces
 {
+    public interface ICheckable
+    {
+        bool IsCurrentChecked { get; set; }
+    }
     public interface IConflict
     {
         bool IsEmptyItemSelected { get; set; }
