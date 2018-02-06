@@ -222,20 +222,6 @@ namespace Dev2.Activities.Specs.Merge
             Assert.AreEqual(connectorDescription, connector.DifferentArmConnector.ArmDescription);
         }
 
-        [Then(@"conflict ""(.*)"" Different tool connector is disabled")]
-        public void ThenConflictDifferentToolConnectorIsDisabled(int conflictRow)
-        {
-            var connector = GetArmConnectorFromRow(conflictRow);
-            Assert.IsFalse(connector.DifferentArmConnector.IsArmSelectionAllowed, "Expected " + connector.DifferentArmConnector.ArmDescription + "to be disabled.");
-        }
-
-        [Then(@"conflict ""(.*)"" Current tool connector is enabled")]
-        public void ThenConflictCurrentToolConnectorIsEnabled(int conflictRow)
-        {
-            var connector = GetArmConnectorFromRow(conflictRow);
-            Assert.IsTrue(connector.CurrentArmConnector.IsArmSelectionAllowed, "Expected " + connector.CurrentArmConnector.ArmDescription + "to be enabled.");
-        }
-
         [Then(@"Merge variable conflicts is true")]
         public void ThenMergeVariableConflictsIsTrue()
         {

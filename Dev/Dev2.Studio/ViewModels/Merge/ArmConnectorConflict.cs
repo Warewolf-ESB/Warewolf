@@ -17,7 +17,6 @@ namespace Dev2.ViewModels.Merge
     public class ArmConnectorConflict : BindableBase, IArmConnectorConflict
     {
         bool _hasConflict;
-        bool _isMergeExpanderEnabled;
         public IMergeArmConnectorConflict CurrentArmConnector { get; set; }
         public IMergeArmConnectorConflict DifferentArmConnector { get; set; }
         public bool HasConflict
@@ -32,15 +31,6 @@ namespace Dev2.ViewModels.Merge
         public bool IsChecked { get; set; }
         public Guid UniqueId { get; set; }
         public string Key { get; set; }
-        public bool IsMergeExpanderEnabled
-        {
-            get => _isMergeExpanderEnabled && HasConflict;
-            set
-            {
-                _isMergeExpanderEnabled = value;
-                OnPropertyChanged(() => IsMergeExpanderEnabled);
-            }
-        }
 
         public bool IsEmptyItemSelected { get; set; }
 

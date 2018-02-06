@@ -11,28 +11,6 @@ namespace Dev2.Core.Tests.Merge
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void MergeArmConnectorConflict_IsArmSelectionAllowed_DefaultConstruction_ShouldBeFalse()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var completeConflict = new MergeArmConnectorConflict("a -> b", "a", "a", "a", new ArmConnectorConflict());
-            var wasCalled = false;
-            completeConflict.PropertyChanged += (a, b) =>
-            {
-                if (b.PropertyName == "IsArmSelectionAllowed")
-                {
-                    wasCalled = true;
-                }
-            };
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict);
-            Assert.IsFalse(completeConflict.IsArmSelectionAllowed);
-            completeConflict.IsArmSelectionAllowed = true;
-            Assert.IsTrue(wasCalled);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void Equals_OtherIsNull_Returns_False()
         {
             //------------Setup for test--------------------------

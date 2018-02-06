@@ -25,7 +25,6 @@ namespace Dev2.ViewModels.Merge
         public IArmConnectorConflict Container { get; set; }
         public string Key { get; set; }
         bool _isChecked;
-        bool _isArmSelectionAllowed;
 
         public string Grouping => SourceUniqueId + Key ?? "";
 
@@ -53,16 +52,6 @@ namespace Dev2.ViewModels.Merge
                     OnChecked?.Invoke(Container, _isChecked);
                 }
                 OnPropertyChanged(() => IsChecked);
-            }
-        }
-
-        public bool IsArmSelectionAllowed
-        {
-            get => _isArmSelectionAllowed && Container.HasConflict;
-            set
-            {
-                _isArmSelectionAllowed = value;
-                OnPropertyChanged(() => IsArmSelectionAllowed);
             }
         }
 
@@ -118,13 +107,6 @@ namespace Dev2.ViewModels.Merge
             var hashCode = (397) ^ SourceUniqueId.GetHashCode();
             hashCode = (hashCode * 397) ^ (DestinationUniqueId != null ? DestinationUniqueId.GetHashCode() : 0);
             return hashCode;
-        }
-
-        public void DisableEvents()
-        {
-            WorkflowDesignerViewModel?.DeLinkTools(SourceUniqueId, DestinationUniqueId, Key);
-            IsArmSelectionAllowed = false;
-            IsChecked = false;
         }
     }
 }

@@ -503,11 +503,7 @@ namespace Dev2.Core.Tests
                 //---------------Test Result -----------------------
                 Assert.AreEqual(1, armConnectorConflicts.Count);
                 var hasConflict = armConnectorConflicts.Single().HasConflict;
-                var isArmSelectionAllowed = armConnectorConflicts.Single().CurrentArmConnector.IsArmSelectionAllowed;
-                var isArmSelectionAllowed1 = armConnectorConflicts.Single().DifferentArmConnector.IsArmSelectionAllowed;
                 Assert.IsTrue(hasConflict);
-                Assert.IsFalse(isArmSelectionAllowed);
-                Assert.IsFalse(isArmSelectionAllowed1);
             }
         }
 
@@ -568,11 +564,7 @@ namespace Dev2.Core.Tests
                 Assert.AreEqual(1, armConnectorConflicts.Count);
 
                 var hasConflict = armConnectorConflicts.Single().HasConflict;
-                var isArmSelectionAllowed = armConnectorConflicts.Single().CurrentArmConnector.IsArmSelectionAllowed;
-                var isArmSelectionAllowed1 = armConnectorConflicts.Single().DifferentArmConnector.IsArmSelectionAllowed;
                 Assert.IsTrue(hasConflict);
-                Assert.IsFalse(isArmSelectionAllowed);
-                Assert.IsFalse(isArmSelectionAllowed1);
             }
         }
 
@@ -629,9 +621,7 @@ namespace Dev2.Core.Tests
                 //---------------Test Result -----------------------
                 Assert.AreEqual(1, armConnectorConflicts.Count);
                 var hasConflict = armConnectorConflicts.Single().HasConflict;
-                var isArmSelectionAllowed = armConnectorConflicts.Single().CurrentArmConnector.IsArmSelectionAllowed;
                 Assert.IsFalse(hasConflict);
-                Assert.IsFalse(isArmSelectionAllowed);
             }
         }
 

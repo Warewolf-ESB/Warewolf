@@ -9,29 +9,6 @@ namespace Dev2.Core.Tests.Merge
     [TestClass]
     public class ArmConnectorConflictTests
     {
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ArmConnectorConflict_IsMergeExpanderEnabled_DefaultConstruction_ShouldBeFalse()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var completeConflict = new ArmConnectorConflict();
-            var wasCalled = false;
-            completeConflict.PropertyChanged += (a, b) =>
-            {
-                if (b.PropertyName == "IsMergeExpanderEnabled")
-                {
-                    wasCalled = true;
-                }
-            };
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict);
-            Assert.IsFalse(completeConflict.IsMergeExpanderEnabled);
-            completeConflict.IsMergeExpanderEnabled = true;
-            Assert.IsTrue(wasCalled);
-        }
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Equals_OtherIsNull_Returns_False()
