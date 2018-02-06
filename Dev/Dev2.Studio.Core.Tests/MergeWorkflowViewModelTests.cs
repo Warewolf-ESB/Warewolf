@@ -750,6 +750,7 @@ namespace Dev2.Core.Tests
             }
         }
 
+        // TODO: Remove?
         [TestMethod]
         public void ResetToolConflict_Given_MergeToolModel_VerifyCalls()
         {
@@ -781,7 +782,6 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var mergeToolModel = new Mock<IMergeToolModel>();
-            mergeToolModel.Setup(p => p.DisableEvents()).Verifiable();
             var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             wfDesignerVm.Setup(p => p.RemoveItem(It.IsAny<IMergeToolModel>())).Verifiable();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
@@ -938,6 +938,7 @@ namespace Dev2.Core.Tests
             }
         }
 
+        // TODO: Remove?
         [TestMethod]
         public void ResetToolEvents_Given_MergeToolModel_VerifyCalls()
         {
@@ -970,7 +971,6 @@ namespace Dev2.Core.Tests
 
             var mergeToolModel = new Mock<IMergeToolModel>();
             var mergeToolModelInternal = new Mock<IMergeToolModel>();
-            mergeToolModelInternal.Setup(p => p.DisableEvents()).Verifiable();
 
             var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             wfDesignerVm.Setup(p => p.RemoveItem(It.IsAny<IMergeToolModel>())).Verifiable();
@@ -991,7 +991,6 @@ namespace Dev2.Core.Tests
                 //---------------Execute Test ----------------------
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { mergeToolModel.Object });
                 //---------------Test Result -----------------------
-                mergeToolModelInternal.Verify(p => p.DisableEvents(), Times.Exactly(2));
             }
         }
 

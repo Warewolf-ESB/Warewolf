@@ -36,8 +36,6 @@ namespace Dev2.Common.Interfaces
         IToolConflict Container { get; set; }
         bool IsTrueArm { get; set; }
         string NodeArmDescription { get; set; }
-
-        void DisableEvents();
     }
     public delegate void ModelToolChanged(object sender, IMergeToolModel args);
 }

@@ -204,10 +204,5 @@ namespace Dev2.ViewModels.Merge
         }
 
         public event ModelToolChanged SomethingModelToolChanged;
-
-        public void DisableEvents()
-        {
-            IsMergeChecked = false;
-        }
     }
 }
