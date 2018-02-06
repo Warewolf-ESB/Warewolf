@@ -17,7 +17,6 @@ namespace Dev2.Common.Interfaces
         bool IsEmptyItemSelected { get; set; }
         bool HasConflict { get; set; }
         bool IsChecked { get; set; }
-        bool IsMergeExpanderEnabled { get; set; }
         Guid UniqueId { get; set; }
     }
 

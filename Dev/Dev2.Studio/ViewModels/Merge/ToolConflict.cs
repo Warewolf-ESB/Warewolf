@@ -19,7 +19,6 @@ namespace Dev2.ViewModels.Merge
     public class ToolConflict : BindableBase, IToolConflict
     {
         bool _isMergeExpanded;
-        bool _isMergeExpanderEnabled;
         bool _hasConflict;
         bool _hasNodeArmConflict;
         IEnumerator<IToolConflict> _conflictEnumerator;
@@ -57,16 +56,6 @@ namespace Dev2.ViewModels.Merge
             {
                 _hasNodeArmConflict = value;
                 OnPropertyChanged(() => HasNodeArmConflict);
-            }
-        }
-
-        public bool IsMergeExpanderEnabled
-        {
-            get => _isMergeExpanderEnabled;
-            set
-            {
-                _isMergeExpanderEnabled = value;
-                OnPropertyChanged(() => IsMergeExpanderEnabled);
             }
         }
 

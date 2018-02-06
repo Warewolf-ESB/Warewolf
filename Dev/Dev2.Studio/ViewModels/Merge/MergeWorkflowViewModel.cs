@@ -235,7 +235,6 @@ namespace Dev2.ViewModels.Merge
                     DataListViewModel = conflictModel.DataListViewModel;
                 }
                 var completeConflict = Conflicts.First.Value as IToolConflict;
-                completeConflict.IsMergeExpanderEnabled = completeConflict.HasConflict;
                 completeConflict.IsStartNode = true;
                 if (completeConflict.IsChecked)
                 {
@@ -347,7 +346,6 @@ namespace Dev2.ViewModels.Merge
 
         static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
         {
-            nextArmConflict.IsMergeExpanderEnabled = nextArmConflict.HasConflict;
             if (!nextArmConflict.HasConflict)
             {
                 nextArmConflict.CurrentArmConnector.IsChecked = true;
@@ -426,7 +424,6 @@ namespace Dev2.ViewModels.Merge
 
         static void UpdateNextToolState(IToolConflict nextConflict)
         {
-            nextConflict.IsMergeExpanderEnabled = nextConflict.HasConflict;
             if (!nextConflict.HasConflict || nextConflict.IsContainerTool)
             {
                 ExpandPreviousItems(nextConflict);
@@ -461,81 +458,66 @@ namespace Dev2.ViewModels.Merge
             var toolIds = conflictList.Where(s => s is IToolConflict && s.IsChecked && !s.IsEmptyItemSelected).Select(a => a.UniqueId.ToString());
             foreach (var connectorConflict in connectorConflicts)
             {
-                var currentExpanderValue = false;
-                var differentExpanderValue = false;
-
                 var foundCurrentSource = FindMatchingConnector(connectorConflict.CurrentArmConnector.SourceUniqueId, toolIds);
                 var foundCurrentDestination = FindMatchingConnector(connectorConflict.CurrentArmConnector.DestinationUniqueId, toolIds);
                 if ((foundCurrentDestination && foundCurrentSource) || connectorConflict.CurrentArmConnector.ArmDescription == null)
                 {
-                    currentExpanderValue = UpdateCurrentArmState(connectorConflict);
+                    UpdateCurrentArmState(connectorConflict);
                 }
 
                 var foundDiffSource = FindMatchingConnector(connectorConflict.DifferentArmConnector.SourceUniqueId, toolIds);
                 var foundDiffDestination = FindMatchingConnector(connectorConflict.DifferentArmConnector.DestinationUniqueId, toolIds);
                 if ((foundDiffDestination && foundDiffSource) || connectorConflict.DifferentArmConnector.ArmDescription == null)
                 {
-                    differentExpanderValue = UpdateDifferentArmState(connectorConflict);
+                    UpdateDifferentArmState(connectorConflict);
                 }
-
-                connectorConflict.IsMergeExpanderEnabled = currentExpanderValue || differentExpanderValue;
             }
         }
 
-        bool UpdateCurrentArmState(IArmConnectorConflict connectorConflict)
+        void UpdateCurrentArmState(IArmConnectorConflict connectorConflict)
         {
-            bool expectedExpanderValue;
             var currSourceConflict = conflictList.FirstOrDefault(t => t is IToolConflict && t.UniqueId.ToString() == connectorConflict.CurrentArmConnector.SourceUniqueId) as ToolConflict;
 
-            var expectedCurrentValue = currSourceConflict == null;
-            expectedExpanderValue = currSourceConflict == null;
+            var isArmSelectionAllowed = currSourceConflict == null;
 
             var sourceMatch = currSourceConflict.CurrentViewModel.UniqueId.ToString() == connectorConflict.CurrentArmConnector.SourceUniqueId;
             var destinationMatch = currSourceConflict.CurrentViewModel.UniqueId.ToString() == connectorConflict.CurrentArmConnector.DestinationUniqueId;
 
-            if (!expectedCurrentValue && (sourceMatch || destinationMatch))
+            if (!isArmSelectionAllowed && (sourceMatch || destinationMatch))
             {
                 if (currSourceConflict.HasConflict)
                 {
-                    expectedCurrentValue = currSourceConflict.CurrentViewModel.IsMergeChecked;
-                    expectedExpanderValue = currSourceConflict.CurrentViewModel.IsMergeChecked;
+                    isArmSelectionAllowed = currSourceConflict.CurrentViewModel.IsMergeChecked;
                 }
                 else
                 {
-                    expectedCurrentValue = currSourceConflict.IsChecked;
-                    expectedExpanderValue = currSourceConflict.IsChecked;
+                    isArmSelectionAllowed = currSourceConflict.IsChecked;
                 }
             }
-            connectorConflict.CurrentArmConnector.IsArmSelectionAllowed = expectedCurrentValue;
-            return expectedExpanderValue;
+            connectorConflict.CurrentArmConnector.IsArmSelectionAllowed = isArmSelectionAllowed;
         }
 
-        bool UpdateDifferentArmState(IArmConnectorConflict connnectorConflict)
+        void UpdateDifferentArmState(IArmConnectorConflict connnectorConflict)
         {
-            bool expectedExpanderValue;
             var diffDestConflict = conflictList.FirstOrDefault(t => t is IToolConflict && t.UniqueId.ToString() == connnectorConflict.DifferentArmConnector.DestinationUniqueId) as ToolConflict;
 
-            var expectedDifferentValue = diffDestConflict == null;
-            expectedExpanderValue = diffDestConflict == null;
+            var isArmSelectionAllowed = diffDestConflict == null;
 
             var sourceMatch = diffDestConflict.DiffViewModel.UniqueId.ToString() == connnectorConflict.DifferentArmConnector.SourceUniqueId;
             var destinationMatch = diffDestConflict.DiffViewModel.UniqueId.ToString() == connnectorConflict.DifferentArmConnector.DestinationUniqueId;
 
-            if (!expectedDifferentValue && (sourceMatch || destinationMatch))
+            if (!isArmSelectionAllowed && (sourceMatch || destinationMatch))
             {
                 if (diffDestConflict.HasConflict)
                 {
-                    expectedDifferentValue = diffDestConflict.DiffViewModel.IsMergeChecked;
-                    expectedExpanderValue = diffDestConflict.DiffViewModel.IsMergeChecked;
+                    isArmSelectionAllowed = diffDestConflict.DiffViewModel.IsMergeChecked;
                 }
                 else
                 {
-                    expectedDifferentValue = diffDestConflict.IsChecked;
-                    expectedExpanderValue = diffDestConflict.IsChecked;
+                    isArmSelectionAllowed = diffDestConflict.IsChecked;
                 }
             }
-            connnectorConflict.DifferentArmConnector.IsArmSelectionAllowed = expectedDifferentValue;
-            return expectedExpanderValue;
+            connnectorConflict.DifferentArmConnector.IsArmSelectionAllowed = isArmSelectionAllowed;
         }
 
         static void ShowArmConnectors(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
@@ -569,11 +551,7 @@ namespace Dev2.ViewModels.Merge
             }
             return hasValues;
         });
-        static bool FindMatchingConnector(string connectorId, IEnumerable<string> toolIds)
-        {
-            var found = toolIds.Contains(connectorId);
-            return found;
-        }
+        static bool FindMatchingConnector(string connectorId, IEnumerable<string> toolIds) => toolIds.Contains(connectorId);
 
         static void AddToTempConflictList(List<IConflict> conflicts, List<IConflict> itemsToAdd, IArmConnectorConflict found)
         {
@@ -783,10 +761,6 @@ namespace Dev2.ViewModels.Merge
                         if (conflict.HasConflict)
                         {
                             isValid = conflict.IsChecked;
-                        }
-                        if (!conflict.IsMergeExpanderEnabled)
-                        {
-                            return true;
                         }
                         return isValid;
                     });
