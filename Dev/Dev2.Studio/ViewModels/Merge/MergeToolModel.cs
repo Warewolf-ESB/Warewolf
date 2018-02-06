@@ -27,7 +27,6 @@ namespace Dev2.ViewModels.Merge
         ImageSource _mergeIcon;
         string _mergeDescription;
         bool _isMergeChecked;
-        bool _isMergeEnabled;
         bool _isMergeVisible;
         ObservableCollection<IMergeToolModel> _children;
         string _parentDescription;
@@ -116,16 +115,6 @@ namespace Dev2.ViewModels.Merge
                 {
                     WorkflowDesignerViewModel.SelectedItem = ModelItem;
                 }
-            }
-        }
-
-        public bool IsMergeEnabled
-        {
-            get => _isMergeEnabled && Container.HasConflict;
-            set
-            {
-                _isMergeEnabled = value;
-                OnPropertyChanged(() => IsMergeEnabled);
             }
         }
 
@@ -218,7 +207,6 @@ namespace Dev2.ViewModels.Merge
 
         public void DisableEvents()
         {
-            IsMergeEnabled = false;
             IsMergeChecked = false;
         }
     }

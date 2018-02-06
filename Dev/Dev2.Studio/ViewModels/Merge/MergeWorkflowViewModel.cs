@@ -62,7 +62,6 @@ namespace Dev2.ViewModels.Merge
                 {
                     Model = firstConflict?.CurrentViewModel ?? new MergeToolModel
                     {
-                        IsMergeEnabled = false,
                         IsCurrent = true,
                         WorkflowDesignerViewModel = WorkflowDesignerViewModel
                     },
@@ -80,7 +79,6 @@ namespace Dev2.ViewModels.Merge
                 {
                     Model = firstConflict?.DiffViewModel ?? new MergeToolModel
                     {
-                        IsMergeEnabled = false,
                         IsCurrent = false,
                         WorkflowDesignerViewModel = WorkflowDesignerViewModel
                     },
@@ -243,15 +241,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     return;
                 }
-                if (completeConflict.HasConflict)
-                {
-                    completeConflict.DiffViewModel.IsMergeEnabled = completeConflict.HasConflict;
-                    completeConflict.CurrentViewModel.IsMergeEnabled = completeConflict.HasConflict;
-                }
-                else
-                {
-                    completeConflict.CurrentViewModel.IsMergeChecked = true;
-                }
+                completeConflict.CurrentViewModel.IsMergeChecked = !completeConflict.HasConflict;
             }
             catch (Exception ex)
             {
@@ -297,7 +287,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     case IToolConflict nextConflict:
                         UpdateNextToolState(nextConflict);
-                        RemoveMatchingActivity(mergeToolModel, container, nextConflict);
+                        RemoveMatchingActivity(mergeToolModel, container);
                         break;
                     case IArmConnectorConflict nextArmConflict:
                         UpdateNextArmState(nextArmConflict);
@@ -310,7 +300,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        void RemoveMatchingActivity(IMergeToolModel mergeToolModel, IToolConflict container, IToolConflict nextConflict)
+        void RemoveMatchingActivity(IMergeToolModel mergeToolModel, IToolConflict container)
         {
             foreach (var conf in conflictList.Where(o => o is IToolConflict))
             {
@@ -318,13 +308,11 @@ namespace Dev2.ViewModels.Merge
                 if (mergeToolModel.IsCurrent)
                 {
                     container.DiffViewModel.IsMergeChecked = false;
-                    nextConflict.DiffViewModel.IsMergeEnabled = nextConflict.CurrentViewModel.ModelItem == null && nextConflict.HasConflict;
                     WorkflowDesignerViewModel?.RemoveItem(confl.DiffViewModel);
                 }
                 else
                 {
                     container.CurrentViewModel.IsMergeChecked = false;
-                    nextConflict.CurrentViewModel.IsMergeEnabled = nextConflict.CurrentViewModel.ModelItem == null && nextConflict.HasConflict;
                     WorkflowDesignerViewModel?.RemoveItem(confl.CurrentViewModel);
                 }
             }
@@ -424,12 +412,7 @@ namespace Dev2.ViewModels.Merge
                 return null;
             }
             var nextConflict = conflict as IToolConflict;
-            if (nextConflict != null)
-            {
-                nextConflict.CurrentViewModel.IsMergeEnabled = nextConflict.HasConflict;
-                nextConflict.DiffViewModel.IsMergeEnabled = nextConflict.HasConflict;
-            }
-            else
+            if (nextConflict == null)
             {
                 var nextArmConflict = conflict as IArmConnectorConflict;
                 if (nextArmConflict != null)
@@ -448,8 +431,6 @@ namespace Dev2.ViewModels.Merge
             {
                 ExpandPreviousItems(nextConflict);
                 nextConflict.CurrentViewModel.IsMergeChecked = true;
-                nextConflict.CurrentViewModel.IsMergeEnabled = false;
-                nextConflict.DiffViewModel.IsMergeEnabled = false;
             }
         }
 
@@ -684,7 +665,6 @@ namespace Dev2.ViewModels.Merge
             ModelItem = null,
             WorkflowDesignerViewModel = workflowDesignerViewModel,
             NodeLocation = new Point(),
-            IsMergeEnabled = false,
             IsMergeVisible = false,
             UniqueId = uniqueId
         };
@@ -895,8 +875,8 @@ namespace Dev2.ViewModels.Merge
         /// Set the selection of each connector option to
         /// CurrentWorkFlow's connector state
         /// </summary>
-        /// <param name="CurrentWorkFlow">Which workflow to treat as current</param>
-        public void SetConnectorSelectionsToCurrentState(int CurrentWorkFlow)
+        /// <param name="WorkFlow">Which workflow to treat as current</param>
+        public void SetConnectorSelectionsToCurrentState(int WorkFlow)
         {
         }
 
