@@ -42,7 +42,6 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.CreateBlankWorkflow();
 
             _resourceModel = currentResourceModel;
-            _seenConflicts = new List<IConflict>();
             var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, loadworkflowFromServer);
             conflictList = new ConflictList
             {
@@ -257,7 +256,6 @@ namespace Dev2.ViewModels.Merge
                 {
                     HasMergeStarted = true;
                 }
-                ResetToolEvents(mergeToolModel);
 
                 // setup
                 var container = mergeToolModel.Container;
@@ -317,33 +315,6 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public void ResetToolEvents(IMergeToolModel mergeToolModel)
-        {
-            var index = conflictList.IndexOf(mergeToolModel.Container);
-            var count = index + 1;
-            if (index != -1 && count < conflictList.Count)
-            {
-                var restOfItems = conflictList.Skip(count).ToList();
-                foreach (var conf in restOfItems)
-                {
-                    if (conf is IToolConflict tool && tool.HasConflict)
-                    {
-                        ResetToolConflict(tool.DiffViewModel, _seenConflicts);
-                        ResetToolConflict(tool.CurrentViewModel, _seenConflicts);
-                    }
-                }
-            }
-        }
-
-        private void ResetToolConflict(IMergeToolModel mergeTool, List<IConflict> _seenConflicts)
-        {
-            if (mergeTool != null)
-            {
-                mergeTool.DisableEvents();
-                _seenConflicts.Remove(mergeTool.Container);
-            }
-        }
-
         static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
         {
             if (!nextArmConflict.HasConflict)
@@ -397,29 +368,10 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
+        // TODO: Remove?
         IConflict UpdateNextEnabledState(IConflict currentConflict)
         {
-            if (Conflicts == null)
-            {
-                return null;
-            }
-
-            var conflict = conflictList.GetNextConflict(currentConflict, _seenConflicts);
-            if (conflict == null)
-            {
-                return null;
-            }
-            var nextConflict = conflict as IToolConflict;
-            if (nextConflict == null)
-            {
-                var nextArmConflict = conflict as IArmConnectorConflict;
-                if (nextArmConflict != null)
-                {
-                    SetMatchingArmState();
-                }
-                return nextArmConflict;
-            }
-            return nextConflict;
+            return currentConflict;
         }
 
         static void UpdateNextToolState(IToolConflict nextConflict)
@@ -435,10 +387,6 @@ namespace Dev2.ViewModels.Merge
         {
             if (isChecked)
             {
-                if (container.IsChecked)
-                {
-                    _seenConflicts.Remove(container);
-                }
                 container.IsChecked = isChecked;
                 var conflict = UpdateNextEnabledState(container);
                 if (conflict is IToolConflict nextConflict)
@@ -670,7 +618,6 @@ namespace Dev2.ViewModels.Merge
         }
 
         IDataListViewModel _dataListViewModel;
-        readonly List<IConflict> _seenConflicts;
 
         public IDataListViewModel DataListViewModel
         {

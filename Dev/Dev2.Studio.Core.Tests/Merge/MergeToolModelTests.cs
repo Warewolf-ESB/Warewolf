@@ -97,21 +97,6 @@ namespace Dev2.Core.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DisableEvents_VerifySets()
-        {
-            //------------Setup for test--------------------------
-            var model = new MergeToolModel
-            {
-                IsMergeChecked = true
-            };
-            //------------Execute Test---------------------------
-            model.DisableEvents();
-            //------------Assert Results-------------------------
-            Assert.IsFalse(model.IsMergeChecked);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_ParentDescription_DefaultConstruction()
         {
             //------------Setup for test--------------------------
