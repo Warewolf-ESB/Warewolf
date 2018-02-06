@@ -277,7 +277,7 @@ namespace Dev2.ViewModels.Merge
                 var model = mergeToolModel as MergeToolModel;
                 model.RemovePreviousContainerActivity();
 
-                var conflict = UpdateNextEnabledState(mergeToolModel.Container);
+                var conflict = conflictList.GetNextConflict(mergeToolModel.Container);
 
                 switch (conflict)
                 {
@@ -360,12 +360,6 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        // TODO: Remove?
-        IConflict UpdateNextEnabledState(IConflict currentConflict)
-        {
-            return currentConflict;
-        }
-
         static void UpdateNextToolState(IToolConflict nextConflict)
         {
             if (!nextConflict.HasConflict || nextConflict.IsContainerTool)
@@ -380,7 +374,7 @@ namespace Dev2.ViewModels.Merge
             if (isChecked)
             {
                 container.IsChecked = isChecked;
-                var conflict = UpdateNextEnabledState(container);
+                var conflict = conflictList.GetNextConflict(container);
                 if (conflict is IToolConflict nextConflict)
                 {
                     UpdateNextToolState(nextConflict);
