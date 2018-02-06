@@ -466,7 +466,6 @@
                                                                 BorderThickness="0" 
                                                                 Margin="0,0,7,0"
                                                                 DataContext="{Binding CurrentViewModel}"
-                                                                IsEnabled="{Binding IsMergeEnabled}"
                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderBorder_AutoID">
                                                             <DockPanel Name="TreeViewExpanderCurrentHeaderDockPanel" 
                                                                        LastChildFill="False" 
@@ -531,7 +530,6 @@
                                                             <DockPanel Name="TreeViewExpanderDifferenceHeaderDockPanel" 
                                                                        LastChildFill="False" 
                                                                        DataContext="{Binding DiffViewModel}"
-                                                                       IsEnabled="{Binding IsMergeEnabled}"
                                                                        AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderDockPanel_AutoID">
                                                                 <StackPanel Name="TreeViewExpanderDifferenceHeaderSP" 
                                                                             DockPanel.Dock="Left" 
@@ -697,7 +695,6 @@
                                                 BorderThickness="0" 
                                                 Margin="0,0,-2,0" 
                                                 DataContext="{Binding CurrentArmConnector}"
-                                                IsEnabled="{Binding IsMergeEnabled}"
                                                 AutomationProperties.AutomationId="UI_CurrentNodeArmBorder_AutoID">
                                             <DockPanel x:Name="CurrentNodeArmDockPanel" 
                                                        LastChildFill="False"
@@ -807,7 +804,6 @@
                                             <DockPanel x:Name="DifferenceNodeArmDockPanel" 
                                                        LastChildFill="False"
                                                        DataContext="{Binding DifferentArmConnector}"
-                                                       IsEnabled="{Binding IsMergeEnabled}"
                                                        AutomationProperties.AutomationId="UI_DifferenceNodeArmDockPanel_AutoID">
                                                 <StackPanel Name="DifferenceNodeArmSP" 
                                                             DockPanel.Dock="Left" 

@@ -212,31 +212,7 @@ namespace Dev2.Core.Tests.Merge
             model.HasParent = true;
             Assert.IsTrue(wasCalled);
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void MergeToolModel_IsMergeEnabled_DefaultConstruction()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var model = new MergeToolModel();
-            var wasCalled = false;
-            model.PropertyChanged += (a, b) =>
-            {
-                if (b.PropertyName == "IsMergeEnabled")
-                {
-                    wasCalled = true;
-                }
-            };
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.IsNotNull(model.Children);
-            Assert.IsFalse(model.IsMergeChecked);
-            model.IsMergeEnabled = true;
-            Assert.IsTrue(wasCalled);
-        }
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_IsMergeVisible_DefaultConstruction()
@@ -398,7 +374,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual(default(Guid), model.UniqueId);
             Assert.AreEqual(default(IMergeToolModel), model.Parent);
             Assert.AreEqual(default(IToolConflict), model.Container);
-            Assert.AreEqual(default(bool), model.IsMergeEnabled);
             Assert.AreEqual(default(string), model.NodeArmDescription);
             //------------Assert Results-------------------------
             model.IsTrueArm = true;
@@ -408,7 +383,6 @@ namespace Dev2.Core.Tests.Merge
             model.Parent = new MergeToolModel();
             model.Container = new ToolConflict();
             model.Container.HasConflict = true;
-            model.IsMergeEnabled = true;
             model.NodeArmDescription = "";
             Assert.AreNotEqual(default(bool), model.IsTrueArm);
             Assert.AreNotEqual(default(Point), model.NodeLocation);
@@ -416,7 +390,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreNotEqual(default(Guid), model.UniqueId);
             Assert.AreNotEqual(default(IMergeToolModel), model.Parent);
             Assert.AreNotEqual(default(IToolConflict), model.Container);
-            Assert.AreNotEqual(default(bool), model.IsMergeEnabled);
             Assert.AreNotEqual(default(string), model.NodeArmDescription);
         }
 

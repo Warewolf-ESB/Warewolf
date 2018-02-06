@@ -203,34 +203,6 @@ namespace Dev2.Activities.Specs.Merge
             Assert.AreEqual(mergeToolDescription, toolConflict.DiffViewModel.MergeDescription);
         }
 
-        [Then(@"conflict ""(.*)"" Different tool is disabled")]
-        public void ThenConflictDifferentToolIsDisabled(int conflictRow)
-        {
-            var toolConflict = GetToolConflictFromRow(conflictRow);
-            Assert.IsFalse(toolConflict.DiffViewModel.IsMergeEnabled, "Expected " + toolConflict.DiffViewModel.MergeDescription + "to be disabled.");
-        }
-
-        [Then(@"conflict ""(.*)"" Different tool is enabled")]
-        public void ThenConflictDifferentToolIsEnabled(int conflictRow)
-        {
-            var toolConflict = GetToolConflictFromRow(conflictRow);
-            Assert.IsTrue(toolConflict.DiffViewModel.IsMergeEnabled, "Expected " + toolConflict.DiffViewModel.MergeDescription + "to be enabled.");
-        }
-
-        [Then(@"conflict ""(.*)"" Current tool is disabled")]
-        public void ThenConflictCurrentToolIsDisabled(int conflictRow)
-        {
-            var toolConflict = GetToolConflictFromRow(conflictRow);
-            Assert.IsFalse(toolConflict.CurrentViewModel.IsMergeEnabled, "Expected " + toolConflict.CurrentViewModel.MergeDescription + "to be disabled.");
-        }
-
-        [Then(@"conflict ""(.*)"" Current tool is enabled")]
-        public void ThenConflictCurrentToolIsEnabled(int conflictRow)
-        {
-            var toolConflict = GetToolConflictFromRow(conflictRow);
-            Assert.IsTrue(toolConflict.CurrentViewModel.IsMergeEnabled, "Expected " + toolConflict.CurrentViewModel.MergeDescription + "to be enabled.");
-        }
-
         IArmConnectorConflict GetArmConnectorFromRow(int conflictRow)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
