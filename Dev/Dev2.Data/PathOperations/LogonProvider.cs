@@ -22,11 +22,6 @@ namespace Dev2.Data.PathOperations
         {            
             var loggedOn = LogonUser(lpszUsername, lpszDomain, lpszPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeToken);
             phToken = safeToken;
-            if (!loggedOn)
-            {
-                loggedOn = LogonUser(lpszUsername, lpszDomain, lpszPassword, LOGON32_LOGON_NEW_CREDENTIALS, LOGON32_PROVIDER_WINNT50, out SafeTokenHandle safeTokenHandle);
-                phToken = safeTokenHandle;
-            }            
             return loggedOn;
         }
     }
