@@ -671,42 +671,52 @@ namespace Dev2.PathOperations
 
         public void WriteDataToFile(IDev2PutRawOperationTO args, string path, IFile fileWrapper)
         {
-            // handle UNC path
-            var loginOk = _logOnprovider.DoLogon(ExtractUserName(IOPath), ExtractDomain(IOPath), IOPath.Password, out SafeTokenHandle safeTokenHandle);
-
-            if (loginOk)
+            if (!RequiresAuth(IOPath))
             {
-                using (safeTokenHandle)
+                DoWrite(args, path, fileWrapper);
+            }
+            else
+            {
+                // handle UNC path
+                var loginOk = _logOnprovider.DoLogon(ExtractUserName(IOPath), ExtractDomain(IOPath), IOPath.Password, out SafeTokenHandle safeTokenHandle);
+
+                if (loginOk)
                 {
-
-                    var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                    using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                    using (safeTokenHandle)
                     {
-                        // Do the operation here
 
-                        try
+                        var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                        using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                         {
-                            if (IsBase64(args.FileContents))
-                            {
-                                var data = GetBytesFromBase64String(args);
-                                fileWrapper.WriteAllBytes(path, data);
-                            }
-                            else
-                            {
-                                fileWrapper.WriteAllText(path, args.FileContents);
-                            }
-
+                            // Do the operation here
+                            DoWrite(args, path, fileWrapper);
+                            // remove impersonation now
+                            impersonatedUser.Undo();
+                            newID.Dispose();
                         }
-                        catch (Exception)
-                        {
-                            throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, IOPath.Username));
-                        }
-
-                        // remove impersonation now
-                        impersonatedUser.Undo();
-                        newID.Dispose();
                     }
                 }
+            }
+        }
+
+        void DoWrite(IDev2PutRawOperationTO args, string path, IFile fileWrapper)
+        {
+            try
+            {
+                if (IsBase64(args.FileContents))
+                {
+                    var data = GetBytesFromBase64String(args);
+                    fileWrapper.WriteAllBytes(path, data);
+                }
+                else
+                {
+                    fileWrapper.WriteAllText(path, args.FileContents);
+                }
+
+            }
+            catch (Exception)
+            {
+                throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, IOPath.Username));
             }
         }
 
