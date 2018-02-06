@@ -94,29 +94,7 @@ namespace Dev2.Core.Tests.Merge
             completeConflict.HasNodeArmConflict = true;
             Assert.IsTrue(wasCalled);
         }
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ToolConflict_IsMergeExpanderEnabled_DefaultConstruction_ShouldBeFalse()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var completeConflict = new ToolConflict();
-            var wasCalled = false;
-            completeConflict.PropertyChanged += (a, b) =>
-            {
-                if (b.PropertyName == "IsMergeExpanderEnabled")
-                {
-                    wasCalled = true;
-                }
-            };
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Children);
-            Assert.IsFalse(completeConflict.IsMergeExpanderEnabled);
-            completeConflict.IsMergeExpanderEnabled = true;
-            Assert.IsTrue(wasCalled);
-        }
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ToolConflict_IsMergeExpanded_DefaultConstruction_ShouldBeFalse()

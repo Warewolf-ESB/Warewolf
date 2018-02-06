@@ -1,6 +1,5 @@
 ﻿using Dev2.Activities.PathOperations;
 using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
@@ -13,8 +12,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.MergeParser;

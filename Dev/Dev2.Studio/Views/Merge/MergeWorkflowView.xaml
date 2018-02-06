@@ -446,7 +446,6 @@
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="2"
 							                      Header="{Binding .}"
-                                                  IsEnabled="{Binding IsMergeExpanderEnabled}"
 							                      IsExpanded="{Binding IsMergeExpanded}"
 							                      Style="{StaticResource MergeExpander}"
                                                   Visibility="{Binding IsContainerTool, Converter={StaticResource BoolToVisibilityConverterNegative}}"
@@ -679,7 +678,6 @@
                                     <Grid Name="ConflictsTreeViewTemplateGrid" 
                                           Background="{StaticResource WarewolfPanelGreyBrush}" 
                                           Width="{Binding ElementName=ConflictsTreeView, Path=ActualWidth}"
-                                          IsEnabled="{Binding IsMergeExpanderEnabled}"
                                           AutomationProperties.AutomationId="UI_ConflictsTreeViewTemplateGrid_AutoID">
 
                                         <Grid.ColumnDefinitions>
