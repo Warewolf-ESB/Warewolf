@@ -26,11 +26,9 @@ namespace Dev2.Common.Interfaces
         string ArmDescription { get; set; }
         string SourceUniqueId { get; set; }
         string DestinationUniqueId { get; set; }
-        bool IsArmSelectionAllowed { get; set; }
         bool IsChecked { get; set; }
         string Key { get; set; }
         event Action<IArmConnectorConflict, bool> OnChecked;
-        void DisableEvents();
     }
 
     public interface IArmConnectorConflict : IConflict, IEquatable<IArmConnectorConflict>

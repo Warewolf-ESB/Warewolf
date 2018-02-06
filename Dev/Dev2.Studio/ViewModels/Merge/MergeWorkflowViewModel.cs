@@ -265,7 +265,6 @@ namespace Dev2.ViewModels.Merge
                 container.IsEmptyItemSelected = mergeToolModel.ModelItem == null;
 
                 UpdateState(container);
-                SetMatchingArmState();
             }
             catch (Exception ex)
             {
@@ -317,12 +316,7 @@ namespace Dev2.ViewModels.Merge
 
         static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
         {
-            if (!nextArmConflict.HasConflict)
-            {
-                nextArmConflict.CurrentArmConnector.IsChecked = true;
-                nextArmConflict.CurrentArmConnector.IsArmSelectionAllowed = false;
-                nextArmConflict.DifferentArmConnector.IsArmSelectionAllowed = false;
-            }
+            nextArmConflict.CurrentArmConnector.IsChecked = !nextArmConflict.HasConflict;
         }
 
         void RemovePreviousToolArm(IConflict container)
@@ -356,8 +350,6 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (tool.HasConflict)
                     {
-                        tool.CurrentArmConnector.DisableEvents();
-                        tool.DifferentArmConnector.DisableEvents();
                         tool.IsChecked = false;
                     }
                     else
@@ -393,79 +385,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     UpdateNextToolState(nextConflict);
                 }
-                if (conflict is IArmConnectorConflict nextArmConflict)
-                {
-                    SetMatchingArmState();
-                }
             }
-        }
-
-        void SetMatchingArmState()
-        {
-            var connectorConflicts = conflictList.Where(s => s is IArmConnectorConflict).Cast<IArmConnectorConflict>().ToList();
-            var toolIds = conflictList.Where(s => s is IToolConflict && s.IsChecked && !s.IsEmptyItemSelected).Select(a => a.UniqueId.ToString());
-            foreach (var connectorConflict in connectorConflicts)
-            {
-                var foundCurrentSource = FindMatchingConnector(connectorConflict.CurrentArmConnector.SourceUniqueId, toolIds);
-                var foundCurrentDestination = FindMatchingConnector(connectorConflict.CurrentArmConnector.DestinationUniqueId, toolIds);
-                if ((foundCurrentDestination && foundCurrentSource) || connectorConflict.CurrentArmConnector.ArmDescription == null)
-                {
-                    UpdateCurrentArmState(connectorConflict);
-                }
-
-                var foundDiffSource = FindMatchingConnector(connectorConflict.DifferentArmConnector.SourceUniqueId, toolIds);
-                var foundDiffDestination = FindMatchingConnector(connectorConflict.DifferentArmConnector.DestinationUniqueId, toolIds);
-                if ((foundDiffDestination && foundDiffSource) || connectorConflict.DifferentArmConnector.ArmDescription == null)
-                {
-                    UpdateDifferentArmState(connectorConflict);
-                }
-            }
-        }
-
-        void UpdateCurrentArmState(IArmConnectorConflict connectorConflict)
-        {
-            var currSourceConflict = conflictList.FirstOrDefault(t => t is IToolConflict && t.UniqueId.ToString() == connectorConflict.CurrentArmConnector.SourceUniqueId) as ToolConflict;
-
-            var isArmSelectionAllowed = currSourceConflict == null;
-
-            var sourceMatch = currSourceConflict.CurrentViewModel.UniqueId.ToString() == connectorConflict.CurrentArmConnector.SourceUniqueId;
-            var destinationMatch = currSourceConflict.CurrentViewModel.UniqueId.ToString() == connectorConflict.CurrentArmConnector.DestinationUniqueId;
-
-            if (!isArmSelectionAllowed && (sourceMatch || destinationMatch))
-            {
-                if (currSourceConflict.HasConflict)
-                {
-                    isArmSelectionAllowed = currSourceConflict.CurrentViewModel.IsMergeChecked;
-                }
-                else
-                {
-                    isArmSelectionAllowed = currSourceConflict.IsChecked;
-                }
-            }
-            connectorConflict.CurrentArmConnector.IsArmSelectionAllowed = isArmSelectionAllowed;
-        }
-
-        void UpdateDifferentArmState(IArmConnectorConflict connnectorConflict)
-        {
-            var diffDestConflict = conflictList.FirstOrDefault(t => t is IToolConflict && t.UniqueId.ToString() == connnectorConflict.DifferentArmConnector.DestinationUniqueId) as ToolConflict;
-
-            var isArmSelectionAllowed = diffDestConflict == null;
-
-            var sourceMatch = diffDestConflict.DiffViewModel.UniqueId.ToString() == connnectorConflict.DifferentArmConnector.SourceUniqueId;
-            var destinationMatch = diffDestConflict.DiffViewModel.UniqueId.ToString() == connnectorConflict.DifferentArmConnector.DestinationUniqueId;
-
-            if (!isArmSelectionAllowed && (sourceMatch || destinationMatch))
-            {
-                if (diffDestConflict.HasConflict)
-                {
-                    isArmSelectionAllowed = diffDestConflict.DiffViewModel.IsMergeChecked;
-                }
-                else
-                {
-                    isArmSelectionAllowed = diffDestConflict.IsChecked;
-                }
-            }
-            connnectorConflict.DifferentArmConnector.IsArmSelectionAllowed = isArmSelectionAllowed;
         }
 
         static void ShowArmConnectors(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
