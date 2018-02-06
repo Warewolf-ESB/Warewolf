@@ -77,6 +77,7 @@ $JobSpecs["Workflow Merging Specs"]		 										= "Dev2.Activities.Specs", "Work
 $JobSpecs["Example Workflow Execution Specs"] 									= "Dev2.Activities.Specs", "ExampleWorkflowExecution"
 $JobSpecs["Subworkflow Execution Specs"]										= "Dev2.Activities.Specs", "SubworkflowExecution"
 $JobSpecs["Workflow Execution Specs"]		 									= "Dev2.Activities.Specs", "WorkflowExecution"
+$JobSpecs["Assign Workflow Execution Specs"]		 							= "Dev2.Activities.Specs", "AssignWorkflowExecution"
 $JobSpecs["Studio Test Framework Specs"]		 								= "Dev2.Activities.Specs", "StudioTestFramework"
 $JobSpecs["Studio Test Framework With Data Tools Specs"]		 				= "Dev2.Activities.Specs", "StudioTestFrameworkWithDataTools"
 $JobSpecs["Studio Test Framework With Database Tools Specs"]					= "Dev2.Activities.Specs", "StudioTestFrameworkWithDatabaseTools"
