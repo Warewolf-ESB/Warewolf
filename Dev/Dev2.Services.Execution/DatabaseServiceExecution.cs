@@ -231,7 +231,16 @@ namespace Dev2.Services.Execution
 
         void SqlExecution(ErrorResultTO errors, int update)
         {
-            var connection = new SqlConnection(Source.ConnectionString);
+
+            var conStrBuilder = new SqlConnectionStringBuilder(Source.ConnectionString)
+            {
+                ConnectTimeout = 20,
+                MaxPoolSize = 100,
+                MultipleActiveResultSets = true,
+                Pooling = true,
+                ApplicationName = "Warewolf Service"
+            };
+            var connection = new SqlConnection(conStrBuilder.ConnectionString);
             var startTime = Stopwatch.StartNew();
             var cmd = connection.CreateCommand();
             try
@@ -246,16 +255,20 @@ namespace Dev2.Services.Execution
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = ProcedureName;
                     connection.Open();
-                    var reader = cmd.ExecuteReader();
-                    var table = new DataTable();
-                    table.Load(reader);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        var table = new DataTable();
+                        table.Load(reader);
+                        scope.Complete();
+                        Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                        var startTime1 = Stopwatch.StartNew();
+                        TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                        Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                    }
                     // The Complete method commits the transaction. If an exception has been thrown,
                     // Complete is not  called and the transaction is rolled back.
-                    Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                    scope.Complete();
-                    var startTime1 = Stopwatch.StartNew();
-                    TranslateDataTableToEnvironment(table, DataObj.Environment, update);
-                    Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                    
+                    
                 }
             }
             catch (Exception ex)

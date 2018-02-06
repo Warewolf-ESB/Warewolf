@@ -49,6 +49,26 @@ namespace Dev2.Integration.Tests.Server_Refresh
             Task.WaitAll(list.ToArray());
         }
 
+        [TestMethod]
+        public void Run_a_Tests_to_Verify_ParallelSqlExecutionONAllDatabaseTools()
+        {
+            var url1 = "http://localhost:3142/secure/AllDatabaseTests.tests";
+            List<Task> list = new List<Task>();
+
+            Parallel.For(1, 10, a =>
+            {
+                var passRequest = ExecuteRequest(new Uri(url1));
+                list.Add(passRequest);
+                passRequest.ContinueWith((b) =>
+                {
+                    StringAssert.Contains(b.Result, "\"Result\": \"Passed\""); }
+                );
+
+            });
+            Task.WaitAll(list.ToArray());
+
+        }
+
         class PatientWebClient : WebClient
         {
             protected override WebRequest GetWebRequest(Uri uri)

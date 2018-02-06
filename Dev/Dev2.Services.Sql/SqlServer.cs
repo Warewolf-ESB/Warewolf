@@ -28,7 +28,7 @@ namespace Dev2.Services.Sql
         public void Dispose()
         {
             _transaction?.Dispose();
-            _connection?.Dispose();
+            _connection?.Dispose();            
             _connection = null;
         }
 
@@ -44,7 +44,7 @@ namespace Dev2.Services.Sql
         }
 
         public bool IsConnected { get; }
-        public string ConnectionString { get; }
+        public string ConnectionString { get => _connectionString; }
         string _connectionString;
         ISqlConnection _connection;
         IDbTransaction _transaction;
@@ -55,6 +55,22 @@ namespace Dev2.Services.Sql
             _connectionString = connectionString;
             _connection = _connectionBuilder.BuildConnection(_connectionString);
 
+            try
+            {
+                _connection.TryOpen();
+                return true;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                return false;
+            }
+
+        }
+
+        public bool Connect()
+        {
+            _connection = _connectionBuilder.BuildConnection(_connectionString);
             try
             {
                 _connection.TryOpen();
@@ -173,7 +189,7 @@ namespace Dev2.Services.Sql
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 var fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
-                _connection.TryOpen();
+                Connect();
                 var sqlCommand = _connection.CreateCommand();
                 TrySetTransaction(_transaction, sqlCommand);
                 sqlCommand.CommandText = fullProcedureName;
@@ -216,6 +232,7 @@ namespace Dev2.Services.Sql
             }
         }
 
+       
         public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
