@@ -151,26 +151,7 @@ namespace Dev2.Common.DateAndTime
                 var forwardLookupLength = 0;
                 var currentChar = formatArray[count];
 
-                if (literalRegionState == LiteralRegionStates.OutsideLiteralRegion)
-                {
-                    forwardLookupLength = DateTimeLiteralProcessor.ProcessOutsideLiteral(dateTimeFormatForwardLookups, dateTimeFormatPartOptions, formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref literalRegionState, ref currentValue);
-                }
-                else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegion)
-                {
-                    forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideInferredLiteral(dateTimeFormatForwardLookups, dateTimeFormatPartOptions, formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
-                }
-                else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegionWithEscape)
-                {
-                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideInferredEscapedLiteral(ref error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
-                }
-                else if (literalRegionState == LiteralRegionStates.InsideLiteralRegion)
-                {
-                    forwardLookupLength = DateTimeLiteralProcessor.ProcessInsideLiteral(formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref currentValue, ref literalRegionState);
-                }
-                else if (literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
-                {
-                    literalRegionState = DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
-                }
+                forwardLookupLength = DateTimeLiteralProcessor.ProcessOutsideLiteral(dateTimeFormatForwardLookups, dateTimeFormatPartOptions, formatParts, ref error, currentChar, formatArray, count, forwardLookupLength, ref literalRegionState, ref currentValue);
 
                 count++;
                 if (forwardLookupLength > 0)
@@ -179,15 +160,9 @@ namespace Dev2.Common.DateAndTime
                 }
             }
 
-            if (currentValue.Length > 0 && literalRegionState != LiteralRegionStates.InsideLiteralRegion &&
-                literalRegionState != LiteralRegionStates.InsideLiteralRegionWithEscape)
+            if (currentValue.Length > 0)
             {
                 formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
-            }
-            else if (currentValue.Length > 0)
-            {
-                nothingDied = false;
-                error = "A \' character defines a start or end of a non date time region, there apears to be a extra \' character.";
             }
 
             return nothingDied;

@@ -300,7 +300,7 @@ namespace Dev2.TO
                     }
                     if (complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1 ||
-                        
+
                        !Enumerable.Range(1, complex.Item.Count() - 1)
                            .Where(i => i % 2 == 1)
                            .Select(i =>
@@ -309,17 +309,20 @@ namespace Dev2.TO
                                             complex.Item.ElementAt(i)
                                             ) == ",")
                            .Aggregate((a, b) => a && b))
-                    
+
                     {
                         return ErrorResource.ExpressionMustBeCommaSeperated;
                     }
                 }
-                else if (!parsed.IsRecordSetNameExpression &&
-                        !parsed.IsRecordSetExpression &&
-                        !parsed.IsScalarExpression &&
-                        !parsed.IsWarewolfAtomExpression)
+                else
                 {
-                    return ErrorResource.OnlyScalarRecordsetCommaSeperated;
+                    if (!parsed.IsRecordSetNameExpression &&
+                      !parsed.IsRecordSetExpression &&
+                      !parsed.IsScalarExpression &&
+                      !parsed.IsWarewolfAtomExpression)
+                    {
+                        return ErrorResource.OnlyScalarRecordsetCommaSeperated;
+                    }
                 }
             }
             catch (Exception)

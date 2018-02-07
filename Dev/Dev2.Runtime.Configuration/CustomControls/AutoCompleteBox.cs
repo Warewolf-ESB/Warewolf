@@ -1489,10 +1489,13 @@ namespace System.Windows.Controls
                         viewCount++;
                     }
                 }
-                else if (viewCount > viewIndex && _view[viewIndex] == item)
+                else
                 {
-                    _view.RemoveAt(viewIndex);
-                    viewCount--;
+                    if (viewCount > viewIndex && _view[viewIndex] == item)
+                    {
+                        _view.RemoveAt(viewIndex);
+                        viewCount--;
+                    }
                 }
             }
             _valueBindingEvaluator?.ClearDataContext();
