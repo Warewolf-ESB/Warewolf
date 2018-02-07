@@ -53,37 +53,7 @@ namespace Dev2.Common
                 }
 
                 // Associate each node with its dependencies.
-                var graphCount = graph.Nodes.Count - 1;
-                if (nestingLevel > 0)
-                {
-                    for (var i = 0; i <= nestingLevel; i++)
-                    {
-                        if (nestingLevel < graphCount)
-                        {
-                            graph.Nodes.RemoveAt(graphCount);
-                            graphCount = graph.Nodes.Count - 1;
-                        }
-                    }
-                }
-                foreach (var node in graph.Nodes)
-                {
-                    var nodeElem = nodeElems.First(elem => elem.Attribute("id").Value == node.ID);
-                    var dependencyElems = nodeElem.Elements("dependency");
-                    foreach (var dependencyElem in dependencyElems)
-                    {
-                        var depID = dependencyElem.Attribute("id").Value;
-
-                        var dependency = graph.Nodes.FirstOrDefault(n => n.ID == depID);
-                        if (dependency != null)
-                        {
-                            node.NodeDependencies.Add(dependency);
-                        }
-                    }
-
-                    //Now adjust position according to nodesize
-                    node.LocationX = node.LocationX - node.NodeWidth;
-                    node.LocationY = node.LocationY - node.NodeHeight / 2;
-                }
+                AssociateEachNodeWithItsDependencies(nestingLevel, graph, nodeElems);
 
                 // Tell the graph to inspect itself for circular dependencies.
                 graph.CheckForCircularDependencies();
@@ -93,6 +63,41 @@ namespace Dev2.Common
             catch (Exception ex)
             {
                 return new Graph(ErrorResource.DependencyInormationMalformed);
+            }
+        }
+
+        private static void AssociateEachNodeWithItsDependencies(int nestingLevel, Graph graph, System.Collections.Generic.List<XElement> nodeElems)
+        {
+            var graphCount = graph.Nodes.Count - 1;
+            if (nestingLevel > 0)
+            {
+                for (var i = 0; i <= nestingLevel; i++)
+                {
+                    if (nestingLevel < graphCount)
+                    {
+                        graph.Nodes.RemoveAt(graphCount);
+                        graphCount = graph.Nodes.Count - 1;
+                    }
+                }
+            }
+            foreach (var node in graph.Nodes)
+            {
+                var nodeElem = nodeElems.First(elem => elem.Attribute("id").Value == node.ID);
+                var dependencyElems = nodeElem.Elements("dependency");
+                foreach (var dependencyElem in dependencyElems)
+                {
+                    var depID = dependencyElem.Attribute("id").Value;
+
+                    var dependency = graph.Nodes.FirstOrDefault(n => n.ID == depID);
+                    if (dependency != null)
+                    {
+                        node.NodeDependencies.Add(dependency);
+                    }
+                }
+
+                //Now adjust position according to nodesize
+                node.LocationX = node.LocationX - node.NodeWidth;
+                node.LocationY = node.LocationY - node.NodeHeight / 2;
             }
         }
 
