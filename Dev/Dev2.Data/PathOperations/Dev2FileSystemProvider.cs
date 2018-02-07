@@ -149,55 +149,68 @@ namespace Dev2.PathOperations
                 {
                     destination = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + destination.Path, destination.Username, destination.Password, destination.PrivateKeyFile);
                 }
-                if (args.Overwrite || !args.Overwrite && !FileExist(destination))
+                _fileLock.EnterWriteLock();
+                try
                 {
-                    _fileLock.EnterWriteLock();
-                    try
+                    if (!RequiresAuth(destination))
                     {
-                        if (!RequiresAuth(destination))
+                        result = WriteData(src, args, destination);
+                    }
+                    else
+                    {
+                        // handle UNC path
+                        var loginOk = _logOnprovider.DoLogon(ExtractUserName(destination), ExtractDomain(destination), destination.Password, out SafeTokenHandle safeTokenHandle);
+
+                        if (loginOk)
                         {
-                            using (src)
+                            using (safeTokenHandle)
                             {
-                                File.WriteAllBytes(destination.Path, src.ToByteArray());
-                                result = (int)src.Length;
+                                var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                                using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                                {
+                                    // Do the operation here
+                                    result = WriteData(src, args, destination);
+                                    // remove impersonation now
+                                    impersonatedUser.Undo();
+                                }
                             }
                         }
                         else
                         {
-                            // handle UNC path
-                            var loginOk = _logOnprovider.DoLogon(ExtractUserName(destination), ExtractDomain(destination), destination.Password, out SafeTokenHandle safeTokenHandle);
-
-                            if (loginOk)
-                            {
-                                using (safeTokenHandle)
-                                {
-                                    var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                    using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                                    {
-                                        // Do the operation here
-                                        using (src)
-                                        {
-                                            File.WriteAllBytes(destination.Path, src.ToByteArray());
-                                            result = (int)src.Length;
-                                        }
-
-                                        // remove impersonation now
-                                        impersonatedUser.Undo();
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // login failed
-                                throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, destination.Username, destination.Path));
-                            }
+                            // login failed
+                            throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, destination.Username, destination.Path));
                         }
                     }
-                    finally
-                    {
-                        _fileLock.ExitWriteLock();
-                    }
                 }
+                finally
+                {
+                    _fileLock.ExitWriteLock();
+                }
+            }
+            return result;
+        }
+
+        private static int WriteData(Stream src, IDev2CRUDOperationTO args, IActivityIOPath destination)
+        {
+            int result;
+
+            if (FileExist(destination) && !args.Overwrite)
+            {
+                using (var stream = new FileStream(destination.Path, FileMode.Append))
+                {
+                    var data = src.ToByteArray();
+                    stream.Write(data, 0, data.Length);
+                }
+                result = (int)src.Length;
+            }
+            else if (args.Overwrite)
+            {
+                File.WriteAllBytes(destination.Path, src.ToByteArray());
+                result = (int)src.Length;
+            }
+            else
+            {
+                result = -1;
             }
             return result;
         }
@@ -249,6 +262,7 @@ namespace Dev2.PathOperations
             {
                 Dev2Logger.Error("Error getting file: " + src.Path, ex, GlobalConstants.WarewolfError);
                 result = false;
+                throw;
             }
             return result;
         }
