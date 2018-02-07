@@ -28,7 +28,6 @@ Param(
   [string]$MergeDotCoverSnapshotsInDirectory="",
   [switch]${Startmy.warewolf.io},
   [string]$sendRecordedMediaForPassedTestCase="false",
-  [switch]$StartServerContainer,
   [string]$ServerContainerVersion,
   [switch]$JobContainers
 )
@@ -297,20 +296,6 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     taskkill /im "operadriver.exe" /f  2>&1 | out-null
     taskkill /im "geckodriver.exe" /f  2>&1 | out-null
     taskkill /im "IEDriverServer.exe" /f  2>&1 | out-null
-
-    #Stop Server Container
-    if (Get-Command docker -ErrorAction SilentlyContinue) {
-        docker container ls | %{if ($_.EndsWith("warewolfserver")) { 
-            docker exec warewolfserver sc stop "Warewolf Server"
-            $ServerContainerLogText = docker exec warewolfserver cmd /c type "C:\\ProgramData\\Warewolf\\Server Log\\warewolf-server.log"    
-            $ServerContainerLogText | Out-File -LiteralPath "$TestsResultsPath\ServerContainer.log" -Encoding utf8 -Force
-            docker stop warewolfserver
-        }}
-        docker container ls -a | %{if ($_.EndsWith("warewolfserver")) { 
-            docker container rm -f warewolfserver
-            docker images | ConvertFrom-String | where {$_.P2 -eq "<none>"} | % { docker rmi $_.P3 }
-        }}
-    }
 
     #Delete Certain Studio and Server Resources
     $ToClean = "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
@@ -679,27 +664,6 @@ function Start-Server([string]$ServerPath,[string]$ResourcesType) {
         exit 1
     } else {
         Write-Host Server has started.
-    }
-}
-
-function Start-Container {
-    if (Get-Command docker -ErrorAction SilentlyContinue) {
-        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-            $ServerPath = Find-Warewolf-Server-Exe
-        }
-        $ServerDirectory = (Get-Item $ServerPath).Directory.FullName
-        if ($ServerContainerVersion -eq $null -or $ServerContainerVersion -eq "") {
-            Write-Host Starting container from $ServerDirectory
-            docker build -t warewolfserver "$ServerDirectory"
-            docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver ping -t 4.2.2.3
-        } else {
-            Write-Host Starting container from warewolfserver/warewolfserver:$ServerContainerVersion
-            docker pull warewolfserver/warewolfserver:$ServerContainerVersion
-            docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver/warewolfserver:$ServerContainerVersion ping -t 4.2.2.3
-        }
-        Write-Host Server container has started.
-    } else {
-        Write-Warning -Message "Cannot find Docker, container server not started."
     }
 }
 
@@ -1153,9 +1117,6 @@ TestResults
         if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
             if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                 Start-my.warewolf.io
-                if ($StartServerContainer.IsPresent -or ($ServerContainerVersion -ne $null -and $ServerContainerVersion -ne "")) {
-                    Start-Container
-                }
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
                     Start-Server $ServerPath $ResourcesType
                     if ($StartStudio.IsPresent) {
@@ -1469,9 +1430,8 @@ if ($Cleanup.IsPresent) {
     Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log") $JobNames
 }
 
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobNames -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "" -and !$StartServerContainer.IsPresent) {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobNames -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "") {
     Start-my.warewolf.io
-    Start-Container
     if (!${Startmy.warewolf.io}.IsPresent) {
         $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
         Start-Server $ServerPath $ResourcesType
