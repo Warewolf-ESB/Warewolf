@@ -28,7 +28,7 @@ namespace Dev2.Common.Interfaces
         Guid UniqueId { get; set; }
         string ParentDescription { get; set; }
         bool HasParent { get; set; }
-        event ModelToolChanged SomethingModelToolChanged;
+        event ToolModelChangedHandler NotifyToolModelChanged;
         FlowNode FlowNode { get; set; }
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
@@ -37,5 +37,5 @@ namespace Dev2.Common.Interfaces
         bool IsTrueArm { get; set; }
         string NodeArmDescription { get; set; }
     }
-    public delegate void ModelToolChanged(object sender, IMergeToolModel args);
+    public delegate void ToolModelChangedHandler(IMergeToolModel args);
 }

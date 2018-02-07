@@ -217,7 +217,6 @@
         <Setter Property="MinHeight" Value="17" />
         <Setter Property="MinWidth" Value="17" />
         <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="IsThreeState" Value="True"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="CheckBox">
@@ -372,7 +371,6 @@
                                    StrokeThickness="1" />
                         <ContentPresenter x:Name="contentPresenter"
                                           Grid.Column="1"
-                                          
                                           Margin="0,2,0,0"
                                           Content="{TemplateBinding Content}"
                                           ContentTemplate="{TemplateBinding ContentTemplate}" />

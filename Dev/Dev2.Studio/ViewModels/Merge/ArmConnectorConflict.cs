@@ -14,7 +14,8 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class ArmConnectorConflict : BindableBase, IArmConnectorConflict, ICheckable
+    // TODO: change name to ConnectorConflictRow inherits from ConflictRow
+    public class ArmConnectorConflict : BindableBase, IArmConnectorConflict, IConflictCheckable
     {
         bool _hasConflict;
         public IMergeArmConnectorConflict CurrentArmConnector { get; set; }
@@ -36,9 +37,12 @@ namespace Dev2.ViewModels.Merge
         public bool IsCurrentChecked
         {
             get { return CurrentArmConnector.IsChecked; }
-            set { CurrentArmConnector.IsChecked = value; }
+            set {
+                CurrentArmConnector.IsChecked = value;
+                NotifyCurrentCheckedChanged?.Invoke(CurrentArmConnector.IsChecked);
+            }
         }
-
+        
         public bool Equals(IArmConnectorConflict other)
         {
             if (other == null)
@@ -70,5 +74,7 @@ namespace Dev2.ViewModels.Merge
             hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
             return hashCode;
         }
+
+        public event ToggledEventHandler NotifyCurrentCheckedChanged;
     }
 }

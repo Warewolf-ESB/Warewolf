@@ -156,7 +156,7 @@ namespace Dev2.ViewModels.Merge
 
             var currentFactory = new ConflictModelFactory(differenceResourceModel, conflictTreeNode, WorkflowDesignerViewModel);
             foundConflict.DiffViewModel = currentFactory.Model;
-            foundConflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+            foundConflict.DiffViewModel.NotifyToolModelChanged += OnToolModelChangedHandler;
             foundConflict.DiffViewModel.Container = foundConflict;
             foundConflict.DiffViewModel.IsCurrent = false;
             foundConflict.HasConflict = foundConflict.HasConflict || conflictTreeNode.IsInConflict;
@@ -178,7 +178,7 @@ namespace Dev2.ViewModels.Merge
                     UniqueId = id,
                     CurrentViewModel = EmptyConflictViewModel(id, WorkflowDesignerViewModel),
                 };
-                conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                conflict.CurrentViewModel.NotifyToolModelChanged += OnToolModelChangedHandler;
                 conflict.CurrentViewModel.Container = conflict;
                 conflict.CurrentViewModel.IsCurrent = true;
                 conflicts.Add(conflict);
@@ -190,7 +190,7 @@ namespace Dev2.ViewModels.Merge
             var conflictTreeNode = node;
             var currentFactory = new ConflictModelFactory(differenceResourceModel, conflictTreeNode, WorkflowDesignerViewModel);
             conflict.DiffViewModel = currentFactory.Model;
-            conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+            conflict.DiffViewModel.NotifyToolModelChanged += OnToolModelChangedHandler;
             conflict.DiffViewModel.Container = conflict;
             conflict.DiffViewModel.IsCurrent = false;
             conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
@@ -205,9 +205,9 @@ namespace Dev2.ViewModels.Merge
             var id = Guid.Parse(treeItem.UniqueId);
             conflict.UniqueId = id;
             conflict.DiffViewModel = EmptyConflictViewModel(id, WorkflowDesignerViewModel);
-            conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+            conflict.DiffViewModel.NotifyToolModelChanged += OnToolModelChangedHandler;
             conflict.CurrentViewModel = modelFactory.Model;
-            conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+            conflict.CurrentViewModel.NotifyToolModelChanged += OnToolModelChangedHandler;
             conflict.CurrentViewModel.Container = conflict;
             conflict.CurrentViewModel.IsCurrent = true;
             conflict.DiffViewModel.Container = conflict;
@@ -250,7 +250,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        void SourceOnModelToolChanged(object sender, IMergeToolModel mergeToolModel)
+        void OnToolModelChangedHandler(IMergeToolModel mergeToolModel)
         {
             try
             {
@@ -285,41 +285,18 @@ namespace Dev2.ViewModels.Merge
                 switch (conflict)
                 {
                     case IToolConflict nextConflict:
-                        UpdateNextToolState(nextConflict);
-                        RemoveMatchingActivity(mergeToolModel, container);
+                        if (!nextConflict.HasConflict || nextConflict.IsContainerTool)
+                        {
+                            nextConflict.CurrentViewModel.IsMergeChecked = true;
+                        }
                         break;
                     case IArmConnectorConflict nextArmConflict:
-                        UpdateNextArmState(nextArmConflict);
+                        nextArmConflict.CurrentArmConnector.IsChecked = !nextArmConflict.HasConflict;
                         break;
                     default:
                         break;
                 }
-
-                model.AddActivity();
             }
-        }
-
-        void RemoveMatchingActivity(IMergeToolModel mergeToolModel, IToolConflict container)
-        {
-            foreach (var conf in conflictList.Where(o => o is IToolConflict))
-            {
-                var confl = conf as IToolConflict;
-                if (mergeToolModel.IsCurrent)
-                {
-                    container.DiffViewModel.IsMergeChecked = false;
-                    WorkflowDesignerViewModel?.RemoveItem(confl.DiffViewModel);
-                }
-                else
-                {
-                    container.CurrentViewModel.IsMergeChecked = false;
-                    WorkflowDesignerViewModel?.RemoveItem(confl.CurrentViewModel);
-                }
-            }
-        }
-
-        static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
-        {
-            nextArmConflict.CurrentArmConnector.IsChecked = !nextArmConflict.HasConflict;
         }
 
         void RemovePreviousToolArm(IConflict container)
@@ -363,24 +340,15 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        static void UpdateNextToolState(IToolConflict nextConflict)
-        {
-            if (!nextConflict.HasConflict || nextConflict.IsContainerTool)
-            {
-                ExpandPreviousItems(nextConflict);
-                nextConflict.CurrentViewModel.IsMergeChecked = true;
-            }
-        }
-
         void ArmCheck(IArmConnectorConflict container, bool isChecked)
         {
             if (isChecked)
             {
                 container.IsChecked = isChecked;
                 var conflict = conflictList.GetNextConflict(container);
-                if (conflict is IToolConflict nextConflict)
+                if (conflict is IToolConflict nextConflict && (!nextConflict.HasConflict || nextConflict.IsContainerTool))
                 {
-                    UpdateNextToolState(nextConflict);
+                    nextConflict.CurrentViewModel.IsMergeChecked = true;
                 }
             }
         }
@@ -546,15 +514,6 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        static void ExpandPreviousItems(IToolConflict nextConflict)
-        {
-            if (nextConflict.Parent != null)
-            {
-                nextConflict.Parent.IsMergeExpanded = true;
-                ExpandPreviousItems(nextConflict.Parent);
-            }
-        }
-
         public LinkedList<IConflict> Conflicts { get; set; }
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
@@ -706,7 +665,7 @@ namespace Dev2.ViewModels.Merge
         {
             foreach (var conflict in conflicts)
             {
-                if (conflict is ICheckable check)
+                if (conflict is IConflictCheckable check)
                 {
                     check.IsCurrentChecked = true;
                 }
