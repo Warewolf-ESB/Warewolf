@@ -19,10 +19,11 @@ using System.Activities.Statements;
 using System.Activities.Presentation.Model;
 using System.Windows;
 using Dev2.Studio.Interfaces;
+using System.ComponentModel;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class MergeToolModel : BindableBase, IMergeToolModel
+    public class MergeToolModel : BindableBase, IMergeToolModel, ICheckable
     {
         ImageSource _mergeIcon;
         string _mergeDescription;
@@ -40,6 +41,46 @@ namespace Dev2.ViewModels.Merge
         public MergeToolModel()
         {
             Children = new ObservableCollection<IMergeToolModel>();
+
+            RegisterEventHandlers();
+        }
+
+        private void RegisterEventHandlers()
+        {
+            PropertyChanged += (sender, eventArg) => {
+                if (eventArg.PropertyName == nameof(IsChecked))
+                {
+                    NotifyIsCheckedChanged?.Invoke(IsChecked);
+                }
+            };
+
+            NotifyIsCheckedChanged += AddRemoveActivityHandler;
+            NotifyIsCheckedChanged += PropagateCheckedState;
+        }
+
+        private void AddRemoveActivityHandler(bool isChecked)
+        {
+            if (!isChecked)
+            {
+                RemoveActivity();
+            }
+            else
+            {
+                AddActivity();
+            }
+        }
+        private void PropagateCheckedState(bool isChecked)
+        {
+            if (isChecked)
+            {
+                NotifyToolModelChanged?.Invoke(this);
+            }
+        }
+
+
+        public void RemoveActivity()
+        {
+            WorkflowDesignerViewModel?.RemoveItem(this);
         }
 
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
@@ -68,18 +109,15 @@ namespace Dev2.ViewModels.Merge
         public bool IsMergeChecked
         {
             get => _isMergeChecked;
-            set
-            {
-                var current = MemberwiseClone();
-                _isMergeChecked = value;
-
-                if (_isMergeChecked)
-                {
-                    SomethingModelToolChanged?.Invoke(current, this);
-                }
-                OnPropertyChanged(() => IsMergeChecked);
-            }
+            set => SetProperty(ref _isMergeChecked, value);
         }
+        // new polymorphic name for ismergechecked
+        public bool IsChecked
+        {
+            get => _isMergeChecked;
+            set => SetProperty(ref _isMergeChecked, value);
+        }
+
         public bool IsCurrent
         {
             get => _isCurrent;
@@ -203,6 +241,8 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public event ModelToolChanged SomethingModelToolChanged;
+        public event ToolModelChangedHandler NotifyToolModelChanged;
+
+        public event ToggledEventHandler NotifyIsCheckedChanged;
     }
 }

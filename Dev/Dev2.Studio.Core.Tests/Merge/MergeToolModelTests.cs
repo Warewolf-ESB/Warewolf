@@ -161,7 +161,7 @@ namespace Dev2.Core.Tests.Merge
                     wasCalled = true;
                 }
             };
-            model.SomethingModelToolChanged += (a, b) =>
+            model.NotifyToolModelChanged += (_) =>
             {
                 eventCalled = true;
             };

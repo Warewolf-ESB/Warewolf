@@ -9,12 +9,20 @@
 */
 
 using System;
+using System.ComponentModel;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface ICheckable
+    public delegate void ToggledEventHandler(bool isChecked);
+
+    public interface IConflictCheckable
     {
         bool IsCurrentChecked { get; set; }
+        event ToggledEventHandler NotifyCurrentCheckedChanged;
+    }
+    public interface ICheckable {
+        bool IsChecked { get; set; }
+        event ToggledEventHandler NotifyIsCheckedChanged;
     }
     public interface IConflict
     {

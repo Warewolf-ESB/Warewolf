@@ -16,7 +16,8 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class ToolConflict : BindableBase, IToolConflict, ICheckable
+    // TODO: change name to ToolConflictRow inherits from ConflictRow
+    public class ToolConflict : BindableBase, IToolConflict, IConflictCheckable
     {
         bool _isMergeExpanded;
         bool _hasConflict;
@@ -37,7 +38,15 @@ namespace Dev2.ViewModels.Merge
         public IToolConflict Parent { get; set; }
         public Guid UniqueId { get; set; }
 
-        public bool IsChecked { get; set; }
+        private bool _IsChecked;
+        public bool IsChecked {
+            get { return _IsChecked; }
+            set
+            {
+                _IsChecked = value;
+                NotifyCurrentCheckedChanged?.Invoke(_IsChecked);
+            }
+        }
 
         public bool HasConflict
         {
@@ -159,5 +168,7 @@ namespace Dev2.ViewModels.Merge
             }
             return current && childrenMatch;
         }
+
+        public event ToggledEventHandler NotifyCurrentCheckedChanged;
     }
 }
