@@ -137,7 +137,10 @@ namespace Dev2.Activities.Designers2.Core
                         ContentDesignerTemplate.LeftButtons.Clear();
                     }
                 }
-                ViewModel.IsMerge = dataContext.GetType().Name == "MergeWorkflowViewModel";
+                if (ViewModel != null)
+                {
+                    ViewModel.IsMerge = dataContext.GetType().Name == "MergeWorkflowViewModel";
+                }
                 return true;
             }
             return false;
@@ -169,7 +172,7 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (ViewModel != null && e.OriginalSource.GetType()==typeof(Border))
+            if (ViewModel != null && e.OriginalSource.GetType() == typeof(Border))
             {
                 UpdateHelpDescriptor(ViewModel.HelpText);
             }
