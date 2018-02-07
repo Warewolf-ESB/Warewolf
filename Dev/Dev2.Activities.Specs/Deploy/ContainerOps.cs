@@ -135,11 +135,21 @@ namespace Dev2.Activities.Specs.Deploy
 
         void Build(string serverPath)
         {
-            var tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
-            if (!File.Exists(tempTarFilePath))
+            var TempDirPath = Environment.ExpandEnvironmentVariables("%TEMP%");
+            string tempTarFilePath = "";
+            if (TempDirPath != "")
             {
-                CreateTarGZ(tempTarFilePath, serverPath);
+                tempTarFilePath = Path.Combine(TempDirPath, "gzip-server.tar.gz");
             }
+            else
+            {
+                tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
+            }
+            if (File.Exists(tempTarFilePath))
+            {
+                File.Delete(tempTarFilePath)
+            }
+            CreateTarGZ(tempTarFilePath, serverPath);
             var url = "http://" + _remoteDockerApi + ":2375/build";
             byte[] paramFileBytes = File.ReadAllBytes(tempTarFilePath);
             HttpContent bytesContent = new ByteArrayContent(paramFileBytes);
