@@ -50,7 +50,7 @@ namespace Dev2.PathOperations
         }
 
         public string Get(IActivityIOOperationsEndPoint path) => Get(path, false);
-        public string Get(IActivityIOOperationsEndPoint path, bool deferredRead = false)
+        public string Get(IActivityIOOperationsEndPoint path, bool deferredRead)
         {
             try
             {
