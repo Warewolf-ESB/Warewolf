@@ -323,7 +323,7 @@ namespace Dev2.Activities.Specs.Deploy
             }
             if (File.Exists(tempTarFilePath))
             {
-                File.Delete(tempTarFilePath)
+                File.Delete(tempTarFilePath);
             }
             Stream outStream = File.Create(tempTarFilePath);
             Stream gzoStream = new GZipOutputStream(outStream);
