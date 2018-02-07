@@ -262,7 +262,6 @@ namespace Dev2.PathOperations
             {
                 Dev2Logger.Error("Error getting file: " + src.Path, ex, GlobalConstants.WarewolfError);
                 result = false;
-                throw;
             }
             return result;
         }
