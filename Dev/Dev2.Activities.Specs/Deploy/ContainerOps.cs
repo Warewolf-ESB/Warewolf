@@ -135,23 +135,8 @@ namespace Dev2.Activities.Specs.Deploy
 
         void Build(string serverPath)
         {
-            var TempDirPath = Environment.ExpandEnvironmentVariables("%TEMP%");
-            string tempTarFilePath = "";
-            if (TempDirPath != "")
-            {
-                tempTarFilePath = Path.Combine(TempDirPath, "gzip-server.tar.gz");
-            }
-            else
-            {
-                tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
-            }
-            if (File.Exists(tempTarFilePath))
-            {
-                File.Delete(tempTarFilePath)
-            }
-            CreateTarGZ(tempTarFilePath, serverPath);
+            byte[] paramFileBytes = CreateTarGZ(serverPath);
             var url = "http://" + _remoteDockerApi + ":2375/build";
-            byte[] paramFileBytes = File.ReadAllBytes(tempTarFilePath);
             HttpContent bytesContent = new ByteArrayContent(paramFileBytes);
             bytesContent.Headers.Remove("Content-Type");
             bytesContent.Headers.Add("Content-Type", "application/x-tar");
@@ -215,7 +200,7 @@ namespace Dev2.Activities.Specs.Deploy
             }
         }
 
-        private void Delete()
+        void Delete()
         {
             var url = "http://" + _remoteDockerApi + ":2375/images/" + _remoteImageID;
             using (var client = new HttpClient())
@@ -233,7 +218,7 @@ namespace Dev2.Activities.Specs.Deploy
             }
         }
 
-        private void DeleteContainer()
+        void DeleteContainer()
         {
             var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "?v=1";
             using (var client = new HttpClient())
@@ -324,9 +309,23 @@ namespace Dev2.Activities.Specs.Deploy
             }
         }
 
-        void CreateTarGZ(string tgzFilename, string sourceDirectory)
+        byte[] CreateTarGZ(string sourceDirectory)
         {
-            Stream outStream = File.Create(tgzFilename);
+            var TempDirPath = Environment.ExpandEnvironmentVariables("%TEMP%");
+            string tempTarFilePath = "";
+            if (TempDirPath != "")
+            {
+                tempTarFilePath = Path.Combine(TempDirPath, "gzip-server.tar.gz");
+            }
+            else
+            {
+                tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
+            }
+            if (File.Exists(tempTarFilePath))
+            {
+                File.Delete(tempTarFilePath)
+            }
+            Stream outStream = File.Create(tempTarFilePath);
             Stream gzoStream = new GZipOutputStream(outStream);
             TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzoStream);
 
@@ -340,6 +339,7 @@ namespace Dev2.Activities.Specs.Deploy
             AddDirectoryFilesToTar(tarArchive, sourceDirectory, true);
 
             tarArchive.Close();
+            return File.ReadAllBytes(tempTarFilePath);
         }
 
         void AddDirectoryFilesToTar(TarArchive tarArchive, string sourceDirectory, bool recurse)
