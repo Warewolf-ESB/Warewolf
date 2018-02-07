@@ -193,7 +193,7 @@ namespace Dev2.Activities.Specs.Deploy
 
         string ParseForHostname(string responseText)
         {
-            var parseAround = "\"Hostname\": ";
+            var parseAround = "\"Hostname\":\"";
             if (responseText.Contains(parseAround))
             {
                 Console.Write("Get Hostname: " + responseText);
