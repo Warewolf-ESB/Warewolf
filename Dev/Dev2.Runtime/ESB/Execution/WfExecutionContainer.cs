@@ -142,7 +142,7 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override bool CanExecute(Guid resourceId, IDSFDataObject dataObject, AuthorizationContext authorizationContext)
         {
-            var isAuthorized = ServerAuthorizationService.Instance.IsAuthorized(authorizationContext, resourceId.ToString());
+            var isAuthorized = ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, authorizationContext, resourceId.ToString());
             if (!isAuthorized)
             {
                 dataObject.Environment.AddError(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToExecuteException);
