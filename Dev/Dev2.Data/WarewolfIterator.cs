@@ -123,20 +123,7 @@ namespace Dev2.Data
                 warewolfAtomToString = eval;
                 if (eval == cleanExpression.Replace("\"", "") && cleanExpression.Contains("\""))
                 {
-                    try
-                    {
-                        var b = functionEvaluator.TryEvaluateFunction(cleanExpression.Replace("\"", ""), out string eval2, out error);
-                        if (b)
-                        {
-                            warewolfAtomToString = eval2;
-
-                        }
-                    }
-                    catch (Exception err)
-                    {
-
-                        Dev2Logger.Warn(err, "Warewolf Warn");
-                    }
+                    TryEvalAsFunction(ref warewolfAtomToString, cleanExpression, functionEvaluator, ref error);
                 }
                 if (!tryEvaluateFunction)
                 {
@@ -151,7 +138,26 @@ namespace Dev2.Data
             return warewolfAtomToString;
         }
 
+        private static void TryEvalAsFunction(ref string warewolfAtomToString, string cleanExpression, FunctionEvaluator functionEvaluator, ref string error)
+        {
+            try
+            {
+                var b = functionEvaluator.TryEvaluateFunction(cleanExpression.Replace("\"", ""), out string eval2, out error);
+                if (b)
+                {
+                    warewolfAtomToString = eval2;
+
+                }
+            }
+            catch (Exception err)
+            {
+
+                Dev2Logger.Warn(err, "Warewolf Warn");
+            }
+        }
+
         public bool HasMoreData() => _currentValue <= _maxValue - 1;
+
         #endregion
     }
 }
