@@ -4,18 +4,26 @@ using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using System.Net.Http;
 using System.Text;
+using System.Management;
 
 namespace Dev2.Activities.Specs.Deploy
 {
     class ContainerOps
     {
-        readonly string _remoteDockerApi = "test-load";
+        readonly string _remoteDockerApi;
         string _remoteContainerID = null;
         string _remoteImageID = null;
+        public string hostname;
 
-        public string StartRemoteContainer(string serverPath)
+        public ContainerOps(string remoteDockerApi = "test-load")
         {
-            Build(serverPath);
+            _remoteDockerApi = remoteDockerApi;
+            hostname = StartRemoteContainer();
+        }
+
+        public string StartRemoteContainer()
+        {
+            Build(GetServerPath());
             CreateContainer();
             StartContainer();
             return GetContainerHostname();
@@ -38,11 +46,10 @@ namespace Dev2.Activities.Specs.Deploy
         string GetContainerHostname()
         {
             var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/json";
-            HttpContent containerStopContent = new StringContent("");
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.PostAsync(url, containerStopContent).Result;
+                var response = client.GetAsync(url).Result;
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
@@ -52,17 +59,7 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                     else
                     {
-                        var responseText = reader.ReadToEnd();
-                        Console.Write("Get Hostname: " + responseText);
-                        var parseAround = "\"Hostname\": ";
-                        if (responseText.Contains(parseAround))
-                        {
-                            return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
-                        }
-                        else
-                        {
-                            throw new HttpRequestException("Error getting container hostname. " + responseText);
-                        }
+                        return ParseForHostname(reader.ReadToEnd());
                     }
                 }
             }
@@ -130,9 +127,7 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                     else
                     {
-                        var createContainer = reader.ReadToEnd();
-                        Console.Write("Create Container: " + createContainer);
-                        _remoteContainerID = createContainer.Substring(7, 64);
+                        _remoteContainerID = ParseForContainerID(reader.ReadToEnd());
                     }
                 }
             }
@@ -163,19 +158,50 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                     else
                     {
-                        var responseText = reader.ReadToEnd();
-                        Console.Write("Build Image: " + responseText);
-                        var parseAround = "Successfully built ";
-                        if (responseText.Contains(parseAround))
-                        {
-                            _remoteImageID = responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
-                        }
-                        else
-                        {
-                            throw new HttpRequestException("Error creating remote server image. " + responseText);
-                        }
+                        _remoteImageID = ParseForImageID(reader.ReadToEnd());
                     }
                 }
+            }
+        }
+
+        string ParseForImageID(string responseText)
+        {
+            var parseAround = "Successfully built ";
+            if (responseText.Contains(parseAround))
+            {
+                Console.Write("Build Image: " + responseText);
+                return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
+            }
+            else
+            {
+                throw new HttpRequestException("Error parsing for image ID. " + responseText);
+            }
+        }
+
+        string ParseForContainerID(string responseText)
+        {
+            if (responseText.Length > 7 + 64)
+            {
+                Console.Write("Create Container: " + responseText);
+                return responseText.Substring(7, 64);
+            }
+            else
+            {
+                throw new HttpRequestException("Error parsing for container ID. " + responseText);
+            }
+        }
+
+        string ParseForHostname(string responseText)
+        {
+            var parseAround = "\"Hostname\": ";
+            if (responseText.Contains(parseAround))
+            {
+                Console.Write("Get Hostname: " + responseText);
+                return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
+            }
+            else
+            {
+                throw new HttpRequestException("Error getting container hostname. " + responseText);
             }
         }
 
@@ -242,7 +268,7 @@ namespace Dev2.Activities.Specs.Deploy
   ""AttachStdin"": false,
   ""AttachStdout"": false,
   ""AttachStderr"": true,
-  ""Cmd"": [""sc stop \""Warewolf Server\""""],
+  ""Cmd"": [""cmd /c sc stop \""Warewolf Server\""""],
   ""DetachKeys"": ""ctrl-p,ctrl-q"",
   ""Privileged"": true,
   ""Tty"": true,
@@ -273,7 +299,7 @@ namespace Dev2.Activities.Specs.Deploy
   ""AttachStdin"": true,
   ""AttachStdout"": true,
   ""AttachStderr"": true,
-  ""Cmd"": [""cmd /c type \""C:\\ProgramData\\Warewolf\\Server Log\\warewolf - server.log\""""],
+  ""Cmd"": [""cmd /c type \""C:\\ProgramData\\Warewolf\\Server Log\\warewolf-server.log\""""],
   ""DetachKeys"": ""ctrl-p,ctrl-q"",
   ""Privileged"": true,
   ""Tty"": true,
@@ -321,10 +347,6 @@ namespace Dev2.Activities.Specs.Deploy
 
         void AddDirectoryFilesToTar(TarArchive tarArchive, string sourceDirectory, bool recurse)
         {
-            //
-            // Optionally, write an entry for the directory itself.
-            // Specify false for recursion here if we will add the directory's files individually.
-            //
             TarEntry tarEntry = TarEntry.CreateEntryFromFile(sourceDirectory);
             tarArchive.WriteEntry(tarEntry, false);
             //
@@ -343,6 +365,28 @@ namespace Dev2.Activities.Specs.Deploy
                 foreach (string directory in directories)
                     AddDirectoryFilesToTar(tarArchive, directory, recurse);
             }
+        }
+
+        string GetServerPath()
+        {
+            String[] properties = { "Name", "ExecutablePath" };
+            SelectQuery s = new SelectQuery("Win32_Process",
+               "Name = 'Warewolf Server.exe' ",
+               properties);
+            ManagementObjectSearcher searcher =
+               new ManagementObjectSearcher(s);
+            ManagementObjectCollection objCollection = searcher.Get();
+            if (objCollection.Count <= 0)
+            {
+                throw new Exception("Warewolf Server is not running.");
+            }
+            string serverFilePath = "";
+            foreach (ManagementBaseObject obj in objCollection)
+            {
+                serverFilePath = obj["ExecutablePath"].ToString();
+                break;
+            }
+            return Path.GetDirectoryName(serverFilePath);
         }
     }
 }
