@@ -109,10 +109,6 @@ namespace Dev2.Activities.Designers2.Core
         {
             try
             {
-                if (InputArea != null)
-                {
-                    _viewmodel.InputArea.ResetInputs(InputArea.Inputs);
-                }
                 _viewmodel.OutputsRegion.Outputs.Clear();
                 if (TestResults != null)
                 {
