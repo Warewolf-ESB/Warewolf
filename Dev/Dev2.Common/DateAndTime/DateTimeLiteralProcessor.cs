@@ -132,10 +132,6 @@ namespace Dev2.Common.DateAndTime
             return forwardLookupLength;
         }
 
-        /// <summary>
-        ///     Performs a forward lookup for the given forwardLookupIndex and checks is the result is a double escaped literal
-        ///     character.
-        /// </summary>
         static bool CheckForDoubleEscapedLiteralCharacter(char[] formatArray, int startPosition,
             out string result, out string error)
         {
@@ -143,11 +139,7 @@ namespace Dev2.Common.DateAndTime
             result = DateTimeParser.ForwardLookup(formatArray, startPosition, 2);
             return result == "''";
         }
-
-        /// <summary>
-        ///     Performs a forward lookup for the given forwardLookupIndex and checks the results against known
-        ///     date time format parts. Returns true if part is found otherwise false.
-        /// </summary>
+        
         static bool TryGetDateTimeFormatPart(char[] formatArray, int startPosition, char forwardLookupIndex,
             Dictionary<char, List<int>> dateTimeFormatForwardLookups,
             Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out string result,
@@ -176,12 +168,15 @@ namespace Dev2.Common.DateAndTime
                         result = lookupResults[count];
                         count = lookupResults.Count;
                     }
-                    else if (count == lookupLengths.Count - 1)
+                    else
                     {
-                        nothingDied = false;
-                        error =
-                            string.Concat("Failed to find any format part matches in forward lookups from character '",
-                                forwardLookupIndex, "' at index ", startPosition, " of format.");
+                        if (count == lookupLengths.Count - 1)
+                        {
+                            nothingDied = false;
+                            error =
+                                string.Concat("Failed to find any format part matches in forward lookups from character '",
+                                    forwardLookupIndex, "' at index ", startPosition, " of format.");
+                        }
                     }
 
                     count++;

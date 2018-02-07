@@ -93,9 +93,12 @@ namespace Dev2.Common.DateAndTime
                     {
                         result++;
                     }
-                    else if (result > 0)
+                    else
                     {
-                        result--;
+                        if (result > 0)
+                        {
+                            result--;
+                        }
                     }
                 }
             }
@@ -115,9 +118,12 @@ namespace Dev2.Common.DateAndTime
                 {
                     result++;
                 }
-                else if (result > 0)
+                else
                 {
-                    result--;
+                    if (result > 0)
+                    {
+                        result--;
+                    }
                 }
             }
 

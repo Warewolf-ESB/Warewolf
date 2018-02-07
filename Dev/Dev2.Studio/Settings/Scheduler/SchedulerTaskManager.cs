@@ -258,9 +258,12 @@ namespace Dev2.Settings.Scheduler
                                 {
                                     _schedulerViewModel.SelectedTask = _schedulerViewModel.TaskList[indexInFilteredList - 1];
                                 }
-                                else if (indexInFilteredList == 0 && _schedulerViewModel.TaskList.Count > 0)
+                                else
                                 {
-                                    _schedulerViewModel.SelectedTask = _schedulerViewModel.TaskList[0];
+                                    if (indexInFilteredList == 0 && _schedulerViewModel.TaskList.Count > 0)
+                                    {
+                                        _schedulerViewModel.SelectedTask = _schedulerViewModel.TaskList[0];
+                                    }
                                 }
                             }
                             _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.History);

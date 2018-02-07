@@ -119,9 +119,12 @@ namespace Dev2.UI
             {
                 CloseDropDown(true, false);
             }
-            else if (e.Key == Key.V && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+            else
             {
-                IsPaste = true;
+                if (e.Key == Key.V && e.KeyboardDevice.Modifiers == ModifierKeys.Control)
+                {
+                    IsPaste = true;
+                }
             }
         }
 
@@ -220,11 +223,14 @@ namespace Dev2.UI
                                 foundMinimum = i;
                                 foundLength = index - i;
                             }
-                            else if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
+                            else
                             {
+                                if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
+                                {
 #pragma warning disable S127 // "for" loop stop conditions should be invariant
-                                i = -1;
+                                    i = -1;
 #pragma warning restore S127 // "for" loop stop conditions should be invariant
+                                }
                             }
                         }
 
@@ -473,9 +479,12 @@ namespace Dev2.UI
 
                     IsInCalculateMode = calculateMode;
                 }
-                else if (IsInCalculateMode)
+                else
                 {
-                    calculateMode = true;
+                    if (IsInCalculateMode)
+                    {
+                        calculateMode = true;
+                    }
                 }
 
                 if (forceUpdate)
@@ -559,12 +568,15 @@ namespace Dev2.UI
                             ttErrorBuilder.AppendLine("Scalar is not allowed");
                         }
                     }
-                    else if (FilterType == enIntellisensePartType.ScalarsOnly)
+                    else
                     {
-                        if (text.Contains("(") && text.Contains(")"))
+                        if (FilterType == enIntellisensePartType.ScalarsOnly)
                         {
-                            HasError = true;
-                            ttErrorBuilder.AppendLine("Recordset is not allowed");
+                            if (text.Contains("(") && text.Contains(")"))
+                            {
+                                HasError = true;
+                                ttErrorBuilder.AppendLine("Recordset is not allowed");
+                            }
                         }
                     }
                 }
