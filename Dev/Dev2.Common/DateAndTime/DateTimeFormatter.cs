@@ -86,33 +86,38 @@ namespace Dev2.Common.DateAndTime
 
             if (nothingDied)
             {
-                var count = 0;
-                while (count < formatParts.Count && nothingDied)
-                {
-                    var formatPart = formatParts[count];
-
-                    if (formatPart.Isliteral)
-                    {
-                        result += formatPart.Value;
-                    }
-                    else
-                    {
-                        if (DateTimeFormatParts.TryGetValue(formatPart.Value, out Func<IDateTimeResultTO, DateTime, string> func))
-                        {
-                            result += func(dateTimeResultTO, tmpDateTime);
-                        }
-                        else
-                        {
-                            nothingDied = false;
-                            error = string.Concat("Unrecognized format part '", formatPart.Value, "'.");
-                        }
-                    }
-
-                    count++;
-                }
+                AddParts(ref result, ref error, ref nothingDied, dateTimeResultTO, tmpDateTime, formatParts);
             }
 
             return result;
+        }
+
+        private static void AddParts(ref string result, ref string error, ref bool nothingDied, IDateTimeResultTO dateTimeResultTO, DateTime tmpDateTime, List<IDateTimeFormatPartTO> formatParts)
+        {
+            var count = 0;
+            while (count < formatParts.Count && nothingDied)
+            {
+                var formatPart = formatParts[count];
+
+                if (formatPart.Isliteral)
+                {
+                    result += formatPart.Value;
+                }
+                else
+                {
+                    if (DateTimeFormatParts.TryGetValue(formatPart.Value, out Func<IDateTimeResultTO, DateTime, string> func))
+                    {
+                        result += func(dateTimeResultTO, tmpDateTime);
+                    }
+                    else
+                    {
+                        nothingDied = false;
+                        error = string.Concat("Unrecognized format part '", formatPart.Value, "'.");
+                    }
+                }
+
+                count++;
+            }
         }
 
         protected static void CreateDateTimeFormatParts()

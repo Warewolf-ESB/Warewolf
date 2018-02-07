@@ -73,22 +73,16 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 ad.Children.SchemaFilter.Add("group");
                 foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if (dChildEntry.Name == WarewolfGroup)
-                    {
-                        // Now check group membership ;)
-                        var members = dChildEntry.Invoke("Members");
+                    // Now check group membership ;)
+                    var members = dChildEntry.Invoke("Members");
 
-                        if (members != null)
+                    if (members != null)
+                    {
+                        foreach (var member in (IEnumerable)members)
                         {
-                            foreach (var member in (IEnumerable)members)
+                            using (var memberEntry = new DirectoryEntry(member))
                             {
-                                using (var memberEntry = new DirectoryEntry(member))
-                                {
-                                    if (memberEntry.Name == theUser)
-                                    {
-                                        return true;
-                                    }
-                                }
+                                return dChildEntry.Name == WarewolfGroup && memberEntry.Name == theUser;
                             }
                         }
                     }
@@ -173,22 +167,16 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 ad.Children.SchemaFilter.Add("group");
                 foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if (dChildEntry.Name == WarewolfGroup)
-                    {
-                        // Now check group membership ;)
-                        var members = dChildEntry.Invoke("Members");
+                    // Now check group membership ;)
+                    var members = dChildEntry.Invoke("Members");
 
-                        if (members != null)
+                    if (members != null)
+                    {
+                        foreach (var member in (IEnumerable)members)
                         {
-                            foreach (var member in (IEnumerable)members)
+                            using (var memberEntry = new DirectoryEntry(member))
                             {
-                                using (var memberEntry = new DirectoryEntry(member))
-                                {
-                                    if (memberEntry.Name == AdministratorsGroup)
-                                    {
-                                        return true;
-                                    }
-                                }
+                                return dChildEntry.Name == WarewolfGroup && memberEntry.Name == AdministratorsGroup;
                             }
                         }
                     }

@@ -47,22 +47,16 @@ namespace Dev2.Services.Security
                     ad.Children.SchemaFilter.Add("group");
                     foreach(DirectoryEntry dChildEntry in ad.Children)
                     {
-                        if(dChildEntry.Name == "Warewolf Administrators")
-                        {
-                            // Now check group membership ;)
-                            var members = dChildEntry.Invoke("Members");
+                        // Now check group membership ;)
+                        var members = dChildEntry.Invoke("Members");
 
-                            if(members != null)
+                        if(members != null)
+                        {
+                            foreach(var member in (IEnumerable)members)
                             {
-                                foreach(var member in (IEnumerable)members)
+                                using(DirectoryEntry memberEntry = new DirectoryEntry(member))
                                 {
-                                    using(DirectoryEntry memberEntry = new DirectoryEntry(member))
-                                    {
-                                        if(memberEntry.Name == adGroup)
-                                        {
-                                            return true;
-                                        }
-                                    }
+                                    return dChildEntry.Name == "Warewolf Administrators" && memberEntry.Name == adGroup;
                                 }
                             }
                         }

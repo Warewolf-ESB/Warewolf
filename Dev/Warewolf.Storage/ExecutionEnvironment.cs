@@ -439,21 +439,27 @@ namespace Warewolf.Storage
                 var recSetData = recSetResult?.Item;
                 if (recSetData != null)
                 {
-                    var data = recSetData.Data.ToArray();
-                    var listOfData = new List<DataStorage.WarewolfAtom>();
-                    foreach (var keyValuePair in data)
-                    {
-                        if (keyValuePair.Key == "WarewolfPositionColumn")
-                        {
-                            continue;
-                        }
-                        listOfData.AddRange(keyValuePair.Value.ToList());
-                    }
-                    return listOfData;
+                    return EvalRecordsetAsAtom(recSetData);
                 }
             }
             var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
             return x?.ToList();
+        }
+
+        private static List<DataStorage.WarewolfAtom> EvalRecordsetAsAtom(DataStorage.WarewolfRecordset recSetData)
+        {
+            var data = recSetData.Data.ToArray();
+            var listOfData = new List<DataStorage.WarewolfAtom>();
+            foreach (var keyValuePair in data)
+            {
+                if (keyValuePair.Key == "WarewolfPositionColumn")
+                {
+                    continue;
+                }
+                listOfData.AddRange(keyValuePair.Value.ToList());
+            }
+
+            return listOfData;
         }
 
         private static DataStorage.WarewolfAtom EvalAsRecordset(CommonFunctions.WarewolfEvalResult result)
