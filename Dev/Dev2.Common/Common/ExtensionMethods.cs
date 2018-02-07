@@ -240,35 +240,40 @@ namespace Dev2.Common.Common
                 return -1;
             }
 
-            int index;
+            int index = 0;
             var length = value.Length;
             var maxSearchLength = sb.Length - length + 1;
 
             if (ignoreCase)
             {
-                for (int i = startIndex; i < maxSearchLength; ++i)
-                {
-                    if (Char.ToLower(sb[i]) == Char.ToLower(value[0]))
-                    {
-                        index = 1;
-                        while (index < length && Char.ToLower(sb[i + index]) == Char.ToLower(value[index]))
-                        {
-                            ++index;
-                        }
-
-                        if (index == length)
-                        {
-                            return i;
-                        }
-                    }
-                }
-
-                return -1;
+                return CaseInsensitiveIndexOf(sb, value, startIndex, ref index, length, maxSearchLength);
             }
 
             for (int i = startIndex; i < maxSearchLength; ++i)
             {
                 if (sb[i] == value[0])
+                {
+                    index = 1;
+                    while (index < length && sb[i + index] == value[index])
+                    {
+                        ++index;
+                    }
+
+                    if (index == length)
+                    {
+                        return i;
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        private static int CaseInsensitiveIndexOf(StringBuilder sb, string value, int startIndex, ref int index, int length, int maxSearchLength)
+        {
+            for (int i = startIndex; i < maxSearchLength; ++i)
+            {
+                if (Char.ToLower(sb[i]) == Char.ToLower(value[0]))
                 {
                     index = 1;                    
                     while (index < length && sb[i + index] == value[index] || SkipDueToEscapeChar(sb,startIndex,i + index-1, escapeChar,value))

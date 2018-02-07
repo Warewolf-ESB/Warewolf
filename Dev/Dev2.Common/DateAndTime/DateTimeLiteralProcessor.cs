@@ -170,13 +170,7 @@ namespace Dev2.Common.DateAndTime
                     }
                     else
                     {
-                        if (count == lookupLengths.Count - 1)
-                        {
-                            nothingDied = false;
-                            error =
-                                string.Concat("Failed to find any format part matches in forward lookups from character '",
-                                    forwardLookupIndex, "' at index ", startPosition, " of format.");
-                        }
+                        CheckLookupLengths(startPosition, forwardLookupIndex, lookupLengths, count, ref error, ref nothingDied);
                     }
 
                     count++;
@@ -189,6 +183,17 @@ namespace Dev2.Common.DateAndTime
             }
 
             return nothingDied;
+        }
+
+        private static void CheckLookupLengths(int startPosition, char forwardLookupIndex, List<int> lookupLengths, int count, ref string error, ref bool nothingDied)
+        {
+            if (count == lookupLengths.Count - 1)
+            {
+                nothingDied = false;
+                error =
+                    string.Concat("Failed to find any format part matches in forward lookups from character '",
+                        forwardLookupIndex, "' at index ", startPosition, " of format.");
+            }
         }
     }
 }
