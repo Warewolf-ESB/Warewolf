@@ -213,12 +213,7 @@ namespace Dev2.Services.Security
                     var principleName = principal.Identity.Name;
                     if (!string.IsNullOrEmpty(principleName))
                     {
-                        isInRole = principal.IsInRole(windowsGroup);
-                        if (!isInRole)
-                        {
-                            isInRole = DoFallBackCheck(principal);
-                        }
-                        return IsGroupInRole(principal, ref isInRole, windowsGroup);
+                        return IsPrincipleInRole(principal, windowsGroup);
                     }
                 }
                 else
@@ -233,6 +228,16 @@ namespace Dev2.Services.Security
 
 
             return isInRole || p.IsBuiltInGuestsForExecution;
+        }
+
+        private bool IsPrincipleInRole(IPrincipal principal, string windowsGroup)
+        {
+            var isInRole = principal.IsInRole(windowsGroup);
+            if (!isInRole)
+            {
+                isInRole = DoFallBackCheck(principal);
+            }
+            return IsGroupInRole(principal, ref isInRole, windowsGroup);
         }
 
         private bool IsGroupInRole(IPrincipal principal, ref bool isInRole, string windowsGroup)

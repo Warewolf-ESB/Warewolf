@@ -49,22 +49,27 @@ namespace Dev2.Services.Sql
                         var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
                             fullProcedureName))
                     {
-                        try
-                        {
-
-                            var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> outParameters);
-                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-
-                            procedureProcessor?.Invoke(command, parameters, outParameters, helpText, fullProcedureName);
-                        }
-                        catch (Exception)
-                        {
-                            if (!continueOnProcessorException)
-                            {
-                                throw;
-                            }
-                        }
+                        TryProcessProcedure(procedureProcessor, continueOnProcessorException, fullProcedureName, command);
                     }
+                }
+            }
+        }
+
+        private void TryProcessProcedure(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, bool continueOnProcessorException, string fullProcedureName, IDbCommand command)
+        {
+            try
+            {
+
+                var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> outParameters);
+                var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+
+                procedureProcessor?.Invoke(command, parameters, outParameters, helpText, fullProcedureName);
+            }
+            catch (Exception)
+            {
+                if (!continueOnProcessorException)
+                {
+                    throw;
                 }
             }
         }
@@ -176,21 +181,26 @@ namespace Dev2.Services.Sql
                         var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,
                             fullProcedureName))
                     {
-                        try
-                        {
-                            var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
-                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-
-                            procedureProcessor?.Invoke(command, parameters, helpText, fullProcedureName);
-                        }
-                        catch (Exception)
-                        {
-                            if (!continueOnProcessorException)
-                            {
-                                throw;
-                            }
-                        }
+                        TryProcessProcedure(procedureProcessor, continueOnProcessorException, fullProcedureName, command);
                     }
+                }
+            }
+        }
+
+        private void TryProcessProcedure(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, bool continueOnProcessorException, string fullProcedureName, IDbCommand command)
+        {
+            try
+            {
+                var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
+                var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+
+                procedureProcessor?.Invoke(command, parameters, helpText, fullProcedureName);
+            }
+            catch (Exception)
+            {
+                if (!continueOnProcessorException)
+                {
+                    throw;
                 }
             }
         }
@@ -450,14 +460,7 @@ namespace Dev2.Services.Sql
                         _command.Dispose();
                     }
 
-                    if (_connection != null)
-                    {
-                        if (_connection.State != ConnectionState.Closed)
-                        {
-                            _connection.Close();
-                        }
-                        _connection.Dispose();
-                    }
+                    DisposeConnection();
                 }
 
                 // Call the appropriate methods to clean up
@@ -467,6 +470,18 @@ namespace Dev2.Services.Sql
 
                 // Note disposing has been done.
                 _disposed = true;
+            }
+        }
+
+        private void DisposeConnection()
+        {
+            if (_connection != null)
+            {
+                if (_connection.State != ConnectionState.Closed)
+                {
+                    _connection.Close();
+                }
+                _connection.Dispose();
             }
         }
 
