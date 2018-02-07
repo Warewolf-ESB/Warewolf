@@ -102,7 +102,7 @@ namespace Dev2.Activities.Designers.Tests.MySql
         }
 
         [TestMethod]
-        [Owner("Pieter Terblanche")]Oracle_TestActionSetSourceAndTestClickOkHasMappings
+        [Owner("Pieter Terblanche")]
         [TestCategory("MySql_MethodName")]
         public void MySql_TestActionSetSourceAndTestClickOkHasMappings()
         {
