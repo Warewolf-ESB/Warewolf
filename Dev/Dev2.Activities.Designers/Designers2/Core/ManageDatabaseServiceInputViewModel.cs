@@ -109,6 +109,10 @@ namespace Dev2.Activities.Designers2.Core
         {
             try
             {
+                if (InputArea != null)
+                {
+                    _viewmodel.InputArea.ResetInputs(InputArea.Inputs);
+                }
                 _viewmodel.OutputsRegion.Outputs.Clear();
                 if (TestResults != null)
                 {
@@ -167,7 +171,7 @@ namespace Dev2.Activities.Designers2.Core
                 if (Model.Source.Type == enSourceType.ODBC)
                 {
                     var dbSource = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, Model.Source.Id);
-                    TestResults.TableName = dbSource.DatabaseName.Replace(" ","");
+                    TestResults.TableName = dbSource.DatabaseName.Replace(" ", "");
                 }
                 if (TestResults != null)
                 {
@@ -274,7 +278,7 @@ namespace Dev2.Activities.Designers2.Core
             get { return _testPassed; }
             set
             {
-                _testPassed = value; 
+                _testPassed = value;
                 OnPropertyChanged();
             }
         }
@@ -294,7 +298,7 @@ namespace Dev2.Activities.Designers2.Core
             get { return _testMessage; }
             set
             {
-                _testMessage = value; 
+                _testMessage = value;
                 OnPropertyChanged();
             }
         }
@@ -304,7 +308,7 @@ namespace Dev2.Activities.Designers2.Core
             get { return _showTestMessage; }
             set
             {
-                _showTestMessage = value; 
+                _showTestMessage = value;
                 OnPropertyChanged();
             }
         }
