@@ -127,34 +127,44 @@ namespace Dev2.Studio.AppResources.Behaviors
                 }
                 for (int i = 0; i < dataGridItems.Count; i++)
                 {
-                    var list = dataGridItems.SourceCollection.Cast<object>().ToList();
+                    SetWatermarkAt(i);
+                }
+            }
+        }
 
-                    if (list[i] is ModelItem mi)
-                    {
-                        var watermarkIndex = WatermarkIndexes.IndexOf(i);
-                        WatermarkSential.IsWatermarkBeingApplied = true;
-                        var modelProperty = mi.Properties[WatermarkPropertyName];
-                        modelProperty?.SetValue(watermarkIndex != -1 ? WatermarkText[watermarkIndex] : "");
-                    }
-                    else
-                    {
-                        var pi = dataGridItems[i].GetType().GetProperty(WatermarkPropertyName);
+        void SetWatermarkAt(int i)
+        {
+            var list = dataGridItems.SourceCollection.Cast<object>().ToList();
 
-                        if (pi != null)
-                        {
-                            if (WatermarkText.Count > i && dataGridItems.Count > i)
-                            {
-                                pi.SetValue(dataGridItems[i], WatermarkText[i], null);
-                            }
-                            else
-                            {
-                                if (i == dataGridItems.Count - 1)
-                                {
-                                    pi.SetValue(dataGridItems[i], "", null);
-                                }
-                            }
-                        }
-                    }
+            if (list[i] is ModelItem mi)
+            {
+                var watermarkIndex = WatermarkIndexes.IndexOf(i);
+                WatermarkSential.IsWatermarkBeingApplied = true;
+                var modelProperty = mi.Properties[WatermarkPropertyName];
+                modelProperty?.SetValue(watermarkIndex != -1 ? WatermarkText[watermarkIndex] : "");
+            }
+            else
+            {
+                var pi = dataGridItems[i].GetType().GetProperty(WatermarkPropertyName);
+
+                if (pi != null)
+                {
+                    UpdateWatermarkProperty(i, pi);
+                }
+            }
+        }
+
+        private void UpdateWatermarkProperty(int i, PropertyInfo pi)
+        {
+            if (WatermarkText.Count > i && dataGridItems.Count > i)
+            {
+                pi.SetValue(dataGridItems[i], WatermarkText[i], null);
+            }
+            else
+            {
+                if (i == dataGridItems.Count - 1)
+                {
+                    pi.SetValue(dataGridItems[i], "", null);
                 }
             }
         }

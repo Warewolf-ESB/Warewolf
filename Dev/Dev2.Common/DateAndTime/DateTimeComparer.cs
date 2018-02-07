@@ -89,19 +89,26 @@ namespace Dev2.Common.DateAndTime
                 input1 = input1.AddYears(result);
                 if (input2 < input1)
                 {
-                    if (result < 0)
-                    {
-                        result++;
-                    }
-                    else
-                    {
-                        if (result > 0)
-                        {
-                            result--;
-                        }
-                    }
+                    result = Touch(result);
                 }
             }
+            return result;
+        }
+
+        private static int Touch(int result)
+        {
+            if (result < 0)
+            {
+                result++;
+            }
+            else
+            {
+                if (result > 0)
+                {
+                    result--;
+                }
+            }
+
             return result;
         }
 

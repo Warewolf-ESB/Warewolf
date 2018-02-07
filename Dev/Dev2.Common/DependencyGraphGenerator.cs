@@ -20,23 +20,8 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
-
-    /// <summary>
-    /// Used to generate dependency graphs.
-    /// Extracted From View Model ;)
-    /// </summary>
     public class DependencyGraphGenerator : IDependencyGraphGenerator
     {
-        /// <summary>
-        /// Builds the graph.
-        /// </summary>
-        /// <param name="xmlData">The XML data.</param>
-        /// <param name="modelName">Name of the model.</param>
-        /// <param name="width">The width.</param>
-        /// <param name="height">The height.</param>
-        /// <param name="nestingLevel">How deep should the graph show.</param>
-        /// <returns></returns>
-
         public IGraph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {
             if (xmlData == null || xmlData.Length == 0)
@@ -64,23 +49,7 @@ namespace Dev2.Common
                 // Create all of the nodes and add them to the graph.
                 foreach (var nodeElem in nodeElems)
                 {
-                    // build the graph position data
-                    var id = nodeElem.Attribute("id").Value;
-                    var node = CreateNode(nodeElem, modelName, width, height, ref count);
-
-                    var alreadyAdded = false;
-                    foreach (var n in graph.Nodes)
-                    {
-                        if (n.ID == id)
-                        {
-                            alreadyAdded = true;
-                        }
-                    }
-
-                    if (!alreadyAdded)
-                    {
-                        graph.Nodes.Add(node);
-                    }
+                    count = BuildGraphPositionData(modelName, width, height, graph, count, nodeElem);
                 }
 
                 // Associate each node with its dependencies.
@@ -127,6 +96,27 @@ namespace Dev2.Common
             }
         }
 
+        private double BuildGraphPositionData(string modelName, double width, double height, Graph graph, double count, XElement nodeElem)
+        {
+            var id = nodeElem.Attribute("id").Value;
+            var node = CreateNode(nodeElem, modelName, width, height, ref count);
+
+            var alreadyAdded = false;
+            foreach (var n in graph.Nodes)
+            {
+                if (n.ID == id)
+                {
+                    alreadyAdded = true;
+                }
+            }
+
+            if (!alreadyAdded)
+            {
+                graph.Nodes.Add(node);
+            }
+
+            return count;
+        }
 
         IDependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
