@@ -218,51 +218,7 @@ namespace Dev2.Services.Security
                         {
                             isInRole = DoFallBackCheck(principal);
                         }
-                        if (!isInRole)
-                        {
-                            var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
-                            var windowsPrincipal = principal as WindowsPrincipal;
-                            var windowsIdentity = principal.Identity as WindowsIdentity;
-                            if (windowsPrincipal != null)
-                            {
-                                isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
-                                if (windowsIdentity != null && !isInRole)
-                                {
-                                    if (windowsIdentity.Groups != null)
-                                    {
-                                        isInRole = windowsIdentity.Groups.Any(reference =>
-                                        {
-                                            if (reference.Value == sid.Value)
-                                            {
-                                                return true;
-                                            }
-                                            try
-                                            {
-                                                var identityReference = reference.Translate(typeof(NTAccount));
-                                                if (identityReference != null)
-                                                {
-                                                    return identityReference.Value == windowsGroup;
-                                                }
-                                            }
-                                            catch (Exception)
-                                            {
-                                                return false;
-                                            }
-                                            return false;
-                                        });
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                isInRole = principal.IsInRole(sid.Value);
-                            }
-                        }
-                        if (!isInRole)
-                        {
-                            isInRole = DoFallBackCheck(principal);
-                        }
-                        return isInRole;
+                        return IsGroupInRole(principal, ref isInRole, windowsGroup);
                     }
                 }
                 else
@@ -279,8 +235,61 @@ namespace Dev2.Services.Security
             return isInRole || p.IsBuiltInGuestsForExecution;
         }
 
+        private bool IsGroupInRole(IPrincipal principal, ref bool isInRole, string windowsGroup)
+        {
+            if (!isInRole)
+            {
+                var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+                var windowsPrincipal = principal as WindowsPrincipal;
+                var windowsIdentity = principal.Identity as WindowsIdentity;
+                if (windowsPrincipal != null)
+                {
+                    isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
+                    if (windowsIdentity != null && !isInRole && windowsIdentity.Groups != null)
+                    {
+                        isInRole = windowsIdentity.Groups.Any(reference =>
+                        {
+                            return IsRefInGroup(windowsGroup, reference, sid);
+                        });
+                    }
+
+                }
+                else
+                {
+                    isInRole = principal.IsInRole(sid.Value);
+                }
+            }
+            if (!isInRole)
+            {
+                isInRole = DoFallBackCheck(principal);
+            }
+            return isInRole;
+        }
+
+        private static bool IsRefInGroup(string windowsGroup, IdentityReference reference, SecurityIdentifier sid)
+        {
+            if (reference.Value == sid.Value)
+            {
+                return true;
+            }
+            try
+            {
+                var identityReference = reference.Translate(typeof(NTAccount));
+                if (identityReference != null)
+                {
+                    return identityReference.Value == windowsGroup;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return false;
+        }
+
         bool DoFallBackCheck(IPrincipal principal)
         {
+            bool isInRole = false;
             var username = principal?.Identity?.Name;
             if (username != null)
             {
@@ -291,33 +300,45 @@ namespace Dev2.Services.Security
                     theUser = username.Substring(domainChar + 1);
                 }
                 var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
-                {
-                    ad.Children.SchemaFilter.Add("group");
-                    foreach (DirectoryEntry dChildEntry in ad.Children)
-                    {
-                        if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole || dChildEntry.Name=="Administrators" || dChildEntry.Name=="BUILTIN\\Administrators")
-                        {
-                            var members = dChildEntry.Invoke("Members");
+                isInRole = IsInRole(isInRole, theUser, windowsBuiltInRole);
+            }
+            return isInRole;
+        }
 
-                            if (members != null)
-                            {
-                                foreach (var member in (IEnumerable)members)
-                                {
-                                    using (var memberEntry = new DirectoryEntry(member))
-                                    {
-                                        if (memberEntry.Name == theUser)
-                                        {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
+        private static bool IsInRole(bool isInRole, string theUser, string windowsBuiltInRole)
+        {
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            {
+                ad.Children.SchemaFilter.Add("group");
+                foreach (DirectoryEntry dChildEntry in ad.Children)
+                {
+                    isInRole = IsChildInRole(theUser, windowsBuiltInRole, dChildEntry);
+                }
+            }
+
+            return isInRole;
+        }
+
+        private static bool IsChildInRole(string theUser, string windowsBuiltInRole, DirectoryEntry dChildEntry)
+        {
+            bool isInRole = false;
+            if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole || dChildEntry.Name == "Administrators" || dChildEntry.Name == "BUILTIN\\Administrators")
+            {
+                var members = dChildEntry.Invoke("Members");
+
+                if (members != null)
+                {
+                    foreach (var member in (IEnumerable)members)
+                    {
+                        using (var memberEntry = new DirectoryEntry(member))
+                        {
+                            isInRole = memberEntry.Name == theUser;
                         }
                     }
                 }
             }
-            return false;
+
+            return isInRole;
         }
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal)
