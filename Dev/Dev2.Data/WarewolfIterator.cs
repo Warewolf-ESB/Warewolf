@@ -7,6 +7,7 @@ using Dev2.MathOperations;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using System.Text;
 
 namespace Dev2.Data
 {
@@ -39,30 +40,36 @@ namespace Dev2.Data
 
         void SetupForWarewolfRecordSetResult(CommonFunctions.WarewolfEvalResult warewolfEvalResult)
         {
-            if (warewolfEvalResult.IsWarewolfRecordSetResult)
+            if (warewolfEvalResult.IsWarewolfRecordSetResult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult listResult)
             {
-                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult listResult)
+                var stringValue = "";
+                foreach (var item in listResult.Item.Data)
                 {
-                    var stringValue = "";
-                    foreach (var item in listResult.Item.Data)
-                    {
-                        if (item.Key != EvaluationFunctions.PositionColumn)
-                        {
-                            var data = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                            var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(data);
-                            if (string.IsNullOrEmpty(stringValue))
-                            {
-                                stringValue = warewolfEvalResultToString;
-                            }
-                            else
-                            {
-                                stringValue += "," + warewolfEvalResultToString;
-                            }
-                        }
-                    }
-                    _scalarResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(stringValue)) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                    stringValue = SetupListResultItem(item);
+                }
+                _scalarResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(stringValue)) as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+            }
+
+        }
+
+        private static String SetupListResultItem(System.Collections.Generic.KeyValuePair<string, WarewolfParserInterop.WarewolfAtomList<DataStorage.WarewolfAtom>> item)
+        {
+            var stringValue = new StringBuilder();
+            if (item.Key != EvaluationFunctions.PositionColumn)
+            {
+                var data = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(item.Value) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+                var warewolfEvalResultToString = ExecutionEnvironment.WarewolfEvalResultToString(data);
+                if (string.IsNullOrEmpty(stringValue.ToString()))
+                {
+                    stringValue = new StringBuilder(warewolfEvalResultToString);
+                }
+                else
+                {
+                    stringValue.Append("," + warewolfEvalResultToString);
                 }
             }
+
+            return stringValue.ToString();
         }
 
         void SetupScalarResult(CommonFunctions.WarewolfEvalResult warewolfEvalResult)

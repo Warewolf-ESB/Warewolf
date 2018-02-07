@@ -72,23 +72,25 @@ namespace Dev2.Services.Sql
                 {
                     using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, _owner + "." + fullProcedureName))
                     {
-                        try
-                        {
-
-                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
-
-                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-
-                            procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
-                        }
-                        catch (Exception)
-                        {
-                            if (!continueOnProcessorException)
-                            {
-                                throw;
-                            }
-                        }
+                        TryProcessProcedure(procedureProcessor, continueOnProcessorException, dbName, fullProcedureName, command);
                     }
+                }
+            }
+        }
+
+        private void TryProcessProcedure(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, bool continueOnProcessorException, string dbName, string fullProcedureName, IDbCommand command)
+        {
+            try
+            {
+                var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
+                var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
+            }
+            catch (Exception)
+            {
+                if (!continueOnProcessorException)
+                {
+                    throw;
                 }
             }
         }
@@ -191,20 +193,24 @@ namespace Dev2.Services.Sql
                 {
                     using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, _owner + "." + fullProcedureName))
                     {
-                        try
-                        {
-                            var parameters = DbDataParameters(dbName, command, fullProcedureName, out List<IDbDataParameter> isOut, out string helpText);
-
-                            procedureProcessor(command, parameters, helpText, fullProcedureName);
-                        }
-                        catch (Exception)
-                        {
-                            if (!continueOnProcessorException)
-                            {
-                                throw;
-                            }
-                        }
+                        TryProcessProcedure(procedureProcessor, continueOnProcessorException, dbName, fullProcedureName, command);
                     }
+                }
+            }
+        }
+
+        private void TryProcessProcedure(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, bool continueOnProcessorException, string dbName, string fullProcedureName, IDbCommand command)
+        {
+            try
+            {
+                var parameters = DbDataParameters(dbName, command, fullProcedureName, out List<IDbDataParameter> isOut, out string helpText);
+                procedureProcessor(command, parameters, helpText, fullProcedureName);
+            }
+            catch (Exception)
+            {
+                if (!continueOnProcessorException)
+                {
+                    throw;
                 }
             }
         }
@@ -299,23 +305,7 @@ namespace Dev2.Services.Sql
                 if (command.CommandType == CommandType.StoredProcedure)
                 {
                     var obj = new OracleParameter();
-
-                    for (int i = 0; i < command.Parameters.Count; i++)
-                    {
-                        var temp = (OracleParameter)command.Parameters[i];
-
-                        if (temp.OracleDbType == OracleDbType.RefCursor)
-                        {
-                            obj = (OracleParameter)command.Parameters[i];
-                        }
-                        else
-                        {
-                            if (temp.Direction != ParameterDirection.Input)
-                            {
-                                singleOutParams.Add(temp);
-                            }
-                        }
-                    }
+                    obj = GetProcInputs(command, singleOutParams, obj);
                     command.ExecuteNonQuery();
                     if (obj.ParameterName.Length > 0)
                     {
@@ -363,6 +353,28 @@ namespace Dev2.Services.Sql
                 }
                 throw;
             }
+        }
+
+        private static OracleParameter GetProcInputs(IDbCommand command, List<IDataParameter> singleOutParams, OracleParameter obj)
+        {
+            for (int i = 0; i < command.Parameters.Count; i++)
+            {
+                var temp = (OracleParameter)command.Parameters[i];
+
+                if (temp.OracleDbType == OracleDbType.RefCursor)
+                {
+                    obj = (OracleParameter)command.Parameters[i];
+                }
+                else
+                {
+                    if (temp.Direction != ParameterDirection.Input)
+                    {
+                        singleOutParams.Add(temp);
+                    }
+                }
+            }
+
+            return obj;
         }
 
         public static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
@@ -725,15 +737,7 @@ namespace Dev2.Services.Sql
                     _transaction?.Dispose();
 
                     _command?.Dispose();
-
-                    if(_connection != null)
-                    {
-                        if(_connection.State != ConnectionState.Closed)
-                        {
-                            _connection.Close();
-                        }
-                        _connection.Dispose();
-                    }
+                    DisposeConnection();
                 }
 
                 // Call the appropriate methods to clean up 
@@ -746,5 +750,16 @@ namespace Dev2.Services.Sql
             }
         }
 
+        private void DisposeConnection()
+        {
+            if (_connection != null)
+            {
+                if (_connection.State != ConnectionState.Closed)
+                {
+                    _connection.Close();
+                }
+                _connection.Dispose();
+            }
+        }
     }
 }
