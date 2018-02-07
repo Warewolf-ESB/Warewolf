@@ -75,15 +75,13 @@ namespace Dev2.Data.Parsers
 
                     foreach (XmlAttribute attrib in xmlAttributeCollection)
                     {
-                        if (attrib?.NodeType == XmlNodeType.Attribute)
+                        if (attrib?.NodeType == XmlNodeType.Attribute && attrib.Name.Contains("xmlns:"))
                         {
-                            if (attrib.Name.Contains("xmlns:"))
-                            {
-                                var nsAttrib = attrib.Name.Split(':');
-                                var ns = nsAttrib[1];
-                                namespaces.Add(new KeyValuePair<string, string>(ns, attrib.Value));
-                            }
+                            var nsAttrib = attrib.Name.Split(':');
+                            var ns = nsAttrib[1];
+                            namespaces.Add(new KeyValuePair<string, string>(ns, attrib.Value));
                         }
+
                     }
                 }
                 using (TextReader stringReader = new StringReader(useXmlData))

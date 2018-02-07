@@ -167,95 +167,117 @@ namespace Dev2.Data
                 var columnDirection = enDev2ColumnArgumentDirection.None;
                 foreach (XmlNode c in children)
                 {
-                    XmlAttribute descAttribute = null;
-                    XmlAttribute columnIoDirection = null;
-                    if (!DataListUtil.IsSystemTag(c.Name))
+                    columnDirection = AddNonSystemTags(columnDirection, c);
+                }
+            }
+        }
+
+        private enDev2ColumnArgumentDirection AddNonSystemTags(enDev2ColumnArgumentDirection columnDirection, XmlNode c)
+        {
+            XmlAttribute descAttribute = null;
+            XmlAttribute columnIoDirection = null;
+            if (!DataListUtil.IsSystemTag(c.Name))
+            {
+                if (c.HasChildNodes)
+                {
+                    var jsonAttribute = IsJsonAttribute(c);
+                    if (jsonAttribute)
                     {
-                        if (c.HasChildNodes)
-                        {
-                            var jsonAttribute = IsJsonAttribute(c);
-                            if (jsonAttribute)
-                            {
-                                AddComplexObjectFromXmlNode(c);
-                            }
-                            else
-                            {
-                                var cols = new List<IScalar>();
-                                foreach (XmlNode subc in c.ChildNodes)
-                                {
-                                    // It is possible for the .Attributes property to be null, a check should be added
-                                    if (subc.Attributes != null)
-                                    {
-                                        descAttribute = subc.Attributes["Description"];
-                                        columnIoDirection = subc.Attributes["ColumnIODirection"];
-                                        if (columnIoDirection != null)
-                                        {
-                                            Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
-                                        }
-                                    }
-                                    var scalar = new Scalar { Name = subc.Name, IsEditable = true, IODirection = columnDirection };
-                                    if (descAttribute != null)
-                                    {
-                                        scalar.Description = descAttribute.Value;
-                                    }
-                                    cols.Add(scalar);
-                                }
-                                if (c.Attributes != null)
-                                {
-                                    descAttribute = c.Attributes["Description"];
-                                    columnIoDirection = c.Attributes["ColumnIODirection"];
-                                }
-
-                                var descriptionValue = "";
-                                columnDirection = enDev2ColumnArgumentDirection.None;
-                                if (descAttribute != null)
-                                {
-                                    descriptionValue = descAttribute.Value;
-                                }
-                                if (columnIoDirection != null)
-                                {
-                                    Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
-                                }
-                                var recSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
-                                RecordSets.Add(recSet);
-                                var shapeRecSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
-                                ShapeRecordSets.Add(shapeRecSet);
-                            }
-                        }
-                        else
-                        {
-                            var jsonAttribute = IsJsonAttribute(c);
-                            if (jsonAttribute)
-                            {
-                                AddComplexObjectFromXmlNode(c);
-                            }
-                            else
-                            {
-
-
-                                if (c.Attributes != null)
-                                {
-                                    descAttribute = c.Attributes["Description"];
-                                    columnIoDirection = c.Attributes["ColumnIODirection"];
-                                }
-                                var descriptionValue = "";
-                                columnDirection = enDev2ColumnArgumentDirection.None;
-                                if (descAttribute != null)
-                                {
-                                    descriptionValue = descAttribute.Value;
-                                }
-                                if (columnIoDirection != null)
-                                {
-                                    Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
-                                }
-                                var scalar = new Scalar { Name = c.Name, Description = descriptionValue, IODirection = columnDirection, IsEditable = true };
-                                Scalars.Add(scalar);
-                                ShapeScalars.Add(scalar);
-                            }
-                        }
+                        AddComplexObjectFromXmlNode(c);
+                    }
+                    else
+                    {
+                        AddRecsetShape(ref columnDirection, c, ref descAttribute, ref columnIoDirection);
+                    }
+                }
+                else
+                {
+                    var jsonAttribute = IsJsonAttribute(c);
+                    if (jsonAttribute)
+                    {
+                        AddComplexObjectFromXmlNode(c);
+                    }
+                    else
+                    {
+                        columnDirection = AddScalarsShape(c, ref descAttribute, ref columnIoDirection);
                     }
                 }
             }
+
+            return columnDirection;
+        }
+
+        private enDev2ColumnArgumentDirection AddScalarsShape(XmlNode c, ref XmlAttribute descAttribute, ref XmlAttribute columnIoDirection)
+        {
+            enDev2ColumnArgumentDirection columnDirection;
+            if (c.Attributes != null)
+            {
+                descAttribute = c.Attributes["Description"];
+                columnIoDirection = c.Attributes["ColumnIODirection"];
+            }
+            var descriptionValue = "";
+            columnDirection = enDev2ColumnArgumentDirection.None;
+            if (descAttribute != null)
+            {
+                descriptionValue = descAttribute.Value;
+            }
+            if (columnIoDirection != null)
+            {
+                Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+            }
+            var scalar = new Scalar { Name = c.Name, Description = descriptionValue, IODirection = columnDirection, IsEditable = true };
+            Scalars.Add(scalar);
+            ShapeScalars.Add(scalar);
+            return columnDirection;
+        }
+
+        private void AddRecsetShape(ref enDev2ColumnArgumentDirection columnDirection, XmlNode c, ref XmlAttribute descAttribute, ref XmlAttribute columnIoDirection)
+        {
+            var cols = new List<IScalar>();
+            foreach (XmlNode subc in c.ChildNodes)
+            {
+                // It is possible for the .Attributes property to be null, a check should be added
+                AddAttributes(ref columnDirection, ref descAttribute, ref columnIoDirection, cols, subc);
+            }
+            if (c.Attributes != null)
+            {
+                descAttribute = c.Attributes["Description"];
+                columnIoDirection = c.Attributes["ColumnIODirection"];
+            }
+
+            var descriptionValue = "";
+            columnDirection = enDev2ColumnArgumentDirection.None;
+            if (descAttribute != null)
+            {
+                descriptionValue = descAttribute.Value;
+            }
+            if (columnIoDirection != null)
+            {
+                Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+            }
+            var recSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
+            RecordSets.Add(recSet);
+            var shapeRecSet = new RecordSet { Columns = new Dictionary<int, List<IScalar>> { { 1, cols } }, Description = descriptionValue, IODirection = columnDirection, IsEditable = false, Name = c.Name };
+            ShapeRecordSets.Add(shapeRecSet);
+        }
+
+        private static void AddAttributes(ref enDev2ColumnArgumentDirection columnDirection, ref XmlAttribute descAttribute, ref XmlAttribute columnIoDirection, List<IScalar> cols, XmlNode subc)
+        {
+            if (subc.Attributes != null)
+            {
+                descAttribute = subc.Attributes["Description"];
+                columnIoDirection = subc.Attributes["ColumnIODirection"];
+                if (columnIoDirection != null)
+                {
+                    Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
+                }
+            }
+            var scalar = new Scalar { Name = subc.Name, IsEditable = true, IODirection = columnDirection };
+            if (descAttribute != null)
+            {
+                scalar.Description = descAttribute.Value;
+            }
+            cols.Add(scalar);
         }
 
         static bool IsJsonAttribute(XmlNode c)
