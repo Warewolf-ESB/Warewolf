@@ -15,13 +15,13 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class MergeArmConnectorConflict : BindableBase, IMergeArmConnectorConflict
+    public class MergeArmConnectorConflict : ConflictItem, IMergeArmConnectorConflict
     {
         public string ArmDescription { get; set; }
         public string LeftArmDescription { get; set; }
         public string RightArmDescription { get; set; }
-        public string SourceUniqueId { get; set; }
-        public string DestinationUniqueId { get; set; }
+        public Guid SourceUniqueId { get; set; }
+        public Guid DestinationUniqueId { get; set; }
         public IArmConnectorConflict Container { get; set; }
         public string Key { get; set; }
         bool _isChecked;
@@ -37,7 +37,7 @@ namespace Dev2.ViewModels.Merge
             get => _isChecked;
             set
             {
-                _isChecked = value;
+                SetProperty(ref _isChecked, value);
                 if (_isChecked)
                 {
                     if (string.IsNullOrEmpty(ArmDescription))
@@ -48,10 +48,9 @@ namespace Dev2.ViewModels.Merge
                     {
                         WorkflowDesignerViewModel?.LinkTools(SourceUniqueId, DestinationUniqueId, Key);
                     }
-                    
+
                     OnChecked?.Invoke(Container, _isChecked);
                 }
-                OnPropertyChanged(() => IsChecked);
             }
         }
 
@@ -61,7 +60,7 @@ namespace Dev2.ViewModels.Merge
         {
             Container = container;
         }
-        public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId, string key, IArmConnectorConflict container)
+        public MergeArmConnectorConflict(string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key, IArmConnectorConflict container)
         {
             ArmDescription = armDescription;
             if (!string.IsNullOrWhiteSpace(armDescription))
@@ -108,5 +107,7 @@ namespace Dev2.ViewModels.Merge
             hashCode = (hashCode * 397) ^ (DestinationUniqueId != null ? DestinationUniqueId.GetHashCode() : 0);
             return hashCode;
         }
+
+        public event ToggledEventHandler NotifyIsCheckedChanged;
     }
 }

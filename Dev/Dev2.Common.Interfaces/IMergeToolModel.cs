@@ -17,12 +17,11 @@ using System.Windows.Media;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IMergeToolModel
+    //TODO: Change name to IToolModelConflictItem
+    public interface IMergeToolModel : IConflictItem
     {
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
-        bool IsMergeChecked { get; set; }
-        bool IsCurrent { get; set; }
         IMergeToolModel Parent { get; set; }
         ObservableCollection<IMergeToolModel> Children { get; set; }
         Guid UniqueId { get; set; }

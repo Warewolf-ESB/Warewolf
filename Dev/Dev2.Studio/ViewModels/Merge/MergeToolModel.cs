@@ -23,11 +23,11 @@ using System.ComponentModel;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class MergeToolModel : BindableBase, IMergeToolModel, ICheckable
+    public class MergeToolModel : ConflictItem, IMergeToolModel, ICheckable
     {
         ImageSource _mergeIcon;
         string _mergeDescription;
-        bool _isMergeChecked;
+        bool _isChecked;
         bool _isMergeVisible;
         ObservableCollection<IMergeToolModel> _children;
         string _parentDescription;
@@ -36,7 +36,6 @@ namespace Dev2.ViewModels.Merge
         FlowNode _flowNode;
         IMergeToolModel _parent;
         string _nodeArmDescription;
-        bool _isCurrent;
 
         public MergeToolModel()
         {
@@ -50,7 +49,7 @@ namespace Dev2.ViewModels.Merge
             PropertyChanged += (sender, eventArg) => {
                 if (eventArg.PropertyName == nameof(IsChecked))
                 {
-                    NotifyIsCheckedChanged?.Invoke(IsChecked);
+                    NotifyIsCheckedChanged?.Invoke(this, IsChecked);
                 }
             };
 
@@ -58,7 +57,7 @@ namespace Dev2.ViewModels.Merge
             NotifyIsCheckedChanged += PropagateCheckedState;
         }
 
-        private void AddRemoveActivityHandler(bool isChecked)
+        private void AddRemoveActivityHandler(IConflictItem item, bool isChecked)
         {
             if (!isChecked)
             {
@@ -69,7 +68,7 @@ namespace Dev2.ViewModels.Merge
                 AddActivity();
             }
         }
-        private void PropagateCheckedState(bool isChecked)
+        private void PropagateCheckedState(IConflictItem item, bool isChecked)
         {
             if (isChecked)
             {
@@ -106,26 +105,11 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged(() => MergeDescription);
             }
         }
-        public bool IsMergeChecked
-        {
-            get => _isMergeChecked;
-            set => SetProperty(ref _isMergeChecked, value);
-        }
         // new polymorphic name for ismergechecked
         public bool IsChecked
         {
-            get => _isMergeChecked;
-            set => SetProperty(ref _isMergeChecked, value);
-        }
-
-        public bool IsCurrent
-        {
-            get => _isCurrent;
-            set
-            {
-                _isCurrent = value;
-                OnPropertyChanged(() => IsCurrent);
-            }
+            get => _isChecked;
+            set => SetProperty(ref _isChecked, value);
         }
 
         public void RemovePreviousContainerActivity()

@@ -16,8 +16,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge
 {
-    // TODO: change name to ToolConflictRow inherits from ConflictRow
-    public class ToolConflict : BindableBase, IToolConflict, IConflictCheckable
+    public class ToolConflictRow : ConflictRow, IToolConflict
     {
         bool _isMergeExpanded;
         bool _hasConflict;
@@ -27,28 +26,23 @@ namespace Dev2.ViewModels.Merge
         bool _isStartNode;
         bool _isEmptyItemSelected;
 
-        public ToolConflict()
+        public ToolConflictRow()
         {
             Children = new LinkedList<IToolConflict>();
         }
 
         public IMergeToolModel CurrentViewModel { get; set; }
+        public override IConflictItem Current => CurrentViewModel;
         public IMergeToolModel DiffViewModel { get; set; }
+        public override IConflictItem Different => DiffViewModel;
+
         public LinkedList<IToolConflict> Children { get; set; }
         public IToolConflict Parent { get; set; }
-        public Guid UniqueId { get; set; }
+        public override Guid UniqueId { get; set; }
 
-        private bool _IsChecked;
-        public bool IsChecked {
-            get { return _IsChecked; }
-            set
-            {
-                _IsChecked = value;
-                NotifyCurrentCheckedChanged?.Invoke(_IsChecked);
-            }
-        }
+        public override bool IsChecked { get; set; }
 
-        public bool HasConflict
+        public override bool HasConflict
         {
             get => _hasConflict;
             set
@@ -98,7 +92,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public bool IsEmptyItemSelected
+        public override bool IsEmptyItemSelected
         {
             get => _isEmptyItemSelected;
             set
@@ -106,12 +100,6 @@ namespace Dev2.ViewModels.Merge
                 _isEmptyItemSelected = value;
                 OnPropertyChanged(() => IsEmptyItemSelected);
             }
-        }
-
-        public bool IsCurrentChecked
-        {
-            get { return CurrentViewModel.IsMergeChecked; }
-            set { CurrentViewModel.IsMergeChecked = value; }
         }
 
         public IToolConflict GetNextConflict()
@@ -168,7 +156,5 @@ namespace Dev2.ViewModels.Merge
             }
             return current && childrenMatch;
         }
-
-        public event ToggledEventHandler NotifyCurrentCheckedChanged;
     }
 }

@@ -5,23 +5,23 @@ using System.Collections;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
-    public class ConflictList : IEnumerable<IConflict>
+    public class ConflictList : IEnumerable<IConflictRow>
     {
-        private List<IConflict> conflicts;
-        public List<IConflict> Conflicts
+        private List<IConflictRow> conflicts;
+        public List<IConflictRow> Conflicts
         {
             get { return conflicts; }
             set { conflicts = value; }
         }
 
-        public IEnumerator<IConflict> GetEnumerator() => conflicts.GetEnumerator();
+        public IEnumerator<IConflictRow> GetEnumerator() => conflicts.GetEnumerator();
 
         IEnumerator IEnumerable.GetEnumerator() => conflicts.GetEnumerator();
 
         public int Count => conflicts.Count;
-        public int IndexOf(IConflict conflict) => conflicts.IndexOf(conflict);
+        public int IndexOf(IConflictRow conflict) => conflicts.IndexOf(conflict);
 
-        public IConflict GetNextConflict(IConflict conflict)
+        public IConflictRow GetNextConflict(IConflictRow conflict)
         {
             var idx = conflicts.IndexOf(conflict);
             var nextConflict = MoveNext(idx);
@@ -33,7 +33,7 @@ namespace Dev2.ViewModels.Merge.Utils
             return nextConflict;
         }
 
-        public IConflict MoveNext(int index)
+        public IConflictRow MoveNext(int index)
         {
             var nextIndex = index + 1;
             if (nextIndex >= conflicts.Count)
@@ -44,7 +44,7 @@ namespace Dev2.ViewModels.Merge.Utils
             return nextConflict;
         }
 
-        public IConflict GetNextConlictToUpdate(IConflict container)
+        public IConflictRow GetNextConlictToUpdate(IConflictRow container)
         {
             var index = conflicts.IndexOf(container) + 1;
             if (index < conflicts.Count)

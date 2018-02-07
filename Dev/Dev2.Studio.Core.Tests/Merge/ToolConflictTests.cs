@@ -15,7 +15,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -28,7 +28,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -41,7 +41,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ToolConflict();            
+            var completeConflict = new ToolConflictRow();            
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -55,7 +55,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
             var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
             var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
@@ -101,7 +101,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
             var wasCalled = false;
             completeConflict.PropertyChanged += (a,b)=> 
             {
@@ -123,9 +123,9 @@ namespace Dev2.Core.Tests.Merge
         public void Find_GivenNomatch_ExpectNull()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
             //------------Execute Test---------------------------
-            var result=completeConflict.Find(new ToolConflict());
+            var result=completeConflict.Find(new ToolConflictRow());
             //------------Assert Results-------------------------
             Assert.IsNull(result);
         }
@@ -135,8 +135,8 @@ namespace Dev2.Core.Tests.Merge
         public void Find_GivenExists_ExpectResults()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
-            var child = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
+            var child = new ToolConflictRow();
 
             completeConflict.Children.AddFirst(child);
             //------------Execute Test---------------------------
@@ -151,9 +151,9 @@ namespace Dev2.Core.Tests.Merge
         public void Find_GivenGrandChildExists_ExpectResults()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
-            var child = new ToolConflict();
-            var gChild = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
+            var child = new ToolConflictRow();
+            var gChild = new ToolConflictRow();
             child.Children.AddFirst(gChild);
             completeConflict.Children.AddFirst(child);
             //------------Execute Test---------------------------
@@ -168,7 +168,7 @@ namespace Dev2.Core.Tests.Merge
         public void GetNextConflict_GivenEmptyChildren_ExpectNull()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
 
             //------------Execute Test---------------------------
             var result = completeConflict.GetNextConflict();
@@ -181,8 +181,8 @@ namespace Dev2.Core.Tests.Merge
         public void GetNextConflict_GivenOnChildChildren_ExpectNull()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
-            var value = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
+            var value = new ToolConflictRow();
             completeConflict.Children.AddFirst(value);
             //------------Execute Test---------------------------
             var result = completeConflict.GetNextConflict();
@@ -196,9 +196,9 @@ namespace Dev2.Core.Tests.Merge
         public void GetNextConflict_GivenOnChildChildren_ExpectNull_Multiple()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
-            var value = new ToolConflict();
-            var value1 = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
+            var value = new ToolConflictRow();
+            var value1 = new ToolConflictRow();
             completeConflict.Children.AddFirst(value);
             value.Children.AddFirst(value1);
             //------------Execute Test---------------------------
@@ -217,9 +217,9 @@ namespace Dev2.Core.Tests.Merge
         public void Find_GivenNull_ExpectNull()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
             //------------Execute Test---------------------------
-            var result = completeConflict.Find(new ToolConflict());
+            var result = completeConflict.Find(new ToolConflictRow());
             //------------Assert Results-------------------------
             Assert.IsNull(result);
         }
@@ -229,7 +229,7 @@ namespace Dev2.Core.Tests.Merge
         public void All_GivenIncorrectMatch_ExpectTrue()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
             //------------Execute Test---------------------------
             var result = completeConflict.All(p=>p.UniqueId == Guid.Empty);
             //------------Assert Results-------------------------
@@ -242,8 +242,8 @@ namespace Dev2.Core.Tests.Merge
         public void All_GivenMatch_ExpectTrue()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
-            completeConflict.Children.AddFirst(new ToolConflict());
+            var completeConflict = new ToolConflictRow();
+            completeConflict.Children.AddFirst(new ToolConflictRow());
             //------------Execute Test---------------------------
             var result = completeConflict.All(p => p.UniqueId == Guid.Empty);
             //------------Assert Results-------------------------
@@ -255,8 +255,8 @@ namespace Dev2.Core.Tests.Merge
         public void All_GivenMatch_ExpectFalse()
         {
             //------------Setup for test--------------------------
-            var completeConflict = new ToolConflict();
-            completeConflict.Children.AddFirst(new ToolConflict());
+            var completeConflict = new ToolConflictRow();
+            completeConflict.Children.AddFirst(new ToolConflictRow());
             //------------Execute Test---------------------------
             var result = completeConflict.All(p => p.UniqueId == Guid.NewGuid());
             //------------Assert Results-------------------------
@@ -270,7 +270,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ToolConflict();
+            var completeConflict = new ToolConflictRow();
             var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
@@ -293,7 +293,7 @@ namespace Dev2.Core.Tests.Merge
         public void ToolConflict_AutoProperties_tests()
         {
             //------------Setup for test--------------------------
-            var model = new ToolConflict();
+            var model = new ToolConflictRow();
             //------------Execute Test---------------------------
             //Assert.AreEqual(default(string), model.Key);
             Assert.AreEqual(default(Guid), model.UniqueId);

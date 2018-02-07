@@ -149,14 +149,14 @@ namespace Dev2.Core.Tests.Merge
             //------------Execute Test---------------------------
             var model = new MergeToolModel
             {
-                Container = new ToolConflict()
+                Container = new ToolConflictRow()
             };
             model.Container.HasConflict = true;
             var wasCalled = false;
             var eventCalled = false;
             model.PropertyChanged += (a, b) =>
             {
-                if (b.PropertyName == "IsMergeChecked")
+                if (b.PropertyName == "IsChecked")
                 {
                     wasCalled = true;
                 }
@@ -168,8 +168,8 @@ namespace Dev2.Core.Tests.Merge
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsNotNull(model.Children);
-            Assert.IsFalse(model.IsMergeChecked);
-            model.IsMergeChecked = true;
+            Assert.IsFalse(model.IsChecked);
+            model.IsChecked = true;
             Assert.IsTrue(wasCalled);
             Assert.IsTrue(eventCalled);
         }
@@ -366,7 +366,7 @@ namespace Dev2.Core.Tests.Merge
             model.FlowNode = new FlowStep();
             model.UniqueId = Guid.NewGuid();
             model.Parent = new MergeToolModel();
-            model.Container = new ToolConflict();
+            model.Container = new ToolConflictRow();
             model.Container.HasConflict = true;
             model.NodeArmDescription = "";
             Assert.AreNotEqual(default(bool), model.IsTrueArm);
@@ -386,12 +386,12 @@ namespace Dev2.Core.Tests.Merge
             var mergeToolModel = new MergeToolModel
             {
                 UniqueId = id,
-                IsMergeChecked = true,
-                Container = new ToolConflict { IsChecked = true }
+                IsChecked = true,
+                Container = new ToolConflictRow { IsChecked = true }
             };
             object sender = mergeToolModel;
             IMergeToolModel args = new MergeToolModel();
-            args.Container = new ToolConflict
+            args.Container = new ToolConflictRow
             {
                 UniqueId = id,
                 IsChecked = true,
@@ -421,13 +421,13 @@ namespace Dev2.Core.Tests.Merge
             var mergeToolModel = new MergeToolModel
             {
                 UniqueId = id,
-                IsMergeChecked = true,
+                IsChecked = true,
                 ModelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity()),
-                Container = new ToolConflict { IsChecked = true }
+                Container = new ToolConflictRow { IsChecked = true }
             };
             object sender = mergeToolModel;
             IMergeToolModel args = new MergeToolModel();
-            args.Container = new ToolConflict
+            args.Container = new ToolConflictRow
             {
                 UniqueId = id,
                 IsChecked = true,

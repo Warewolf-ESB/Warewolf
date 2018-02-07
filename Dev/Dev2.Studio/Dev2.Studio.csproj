@@ -311,6 +311,8 @@
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
+    <Compile Include="ViewModels\Merge\ConflictItem.cs" />
+    <Compile Include="ViewModels\Merge\ConflictRow.cs" />
     <Compile Include="ViewModels\Merge\Utils\ConflictList.cs" />
     <Compile Include="WorkflowDesignerWrapper.cs" />
     <None Include="..\Run Tests.ps1">
@@ -416,12 +418,12 @@
     <Compile Include="ViewModels\Help\IHelpViewWrapper.cs" />
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
     <Compile Include="ViewModels\MergeViewModel.cs" />
-    <Compile Include="ViewModels\Merge\ArmConnectorConflict.cs" />
+    <Compile Include="ViewModels\Merge\ConnectorConflictRow.cs" />
     <Compile Include="ViewModels\Merge\ConflictModelFactory.cs" />
     <Compile Include="ViewModels\Merge\MergeArmConnectorConflict.cs" />
     <Compile Include="ViewModels\Merge\MergeToolModel.cs" />
     <Compile Include="ViewModels\Merge\MergeWorkflowViewModel.cs" />
-    <Compile Include="ViewModels\Merge\ToolConflict.cs" />
+    <Compile Include="ViewModels\Merge\ToolConflictRow.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />
     <Compile Include="ViewModels\StudioTestViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerDataPartUtils.cs" />

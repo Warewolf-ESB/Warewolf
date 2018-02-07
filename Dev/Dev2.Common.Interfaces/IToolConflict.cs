@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IToolConflict : IConflict
+    public interface IToolConflict : IConflictRow
     {
         IMergeToolModel CurrentViewModel { get; set; }
         IMergeToolModel DiffViewModel { get; set; }

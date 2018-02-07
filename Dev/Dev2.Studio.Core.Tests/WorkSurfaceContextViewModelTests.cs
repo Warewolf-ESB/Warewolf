@@ -1209,7 +1209,7 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
-        public void LinkTools(string sourceUniqueId, string destinationUniqueId, string key)
+        public void LinkTools(Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
 
         }
@@ -1226,7 +1226,7 @@ namespace Dev2.Core.Tests
 
         public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel) => throw new NotImplementedException();
 
-        public void DeLinkTools(string sourceUniqueId, string destinationUniqueId, string key)
+        public void DeLinkTools(Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             throw new NotImplementedException();
         }
