@@ -309,23 +309,7 @@ namespace Dev2.Services.Sql
                     command.ExecuteNonQuery();
                     if (obj.ParameterName.Length > 0)
                     {
-                        try
-                        {
-                            var da = new OracleDataAdapter(command as OracleCommand);
-                            using (da)
-                            {
-                                return handler(da);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            var da = new OracleDataAdapter(command as OracleCommand);
-                            using (da)
-                            {
-                                Console.WriteLine(e);
-                                return handler(da);
-                            }
-                        }
+                        return ExecuteAsOracleCommand(command, handler);
                     }
                     if (singleOutParams.Count > 0)
                     {
@@ -352,6 +336,27 @@ namespace Dev2.Services.Sql
                     return handler(new OracleDataAdapter());
                 }
                 throw;
+            }
+        }
+
+        private static T ExecuteAsOracleCommand<T>(IDbCommand command, Func<IDataAdapter, T> handler)
+        {
+            try
+            {
+                var da = new OracleDataAdapter(command as OracleCommand);
+                using (da)
+                {
+                    return handler(da);
+                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn("Error executing oracle command. " + e.Message, GlobalConstants.WarewolfWarn);
+                var da = new OracleDataAdapter(command as OracleCommand);
+                using (da)
+                {
+                    return handler(da);
+                }
             }
         }
 

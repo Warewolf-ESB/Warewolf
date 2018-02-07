@@ -42,41 +42,49 @@ namespace Dev2.Data.Util
                 {
                     using (XmlReader reader = XmlReader.Create(tr, IsXmlReaderSettings))
                     {
-
-                        try
-                        {
-                            long nodeCount = 0;
-                            while (reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
-                            {
-                                nodeCount++;
-
-                                if (reader.NodeType != XmlNodeType.CDATA)
-                                {
-                                    if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
-                                    {
-                                        isHtml = true;
-                                        result = false;
-                                    }
-
-                                    if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
-                                    {
-                                        isFragment = true;
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            tr.Close();
-                            reader.Close();
-                            isFragment = false;
-                            result = false;
-                        }
+                        TryProcessAllNodes(ref isFragment, ref isHtml, ref result, tr, reader);
                     }
                 }
             }
 
             return result;
+        }
+
+        private static void TryProcessAllNodes(ref bool isFragment, ref bool isHtml, ref bool result, TextReader tr, XmlReader reader)
+        {
+            try
+            {
+                long nodeCount = 0;
+                while (reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
+                {
+                    nodeCount++;
+                    IsHtmlOrFragment(ref isFragment, ref isHtml, ref result, reader, nodeCount);
+                }
+            }
+            catch (Exception)
+            {
+                tr.Close();
+                reader.Close();
+                isFragment = false;
+                result = false;
+            }
+        }
+
+        private static void IsHtmlOrFragment(ref bool isFragment, ref bool isHtml, ref bool result, XmlReader reader, long nodeCount)
+        {
+            if (reader.NodeType != XmlNodeType.CDATA)
+            {
+                if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
+                {
+                    isHtml = true;
+                    result = false;
+                }
+
+                if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                {
+                    isFragment = true;
+                }
+            }
         }
 
         public static string ToCleanXml(this string payload)
