@@ -11,32 +11,21 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using Dev2.Interfaces;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Common;
 using Dev2.Activities.DateAndTime;
 
 namespace ActivityUnitTests.ActivityTests
-
 {
-    /// <summary>
-    /// Summary description for DateTimeDifferenceTests
-    /// </summary>
     [TestClass]
     
     public class DotNetDateTimeDifferenceTests : BaseActivityUnitTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region Positive Test Cases
-
         [TestMethod]
-        public void Positive_With_Normal_Params_Expected_Positive()
+        public void DotNet_Positive_With_Normal_Params_Expected_Positive()
         {
             SetupArguments(
                            "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
@@ -57,7 +46,7 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         [TestMethod]
-        public void Positive_UsingRecorsetWithStar_Expected_Positive()
+        public void DotNet_Positive_UsingRecorsetWithStar_Expected_Positive()
         {
             SetupArguments(
                            ActivityStrings.DateTimeDifferenceDataListWithData
@@ -79,7 +68,7 @@ namespace ActivityUnitTests.ActivityTests
         }
         
         [TestMethod]
-        public void Blank_InputFormat_Expected_Error()
+        public void DotNet_Blank_InputFormat_Expected_Error()
         {
             SetupArguments(
                               "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
@@ -95,17 +84,12 @@ namespace ActivityUnitTests.ActivityTests
 
             // remove test datalist ;)
             Assert.IsNull(actual);
-        }              
-        #endregion Positive Test Cases
-
-        #region Error Test Cases
-
-        #endregion Error Test Cases
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfDateTimeDifferenceActivity_GetOutputs")]
-        public void DsfDateTimeDifferenceActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
+        public void DotNet_DsfDateTimeDifferenceActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
         {
             //------------Setup for test--------------------------
             var act = new DsfDotNetDateTimeDifferenceActivity { Input1 = "", Input2 = "", InputFormat = "", OutputType = "", Result = "[[dtd]]" };
@@ -203,7 +187,5 @@ namespace ActivityUnitTests.ActivityTests
             CurrentDl = testData;
             TestData = currentDL;
         }
-
-        #endregion Private Test Methods
     }
 }
