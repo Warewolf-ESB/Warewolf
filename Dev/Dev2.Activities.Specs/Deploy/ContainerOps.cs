@@ -233,10 +233,7 @@ namespace Dev2.Activities.Specs.Deploy
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new HttpRequestException("Error deleting remote server container. " + reader.ReadToEnd());
-                    }
+                    Console.Write("Deleting remote server container: " + reader.ReadToEnd());
                 }
             }
         }
@@ -252,10 +249,7 @@ namespace Dev2.Activities.Specs.Deploy
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
-                    }
+                    Console.Write("Starting remote server container: " + reader.ReadToEnd());
                 }
             }
         }
@@ -284,14 +278,7 @@ namespace Dev2.Activities.Specs.Deploy
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        throw new HttpRequestException("Error stopping Warewolf Server in remote container. " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        Console.Write("Stopped Warewolf Server: " + reader.ReadToEnd());
-                    }
+                    Console.Write("Stopped Warewolf Server: " + reader.ReadToEnd());
                 }
             }
             containerExecContent = new StringContent(@"
