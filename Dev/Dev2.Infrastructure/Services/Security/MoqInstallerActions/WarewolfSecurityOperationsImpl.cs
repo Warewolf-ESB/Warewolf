@@ -161,29 +161,39 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public bool IsAdminMemberOfWarewolf()
         {
-
+            bool result = false;
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
                 foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    // Now check group membership ;)
-                    var members = dChildEntry.Invoke("Members");
-
-                    if (members != null)
+                    if (dChildEntry.Name == WarewolfGroup)
                     {
-                        foreach (var member in (IEnumerable)members)
-                        {
-                            using (var memberEntry = new DirectoryEntry(member))
-                            {
-                                return dChildEntry.Name == WarewolfGroup && memberEntry.Name == AdministratorsGroup;
-                            }
-                        }
+                        result = IsAdminMemberOfDirectoryEntry(dChildEntry);
                     }
                 }
             }
 
-            return false;
+            return result;
+        }
+
+        private static bool IsAdminMemberOfDirectoryEntry(DirectoryEntry dChildEntry)
+        {
+            bool result = false;
+            var members = dChildEntry.Invoke("Members");
+
+            if (members != null)
+            {
+                foreach (var member in (IEnumerable)members)
+                {
+                    using (var memberEntry = new DirectoryEntry(member))
+                    {
+                        result = memberEntry.Name == AdministratorsGroup;
+                    }
+                }
+            }
+
+            return result;
         }
 
         public void DeleteWarewolfGroup()
