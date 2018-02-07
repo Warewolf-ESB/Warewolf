@@ -30,19 +30,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
     {
         
         /// <summary>
-        /// Open_Workflow_Tab_UI_Map_Designer_To_Flowchart - Use 'Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues' to pass parameters into this method.
-        /// </summary>
-        public void Open_Workflow_Tab_UI_Map_Designer_To_Flowchart()
-        {
-            #region Variable Declarations
-            WpfText uISQLErrorError15700seText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UISQLServerDatabaseTreeItem.UISQLErrorError15700seText;
-            #endregion
-
-            // Verify that the 'ControlType' property of 'SQL Error: Error 15700, severity -1, state 1 was r...' label equals 'Text'
-            Assert.AreEqual(this.Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues.UISQLErrorError15700seTextControlType, uISQLErrorError15700seText.ControlType.ToString());
-        }
-        
-        /// <summary>
         /// Open_Tools_UI_Map_Designer_To_Flowchart - Use 'Open_Tools_UI_Map_Designer_To_FlowchartParams' to pass parameters into this method.
         /// </summary>
         public void Open_Tools_UI_Map_Designer_To_Flowchart()
@@ -55,19 +42,20 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             Assert.AreEqual(this.Open_Tools_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        #region Properties
-        public virtual Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues
+        /// <summary>
+        /// Open_Workflow_Tab_UI_Map_Designer_To_Flowchart - Use 'Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void Open_Workflow_Tab_UI_Map_Designer_To_Flowchart()
         {
-            get
-            {
-                if ((this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues == null))
-                {
-                    this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues = new Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues();
-                }
-                return this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
-            }
+            #region Variable Declarations
+            WpfText uISQLErrorError15700seText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UISQLServerDatabaseTreeItem.UISQLErrorError15700seText;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'SQL Error: Error 15700, severity -1, state 1 was r...' label equals 'Text'
+            Assert.AreEqual(this.Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues.UISQLErrorError15700seTextControlType, uISQLErrorError15700seText.ControlType.ToString());
         }
         
+        #region Properties
         public virtual Open_Tools_UI_Map_Designer_To_FlowchartParams Open_Tools_UI_Map_Designer_To_FlowchartParams
         {
             get
@@ -77,6 +65,18 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                     this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams = new Open_Tools_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
+            }
+        }
+        
+        public virtual Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues
+        {
+            get
+            {
+                if ((this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues == null))
+                {
+                    this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues = new Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues();
+                }
+                return this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
             }
         }
         
@@ -115,33 +115,32 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mUIWpfWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
-        private Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
-        
         private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
+        
+        private Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
         private UICodedUITestBuilderWindow mUICodedUITestBuilderWindow;
         
         private UIWpfWindow mUIWpfWindow;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'Open_Workflow_Tab_UI_Map_Designer_To_Flowchart'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues
-    {
         
-        #region Fields
-        /// <summary>
-        /// Verify that the 'ControlType' property of 'SQL Error: Error 15700, severity -1, state 1 was r...' label equals 'Text'
-        /// </summary>
-        public string UISQLErrorError15700seTextControlType = "Text";
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -157,6 +156,21 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'Open_Workflow_Tab_UI_Map_Designer_To_Flowchart'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'SQL Error: Error 15700, severity -1, state 1 was r...' label equals 'Text'
+        /// </summary>
+        public string UISQLErrorError15700seTextControlType = "Text";
         #endregion
     }
     
@@ -7325,10 +7339,29 @@ An invalid parameter or option was specified for procedure 'some_procedure'.";
                 return this.mUISQLErrorError15700seText;
             }
         }
+        
+        public WpfText UIErrorText
+        {
+            get
+            {
+                if ((this.mUIErrorText == null))
+                {
+                    this.mUIErrorText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIErrorText.SearchProperties[WpfText.PropertyNames.Name] = "Error :";
+                    this.mUIErrorText.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIErrorText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIErrorText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfText mUISQLErrorError15700seText;
+        
+        private WpfText mUIErrorText;
         #endregion
     }
     
@@ -8176,5 +8209,106 @@ An invalid parameter or option was specified for procedure 'some_procedure'.";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             #endregion
         }
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDebugOutputCustom UIDebugOutputCustom
+        {
+            get
+            {
+                if ((this.mUIDebugOutputCustom == null))
+                {
+                    this.mUIDebugOutputCustom = new UIDebugOutputCustom(this);
+                }
+                return this.mUIDebugOutputCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDebugOutputCustom mUIDebugOutputCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIDebugOutputCustom : WpfCustom
+    {
+        
+        public UIDebugOutputCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DebugOutputView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DebugOutput";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDebugOutputTreeTree UIDebugOutputTreeTree
+        {
+            get
+            {
+                if ((this.mUIDebugOutputTreeTree == null))
+                {
+                    this.mUIDebugOutputTreeTree = new UIDebugOutputTreeTree(this);
+                }
+                return this.mUIDebugOutputTreeTree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDebugOutputTreeTree mUIDebugOutputTreeTree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIDebugOutputTreeTree : WpfTree
+    {
+        
+        public UIDebugOutputTreeTree(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "DebugOutputTree";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTreeItem UISQLServerDatabaseTreeItem
+        {
+            get
+            {
+                if ((this.mUISQLServerDatabaseTreeItem == null))
+                {
+                    this.mUISQLServerDatabaseTreeItem = new WpfTreeItem(this);
+                    #region Search Criteria
+                    this.mUISQLServerDatabaseTreeItem.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
+                    this.mUISQLServerDatabaseTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUISQLServerDatabaseTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTreeItem mUISQLServerDatabaseTreeItem;
+        #endregion
     }
 }
