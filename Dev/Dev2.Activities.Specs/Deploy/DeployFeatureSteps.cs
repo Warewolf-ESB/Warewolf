@@ -40,14 +40,28 @@ namespace Dev2.Activities.Specs.Deploy
             _containerOps.DeleteRemoteContainer();
         }
 
-        [Given(@"localhost and destination server ""(.*)"" are connected")]
-        public void ConnectServers(string destinationServer)
+        [Given(@"localhost and destination server are connected")]
+        public void ConnectServers()
         {
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
-            _containerOps.ConnectToRemoteServerContainer(destinationServer);
+            ConnectToRemoteServerContainer();
             var localhost = ServerRepository.Instance.Source;
             ScenarioContext.Current.Add("sourceServer", localhost);
             localhost.Connect();
+        }
+
+        void ConnectToRemoteServerContainer()
+        {
+            var arg = @"C:\Program Files (x86)\Warewolf\Server";
+            string destinationServer = _containerOps.StartRemoteContainer(arg);
+
+            var formattableString = $"http://{destinationServer}:3142";
+            IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfUser", "Dev2@dmin123"))
+            {
+                Name = destinationServer
+            };
+            ScenarioContext.Current.Add("destinationServer", remoteServer);
+            remoteServer.Connect();
         }
 
         [Then(@"And the destination resource is ""(.*)""")]

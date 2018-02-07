@@ -5,7 +5,7 @@ In order to schedule workflows
 	I want to setup schedules
 
 Scenario: Create and Deploy a renamed resource to localhost
-	Given localhost and destination server "remotewarewolfservercontainer" are connected
+	Given localhost and destination server are connected
 	#And I have a workflow "OriginalName"
 	#And "OriginalName" contains an Assign "Rec To Convert" as
 	#| variable    | value |

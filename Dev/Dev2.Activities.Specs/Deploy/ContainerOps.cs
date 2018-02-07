@@ -1,8 +1,4 @@
 ﻿using System;
-using Dev2.Network;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Interfaces;
-using TechTalk.SpecFlow;
 using System.IO;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
@@ -17,60 +13,85 @@ namespace Dev2.Activities.Specs.Deploy
         string _remoteContainerID = null;
         string _remoteImageID = null;
 
-        public void ConnectToRemoteServerContainer(string destinationServer)
+        public string StartRemoteContainer(string serverPath)
         {
-            var arg = @"C:\Program Files (x86)\Warewolf\Server";
-            StartRemoteContainer(arg);
-
-            var formattableString = $"http://{destinationServer}:3142";
-            IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfUser", "Dev2@dmin123"))
-            {
-                Name = destinationServer
-            };
-            ScenarioContext.Current.Add("destinationServer", remoteServer);
-            remoteServer.Connect();
+            Build(serverPath);
+            CreateContainer();
+            StartContainer();
+            return GetContainerHostname();
         }
 
-        void StartRemoteContainer(string serverPath)
+        public void DeleteRemoteContainer()
         {
-            var tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
-            if (!File.Exists(tempTarFilePath))
+            if (_remoteContainerID != null)
             {
-                CreateTarGZ(tempTarFilePath, serverPath);
+                RecoverServerLogFile();
+                StopContainer();
+                DeleteContainer();
             }
-            var url = "http://" + _remoteDockerApi + ":2375/build";
-            byte[] paramFileBytes = File.ReadAllBytes(tempTarFilePath);
-            HttpContent bytesContent = new ByteArrayContent(paramFileBytes);
-            bytesContent.Headers.Remove("Content-Type");
-            bytesContent.Headers.Add("Content-Type", "application/x-tar");
+            if (_remoteImageID != null)
+            {
+                Delete();
+            }
+        }
+
+        string GetContainerHostname()
+        {
+            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/json";
+            HttpContent containerStopContent = new StringContent("");
             using (var client = new HttpClient())
             {
-                client.Timeout = new TimeSpan(1, 0, 0);
-                var response = client.PostAsync(url, bytesContent).Result;
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerStopContent).Result;
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        throw new HttpRequestException("Error creating remote server image. " + reader.ReadToEnd());
+                        throw new HttpRequestException("Error getting container hostname. " + reader.ReadToEnd());
                     }
                     else
                     {
                         var responseText = reader.ReadToEnd();
-                        Console.Write("Build Image: " + responseText);
-                        var parseAround = "Successfully built ";
-                        if (responseText.Contains(responseText))
+                        Console.Write("Get Hostname: " + responseText);
+                        var parseAround = "\"Hostname\": ";
+                        if (responseText.Contains(parseAround))
                         {
-                            _remoteImageID = responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
+                            return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
                         }
                         else
                         {
-                            throw new HttpRequestException("Error creating remote server image. " + responseText);
+                            throw new HttpRequestException("Error getting container hostname. " + responseText);
                         }
                     }
                 }
             }
-            url = "http://" + _remoteDockerApi + ":2375/containers/create";
+        }
+
+        void StartContainer()
+        {
+            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/start";
+            HttpContent containerStartContent = new StringContent("");
+            containerStartContent.Headers.Remove("Content-Type");
+            containerStartContent.Headers.Add("Content-Type", "application/json");
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerStartContent).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
+                    }
+                }
+            }
+        }
+
+        void CreateContainer()
+        {
+            var url = "http://" + _remoteDockerApi + ":2375/containers/create";
             HttpContent containerContent = new StringContent(@"
 {
      ""Hostname"":"""",
@@ -115,14 +136,93 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                 }
             }
-            url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/start";
-            HttpContent containerStartContent = new StringContent("");
-            containerStartContent.Headers.Remove("Content-Type");
-            containerStartContent.Headers.Add("Content-Type", "application/json");
+        }
+
+        void Build(string serverPath)
+        {
+            var tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
+            if (!File.Exists(tempTarFilePath))
+            {
+                CreateTarGZ(tempTarFilePath, serverPath);
+            }
+            var url = "http://" + _remoteDockerApi + ":2375/build";
+            byte[] paramFileBytes = File.ReadAllBytes(tempTarFilePath);
+            HttpContent bytesContent = new ByteArrayContent(paramFileBytes);
+            bytesContent.Headers.Remove("Content-Type");
+            bytesContent.Headers.Add("Content-Type", "application/x-tar");
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(1, 0, 0);
+                var response = client.PostAsync(url, bytesContent).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new HttpRequestException("Error creating remote server image. " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        var responseText = reader.ReadToEnd();
+                        Console.Write("Build Image: " + responseText);
+                        var parseAround = "Successfully built ";
+                        if (responseText.Contains(parseAround))
+                        {
+                            _remoteImageID = responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 12);
+                        }
+                        else
+                        {
+                            throw new HttpRequestException("Error creating remote server image. " + responseText);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void Delete()
+        {
+            var url = "http://" + _remoteDockerApi + ":2375/images/" + _remoteImageID;
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.PostAsync(url, containerStartContent).Result;
+                var response = client.DeleteAsync(url).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new HttpRequestException("Error deleting remote server image. " + reader.ReadToEnd());
+                    }
+                }
+            }
+        }
+
+        private void DeleteContainer()
+        {
+            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "?v=1";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.DeleteAsync(url).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        throw new HttpRequestException("Error deleting remote server container. " + reader.ReadToEnd());
+                    }
+                }
+            }
+        }
+
+        void StopContainer()
+        {
+            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/stop";
+            HttpContent containerStopContent = new StringContent("");
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerStopContent).Result;
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
@@ -134,12 +234,10 @@ namespace Dev2.Activities.Specs.Deploy
             }
         }
 
-        public void DeleteRemoteContainer()
+        void RecoverServerLogFile()
         {
-            if (_remoteContainerID != null)
-            {
-                var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/exec";
-                HttpContent containerExecContent = new StringContent(@"
+            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/exec";
+            HttpContent containerExecContent = new StringContent(@"
 {
   ""AttachStdin"": false,
   ""AttachStdout"": false,
@@ -151,26 +249,26 @@ namespace Dev2.Activities.Specs.Deploy
   ""User"": ""WarewolfUser:Dev2@dmin123""
 }
 ");
-                containerExecContent.Headers.Remove("Content-Type");
-                containerExecContent.Headers.Add("Content-Type", "application/json");
-                using (var client = new HttpClient())
+            containerExecContent.Headers.Remove("Content-Type");
+            containerExecContent.Headers.Add("Content-Type", "application/json");
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerExecContent).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
-                    client.Timeout = new TimeSpan(0, 20, 0);
-                    var response = client.PostAsync(url, containerExecContent).Result;
-                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                    if (!response.IsSuccessStatusCode)
                     {
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            throw new HttpRequestException("Error stopping Warewolf Server in remote container. " + reader.ReadToEnd());
-                        }
-                        else
-                        {
-                            Console.Write("Stopped Warewolf Server: " + reader.ReadToEnd());
-                        }
+                        throw new HttpRequestException("Error stopping Warewolf Server in remote container. " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        Console.Write("Stopped Warewolf Server: " + reader.ReadToEnd());
                     }
                 }
-                containerExecContent = new StringContent(@"
+            }
+            containerExecContent = new StringContent(@"
 {
   ""AttachStdin"": true,
   ""AttachStdout"": true,
@@ -182,71 +280,22 @@ namespace Dev2.Activities.Specs.Deploy
   ""User"": ""WarewolfUser:Dev2@dmin123""
 }
 ");
-                containerExecContent.Headers.Remove("Content-Type");
-                containerExecContent.Headers.Add("Content-Type", "application/json");
-                using (var client = new HttpClient())
-                {
-                    client.Timeout = new TimeSpan(0, 20, 0);
-                    var response = client.PostAsync(url, containerExecContent).Result;
-                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
-                    {
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
-                        }
-                        else
-                        {
-                            Console.Write("Got Warewolf Server Log: " + reader.ReadToEnd());
-                        }
-                    }
-                }
-                url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/stop";
-                HttpContent containerStopContent = new StringContent("");
-                containerStopContent.Headers.Remove("Content-Type");
-                containerStopContent.Headers.Add("Content-Type", "application/json");
-                using (var client = new HttpClient())
-                {
-                    client.Timeout = new TimeSpan(0, 20, 0);
-                    var response = client.PostAsync(url, containerStopContent).Result;
-                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
-                    {
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
-                        }
-                    }
-                }
-                url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "?v=1";
-                using (var client = new HttpClient())
-                {
-                    client.Timeout = new TimeSpan(0, 20, 0);
-                    var response = client.DeleteAsync(url).Result;
-                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
-                    {
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            throw new HttpRequestException("Error deleting remote server container. " + reader.ReadToEnd());
-                        }
-                    }
-                }
-            }
-            if (_remoteImageID != null)
+            containerExecContent.Headers.Remove("Content-Type");
+            containerExecContent.Headers.Add("Content-Type", "application/json");
+            using (var client = new HttpClient())
             {
-                var url = "http://" + _remoteDockerApi + ":2375/images/" + _remoteImageID;
-                using (var client = new HttpClient())
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerExecContent).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
-                    client.Timeout = new TimeSpan(0, 20, 0);
-                    var response = client.DeleteAsync(url).Result;
-                    var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                    using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                    if (!response.IsSuccessStatusCode)
                     {
-                        if (!response.IsSuccessStatusCode)
-                        {
-                            throw new HttpRequestException("Error deleting remote server image. " + reader.ReadToEnd());
-                        }
+                        throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        Console.Write("Got Warewolf Server Log: " + reader.ReadToEnd());
                     }
                 }
             }
