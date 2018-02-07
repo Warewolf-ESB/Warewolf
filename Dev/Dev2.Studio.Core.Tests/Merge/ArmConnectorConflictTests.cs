@@ -15,7 +15,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ArmConnectorConflict();
+            var completeConflict = new ConnectorConflictRow();
 
             //------------Assert Results-------------------------
             var areEqual = completeConflict.Equals(null);
@@ -28,8 +28,8 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ArmConnectorConflict();
-            var completeConflict1 = new ArmConnectorConflict();
+            var completeConflict = new ConnectorConflictRow();
+            var completeConflict1 = new ConnectorConflictRow();
 
             //------------Assert Results-------------------------
             var areEqual = completeConflict.Equals(completeConflict1);
@@ -44,8 +44,8 @@ namespace Dev2.Core.Tests.Merge
             //------------Execute Test---------------------------
             var container = new Mock<IArmConnectorConflict>();
             var a = new MergeArmConnectorConflict(container.Object);
-            var completeConflict = new ArmConnectorConflict() {CurrentArmConnector= a, DifferentArmConnector=a };
-            var completeConflict1 = new ArmConnectorConflict() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var completeConflict = new ConnectorConflictRow() {CurrentArmConnector= a, DifferentArmConnector=a };
+            var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
 
             //------------Assert Results-------------------------
             var areEqual = completeConflict.Equals(completeConflict1);
@@ -59,8 +59,8 @@ namespace Dev2.Core.Tests.Merge
             //------------Execute Test---------------------------
             var container = new Mock<IArmConnectorConflict>();
             var a = new MergeArmConnectorConflict(container.Object);
-            var completeConflict = new ArmConnectorConflict() { CurrentArmConnector = a, DifferentArmConnector = a };
-            var completeConflict1 = new ArmConnectorConflict() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var completeConflict = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
 
             //------------Assert Results-------------------------
             var areEqual = completeConflict.Equals((object)completeConflict1);
@@ -75,8 +75,8 @@ namespace Dev2.Core.Tests.Merge
             //------------Execute Test---------------------------
             var container = new Mock<IArmConnectorConflict>();
             var a = new MergeArmConnectorConflict(container.Object);
-            var completeConflict = new ArmConnectorConflict() { CurrentArmConnector = a, DifferentArmConnector = a };
-            var completeConflict1 = new ArmConnectorConflict() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var completeConflict = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
 
             //------------Assert Results-------------------------
             var hash = completeConflict.GetHashCode();
@@ -91,8 +91,8 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             var container = new Mock<IArmConnectorConflict>();
             var a = new MergeArmConnectorConflict(container.Object);
-            var completeConflict = new ArmConnectorConflict() { CurrentArmConnector = a, DifferentArmConnector = a, UniqueId = Guid.NewGuid() };
-            var completeConflict1 = new ArmConnectorConflict() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var completeConflict = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a, UniqueId = Guid.NewGuid() };
+            var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
             //------------Execute Test---------------------------
             Assert.IsFalse(completeConflict.HasConflict);
             var hash = completeConflict.GetHashCode();
@@ -109,7 +109,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ArmConnectorConflict();
+            var completeConflict = new ConnectorConflictRow();
             var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
@@ -130,7 +130,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var completeConflict = new ArmConnectorConflict();
+            var completeConflict = new ConnectorConflictRow();
             var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
@@ -151,7 +151,7 @@ namespace Dev2.Core.Tests.Merge
         public void ArmConnectorConflict_AutoProperties_tests()
         {
             //------------Setup for test--------------------------
-            var model = new ArmConnectorConflict();
+            var model = new ConnectorConflictRow();
             //------------Execute Test---------------------------
             Assert.AreEqual(default(string), model.Key);
             Assert.AreEqual(default(Guid), model.UniqueId);

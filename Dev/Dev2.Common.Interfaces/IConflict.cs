@@ -13,12 +13,11 @@ using System.ComponentModel;
 
 namespace Dev2.Common.Interfaces
 {
-    public delegate void ToggledEventHandler(bool isChecked);
+    public delegate void ToggledEventHandler(IConflictItem item, bool isChecked);
 
     public interface IConflictCheckable
     {
         bool IsCurrentChecked { get; set; }
-        event ToggledEventHandler NotifyCurrentCheckedChanged;
     }
     public interface ICheckable {
         bool IsChecked { get; set; }
@@ -32,18 +31,30 @@ namespace Dev2.Common.Interfaces
         Guid UniqueId { get; set; }
     }
 
-    public interface IMergeArmConnectorConflict : IEquatable<IMergeArmConnectorConflict>
+    //TODO: Change name to IConnectorConflictItem
+    public interface IMergeArmConnectorConflict : IConflictItem, IEquatable<IMergeArmConnectorConflict>
     {
         IArmConnectorConflict Container { get; set; }
         string ArmDescription { get; set; }
-        string SourceUniqueId { get; set; }
-        string DestinationUniqueId { get; set; }
-        bool IsChecked { get; set; }
+        Guid SourceUniqueId { get; set; }
+        Guid DestinationUniqueId { get; set; }
         string Key { get; set; }
         event Action<IArmConnectorConflict, bool> OnChecked;
     }
 
-    public interface IArmConnectorConflict : IConflict, IEquatable<IArmConnectorConflict>
+    public interface IConflictItem
+    {
+        bool IsChecked { get; set; }
+        event ToggledEventHandler NotifyIsCheckedChanged;
+    }
+    public interface IConflictRow : IConflict
+    {
+        IConflictItem Current { get; }
+        IConflictItem Different { get; }
+        bool IsCurrentChecked { get; set; }
+    }
+
+    public interface IArmConnectorConflict : IConflictRow, IEquatable<IArmConnectorConflict>
     {
         IMergeArmConnectorConflict CurrentArmConnector { get; set; }
         IMergeArmConnectorConflict DifferentArmConnector { get; set; }

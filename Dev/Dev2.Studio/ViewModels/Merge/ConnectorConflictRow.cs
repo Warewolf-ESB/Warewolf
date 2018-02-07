@@ -10,17 +10,25 @@
 
 using System;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge
 {
-    // TODO: change name to ConnectorConflictRow inherits from ConflictRow
-    public class ArmConnectorConflict : BindableBase, IArmConnectorConflict, IConflictCheckable
+    public class ConnectorConflictRow : ConflictRow, IArmConnectorConflict
     {
         bool _hasConflict;
         public IMergeArmConnectorConflict CurrentArmConnector { get; set; }
+        public override IConflictItem Current
+        {
+            get => CurrentArmConnector;
+        }
         public IMergeArmConnectorConflict DifferentArmConnector { get; set; }
-        public bool HasConflict
+        public override IConflictItem Different {
+            get => DifferentArmConnector;
+        }
+
+        public string Key { get; set; }
+        
+        public override bool HasConflict
         {
             get => _hasConflict;
             set
@@ -29,19 +37,11 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged(() => HasConflict);
             }
         }
-        public bool IsChecked { get; set; }
-        public Guid UniqueId { get; set; }
-        public string Key { get; set; }
+        public override bool IsChecked { get; set; }
 
-        public bool IsEmptyItemSelected { get; set; }
-        public bool IsCurrentChecked
-        {
-            get { return CurrentArmConnector.IsChecked; }
-            set {
-                CurrentArmConnector.IsChecked = value;
-                NotifyCurrentCheckedChanged?.Invoke(CurrentArmConnector.IsChecked);
-            }
-        }
+        public override Guid UniqueId { get; set; }
+
+        public override bool IsEmptyItemSelected { get; set; }
         
         public bool Equals(IArmConnectorConflict other)
         {
@@ -74,7 +74,5 @@ namespace Dev2.ViewModels.Merge
             hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
             return hashCode;
         }
-
-        public event ToggledEventHandler NotifyCurrentCheckedChanged;
     }
 }

@@ -2799,7 +2799,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void DeLinkTools(string sourceUniqueId, string destinationUniqueId, string key)
+        public void DeLinkTools(Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key, true))
             {
@@ -2817,7 +2817,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void LinkTools(string sourceUniqueId, string destinationUniqueId, string key)
+        public void LinkTools(Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key))
             {
@@ -2835,7 +2835,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        bool SetNextForDecision(string sourceUniqueId, string destinationUniqueId, string key, bool delink = false)
+        bool SetNextForDecision(Guid sourceUniqueId, Guid destinationUniqueId, string key, bool delink = false)
         {
             var decisionItem = GetDecisionFromNodeCollection(sourceUniqueId);
             if (decisionItem != null)
@@ -2863,9 +2863,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             return false;
         }
 
-        ModelItem GetItemFromNodeCollection(string uniqueId) => GetDecisionFromNodeCollection(uniqueId) ?? GetSwitchFromNodeCollection(uniqueId) ?? GetRegularActivityFromNodeCollection(uniqueId);
+        ModelItem GetItemFromNodeCollection(Guid uniqueId) => GetDecisionFromNodeCollection(uniqueId) ?? GetSwitchFromNodeCollection(uniqueId) ?? GetRegularActivityFromNodeCollection(uniqueId);
 
-        bool SetNextForSwitch(string sourceUniqueId, string destinationUniqueId, string key, bool delink = false)
+        bool SetNextForSwitch(Guid sourceUniqueId, Guid destinationUniqueId, string key, bool delink = false)
         {
             var switchItem = GetSwitchFromNodeCollection(sourceUniqueId);
             if (switchItem != null)
@@ -2922,25 +2922,25 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        ModelItem GetDecisionFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
+        ModelItem GetDecisionFromNodeCollection(Guid uniqueId) => NodesCollection.FirstOrDefault(q =>
         {
             var decision = q.GetProperty("Condition") as IDev2Activity;
             if (decision == null)
             {
                 return false;
             }
-            var hasParent = decision.UniqueID == uniqueId && q.GetCurrentValue<FlowNode>() is FlowDecision;
+            var hasParent = decision.UniqueID == uniqueId.ToString() && q.GetCurrentValue<FlowNode>() is FlowDecision;
             return hasParent;
         });
 
-        ModelItem GetSwitchFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
+        ModelItem GetSwitchFromNodeCollection(Guid uniqueId) => NodesCollection.FirstOrDefault(q =>
         {
             var decision = q.GetProperty("Expression") as IDev2Activity;
             if (decision == null)
             {
                 return false;
             }
-            var hasParent = decision.UniqueID == uniqueId;
+            var hasParent = decision.UniqueID == uniqueId.ToString();
             return hasParent;
         });
 
@@ -2978,11 +2978,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             parentNodeProperty.SetValue(nextStep);
         }
 
-        ModelItem GetRegularActivityFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
+        ModelItem GetRegularActivityFromNodeCollection(Guid uniqueId) => NodesCollection.FirstOrDefault(q =>
         {
             var s = q.GetCurrentValue() as FlowStep;
             var act = s?.Action as IDev2Activity;
-            return act?.UniqueID == uniqueId;
+            return act?.UniqueID == uniqueId.ToString();
         });
 
         public ModelItemCollection NodesCollection
@@ -3051,7 +3051,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 default:
                     break;
             }
-            var modelItem = GetItemFromNodeCollection(model.UniqueId.ToString());
+            var modelItem = GetItemFromNodeCollection(model.UniqueId);
             SetShapeLocation(modelItem, model.NodeLocation);
             var startNode = chart.Properties["StartNode"];
             if (startNode?.ComputedValue == null)

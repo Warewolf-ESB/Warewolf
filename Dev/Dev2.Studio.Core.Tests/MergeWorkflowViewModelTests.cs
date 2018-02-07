@@ -303,7 +303,7 @@ namespace Dev2.Core.Tests
                 //---------------Execute Test ----------------------
                 var conflicts = new List<IConflict>
                                 {
-                                    new ArmConnectorConflict()
+                                    new ConnectorConflictRow()
                                 };
                 var armConnectorConflicts = new List<IArmConnectorConflict>();
                 methodToRun.Invoke(null, new object[] { conflicts, armConnectorConflicts });
@@ -343,7 +343,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var toolUniqueId = new Guid();
-            var conflicts = new List<IConflict> { new ToolConflict { UniqueId = toolUniqueId } };
+            var conflicts = new List<IConflict> { new ToolConflictRow { UniqueId = toolUniqueId } };
 
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
@@ -386,10 +386,10 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var conflicts = new List<IConflict>(new[] { b });
             var itemsToAdd = new List<IConflict>();
-            var armConnectorConflicts = new ArmConnectorConflict();
+            var armConnectorConflicts = new ConnectorConflictRow();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("AddToTempConflictList", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
@@ -434,7 +434,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             //AddDiffArmConnectors(List < IArmConnectorConflict > armConnectorConflicts, ConflictTreeNode treeItem, Guid id)
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var calcActivity = new DsfCalculateActivity();
             var conflictTreeNode = new ConflictTreeNode(calcActivity, new Point());
             var guid = calcActivity.UniqueID.ToGuid();
@@ -483,7 +483,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -536,7 +536,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -545,7 +545,8 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            b.CurrentArmConnector = new MergeArmConnectorConflict("", "", "", "", b);
+            var empty = Guid.Empty;
+            b.CurrentArmConnector = new MergeArmConnectorConflict("", empty, empty, "", b);
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
             var itemsToAdd = new List<IConflict>();
             var armConnectorConflicts = new List<IArmConnectorConflict>();
@@ -597,7 +598,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -606,7 +607,8 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            b.CurrentArmConnector = new MergeArmConnectorConflict("", "", "", "", b);
+            var empty = Guid.Empty;
+            b.CurrentArmConnector = new MergeArmConnectorConflict("", empty, empty, "", b);
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
             var itemsToAdd = new List<IConflict>();
             var armConnectorConflicts = new List<IArmConnectorConflict>();
@@ -654,7 +656,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -663,7 +665,8 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            b.CurrentArmConnector = new MergeArmConnectorConflict("", "", "", "", b);
+            var empty = Guid.Empty;
+            b.CurrentArmConnector = new MergeArmConnectorConflict("", empty, empty, "", b);
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
             var itemsToAdd = new List<IConflict>();
             var armConnectorConflicts = new List<IArmConnectorConflict>();
@@ -711,7 +714,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -720,7 +723,8 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
-            b.CurrentArmConnector = new MergeArmConnectorConflict("", "", "", "", b);
+            var empty = Guid.Empty;
+            b.CurrentArmConnector = new MergeArmConnectorConflict("", empty, empty, "", b);
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
             var itemsToAdd = new List<IConflict>();
             var armConnectorConflicts = new List<IArmConnectorConflict>();
@@ -967,9 +971,9 @@ namespace Dev2.Core.Tests
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
-                var conflict = mergeWorkflowViewModel.Conflicts.FirstOrDefault() as ToolConflict;
-                var lastConflict = mergeWorkflowViewModel.Conflicts.Last(c => c is ToolConflict);
-                var bbb = lastConflict as ToolConflict;
+                var conflict = mergeWorkflowViewModel.Conflicts.FirstOrDefault() as ToolConflictRow;
+                var lastConflict = mergeWorkflowViewModel.Conflicts.Last(c => c is ToolConflictRow);
+                var bbb = lastConflict as ToolConflictRow;
                 bbb.CurrentViewModel = mergeToolModelInternal.Object;
                 bbb.DiffViewModel = mergeToolModelInternal.Object;
                 bbb.HasConflict = true;
@@ -1015,7 +1019,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var toolConflict = new Mock<IToolConflict>();
-            toolConflict.Setup(p => p.Parent).Returns(new ToolConflict()).Verifiable();
+            toolConflict.Setup(p => p.Parent).Returns(new ToolConflictRow()).Verifiable();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("ExpandPreviousItems", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
@@ -1057,7 +1061,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1108,7 +1112,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1157,7 +1161,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1209,7 +1213,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1270,7 +1274,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1330,7 +1334,7 @@ namespace Dev2.Core.Tests
             var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1383,7 +1387,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1430,7 +1434,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1489,7 +1493,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1548,7 +1552,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1607,7 +1611,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
@@ -1669,7 +1673,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
-            var b = new ArmConnectorConflict();
+            var b = new ConnectorConflictRow();
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();

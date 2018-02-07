@@ -123,16 +123,16 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenISelectCurrentTool()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflict && a.HasConflict && !a.IsChecked).Cast<ToolConflict>().Select(p => p.CurrentViewModel).FirstOrDefault() as IMergeToolModel;
+            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && a.HasConflict && !a.IsChecked).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).FirstOrDefault() as IMergeToolModel;
             Assert.IsNotNull(mergeToolModel);
-            mergeToolModel.IsMergeChecked = true;
+            mergeToolModel.IsChecked = true;
         }
 
         [Then(@"I select Current Arm")]
         public void ThenISelectCurrentArm()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict && a.HasConflict && !a.IsChecked).Cast<ArmConnectorConflict>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IMergeArmConnectorConflict;
+            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IMergeArmConnectorConflict;
             Assert.IsNotNull(mergeArmConnector);
             mergeArmConnector.IsChecked = true;
         }
@@ -148,8 +148,8 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenCurrentWorkflowContainsTools(int currentToolCount)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var count = mergeVm.Conflicts.Where(a => a is ToolConflict).Cast<ToolConflict>().Select(p => p.CurrentViewModel).Count();
-            var count1 = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict).Cast<ArmConnectorConflict>().Select(p => p.CurrentArmConnector).Count();
+            var count = mergeVm.Conflicts.Where(a => a is ToolConflictRow).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).Count();
+            var count1 = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow).Cast<ConnectorConflictRow>().Select(p => p.CurrentArmConnector).Count();
             Assert.AreEqual(currentToolCount, count + count1);
         }
 
@@ -157,8 +157,8 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenDifferentWorkflowContainsTools(int toolCount)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var count = mergeVm.Conflicts.Where(a => a is ToolConflict).Cast<ToolConflict>().Select(p => p.DiffViewModel).Count();
-            var count1 = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict).Cast<ArmConnectorConflict>().Select(p => p.DifferentArmConnector).Count();
+            var count = mergeVm.Conflicts.Where(a => a is ToolConflictRow).Cast<ToolConflictRow>().Select(p => p.DiffViewModel).Count();
+            var count1 = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).Count();
             Assert.AreEqual(toolCount, count + count1);
         }
 
