@@ -74,6 +74,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Deploy\ContainerOps.cs" />
     <Compile Include="MergeExecutionSteps.cs" />
     <Compile Include="Composition\SubworkflowExecution.feature.cs">
       <DependentUpon>SubworkflowExecution.feature</DependentUpon>

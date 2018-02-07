@@ -31,6 +31,7 @@ namespace Dev2.Activities.Specs.Merge
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
         }
+
         [BeforeScenario]
         public void Setup()
         {
@@ -44,11 +45,13 @@ namespace Dev2.Activities.Specs.Merge
             CustomContainer.Register(pop.Object);
             localHost = environmentModel.Source;
             localHost.Connect();
-            localHost.ResourceRepository.ForceLoad();
+#pragma warning disable S125 // Sections of code should not be "commented out"
+            //localHost.ResourceRepository.ForceLoad();
+#pragma warning restore S125 // Sections of code should not be "commented out"
         }
 
         IServer localHost;
-        IServerRepository environmentModel = ServerRepository.Instance;
+        readonly IServerRepository environmentModel = ServerRepository.Instance;
         [Given(@"I Load workflow ""(.*)"" from ""(.*)""")]
         public void GivenILoadWorkflowFrom(string resourceName, string serverName)
         {

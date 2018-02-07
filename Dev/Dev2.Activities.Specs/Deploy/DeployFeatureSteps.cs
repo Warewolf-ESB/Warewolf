@@ -14,6 +14,7 @@ using System.IO;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using System.Net.Http;
+using System.Text;
 
 namespace Dev2.Activities.Specs.Deploy
 {
@@ -22,104 +23,31 @@ namespace Dev2.Activities.Specs.Deploy
     {
         static ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
-        Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
+        readonly Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
+        static ContainerOps _containerOps = new ContainerOps();
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
+#pragma warning disable S3010 // Static fields should not be updated in constructors
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
+#pragma warning restore S3010 // Static fields should not be updated in constructors
             _commonSteps = new CommonSteps(_scenarioContext);
+        }
+
+        [AfterScenario("Deploy")]
+        public void CleanupRemoteDocker()
+        {
+            _containerOps.DeleteRemoteContainer();
         }
 
         [Given(@"localhost and destination server ""(.*)"" are connected")]
         public void ConnectServers(string destinationServer)
         {
-            var formattableString = $"http://{destinationServer}:3142";
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
-            IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfUser", "Dev2@dmin123"))
-            {
-                Name = destinationServer
-            };
-            ScenarioContext.Current.Add("destinationServer", remoteServer);
-            ConnectToRemoteServerContainer();
-            remoteServer.Connect();
-            var previousVersions = remoteServer.ProxyLayer.GetVersions(_resourceId);
-            if (previousVersions != null && previousVersions.Count > 0)
-            {
-                remoteServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
-            }
+            _containerOps.ConnectToRemoteServerContainer(destinationServer);
             var localhost = ServerRepository.Instance.Source;
             ScenarioContext.Current.Add("sourceServer", localhost);
             localhost.Connect();
-        }
-
-        private void ConnectToRemoteServerContainer()
-        {
-            var arg = @"C:\Program Files (x86)\Warewolf\Server";
-            var tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
-            if (!File.Exists(tempTarFilePath)) CreateTarGZ(tempTarFilePath, arg);
-            var result = Upload("http://test-load:2375/build", File.ReadAllBytes(tempTarFilePath));
-            Assert.IsNotNull(result);
-        }
-
-        private void CreateTarGZ(string tgzFilename, string sourceDirectory)
-        {
-            Stream outStream = File.Create(tgzFilename);
-            Stream gzoStream = new GZipOutputStream(outStream);
-            TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzoStream);
-
-            // Note that the RootPath is currently case sensitive and must be forward slashes e.g. "c:/temp"
-            // and must not end with a slash, otherwise cuts off first char of filename
-            // This is scheduled for fix in next release
-            tarArchive.RootPath = sourceDirectory.Replace('\\', '/');
-            if (tarArchive.RootPath.EndsWith("/"))
-                tarArchive.RootPath = tarArchive.RootPath.Remove(tarArchive.RootPath.Length - 1);
-
-            AddDirectoryFilesToTar(tarArchive, sourceDirectory, true);
-
-            tarArchive.Close();
-        }
-
-        private Stream Upload(string url, byte[] paramFileBytes)
-        {
-            HttpContent bytesContent = new ByteArrayContent(paramFileBytes);
-            bytesContent.Headers.Remove("Content-Type");
-            bytesContent.Headers.Add("Content-Type", "application/x-tar");
-            using (var client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(1,0,0);
-                var response = client.PostAsync(url, bytesContent).Result;
-                if (!response.IsSuccessStatusCode)
-                {
-                    return null;
-                }
-                return response.Content.ReadAsStreamAsync().Result;
-            }
-        }
-
-        private void AddDirectoryFilesToTar(TarArchive tarArchive, string sourceDirectory, bool recurse)
-        {
-            //
-            // Optionally, write an entry for the directory itself.
-            // Specify false for recursion here if we will add the directory's files individually.
-            //
-            TarEntry tarEntry = TarEntry.CreateEntryFromFile(sourceDirectory);
-            tarArchive.WriteEntry(tarEntry, false);
-            //
-            // Write each file to the tar.
-            //
-            string[] filenames = Directory.GetFiles(sourceDirectory);
-            foreach (string filename in filenames)
-            {
-                tarEntry = TarEntry.CreateEntryFromFile(filename);
-                tarArchive.WriteEntry(tarEntry, true);
-            }
-
-            if (recurse)
-            {
-                string[] directories = Directory.GetDirectories(sourceDirectory);
-                foreach (string directory in directories)
-                    AddDirectoryFilesToTar(tarArchive, directory, recurse);
-            }
         }
 
         [Then(@"And the destination resource is ""(.*)""")]
