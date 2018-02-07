@@ -15,6 +15,7 @@ using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
 using System.Net.Http;
 using System.Text;
+using System.Diagnostics;
 
 namespace Dev2.Activities.Specs.Deploy
 {
@@ -52,8 +53,9 @@ namespace Dev2.Activities.Specs.Deploy
 
         void ConnectToRemoteServerContainer()
         {
-            var arg = @"C:\Program Files (x86)\Warewolf\Server";
-            string destinationServer = _containerOps.StartRemoteContainer(arg);
+            Process server = Process.GetProcesses().FirstOrDefault(process => process.ProcessName == "Warewolf Server");
+            Assert.IsNotNull(server, "Warewolf Server is not running.");
+            string destinationServer = _containerOps.StartRemoteContainer(Path.GetDirectoryName(server.MainModule.FileName));
 
             var formattableString = $"http://{destinationServer}:3142";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfUser", "Dev2@dmin123"))
