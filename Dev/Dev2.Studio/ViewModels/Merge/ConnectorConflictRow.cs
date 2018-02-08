@@ -17,14 +17,9 @@ namespace Dev2.ViewModels.Merge
     {
         bool _hasConflict;
         public IConnectorConflictItem CurrentArmConnector { get; set; }
-        public override IConflictItem Current
-        {
-            get => CurrentArmConnector;
-        }
+        public override IConflictItem Current  => CurrentArmConnector;
         public IConnectorConflictItem DifferentArmConnector { get; set; }
-        public override IConflictItem Different {
-            get => DifferentArmConnector;
-        }
+        public override IConflictItem Different => DifferentArmConnector;
 
         public string Key { get; set; }
         

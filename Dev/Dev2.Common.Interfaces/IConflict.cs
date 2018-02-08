@@ -51,6 +51,7 @@ namespace Dev2.Common.Interfaces
         IConflictItem Current { get; }
         IConflictItem Different { get; }
         bool IsCurrentChecked { get; set; }
+        // TODO: Add Previous and Next Row? If we do this can we just implement IList<>?
     }
 
     public interface IArmConnectorConflict : IConflictRow, IEquatable<IArmConnectorConflict>
