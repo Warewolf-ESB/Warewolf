@@ -55,7 +55,6 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public bool IsUserInGroup(string username)
         {
-
             if (string.IsNullOrEmpty(username))
             {
                 throw new ArgumentNullException("username");
@@ -105,15 +104,12 @@ namespace Dev2.Services.Security.MoqInstallerActions
         public void AddUserToWarewolf(string currentUser)
         {
             if (string.IsNullOrEmpty(currentUser))
-            {
-                
-                throw new ArgumentNullException("Null or Empty User");
-                
+            {                
+                throw new ArgumentNullException("Null or Empty User");                
             }
 
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
-
                 ad.Children.SchemaFilter.Add("group");
                 foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
