@@ -180,27 +180,8 @@ namespace Dev2.Data.Parsers
                 if (payload.Contains(DataListUtil.OpeningSquareBrackets))
                 {
                     var rootItems = MakeParts(payload, addCompleteParts);
-                    IParseTO magicRegion = null;
                     IList<IParseTO> evalParts = new List<IParseTO>();
-
-                    rootItems
-                        .ToList()
-                        .ForEach(rootItem =>
-                        {
-                            var eval = rootItem;
-                            while (eval != null)
-                            {
-                                if (eval.HangingOpen)
-                                {
-                                    magicRegion = eval;
-                                }
-                                if (!eval.HangingOpen && eval != magicRegion)
-                                {
-                                    evalParts.Add(eval);
-                                }
-                                eval = eval.Child;
-                            }
-                        });
+                    var magicRegion = FindMagicRegion(rootItems, ref evalParts);
                     if (magicRegion != null)
                     {
                         result = isFromIntellisense ? ExtractActualIntellisenseOptions(magicRegion, parts, false) : ExtractIntellisenseOptions(magicRegion, parts, false);
@@ -223,6 +204,30 @@ namespace Dev2.Data.Parsers
                 result.Add(IntellisenseFactory.CreateErrorResult(e.StartIndex, e.EndIndex, p, e.Message, e.ErrorCode, true));
             }
             return result;
+        }
+
+        private static IParseTO FindMagicRegion(IList<IParseTO> rootItems, IList<IParseTO> evalParts)
+        {
+            IParseTO magicRegion = null;
+            rootItems
+                .ToList()
+                .ForEach(rootItem =>
+                {
+                    var eval = rootItem;
+                    while (eval != null)
+                    {
+                        if (eval.HangingOpen)
+                        {
+                            magicRegion = eval;
+                        }
+                        if (!eval.HangingOpen && eval != magicRegion)
+                        {
+                            evalParts.Add(eval);
+                        }
+                        eval = eval.Child;
+                    }
+                });
+            return magicRegion;
         }
 
         public IList<IParseTO> MakeParts(string payload) => MakeParts(payload, false);
