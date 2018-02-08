@@ -52,15 +52,13 @@ namespace Dev2.Services.Sql
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "PostgreCommand"));
             }
 
-            using (var dataset = new DataSet())
+            var dataset = new DataSet();
+            using (var adapter = new NpgsqlDataAdapter(command as NpgsqlCommand))
             {
-                using (var adapter = new NpgsqlDataAdapter(command as NpgsqlCommand))
-                {
-                    adapter.Fill(dataset);
-                }
-
-                return dataset;
+                adapter.Fill(dataset);
             }
+
+            return dataset;
         }
     }
 }

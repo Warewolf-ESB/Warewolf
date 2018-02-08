@@ -89,15 +89,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region OnFaulted
-
-        void OnFaulted(NativeActivityFaultContext faultContext, Exception propagatedException, ActivityInstance propagatedFrom)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;

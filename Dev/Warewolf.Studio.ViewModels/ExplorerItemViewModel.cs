@@ -1475,27 +1475,6 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        VersionViewModel CreateNewVersion(IVersionInfo a) => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
-        {
-            ResourceName =
-                "v." + a.VersionNumber + " " +
-                a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " +
-                a.Reason.Replace(".xml", ""),
-            VersionNumber = a.VersionNumber,
-            VersionInfo = a,
-            ResourceId = ResourceId,
-            IsVersion = true,
-            CanEdit = false,
-            CanCreateWorkflowService = false,
-            ShowContextMenu = true,
-            CanCreateSource = false,
-            IsResourceVersion = true,
-            AllowResourceCheck = false,
-            IsResourceChecked = false,
-            CanDelete = CanDelete,
-            ResourceType = "Version"
-        };
-
         void UpdateResourceVersions()
         {
             IsExpanded = true;

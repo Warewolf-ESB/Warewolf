@@ -144,7 +144,6 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         void DocumentHostOnActiveDocumentChanged(object sender, RoutedPropertyChangedEventArgs<ContentPane> routedPropertyChangedEventArgs)
         {
-
             if (DocumentHost?.DataContext is ShellViewModel mainViewModel)
             {
                 if (_shellViewModel == null)

@@ -17,10 +17,8 @@ namespace Dev2.Settings.Scheduler
         struct CREDUI_INFO
         {
             public int cbSize;
-            readonly IntPtr hwndParent;
             public string pszMessageText;
             public string pszCaptionText;
-            readonly IntPtr hbmBanner;
         }
 
         [DllImport("credui.dll", CharSet = CharSet.Auto)]

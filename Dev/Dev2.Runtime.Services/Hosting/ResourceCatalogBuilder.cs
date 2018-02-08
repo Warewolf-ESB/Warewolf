@@ -41,7 +41,7 @@ namespace Dev2.Runtime.Hosting
         private readonly IResourceUpgrader _resourceUpgrader;
         private readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
         private readonly object _addLock = new object();
-        List<string> _convertToBiteExtension = new List<string>();
+        readonly List<string> _convertToBiteExtension = new List<string>();
 
 
         public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)
@@ -145,7 +145,10 @@ namespace Dev2.Runtime.Hosting
                     {
                         //TODO: Remove this after V1 is released. All will be updated.
                         #region old typing to be removed after V1
-                        if (!IsWarewolfResource(xml)) { return; }
+                        if (!IsWarewolfResource(xml))
+                        {
+                            return;
+                        }
                         if (typeName == "Unknown")
                         {
                             var servertype = xml.AttributeSafe("ResourceType");

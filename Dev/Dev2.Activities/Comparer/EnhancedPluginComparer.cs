@@ -30,7 +30,7 @@ namespace Dev2.Comparer
             }
             else
             {
-                nameSpacesAreEqual = x.Namespace == null && y.Namespace == null; ;
+                nameSpacesAreEqual = x.Namespace == null && y.Namespace == null;
             }
 
             var serviceInputsEquals = CommonEqualityOps.CollectionEquals(x.ConstructorInputs, y.ConstructorInputs, new ServiceInputComparer());

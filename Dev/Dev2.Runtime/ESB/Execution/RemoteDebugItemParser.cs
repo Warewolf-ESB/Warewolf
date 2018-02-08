@@ -16,6 +16,10 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class RemoteDebugItemParser
     {
+        protected RemoteDebugItemParser()
+        {
+        }
+
         public static IList<IDebugState> ParseItems(string data)
         {
             var parseData = data.Replace("Dev2.Diagnostics.DebugState", "Dev2.Diagnostics.Debug.DebugState");
