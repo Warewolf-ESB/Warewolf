@@ -228,7 +228,10 @@ namespace Dev2.Activities.Specs.Deploy
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
-                    Console.Write("Deleting remote server container: " + reader.ReadToEnd());
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.Write("Deleting remote server container: " + reader.ReadToEnd());
+                    }
                 }
             }
         }
@@ -244,7 +247,10 @@ namespace Dev2.Activities.Specs.Deploy
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
-                    Console.Write("Starting remote server container: " + reader.ReadToEnd());
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.Write("Starting remote server container: " + reader.ReadToEnd());
+                    }                    
                 }
             }
         }
@@ -273,7 +279,10 @@ namespace Dev2.Activities.Specs.Deploy
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
-                    Console.Write("Stopped Warewolf Server: " + reader.ReadToEnd());
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.Write("Stopped Warewolf Server: " + reader.ReadToEnd());
+                    }
                 }
             }
             containerExecContent = new StringContent(@"
@@ -285,7 +294,7 @@ namespace Dev2.Activities.Specs.Deploy
   ""DetachKeys"": ""ctrl-p,ctrl-q"",
   ""Privileged"": true,
   ""Tty"": true,
-  ""User"": ""WarewolfUser:Dev2@dmin123""
+  ""User"": ""WarewolfUser""
 }
 ");
             containerExecContent.Headers.Remove("Content-Type");
@@ -299,7 +308,7 @@ namespace Dev2.Activities.Specs.Deploy
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
+                        throw new HttpRequestException("Error getting server log. " + reader.ReadToEnd());
                     }
                     else
                     {
