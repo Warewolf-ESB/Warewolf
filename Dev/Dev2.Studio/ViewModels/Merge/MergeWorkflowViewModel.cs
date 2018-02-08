@@ -329,9 +329,6 @@ namespace Dev2.ViewModels.Merge
             void UpdateState(IToolConflict container)
             {
                 // update
-                var model = mergeToolModel as MergeToolModel;
-                model.RemovePreviousContainerActivity();
-
                 var conflict = conflictList.GetNextConflict(mergeToolModel.Container);
 
                 switch (conflict)
@@ -682,6 +679,7 @@ namespace Dev2.ViewModels.Merge
     public class ConflictListStateApplier
     {
         readonly ConflictList conflicts;
+        // TODO: this state applier should also be used to disable Connectors that are unavailable
         public ConflictListStateApplier(ConflictList conflicts)
         {
             this.conflicts = conflicts;
@@ -712,15 +710,23 @@ namespace Dev2.ViewModels.Merge
         {
             foreach (var conflictRow in conflictList)
             {
-                conflictRow.Current.NotifyIsCheckedChanged += Handler;
-                conflictRow.Different.NotifyIsCheckedChanged += Handler;
+                var innerConflictRow = conflictRow;
+
+                conflictRow.Current.NotifyIsCheckedChanged += (current, isChecked) =>
+                {
+                    Handler(current, innerConflictRow.Different);
+                };
+                conflictRow.Different.NotifyIsCheckedChanged += (diff, isChecked) =>
+                {
+                    Handler(innerConflictRow.Current, diff);
+                };
             }
         }
 
-        private void Handler(IConflictItem conflictItem, bool isChecked)
+        private void Handler(IConflictItem currentItem, IConflictItem diffItem)
         {
             // apply tool or connector state to workflow
-            
+            // DelinkActivities, LinkActivities, AddActivity, RemoveActivity all should be here?
         }
     }
 }

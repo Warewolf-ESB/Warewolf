@@ -25,8 +25,6 @@ namespace Dev2.ViewModels.Merge
         public string Key { get; set; }
         bool _isChecked;
 
-        public string Grouping => SourceUniqueId + Key ?? "";
-
         public event Action<IArmConnectorConflict, bool> OnChecked;
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
@@ -86,25 +84,25 @@ namespace Dev2.ViewModels.Merge
                 }
                 if (string.IsNullOrEmpty(ArmDescription))
                 {
-                    DeLinkTools();
+                    DeLinkActivities();
                 }
                 else
                 {
-                    LinkTools();
+                    LinkActivities();
                 }
 
                 OnChecked?.Invoke(Container, _isChecked);
             }
         }
 
-        private void DeLinkTools()
+        private void DeLinkActivities()
         {
-            WorkflowDesignerViewModel?.DeLinkTools(SourceUniqueId, DestinationUniqueId, Key);
+            WorkflowDesignerViewModel?.DeLinkActivities(SourceUniqueId, DestinationUniqueId, Key);
         }
 
-        private void LinkTools()
+        private void LinkActivities()
         {
-            WorkflowDesignerViewModel?.LinkTools(SourceUniqueId, DestinationUniqueId, Key);
+            WorkflowDesignerViewModel?.LinkActivities(SourceUniqueId, DestinationUniqueId, Key);
         }
 
         public bool Equals(IConnectorConflictItem other)

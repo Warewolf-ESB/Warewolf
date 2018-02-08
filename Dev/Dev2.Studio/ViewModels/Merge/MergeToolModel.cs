@@ -76,7 +76,6 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-
         public void RemoveActivity()
         {
             WorkflowDesignerViewModel?.RemoveItem(this);
@@ -109,18 +108,6 @@ namespace Dev2.ViewModels.Merge
         {
             get => _isChecked;
             set => SetProperty(ref _isChecked, value);
-        }
-
-        public void RemovePreviousContainerActivity()
-        {
-            if (Container?.CurrentViewModel == this)
-            {
-                WorkflowDesignerViewModel?.RemoveItem(Container.DiffViewModel);
-            }
-            if (Container?.DiffViewModel == this)
-            {
-                WorkflowDesignerViewModel?.RemoveItem(Container.CurrentViewModel);
-            }
         }
 
         public void AddActivity()
