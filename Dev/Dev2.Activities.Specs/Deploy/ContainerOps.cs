@@ -264,10 +264,8 @@ namespace Dev2.Activities.Specs.Deploy
   ""AttachStdout"": false,
   ""AttachStderr"": true,
   ""Cmd"": [""cmd /c sc stop \""Warewolf Server\""""],
-  ""DetachKeys"": ""ctrl-p,ctrl-q"",
   ""Privileged"": true,
-  ""Tty"": true,
-  ""User"": ""0""
+  ""Tty"": true
 }
 ");
             containerExecContent.Headers.Remove("Content-Type");
@@ -296,10 +294,8 @@ namespace Dev2.Activities.Specs.Deploy
   ""AttachStdout"": true,
   ""AttachStderr"": true,
   ""Cmd"": [""cmd /c type \""C:\\ProgramData\\Warewolf\\Server Log\\warewolf-server.log\""""],
-  ""DetachKeys"": ""ctrl-p,ctrl-q"",
   ""Privileged"": true,
-  ""Tty"": true,
-  ""User"": ""0""
+  ""Tty"": true
 }
 ");
             containerExecContent.Headers.Remove("Content-Type");
