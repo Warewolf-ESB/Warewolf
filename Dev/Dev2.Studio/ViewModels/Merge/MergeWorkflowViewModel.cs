@@ -110,9 +110,19 @@ namespace Dev2.ViewModels.Merge
             var conflicts = new List<IConflictRow>();
             var armConnectorConflicts = new List<IArmConnectorConflict>();
 
-            var current = currentChanges.current.AsEnumerable();
-            var diff = currentChanges.diff.AsEnumerable();
+            var current = currentChanges.current;
+            var diff = currentChanges.diff;
             var distinctOrderedList = current.Union(diff).DistinctBy(o => o.UniqueId).ToList();
+
+            var first = distinctOrderedList[0];
+            var isInConflict = current[0].UniqueId != diff[0].UniqueId;
+
+            if (first.IsInConflict || isInConflict)
+            {
+                var startRow = CreateStartRow();
+                AddStartNodeConnectors(armConnectorConflicts, current[0], diff[0]);
+                conflicts.Add(startRow);
+            }
 
             foreach (var distinctItem in distinctOrderedList)
             {
@@ -122,12 +132,12 @@ namespace Dev2.ViewModels.Merge
                     ProcessCurrentItem(currentResourceModel, conflicts, armConnectorConflicts, currentItem);
                 }
 
-                var currentIndex = current.ToList().IndexOf(currentItem);
-                var diffIndex = diff.ToList().IndexOf(currentItem);
+                var currentIndex = current.IndexOf(currentItem);
+                var diffIndex = diff.IndexOf(currentItem);
 
                 if (diffIndex != -1 && diffIndex != currentIndex && (diffIndex + 1) <= current.Count())
                 {
-                    var diffItm = diff.ToList()[currentIndex];
+                    var diffItm = diff[currentIndex];
                     if (diffItm != null && currentItem != null)
                     {
                         ProcessExistingDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, diffItm, currentItem.UniqueId);
@@ -211,6 +221,53 @@ namespace Dev2.ViewModels.Merge
             ShowArmConnectors(conflicts, armConnectorConflicts);
             conflicts.Add(conflict);
             AddArmConnectors(armConnectorConflicts, treeItem, id);
+        }
+
+        ToolConflictRow CreateStartRow()
+        {
+            var conflict = new ToolConflictRow
+            {
+                UniqueId = Guid.Empty,
+                HasConflict = false
+            };
+
+            conflict.CurrentViewModel = new MergeToolModel
+            {
+                MergeDescription = "Start",
+                Container = conflict
+            };
+
+            conflict.DiffViewModel = new MergeToolModel
+            {
+                Container = conflict
+            };
+
+            return conflict;
+        }
+
+        void AddStartNodeConnectors(List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode currentItem, ConflictTreeNode diffItem)
+        {
+            const string key = "Start";
+            var armConnector = new ConnectorConflictRow
+            {
+                UniqueId = Guid.Empty,
+                Key = key,
+                HasConflict = true
+            };
+            var currentConnectorConflict = new MergeArmConnectorConflict("Start -> " + currentItem.Activity.GetDisplayName(), Guid.Empty, Guid.Parse(currentItem.UniqueId), key, armConnector)
+            {
+                WorkflowDesignerViewModel = WorkflowDesignerViewModel
+            };
+            var diffConnectorConflict = new MergeArmConnectorConflict("Start -> " + diffItem.Activity.GetDisplayName(), Guid.Empty, Guid.Parse(diffItem.UniqueId), key, armConnector)
+            {
+                WorkflowDesignerViewModel = WorkflowDesignerViewModel
+            };
+            armConnector.CurrentArmConnector = currentConnectorConflict;
+            armConnector.DifferentArmConnector = diffConnectorConflict;
+            armConnector.CurrentArmConnector.OnChecked += ArmCheck;
+            armConnector.DifferentArmConnector.OnChecked += ArmCheck;
+            armConnector.HasConflict = true;
+            armConnectorConflicts.Add(armConnector);
         }
 
         void SourceOnConflictModelChanged(object sender, IConflictModelFactory conflictModel)
@@ -391,8 +448,7 @@ namespace Dev2.ViewModels.Merge
 
         void AddDiffArmConnectors(List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem, Guid id)
         {
-            var armConnectors = treeItem.Activity.ArmConnectors();
-            foreach (var (Description, Key, SourceUniqueId, DestinationUniqueId) in armConnectors)
+            foreach (var (Description, Key, SourceUniqueId, DestinationUniqueId) in treeItem.Activity.ArmConnectors())
             {
                 var foundConnector = armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == Key);
                 if (foundConnector != null)
@@ -430,8 +486,7 @@ namespace Dev2.ViewModels.Merge
 
         void AddArmConnectors(List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem, Guid id)
         {
-            var armConnectors = treeItem.Activity.ArmConnectors();
-            foreach (var (Description, Key, SourceUniqueId, DestinationUniqueId) in armConnectors)
+            foreach (var (Description, Key, SourceUniqueId, DestinationUniqueId) in treeItem.Activity.ArmConnectors())
             {
                 var armConnector = new ConnectorConflictRow
                 {
@@ -648,13 +703,12 @@ namespace Dev2.ViewModels.Merge
     /// </summary>
     public class MergePreviewWorkflowStateApplier
     {
-        readonly ConflictList conflictList;
         public MergePreviewWorkflowStateApplier(ConflictList conflictList)
         {
-            this.conflictList = conflictList;
+            RegisterEventHandler(conflictList);
         }
 
-        public void RegisterEventHandler()
+        public void RegisterEventHandler(ConflictList conflictList)
         {
             foreach (var conflictRow in conflictList)
             {

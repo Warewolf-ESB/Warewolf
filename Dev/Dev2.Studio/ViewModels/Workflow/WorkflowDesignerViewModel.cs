@@ -3037,11 +3037,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             var modelItem = GetItemFromNodeCollection(model.UniqueId);
             SetShapeLocation(modelItem, model.NodeLocation);
-            var startNode = chart.Properties["StartNode"];
-            if (startNode?.ComputedValue == null)
-            {
-                AddStartNode(model.FlowNode, startNode);
-            }
         }
 
         void SetShapeLocation(ModelItem modelItem, Point location)
@@ -3068,17 +3063,25 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        void AddStartNode(FlowNode flowNode, ModelProperty startNode)
+        public void AddStartNode(IMergeToolModel model)
         {
-            if (flowNode == null)
+            if (model == null)
             {
                 return;
             }
+            var root = _wd.Context.Services.GetService<ModelService>().Root;
+            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
 
-            if (startNode.ComputedValue == null)
+            var nodes = chart?.Properties["Nodes"]?.Collection;
+            if (nodes == null)
             {
-                startNode.SetValue(flowNode);
-                Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
+                return;
+            }
+            var startNode = chart.Properties["StartNode"];
+            if (startNode != null && startNode.ComputedValue == null)
+            {
+                startNode.SetValue(model.FlowNode);
+                Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(model.FlowNode));
             }
         }
 

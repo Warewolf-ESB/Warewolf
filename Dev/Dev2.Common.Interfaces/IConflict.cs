@@ -31,8 +31,7 @@ namespace Dev2.Common.Interfaces
         Guid UniqueId { get; set; }
     }
 
-    //TODO: Change name to IConnectorConflictItem
-    public interface IMergeArmConnectorConflict : IConflictItem, IEquatable<IMergeArmConnectorConflict>
+    public interface IConnectorConflictItem : IConflictItem, IEquatable<IConnectorConflictItem>
     {
         IArmConnectorConflict Container { get; set; }
         string ArmDescription { get; set; }
@@ -56,8 +55,8 @@ namespace Dev2.Common.Interfaces
 
     public interface IArmConnectorConflict : IConflictRow, IEquatable<IArmConnectorConflict>
     {
-        IMergeArmConnectorConflict CurrentArmConnector { get; set; }
-        IMergeArmConnectorConflict DifferentArmConnector { get; set; }
+        IConnectorConflictItem CurrentArmConnector { get; set; }
+        IConnectorConflictItem DifferentArmConnector { get; set; }
         string Key { get; set; }
     }
 }

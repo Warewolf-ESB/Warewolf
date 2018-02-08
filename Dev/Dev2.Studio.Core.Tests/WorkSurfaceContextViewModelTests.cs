@@ -1216,9 +1216,12 @@ namespace Dev2.Core.Tests
 
         public void RemoveStartNodeConnection()
         {
-            throw new NotImplementedException();
+            
         }
+        public void AddStartNode(IMergeToolModel model)
+        {
 
+        }
         public void UpdateModelItem(ModelItem modelItem, IMergeToolModel modelTool)
         {
             throw new NotImplementedException();
