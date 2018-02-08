@@ -104,7 +104,7 @@ namespace Dev2.ViewModels.Merge
         public override int GetHashCode()
         {
             var hashCode = (397) ^ SourceUniqueId.GetHashCode();
-            hashCode = (hashCode * 397) ^ (DestinationUniqueId != null ? DestinationUniqueId.GetHashCode() : 0);
+            hashCode = (hashCode * 397) ^ (DestinationUniqueId.GetHashCode());
             return hashCode;
         }
 

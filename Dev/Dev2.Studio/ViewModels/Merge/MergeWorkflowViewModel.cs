@@ -128,7 +128,7 @@ namespace Dev2.ViewModels.Merge
                 if (diffIndex != -1 && diffIndex != currentIndex && (diffIndex + 1) <= current.Count())
                 {
                     var diffItm = diff.ToList()[currentIndex];
-                    if (diffItm != null)
+                    if (diffItm != null && currentItem != null)
                     {
                         ProcessExistingDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, diffItm, currentItem.UniqueId);
                     }
