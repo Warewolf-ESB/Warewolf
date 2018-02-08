@@ -267,7 +267,7 @@ namespace Dev2.Activities.Specs.Deploy
   ""DetachKeys"": ""ctrl-p,ctrl-q"",
   ""Privileged"": true,
   ""Tty"": true,
-  ""User"": ""WarewolfUser:Dev2@dmin123""
+  ""User"": ""0""
 }
 ");
             containerExecContent.Headers.Remove("Content-Type");
@@ -299,7 +299,7 @@ namespace Dev2.Activities.Specs.Deploy
   ""DetachKeys"": ""ctrl-p,ctrl-q"",
   ""Privileged"": true,
   ""Tty"": true,
-  ""User"": ""WarewolfUser:Dev2@dmin123""
+  ""User"": ""0""
 }
 ");
             containerExecContent.Headers.Remove("Content-Type");
