@@ -23,27 +23,8 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Parsers
 {
-    /// <summary>
-    /// XPath Parser
-    /// </summary>
     public class XPathParser
     {
-        /// <summary>
-        /// Executes the X path.
-        /// </summary>
-        /// <param name="xmlData">The XML data.</param>
-        /// <param name="xPath">The x path.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">
-        /// xmlData
-        /// or
-        /// xPath
-        /// </exception>
-        /// <exception cref="System.Exception">
-        /// Input XML is not valid.
-        /// or
-        /// The XPath expression provided is not valid.
-        /// </exception>
         public IEnumerable<string> ExecuteXPath(string xmlData, string xPath)
         {
             if (string.IsNullOrEmpty(xmlData))
@@ -71,18 +52,7 @@ namespace Dev2.Data.Parsers
                 var namespaces = new List<KeyValuePair<string, string>>();
                 if (document.DocumentElement != null)
                 {
-                    var xmlAttributeCollection = document.DocumentElement.Attributes;
-
-                    foreach (XmlAttribute attrib in xmlAttributeCollection)
-                    {
-                        if (attrib?.NodeType == XmlNodeType.Attribute && attrib.Name.Contains("xmlns:"))
-                        {
-                            var nsAttrib = attrib.Name.Split(':');
-                            var ns = nsAttrib[1];
-                            namespaces.Add(new KeyValuePair<string, string>(ns, attrib.Value));
-                        }
-
-                    }
+                    namespaces = AddDocumentElementAttributesToNamepsace(document);
                 }
                 using (TextReader stringReader = new StringReader(useXmlData))
                 {
@@ -117,6 +87,22 @@ namespace Dev2.Data.Parsers
                 Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
                 throw;
             }
+        }
+
+        static List<KeyValuePair<string, string>> AddDocumentElementAttributesToNamepsace(XmlDocument document)
+        {
+            var xmlAttributeCollection = document.DocumentElement.Attributes;
+            var namespaces = new List<KeyValuePair<string, string>>();
+            foreach (XmlAttribute attrib in xmlAttributeCollection)
+            {
+                if (attrib?.NodeType == XmlNodeType.Attribute && attrib.Name.Contains("xmlns:"))
+                {
+                    var nsAttrib = attrib.Name.Split(':');
+                    var ns = nsAttrib[1];
+                    namespaces.Add(new KeyValuePair<string, string>(ns, attrib.Value));
+                }
+            }
+            return namespaces;
         }
 
         static List<string> BuildListFromXPathResult(IEnumerator list)
