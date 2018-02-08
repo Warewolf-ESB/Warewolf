@@ -379,7 +379,7 @@ namespace Dev2.Activities.Specs.Deploy
             var parseAround = "\"Id\":\"";
             if (responseText.Contains(parseAround))
             {
-                Console.Write("Created Command: " + responseText);
+                Console.Write("Exec Command Created: " + responseText);
                 return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 64);
             }
             else
