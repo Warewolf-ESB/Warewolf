@@ -132,7 +132,7 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenISelectCurrentArm()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IMergeArmConnectorConflict;
+            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IConnectorConflictItem;
             Assert.IsNotNull(mergeArmConnector);
             mergeArmConnector.IsChecked = true;
         }

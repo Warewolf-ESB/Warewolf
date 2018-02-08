@@ -105,7 +105,6 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged(() => MergeDescription);
             }
         }
-        // new polymorphic name for ismergechecked
         public bool IsChecked
         {
             get => _isChecked;
@@ -126,10 +125,6 @@ namespace Dev2.ViewModels.Merge
 
         public void AddActivity()
         {
-            if (Container.IsStartNode)
-            {
-                WorkflowDesignerViewModel?.RemoveStartNodeConnection();
-            }
             if (ModelItem != null)
             {
                 WorkflowDesignerViewModel?.AddItem(this);

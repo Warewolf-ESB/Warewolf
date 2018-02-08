@@ -42,6 +42,7 @@ namespace Dev2.Studio.Interfaces
         void RemoveItem(IMergeToolModel model);
         void AddItem(IMergeToolModel model);
         void RemoveStartNodeConnection();
+        void AddStartNode(IMergeToolModel model);
         void LinkTools(Guid sourceUniqueId, Guid destinationUniqueId, string key);
         void DeLinkTools(Guid sourceUniqueId, Guid destinationUniqueId, string key);
         void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);

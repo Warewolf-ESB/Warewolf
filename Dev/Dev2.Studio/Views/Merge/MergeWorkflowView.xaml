@@ -502,9 +502,20 @@
                                                                                       IsChecked="{Binding IsChecked}" 
                                                                                       HorizontalAlignment="Right"
                                                                                       Margin="0,0,3,0"
-                                                                                      Style="{StaticResource MergeCheckBoxStyle}"
                                                                                       AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRB_AutoID"
                                                                                       ToolTip="{x:Static languages:Tooltips.MergeCurrentConflictRBTooltip}">
+                                                                                <CheckBox.Style>
+                                                                                    <Style BasedOn="{StaticResource MergeCheckBoxStyle}" TargetType="{x:Type CheckBox}">
+                                                                                        <Style.Triggers>
+                                                                                            <DataTrigger Binding="{Binding ElementName=MergeToolNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                                                                <Setter Property="CheckBox.Visibility" Value="Collapsed"/>
+                                                                                            </DataTrigger>
+                                                                                            <DataTrigger Binding="{Binding IsContained}" Value="True">
+                                                                                                <Setter Property="CheckBox.Visibility" Value="Collapsed"/>
+                                                                                            </DataTrigger>
+                                                                                        </Style.Triggers>
+                                                                                    </Style>
+                                                                                </CheckBox.Style>
                                                                                 <i:Interaction.Behaviors>
                                                                                     <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentConflictRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                                                 </i:Interaction.Behaviors>

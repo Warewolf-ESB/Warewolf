@@ -10,12 +10,11 @@
 
 using System;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Interfaces;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class MergeArmConnectorConflict : ConflictItem, IMergeArmConnectorConflict
+    public class MergeArmConnectorConflict : ConflictItem, IConnectorConflictItem
     {
         public string ArmDescription { get; set; }
         public string LeftArmDescription { get; set; }
@@ -35,23 +34,7 @@ namespace Dev2.ViewModels.Merge
         public bool IsChecked
         {
             get => _isChecked;
-            set
-            {
-                SetProperty(ref _isChecked, value);
-                if (_isChecked)
-                {
-                    if (string.IsNullOrEmpty(ArmDescription))
-                    {
-                        WorkflowDesignerViewModel?.DeLinkTools(SourceUniqueId, DestinationUniqueId, Key);
-                    }
-                    else
-                    {
-                        WorkflowDesignerViewModel?.LinkTools(SourceUniqueId, DestinationUniqueId, Key);
-                    }
-
-                    OnChecked?.Invoke(Container, _isChecked);
-                }
-            }
+            set => SetProperty(ref _isChecked, value);
         }
 
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
@@ -59,6 +42,7 @@ namespace Dev2.ViewModels.Merge
         public MergeArmConnectorConflict(IArmConnectorConflict container)
         {
             Container = container;
+            RegisterEventHandlers();
         }
         public MergeArmConnectorConflict(string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key, IArmConnectorConflict container)
         {
@@ -73,9 +57,57 @@ namespace Dev2.ViewModels.Merge
             DestinationUniqueId = destinationUniqueId;
             Key = key;
             Container = container;
+
+            RegisterEventHandlers();
         }
 
-        public bool Equals(IMergeArmConnectorConflict other)
+        private void RegisterEventHandlers()
+        {
+            PropertyChanged += (sender, eventArg) => {
+                if (eventArg.PropertyName == nameof(IsChecked))
+                {
+                    NotifyIsCheckedChanged?.Invoke(this, IsChecked);
+                }
+            };
+
+            NotifyIsCheckedChanged += AddRemoveActivityHandler;
+        }
+
+        private void AddRemoveActivityHandler(IConflictItem item, bool isChecked)
+        {
+            if (isChecked)
+            {
+                // TODO: Move to StateApplier?
+                if (Key == "Start")
+                {
+                    WorkflowDesignerViewModel?.RemoveStartNodeConnection();
+                    // TODO: Pass in IMergeToolModel
+                    WorkflowDesignerViewModel?.AddStartNode(null);
+                }
+                if (string.IsNullOrEmpty(ArmDescription))
+                {
+                    DeLinkTools();
+                }
+                else
+                {
+                    LinkTools();
+                }
+
+                OnChecked?.Invoke(Container, _isChecked);
+            }
+        }
+
+        private void DeLinkTools()
+        {
+            WorkflowDesignerViewModel?.DeLinkTools(SourceUniqueId, DestinationUniqueId, Key);
+        }
+
+        private void LinkTools()
+        {
+            WorkflowDesignerViewModel?.LinkTools(SourceUniqueId, DestinationUniqueId, Key);
+        }
+
+        public bool Equals(IConnectorConflictItem other)
         {
             if (other == null)
             {
@@ -98,7 +130,7 @@ namespace Dev2.ViewModels.Merge
             {
                 return false;
             }
-            return Equals((IMergeArmConnectorConflict)obj);
+            return Equals((IConnectorConflictItem)obj);
         }
 
         public override int GetHashCode()

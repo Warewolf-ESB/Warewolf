@@ -16,12 +16,12 @@ namespace Dev2.ViewModels.Merge
     public class ConnectorConflictRow : ConflictRow, IArmConnectorConflict
     {
         bool _hasConflict;
-        public IMergeArmConnectorConflict CurrentArmConnector { get; set; }
+        public IConnectorConflictItem CurrentArmConnector { get; set; }
         public override IConflictItem Current
         {
             get => CurrentArmConnector;
         }
-        public IMergeArmConnectorConflict DifferentArmConnector { get; set; }
+        public IConnectorConflictItem DifferentArmConnector { get; set; }
         public override IConflictItem Different {
             get => DifferentArmConnector;
         }
