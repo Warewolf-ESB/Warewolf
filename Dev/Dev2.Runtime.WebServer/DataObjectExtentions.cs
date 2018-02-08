@@ -42,24 +42,8 @@ namespace Dev2.Runtime.WebServer
                     if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase) || typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
                     {
                         dataObject.IsServiceTestExecution = true;
-                        var idx = originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
-                        if (idx > loc)
-                        {
-                            var testName = originalServiceName.Substring(idx + 1).ToUpper();
-                            dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
-                        }
-                        else
-                        {
-                            dataObject.TestName = "*";
-                        }
-                        if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            dataObject.ReturnType = EmitionTypes.TEST;
-                        }
-                        if (typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            dataObject.ReturnType = EmitionTypes.TRX;
-                        }
+                        SetDataObjectTestName(dataObject, loc, originalServiceName);
+                        SetDataObjectReturnType(dataObject, typeOf);
                     }
 
                     if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
@@ -82,6 +66,32 @@ namespace Dev2.Runtime.WebServer
                 dataObject.SetContentType(headers);
             }
             return serviceName;
+        }
+
+        private static void SetDataObjectTestName(IDSFDataObject dataObject, int loc, string originalServiceName)
+        {
+            var idx = originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
+            if (idx > loc)
+            {
+                var testName = originalServiceName.Substring(idx + 1).ToUpper();
+                dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
+            }
+            else
+            {
+                dataObject.TestName = "*";
+            }
+        }
+
+        private static void SetDataObjectReturnType(IDSFDataObject dataObject, string typeOf)
+        {
+            if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
+            {
+                dataObject.ReturnType = EmitionTypes.TEST;
+            }
+            if (typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
+            {
+                dataObject.ReturnType = EmitionTypes.TRX;
+            }
         }
 
         public static void SetContentType(this IDSFDataObject dataObject, NameValueCollection headers)
