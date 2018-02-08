@@ -38,21 +38,8 @@ namespace Dev2.Data.Builders
             {
                 var rsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
                 var scanRsName = tmp.RecordSetName;
-                
-                if(IsOutput)
-                {
-                    if(IsDbService)
-                    {
-                        if(!string.IsNullOrEmpty(rsName))
-                        {
-                            scanRsName = rsName;
-                        }
-                    }
-                }
-                else
-                {
-                    scanRsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
-                }
+
+                scanRsName = GetRecordsetName(tmp, rsName, scanRsName);
 
                 if (tmp.IsRecordSet)
                 {
@@ -101,5 +88,24 @@ namespace Dev2.Data.Builders
             return result;
         }
 
+        private string GetRecordsetName(IDev2Definition tmp, string rsName, string scanRsName)
+        {
+            if (IsOutput)
+            {
+                if (IsDbService)
+                {
+                    if (!string.IsNullOrEmpty(rsName))
+                    {
+                        scanRsName = rsName;
+                    }
+                }
+            }
+            else
+            {
+                scanRsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
+            }
+
+            return scanRsName;
+        }
     }
 }

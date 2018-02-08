@@ -329,34 +329,7 @@ namespace Dev2.Data.Parsers
                     search = search.Substring(0, search.Length - (search.Length - pos));
                 }
 
-                try
-                {
-                    var results = CreateResultsGeneric(refParts, payload, parts.Length == 1 ? search : parts[1], addCompleteParts);
-
-                    if (parts.Length == 2)
-                    {
-                        var cmp = parts[1].ToLower();
-
-                        foreach (IIntellisenseResult res in results)
-                        {
-                            if (res.Option.Field.ToLower().IndexOf(cmp, StringComparison.Ordinal) >= 0)
-                            {
-                                result.Add(res);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (IIntellisenseResult res in results)
-                        {
-                            result.Add(res);
-                        }
-                    }
-                }
-                catch (Dev2DataLanguageParseError e)
-                {
-                    result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
-                }
+                TryAddParts(payload, refParts, addCompleteParts, result, parts, search, isRs);
             }
 
             IList<IIntellisenseResult> realResults = new List<IIntellisenseResult>();
@@ -389,6 +362,38 @@ namespace Dev2.Data.Parsers
             return result;
         }
 
+        private void TryAddParts(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, string search, bool isRs)
+        {
+            try
+            {
+                var results = CreateResultsGeneric(refParts, payload, parts.Length == 1 ? search : parts[1], addCompleteParts);
+
+                if (parts.Length == 2)
+                {
+                    var cmp = parts[1].ToLower();
+
+                    foreach (IIntellisenseResult res in results)
+                    {
+                        if (res.Option.Field.ToLower().IndexOf(cmp, StringComparison.Ordinal) >= 0)
+                        {
+                            result.Add(res);
+                        }
+                    }
+                }
+                else
+                {
+                    foreach (IIntellisenseResult res in results)
+                    {
+                        result.Add(res);
+                    }
+                }
+            }
+            catch (Dev2DataLanguageParseError e)
+            {
+                result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
+            }
+        }
+
         IEnumerable<IIntellisenseResult> CreateResultsGeneric(IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IParseTO payload, string search, bool addCompleteParts)
         {
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
@@ -409,28 +414,33 @@ namespace Dev2.Data.Parsers
                 }
                 else
                 {
-                    foreach (IDev2DataLanguageIntellisensePart t in refParts)
-                    {
-                        var match = t.Name.ToLower();
-
-                        if (t.Children != null && t.Children.Count > 0)
-                        {
-                            AddFieldOptions(payload, search, addCompleteParts, match, t, result);
-                        }
-                        else
-                        {
-                            if (!match.Contains(search))
-                            {
-                                continue;
-                            }
-
-                            AddFoundItems(payload, t, result);
-                        }
-                    }
+                    AddOptions(refParts, payload, search, addCompleteParts, result);
                 }
             }
 
             return result;
+        }
+
+        private static void AddOptions(IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IParseTO payload, string search, bool addCompleteParts, IList<IIntellisenseResult> result)
+        {
+            foreach (IDev2DataLanguageIntellisensePart t in refParts)
+            {
+                var match = t.Name.ToLower();
+
+                if (t.Children != null && t.Children.Count > 0)
+                {
+                    AddFieldOptions(payload, search, addCompleteParts, match, t, result);
+                }
+                else
+                {
+                    if (!match.Contains(search))
+                    {
+                        continue;
+                    }
+
+                    AddFoundItems(payload, t, result);
+                }
+            }
         }
 
         static void AddFoundItems(IParseTO payload, IDev2DataLanguageIntellisensePart t, IList<IIntellisenseResult> result)
