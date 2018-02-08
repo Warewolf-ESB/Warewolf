@@ -267,11 +267,12 @@ namespace Dev2.Activities.Specs.Deploy
   ""DetachKeys"": ""ctrl-p,ctrl-q"",
   ""Privileged"": true,
   ""Tty"": true,
-  ""User"": ""WarewolfUser:Dev2@dmin123""
+  ""User"": ""WarewolfUser""
 }
 ");
             containerExecContent.Headers.Remove("Content-Type");
             containerExecContent.Headers.Add("Content-Type", "application/json");
+            string stopWarewolfServerCommandID = "";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
@@ -281,7 +282,11 @@ namespace Dev2.Activities.Specs.Deploy
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        Console.Write("Stopped Warewolf Server: " + reader.ReadToEnd());
+                        Console.Write("Error Creating Stop Warewolf Server Command: " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        stopWarewolfServerCommandID = ParseForCommandID(reader.ReadToEnd());
                     }
                 }
             }
@@ -299,6 +304,7 @@ namespace Dev2.Activities.Specs.Deploy
 ");
             containerExecContent.Headers.Remove("Content-Type");
             containerExecContent.Headers.Add("Content-Type", "application/json");
+            string getWarewolfServerLogCommandID = "";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
@@ -308,13 +314,69 @@ namespace Dev2.Activities.Specs.Deploy
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        throw new HttpRequestException("Error getting server log. " + reader.ReadToEnd());
+                        Console.Write("Error getting server log. " + reader.ReadToEnd());
                     }
                     else
                     {
-                        Console.Write("Got Warewolf Server Log: " + reader.ReadToEnd());
+                        getWarewolfServerLogCommandID = ParseForCommandID(reader.ReadToEnd());
                     }
                 }
+            }
+            url = "http://" + _remoteDockerApi + ":2375/exec/" + stopWarewolfServerCommandID + "/start";
+            HttpContent containerExecStartContent = new StringContent(@"
+{
+ ""Detach"": false,
+ ""Tty"": false
+}");
+            containerExecStartContent.Headers.Remove("Content-Type");
+            containerExecStartContent.Headers.Add("Content-Type", "application/json");
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerExecStartContent).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.Write("Error Creating Stop Warewolf Server Command: " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        Console.Write("Stopped Warewolf Server." + reader.ReadToEnd());
+                    }
+                }
+            }
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerExecStartContent).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.Write("Error getting server log. " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        Console.Write("Recovered Warewolf Server Log." + reader.ReadToEnd());
+                    }
+                }
+            }
+        }
+
+        string ParseForCommandID(string responseText)
+        {
+            var parseAround = "\"Id\":\"";
+            if (responseText.Contains(parseAround))
+            {
+                Console.Write("Created Command: " + responseText);
+                return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 64);
+            }
+            else
+            {
+                throw new HttpRequestException("Error parsing for image ID. " + responseText);
             }
         }
 
