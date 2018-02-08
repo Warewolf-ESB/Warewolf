@@ -348,6 +348,13 @@ namespace Dev2.Activities.Specs.Deploy
                 }
             }
             url = "http://" + _remoteDockerApi + ":2375/exec/" + getWarewolfServerLogCommandID + "/start";
+            containerExecStartContent = new StringContent(@"
+{
+ ""Detach"": false,
+ ""Tty"": false
+}");
+            containerExecStartContent.Headers.Remove("Content-Type");
+            containerExecStartContent.Headers.Add("Content-Type", "application/json");
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
