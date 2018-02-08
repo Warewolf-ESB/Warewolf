@@ -145,7 +145,7 @@ namespace Dev2.Runtime.ESB.Execution
             var isAuthorized = ServerAuthorizationService.Instance.IsAuthorized(dataObject.ExecutingUser, authorizationContext, resourceId.ToString());
             if (!isAuthorized)
             {
-                dataObject.Environment.AddError(Warewolf.Resource.Errors.ErrorResource.NotAuthorizedToExecuteException);
+                dataObject.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser.Identity.Name, dataObject.ServiceName));
             }
             return isAuthorized;
         }
