@@ -128,7 +128,7 @@ namespace Dev2.Services.Sql
                 if (_connection?.State != ConnectionState.Open)
                 {
                     _connection = _connectionBuilder.BuildConnection(_connectionString);
-                    _connection.Open();
+                    _connection.EnsureOpen();
                     var dbCommand = _connection.CreateCommand();
                     TrySetTransaction(_transaction, dbCommand);
                     dbCommand.CommandText = command.CommandText;

@@ -12,7 +12,7 @@ namespace Dev2.Services.Sql
             {
                 if (connection.State != ConnectionState.Open)
                 {
-                    connection.Open();
+                    connection.EnsureOpen();
                 }
             }
             catch (Exception e)
