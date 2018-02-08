@@ -30,18 +30,13 @@ namespace Dev2.Services.Sql
         {
             get
             {
-                if (_connection == null)
-                {
-                    Open();
-                }
+
+                EnsureOpen();
                 return _connection.FireInfoMessageEventOnUserErrors;
             }
             set
             {
-                if (_connection == null)
-                {
-                    Open();
-                }
+                EnsureOpen();
                 _connection.FireInfoMessageEventOnUserErrors = value;
             }
         }
@@ -50,18 +45,12 @@ namespace Dev2.Services.Sql
         {
             get
             {
-                if (_connection == null)
-                {
-                    Open();
-                }
+                EnsureOpen();
                 return _connection.StatisticsEnabled;
             }
             set
             {
-                if (_connection == null)
-                {
-                    Open();
-                }
+                EnsureOpen();
                 _connection.StatisticsEnabled = value;
             }
         }
@@ -71,56 +60,44 @@ namespace Dev2.Services.Sql
         {
             get
             {
-                if (_connection == null)
-                {
-                    Open();
-                }
+                EnsureOpen();
                 return _connection.State;
             }
         }
 
         public IDbTransaction BeginTransaction()
         {
-            if (_connection == null)
-            {
-                Open();
-            }
+            EnsureOpen();
             return _connection.BeginTransaction();
         }
 
-        public void Open()
+        public void EnsureOpen()
         {
             if (_connection == null)
             {
                 CreateConnection();
             }
-            _connection.Open();
+            if (_connection.State != ConnectionState.Open)
+            {
+                _connection.Open();
+            }
         }
 
         public DataTable GetSchema(string table)
         {
-            if (_connection == null)
-            {
-                Open();
-            }
+            EnsureOpen();
             return _connection.GetSchema(table);
         }
 
         public IDbCommand CreateCommand()
         {
-            if (_connection == null)
-            {
-                Open();
-            }
+            EnsureOpen();
             return _connection.CreateCommand();
         }
 
         public void SetInfoMessage(SqlInfoMessageEventHandler a)
         {
-            if (_connection == null)
-            {
-                Open();
-            }
+            EnsureOpen();
             _connection.InfoMessage += a;
         }
 

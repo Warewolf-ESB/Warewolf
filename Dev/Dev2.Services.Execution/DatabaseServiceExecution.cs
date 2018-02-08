@@ -265,10 +265,6 @@ namespace Dev2.Services.Execution
                         TranslateDataTableToEnvironment(table, DataObj.Environment, update);
                         Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
                     }
-                    // The Complete method commits the transaction. If an exception has been thrown,
-                    // Complete is not  called and the transaction is rolled back.
-                    
-                    
                 }
             }
             catch (Exception ex)
