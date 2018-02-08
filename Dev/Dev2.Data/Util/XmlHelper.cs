@@ -20,12 +20,12 @@ namespace Dev2.Data.Util
         static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
         static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
         static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>",
-                                                         "<Dev2XMLResult>", "</Dev2XMLResult>",
-                                                         "<WebXMLConfiguration>", "</WebXMLConfiguration>",
-                                                         "<ActivityInput>", "</ActivityInput>",
-                                                         "<ADL>","</ADL>",
-                                                         "<DL>","</DL>"
-                                                       };
+                                                 "<Dev2XMLResult>", "</Dev2XMLResult>",
+                                                 "<WebXMLConfiguration>", "</WebXMLConfiguration>",
+                                                 "<ActivityInput>", "</ActivityInput>",
+                                                 "<ADL>","</ADL>",
+                                                 "<DL>","</DL>"
+                                               };
         const string AdlRoot = "ADL";
 
         public static bool IsXml(string data, out bool isFragment, out bool isHtml)
@@ -135,42 +135,45 @@ namespace Dev2.Data.Util
 
             for (int i = 0; i < toRemove.Length; i++)
             {
-                var myTag = toRemove[i];
-                if (myTag.IndexOf("<", StringComparison.Ordinal) >= 0 && myTag.IndexOf("</", StringComparison.Ordinal) < 0)
-                {
-                    foundOpen = true;
-                }
-                else
-                {
-                    if (myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
-                    {
-                        if (foundOpen)
-                        {
-                            var loc = i - 1;
-                            if (loc >= 0)
-                            {
-                                var start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
-                                var end = result.IndexOf(myTag, StringComparison.Ordinal);
-                                if (start < end && start >= 0)
-                                {
-                                    var canidate = result.Substring(start, end - start + myTag.Length);
-                                    var tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                                    result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            result = result.Replace(myTag, "");
-                        }
-
-                        foundOpen = false;
-                    }
-                }
+                CleanupEachToRemove(toRemove, i, ref foundOpen, ref result);
             }
 
             return result.Trim();
+        }
 
+        static void CleanupEachToRemove(string[] toRemove, int i, ref bool foundOpen, ref string result)
+        {
+            var myTag = toRemove[i];
+            if (myTag.IndexOf("<", StringComparison.Ordinal) >= 0 && myTag.IndexOf("</", StringComparison.Ordinal) < 0)
+            {
+                foundOpen = true;
+            }
+            else
+            {
+                if (myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
+                {
+                    result = foundOpen ? RemoveBetweenTags(toRemove, i, result, myTag) : result.Replace(myTag, "");
+                    foundOpen = false;
+                }
+            }
+        }
+
+        private static string RemoveBetweenTags(string[] toRemove, int i, string result, string myTag)
+        {
+            var loc = i - 1;
+            if (loc >= 0)
+            {
+                var start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
+                var end = result.IndexOf(myTag, StringComparison.Ordinal);
+                if (start < end && start >= 0)
+                {
+                    var canidate = result.Substring(start, end - start + myTag.Length);
+                    var tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
+                    result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
+                }
+            }
+
+            return result;
         }
     }
 }
