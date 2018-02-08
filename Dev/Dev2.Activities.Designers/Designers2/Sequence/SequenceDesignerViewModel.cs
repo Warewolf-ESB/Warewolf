@@ -150,18 +150,6 @@ namespace Dev2.Activities.Designers2.Sequence
             return false;
         }
 
-        private static void ValidateRemoteProperties(IContextualResourceModel resource, DsfActivity d)
-        {
-            if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-            {
-                dynamic mvm = Application.Current.MainWindow.DataContext;
-                if (mvm != null && mvm.ActiveItem != null)
-                {
-                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
-                }
-            }
-        }
-
         public bool DoDrop(IDataObject dataObject)
         {
             var formats = dataObject.GetFormats();

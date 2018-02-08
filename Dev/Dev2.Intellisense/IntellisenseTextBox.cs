@@ -143,10 +143,7 @@ namespace Dev2.UI
         {
             if (e.Key != Key.Tab)
             {
-                if ((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
-                {
-                }
-                else
+                if (!((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn))
                 {
                     e.Handled = true;
                 }
@@ -485,8 +482,8 @@ namespace Dev2.UI
                 {
                     var provider = IntellisenseProvider;
                     var context = new IntellisenseProviderContext { FilterType = FilterType, DesiredResultSet = desiredResultSet, InputText = text, CaretPosition = CaretIndex };
-
-                    if ((context.IsInCalculateMode = calculateMode) && AllowUserCalculateMode)
+                    context.IsInCalculateMode = calculateMode;
+                    if ((context.IsInCalculateMode) && AllowUserCalculateMode)
                     {
                         if (CaretIndex > 0)
                         {

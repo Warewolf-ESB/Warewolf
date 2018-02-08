@@ -25,7 +25,6 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
         Action _sourceChangedAction;
         IPluginAction _selectedAction;
-        readonly IPluginServiceModel _model;
         ICollection<IPluginAction> _actions;
         bool _isActionEnabled;
         bool _isRefreshing;
@@ -41,10 +40,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         IPluginAction Method
         {
-            set
-            {
-                _modelItem.SetProperty("Method", value);
-            }
+            set => _modelItem.SetProperty("Method", value);
+            get => _modelItem.GetProperty("Method") as IPluginAction;
         }
 
         public double LabelWidth
