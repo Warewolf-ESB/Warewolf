@@ -181,7 +181,7 @@ namespace Dev2.Data.Parsers
                 {
                     var rootItems = MakeParts(payload, addCompleteParts);
                     IList<IParseTO> evalParts = new List<IParseTO>();
-                    var magicRegion = FindMagicRegion(rootItems, ref evalParts);
+                    var magicRegion = FindMagicRegion(rootItems, evalParts);
                     if (magicRegion != null)
                     {
                         result = isFromIntellisense ? ExtractActualIntellisenseOptions(magicRegion, parts, false) : ExtractIntellisenseOptions(magicRegion, parts, false);
