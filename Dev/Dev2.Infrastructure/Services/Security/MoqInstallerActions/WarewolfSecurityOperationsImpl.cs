@@ -73,23 +73,33 @@ namespace Dev2.Services.Security.MoqInstallerActions
                 ad.Children.SchemaFilter.Add("group");
                 foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    // Now check group membership ;)
-                    var members = dChildEntry.Invoke("Members");
-
-                    if (members != null)
+                    if (dChildEntry.Name == WarewolfGroup)
                     {
-                        foreach (var member in (IEnumerable)members)
-                        {
-                            using (var memberEntry = new DirectoryEntry(member))
-                            {
-                                return dChildEntry.Name == WarewolfGroup && memberEntry.Name == theUser;
-                            }
-                        }
+                        return IsMemberOfGroup(theUser, dChildEntry);
                     }
                 }
             }
 
             return false;
+        }
+
+        private static bool IsMemberOfGroup(string theUser, DirectoryEntry dChildEntry)
+        {
+            bool isMember = false;
+            var members = dChildEntry.Invoke("Members");
+
+            if (members != null)
+            {
+                foreach (var member in (IEnumerable)members)
+                {
+                    using (var memberEntry = new DirectoryEntry(member))
+                    {
+                        isMember = memberEntry.Name == theUser;
+                    }
+                }
+            }
+
+            return isMember;
         }
 
         public void AddUserToWarewolf(string currentUser)
