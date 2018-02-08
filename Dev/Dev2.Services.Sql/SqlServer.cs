@@ -50,7 +50,7 @@ namespace Dev2.Services.Sql
         IDbTransaction _transaction;
 
 
-        public bool Connect(string connectionString)
+        public void Connect(string connectionString)
         {
             _connectionString = connectionString;
             _connection = _connectionBuilder.BuildConnection(_connectionString);
@@ -58,30 +58,17 @@ namespace Dev2.Services.Sql
             try
             {
                 _connection.TryOpen();
-                return true;
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                return false;
+                throw new WarewolfDbException(e.Message);
             }
-
         }
 
-        public bool Connect()
+        public void Connect()
         {
-            _connection = _connectionBuilder.BuildConnection(_connectionString);
-            try
-            {
-                _connection.TryOpen();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                return false;
-            }
-
+            Connect(_connectionString);            
         }
 
         public void BeginTransaction()
