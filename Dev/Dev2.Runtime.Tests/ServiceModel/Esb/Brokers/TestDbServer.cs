@@ -34,10 +34,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         public virtual bool IsConnected => true;
         public virtual string ConnectionString { get; private set; }
 
-        public virtual bool Connect(string connectionString)
+        public virtual void Connect(string connectionString)
         {
             ConnectionString = connectionString;
-            return true;
         }
 
         public virtual void BeginTransaction()

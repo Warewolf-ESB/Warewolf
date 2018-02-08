@@ -71,7 +71,7 @@ namespace Dev2.Integration.Tests.Services.Sql
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("SqlDatabaseBroker")]
-        [ExpectedException(typeof(SqlException))]
+        [ExpectedException(typeof(WarewolfDbException))]
         
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithInvalidUsername_ThrowsLoginFailedException()
 
