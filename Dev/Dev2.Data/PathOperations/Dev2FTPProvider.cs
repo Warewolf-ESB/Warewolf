@@ -241,14 +241,17 @@ namespace Dev2.Data.PathOperations
 
             if (ok)
             {
-                try
+                using (src)
                 {
-                    result = IsStandardFtp(dst) ? WriteToFtp(src, dst) : WriteToSftp(src, dst);
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(@"Exception in Put command", ex, GlobalConstants.WarewolfError);
-                    throw;
+                    try
+                    {
+                        result = IsStandardFtp(dst) ? WriteToFtp(src, dst) : WriteToSftp(src, dst);
+                    }
+                    catch (Exception ex)
+                    {
+                        Dev2Logger.Error(@"Exception in Put command", ex, GlobalConstants.WarewolfError);
+                        throw;
+                    }
                 }
             }
             return result;
@@ -1041,11 +1044,6 @@ namespace Dev2.Data.PathOperations
         bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
-        }
-
-        public void WriteDataToFile(IDev2PutRawOperationTO args, string path, IFile fileWrapper)
-        {
-            throw new NotImplementedException();
         }
         #endregion Private Methods
     }

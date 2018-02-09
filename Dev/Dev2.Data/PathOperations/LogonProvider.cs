@@ -41,8 +41,7 @@ namespace Dev2.Data.PathOperations
             }
             finally
             {
-                var ex = Marshal.GetExceptionForHR(
-                            Marshal.GetHRForLastWin32Error());
+                Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
             }
             return loggedOn;
         }
