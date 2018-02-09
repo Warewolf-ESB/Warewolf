@@ -24,5 +24,6 @@ namespace Dev2.Common.Interfaces.ToolBase.Database
     public interface IDatabaseInputRegion : IToolRegion
     {
         ICollection<IServiceInput> Inputs { get; set; }
+        void ResetInputs(ICollection<IServiceInput> inputs);
     }
 }

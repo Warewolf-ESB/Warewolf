@@ -54,6 +54,14 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             RemoveItemPropertyChangeEvent(e);
         }
 
+        public void ResetInputs(ICollection<IServiceInput> inputs)
+        {
+            var newInputs = new ObservableCollection<IServiceInput>();
+            newInputs.CollectionChanged += InputsCollectionChanged;
+            newInputs.AddRange(inputs);
+            Inputs = newInputs;
+        }
+
         void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null)
@@ -69,8 +77,8 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 }
             }
         }
-
-        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e) => _modelItem.SetProperty("Inputs", Inputs);
+        
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e) => _modelItem.SetProperty("Inputs", _inputs.ToList());
 
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
@@ -128,11 +136,11 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                     var removedInputs = inputCopy.Except(selectedActionInputs, new ServiceInputNameComparer()).ToList();
                     var union = inputCopy.Union(newInputs, new ServiceInputNameComparer()).ToList();
                     union.RemoveAll(a => removedInputs.Any(k => a.Equals(k)));
-                    Inputs = union;
+                    ResetInputs(union);
                 }
                 else
                 {
-                    Inputs = selectedActionInputs;
+                    ResetInputs(selectedActionInputs);
                     _datatalistMapper.MapInputsToDatalist(Inputs);
                     IsInputsEmptyRows = Inputs.Count < 1;
                     IsEnabled = true;
