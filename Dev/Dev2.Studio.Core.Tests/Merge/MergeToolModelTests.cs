@@ -379,41 +379,6 @@ namespace Dev2.Core.Tests.Merge
         }
 
         [TestMethod]
-        public void RemovePreviousActivity_Given_MergeToolModel_verifyCall()
-        {
-            //---------------Set up test pack-------------------
-            var id = Guid.NewGuid();
-            var mergeToolModel = new MergeToolModel
-            {
-                UniqueId = id,
-                IsChecked = true,
-                Container = new ToolConflictRow { IsChecked = true }
-            };
-            object sender = mergeToolModel;
-            IMergeToolModel args = new MergeToolModel();
-            args.Container = new ToolConflictRow
-            {
-                UniqueId = id,
-                IsChecked = true,
-                CurrentViewModel = mergeToolModel,
-                DiffViewModel = args
-            };
-            mergeToolModel.Container = args.Container;
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
-            wfDesignerVm.Setup(p => p.RemoveItem(It.IsAny<IMergeToolModel>()));
-
-            mergeToolModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
-
-            var methodToRun = typeof(MergeToolModel).GetMethod("RemovePreviousContainerActivity", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(methodToRun);
-            //---------------Execute Test ----------------------
-            var aaaa = methodToRun.Invoke(mergeToolModel, new object[] { });
-            //---------------Test Result -----------------------
-            wfDesignerVm.Verify(p => p.RemoveItem(It.IsAny<IMergeToolModel>()), Times.Exactly(1));
-        }
-
-        [TestMethod]
         public void AddActivity_Given_MergeToolModel_verifyCall()
         {
             //---------------Set up test pack-------------------
