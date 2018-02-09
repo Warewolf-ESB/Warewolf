@@ -123,7 +123,7 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenISelectCurrentTool()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && a.HasConflict && !a.IsChecked).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).FirstOrDefault() as IMergeToolModel;
+            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && a.HasConflict && !a.IsChecked).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).FirstOrDefault() as IToolModelConflictItem;
             Assert.IsNotNull(mergeToolModel);
             mergeToolModel.IsChecked = true;
         }
@@ -178,11 +178,11 @@ namespace Dev2.Activities.Specs.Merge
             Assert.IsFalse(a);
         }
 
-        IToolConflict GetToolConflictFromRow(int conflictRow)
+        IToolConflictRow GetToolConflictFromRow(int conflictRow)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
             var conflict = mergeVm.Conflicts.ToList()[conflictRow];
-            var toolConflict = conflict as IToolConflict;
+            var toolConflict = conflict as IToolConflictRow;
             return toolConflict;
         }
         
@@ -200,11 +200,11 @@ namespace Dev2.Activities.Specs.Merge
             Assert.AreEqual(mergeToolDescription, toolConflict.DiffViewModel.MergeDescription);
         }
 
-        IArmConnectorConflict GetArmConnectorFromRow(int conflictRow)
+        IConnectorConflictRow GetArmConnectorFromRow(int conflictRow)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
             var conflict = mergeVm.Conflicts.ToList()[conflictRow];
-            var toolConflict = conflict as IArmConnectorConflict;
+            var toolConflict = conflict as IConnectorConflictRow;
             return toolConflict;
         }
 

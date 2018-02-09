@@ -16,28 +16,28 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class ToolConflictRow : ConflictRow, IToolConflict
+    public class ToolConflictRow : ConflictRow, IToolConflictRow
     {
         bool _isMergeExpanded;
         bool _hasConflict;
         bool _hasNodeArmConflict;
-        IEnumerator<IToolConflict> _conflictEnumerator;
+        IEnumerator<IToolConflictRow> _conflictEnumerator;
         bool _isContainerTool;
         bool _isStartNode;
         bool _isEmptyItemSelected;
 
         public ToolConflictRow()
         {
-            Children = new LinkedList<IToolConflict>();
+            Children = new LinkedList<IToolConflictRow>();
         }
 
-        public IMergeToolModel CurrentViewModel { get; set; }
+        public IToolModelConflictItem CurrentViewModel { get; set; }
         public override IConflictItem Current => CurrentViewModel;
-        public IMergeToolModel DiffViewModel { get; set; }
+        public IToolModelConflictItem DiffViewModel { get; set; }
         public override IConflictItem Different => DiffViewModel;
 
-        public LinkedList<IToolConflict> Children { get; set; }
-        public IToolConflict Parent { get; set; }
+        public LinkedList<IToolConflictRow> Children { get; set; }
+        public IToolConflictRow Parent { get; set; }
         public override Guid UniqueId { get; set; }
 
         public override bool IsChecked { get; set; }
@@ -102,7 +102,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public IToolConflict GetNextConflict()
+        public IToolConflictRow GetNext()
         {
             if (_conflictEnumerator == null)
             {
@@ -113,7 +113,7 @@ namespace Dev2.ViewModels.Merge
                 var current = _conflictEnumerator.Current;
                 if (current.Children.Count > 0)
                 {
-                    var nextConflict = current.GetNextConflict();
+                    var nextConflict = current.GetNext();
                     if (nextConflict != null)
                     {
                         return nextConflict;
@@ -128,7 +128,7 @@ namespace Dev2.ViewModels.Merge
             return null;
         }
 
-        public LinkedListNode<IToolConflict> Find(IToolConflict itemToFind)
+        public LinkedListNode<IToolConflictRow> Find(IToolConflictRow itemToFind)
         {
             var linkedConflict = Children.Find(itemToFind);
             if (linkedConflict != null)
@@ -146,7 +146,7 @@ namespace Dev2.ViewModels.Merge
             return null;
         }
 
-        public bool All(Func<IToolConflict, bool> check)
+        public bool All(Func<IToolConflictRow, bool> check)
         {
             var current = Children.All(check);
             var childrenMatch = true;

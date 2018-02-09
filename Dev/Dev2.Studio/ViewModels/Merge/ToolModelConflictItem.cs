@@ -13,33 +13,31 @@ using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
 using System.Activities.Statements;
 using System.Activities.Presentation.Model;
 using System.Windows;
 using Dev2.Studio.Interfaces;
-using System.ComponentModel;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class MergeToolModel : ConflictItem, IMergeToolModel, ICheckable
+    public class ToolModelConflictItem : ConflictItem, IToolModelConflictItem, ICheckable
     {
         ImageSource _mergeIcon;
         string _mergeDescription;
         bool _isChecked;
         bool _isMergeVisible;
-        ObservableCollection<IMergeToolModel> _children;
+        ObservableCollection<IToolModelConflictItem> _children;
         string _parentDescription;
         bool _hasParent;
         Guid _uniqueId;
         FlowNode _flowNode;
-        IMergeToolModel _parent;
+        IToolModelConflictItem _parent;
         string _nodeArmDescription;
 
-        public MergeToolModel()
+        public ToolModelConflictItem()
         {
-            Children = new ObservableCollection<IMergeToolModel>();
+            Children = new ObservableCollection<IToolModelConflictItem>();
 
             RegisterEventHandlers();
         }
@@ -104,6 +102,9 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged(() => MergeDescription);
             }
         }
+
+        // Add AutoSelect IsChecked
+
         public bool IsChecked
         {
             get => _isChecked;
@@ -132,9 +133,9 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public IToolConflict Container { get; set; }
+        public IToolConflictRow Container { get; set; }
 
-        public IMergeToolModel Parent
+        public IToolModelConflictItem Parent
         {
             get => _parent;
             set
@@ -144,7 +145,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public ObservableCollection<IMergeToolModel> Children
+        public ObservableCollection<IToolModelConflictItem> Children
         {
             get => _children;
             set

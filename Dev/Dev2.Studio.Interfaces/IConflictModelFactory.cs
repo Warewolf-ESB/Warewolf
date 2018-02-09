@@ -10,8 +10,8 @@ namespace Dev2.Studio.Interfaces
         string ServerName { get; set; }
         bool IsVariablesChecked { get; set; }
         bool IsWorkflowNameChecked { get; set; }
-        ObservableCollection<IMergeToolModel> Children { get; set; }
-        IMergeToolModel Model { get; set; }
+        ObservableCollection<IToolModelConflictItem> Children { get; set; }
+        IToolModelConflictItem Model { get; set; }
         IDataListViewModel DataListViewModel { get; set; }
         void GetDataList(IContextualResourceModel resourceModel);
         event ConflictModelChanged SomethingConflictModelChanged;

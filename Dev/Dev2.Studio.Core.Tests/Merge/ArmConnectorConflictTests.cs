@@ -42,8 +42,8 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var container = new Mock<IArmConnectorConflict>();
-            var a = new MergeArmConnectorConflict(container.Object);
+            var container = new Mock<IConnectorConflictRow>();
+            var a = new ConnectorConflictItem(container.Object);
             var completeConflict = new ConnectorConflictRow() {CurrentArmConnector= a, DifferentArmConnector=a };
             var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
 
@@ -57,8 +57,8 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var container = new Mock<IArmConnectorConflict>();
-            var a = new MergeArmConnectorConflict(container.Object);
+            var container = new Mock<IConnectorConflictRow>();
+            var a = new ConnectorConflictItem(container.Object);
             var completeConflict = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
             var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
 
@@ -73,8 +73,8 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var container = new Mock<IArmConnectorConflict>();
-            var a = new MergeArmConnectorConflict(container.Object);
+            var container = new Mock<IConnectorConflictRow>();
+            var a = new ConnectorConflictItem(container.Object);
             var completeConflict = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
             var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
 
@@ -89,8 +89,8 @@ namespace Dev2.Core.Tests.Merge
         public void GetHashCode_TwoNewObjectsDiffSides_Returns_SameValue()
         {
             //------------Setup for test--------------------------
-            var container = new Mock<IArmConnectorConflict>();
-            var a = new MergeArmConnectorConflict(container.Object);
+            var container = new Mock<IConnectorConflictRow>();
+            var a = new ConnectorConflictItem(container.Object);
             var completeConflict = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a, UniqueId = Guid.NewGuid() };
             var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
             //------------Execute Test---------------------------

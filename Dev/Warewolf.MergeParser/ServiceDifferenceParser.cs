@@ -45,24 +45,10 @@ namespace Warewolf.MergeParser
             _definationCleaner = definationCleaner;
         }
 
-        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference) => GetConflictTrees(current, difference, true);
         public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer)
         {
             var currentTree = BuildTree(current, true);
             var diffTree = BuildTree(difference, loadworkflowFromServer);
-            var completeList = currentTree.Concat(diffTree);
-            var groupedItems = completeList.GroupBy(a => a.UniqueId);
-            foreach (var item in groupedItems)
-            {
-                var itemList = item.ToList();
-                var hasConflict = false;
-                if (itemList.Count > 1)
-                {
-                    var item1 = itemList[0];
-                    var item2 = itemList[1];
-                    hasConflict = !item1.Equals(item2);
-                }
-            }
             return (currentTree, diffTree);
         }
 

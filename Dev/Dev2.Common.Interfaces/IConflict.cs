@@ -33,12 +33,12 @@ namespace Dev2.Common.Interfaces
 
     public interface IConnectorConflictItem : IConflictItem, IEquatable<IConnectorConflictItem>
     {
-        IArmConnectorConflict Container { get; set; }
+        IConnectorConflictRow ConnectorConflictRow { get; set; }
         string ArmDescription { get; set; }
         Guid SourceUniqueId { get; set; }
         Guid DestinationUniqueId { get; set; }
         string Key { get; set; }
-        event Action<IArmConnectorConflict, bool> OnChecked;
+        event Action<IConnectorConflictRow, bool> OnChecked;
     }
 
     public interface IConflictItem
@@ -51,10 +51,10 @@ namespace Dev2.Common.Interfaces
         IConflictItem Current { get; }
         IConflictItem Different { get; }
         bool IsCurrentChecked { get; set; }
-        // TODO: Add Previous and Next Row? If we do this can we just implement IList<>?
     }
 
-    public interface IArmConnectorConflict : IConflictRow, IEquatable<IArmConnectorConflict>
+    // Was IArmConnectorConflict
+    public interface IConnectorConflictRow : IConflictRow, IEquatable<IConnectorConflictRow>
     {
         IConnectorConflictItem CurrentArmConnector { get; set; }
         IConnectorConflictItem DifferentArmConnector { get; set; }

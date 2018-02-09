@@ -13,17 +13,17 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IToolConflict : IConflictRow
+    public interface IToolConflictRow : IConflictRow
     {
-        IMergeToolModel CurrentViewModel { get; set; }
-        IMergeToolModel DiffViewModel { get; set; }
-        LinkedList<IToolConflict> Children { get; set; }
-        IToolConflict Parent { get; set; }
+        IToolModelConflictItem CurrentViewModel { get; set; }
+        IToolModelConflictItem DiffViewModel { get; set; }
+        LinkedList<IToolConflictRow> Children { get; set; }
+        IToolConflictRow Parent { get; set; }
         bool IsMergeExpanded { get; set; }
         bool IsContainerTool { get; set; }
         bool IsStartNode { get; set; }
-        IToolConflict GetNextConflict();
-        LinkedListNode<IToolConflict> Find(IToolConflict itemToFind);
-        bool All(Func<IToolConflict, bool> check);
+        IToolConflictRow GetNext();
+        LinkedListNode<IToolConflictRow> Find(IToolConflictRow itemToFind);
+        bool All(Func<IToolConflictRow, bool> check);
     }
 }

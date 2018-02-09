@@ -1,57 +1,87 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Dev2.Common.Interfaces;
 using System.Collections;
+using Dev2.Common;
+using System;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
-    public class ConflictList : IEnumerable<IConflictRow>
+    public class ToolModelConflictRowList : IEnumerable<IConflictRow>
     {
-        private List<IConflictRow> conflicts;
-        public List<IConflictRow> Conflicts
+        readonly ConflictTreeNode[] currentTree;
+        readonly ConflictTreeNode[] diffTree;
+        readonly ConflictModelFactory modelFactoryCurrent;
+        readonly ConflictModelFactory modelFactoryDifferent;
+        readonly List<IConflictRow> list;
+
+        public ToolModelConflictRowList(ConflictModelFactory modelFactoryCurrent, ConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
         {
-            get { return conflicts; }
-            set { conflicts = value; }
+            this.modelFactoryCurrent = modelFactoryCurrent;
+            this.modelFactoryDifferent = modelFactoryDifferent;
+            this.currentTree = currentTree.ToArray();
+            this.diffTree = diffTree.ToArray();
+            list = new List<IConflictRow>();
+            CreateList();
         }
 
-        public IEnumerator<IConflictRow> GetEnumerator() => conflicts.GetEnumerator();
-
-        IEnumerator IEnumerable.GetEnumerator() => conflicts.GetEnumerator();
-
-        public int Count => conflicts.Count;
-        public int IndexOf(IConflictRow conflict) => conflicts.IndexOf(conflict);
-
-        public IConflictRow GetNextConflict(IConflictRow conflict)
+        void CreateList()
         {
-            var idx = conflicts.IndexOf(conflict);
-            var nextConflict = MoveNext(idx);
-            while (nextConflict != null)
+            int index = 0;
+            var maxCount = Math.Max(currentTree.Length, diffTree.Length);
+            for (; index < maxCount; index++)
             {
-                idx = idx + 1;
-                nextConflict = MoveNext(idx);
+                ConflictTreeNode current = null;
+                ConflictTreeNode diff = null;
+                if (index < currentTree.Length)
+                {
+                    current = currentTree[index];
+                }
+                if (index < diffTree.Length)
+                {
+                    diff = diffTree[index];
+                }
+                // TODO: add an event for when items are added to the list so that we can listen for events on each Item in the row without adding an event listener in here.
+                list.Add(CreateConflictRow(current, diff));
             }
-            return nextConflict;
         }
 
-        public IConflictRow MoveNext(int index)
+        public IEnumerator<IConflictRow> GetEnumerator()
         {
-            var nextIndex = index + 1;
-            if (nextIndex >= conflicts.Count)
-            {
-                return null;
-            }
-            var nextConflict = conflicts[nextIndex];
-            return nextConflict;
+            
+            yield break;
         }
+
+        IConflictRow CreateConflictRow(ConflictTreeNode current, ConflictTreeNode diff)
+        {
+            var row = new ToolConflictRow();
+            
+            var id = Guid.Parse(current.UniqueId);
+            row.UniqueId = id;
+            row.CurrentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current);
+            row.DiffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff);
+
+
+
+            row.CurrentViewModel.Container = row;
+            row.DiffViewModel.Container = row;
+
+            return new ToolConflictRow
+            {
+                
+            };
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+
+            yield break;
+        }
+
+        public int Count => 0;
+        public int IndexOf(IConflictRow conflict) => 0;
 
         public IConflictRow GetNextConlictToUpdate(IConflictRow container)
         {
-            var index = conflicts.IndexOf(container) + 1;
-            if (index < conflicts.Count)
-            {
-                var nextConflict = conflicts.ElementAt(index);
-                return nextConflict;
-            }
             return null;
         }
     }
