@@ -109,7 +109,7 @@ namespace Dev2.Activities.Specs.Deploy
      ""Volumes"":{
             },
      ""VolumesFrom"":"""",
-     ""WorkingDir"":""""
+     ""WorkingDir"":""C:\\Windows\\System32""
 }
 ");
             containerContent.Headers.Remove("Content-Type");
@@ -265,7 +265,7 @@ namespace Dev2.Activities.Specs.Deploy
   ""AttachStderr"": true,
   ""Cmd"": [""cmd /c sc stop \""Warewolf Server\""""],
   ""Privileged"": true,
-  ""Tty"": true
+  ""Tty"": false
 }
 ");
             containerExecContent.Headers.Remove("Content-Type");
@@ -295,7 +295,7 @@ namespace Dev2.Activities.Specs.Deploy
   ""AttachStderr"": true,
   ""Cmd"": [""cmd /c type \""C:\\ProgramData\\Warewolf\\Server Log\\warewolf-server.log\""""],
   ""Privileged"": true,
-  ""Tty"": true
+  ""Tty"": false
 }
 ");
             containerExecContent.Headers.Remove("Content-Type");
