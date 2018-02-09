@@ -153,7 +153,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsTrue(wasCalled);
             Assert.IsTrue(onChecked);
         }
-              
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -167,7 +166,6 @@ namespace Dev2.Core.Tests.Merge
             //------------Execute Test---------------------------
             Assert.AreEqual(default(string), model.ArmDescription);
             Assert.AreEqual(default(string), model.Key);
-            Assert.AreEqual(default(string), model.DestinationUniqueId);
             Assert.AreEqual(default(bool), model.IsChecked);
             Assert.AreNotEqual(default(bool), model.Container);
 
@@ -175,14 +173,11 @@ namespace Dev2.Core.Tests.Merge
 
             model.Key = "";
             model.ArmDescription = "";
-            model.DestinationUniqueId = Guid.Empty;
             model.IsChecked = true;
 
             Assert.AreNotEqual(default(string), model.Key);
             Assert.AreNotEqual(default(string), model.ArmDescription);
-            Assert.AreNotEqual(default(Guid), model.DestinationUniqueId);
             Assert.AreNotEqual(default(bool), model.IsChecked);
-
         }
     }
 }
