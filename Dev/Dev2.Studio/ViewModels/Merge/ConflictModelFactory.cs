@@ -37,25 +37,21 @@ namespace Dev2.ViewModels.Merge
         public delegate void ModelItemChanged(ModelItem modelItem, ToolModelConflictItem mergeToolModel);
         public event ModelItemChanged OnModelItemChanged;
 
-        // NEW
-        readonly IWorkflowDesignerViewModel _workflowDesignerViewModel;
-
-        // NEW
-        public ConflictModelFactory(IContextualResourceModel resourceModel, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        public ConflictModelFactory(IContextualResourceModel resourceModel)
         {
             Children = new ObservableCollection<IToolModelConflictItem>();
             _resourceModel = resourceModel;
-            _workflowDesignerViewModel = workflowDesignerViewModel;
+            WorkflowName = _resourceModel.ResourceName;
+            ServerName = _resourceModel.Environment.Name;
+            GetDataList(_resourceModel);
         }
 
-        public ConflictModelFactory(IContextualResourceModel resourceModel, IConflictTreeNode conflict, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        public ConflictModelFactory(IContextualResourceModel resourceModel, IConflictTreeNode conflict)
         {
             Children = new ObservableCollection<IToolModelConflictItem>();
             _resourceModel = resourceModel;
             var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
-            // NEW
-            _workflowDesignerViewModel = workflowDesignerViewModel;
-            Model = GetModel(modelItem, conflict, null, _workflowDesignerViewModel);
+            Model = GetModel(modelItem, conflict, null);
         }
 
         public ConflictModelFactory()
@@ -148,15 +144,18 @@ namespace Dev2.ViewModels.Merge
         public ObservableCollection<IToolModelConflictItem> Children { get; set; }
 
 
-        public IToolModelConflictItem CreateToolModelConfictItem(IConflictTreeNode node) => CreateToolModelConfictItem(node, null, null);
-        public IToolModelConflictItem CreateToolModelConfictItem(IConflictTreeNode node, IToolModelConflictItem parentItem, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        public IToolModelConflictItem CreateToolModelConfictItem(IConflictTreeNode node) => CreateToolModelConfictItem(node, null);
+        // TODO: Remove IToolModelConflictItem parentItem?
+        public IToolModelConflictItem CreateToolModelConfictItem(IConflictTreeNode node, IToolModelConflictItem parentItem)
         {
             var modelItem = ModelItemUtils.CreateModelItem(node.Activity);
-            return GetModel(modelItem, node, parentItem, workflowDesignerViewModel, "");
+            return GetModel(modelItem, node, parentItem, "");
         }
-        public IToolModelConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node, IToolModelConflictItem parentItem, IWorkflowDesignerViewModel workflowDesignerViewModel) => GetModel(modelItem, node, parentItem, workflowDesignerViewModel, "");
+        // TODO: Remove IToolModelConflictItem parentItem?
+        public IToolModelConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node, IToolModelConflictItem parentItem) => GetModel(modelItem, node, parentItem, "");
 
-        public IToolModelConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node, IToolModelConflictItem parentItem, IWorkflowDesignerViewModel workflowDesignerViewModel, string parentLabelDescription)
+        // TODO: Remove IToolModelConflictItem parentItem?
+        public IToolModelConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node, IToolModelConflictItem parentItem, string parentLabelDescription)
         {
             if (modelItem == null || node == null || node.Activity == null)
             {
@@ -193,16 +192,15 @@ namespace Dev2.ViewModels.Merge
             }
             instance.IsMerge = true;
 
-            var mergeToolModel = CreateNewMergeToolModel(modelItem, node, parentItem, parentLabelDescription, instance, workflowDesignerViewModel);
+            var mergeToolModel = CreateNewMergeToolModel(modelItem, node, parentItem, parentLabelDescription, instance);
             return mergeToolModel;
         }
 
-        ToolModelConflictItem CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, IToolModelConflictItem parentItem, string parentLabelDescription, ActivityDesignerViewModel instance, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        ToolModelConflictItem CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, IToolModelConflictItem parentItem, string parentLabelDescription, ActivityDesignerViewModel instance)
         {
             var mergeToolModel = new ToolModelConflictItem
             {
                 ActivityDesignerViewModel = instance,
-                WorkflowDesignerViewModel = workflowDesignerViewModel,
                 MergeIcon = modelItem.GetImageSourceForTool(),
                 MergeDescription = node.Activity.GetDisplayName(),
                 UniqueId = node.Activity.UniqueID.ToGuid(),

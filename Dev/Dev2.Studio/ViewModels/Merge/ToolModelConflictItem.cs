@@ -59,11 +59,11 @@ namespace Dev2.ViewModels.Merge
         {
             if (!isChecked)
             {
-                RemoveActivity();
+                // RemoveActivity() 
             }
             else
             {
-                AddActivity();
+                // AddActivity()
             }
         }
         private void PropagateCheckedState(IConflictItem item, bool isChecked)
@@ -74,14 +74,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public void RemoveActivity()
-        {
-            WorkflowDesignerViewModel?.RemoveItem(this);
-        }
-
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
-
-        public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 
         [JsonIgnore]
         public ImageSource MergeIcon
@@ -111,7 +104,7 @@ namespace Dev2.ViewModels.Merge
             set => SetProperty(ref _isChecked, value);
         }
 
-        public void AddActivity()
+        public void AddActivity(IWorkflowDesignerViewModel WorkflowDesignerViewModel)
         {
             if (ModelItem != null)
             {

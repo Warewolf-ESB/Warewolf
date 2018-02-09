@@ -79,8 +79,6 @@ namespace Dev2.Core.Tests
                 //---------------Assert Precondition----------------
                 //---------------Execute Test ----------------------
                 //---------------Test Result -----------------------
-                Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
-                Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
             }
         }
 
@@ -122,12 +120,7 @@ namespace Dev2.Core.Tests
                 //---------------Assert Precondition----------------
                 Assert.AreNotSame(currentResourceModel, differenceResourceModel);
                 //---------------Execute Test ----------------------
-                Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
-                Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
                 //---------------Test Result -----------------------
-                var mergeToolModels = mergeWorkflowViewModel.CurrentConflictModel;
-                var differenceViewModel = mergeWorkflowViewModel.DifferenceConflictModel;
-                Assert.AreNotSame(mergeToolModels, differenceViewModel);
             }
         }
 
@@ -167,10 +160,8 @@ namespace Dev2.Core.Tests
                 //---------------Assert Precondition----------------
                 Assert.AreNotSame(currentResourceModel, differenceResourceModel);
                 //---------------Execute Test ----------------------
-                Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
-                Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
                 //---------------Test Result -----------------------
-                Assert.AreEqual(18, mergeWorkflowViewModel.Conflicts.Count);
+                Assert.AreEqual(18, mergeWorkflowViewModel.Conflicts.Count());
             }
         }
 
@@ -820,7 +811,6 @@ namespace Dev2.Core.Tests
             wfDesignerVm.Setup(p => p.RemoveItem(It.IsAny<IToolModelConflictItem>())).Verifiable();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
-                mergeWorkflowViewModel.CurrentConflictModel = null;
                 mergeWorkflowViewModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("SetupBindings", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 //---------------Assert Precondition----------------
@@ -829,7 +819,6 @@ namespace Dev2.Core.Tests
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { currentResourceModel.Object, differenceResourceModel.Object, mergeToolModel.Object });
                 //---------------Test Result -----------------------
                 mergeToolModel.VerifyAll();
-                Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
             }
         }
 
@@ -869,7 +858,6 @@ namespace Dev2.Core.Tests
             wfDesignerVm.Setup(p => p.RemoveItem(It.IsAny<IToolModelConflictItem>())).Verifiable();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
-                mergeWorkflowViewModel.DifferenceConflictModel = null;
                 mergeWorkflowViewModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("SetupBindings", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 //---------------Assert Precondition----------------
@@ -878,7 +866,6 @@ namespace Dev2.Core.Tests
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { currentResourceModel.Object, differenceResourceModel.Object, mergeToolModel.Object });
                 //---------------Test Result -----------------------
                 mergeToolModel.VerifyAll();
-                Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
             }
         }
 
@@ -1030,8 +1017,6 @@ namespace Dev2.Core.Tests
             diffFactory.Setup(p => p.DataListViewModel.WriteToResourceModel()).Verifiable();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
-                mergeWorkflowViewModel.CurrentConflictModel = currentFactory.Object;
-                mergeWorkflowViewModel.DifferenceConflictModel = diffFactory.Object;
                 //---------------Assert Precondition----------------
                 mergeWorkflowViewModel.HasVariablesConflict = true;
                 //---------------Execute Test ----------------------
@@ -1090,8 +1075,6 @@ namespace Dev2.Core.Tests
             diffFactory.Setup(p => p.IsVariablesChecked).Returns(true).Verifiable();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
-                mergeWorkflowViewModel.CurrentConflictModel = currentFactory.Object;
-                mergeWorkflowViewModel.DifferenceConflictModel = diffFactory.Object;
                 //---------------Assert Precondition----------------
                 mergeWorkflowViewModel.HasVariablesConflict = true;
                 //---------------Execute Test ----------------------

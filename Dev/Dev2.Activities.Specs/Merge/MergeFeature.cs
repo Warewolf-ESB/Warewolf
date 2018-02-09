@@ -166,7 +166,7 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenMergeConflictsCountIs(int conflictsCount)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var count = mergeVm.Conflicts.Count;
+            var count = mergeVm.Conflicts.Count();
             Assert.AreEqual(conflictsCount, count);
         }
 

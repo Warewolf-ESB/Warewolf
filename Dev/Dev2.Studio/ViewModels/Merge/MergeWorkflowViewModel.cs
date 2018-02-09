@@ -31,6 +31,8 @@ namespace Dev2.ViewModels.Merge
         bool _isVariablesEnabled;
         readonly IContextualResourceModel _resourceModel;
         readonly ToolModelConflictRowList conflictList;
+        readonly IConflictModelFactory modelFactoryCurrent;
+        readonly IConflictModelFactory modelFactoryDifferent;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadworkflowFromServer)
         {
@@ -43,15 +45,15 @@ namespace Dev2.ViewModels.Merge
             _resourceModel = currentResourceModel;
             var (currentTree, diffTree) = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, loadworkflowFromServer);
 
-            // NEW
-            var modelFactoryCurrent = new ConflictModelFactory(currentResourceModel, WorkflowDesignerViewModel);
-            var modelFactoryDiff = new ConflictModelFactory(differenceResourceModel, WorkflowDesignerViewModel);
+            modelFactoryCurrent = new ConflictModelFactory(currentResourceModel);
+            modelFactoryCurrent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
+            modelFactoryDifferent = new ConflictModelFactory(differenceResourceModel);
+            modelFactoryDifferent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
 
-            conflictList = new ToolModelConflictRowList(modelFactoryCurrent, modelFactoryDiff, currentTree, diffTree);
+            conflictList = new ToolModelConflictRowList(modelFactoryCurrent, modelFactoryDifferent, currentTree, diffTree);
 
-            Conflicts = new LinkedList<IConflictRow>();
-            var firstConflict = Conflicts.FirstOrDefault();
-            SetupBindings(currentResourceModel, differenceResourceModel, firstConflict as IToolConflictRow);
+            Conflicts = conflictList;
+            SetupNamesAndVariables(currentResourceModel, differenceResourceModel);
 
             var stateApplier = new ConflictListStateApplier(conflictList);
             stateApplier.SetConnectorSelectionsToCurrentState();
@@ -59,39 +61,8 @@ namespace Dev2.ViewModels.Merge
             var mergePreviewWorkflowStateApplier = new MergePreviewWorkflowStateApplier(conflictList);
         }
 
-        void SetupBindings(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, IToolConflictRow firstConflict)
+        void SetupNamesAndVariables(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
         {
-            if (CurrentConflictModel == null)
-            {
-                CurrentConflictModel = new ConflictModelFactory
-                {
-                    Model = firstConflict?.CurrentViewModel ?? new ToolModelConflictItem
-                    {
-                        WorkflowDesignerViewModel = WorkflowDesignerViewModel
-                    },
-                    WorkflowName = currentResourceModel.ResourceName,
-                    ServerName = currentResourceModel.Environment.Name
-                };
-
-                CurrentConflictModel.GetDataList(currentResourceModel);
-                CurrentConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
-            }
-
-            if (DifferenceConflictModel == null)
-            {
-                DifferenceConflictModel = new ConflictModelFactory
-                {
-                    Model = firstConflict?.DiffViewModel ?? new ToolModelConflictItem
-                    {
-                        WorkflowDesignerViewModel = WorkflowDesignerViewModel
-                    },
-                    WorkflowName = differenceResourceModel.ResourceName,
-                    ServerName = differenceResourceModel.Environment.Name
-                };
-                DifferenceConflictModel.GetDataList(differenceResourceModel);
-                DifferenceConflictModel.SomethingConflictModelChanged += SourceOnConflictModelChanged;
-            }
-
             HasMergeStarted = false;
 
             HasVariablesConflict = currentResourceModel.DataList != differenceResourceModel.DataList;
@@ -102,8 +73,8 @@ namespace Dev2.ViewModels.Merge
 
             WorkflowDesignerViewModel.CanViewWorkflowLink = false;
             WorkflowDesignerViewModel.IsTestView = true;
-            CurrentConflictModel.IsWorkflowNameChecked = !HasWorkflowNameConflict;
-            CurrentConflictModel.IsVariablesChecked = !HasVariablesConflict;
+            modelFactoryCurrent.IsWorkflowNameChecked = !HasWorkflowNameConflict;
+            modelFactoryCurrent.IsVariablesChecked = !HasVariablesConflict;
         }
 
         void SourceOnConflictModelChanged(object sender, IConflictModelFactory conflictModel)
@@ -124,7 +95,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     DataListViewModel = conflictModel.DataListViewModel;
                 }
-                var completeConflict = Conflicts.First.Value as IToolConflictRow;
+                var completeConflict = Conflicts.First() as IToolConflictRow;
                 completeConflict.IsStartNode = true;
                 if (completeConflict.IsChecked)
                 {
@@ -192,12 +163,9 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public LinkedList<IConflictRow> Conflicts { get; set; }
+        public IEnumerable<IConflictRow> Conflicts { get; set; }
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
-
-        public IConflictModelFactory CurrentConflictModel { get; set; }
-        public IConflictModelFactory DifferenceConflictModel { get; set; }
 
         public void Save()
         {
@@ -206,12 +174,12 @@ namespace Dev2.ViewModels.Merge
                 var resourceId = _resourceModel.ID;
                 if (HasWorkflowNameConflict)
                 {
-                    var resourceName = CurrentConflictModel.IsWorkflowNameChecked ? CurrentConflictModel.WorkflowName : DifferenceConflictModel.WorkflowName;
+                    var resourceName = modelFactoryCurrent.IsWorkflowNameChecked ? modelFactoryCurrent.WorkflowName : modelFactoryDifferent.WorkflowName;
                     _resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceId, resourceName);
                 }
                 if (HasVariablesConflict)
                 {
-                    _resourceModel.DataList = CurrentConflictModel.IsVariablesChecked ? CurrentConflictModel.DataListViewModel.WriteToResourceModel() : DifferenceConflictModel.DataListViewModel.WriteToResourceModel();
+                    _resourceModel.DataList = modelFactoryCurrent.IsVariablesChecked ? modelFactoryCurrent.DataListViewModel.WriteToResourceModel() : modelFactoryDifferent.DataListViewModel.WriteToResourceModel();
                 }
                 _resourceModel.WorkflowXaml = WorkflowDesignerViewModel.ServiceDefinition;
                 _resourceModel.Environment.ResourceRepository.SaveToServer(_resourceModel, "Merge");
@@ -252,8 +220,8 @@ namespace Dev2.ViewModels.Merge
         {
             get
             {
-                var canSave = CurrentConflictModel.IsWorkflowNameChecked || DifferenceConflictModel.IsWorkflowNameChecked;
-                canSave &= CurrentConflictModel.IsVariablesChecked || DifferenceConflictModel.IsVariablesChecked;
+                var canSave = modelFactoryCurrent.IsWorkflowNameChecked || modelFactoryDifferent.IsWorkflowNameChecked;
+                canSave &= modelFactoryCurrent.IsVariablesChecked || modelFactoryDifferent.IsVariablesChecked;
 
                 return canSave;
             }
@@ -336,6 +304,7 @@ namespace Dev2.ViewModels.Merge
         public ConflictListStateApplier(ToolModelConflictRowList conflicts)
         {
             this.conflicts = conflicts;
+            RegisterEventHandlerForConflictItemChanges();
         }
         public void SetConnectorSelectionsToCurrentState()
         {
@@ -347,6 +316,30 @@ namespace Dev2.ViewModels.Merge
                 }
             }
         }
+
+        // NEW
+        public void RegisterEventHandlerForConflictItemChanges()
+        {
+            foreach (var conflict in conflicts)
+            {
+                var innerConflictRow = conflict;
+
+                innerConflictRow.Current.NotifyIsCheckedChanged += (current, isChecked) =>
+                {
+                    Handler(current, innerConflictRow.Different);
+                };
+                innerConflictRow.Different.NotifyIsCheckedChanged += (diff, isChecked) =>
+                {
+                    Handler(innerConflictRow.Current, diff);
+                };
+            }
+        }
+
+        private void Handler(IConflictItem currentItem, IConflictItem diffItem)
+        {
+            // apply tool or connector state to workflow
+            
+        }
     }
     /// <summary>
     /// Apply selection state from a list of IConflict items
@@ -356,10 +349,10 @@ namespace Dev2.ViewModels.Merge
     {
         public MergePreviewWorkflowStateApplier(ToolModelConflictRowList conflictList)
         {
-            RegisterEventHandler(conflictList);
+            RegisterEventHandlerForConflictItemChanges(conflictList);
         }
 
-        public void RegisterEventHandler(ToolModelConflictRowList conflictList)
+        public void RegisterEventHandlerForConflictItemChanges(ToolModelConflictRowList conflictList)
         {
             foreach (var conflictRow in conflictList)
             {

@@ -402,8 +402,7 @@ namespace Dev2.Core.Tests.Merge
             mergeToolModel.Container = args.Container;
             var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             wfDesignerVm.Setup(p => p.AddItem(It.IsAny<IToolModelConflictItem>()));
-
-            mergeToolModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
+            
 
             var methodToRun = typeof(ToolModelConflictItem).GetMethod("AddActivity", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             //---------------Assert Precondition----------------
