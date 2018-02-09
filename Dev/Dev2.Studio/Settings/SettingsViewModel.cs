@@ -590,10 +590,11 @@ namespace Dev2.Settings
                     }
                     return IsSaved;
                 }
-
+                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsPermissionsErrorMsg);
                 _popupController.ShowSaveSettingsPermissionsErrorMsg();
                 return false;
             }
+            ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsNotReachableErrorMsg);
             _popupController.ShowSaveSettingsNotReachableErrorMsg();
             return false;
         }
@@ -604,6 +605,7 @@ namespace Dev2.Settings
             {
                 IsSaved = false;
                 IsDirty = true;
+                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateServerPermissions);
                 _popupController.ShowHasDuplicateServerPermissions();
                 return false;
             }
@@ -616,6 +618,7 @@ namespace Dev2.Settings
             {
                 IsSaved = false;
                 IsDirty = true;
+                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsInvalidPermissionEntry);
                 _popupController.ShowInvalidResourcePermission();
                 return false;
             }
@@ -627,6 +630,7 @@ namespace Dev2.Settings
             {
                 IsSaved = false;
                 IsDirty = true;
+                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateResourcePermissions);
                 _popupController.ShowHasDuplicateResourcePermissions();
                 return false;
             }

@@ -285,6 +285,8 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
 
             var environment = new Mock<IServer>();
@@ -305,6 +307,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(viewModel.HasErrors);
             Assert.AreEqual(@"Error while saving: You don't have permission to change settings on this server.
 You need Administrator permission.", viewModel.Errors);
+            popupController.Verify(controller => controller.ShowSaveSettingsPermissionsErrorMsg(), Times.Once);
         }
 
         [TestMethod]
@@ -327,7 +330,9 @@ You need Administrator permission.", viewModel.Errors);
                 ResourceID = Guid.Empty,
                 IsServer = true
             });
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
+            var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
@@ -356,12 +361,10 @@ You need Administrator permission.", viewModel.Errors);
             //------------Assert Results-------------------------            
             Assert.IsTrue(viewModel.IsDirty);
             Assert.IsFalse(viewModel.IsSaved);
-            Assert.IsTrue(viewModel.HasErrors);
-            
+            Assert.IsTrue(viewModel.HasErrors);            
             var expected = StringResources.SaveSettingsDuplicateServerPermissions;
-
-
-            Assert.AreEqual(expected.ToString(CultureInfo.InvariantCulture), viewModel.Errors.ToString(CultureInfo.InvariantCulture));
+            Assert.AreEqual(expected, viewModel.Errors);
+            popupController.Verify(controller => controller.ShowHasDuplicateResourcePermissions(), Times.Once);
         }
 
 
@@ -386,8 +389,9 @@ You need Administrator permission.", viewModel.Errors);
                 ResourceID = resourceId,
                 IsServer = false,
             });
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
-
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
+            var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
             var authService = new Mock<IAuthorizationService>();
@@ -412,13 +416,14 @@ You need Administrator permission.", viewModel.Errors);
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
 
-            //------------Assert Results-------------------------            
+            //------------Assert Results-------------------------
             Assert.IsTrue(viewModel.IsDirty);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
             Assert.AreEqual(@"There are duplicate permissions for a resource, 
     i.e. one resource has permissions set twice with the same group. 
     Please clear the duplicates before saving.", viewModel.Errors);
+            popupController.Verify(controller => controller.ShowHasDuplicateResourcePermissions(), Times.Once);
         }
 
         [TestMethod]
@@ -428,7 +433,9 @@ You need Administrator permission.", viewModel.Errors);
         {
             //------------Setup for test--------------------------
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
+            var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(false);
@@ -446,6 +453,7 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
             Assert.AreEqual("Error while saving: Server unreachable.", viewModel.Errors);
+            popupController.Verify(controller => controller.ShowSaveSettingsNotReachableErrorMsg(), Times.Once);
         }
 
         [TestMethod]
