@@ -227,11 +227,10 @@ namespace Dev2.Services.Sql
 
         #region Connect
 
-        public bool Connect(string connectionString)
+        public void Connect(string connectionString)
         {
             _connection = (NpgsqlConnection)_factory.CreateConnection(connectionString);
             _connection.Open();
-            return true;
         }
 
         public bool Connect(string connectionString, CommandType commandType, string commandText)

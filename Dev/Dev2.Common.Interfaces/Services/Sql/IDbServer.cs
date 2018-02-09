@@ -19,7 +19,7 @@ namespace Dev2.Common.Interfaces.Services.Sql
         bool IsConnected { get; }
         string ConnectionString { get; }
 
-        bool Connect(string connectionString);
+        void Connect(string connectionString);
 
         void BeginTransaction();
 

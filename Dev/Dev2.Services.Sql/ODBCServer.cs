@@ -102,15 +102,13 @@ namespace Dev2.Services.Sql
             }
         }
 
-        public bool Connect(string connectionString)
+        public void Connect(string connectionString)
         {
             if (!Testing)
             {
                 _connection = (OdbcConnection)_factory.CreateConnection(connectionString);
                 _connection.Open();
             }
-
-            return true;
         }
 
         public IDbCommand CreateCommand()

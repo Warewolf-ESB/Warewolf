@@ -28,7 +28,7 @@ namespace Dev2.Services.Sql
         public void Dispose()
         {
             _transaction?.Dispose();
-            _connection?.Dispose();
+            _connection?.Dispose();            
             _connection = null;
         }
 
@@ -44,13 +44,13 @@ namespace Dev2.Services.Sql
         }
 
         public bool IsConnected { get; }
-        public string ConnectionString { get; }
+        public string ConnectionString { get => _connectionString; }
         string _connectionString;
         ISqlConnection _connection;
         IDbTransaction _transaction;
 
 
-        public bool Connect(string connectionString)
+        public void Connect(string connectionString)
         {
             _connectionString = connectionString;
             _connection = _connectionBuilder.BuildConnection(_connectionString);
@@ -58,14 +58,17 @@ namespace Dev2.Services.Sql
             try
             {
                 _connection.TryOpen();
-                return true;
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                return false;
+                throw new WarewolfDbException(e.Message);
             }
+        }
 
+        public void Connect()
+        {
+            Connect(_connectionString);            
         }
 
         public void BeginTransaction()
@@ -112,7 +115,7 @@ namespace Dev2.Services.Sql
                 if (_connection?.State != ConnectionState.Open)
                 {
                     _connection = _connectionBuilder.BuildConnection(_connectionString);
-                    _connection.Open();
+                    _connection.EnsureOpen();
                     var dbCommand = _connection.CreateCommand();
                     TrySetTransaction(_transaction, dbCommand);
                     dbCommand.CommandText = command.CommandText;
@@ -173,7 +176,7 @@ namespace Dev2.Services.Sql
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 var fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
-                _connection.TryOpen();
+                Connect();
                 var sqlCommand = _connection.CreateCommand();
                 TrySetTransaction(_transaction, sqlCommand);
                 sqlCommand.CommandText = fullProcedureName;
@@ -216,6 +219,7 @@ namespace Dev2.Services.Sql
             }
         }
 
+       
         public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
