@@ -17,13 +17,12 @@ using System.Windows.Media;
 
 namespace Dev2.Common.Interfaces
 {
-    //TODO: Change name to IToolModelConflictItem
-    public interface IMergeToolModel : IConflictItem
+    public interface IToolModelConflictItem : IConflictItem
     {
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
-        IMergeToolModel Parent { get; set; }
-        ObservableCollection<IMergeToolModel> Children { get; set; }
+        IToolModelConflictItem Parent { get; set; }
+        ObservableCollection<IToolModelConflictItem> Children { get; set; }
         Guid UniqueId { get; set; }
         string ParentDescription { get; set; }
         bool HasParent { get; set; }
@@ -32,9 +31,9 @@ namespace Dev2.Common.Interfaces
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
         bool IsMergeVisible { get; set; }
-        IToolConflict Container { get; set; }
+        IToolConflictRow Container { get; set; }
         bool IsTrueArm { get; set; }
         string NodeArmDescription { get; set; }
     }
-    public delegate void ToolModelChangedHandler(IMergeToolModel args);
+    public delegate void ToolModelChangedHandler(IToolModelConflictItem args);
 }

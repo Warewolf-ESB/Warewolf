@@ -39,10 +39,10 @@ namespace Dev2.Studio.Interfaces
 
         string GetWorkflowInputs(string field);
         void CreateBlankWorkflow();
-        void RemoveItem(IMergeToolModel model);
-        void AddItem(IMergeToolModel model);
+        void RemoveItem(IToolModelConflictItem model);
+        void AddItem(IToolModelConflictItem model);
         void RemoveStartNodeConnection();
-        void AddStartNode(IMergeToolModel model);
+        void AddStartNode(IToolModelConflictItem model);
         void LinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key);
         void DeLinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key);
         void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);

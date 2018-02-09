@@ -171,7 +171,7 @@ namespace Dev2.Core.Tests.Merge
             var completeConflict = new ToolConflictRow();
 
             //------------Execute Test---------------------------
-            var result = completeConflict.GetNextConflict();
+            var result = completeConflict.GetNext();
             //------------Assert Results-------------------------
             Assert.IsNull(result);
         }
@@ -185,7 +185,7 @@ namespace Dev2.Core.Tests.Merge
             var value = new ToolConflictRow();
             completeConflict.Children.AddFirst(value);
             //------------Execute Test---------------------------
-            var result = completeConflict.GetNextConflict();
+            var result = completeConflict.GetNext();
             //------------Assert Results-------------------------
             Assert.AreSame(value, result);
             Assert.IsNotNull(result);
@@ -202,11 +202,11 @@ namespace Dev2.Core.Tests.Merge
             completeConflict.Children.AddFirst(value);
             value.Children.AddFirst(value1);
             //------------Execute Test---------------------------
-            var result = completeConflict.GetNextConflict();
+            var result = completeConflict.GetNext();
             Assert.AreSame(value, result);
             Assert.IsNotNull(result);
             //------------Assert Results-------------------------
-             result = completeConflict.GetNextConflict();
+             result = completeConflict.GetNext();
             Assert.AreSame(value1, result);
             Assert.IsNotNull(result);
 
@@ -299,24 +299,24 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual(default(Guid), model.UniqueId);
             Assert.AreEqual(default(bool), model.IsChecked);
             Assert.AreEqual(default(bool), model.IsContainerTool);
-            Assert.AreEqual(default(IMergeToolModel), model.DiffViewModel);
-            Assert.AreEqual(default(IMergeToolModel), model.CurrentViewModel);
-            Assert.AreEqual(default(IToolConflict), model.Parent);
+            Assert.AreEqual(default(IToolModelConflictItem), model.DiffViewModel);
+            Assert.AreEqual(default(IToolModelConflictItem), model.CurrentViewModel);
+            Assert.AreEqual(default(IToolConflictRow), model.Parent);
             //------------Assert Results-------------------------
 
             model.UniqueId = Guid.NewGuid();
             model.IsChecked = true;
             model.IsContainerTool = true;
-            model.Parent = new Mock<IToolConflict>().Object;
-            model.CurrentViewModel = new Mock<IMergeToolModel>().Object;
-            model.DiffViewModel = new Mock<IMergeToolModel>().Object;
+            model.Parent = new Mock<IToolConflictRow>().Object;
+            model.CurrentViewModel = new Mock<IToolModelConflictItem>().Object;
+            model.DiffViewModel = new Mock<IToolModelConflictItem>().Object;
 
             Assert.AreNotEqual(default(Guid), model.UniqueId);
             Assert.AreNotEqual(default(bool), model.IsChecked);
             Assert.AreNotEqual(default(bool), model.IsContainerTool);
-            Assert.AreNotEqual(default(IToolConflict), model.Parent);
-            Assert.AreNotEqual(default(IMergeToolModel), model.DiffViewModel);
-            Assert.AreNotEqual(default(IMergeToolModel), model.CurrentViewModel);
+            Assert.AreNotEqual(default(IToolConflictRow), model.Parent);
+            Assert.AreNotEqual(default(IToolModelConflictItem), model.DiffViewModel);
+            Assert.AreNotEqual(default(IToolModelConflictItem), model.CurrentViewModel);
 
         }
     }

@@ -20,7 +20,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsNotNull(model.Children);
@@ -32,7 +32,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -55,7 +55,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -101,7 +101,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -124,7 +124,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -147,7 +147,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel
+            var model = new ToolModelConflictItem
             {
                 Container = new ToolConflictRow()
             };
@@ -180,7 +180,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -204,7 +204,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -228,7 +228,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -242,7 +242,7 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsNotNull(model);
             Assert.IsNotNull(model.Children);
             Assert.IsFalse(model.IsMergeVisible);
-            model.Parent = new MergeToolModel();
+            model.Parent = new ToolModelConflictItem();
             Assert.IsTrue(wasCalled);
         }
 
@@ -252,7 +252,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -276,7 +276,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -302,7 +302,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -327,7 +327,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -351,21 +351,21 @@ namespace Dev2.Core.Tests.Merge
         public void MergeToolModel_AutoProperties_tests()
         {
             //------------Setup for test--------------------------
-            var model = new MergeToolModel();
+            var model = new ToolModelConflictItem();
             //------------Execute Test---------------------------
             Assert.AreEqual(default(bool), model.IsTrueArm);
             Assert.AreEqual(default(Point), model.NodeLocation);
             Assert.AreEqual(default(FlowNode), model.FlowNode);
             Assert.AreEqual(default(Guid), model.UniqueId);
-            Assert.AreEqual(default(IMergeToolModel), model.Parent);
-            Assert.AreEqual(default(IToolConflict), model.Container);
+            Assert.AreEqual(default(IToolModelConflictItem), model.Parent);
+            Assert.AreEqual(default(IToolConflictRow), model.Container);
             Assert.AreEqual(default(string), model.NodeArmDescription);
             //------------Assert Results-------------------------
             model.IsTrueArm = true;
             model.NodeLocation = new Point(1, 1);
             model.FlowNode = new FlowStep();
             model.UniqueId = Guid.NewGuid();
-            model.Parent = new MergeToolModel();
+            model.Parent = new ToolModelConflictItem();
             model.Container = new ToolConflictRow();
             model.Container.HasConflict = true;
             model.NodeArmDescription = "";
@@ -373,8 +373,8 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreNotEqual(default(Point), model.NodeLocation);
             Assert.AreNotEqual(default(FlowNode), model.FlowNode);
             Assert.AreNotEqual(default(Guid), model.UniqueId);
-            Assert.AreNotEqual(default(IMergeToolModel), model.Parent);
-            Assert.AreNotEqual(default(IToolConflict), model.Container);
+            Assert.AreNotEqual(default(IToolModelConflictItem), model.Parent);
+            Assert.AreNotEqual(default(IToolConflictRow), model.Container);
             Assert.AreNotEqual(default(string), model.NodeArmDescription);
         }
 
@@ -383,7 +383,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //---------------Set up test pack-------------------
             var id = Guid.NewGuid();
-            var mergeToolModel = new MergeToolModel
+            var mergeToolModel = new ToolModelConflictItem
             {
                 UniqueId = id,
                 IsChecked = true,
@@ -391,7 +391,7 @@ namespace Dev2.Core.Tests.Merge
                 Container = new ToolConflictRow { IsChecked = true }
             };
             object sender = mergeToolModel;
-            IMergeToolModel args = new MergeToolModel();
+            IToolModelConflictItem args = new ToolModelConflictItem();
             args.Container = new ToolConflictRow
             {
                 UniqueId = id,
@@ -401,17 +401,17 @@ namespace Dev2.Core.Tests.Merge
             };
             mergeToolModel.Container = args.Container;
             var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
-            wfDesignerVm.Setup(p => p.AddItem(It.IsAny<IMergeToolModel>()));
+            wfDesignerVm.Setup(p => p.AddItem(It.IsAny<IToolModelConflictItem>()));
 
             mergeToolModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
 
-            var methodToRun = typeof(MergeToolModel).GetMethod("AddActivity", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            var methodToRun = typeof(ToolModelConflictItem).GetMethod("AddActivity", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodToRun);
             //---------------Execute Test ----------------------
             var aaaa = methodToRun.Invoke(mergeToolModel, new object[] { });
             //---------------Test Result -----------------------
-            wfDesignerVm.Verify(p => p.AddItem(It.IsAny<IMergeToolModel>()), Times.Exactly(1));
+            wfDesignerVm.Verify(p => p.AddItem(It.IsAny<IToolModelConflictItem>()), Times.Exactly(1));
         }
     }
 }

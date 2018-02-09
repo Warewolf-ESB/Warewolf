@@ -82,7 +82,7 @@ namespace Dev2.Core.Tests.Workflows
             dHelper.Setup(p => p.GetService<ModelService>(It.IsAny<WorkflowDesigner>())).Returns(modelService.Object).Verifiable();
             dHelper.Setup(p => p.GetService<ViewStateService>(It.IsAny<WorkflowDesigner>())).Returns(viewStateService.Object);
             var wd = new WorkflowDesignerViewModelMock(dHelper.Object, crm.Object, wh.Object, eventAggregator.Object, _moq.Object);
-            var obj = new Mock<IMergeToolModel>();
+            var obj = new Mock<IToolModelConflictItem>();
             wd.AddItem(obj.Object);
             dHelper.VerifyAll();
             modelService.VerifyAll();

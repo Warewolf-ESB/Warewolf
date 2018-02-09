@@ -2745,7 +2745,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void RemoveItem(IMergeToolModel model)
+        public void RemoveItem(IToolModelConflictItem model)
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
@@ -2987,7 +2987,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         
         protected bool _isPaste;
 
-        public void AddItem(IMergeToolModel model)
+        public void AddItem(IToolModelConflictItem model)
         {
             var bbb = _workflowDesignerHelper.GetService<ModelService>(_wd);
             var root = bbb.Root;
@@ -3063,7 +3063,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void AddStartNode(IMergeToolModel model)
+        public void AddStartNode(IToolModelConflictItem model)
         {
             if (model == null)
             {

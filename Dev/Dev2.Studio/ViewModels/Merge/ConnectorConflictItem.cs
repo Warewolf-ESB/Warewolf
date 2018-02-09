@@ -14,35 +14,49 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class MergeArmConnectorConflict : ConflictItem, IConnectorConflictItem
+    public class ConnectorConflictItem : ConflictItem, IConnectorConflictItem
     {
         public string ArmDescription { get; set; }
         public string LeftArmDescription { get; set; }
         public string RightArmDescription { get; set; }
         public Guid SourceUniqueId { get; set; }
         public Guid DestinationUniqueId { get; set; }
-        public IArmConnectorConflict Container { get; set; }
+        public IConnectorConflictRow ConnectorConflictRow { get; set; }
         public string Key { get; set; }
         bool _isChecked;
 
-        public event Action<IArmConnectorConflict, bool> OnChecked;
+        // Add AutoSelect IsChecked
+        public void SetAutoChecked()
+        {
+            // TODO: call this from state applier
+            IsChecked = true;
+            AutoChecked = true;
+        }
+        public bool AutoChecked { get; set; }
+
+        public string Grouping => SourceUniqueId + Key ?? "";
+
+        public event Action<IConnectorConflictRow, bool> OnChecked;
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 
         public bool IsChecked
         {
             get => _isChecked;
-            set => SetProperty(ref _isChecked, value);
+            set {
+                SetProperty(ref _isChecked, value);
+                AutoChecked = false;
+            }
         }
 
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
-        public MergeArmConnectorConflict(IArmConnectorConflict container)
+        public ConnectorConflictItem(IConnectorConflictRow container)
         {
-            Container = container;
+            ConnectorConflictRow = container;
             RegisterEventHandlers();
         }
-        public MergeArmConnectorConflict(string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key, IArmConnectorConflict container)
+        public ConnectorConflictItem(string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key, IConnectorConflictRow container)
         {
             ArmDescription = armDescription;
             if (!string.IsNullOrWhiteSpace(armDescription))
@@ -54,7 +68,7 @@ namespace Dev2.ViewModels.Merge
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
             Key = key;
-            Container = container;
+            ConnectorConflictRow = container;
 
             RegisterEventHandlers();
         }
@@ -79,7 +93,7 @@ namespace Dev2.ViewModels.Merge
                 if (Key == "Start")
                 {
                     WorkflowDesignerViewModel?.RemoveStartNodeConnection();
-                    // TODO: Pass in IMergeToolModel
+                    // TODO: Pass in IToolModelConflictItem
                     WorkflowDesignerViewModel?.AddStartNode(null);
                 }
                 if (string.IsNullOrEmpty(ArmDescription))
@@ -91,7 +105,7 @@ namespace Dev2.ViewModels.Merge
                     LinkActivities();
                 }
 
-                OnChecked?.Invoke(Container, _isChecked);
+                OnChecked?.Invoke(ConnectorConflictRow, _isChecked);
             }
         }
 

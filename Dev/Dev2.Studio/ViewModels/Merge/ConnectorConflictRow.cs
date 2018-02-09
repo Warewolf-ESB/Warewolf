@@ -13,7 +13,7 @@ using Dev2.Common.Interfaces;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class ConnectorConflictRow : ConflictRow, IArmConnectorConflict
+    public class ConnectorConflictRow : ConflictRow, IConnectorConflictRow
     {
         bool _hasConflict;
         public IConnectorConflictItem CurrentArmConnector { get; set; }
@@ -38,7 +38,7 @@ namespace Dev2.ViewModels.Merge
 
         public override bool IsEmptyItemSelected { get; set; }
         
-        public bool Equals(IArmConnectorConflict other)
+        public bool Equals(IConnectorConflictRow other)
         {
             if (other == null)
             {
@@ -60,7 +60,7 @@ namespace Dev2.ViewModels.Merge
             {
                 return false;
             }
-            return Equals((IArmConnectorConflict)obj);
+            return Equals((IConnectorConflictRow)obj);
         }
 
         public override int GetHashCode()
