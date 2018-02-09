@@ -287,7 +287,7 @@ namespace Dev2.Core.Tests.Settings
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
             var popupController = new Mock<IPopupController>();
             popupController.Setup(controller => controller.Show()).Returns(MessageBoxResult.Yes);
-            var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), null, securityViewModel);
+            var viewModel = CreateSettingsViewModel(popupController.Object, CreateSettings().ToString(), null, securityViewModel);
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
@@ -364,7 +364,7 @@ You need Administrator permission.", viewModel.Errors);
             Assert.IsTrue(viewModel.HasErrors);            
             var expected = StringResources.SaveSettingsDuplicateServerPermissions;
             Assert.AreEqual(expected, viewModel.Errors);
-            popupController.Verify(controller => controller.ShowHasDuplicateResourcePermissions(), Times.Once);
+            popupController.Verify(controller => controller.ShowHasDuplicateServerPermissions(), Times.Once);
         }
 
 
