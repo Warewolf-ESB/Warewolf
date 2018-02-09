@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
@@ -65,8 +64,8 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public List<string> WatermarkText
         {
-            get { return (List<string>) GetValue(WatermarkTextProperty); }
-            set { SetValue(WatermarkTextProperty, value); }
+            get => (List<string>)GetValue(WatermarkTextProperty);
+            set => SetValue(WatermarkTextProperty, value);
         }
 
         #endregion WatermarkText Property
@@ -80,8 +79,8 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public List<int> WatermarkIndexes
         {
-            get { return (List<int>) GetValue(WatermarkIndexesProperty); }
-            set { SetValue(WatermarkIndexesProperty, value); }
+            get => (List<int>)GetValue(WatermarkIndexesProperty);
+            set => SetValue(WatermarkIndexesProperty, value);
         }
 
         #endregion WatermarkIndexes Property
@@ -97,11 +96,15 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public string WatermarkPropertyName
         {
-            get { return (string) GetValue(WatermarkPropertyNameProperty); }
-            set { SetValue(WatermarkPropertyNameProperty, value); }
+            get => (string)GetValue(WatermarkPropertyNameProperty);
+            set => SetValue(WatermarkPropertyNameProperty, value);
         }
 
-        public INotifyCollectionChanged Observable { get => observable; set => observable = value; }
+        public INotifyCollectionChanged Observable
+        {
+            get => observable;
+            set => observable = value;
+        }
 
         #endregion WatermarkPropertyNames
 
@@ -113,11 +116,6 @@ namespace Dev2.Studio.AppResources.Behaviors
         {
             if (dataGridItems != null && !string.IsNullOrWhiteSpace(WatermarkPropertyName) && WatermarkText != null)
             {
-                if (WatermarkIndexes == null)
-                {
-                    WatermarkIndexes = new List<int>();
-                }
-
                 for (int i = 0; i < WatermarkText.Count; i++)
                 {
                     if (i == WatermarkIndexes.Count)
@@ -142,30 +140,6 @@ namespace Dev2.Studio.AppResources.Behaviors
                 WatermarkSential.IsWatermarkBeingApplied = true;
                 var modelProperty = mi.Properties[WatermarkPropertyName];
                 modelProperty?.SetValue(watermarkIndex != -1 ? WatermarkText[watermarkIndex] : "");
-            }
-            else
-            {
-                var pi = dataGridItems[i].GetType().GetProperty(WatermarkPropertyName);
-
-                if (pi != null)
-                {
-                    UpdateWatermarkProperty(i, pi);
-                }
-            }
-        }
-
-        private void UpdateWatermarkProperty(int i, PropertyInfo pi)
-        {
-            if (WatermarkText.Count > i && dataGridItems.Count > i)
-            {
-                pi.SetValue(dataGridItems[i], WatermarkText[i], null);
-            }
-            else
-            {
-                if (i == dataGridItems.Count - 1)
-                {
-                    pi.SetValue(dataGridItems[i], "", null);
-                }
             }
         }
 
@@ -220,7 +194,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        void notifyPropertyChangedImplimentor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        internal void notifyPropertyChangedImplimentor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Items" || e.PropertyName == "ItemsSource")
             {
