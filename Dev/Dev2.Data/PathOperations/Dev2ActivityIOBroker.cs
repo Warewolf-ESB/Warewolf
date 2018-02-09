@@ -205,19 +205,18 @@ namespace Dev2.PathOperations
 
         public string Delete(IActivityIOOperationsEndPoint src)
         {
-            var result = ResultOk;
             try
             {
                 if (!src.Delete(src.IOPath))
                 {
-                    result = ResultBad;
+                    return ResultBad;
                 }
             }
             finally
             {
                 _filesToDelete.ForEach(RemoveTmpFile);
             }
-            return result;
+            return ResultOk;
         }
 
         public IList<IActivityIOPath> ListDirectory(IActivityIOOperationsEndPoint src, ReadTypes readTypes)

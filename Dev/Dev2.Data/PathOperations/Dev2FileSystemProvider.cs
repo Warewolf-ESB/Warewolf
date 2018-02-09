@@ -198,8 +198,7 @@ namespace Dev2.PathOperations
             {
                 using (var stream = new FileStream(destination.Path, FileMode.Append))
                 {
-                    var data = src.ToByteArray();
-                    stream.Write(data, 0, data.Length);
+                    src.CopyTo(stream);
                 }
                 result = (int)src.Length;
             }
@@ -224,7 +223,7 @@ namespace Dev2.PathOperations
 
                 if (!RequiresAuth(src))
                 {
-                    // We need sense check the value passed in ;)
+                    // We need sense check the value passed in
                     result = DeleteHelper.Delete(src.Path);
                 }
                 else
@@ -241,9 +240,7 @@ namespace Dev2.PathOperations
                             using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
                                 // Do the operation here
-
                                 result = DeleteHelper.Delete(src.Path);
-
 
                                 // remove impersonation now
                                 impersonatedUser.Undo();
@@ -560,7 +557,6 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        // we have a wild-char path ;)
                         var baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
                         var pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
 
@@ -575,8 +571,9 @@ namespace Dev2.PathOperations
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     throw new Exception(string.Format(ErrorResource.DirectoryNotFound, src.Path));
                 }
             }
@@ -608,7 +605,6 @@ namespace Dev2.PathOperations
                                     }
                                     else
                                     {
-                                        // we have a wild-char path ;)
                                         var baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
                                         var pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
 
@@ -624,8 +620,9 @@ namespace Dev2.PathOperations
                                     }
 
                                 }
-                                catch (Exception)
+                                catch (Exception ex)
                                 {
+                                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                                     throw new Exception(string.Format(ErrorResource.DirectoryNotFound, src.Path));
                                 }
 
@@ -723,8 +720,9 @@ namespace Dev2.PathOperations
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, IOPath.Username));
             }
         }

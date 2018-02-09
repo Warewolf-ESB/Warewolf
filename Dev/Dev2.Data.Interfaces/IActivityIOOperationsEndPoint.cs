@@ -41,8 +41,7 @@ namespace Dev2.Data.Interfaces
         
         IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src);
         
-        IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src);
-        void WriteDataToFile(IDev2PutRawOperationTO args, string path, IFile fileWrapper);
+        IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src);        
 
     }
 }
