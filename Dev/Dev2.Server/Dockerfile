@@ -8,4 +8,4 @@ EXPOSE 3143
 RUN mkdir "C:\Program Files (x86)\Warewolf\Server"
 ADD [".", "Program Files (x86)/Warewolf/Server"]
 RUN sc create "Warewolf Server" binPath= "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe" start= auto
-ENTRYPOINT ping -t 4.2.2.3
+CMD ping -t 4.2.2.3
