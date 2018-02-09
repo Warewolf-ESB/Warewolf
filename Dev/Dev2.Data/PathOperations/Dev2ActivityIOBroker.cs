@@ -81,26 +81,7 @@ namespace Dev2.PathOperations
                 if (dst.RequiresLocalTmpStorage())
                 {
                     var tmp = CreateTmpFile();
-                    switch (args.WriteType)
-                    {
-                        case WriteType.AppendBottom:
-                            using (var s = dst.Get(dst.IOPath, _filesToDelete))
-                            {
-                                _fileWrapper.WriteAllBytes(tmp, s.ToByteArray());
-                                _fileWrapper.AppendAllText(tmp, args.FileContents);
-                            }
-                            break;
-                        case WriteType.AppendTop:
-                            using (var s = dst.Get(dst.IOPath, _filesToDelete))
-                            {
-                                _fileWrapper.WriteAllText(tmp, args.FileContents);
-                                _common.AppendToTemp(s, tmp);
-                            }
-                            break;
-                        default:
-                            _fileWrapper.AppendAllText(tmp, args.FileContents);
-                            break;
-                    }
+                    WriteToLocalTempStorage(dst, args, tmp);
                     result = MoveTmpFileToDestination(dst, tmp, result);
                 }
                 else
@@ -108,27 +89,7 @@ namespace Dev2.PathOperations
                     if (dst.PathExist(dst.IOPath))
                     {
                         var tmp = CreateTmpFile();
-                        switch (args.WriteType)
-                        {
-                            case WriteType.AppendBottom:
-                                var fileContent = Encoding.ASCII.GetBytes(args.FileContents);
-                                var putResult = PerformPut(fileContent, dst, false);
-                                result = putResult ? ResultOk : ResultBad;
-                                break;
-                            case WriteType.AppendTop:
-                                using (var s = dst.Get(dst.IOPath, _filesToDelete))
-                                {
-                                    _fileWrapper.WriteAllText(tmp, args.FileContents);
-                                    _common.AppendToTemp(s, tmp);
-                                    result = MoveTmpFileToDestination(dst, tmp, result);
-                                }
-                                break;
-                            case WriteType.Overwrite:
-                            default:
-                                var res = WriteDataToFile(args, dst);
-                                result = res ? ResultOk : ResultBad;
-                                break;
-                        }
+                        result = WriteToRemoteTempStorage(dst, args, result, tmp);
                         RemoveTmpFile(tmp);
                     }
                     else
@@ -149,6 +110,57 @@ namespace Dev2.PathOperations
                 }
             }
             return result;
+        }
+
+        string WriteToRemoteTempStorage(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args, string result, string tmp)
+        {
+            switch (args.WriteType)
+            {
+                case WriteType.AppendBottom:
+                    var fileContent = Encoding.ASCII.GetBytes(args.FileContents);
+                    var putResult = PerformPut(fileContent, dst, false);
+                    result = putResult ? ResultOk : ResultBad;
+                    break;
+                case WriteType.AppendTop:
+                    using (var s = dst.Get(dst.IOPath, _filesToDelete))
+                    {
+                        _fileWrapper.WriteAllText(tmp, args.FileContents);
+                        _common.AppendToTemp(s, tmp);
+                        result = MoveTmpFileToDestination(dst, tmp, result);
+                    }
+                    break;
+                case WriteType.Overwrite:
+                default:
+                    var res = WriteDataToFile(args, dst);
+                    result = res ? ResultOk : ResultBad;
+                    break;
+            }
+
+            return result;
+        }
+
+        void WriteToLocalTempStorage(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args, string tmp)
+        {
+            switch (args.WriteType)
+            {
+                case WriteType.AppendBottom:
+                    using (var s = dst.Get(dst.IOPath, _filesToDelete))
+                    {
+                        _fileWrapper.WriteAllBytes(tmp, s.ToByteArray());
+                        _fileWrapper.AppendAllText(tmp, args.FileContents);
+                    }
+                    break;
+                case WriteType.AppendTop:
+                    using (var s = dst.Get(dst.IOPath, _filesToDelete))
+                    {
+                        _fileWrapper.WriteAllText(tmp, args.FileContents);
+                        _common.AppendToTemp(s, tmp);
+                    }
+                    break;
+                default:
+                    _fileWrapper.AppendAllText(tmp, args.FileContents);
+                    break;
+            }
         }
 
         private bool PerformPut(byte[] fileContent, IActivityIOOperationsEndPoint dst, bool overwrite)
