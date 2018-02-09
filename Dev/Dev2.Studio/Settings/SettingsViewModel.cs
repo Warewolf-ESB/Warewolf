@@ -561,6 +561,10 @@ namespace Dev2.Settings
                     {
                         return false;
                     }
+                    if (!ValidateResourcePermissions())
+                    {
+                        return false;
+                    }
 
                     SecurityViewModel.Save(Settings.Security);
                     if (LogSettingsViewModel.IsDirty)
@@ -587,10 +591,10 @@ namespace Dev2.Settings
                     return IsSaved;
                 }
 
-                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsPermissionsErrorMsg);
+                _popupController.ShowSaveSettingsPermissionsErrorMsg();
                 return false;
             }
-            ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsNotReachableErrorMsg);
+            _popupController.ShowSaveSettingsNotReachableErrorMsg();
             return false;
         }
 
@@ -600,19 +604,30 @@ namespace Dev2.Settings
             {
                 IsSaved = false;
                 IsDirty = true;
-                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateServerPermissions);
+                _popupController.ShowHasDuplicateServerPermissions();
                 return false;
             }
             return true;
         }
 
+        bool ValidateResourcePermissions()
+        {
+            if (SecurityViewModel.HasInvalidResourcePermission())
+            {
+                IsSaved = false;
+                IsDirty = true;
+                _popupController.ShowInvalidResourcePermission();
+                return false;
+            }
+            return true;
+        }
         bool ValidateDuplicateResourcePermissions()
         {
             if (SecurityViewModel.HasDuplicateResourcePermissions())
             {
                 IsSaved = false;
                 IsDirty = true;
-                ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateResourcePermissions);
+                _popupController.ShowHasDuplicateResourcePermissions();
                 return false;
             }
             return true;

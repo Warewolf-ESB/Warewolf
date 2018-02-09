@@ -9,13 +9,14 @@
 */
 
 using System;
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Interfaces.PopupController;
 using Dev2.Studio.ViewModels.Dialogs;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
+using Dev2.Studio.Core;
 
 namespace Dev2.Studio.Controller
 {
@@ -535,7 +536,76 @@ namespace Dev2.Studio.Controller
             ApplyToAll = false;
             return Show();
         }
-
+        public MessageBoxResult ShowInvalidResourcePermission()
+        {
+            Header = StringResources.SaveSettingErrorPrefix;
+            Description = StringResources.SaveSettingsInvalidPermissionEntry;
+            Buttons = MessageBoxButton.OK;
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+        public MessageBoxResult ShowHasDuplicateResourcePermissions()
+        {
+            Header = StringResources.SaveSettingErrorPrefix;
+            Description = StringResources.SaveSettingsDuplicateResourcePermissions;
+            Buttons = MessageBoxButton.OK;
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+        public MessageBoxResult ShowHasDuplicateServerPermissions()
+        {
+            Header = StringResources.SaveSettingErrorPrefix;
+            Description = StringResources.SaveSettingsDuplicateServerPermissions;
+            Buttons = MessageBoxButton.OK;
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+        public MessageBoxResult ShowSaveSettingsNotReachableErrorMsg()
+        {
+            Header = StringResources.SaveSettingErrorPrefix;
+            Description = StringResources.SaveSettingsNotReachableErrorMsg;
+            Buttons = MessageBoxButton.OK;
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+        public MessageBoxResult ShowSaveSettingsPermissionsErrorMsg()
+        {
+            Header = StringResources.SaveSettingErrorPrefix;
+            Description = StringResources.SaveSettingsPermissionsErrorMsg;
+            Buttons = MessageBoxButton.OK;
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
         #region Implementation of IPopupMessages
 
         public IPopupMessage GetDeleteConfirmation(string nameOfItemBeingDeleted) => new PopupMessage
