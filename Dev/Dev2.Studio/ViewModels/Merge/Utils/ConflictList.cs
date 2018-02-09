@@ -3,6 +3,7 @@ using Dev2.Common.Interfaces;
 using System.Collections;
 using Dev2.Common;
 using System;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
@@ -10,22 +11,23 @@ namespace Dev2.ViewModels.Merge.Utils
     {
         readonly ConflictTreeNode[] currentTree;
         readonly ConflictTreeNode[] diffTree;
-        readonly ConflictModelFactory modelFactoryCurrent;
-        readonly ConflictModelFactory modelFactoryDifferent;
-        readonly List<IConflictRow> list;
+        readonly IConflictModelFactory modelFactoryCurrent;
+        readonly IConflictModelFactory modelFactoryDifferent;
+        public List<IConflictRow> List { get; set; }
 
-        public ToolModelConflictRowList(ConflictModelFactory modelFactoryCurrent, ConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
+        public ToolModelConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
         {
             this.modelFactoryCurrent = modelFactoryCurrent;
             this.modelFactoryDifferent = modelFactoryDifferent;
             this.currentTree = currentTree.ToArray();
             this.diffTree = diffTree.ToArray();
-            list = new List<IConflictRow>();
+            
             CreateList();
         }
 
         void CreateList()
         {
+            List = new List<IConflictRow>();
             int index = 0;
             var maxCount = Math.Max(currentTree.Length, diffTree.Length);
             for (; index < maxCount; index++)
@@ -41,48 +43,57 @@ namespace Dev2.ViewModels.Merge.Utils
                     diff = diffTree[index];
                 }
                 // TODO: add an event for when items are added to the list so that we can listen for events on each Item in the row without adding an event listener in here.
-                list.Add(CreateConflictRow(current, diff));
+                List.Add(CreateConflictRow(current, diff));
             }
-        }
-
-        public IEnumerator<IConflictRow> GetEnumerator()
-        {
-            
-            yield break;
         }
 
         IConflictRow CreateConflictRow(ConflictTreeNode current, ConflictTreeNode diff)
         {
             var row = new ToolConflictRow();
-            
+
             var id = Guid.Parse(current.UniqueId);
             row.UniqueId = id;
             row.CurrentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current);
             row.DiffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff);
 
-
-
             row.CurrentViewModel.Container = row;
             row.DiffViewModel.Container = row;
+            row.HasConflict = true;
+            return row;
+        }
 
-            return new ToolConflictRow
-            {
-                
-            };
+        public IEnumerator<IConflictRow> GetEnumerator()
+        {
+            // TODO: return the _real_ rows and the connectors in their correct order
+            yield break;
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-
+            // TODO: return the _real_ rows and the connectors in their correct order
             yield break;
         }
 
         public int Count => 0;
         public int IndexOf(IConflictRow conflict) => 0;
 
+        // TODO: remove?
         public IConflictRow GetNextConlictToUpdate(IConflictRow container)
         {
             return null;
+        }
+
+
+        public IConflictRow this[int key]
+        {
+            get
+            {
+                return List[key];
+            }
+            set
+            {
+                List[key] = value;
+            }
         }
     }
 }

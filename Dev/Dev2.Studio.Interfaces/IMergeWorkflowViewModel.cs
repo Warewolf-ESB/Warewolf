@@ -17,9 +17,7 @@ namespace Dev2.Studio.Interfaces
         bool HasMergeStarted { get; set; }
         bool HasWorkflowNameConflict { get; set; }
         bool HasVariablesConflict { get; set; }
-        IConflictModelFactory CurrentConflictModel { get; set; }
-        IConflictModelFactory DifferenceConflictModel { get; set; }
-        LinkedList<IConflictRow> Conflicts { get; set; }
+        IEnumerable<IConflictRow> Conflicts { get; set; }
         bool IsVariablesEnabled { get; set; }
     }
 }

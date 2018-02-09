@@ -119,9 +119,8 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -153,9 +152,8 @@ namespace Dev2.Core.Tests.Merge
             var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -186,9 +184,8 @@ namespace Dev2.Core.Tests.Merge
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             currentResourceModel.Setup(resModel => resModel.DataList).Returns("");
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -229,9 +226,8 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -267,9 +263,8 @@ namespace Dev2.Core.Tests.Merge
             node.Setup(p => p.Activity).Returns(value);
             contextualResource.Setup(p => p.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentResourceModel.Object);
             //------------Execute Test---------------------------
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
 
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -320,9 +315,8 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -347,9 +341,8 @@ namespace Dev2.Core.Tests.Merge
             var contextualResource = new Mock<IContextualResourceModel>();
 
             node.Setup(p => p.Activity).Returns(new DsfCalculateActivity());
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict.Model);
         }
