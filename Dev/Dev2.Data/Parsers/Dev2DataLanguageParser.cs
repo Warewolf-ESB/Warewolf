@@ -316,7 +316,6 @@ namespace Dev2.Data.Parsers
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
 
             if (payload != null)
-
             {
                 var parts = tmp.ToString().Split('.');
                 var search = parts[0].ToLower();
@@ -338,9 +337,7 @@ namespace Dev2.Data.Parsers
                 .ToList()
                 .ForEach(r =>
                 {
-
                     var addToFinal = true;
-
                     realResults
                         .ToList()
                         .ForEach(rr =>
