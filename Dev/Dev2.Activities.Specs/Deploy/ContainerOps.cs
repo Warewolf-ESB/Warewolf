@@ -257,24 +257,11 @@ namespace Dev2.Activities.Specs.Deploy
 
         void RecoverServerLogFile()
         {
-            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/exec";
-            HttpContent containerExecContent = new StringContent(@"
-{
-  ""AttachStdin"": false,
-  ""AttachStdout"": false,
-  ""AttachStderr"": true,
-  ""Cmd"": [""cmd /c sc stop \""Warewolf Server\""""],
-  ""Privileged"": true,
-  ""Tty"": false
-}
-");
-            containerExecContent.Headers.Remove("Content-Type");
-            containerExecContent.Headers.Add("Content-Type", "application/json");
-            string stopWarewolfServerCommandID = "";
+            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/archive?path=C%3A%5CProgramData%5CWarewolf%5CServer+Log%5Cwarewolf-server.log";
             using (var client = new HttpClient())
             {
                 client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.PostAsync(url, containerExecContent).Result;
+                var response = client.GetAsync(url).Result;
                 var streamingResult = response.Content.ReadAsStreamAsync().Result;
                 using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
                 {
@@ -284,122 +271,24 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                     else
                     {
-                        stopWarewolfServerCommandID = ParseForCommandID(reader.ReadToEnd());
-                    }
-                }
-            }
-            containerExecContent = new StringContent(@"
-{
-  ""AttachStdin"": true,
-  ""AttachStdout"": true,
-  ""AttachStderr"": true,
-  ""Cmd"": [""cmd /c type \""C:\\ProgramData\\Warewolf\\Server Log\\warewolf-server.log\""""],
-  ""Privileged"": true,
-  ""Tty"": false
-}
-");
-            containerExecContent.Headers.Remove("Content-Type");
-            containerExecContent.Headers.Add("Content-Type", "application/json");
-            string getWarewolfServerLogCommandID = "";
-            using (var client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.PostAsync(url, containerExecContent).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Console.Write("Error getting server log. " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        getWarewolfServerLogCommandID = ParseForCommandID(reader.ReadToEnd());
-                    }
-                }
-            }
-            url = "http://" + _remoteDockerApi + ":2375/exec/" + stopWarewolfServerCommandID + "/start";
-            HttpContent containerExecStartContent = new StringContent(@"
-{
- ""Detach"": false,
- ""Tty"": false
-}");
-            containerExecStartContent.Headers.Remove("Content-Type");
-            containerExecStartContent.Headers.Add("Content-Type", "application/json");
-            using (var client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.PostAsync(url, containerExecStartContent).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Console.Write("Error Creating Stop Warewolf Server Command: " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        Console.Write("Stopped Warewolf Server." + reader.ReadToEnd());
-                    }
-                }
-            }
-            url = "http://" + _remoteDockerApi + ":2375/exec/" + getWarewolfServerLogCommandID + "/start";
-            containerExecStartContent = new StringContent(@"
-{
- ""Detach"": false,
- ""Tty"": false
-}");
-            containerExecStartContent.Headers.Remove("Content-Type");
-            containerExecStartContent.Headers.Add("Content-Type", "application/json");
-            using (var client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.PostAsync(url, containerExecStartContent).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Console.Write("Error getting server log. " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        Console.Write("Recovered Warewolf Server Log." + reader.ReadToEnd());
+                        ExtractTar(reader.BaseStream);
                     }
                 }
             }
         }
 
-        string ParseForCommandID(string responseText)
+        string ExtractTar(Stream tarSteam)
         {
-            var parseAround = "\"Id\":\"";
-            if (responseText.Contains(parseAround))
+            using (TarArchive tarArchive = TarArchive.CreateInputTarArchive(tarSteam, TarBuffer.DefaultBlockFactor))
             {
-                Console.Write("Exec Command Created: " + responseText);
-                return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 64);
+                tarArchive.ExtractContents(Environment.ExpandEnvironmentVariables("%TEMP%"));
             }
-            else
-            {
-                throw new HttpRequestException("Error parsing for image ID. " + responseText);
-            }
+            return File.ReadAllText(Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"), "warewolf-server.log"));
         }
 
         byte[] CreateTarGZ(string sourceDirectory)
         {
-            var TempDirPath = Environment.ExpandEnvironmentVariables("%TEMP%");
-            string tempTarFilePath = "";
-            if (TempDirPath != "")
-            {
-                tempTarFilePath = Path.Combine(TempDirPath, "gzip-server.tar.gz");
-            }
-            else
-            {
-                tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
-            }
-            if (File.Exists(tempTarFilePath))
-            {
-                File.Delete(tempTarFilePath);
-            }
+            string tempTarFilePath = GetTempTarFilePath();
             Stream outStream = File.Create(tempTarFilePath);
             Stream gzoStream = new GZipOutputStream(outStream);
             TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzoStream);
@@ -415,6 +304,26 @@ namespace Dev2.Activities.Specs.Deploy
 
             tarArchive.Close();
             return File.ReadAllBytes(tempTarFilePath);
+        }
+
+        private static string GetTempTarFilePath()
+        {
+            var TempDirPath = Environment.ExpandEnvironmentVariables("%TEMP%");
+            string tempTarFilePath = "";
+            if (TempDirPath != "")
+            {
+                tempTarFilePath = Path.Combine(TempDirPath, "gzip-server.tar.gz");
+            }
+            else
+            {
+                tempTarFilePath = @"c:\temp\gzip-server.tar.gz";
+            }
+            if (File.Exists(tempTarFilePath))
+            {
+                File.Delete(tempTarFilePath);
+            }
+
+            return tempTarFilePath;
         }
 
         void AddDirectoryFilesToTar(TarArchive tarArchive, string sourceDirectory, bool recurse)
