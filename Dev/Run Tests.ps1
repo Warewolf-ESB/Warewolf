@@ -874,6 +874,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if (Test-Path $VSTestPath.Replace("Enterprise", "Community")) {
             $VSTestPath = $VSTestPath.Replace("Enterprise", "Community")
         }
+        if (Test-Path $VSTestPath.Replace("Enterprise", "TestAgent")) {
+            $VSTestPath = $VSTestPath.Replace("Enterprise", "TestAgent")
+        }
     }
     if ($MSTestPath -ne "" -and !(Test-Path "$MSTestPath" -ErrorAction SilentlyContinue)) {
         if (Test-Path $MSTestPath.Replace("Enterprise", "Professional")) {
@@ -881,6 +884,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
         if (Test-Path $MSTestPath.Replace("Enterprise", "Community")) {
             $MSTestPath = $MSTestPath.Replace("Enterprise", "Community")
+        }
+        if (Test-Path $MSTestPath.Replace("Enterprise", "TestAgent")) {
+            $MSTestPath = $MSTestPath.Replace("Enterprise", "TestAgent")
         }
     }
 
