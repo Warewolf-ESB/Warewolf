@@ -5,6 +5,7 @@ using ICSharpCode.SharpZipLib.Tar;
 using System.Net.Http;
 using System.Text;
 using System.Management;
+using System.Threading;
 
 namespace Dev2.Activities.Specs.Deploy
 {
@@ -26,6 +27,7 @@ namespace Dev2.Activities.Specs.Deploy
             Build(GetServerPath());
             CreateContainer();
             StartContainer();
+            StartServer();
             return GetContainerHostname();
         }
 
@@ -82,7 +84,85 @@ namespace Dev2.Activities.Specs.Deploy
                     {
                         throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
                     }
+                    else
+                    {
+                        Thread.Sleep(120000);
+                    }
                 }
+            }
+        }
+
+        void StartServer()
+        {
+            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/exec";
+            HttpContent containerExecContent = new StringContent(@"
+{
+  ""AttachStdin"": false,
+  ""AttachStdout"": false,
+  ""AttachStderr"": true,
+  ""Cmd"": [""sc.exe"", ""start"", ""Warewolf Server""""],
+  ""Privileged"": true,
+  ""Tty"": false
+}
+");
+            containerExecContent.Headers.Remove("Content-Type");
+            containerExecContent.Headers.Add("Content-Type", "application/json");
+            string startWarewolfServerCommandID = "";
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerExecContent).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.Write("Error Creating Start Warewolf Server Command: " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        startWarewolfServerCommandID = ParseForCommandID(reader.ReadToEnd());
+                    }
+                }
+            }
+            url = "http://" + _remoteDockerApi + ":2375/exec/" + startWarewolfServerCommandID + "/start";
+            HttpContent containerExecStartContent = new StringContent(@"
+{
+ ""Detach"": false,
+ ""Tty"": false
+}");
+            containerExecStartContent.Headers.Remove("Content-Type");
+            containerExecStartContent.Headers.Add("Content-Type", "application/json");
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 20, 0);
+                var response = client.PostAsync(url, containerExecStartContent).Result;
+                var streamingResult = response.Content.ReadAsStreamAsync().Result;
+                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        Console.Write("Error Starting Warewolf Server: " + reader.ReadToEnd());
+                    }
+                    else
+                    {
+                        Console.Write("Started Warewolf Server." + reader.ReadToEnd());
+                    }
+                }
+            }
+        }
+
+        string ParseForCommandID(string responseText)
+        {
+            var parseAround = "\"Id\":\"";
+            if (responseText.Contains(parseAround))
+            {
+                Console.Write("Exec Command Created: " + responseText);
+                return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 64);
+            }
+            else
+            {
+                throw new HttpRequestException("Error parsing for image ID. " + responseText);
             }
         }
 
