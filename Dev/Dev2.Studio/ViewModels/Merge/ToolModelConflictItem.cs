@@ -17,7 +17,6 @@ using Newtonsoft.Json;
 using System.Activities.Statements;
 using System.Activities.Presentation.Model;
 using System.Windows;
-using Dev2.Studio.Interfaces;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -50,21 +49,7 @@ namespace Dev2.ViewModels.Merge
                     NotifyIsCheckedChanged?.Invoke(this, IsChecked);
                 }
             };
-
-            NotifyIsCheckedChanged += AddRemoveActivityHandler;
             NotifyIsCheckedChanged += PropagateCheckedState;
-        }
-
-        private void AddRemoveActivityHandler(IConflictItem item, bool isChecked)
-        {
-            if (!isChecked)
-            {
-                // RemoveActivity() 
-            }
-            else
-            {
-                // AddActivity()
-            }
         }
         private void PropagateCheckedState(IConflictItem item, bool isChecked)
         {
@@ -102,18 +87,6 @@ namespace Dev2.ViewModels.Merge
         {
             get => _isChecked;
             set => SetProperty(ref _isChecked, value);
-        }
-
-        public void AddActivity(IWorkflowDesignerViewModel WorkflowDesignerViewModel)
-        {
-            if (ModelItem != null)
-            {
-                WorkflowDesignerViewModel?.AddItem(this);
-                if (WorkflowDesignerViewModel != null)
-                {
-                    WorkflowDesignerViewModel.SelectedItem = ModelItem;
-                }
-            }
         }
 
         public bool IsMergeVisible

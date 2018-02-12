@@ -96,27 +96,9 @@ namespace Dev2.ViewModels.Merge
                     // TODO: Pass in IToolModelConflictItem
                     WorkflowDesignerViewModel?.AddStartNode(null);
                 }
-                if (string.IsNullOrEmpty(ArmDescription))
-                {
-                    DeLinkActivities();
-                }
-                else
-                {
-                    LinkActivities();
-                }
 
                 OnChecked?.Invoke(ConnectorConflictRow, _isChecked);
             }
-        }
-
-        private void DeLinkActivities()
-        {
-            WorkflowDesignerViewModel?.DeLinkActivities(SourceUniqueId, DestinationUniqueId, Key);
-        }
-
-        private void LinkActivities()
-        {
-            WorkflowDesignerViewModel?.LinkActivities(SourceUniqueId, DestinationUniqueId, Key);
         }
 
         public bool Equals(IConnectorConflictItem other)
