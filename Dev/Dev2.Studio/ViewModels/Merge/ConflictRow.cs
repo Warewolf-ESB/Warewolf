@@ -7,7 +7,7 @@ namespace Dev2.ViewModels.Merge
     public abstract class ConflictRow : BindableBase, IConflictRow, IConflictCheckable
     {
         public abstract bool IsEmptyItemSelected { get; set; }
-        public abstract bool HasConflict { get; set; }
+        public bool HasConflict => !Current.Equals(Different);
         public abstract bool IsChecked { get; set; }
         public abstract Guid UniqueId { get; set; }
         public abstract IConflictItem Current { get; }

@@ -4,6 +4,8 @@ using System.Collections;
 using Dev2.Common;
 using System;
 using Dev2.Studio.Interfaces;
+using System.Linq;
+using System.Activities.Statements;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
@@ -47,6 +49,43 @@ namespace Dev2.ViewModels.Merge.Utils
             }
         }
 
+        internal static IEnumerable<IConnectorConflictRow> GenerateConnectorConflictRows(ConflictTreeNode current, ConflictTreeNode diff)
+        {
+            int index = 0;
+            var armConnectorsCurrent = current.Activity.ArmConnectors();
+            var armConnectorsDiff = diff.Activity.ArmConnectors();
+            var maxCount = Math.Max(armConnectorsCurrent.Count, armConnectorsDiff.Count);
+            for (; index < maxCount; index++)
+            {
+                var row = new ConnectorConflictRow();
+                if (index < armConnectorsCurrent.Count)
+                {
+                    var connectorCurr = armConnectorsCurrent[index];
+                    row.CurrentArmConnector =
+                        new ConnectorConflictItem(connectorCurr.Description,
+                            Guid.Parse(connectorCurr.SourceUniqueId), Guid.Parse(connectorCurr.DestinationUniqueId),
+                            connectorCurr.Key);
+                }
+                else
+                {
+                    // Do we absolutely require empty ConflictItems in our rows?
+                }
+                if (index < armConnectorsDiff.Count)
+                {
+                    var connectorDiff = armConnectorsDiff[index];
+                    row.DifferentArmConnector = new ConnectorConflictItem(connectorDiff.Description,
+                            Guid.Parse(connectorDiff.SourceUniqueId), Guid.Parse(connectorDiff.DestinationUniqueId),
+                            connectorDiff.Key);
+                }
+                else
+                {
+                    // Do we absolutely require empty ConflictItems in our rows?
+                }
+                yield return row;
+            }
+        }
+
+
         ToolConflictRow CreateConflictRow(ConflictTreeNode current, ConflictTreeNode diff)
         {
             var row = new ToolConflictRow();
@@ -56,11 +95,12 @@ namespace Dev2.ViewModels.Merge.Utils
             row.CurrentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current);
             row.DiffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff);
 
-            row.CurrentViewModel.Container = row;
-            row.DiffViewModel.Container = row;
-            row.HasConflict = true;
+            row.Connectors = GenerateConnectorConflictRows(current, diff);
+
             return row;
         }
+
+
 
         public IEnumerator<IConflictRow> GetEnumerator()
         {

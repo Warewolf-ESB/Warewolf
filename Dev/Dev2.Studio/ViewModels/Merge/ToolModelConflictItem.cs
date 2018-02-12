@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
@@ -26,18 +25,12 @@ namespace Dev2.ViewModels.Merge
         string _mergeDescription;
         bool _isChecked;
         bool _isMergeVisible;
-        ObservableCollection<IToolModelConflictItem> _children;
-        string _parentDescription;
-        bool _hasParent;
         Guid _uniqueId;
         FlowNode _flowNode;
-        IToolModelConflictItem _parent;
         string _nodeArmDescription;
 
         public ToolModelConflictItem()
         {
-            Children = new ObservableCollection<IToolModelConflictItem>();
-
             RegisterEventHandlers();
         }
 
@@ -99,28 +92,6 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public IToolConflictRow Container { get; set; }
-
-        public IToolModelConflictItem Parent
-        {
-            get => _parent;
-            set
-            {
-                _parent = value;
-                OnPropertyChanged(() => Parent);
-            }
-        }
-
-        public ObservableCollection<IToolModelConflictItem> Children
-        {
-            get => _children;
-            set
-            {
-                _children = value;
-                OnPropertyChanged(() => Children);
-            }
-        }
-
         public Guid UniqueId
         {
             get => _uniqueId;
@@ -141,29 +112,9 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public string ParentDescription
-        {
-            get => _parentDescription;
-            set
-            {
-                _parentDescription = value;
-                OnPropertyChanged(() => ParentDescription);
-            }
-        }
-        public bool HasParent
-        {
-            get => _hasParent;
-            set
-            {
-                _hasParent = value;
-                OnPropertyChanged(() => HasParent);
-            }
-        }
-
         public ModelItem ModelItem { get; set; }
         public Point NodeLocation { get; set; }
 
-        public bool IsTrueArm { get; set; }
         public string NodeArmDescription
         {
             get => _nodeArmDescription;

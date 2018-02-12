@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.ComponentModel;
 
 namespace Dev2.Common.Interfaces
 {
@@ -26,19 +25,19 @@ namespace Dev2.Common.Interfaces
     public interface IConflict
     {
         bool IsEmptyItemSelected { get; set; }
-        bool HasConflict { get; set; }
+        bool HasConflict { get; }
         bool IsChecked { get; set; }
         Guid UniqueId { get; set; }
     }
 
     public interface IConnectorConflictItem : IConflictItem, IEquatable<IConnectorConflictItem>
     {
-        IConnectorConflictRow ConnectorConflictRow { get; set; }
         string ArmDescription { get; set; }
         Guid SourceUniqueId { get; set; }
         Guid DestinationUniqueId { get; set; }
         string Key { get; set; }
         event Action<IConnectorConflictRow, bool> OnChecked;
+        // TODO: implement List<IConnectorConflictItem> Conflicts(conflictsList) which returns the connectors that conflict with this connector
     }
 
     public interface IConflictItem
@@ -53,7 +52,6 @@ namespace Dev2.Common.Interfaces
         bool IsCurrentChecked { get; set; }
     }
 
-    // Was IArmConnectorConflict
     public interface IConnectorConflictRow : IConflictRow, IEquatable<IConnectorConflictRow>
     {
         IConnectorConflictItem CurrentArmConnector { get; set; }

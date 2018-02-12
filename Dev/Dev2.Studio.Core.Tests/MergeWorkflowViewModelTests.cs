@@ -537,7 +537,7 @@ namespace Dev2.Core.Tests
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
             var empty = Guid.Empty;
-            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "", b);
+            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "");
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
             var itemsToAdd = new List<IConflict>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
@@ -596,7 +596,7 @@ namespace Dev2.Core.Tests
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
             var empty = Guid.Empty;
-            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "", b);
+            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "");
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
             var itemsToAdd = new List<IConflict>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
@@ -654,7 +654,7 @@ namespace Dev2.Core.Tests
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
             var empty = Guid.Empty;
-            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "", b);
+            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "");
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
             var itemsToAdd = new List<IConflictRow>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
@@ -669,7 +669,6 @@ namespace Dev2.Core.Tests
                 //---------------Test Result -----------------------
                 Assert.AreEqual(Guid.Parse(iniqueId), aaaa.SourceUniqueId);
                 Assert.AreEqual(Guid.Empty, aaaa.DestinationUniqueId);
-                Assert.AreSame(b, aaaa.ConnectorConflictRow);
             }
         }
 
@@ -712,7 +711,7 @@ namespace Dev2.Core.Tests
             b.Key = iniqueId;
             b.UniqueId = iniqueId.ToGuid();
             var empty = Guid.Empty;
-            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "", b);
+            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "");
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
             var itemsToAdd = new List<IConflict>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
