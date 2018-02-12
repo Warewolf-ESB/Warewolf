@@ -28,7 +28,7 @@ Param(
   [string]$MergeDotCoverSnapshotsInDirectory="",
   [switch]${Startmy.warewolf.io},
   [string]$sendRecordedMediaForPassedTestCase="false",
-  [string]$ServerContainerVersion,
+  [string]$JobContainerVersion="",
   [switch]$JobContainers
 )
 $JobSpecs = @{}
@@ -195,6 +195,10 @@ if ($JobNames.Contains(" DotCover")) {
     [bool]$ApplyDotCover = $DotCoverPath -ne ""
 }
 
+if ($JobContainers.IsPresent -and $JobNames.Contains("Example Workflow Execution Specs")) {
+    $ResourcesType = 'Release'
+}
+
 If (!(Test-Path "$TestsResultsPath")) {
     New-Item "$TestsResultsPath" -ItemType Directory
 }
@@ -327,7 +331,7 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
 
 function Cleanup-JobContainers() {
     foreach ($Job in $JobNames.Split(",")) {
-		$JobContainerName = $Job.Replace(" ", "_") + "_Container"
+		$JobContainerName = $Job.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion}})
         if ($(docker container ls --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
             Write-Host Waiting for $JobContainerName
             docker wait $JobContainerName
@@ -338,13 +342,12 @@ function Cleanup-JobContainers() {
             } else {
                 $ResultsDirectory = $TestsPath + "\TestResults\" + $JobContainerName
             }
-		    docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory"
+		    $ContainerCpResult = docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory"
+            Write-Host $ContainerCpResult Folder Copied.
 		    $ContainerRemResult = docker container rm $JobContainerName
             Write-Host $ContainerRemResult Removed. See $ResultsDirectory
         }
 	}
-    docker ps -a -q | % { docker rm $_ }
-    docker images | ConvertFrom-String | ? { $_.P2 -eq "jobsenvironment" -or $_.P2 -eq "<none>" } | % { docker rmi -f $_.P3 }
 }
 
 function Wait-For-FileUnlock([string]$FilePath) {
@@ -1013,19 +1016,21 @@ TestResults
             }
         }
         if ($JobContainers.IsPresent) {
-            $JobContainerName = $JobName.Replace(" ", "_") + "_Container"
-            $JobContainerResult = "The paging file is too small for this operation to complete."
-            while($JobContainerResult.Contains("The paging file is too small for this operation to complete.")) {
+            $JobContainerName = $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion}})
+            $JobContainerResult = "", "The paging file is too small for this operation to complete."
+            while(([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.")) {
                 if ($StartServer.IsPresent) {
                     $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' -StartServer -ResourcesType `'$ResourcesType`' 2>&1
                 } else {
                     $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' 2>&1
                 }
-                if ($JobContainerResult.Contains("The paging file is too small for this operation to complete.")) {
+                if (([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.")) {
+                    Write-Host Out of memory. Waiting 30s before trying to start $JobContainerName again.
                     sleep 30
+                } else {
+                    Write-Host Started $JobContainerName as $JobContainerResult.
                 }
             }
-            Write-Host Started $JobContainerName as $JobContainerResult
         } else {
             if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
 	            Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
