@@ -195,10 +195,6 @@ if ($JobNames.Contains(" DotCover")) {
     [bool]$ApplyDotCover = $DotCoverPath -ne ""
 }
 
-if ($JobContainers.IsPresent -and $JobNames.Contains("Example Workflow Execution Specs")) {
-    $ResourcesType = 'Release'
-}
-
 If (!(Test-Path "$TestsResultsPath")) {
     New-Item "$TestsResultsPath" -ItemType Directory
 }
@@ -342,8 +338,7 @@ function Cleanup-JobContainers() {
             } else {
                 $ResultsDirectory = $TestsPath + "\TestResults\" + $JobContainerName
             }
-		    $ContainerCpResult = docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory"
-            Write-Host $ContainerCpResult Folder Copied.
+		    docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory" 2>&1
 		    $ContainerRemResult = docker container rm $JobContainerName
             Write-Host $ContainerRemResult Removed. See $ResultsDirectory
         }
@@ -1016,15 +1011,19 @@ TestResults
             }
         }
         if ($JobContainers.IsPresent) {
+            if ($JobName -eq "Example Workflow Execution Specs") {
+                $ResourcesType = 'Release'
+            }
             $JobContainerName = $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion}})
             $JobContainerResult = "", "The paging file is too small for this operation to complete."
             while(([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.")) {
                 if ($StartServer.IsPresent) {
-                    $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' -StartServer -ResourcesType `'$ResourcesType`' 2>&1
+                    $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
                 } else {
                     $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' 2>&1
                 }
                 if (([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.")) {
+                    docker container rm $JobContainerName
                     Write-Host Out of memory. Waiting 30s before trying to start $JobContainerName again.
                     sleep 30
                 } else {
