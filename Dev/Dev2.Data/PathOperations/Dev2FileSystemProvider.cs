@@ -217,50 +217,47 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool Delete(IActivityIOPath src)
         {
-            bool result;
             try
             {
-
                 if (!RequiresAuth(src))
                 {
-                    // We need sense check the value passed in
-                    result = DeleteHelper.Delete(src.Path);
+                    return DeleteHelper.Delete(src.Path);
                 }
-                else
+                WindowsImpersonationContext impersonatedUser = null;
+                try
                 {
-                    // handle UNC path
                     var loginOk = _logOnprovider.DoLogon(ExtractUserName(src), ExtractDomain(src), src.Password, out SafeTokenHandle safeTokenHandle);
-
                     if (loginOk)
                     {
                         using (safeTokenHandle)
                         {
 
                             var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                            using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
+                            using (WindowsImpersonationContext user = newID.Impersonate())
                             {
+                                impersonatedUser = user;
                                 // Do the operation here
-                                result = DeleteHelper.Delete(src.Path);
-
-                                // remove impersonation now
-                                impersonatedUser.Undo();
+                                return DeleteHelper.Delete(src.Path);
                             }
                         }
                     }
-                    else
-                    {
-                        // login failed
-                        throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, src.Username, src.Path));
-                    }
+                    throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, src.Username, src.Path));
                 }
-
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
+                    return false;
+                }
+                finally
+                {
+                    impersonatedUser?.Undo();
+                }
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error("Error getting file: " + src.Path, ex, GlobalConstants.WarewolfError);
-                result = false;
+                return false;
             }
-            return result;
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
@@ -497,7 +494,7 @@ namespace Dev2.PathOperations
         {
             if (path == null)
             {
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
             }
             var idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
             var result = idx > 0 ? path.Username.Substring(idx + 1) : path.Username;
