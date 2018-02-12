@@ -5,7 +5,7 @@ Feature: Read Folder
 	I want a tool that reads the contents of a Folder at a given location
 
 
-Scenario Outline: Read Folder file at location new
+Scenario Outline: Read Folder file at location	
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
@@ -48,7 +48,7 @@ Scenario Outline: Read Folder file at location new
 
 	
 	
-Scenario Outline: Read Folder file validation new
+Scenario Outline: Read Folder file validation
     Given I have a variable "[[a]]" with a value "<Val1>"
 	Given I have a variable "[[b]]" with a value "<Val2>"
 	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
@@ -117,7 +117,7 @@ Scenario Outline: Read Folder file validation new
 		| 44 | Local Files | [[sourcePath]]                            | ""                  | """                         | c:\                                                                     | Test                  | ""                   | [[result]]             | ""     | AN           | True             | Password cannot be empty or only white space                                                                                  | 1.Password cannot be empty or only white space                                                                                   |
 		| 45 | Local Files | [[var@]]                                  | ""                  | ""                          |                                                                         | [[var@]]              | String               | [[var@]]               | ""     | AN           | True             | Username - Variable name [[$#]] contains invalid character(s)   Result - Variable name [[var@]] contains invalid character(s) | 1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Variable name [[var@]] contains invalid character(s) |
 
-Scenario Outline: Read Folder file at location with invalid directories new
+Scenario Outline: Read Folder file at location with invalid directories	
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
 	And Read is "<read>"   

@@ -59,6 +59,7 @@ $JobSpecs["File And Folder Create Tool Specs"]	= "Warewolf.Tools.Specs", "FileAn
 $JobSpecs["File And Folder Delete Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderDelete"
 $JobSpecs["File And Folder Move Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderMove"
 $JobSpecs["Folder Read Tool Specs"]		 		= "Warewolf.Tools.Specs", "ReadFolder"
+$JobSpecs["New Folder Read Tool Specs"]		 	= "Warewolf.Tools.Specs", "NewReadFolder"
 $JobSpecs["File Read Tool Specs"]		 		= "Warewolf.Tools.Specs", "ReadFile"
 $JobSpecs["File And Folder Rename Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderRename"
 $JobSpecs["Unzip Tool Specs"]		 			= "Warewolf.Tools.Specs", "Unzip"
