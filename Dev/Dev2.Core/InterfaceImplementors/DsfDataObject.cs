@@ -386,6 +386,7 @@ namespace Dev2.DynamicServices
             result.WebUrl = WebUrl;
             result.IsSubExecution = IsSubExecution;
             result.QueryString = QueryString;
+            result.ExecutingUser = ExecutingUser;
             if (ServiceTest != null)
             {
                 var serializer = new Dev2JsonSerializer();
