@@ -99,7 +99,6 @@ namespace Dev2.PathOperations
             {
                 try
                 {
-                    // handle UNC path
                     var user = ExtractUserName(path);
                     var domain = ExtractDomain(path);
                     var loginOk = _logOnprovider.DoLogon(user, domain, path.Password, out SafeTokenHandle safeTokenHandle);
@@ -113,17 +112,14 @@ namespace Dev2.PathOperations
                             var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                             using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
-                                // Do the operation here
-
                                 result = new MemoryStream(File.ReadAllBytes(path.Path));
 
-                                impersonatedUser.Undo(); // remove impersonation now
+                                impersonatedUser.Undo();
                             }
                         }
                     }
                     else
                     {
-                        // login failed
                         throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, path.Username, path.Path));
                     }
                 }
@@ -158,7 +154,6 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        // handle UNC path
                         var loginOk = _logOnprovider.DoLogon(ExtractUserName(destination), ExtractDomain(destination), destination.Password, out SafeTokenHandle safeTokenHandle);
 
                         if (loginOk)
@@ -168,16 +163,13 @@ namespace Dev2.PathOperations
                                 var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                                 using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                                 {
-                                    // Do the operation here
                                     result = WriteData(src, args, destination);
-                                    // remove impersonation now
                                     impersonatedUser.Undo();
                                 }
                             }
                         }
                         else
                         {
-                            // login failed
                             throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, destination.Username, destination.Path));
                         }
                     }
@@ -236,7 +228,6 @@ namespace Dev2.PathOperations
                             using (WindowsImpersonationContext user = newID.Impersonate())
                             {
                                 impersonatedUser = user;
-                                // Do the operation here
                                 return DeleteHelper.Delete(src.Path);
                             }
                         }
@@ -276,7 +267,6 @@ namespace Dev2.PathOperations
             {
                 try
                 {
-                    // handle UNC path
                     var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, out SafeTokenHandle safeTokenHandle);
                     if (loginOk)
                     {
@@ -286,11 +276,7 @@ namespace Dev2.PathOperations
                             var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                             using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
-                                // Do the operation here
-
                                 result = PathIs(dst) == enPathType.Directory ? Directory.Exists(dst.Path) : File.Exists(dst.Path);
-
-                                // remove impersonation now
                                 impersonatedUser.Undo();
                             }
                             newID.Dispose();
@@ -298,7 +284,6 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        // login failed
                         throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
                     }
                 }
@@ -312,9 +297,6 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        /*
-         * Check for the existence of each directory?!
-         */
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool CreateDirectory(IActivityIOPath dst, IDev2CRUDOperationTO args)
         {
@@ -360,7 +342,6 @@ namespace Dev2.PathOperations
             bool result;
             try
             {
-                // handle UNC path
                 var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
@@ -371,12 +352,8 @@ namespace Dev2.PathOperations
                         var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                         using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                         {
-                            // Do the operation here
-
                             Directory.CreateDirectory(dst.Path);
                             result = true;
-
-                            // remove impersonation now
                             impersonatedUser.Undo();
                         }
                         newID.Dispose();
@@ -384,7 +361,6 @@ namespace Dev2.PathOperations
                 }
                 else
                 {
-                    // login failed
                     throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
                 }
             }
@@ -402,7 +378,6 @@ namespace Dev2.PathOperations
             bool result;
             try
             {
-                // handle UNC path
                 var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
@@ -413,23 +388,18 @@ namespace Dev2.PathOperations
                         var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                         using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                         {
-                            // Do the operation here
-
                             if (DirectoryExist(dst))
                             {
                                 Delete(dst);
                             }
                             Directory.CreateDirectory(dst.Path);
                             result = true;
-
-                            // remove impersonation now
                             impersonatedUser.Undo();
                         }
                     }
                 }
                 else
                 {
-                    // login failed, oh no!
                     throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, dst.Username, dst.Path));
                 }
             }
@@ -459,7 +429,6 @@ namespace Dev2.PathOperations
             }
             else
             {
-                //  && FileExist(path)
                 if (FileExist(path) || DirectoryExist(path))
                 {
                     if (!Dev2ActivityIOPathUtils.IsStarWildCard(path.Path))
@@ -505,7 +474,7 @@ namespace Dev2.PathOperations
         {
             if (path == null)
             {
-                throw new ArgumentNullException("path");
+                throw new ArgumentNullException(nameof(path));
             }
             var result = string.Empty;
 
@@ -579,7 +548,6 @@ namespace Dev2.PathOperations
 
                 try
                 {
-                    // handle UNC path
                     var loginOk = _logOnprovider.DoLogon(ExtractUserName(src), ExtractDomain(src), src.Password, out SafeTokenHandle safeTokenHandle);
 
                     if (loginOk)
@@ -590,8 +558,6 @@ namespace Dev2.PathOperations
                             var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                             using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
-                                // Do the operation here
-
                                 try
                                 {
                                     IEnumerable<string> dirs;
@@ -623,7 +589,6 @@ namespace Dev2.PathOperations
                                     throw new Exception(string.Format(ErrorResource.DirectoryNotFound, src.Path));
                                 }
 
-                                // remove impersonation now
                                 impersonatedUser.Undo();
                                 newID.Dispose();
                             }
@@ -631,8 +596,7 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        // login failed
-                        throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, src.Username, src.Path));
+                       throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, src.Username, src.Path));
                     }
                 }
                 catch (Exception ex)
@@ -680,7 +644,6 @@ namespace Dev2.PathOperations
             }
             else
             {
-                // handle UNC path
                 var loginOk = _logOnprovider.DoLogon(ExtractUserName(IOPath), ExtractDomain(IOPath), IOPath.Password, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
@@ -691,9 +654,7 @@ namespace Dev2.PathOperations
                         var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                         using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                         {
-                            // Do the operation here
                             DoWrite(args, path, fileWrapper);
-                            // remove impersonation now
                             impersonatedUser.Undo();
                             newID.Dispose();
                         }
