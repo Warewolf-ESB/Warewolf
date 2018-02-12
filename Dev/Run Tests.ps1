@@ -976,6 +976,7 @@ SHELL ["powershell"]
 
 RUN New-Item -Path Build -ItemType Directory
 ADD . Build
+ENTRYPOINT & "Build\\Run Tests.ps1"
 "@
         Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject @"
 dockerfile
@@ -1011,7 +1012,7 @@ TestResults
         }
         if ($JobContainers.IsPresent) {
             $JobContainerName = $JobName.Replace(" ", "_") + "_Container"
-            docker run --name $JobContainerName -di jobsenvironment powershell `&`(`'.\Build\Run Tests.ps1`'`) -JobName `'$JobName`' -TestList `'$TestList`'
+            docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`'
         } else {
             if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
 	            Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
