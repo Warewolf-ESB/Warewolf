@@ -10,7 +10,6 @@ namespace Dev2.Data.PathOperations
     {
         const int LOGON32_LOGON_INTERACTIVE = 2;
         const int LOGON32_LOGON_NETWORK = 3;
-        const int LOGON32_LOGON_NEW_CREDENTIALS = 9;
 
         const int LOGON32_PROVIDER_DEFAULT = 0;
         const int LOGON32_PROVIDER_WINNT50 = 3;
