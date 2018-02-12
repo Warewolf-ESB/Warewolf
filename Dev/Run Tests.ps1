@@ -338,11 +338,12 @@ function Cleanup-JobContainers() {
                 $ResultsDirectory = $TestsPath + "\TestResults\" + $JobContainerName
             }
 		    docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory"
-		    docker container rm $JobContainerName
+		    $ContainerRemResult = docker container rm $JobContainerName
+            Write-Host $ContainerRemResult Removed. See $ResultsDirectory
         }
 	}
     docker ps -a -q | % { docker rm $_ }
-    docker images | ConvertFrom-String | ? { $_.P2 -eq "jobsenvironment" -or $_.P2 -eq "<none>" } | % { docker rmi $_.P3 }
+    docker images | ConvertFrom-String | ? { $_.P2 -eq "jobsenvironment" -or $_.P2 -eq "<none>" } | % { docker rmi -f $_.P3 }
 }
 
 function Wait-For-FileUnlock([string]$FilePath) {
@@ -1012,7 +1013,18 @@ TestResults
         }
         if ($JobContainers.IsPresent) {
             $JobContainerName = $JobName.Replace(" ", "_") + "_Container"
-            docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`'
+            $JobContainerResult = "The paging file is too small for this operation to complete."
+            while($JobContainerResult.Contains("The paging file is too small for this operation to complete.")) {
+                if ($StartServer.IsPresent) {
+                    $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' -StartServer -ResourcesType `'$ResourcesType`' 2>&1
+                } else {
+                    $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' 2>&1
+                }
+                if ($JobContainerResult.Contains("The paging file is too small for this operation to complete.")) {
+                    sleep 30
+                }
+            }
+            Write-Host Started $JobContainerName as $JobContainerResult
         } else {
             if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
 	            Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
@@ -1194,14 +1206,16 @@ TestResults
                 Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent $JobName
             }
         }
+        if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1 -and !$JobContainers.IsPresent) {
+            Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
+        }
+    }
+    if ($JobContainers.IsPresent) {
+	    Cleanup-JobContainers
         if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1) {
             Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
         }
     }
-}
-
-if ($JobContainers.IsPresent) {
-	Cleanup-JobContainers
 }
 
 if ($AssemblyFileVersionsTest.IsPresent) {
