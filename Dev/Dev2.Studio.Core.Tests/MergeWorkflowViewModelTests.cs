@@ -807,7 +807,6 @@ namespace Dev2.Core.Tests
             var mergeToolModel = new Mock<IToolConflictRow>();
             mergeToolModel.SetupGet(p => p.CurrentViewModel).Returns(new Mock<IToolModelConflictItem>().Object);
             var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
-            wfDesignerVm.Setup(p => p.RemoveItem(It.IsAny<IToolModelConflictItem>())).Verifiable();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
@@ -854,7 +853,6 @@ namespace Dev2.Core.Tests
             var mergeToolModel = new Mock<IToolConflictRow>();
             mergeToolModel.SetupGet(p => p.DiffViewModel).Returns(new Mock<IToolModelConflictItem>().Object);
             var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
-            wfDesignerVm.Setup(p => p.RemoveItem(It.IsAny<IToolModelConflictItem>())).Verifiable();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.WorkflowDesignerViewModel = wfDesignerVm.Object;

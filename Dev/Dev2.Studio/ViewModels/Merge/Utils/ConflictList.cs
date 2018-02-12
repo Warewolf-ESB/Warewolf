@@ -49,43 +49,6 @@ namespace Dev2.ViewModels.Merge.Utils
             }
         }
 
-        internal static IEnumerable<IConnectorConflictRow> GenerateConnectorConflictRows(ConflictTreeNode current, ConflictTreeNode diff)
-        {
-            int index = 0;
-            var armConnectorsCurrent = current.Activity.ArmConnectors();
-            var armConnectorsDiff = diff.Activity.ArmConnectors();
-            var maxCount = Math.Max(armConnectorsCurrent.Count, armConnectorsDiff.Count);
-            for (; index < maxCount; index++)
-            {
-                var row = new ConnectorConflictRow();
-                if (index < armConnectorsCurrent.Count)
-                {
-                    var connectorCurr = armConnectorsCurrent[index];
-                    row.CurrentArmConnector =
-                        new ConnectorConflictItem(connectorCurr.Description,
-                            Guid.Parse(connectorCurr.SourceUniqueId), Guid.Parse(connectorCurr.DestinationUniqueId),
-                            connectorCurr.Key);
-                }
-                else
-                {
-                    // Do we absolutely require empty ConflictItems in our rows?
-                }
-                if (index < armConnectorsDiff.Count)
-                {
-                    var connectorDiff = armConnectorsDiff[index];
-                    row.DifferentArmConnector = new ConnectorConflictItem(connectorDiff.Description,
-                            Guid.Parse(connectorDiff.SourceUniqueId), Guid.Parse(connectorDiff.DestinationUniqueId),
-                            connectorDiff.Key);
-                }
-                else
-                {
-                    // Do we absolutely require empty ConflictItems in our rows?
-                }
-                yield return row;
-            }
-        }
-
-
         ToolConflictRow CreateConflictRow(ConflictTreeNode current, ConflictTreeNode diff)
         {
             var row = new ToolConflictRow();
@@ -100,11 +63,48 @@ namespace Dev2.ViewModels.Merge.Utils
             return row;
         }
 
+        internal static IEnumerable<IConnectorConflictRow> GenerateConnectorConflictRows(ConflictTreeNode current, ConflictTreeNode diff)
+        {
+            int index = 0;
+            var armConnectorsCurrent = current.Activity.ArmConnectors();
+            var armConnectorsDiff = diff.Activity.ArmConnectors();
+            var maxCount = Math.Max(armConnectorsCurrent.Count, armConnectorsDiff.Count);
+            for (; index < maxCount; index++)
+            {
+                var row = new ConnectorConflictRow();
+                if (index < armConnectorsCurrent.Count)
+                {
+                    var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsCurrent[index];
+                    row.CurrentArmConnector = new ConnectorConflictItem(Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
+                }
+                else
+                {
+                    // Do we absolutely require empty ConflictItems in our rows?
+                }
+                if (index < armConnectorsDiff.Count)
+                {
+                    var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsDiff[index];
+                    row.DifferentArmConnector = new ConnectorConflictItem(Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
+                }
+                else
+                {
+                    // Do we absolutely require empty ConflictItems in our rows?
+                }
+                yield return row;
+            }
+        }
 
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public IEnumerator<IConflictRow> GetEnumerator()
         {
-            // TODO: return the _real_ rows and the connectors in their correct order
+            var startToolRow = CreateStartRow(currentTree[0], diffTree[0]);
+            yield return startToolRow;
+            foreach (var connectorRow in startToolRow.Connectors)
+            {
+                yield return connectorRow;
+            }
+
             foreach (var toolRow in toolConflictRowList)
             {
                 yield return toolRow;
@@ -116,7 +116,46 @@ namespace Dev2.ViewModels.Merge.Utils
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        ToolConflictRow _cacheStartToolRow;
+        private ToolConflictRow CreateStartRow(ConflictTreeNode current, ConflictTreeNode diff)
+        {
+            if (_cacheStartToolRow != null)
+            {
+                return _cacheStartToolRow;
+            }
+            const string description = "Start";
+            var row = new ToolConflictRow
+            {
+                UniqueId = Guid.Empty,
+                CurrentViewModel = new ToolModelConflictItem { MergeDescription = description },
+                DiffViewModel = new ToolModelConflictItem { MergeDescription = description }
+            };
+            CreateStartNodeConnectors(row, current, diff);
+
+            return _cacheStartToolRow = row;
+        }
+
+        static void CreateStartNodeConnectors(ToolConflictRow toolConflictRow, ConflictTreeNode current, ConflictTreeNode diff)
+        {
+            if (toolConflictRow.Connectors != null && toolConflictRow.Connectors.Any())
+            {
+                return;
+            }
+            const string key = "Start";
+            var emptyGuid = Guid.Empty;
+            var row = new ConnectorConflictRow
+            {
+                UniqueId = emptyGuid,
+                Key = key,
+                CurrentArmConnector = new ConnectorConflictItem("Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key),
+                DifferentArmConnector = new ConnectorConflictItem("Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key)
+            };
+            toolConflictRow.Connectors = new List<IConnectorConflictRow> { row };
+        }
+
+        
+
+
 
         public int Count => toolConflictRowList.Count;
         public int IndexOf(IConflictRow conflict) => 0;

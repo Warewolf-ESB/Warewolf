@@ -78,22 +78,6 @@ namespace Dev2.ViewModels.Merge
                     NotifyIsCheckedChanged?.Invoke(this, IsChecked);
                 }
             };
-
-            NotifyIsCheckedChanged += AddRemoveActivityHandler;
-        }
-
-        private void AddRemoveActivityHandler(IConflictItem item, bool isChecked)
-        {
-            if (isChecked)
-            {
-                // TODO: Move to StateApplier?
-                if (Key == "Start")
-                {
-                    WorkflowDesignerViewModel?.RemoveStartNodeConnection();
-                    // TODO: Pass in IToolModelConflictItem
-                    WorkflowDesignerViewModel?.AddStartNode(null);
-                }
-            }
         }
 
         public bool Equals(IConnectorConflictItem other)

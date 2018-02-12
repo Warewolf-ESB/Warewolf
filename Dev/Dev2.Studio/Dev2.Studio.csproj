@@ -314,6 +314,7 @@
     <Compile Include="ViewModels\Merge\ConflictItem.cs" />
     <Compile Include="ViewModels\Merge\ConflictRow.cs" />
     <Compile Include="ViewModels\Merge\Utils\ConflictList.cs" />
+    <Compile Include="ViewModels\Workflow\MergePreviewWorkflowDesignerViewModel.cs" />
     <Compile Include="WorkflowDesignerWrapper.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>

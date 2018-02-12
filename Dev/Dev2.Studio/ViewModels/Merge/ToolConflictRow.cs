@@ -19,7 +19,6 @@ namespace Dev2.ViewModels.Merge
         bool _isMergeExpanded;
         bool _hasNodeArmConflict;
         bool _isContainerTool;
-        bool _isStartNode;
         bool _isEmptyItemSelected;
 
         public IToolModelConflictItem CurrentViewModel { get; set; }
@@ -61,15 +60,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public bool IsStartNode
-        {
-            get => _isStartNode;
-            set
-            {
-                _isStartNode = value;
-                OnPropertyChanged(() => IsStartNode);
-            }
-        }
+        public override bool IsStartNode { get; set; }
 
         public override bool IsEmptyItemSelected
         {

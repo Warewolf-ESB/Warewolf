@@ -12,7 +12,7 @@ namespace Dev2.ViewModels.Merge
         public abstract Guid UniqueId { get; set; }
         public abstract IConflictItem Current { get; }
         public abstract IConflictItem Different { get; }
-
+        public abstract bool IsStartNode { get; set; }
 
         protected ConflictRow()
         {

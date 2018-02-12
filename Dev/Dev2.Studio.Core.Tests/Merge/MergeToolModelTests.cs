@@ -284,7 +284,7 @@ namespace Dev2.Core.Tests.Merge
             };
             object sender = mergeToolModel;
             IToolModelConflictItem args = new ToolModelConflictItem();
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            var wfDesignerVm = new Mock<IMergePreviewWorkflowDesignerViewModel>();
             wfDesignerVm.Setup(p => p.AddItem(It.IsAny<IToolModelConflictItem>()));
 
             var methodToRun = typeof(ToolModelConflictItem).GetMethod("AddActivity", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);

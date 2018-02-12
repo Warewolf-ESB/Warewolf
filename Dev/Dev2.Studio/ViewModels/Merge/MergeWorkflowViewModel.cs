@@ -39,6 +39,7 @@ namespace Dev2.ViewModels.Merge
             _serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
             UpdateHelpDescriptor(Warewolf.Studio.Resources.Languages.HelpText.MergeWorkflowStartupHelp);
 
+            // TODO: Replace with MergePreviewWorkflowDesignerViewModel?
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
             WorkflowDesignerViewModel.CreateBlankWorkflow();
 
@@ -58,7 +59,8 @@ namespace Dev2.ViewModels.Merge
             var stateApplier = new ConflictListStateApplier(conflictList);
             stateApplier.SetConnectorSelectionsToCurrentState();
 
-            var mergePreviewWorkflowStateApplier = new MergePreviewWorkflowStateApplier(conflictList, WorkflowDesignerViewModel);
+            var mergePreviewWorkflowDesignerViewModel = new MergePreviewWorkflowDesignerViewModel(currentResourceModel);
+            var mergePreviewWorkflowStateApplier = new MergePreviewWorkflowStateApplier(conflictList, mergePreviewWorkflowDesignerViewModel);
         }
 
         void SetupNamesAndVariables(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
@@ -349,11 +351,11 @@ namespace Dev2.ViewModels.Merge
     /// </summary>
     public class MergePreviewWorkflowStateApplier
     {
-        readonly IWorkflowDesignerViewModel workflowDesignerViewModel;
+        readonly IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel;
         readonly ToolModelConflictRowList conflictList;
-        public MergePreviewWorkflowStateApplier(ToolModelConflictRowList conflictList, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        public MergePreviewWorkflowStateApplier(ToolModelConflictRowList conflictList, IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel)
         {
-            this.workflowDesignerViewModel = workflowDesignerViewModel;
+            this.mergePreviewWorkflowDesignerViewModel = mergePreviewWorkflowDesignerViewModel;
             this.conflictList = conflictList;
             RegisterEventHandlerForConflictItemChanges();
             Apply();
@@ -367,11 +369,13 @@ namespace Dev2.ViewModels.Merge
 
                 conflictRow.Current.NotifyIsCheckedChanged += (current, isChecked) =>
                 {
-                    Handler(current, innerConflictRow.Different);
+                    //Handler(current, innerConflictRow.Different)
+                    Handler(current, innerConflictRow);
                 };
                 conflictRow.Different.NotifyIsCheckedChanged += (diff, isChecked) =>
                 {
-                    Handler(innerConflictRow.Current, diff);
+                    //Handler(innerConflictRow.Current, diff)
+                    Handler(diff, innerConflictRow);
                 };
             }
         }
@@ -380,78 +384,96 @@ namespace Dev2.ViewModels.Merge
         {
             foreach (var conflictRow in conflictList)
             {
-                Handler(conflictRow.Current, conflictRow.Different);
+                //Handler(conflictRow.Current, conflictRow.Different)
+                Handler(conflictRow.Current, conflictRow);
             }
         }
 
-        private void Handler(IConflictItem currentItem, IConflictItem diffItem)
+        private void Handler(IConflictItem changedItem, IConflictRow row)
         {
-            if (currentItem is IToolModelConflictItem toolItem)
+            if (row.IsStartNode)
             {
-                ToolModelHandler(toolItem, diffItem as IToolModelConflictItem);
+                return;
             }
-            else if (currentItem is IConnectorConflictItem connectorItem)
+
+
+            if (changedItem is IToolModelConflictItem toolItem)
             {
-                ConnectorHandler(connectorItem, diffItem as IConnectorConflictItem);
+                ToolModelHandler(toolItem);
+            }
+            else if (changedItem is IConnectorConflictItem connectorItem && row is IConnectorConflictRow connectorRow)
+            {
+                ConnectorHandler(connectorRow);
+            }
+            else
+            {
+                throw new NotImplementedException("Only ConflictRow and ConflictItem are supported");
             }
         }
-        private void ToolModelHandler(IToolModelConflictItem currentItem, IToolModelConflictItem diffItem)
+        private void ToolModelHandler(IToolModelConflictItem changedItem)
         {
-            if (currentItem.IsChecked)
+            if (changedItem.IsChecked)
             {
-                AddActivity(currentItem);
+                AddActivity(changedItem);
             }
             else
             {
-                RemoveActivity(currentItem);
-            }
-            if (diffItem.IsChecked)
-            {
-                AddActivity(diffItem);
-            }
-            else
-            {
-                RemoveActivity(diffItem);
+                RemoveActivity(changedItem);
             }
         }
 
         private void AddActivity(IToolModelConflictItem toolModelConflictItem)
         {
-            workflowDesignerViewModel.AddItem(toolModelConflictItem);
+            mergePreviewWorkflowDesignerViewModel.AddItem(toolModelConflictItem);
         }
 
         private void RemoveActivity(IToolModelConflictItem toolModelConflictItem)
         {
-            workflowDesignerViewModel.RemoveItem(toolModelConflictItem);
+            mergePreviewWorkflowDesignerViewModel.RemoveItem(toolModelConflictItem);
         }
 
-        private void ConnectorHandler(IConnectorConflictItem currentItem, IConnectorConflictItem diffItem)
+        private void ConnectorHandler(IConnectorConflictRow row)
         {
-            if (currentItem.IsChecked)
+            if (row.IsStartNode)
             {
-                LinkActivities(currentItem.SourceUniqueId, currentItem.DestinationUniqueId, currentItem.Key);
+                mergePreviewWorkflowDesignerViewModel.RemoveStartNodeConnection();
+
+                // TODO: Pass in IToolModelConflictItem linked to StartNode
+                var toolModelConflictItemCurr = conflictList[0].Current as IToolModelConflictItem;
+                var toolModelConflictItemDiff = conflictList[0].Different as IToolModelConflictItem;
+
+                mergePreviewWorkflowDesignerViewModel.LinkStartNode(toolModelConflictItemCurr);
+                mergePreviewWorkflowDesignerViewModel.LinkStartNode(toolModelConflictItemDiff);
+                return;
             }
-            else
+            if (row.Current is IConnectorConflictItem currentItem && row.Different is IConnectorConflictItem diffItem)
             {
-                DeLinkActivities(currentItem.SourceUniqueId, currentItem.DestinationUniqueId, currentItem.Key);
-            }
-            if (diffItem.IsChecked)
-            {
-                LinkActivities(diffItem.SourceUniqueId, diffItem.DestinationUniqueId, diffItem.Key);
-            }
-            else
-            {
-                DeLinkActivities(diffItem.SourceUniqueId, diffItem.DestinationUniqueId, diffItem.Key);
+                if (currentItem.IsChecked)
+                {
+                    LinkActivities(currentItem.SourceUniqueId, currentItem.DestinationUniqueId, currentItem.Key);
+                }
+                else
+                {
+                    DeLinkActivities(currentItem.SourceUniqueId, currentItem.DestinationUniqueId, currentItem.Key);
+                }
+                if (diffItem.IsChecked)
+                {
+                    LinkActivities(diffItem.SourceUniqueId, diffItem.DestinationUniqueId, diffItem.Key);
+                }
+                else
+                {
+                    DeLinkActivities(diffItem.SourceUniqueId, diffItem.DestinationUniqueId, diffItem.Key);
+                }
             }
         }
         private void LinkActivities(Guid SourceUniqueId, Guid DestinationUniqueId, string Key)
         {
-            workflowDesignerViewModel?.LinkActivities(SourceUniqueId, DestinationUniqueId, Key);
+            mergePreviewWorkflowDesignerViewModel?.LinkActivities(SourceUniqueId, DestinationUniqueId, Key);
         }
 
         private void DeLinkActivities(Guid SourceUniqueId, Guid DestinationUniqueId, string Key)
         {
-            workflowDesignerViewModel?.DeLinkActivities(SourceUniqueId, DestinationUniqueId, Key);
+            mergePreviewWorkflowDesignerViewModel?.DeLinkActivities(SourceUniqueId, DestinationUniqueId, Key);
         }
     }
 }

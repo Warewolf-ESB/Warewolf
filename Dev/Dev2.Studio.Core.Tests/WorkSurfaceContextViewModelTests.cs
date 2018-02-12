@@ -1218,7 +1218,7 @@ namespace Dev2.Core.Tests
         {
             
         }
-        public void AddStartNode(IToolModelConflictItem model)
+        public void LinkStartNode(IToolModelConflictItem model)
         {
 
         }
