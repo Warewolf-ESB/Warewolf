@@ -94,18 +94,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Ctor
 
+        public override List<string> GetOutputs() => new List<string> { Result };
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
-
-
-        /// <summary>
-        ///     Executes the logic of the activity and calls the backend code to do the work
-        ///     Also responsible for adding the results to the data list
-        /// </summary>
-        /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -121,7 +111,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 InitializeDebug(dataObject);
                 var searchContext = new SearchContext(this);
-                if (dataObject.IsDebugMode()) { AddDebugInputValues(dataObject, searchContext.ToSearch, ref allErrors, update); }
+                if (dataObject.IsDebugMode())
+                {
+                    AddDebugInputValues(dataObject, searchContext.ToSearch, ref allErrors, update);
+                }
 
                 searchQuery.Execute(searchContext, allErrors, dataObject, update);
 
@@ -429,8 +422,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(DsfFindRecordsMultipleCriteriaActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var resultsCollectionsAreEqual = CommonEqualityOps.CollectionEquals(ResultsCollection, other.ResultsCollection, new FindRecordsTOComparer());
             return base.Equals(other)
                 && string.Equals(FieldsToSearch, other.FieldsToSearch)
@@ -444,9 +445,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfFindRecordsMultipleCriteriaActivity)obj);
         }
 

@@ -95,7 +95,7 @@ namespace Dev2.Runtime.Configuration.Tests.Settings
 
             var actual = logging.ToXml().ToString();
             var expected = XmlResource.Fetch("LoggingSettings").ToString();
-            Assert.AreEqual(actual, expected);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

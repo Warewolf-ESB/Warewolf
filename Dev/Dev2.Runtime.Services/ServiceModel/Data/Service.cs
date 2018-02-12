@@ -136,17 +136,17 @@ namespace Dev2.Runtime.ServiceModel.Data
                 {
                     continue;
                 }
-                XElement validator;
                 var typeName = input.AttributeSafe("NativeType", true);
 
                 Type tmpType = string.IsNullOrEmpty(typeName) ? typeof(object) : TypeExtensions.GetTypeFromSimpleName(typeName);
 
+                XElement validator = input.Element("Validator");
                 // NOTE : Inlining causes debug issues, please avoid ;)
                 result.Parameters.Add(new MethodParameter
                 {
                     Name = input.AttributeSafe("Name"),
                     EmptyToNull = bool.TryParse(input.AttributeSafe("EmptyToNull"), out bool emptyToNull) && emptyToNull,
-                    IsRequired = (validator = input.Element("Validator")) != null && validator.AttributeSafe("Type").Equals("Required", StringComparison.InvariantCultureIgnoreCase),
+                    IsRequired = validator != null && validator.AttributeSafe("Type").Equals("Required", StringComparison.InvariantCultureIgnoreCase),
                     DefaultValue = input.AttributeSafe("DefaultValue"),
                     TypeName = tmpType.FullName
                 });

@@ -134,7 +134,7 @@ namespace Dev2.Studio.ViewModels.Administration
 
         void SetHyperlink(string link, string text)
         {
-            if (!string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
             {
                 Hyperlink = link;
                 HyperlinkText = text;

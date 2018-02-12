@@ -103,7 +103,7 @@ namespace Dev2.Activities.Designers2.Core.Controls
             var child = default(T);
             var numVisuals = VisualTreeHelper.GetChildrenCount(parent);
             var i = 0;
-            while (i < numVisuals && child != null && _staticSkipNumber != 0)
+            while (i < numVisuals && _staticSkipNumber != 0)
             {
                 var v = (Visual)VisualTreeHelper.GetChild(parent, i);
                 child = v as T ?? GetVisualChild<T>(v);

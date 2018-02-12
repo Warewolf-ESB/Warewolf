@@ -134,7 +134,8 @@ namespace Dev2.Common
         Random GetRandom(ref int seed)
         {
             var r = new Random(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
-            return new Random(seed += r.Next(1, 100000));
+            seed += r.Next(1, 100000);
+            return new Random(seed);
         }
     }
 }

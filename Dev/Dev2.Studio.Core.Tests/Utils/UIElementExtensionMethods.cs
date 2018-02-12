@@ -18,11 +18,6 @@ namespace Dev2.Core.Tests.Utils
 {
     public static class UIElementExtensionMethods
     {
-        /// <summary>
-        /// Render a UIElement such that the visual tree is generated, 
-        /// without actually displaying the UIElement
-        /// anywhere
-        /// </summary>
         public static void CreateVisualTree(this UIElement element)
         {
             var fixedDoc = new FixedDocument();
@@ -38,7 +33,6 @@ namespace Dev2.Core.Tests.Utils
                 var w = f.CreateSerializerWriter(s);
                 w.Write(fixedDoc);
             }
-
         }
     }
 }

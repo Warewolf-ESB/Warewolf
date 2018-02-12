@@ -994,11 +994,7 @@ namespace System.Windows.Controls
 
             if (_popupHasOpened)
             {
-#if SILVERLIGHT
-                OnDropDownClosed(new RoutedPropertyChangedEventArgs<bool>(true, false));
-#else
                 OnDropDownClosed(new RoutedPropertyChangedEventArgs<bool>(true, false, DropDownClosedEvent));
-#endif
             }
         }
 
@@ -1008,11 +1004,7 @@ namespace System.Windows.Controls
 
         void FocusChanged(bool hasFocus)
         {
-            if (hasFocus)
-            {
-
-            }
-            else
+            if (!hasFocus)
             {
                 IsDropDownOpen = false;
                 _userCalledPopulate = false;
@@ -1022,12 +1014,7 @@ namespace System.Windows.Controls
 
         protected bool HasFocus()
         {
-            var focused =
-#if SILVERLIGHT
-                FocusManager.GetFocusedElement() as DependencyObject;
-#else
-                IsKeyboardFocusWithin ? Keyboard.FocusedElement as DependencyObject : FocusManager.GetFocusedElement(this) as DependencyObject;
-#endif
+            var focused = IsKeyboardFocusWithin ? Keyboard.FocusedElement as DependencyObject : FocusManager.GetFocusedElement(this) as DependencyObject;
             while (focused != null)
             {
                 if(ReferenceEquals(focused, this))

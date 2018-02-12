@@ -404,7 +404,7 @@ namespace Dev2.Sql.Tests
             {
                 sqlServer.Connect("a");
                 factory.Verify(a => a.BuildConnection(It.IsAny<string>()));
-                conn.Verify(a => a.Open());
+                conn.Verify(a => a.EnsureOpen());
 
 
 
@@ -436,7 +436,7 @@ namespace Dev2.Sql.Tests
 
             sqlServer.Connect("a");
             sqlServer.BeginTransaction();
-            conn.Verify(a => a.Open(), Times.Never);//Connection is open
+            conn.Verify(a => a.EnsureOpen(), Times.Never);//Connection is open
 
             //------------Assert Results-------------------------
             conn.Verify(a => a.BeginTransaction());
@@ -468,7 +468,7 @@ namespace Dev2.Sql.Tests
                 sqlServer.BeginTransaction();
                 sqlServer.RollbackTransaction();
                 factory.Verify(a => a.BuildConnection(It.IsAny<string>()));
-                conn.Verify(a => a.Open(), Times.Never);
+                conn.Verify(a => a.EnsureOpen(), Times.Never);
 
                 dbTran.Verify(a => a.Rollback());
                 dbTran.Verify(a => a.Dispose());
