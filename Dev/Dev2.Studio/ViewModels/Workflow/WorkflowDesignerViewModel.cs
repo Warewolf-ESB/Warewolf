@@ -85,14 +85,12 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
-using System.Collections.Concurrent;
 using Dev2.ViewModels.Merge;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using System.IO;
 
 namespace Dev2.Studio.ViewModels.Workflow
-
 {
     public class FromToolBox
     {
@@ -146,11 +144,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         
         public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner)
             : this(EventPublishers.Aggregator, resource, workflowHelper, createDesigner)
-        {
-        }
-        
-        WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper)
-            : this(eventPublisher, resource, workflowHelper, true)
         {
         }
 
@@ -691,7 +684,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         [ExcludeFromCodeCoverage]
         public virtual object SelectedModelItem => _wd?.Context?.Items.GetValue<Selection>().SelectedObjects.FirstOrDefault();
 
-        public IContextualResourceModel ResourceModel { get { return _resourceModel; } set { _resourceModel = value; } }
+        public IContextualResourceModel ResourceModel
+        {
+            get => _resourceModel;
+            set => _resourceModel = value;
+        }
 
         public string WorkflowName => _resourceModel.ResourceName;
 
@@ -707,7 +704,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder DesignerText => ServiceDefinition;
 
-        public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(_modelService); } set { } }
+        public StringBuilder ServiceDefinition
+        {
+            get => _workflowHelper.SerializeWorkflow(_modelService);
+        }
 
         public ICommand CollapseAllCommand => _collapseAllCommand ?? (_collapseAllCommand = new DelegateCommand(param =>
                                                             {
@@ -2586,41 +2586,24 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 CEventHelper.RemoveAllEventHandlers(_wd);
             }
-
-            catch
+            catch(Exception e)
             {
+                Dev2Logger.Warn("Error disposing Workflow Designer View Model: " + e.Message, GlobalConstants.WarewolfWarn);
             }
 
             _debugSelectionChangedService?.Unsubscribe();
             base.OnDispose();
         }
-
-        /// <summary>
-        /// Gets the work surface context.
-        /// </summary>
-        /// <value>
-        /// The work surface context.
-        /// </value>
+        
         public override WorkSurfaceContext WorkSurfaceContext => ResourceModel?.ResourceType.ToWorkSurfaceContext() ?? WorkSurfaceContext.Unknown;
-
-
-        /// <summary>
-        /// Gets the environment model.
-        /// </summary>
-        /// <value>
-        /// The environment model.
-        /// </value>
-        /// <exception cref="System.NotImplementedException"></exception>
+        
         public IServer Server => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
         public ModelItem SelectedItem
         {
             get => _selectedItem;
-            set
-            {
-                _selectedItem = value;
-            }
+            set => _selectedItem = value;
         }
         public bool WorkspaceSave => _workspaceSave;
 
@@ -2899,10 +2882,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    var cases = parentNodeProperty?.Dictionary;
-                    cases.Remove(key);
-                    cases.Add(key, nodeItem);
-                    parentNodeProperty.SetValue(cases);
+                    if (parentNodeProperty != null)
+                    {
+                        var cases = parentNodeProperty.Dictionary;
+                        cases.Remove(key);
+                        cases.Add(key, nodeItem);
+                        parentNodeProperty.SetValue(cases);
+                    }
                 }
             }
             else
@@ -2998,9 +2984,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return nodes;
             }
         }
-
-        private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
-        IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
+        
         protected bool _isPaste;
 
         public void AddItem(IMergeToolModel model)

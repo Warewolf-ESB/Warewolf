@@ -48,7 +48,7 @@ namespace Dev2.Settings.Logging
         ProgressDialogViewModel _progressDialogViewModel;
         string _serverLogFile;
         IServer _currentEnvironment;
-        LogLevel _serverFileLogLevel;
+        readonly LogLevel _serverFileLogLevel;
         LogLevel _studioFileLogLevel;
         LogSettingsViewModel _item;
 

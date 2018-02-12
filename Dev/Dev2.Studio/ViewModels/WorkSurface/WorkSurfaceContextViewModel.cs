@@ -66,7 +66,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         readonly IServer _server;
         readonly IPopupController _popupController;
         readonly Action<IContextualResourceModel, bool, System.Action> _saveDialogAction;
-        IStudioCompileMessageRepoFactory _studioCompileMessageRepoFactory;
         IResourceChangeHandlerFactory _resourceChangeHandlerFactory;
 
         #endregion private fields

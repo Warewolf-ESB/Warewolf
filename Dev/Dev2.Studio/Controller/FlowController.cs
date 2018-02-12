@@ -9,7 +9,6 @@
 */
 
 
-#region
 
 using System;
 using System.Activities.Presentation.Model;
@@ -35,8 +34,6 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Views;
 
-#endregion
-
 
 namespace Dev2.Studio.Controller
 
@@ -45,14 +42,17 @@ namespace Dev2.Studio.Controller
     {
     }
 
-    public class FlowController : IHandle<ConfigureDecisionExpressionMessage>, IHandle<ConfigureSwitchExpressionMessage>,
-                                  IHandle<ConfigureCaseExpressionMessage>, IHandle<EditCaseExpressionMessage>, IFlowController
+    public class FlowController : 
+        IHandle<ConfigureSwitchExpressionMessage>,
+        IHandle<ConfigureCaseExpressionMessage>,
+        IHandle<EditCaseExpressionMessage>, 
+        IFlowController
     {
 
         #region Fields
 
         static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
-        static Dev2DecisionCallbackHandler _callBackHandler;
+        static Dev2DecisionCallbackHandler _callBackHandler = new Dev2DecisionCallbackHandler();
 
         #endregion Fields
 
@@ -61,17 +61,12 @@ namespace Dev2.Studio.Controller
         public FlowController()
         {
             EventPublishers.Aggregator.Subscribe(this);
-            _callBackHandler = new Dev2DecisionCallbackHandler();
         }
 
         #endregion ctor
 
         #region Public Methods
 
-        /// <summary>
-        ///     Configures the decision expression.
-        ///     Travis.Frisinger - Developed for new Decision Wizard
-        /// </summary>
         public static string ConfigureDecisionExpression(ConfigureDecisionExpressionMessage args)
         {
             var condition = ConfigureActivity<DsfFlowDecisionActivity>(args.ModelItem, GlobalConstants.ConditionPropertyText, args.IsNew, args.IsPaste);
@@ -377,11 +372,6 @@ namespace Dev2.Studio.Controller
         #endregion
 
         #region IHandle
-
-        public void Handle(ConfigureDecisionExpressionMessage message)
-        {
-
-        }
 
         public void Handle(ConfigureSwitchExpressionMessage message)
         {

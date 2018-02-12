@@ -225,7 +225,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var model = TestModel();
             model.ToSource();
             model.TestPassed = true;            
-            Assert.IsNotNull(model.RequestServiceNameViewModel);
+            Assert.IsNotNull(model.GetRequestServiceNameViewModel());
             Assert.IsFalse(model.CanCancelTest());
             Assert.IsTrue(model.CanSave());
           
@@ -240,7 +240,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var model = GetModel();
             model.ToSource();
             model.TestPassed = true;
-            var requestModel = model.RequestServiceNameViewModel;
+            var requestModel = model.GetRequestServiceNameViewModel();
         }
 
         [TestMethod]

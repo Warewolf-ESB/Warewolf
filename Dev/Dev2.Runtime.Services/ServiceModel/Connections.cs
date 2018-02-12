@@ -53,7 +53,9 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 // Validate URI, ports, etc...
+#pragma warning disable S1848 // Objects should not be created to be dropped immediately without being used
                 new Uri(connection.Address);
+#pragma warning restore S1848 // Objects should not be created to be dropped immediately without being used
 
                 var connectResult = ConnectToServer(connection);
                 if (!string.IsNullOrEmpty(connectResult))

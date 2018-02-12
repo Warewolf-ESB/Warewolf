@@ -10,8 +10,8 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModelCommandController
     {
-        IShellViewModel _shellViewModel;
-        IPopupController _popupController;
+        readonly IShellViewModel _shellViewModel;
+        readonly IPopupController _popupController;
 
         public ExplorerItemViewModelCommandController(IShellViewModel shellViewModel, IPopupController popupController)
         {
