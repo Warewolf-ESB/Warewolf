@@ -338,7 +338,12 @@ function Cleanup-JobContainers() {
             } else {
                 $ResultsDirectory = $TestsPath + "\TestResults\" + $JobContainerName
             }
-		    docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory" 2>&1
+		    $ContainerCpResult = docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory" 2>&1
+            if ($ContainerCpResult -eq 0) {
+                Write-Host Recovered test results.
+            } else {
+                Write-Warning -Message "Failed to recover test results for $JobContainerName."
+            }
 		    $ContainerRemResult = docker container rm $JobContainerName
             Write-Host $ContainerRemResult Removed. See $ResultsDirectory
         }
@@ -908,8 +913,12 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Write-Host Removed loose TRX files from VS install directory.
         }
 
-        if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
+        if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
             $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
+            if ($ServerPath -eq "System.ServiceProcess.ServiceController") {
+                $ServerPath = "C:\Build\Warewolf Server.exe"
+                Write-Host Corrected ServerPath. ResourcesType: $ResourcesType
+            }
         }
     }
 
