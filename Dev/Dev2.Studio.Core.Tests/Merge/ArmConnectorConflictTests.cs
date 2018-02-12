@@ -42,10 +42,9 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var container = new Mock<IConnectorConflictRow>();
-            var a = new ConnectorConflictItem(container.Object);
-            var completeConflict = new ConnectorConflictRow() {CurrentArmConnector= a, DifferentArmConnector=a };
-            var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var a = new ConnectorConflictItem();
+            var completeConflict = new ConnectorConflictRow {CurrentArmConnector= a, DifferentArmConnector=a };
+            var completeConflict1 = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
 
             //------------Assert Results-------------------------
             var areEqual = completeConflict.Equals(completeConflict1);
@@ -57,10 +56,9 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var container = new Mock<IConnectorConflictRow>();
-            var a = new ConnectorConflictItem(container.Object);
-            var completeConflict = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
-            var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var a = new ConnectorConflictItem();
+            var completeConflict = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
+            var completeConflict1 = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
 
             //------------Assert Results-------------------------
             var areEqual = completeConflict.Equals((object)completeConflict1);
@@ -73,10 +71,9 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var container = new Mock<IConnectorConflictRow>();
-            var a = new ConnectorConflictItem(container.Object);
-            var completeConflict = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
-            var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var a = new ConnectorConflictItem();
+            var completeConflict = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
+            var completeConflict1 = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
 
             //------------Assert Results-------------------------
             var hash = completeConflict.GetHashCode();
@@ -89,10 +86,9 @@ namespace Dev2.Core.Tests.Merge
         public void GetHashCode_TwoNewObjectsDiffSides_Returns_SameValue()
         {
             //------------Setup for test--------------------------
-            var container = new Mock<IConnectorConflictRow>();
-            var a = new ConnectorConflictItem(container.Object);
-            var completeConflict = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a, UniqueId = Guid.NewGuid() };
-            var completeConflict1 = new ConnectorConflictRow() { CurrentArmConnector = a, DifferentArmConnector = a };
+            var a = new ConnectorConflictItem();
+            var completeConflict = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a, UniqueId = Guid.NewGuid() };
+            var completeConflict1 = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
             //------------Execute Test---------------------------
             Assert.IsFalse(completeConflict.HasConflict);
             var hash = completeConflict.GetHashCode();
@@ -120,7 +116,6 @@ namespace Dev2.Core.Tests.Merge
             };
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            completeConflict.HasConflict = true;
             Assert.IsTrue(wasCalled);
         }
 

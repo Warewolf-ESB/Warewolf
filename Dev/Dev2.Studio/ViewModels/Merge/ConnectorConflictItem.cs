@@ -21,7 +21,6 @@ namespace Dev2.ViewModels.Merge
         public string RightArmDescription { get; set; }
         public Guid SourceUniqueId { get; set; }
         public Guid DestinationUniqueId { get; set; }
-        public IConnectorConflictRow ConnectorConflictRow { get; set; }
         public string Key { get; set; }
         bool _isChecked;
 
@@ -51,12 +50,11 @@ namespace Dev2.ViewModels.Merge
 
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
-        public ConnectorConflictItem(IConnectorConflictRow container)
+        public ConnectorConflictItem()
         {
-            ConnectorConflictRow = container;
             RegisterEventHandlers();
         }
-        public ConnectorConflictItem(string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key, IConnectorConflictRow container)
+        public ConnectorConflictItem(string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             ArmDescription = armDescription;
             if (!string.IsNullOrWhiteSpace(armDescription))
@@ -68,7 +66,6 @@ namespace Dev2.ViewModels.Merge
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
             Key = key;
-            ConnectorConflictRow = container;
 
             RegisterEventHandlers();
         }
@@ -96,8 +93,6 @@ namespace Dev2.ViewModels.Merge
                     // TODO: Pass in IToolModelConflictItem
                     WorkflowDesignerViewModel?.AddStartNode(null);
                 }
-
-                OnChecked?.Invoke(ConnectorConflictRow, _isChecked);
             }
         }
 

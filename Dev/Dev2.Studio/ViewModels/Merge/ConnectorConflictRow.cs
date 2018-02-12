@@ -15,7 +15,6 @@ namespace Dev2.ViewModels.Merge
 {
     public class ConnectorConflictRow : ConflictRow, IConnectorConflictRow
     {
-        bool _hasConflict;
         public IConnectorConflictItem CurrentArmConnector { get; set; }
         public override IConflictItem Current  => CurrentArmConnector;
         public IConnectorConflictItem DifferentArmConnector { get; set; }
@@ -23,21 +22,12 @@ namespace Dev2.ViewModels.Merge
 
         public string Key { get; set; }
         
-        public override bool HasConflict
-        {
-            get => _hasConflict;
-            set
-            {
-                _hasConflict = value;
-                OnPropertyChanged(() => HasConflict);
-            }
-        }
         public override bool IsChecked { get; set; }
 
         public override Guid UniqueId { get; set; }
 
         public override bool IsEmptyItemSelected { get; set; }
-        
+
         public bool Equals(IConnectorConflictRow other)
         {
             if (other == null)

@@ -14,7 +14,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism.Mvvm;
-using System.Collections.ObjectModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Activities;
@@ -39,7 +38,6 @@ namespace Dev2.ViewModels.Merge
 
         public ConflictModelFactory(IContextualResourceModel resourceModel)
         {
-            Children = new ObservableCollection<IToolModelConflictItem>();
             _resourceModel = resourceModel;
             WorkflowName = _resourceModel.ResourceName;
             ServerName = _resourceModel.Environment.Name;
@@ -48,15 +46,13 @@ namespace Dev2.ViewModels.Merge
 
         public ConflictModelFactory(IContextualResourceModel resourceModel, IConflictTreeNode conflict)
         {
-            Children = new ObservableCollection<IToolModelConflictItem>();
             _resourceModel = resourceModel;
             var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
-            Model = GetModel(modelItem, conflict, null);
+            Model = GetModel(modelItem, conflict);
         }
 
         public ConflictModelFactory()
         {
-            Children = new ObservableCollection<IToolModelConflictItem>();
         }
 
         public void GetDataList(IContextualResourceModel resourceModel)
@@ -141,21 +137,14 @@ namespace Dev2.ViewModels.Merge
             }
         }
         public IDataListViewModel DataListViewModel { get; set; }
-        public ObservableCollection<IToolModelConflictItem> Children { get; set; }
 
-
-        public IToolModelConflictItem CreateToolModelConfictItem(IConflictTreeNode node) => CreateToolModelConfictItem(node, null);
-        // TODO: Remove IToolModelConflictItem parentItem?
-        public IToolModelConflictItem CreateToolModelConfictItem(IConflictTreeNode node, IToolModelConflictItem parentItem)
+        public IToolModelConflictItem CreateToolModelConfictItem(IConflictTreeNode node)
         {
             var modelItem = ModelItemUtils.CreateModelItem(node.Activity);
-            return GetModel(modelItem, node, parentItem, "");
+            return GetModel(modelItem, node);
         }
-        // TODO: Remove IToolModelConflictItem parentItem?
-        public IToolModelConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node, IToolModelConflictItem parentItem) => GetModel(modelItem, node, parentItem, "");
 
-        // TODO: Remove IToolModelConflictItem parentItem?
-        public IToolModelConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node, IToolModelConflictItem parentItem, string parentLabelDescription)
+        public IToolModelConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node)
         {
             if (modelItem == null || node == null || node.Activity == null)
             {
@@ -192,11 +181,11 @@ namespace Dev2.ViewModels.Merge
             }
             instance.IsMerge = true;
 
-            var mergeToolModel = CreateNewMergeToolModel(modelItem, node, parentItem, parentLabelDescription, instance);
+            var mergeToolModel = CreateNewMergeToolModel(modelItem, node, instance);
             return mergeToolModel;
         }
 
-        ToolModelConflictItem CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, IToolModelConflictItem parentItem, string parentLabelDescription, ActivityDesignerViewModel instance)
+        ToolModelConflictItem CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
         {
             var mergeToolModel = new ToolModelConflictItem
             {
@@ -208,10 +197,6 @@ namespace Dev2.ViewModels.Merge
                 IsMergeVisible = node.IsInConflict,
                 ModelItem = modelItem,
                 NodeLocation = node.Location,
-                Parent = parentItem,
-                HasParent = parentItem != null,
-                ParentDescription = parentLabelDescription,
-                IsTrueArm = parentLabelDescription?.ToLowerInvariant() == "true",
                 NodeArmDescription = node.Activity.GetDisplayName() + " -> " + " Assign",
             };
 

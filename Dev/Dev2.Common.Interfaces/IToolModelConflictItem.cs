@@ -11,7 +11,6 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
-using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Media;
 
@@ -21,18 +20,12 @@ namespace Dev2.Common.Interfaces
     {
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
-        IToolModelConflictItem Parent { get; set; }
-        ObservableCollection<IToolModelConflictItem> Children { get; set; }
         Guid UniqueId { get; set; }
-        string ParentDescription { get; set; }
-        bool HasParent { get; set; }
         event ToolModelChangedHandler NotifyToolModelChanged;
         FlowNode FlowNode { get; set; }
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
         bool IsMergeVisible { get; set; }
-        IToolConflictRow Container { get; set; }
-        bool IsTrueArm { get; set; }
         string NodeArmDescription { get; set; }
     }
     public delegate void ToolModelChangedHandler(IToolModelConflictItem args);

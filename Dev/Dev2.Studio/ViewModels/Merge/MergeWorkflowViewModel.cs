@@ -313,6 +313,7 @@ namespace Dev2.ViewModels.Merge
                 if (conflict is IConflictCheckable check)
                 {
                     check.IsCurrentChecked = true;
+                    // TODO: Verify UI updates based on HasConflicts - every 10 seconds?
                 }
             }
         }
@@ -337,8 +338,9 @@ namespace Dev2.ViewModels.Merge
 
         private void Handler(IConflictItem currentItem, IConflictItem diffItem)
         {
-            // apply tool or connector state to workflow
-            
+            // apply tool or connector state to list view
+            // e.g. disable conflicting connectors
+
         }
     }
     /// <summary>
@@ -387,7 +389,9 @@ namespace Dev2.ViewModels.Merge
             if (currentItem is IToolModelConflictItem toolItem)
             {
                 ToolModelHandler(toolItem, diffItem as IToolModelConflictItem);
-            } else if (currentItem is IConnectorConflictItem connectorItem) {
+            }
+            else if (currentItem is IConnectorConflictItem connectorItem)
+            {
                 ConnectorHandler(connectorItem, diffItem as IConnectorConflictItem);
             }
         }
