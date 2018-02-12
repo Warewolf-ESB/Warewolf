@@ -91,25 +91,8 @@ namespace Dev2.Activities.Specs.Deploy
             var url = "http://" + _remoteDockerApi + ":2375/containers/create";
             HttpContent containerContent = new StringContent(@"
 {
-     ""Hostname"":"""",
-     ""User"":"""",
-     ""Memory"":0,
-     ""MemorySwap"":0,
-     ""AttachStdin"":false,
-     ""AttachStdout"":true,
-     ""AttachStderr"":true,
-     ""PortSpecs"":null,
-     ""Privileged"": false,
-     ""Tty"":false,
-     ""OpenStdin"":false,
-     ""StdinOnce"":false,
-     ""Env"":null,
-     ""Dns"":null,
-     ""Image"":""" + _remoteImageID + @""",
-     ""Volumes"":{
-            },
-     ""VolumesFrom"":"""",
-     ""WorkingDir"":""C:\\Windows\\System32""
+     ""Cmd"": [""ping"", ""-t"", ""4.2.2.1""],
+     ""Image"":""" + _remoteImageID + @"""
 }
 ");
             containerContent.Headers.Remove("Content-Type");
@@ -212,7 +195,7 @@ namespace Dev2.Activities.Specs.Deploy
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        throw new HttpRequestException("Error deleting remote server image. " + reader.ReadToEnd());
+                        Console.Write("Error deleting remote server image. " + reader.ReadToEnd());
                     }
                 }
             }

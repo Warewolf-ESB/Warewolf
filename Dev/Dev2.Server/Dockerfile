@@ -5,7 +5,8 @@ RUN NET localgroup "Warewolf Administrators" /ADD
 RUN NET localgroup "Warewolf Administrators" WarewolfUser /ADD
 EXPOSE 3142
 EXPOSE 3143
+
 RUN mkdir "C:\Program Files (x86)\Warewolf\Server"
 ADD [".", "Program Files (x86)/Warewolf/Server"]
 RUN sc create "Warewolf Server" binPath= "C:\Program Files (x86)\Warewolf\Server\Warewolf Server.exe" start= auto
-CMD ping -t 4.2.2.3
+CMD sc start "Warewolf Server"
