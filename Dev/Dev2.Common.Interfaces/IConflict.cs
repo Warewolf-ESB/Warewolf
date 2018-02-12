@@ -50,6 +50,7 @@ namespace Dev2.Common.Interfaces
         IConflictItem Current { get; }
         IConflictItem Different { get; }
         bool IsCurrentChecked { get; set; }
+        bool IsStartNode { get; set; }
     }
 
     public interface IConnectorConflictRow : IConflictRow, IEquatable<IConnectorConflictRow>

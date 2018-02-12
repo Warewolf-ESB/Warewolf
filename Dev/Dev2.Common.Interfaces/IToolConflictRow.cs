@@ -16,6 +16,5 @@ namespace Dev2.Common.Interfaces
         IToolModelConflictItem DiffViewModel { get; set; }
         bool IsMergeExpanded { get; set; }
         bool IsContainerTool { get; set; }
-        bool IsStartNode { get; set; }
     }
 }
