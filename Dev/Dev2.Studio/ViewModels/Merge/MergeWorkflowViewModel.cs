@@ -58,7 +58,7 @@ namespace Dev2.ViewModels.Merge
             var stateApplier = new ConflictListStateApplier(conflictList);
             stateApplier.SetConnectorSelectionsToCurrentState();
 
-            var mergePreviewWorkflowStateApplier = new MergePreviewWorkflowStateApplier(conflictList);
+            var mergePreviewWorkflowStateApplier = new MergePreviewWorkflowStateApplier(conflictList, WorkflowDesignerViewModel);
         }
 
         void SetupNamesAndVariables(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
@@ -347,12 +347,17 @@ namespace Dev2.ViewModels.Merge
     /// </summary>
     public class MergePreviewWorkflowStateApplier
     {
-        public MergePreviewWorkflowStateApplier(ToolModelConflictRowList conflictList)
+        readonly IWorkflowDesignerViewModel workflowDesignerViewModel;
+        readonly ToolModelConflictRowList conflictList;
+        public MergePreviewWorkflowStateApplier(ToolModelConflictRowList conflictList, IWorkflowDesignerViewModel workflowDesignerViewModel)
         {
-            RegisterEventHandlerForConflictItemChanges(conflictList);
+            this.workflowDesignerViewModel = workflowDesignerViewModel;
+            this.conflictList = conflictList;
+            RegisterEventHandlerForConflictItemChanges();
+            Apply();
         }
 
-        public void RegisterEventHandlerForConflictItemChanges(ToolModelConflictRowList conflictList)
+        public void RegisterEventHandlerForConflictItemChanges()
         {
             foreach (var conflictRow in conflictList)
             {
@@ -369,10 +374,80 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
+        public void Apply()
+        {
+            foreach (var conflictRow in conflictList)
+            {
+                Handler(conflictRow.Current, conflictRow.Different);
+            }
+        }
+
         private void Handler(IConflictItem currentItem, IConflictItem diffItem)
         {
-            // apply tool or connector state to workflow
-            // DelinkActivities, LinkActivities, AddActivity, RemoveActivity all should be here?
+            if (currentItem is IToolModelConflictItem toolItem)
+            {
+                ToolModelHandler(toolItem, diffItem as IToolModelConflictItem);
+            } else if (currentItem is IConnectorConflictItem connectorItem) {
+                ConnectorHandler(connectorItem, diffItem as IConnectorConflictItem);
+            }
+        }
+        private void ToolModelHandler(IToolModelConflictItem currentItem, IToolModelConflictItem diffItem)
+        {
+            if (currentItem.IsChecked)
+            {
+                AddActivity(currentItem);
+            }
+            else
+            {
+                RemoveActivity(currentItem);
+            }
+            if (diffItem.IsChecked)
+            {
+                AddActivity(diffItem);
+            }
+            else
+            {
+                RemoveActivity(diffItem);
+            }
+        }
+
+        private void AddActivity(IToolModelConflictItem toolModelConflictItem)
+        {
+            workflowDesignerViewModel.AddItem(toolModelConflictItem);
+        }
+
+        private void RemoveActivity(IToolModelConflictItem toolModelConflictItem)
+        {
+            workflowDesignerViewModel.RemoveItem(toolModelConflictItem);
+        }
+
+        private void ConnectorHandler(IConnectorConflictItem currentItem, IConnectorConflictItem diffItem)
+        {
+            if (currentItem.IsChecked)
+            {
+                LinkActivities(currentItem.SourceUniqueId, currentItem.DestinationUniqueId, currentItem.Key);
+            }
+            else
+            {
+                DeLinkActivities(currentItem.SourceUniqueId, currentItem.DestinationUniqueId, currentItem.Key);
+            }
+            if (diffItem.IsChecked)
+            {
+                LinkActivities(diffItem.SourceUniqueId, diffItem.DestinationUniqueId, diffItem.Key);
+            }
+            else
+            {
+                DeLinkActivities(diffItem.SourceUniqueId, diffItem.DestinationUniqueId, diffItem.Key);
+            }
+        }
+        private void LinkActivities(Guid SourceUniqueId, Guid DestinationUniqueId, string Key)
+        {
+            workflowDesignerViewModel?.LinkActivities(SourceUniqueId, DestinationUniqueId, Key);
+        }
+
+        private void DeLinkActivities(Guid SourceUniqueId, Guid DestinationUniqueId, string Key)
+        {
+            workflowDesignerViewModel?.DeLinkActivities(SourceUniqueId, DestinationUniqueId, Key);
         }
     }
 }

@@ -13,7 +13,7 @@ namespace Dev2.ViewModels.Merge.Utils
         readonly ConflictTreeNode[] diffTree;
         readonly IConflictModelFactory modelFactoryCurrent;
         readonly IConflictModelFactory modelFactoryDifferent;
-        public List<IConflictRow> List { get; set; }
+        readonly List<ToolConflictRow> toolConflictRowList;
 
         public ToolModelConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
         {
@@ -21,13 +21,13 @@ namespace Dev2.ViewModels.Merge.Utils
             this.modelFactoryDifferent = modelFactoryDifferent;
             this.currentTree = currentTree.ToArray();
             this.diffTree = diffTree.ToArray();
-            
+
+            toolConflictRowList = new List<ToolConflictRow>();
             CreateList();
         }
 
         void CreateList()
         {
-            List = new List<IConflictRow>();
             int index = 0;
             var maxCount = Math.Max(currentTree.Length, diffTree.Length);
             for (; index < maxCount; index++)
@@ -43,11 +43,11 @@ namespace Dev2.ViewModels.Merge.Utils
                     diff = diffTree[index];
                 }
                 // TODO: add an event for when items are added to the list so that we can listen for events on each Item in the row without adding an event listener in here.
-                List.Add(CreateConflictRow(current, diff));
+                toolConflictRowList.Add(CreateConflictRow(current, diff));
             }
         }
 
-        IConflictRow CreateConflictRow(ConflictTreeNode current, ConflictTreeNode diff)
+        ToolConflictRow CreateConflictRow(ConflictTreeNode current, ConflictTreeNode diff)
         {
             var row = new ToolConflictRow();
 
@@ -65,16 +65,20 @@ namespace Dev2.ViewModels.Merge.Utils
         public IEnumerator<IConflictRow> GetEnumerator()
         {
             // TODO: return the _real_ rows and the connectors in their correct order
-            yield break;
+            foreach (var toolRow in toolConflictRowList)
+            {
+                yield return toolRow;
+
+                foreach (var connectorRow in toolRow.Connectors)
+                {
+                    yield return connectorRow;
+                }
+            }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            // TODO: return the _real_ rows and the connectors in their correct order
-            yield break;
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public int Count => 0;
+        public int Count => toolConflictRowList.Count;
         public int IndexOf(IConflictRow conflict) => 0;
 
         // TODO: remove?
@@ -84,15 +88,15 @@ namespace Dev2.ViewModels.Merge.Utils
         }
 
 
-        public IConflictRow this[int key]
+        public ToolConflictRow this[int key]
         {
             get
             {
-                return List[key];
+                return toolConflictRowList[key];
             }
             set
             {
-                List[key] = value;
+                toolConflictRowList[key] = value;
             }
         }
     }

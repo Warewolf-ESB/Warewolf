@@ -101,6 +101,13 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
+        private IEnumerable<IConnectorConflictRow> _connectors;
+        public IEnumerable<IConnectorConflictRow> Connectors
+        {
+            get { return _connectors ?? new List<IConnectorConflictRow>(); }
+            set { _connectors = value; }
+        }
+
         public IToolConflictRow GetNext()
         {
             if (_conflictEnumerator == null)
