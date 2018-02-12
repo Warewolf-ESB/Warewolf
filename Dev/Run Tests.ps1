@@ -1011,7 +1011,7 @@ TestResults
         }
         if ($JobContainers.IsPresent) {
             $JobContainerName = $JobName.Replace(" ", "_") + "_Container"
-            docker run --name $JobContainerName -di jobsenvironment powershell `&`(`'.\Build\Run Tests.ps1`'`) -JobName `'$JobName`' -TestList `'$TestList`' -VSTest -VSTestPath `'`C:\Program Files `(x86`)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe`'
+            docker run --name $JobContainerName -di jobsenvironment powershell `&`(`'.\Build\Run Tests.ps1`'`) -JobName `'$JobName`' -TestList `'$TestList`'
         } else {
             if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
 	            Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
