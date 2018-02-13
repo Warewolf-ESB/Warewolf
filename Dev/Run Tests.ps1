@@ -29,7 +29,8 @@ Param(
   [switch]${Startmy.warewolf.io},
   [string]$sendRecordedMediaForPassedTestCase="false",
   [string]$JobContainerVersion="",
-  [switch]$JobContainers
+  [switch]$JobContainers,
+  [switch]$IsInContainer
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -338,14 +339,10 @@ function Cleanup-JobContainers() {
             } else {
                 $ResultsDirectory = $TestsPath + "\TestResults\" + $JobContainerName
             }
-		    $ContainerCpResult = docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory" 2>&1
-            if ($ContainerCpResult -eq 0) {
-                Write-Host Recovered test results.
-            } else {
-                Write-Warning -Message "Failed to recover test results for $JobContainerName."
-            }
+		    docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory" 2>&1
+            Write-Host See $ResultsDirectory
 		    $ContainerRemResult = docker container rm $JobContainerName
-            Write-Host $ContainerRemResult Removed. See $ResultsDirectory
+            Write-Host $ContainerRemResult Removed.
         }
 	}
 }
@@ -537,10 +534,10 @@ function Find-Warewolf-Server-Exe {
     }
 }
 
+if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+    $ServerPath = Find-Warewolf-Server-Exe
+}
 function Install-Server {
-    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        $ServerPath = Find-Warewolf-Server-Exe
-    }
     Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will be backed up to $TestsResultsPath."
     if ($ResourcesType -eq "") {
 	    $title = "Server Resources"
@@ -615,7 +612,11 @@ function Install-Server {
         $DotCoverRunnerXMLPath = "$TestsResultsPath\Server DotCover Runner.xml"
         Copy-On-Write $DotCoverRunnerXMLPath
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
-        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"$DotCoverRunnerXMLPath\`" /LogFile=\`"$TestsResultsPath\ServerDotCover.log\`""
+        if ($IsInContainer.IsPresent) {
+            $BinPathWithDotCover = "`"" + $DotCoverPath + "`" cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\ServerDotCover.log`""
+        } else {
+            $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"$DotCoverRunnerXMLPath\`" /LogFile=\`"$TestsResultsPath\ServerDotCover.log\`""
+        }
         if ($ServerService -eq $null) {
             New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
 	    } else {
@@ -642,7 +643,7 @@ function Install-Server {
     }
 }
 
-function Start-Server([string]$ServerPath,[string]$ResourcesType) {
+function Start-Server {
     $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
     Write-Host Deploying New resources from $ServerFolderPath\Resources - $ResourcesType\*
     if (!(Test-Path "$env:ProgramData\Warewolf")) {
@@ -984,6 +985,8 @@ SHELL ["powershell"]
 RUN New-Item -Path Build -ItemType Directory
 ADD . Build
 ENTRYPOINT & "Build\\Run Tests.ps1"
+ENV SCRIPT_PATH "Build\Run Tests.ps1"
+ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
 "@
         Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject @"
 dockerfile
@@ -1018,16 +1021,13 @@ TestResults
             }
         }
         if ($JobContainers.IsPresent) {
-            if ($JobName -eq "Example Workflow Execution Specs") {
-                $ResourcesType = 'Release'
-            }
             $JobContainerName = $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion}})
             $JobContainerResult = "", "The paging file is too small for this operation to complete."
             while(([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.")) {
                 if ($StartServer.IsPresent) {
-                    $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
+                    $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
                 } else {
-                    $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' 2>&1
+                    $JobContainerResult = docker run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
                 }
                 if (([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.")) {
                     docker container rm $JobContainerName
@@ -1149,7 +1149,7 @@ TestResults
             if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                 Start-my.warewolf.io
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-                    Start-Server $ServerPath $ResourcesType
+                    Start-Server
                     if ($StartStudio.IsPresent) {
                         Start-Studio
                     }
@@ -1459,7 +1459,17 @@ if ($Cleanup.IsPresent) {
 		} else {
 			$JobNames = "Manual Tests"
 		}
-	}
+	} else {
+        if ($JobContainers.IsPresent) {
+            foreach ($Job in $JobNames.Split(",")) {
+                $JobContainerName = $Job.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion}})
+                Write-Host Try full path:
+                docker exec $JobContainerName powershell `& `$SCRIPT_PATH -Cleanup
+                Write-Host Try just cleanup arg:
+                docker exec $JobContainerName -Cleanup
+            }
+        }
+    }
     Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log") $JobNames
 }
 
@@ -1467,7 +1477,7 @@ if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsT
     Start-my.warewolf.io
     if (!${Startmy.warewolf.io}.IsPresent) {
         Install-Server
-        Start-Server $ServerPath $ResourcesType
+        Start-Server
         if (!$StartServer.IsPresent -and !${Startmy.warewolf.io}.IsPresent) {
             Start-Studio
         }
