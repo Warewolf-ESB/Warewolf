@@ -537,7 +537,7 @@ function Find-Warewolf-Server-Exe {
     }
 }
 
-function Install-Server([string]$ServerPath,[string]$ResourcesType) {
+function Install-Server {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = Find-Warewolf-Server-Exe
     }
@@ -640,12 +640,14 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ResourcesDirectory -ne "" -and $ResourcesDirectory -ne (Get-Item $ServerPath).Directory.FullName + "\" + (Get-Item $ResourcesDirectory).Name ) {
         Copy-Item -Path "$ResourcesDirectory" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
     }
-    $ServerPath,$ResourcesType
 }
 
 function Start-Server([string]$ServerPath,[string]$ResourcesType) {
     $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
     Write-Host Deploying New resources from $ServerFolderPath\Resources - $ResourcesType\*
+    if (!(Test-Path "$env:ProgramData\Warewolf")) {
+        New-Item "$env:ProgramData\Warewolf" -ItemType Directory
+    }
     Copy-Item -Path ($ServerFolderPath + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 	
     Start-Service "Warewolf Server"
@@ -914,11 +916,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
 
         if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-            $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
-            if ($ServerPath -eq "System.ServiceProcess.ServiceController") {
-                $ServerPath = "C:\Build\Warewolf Server.exe"
-                Write-Host Corrected ServerPath. ResourcesType: $ResourcesType
-            }
+            Install-Server
         }
     }
 
@@ -1468,7 +1466,7 @@ if ($Cleanup.IsPresent) {
 if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobNames -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "") {
     Start-my.warewolf.io
     if (!${Startmy.warewolf.io}.IsPresent) {
-        $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
+        Install-Server
         Start-Server $ServerPath $ResourcesType
         if (!$StartServer.IsPresent -and !${Startmy.warewolf.io}.IsPresent) {
             Start-Studio
