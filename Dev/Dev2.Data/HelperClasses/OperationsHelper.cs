@@ -1,10 +1,12 @@
 ﻿using Dev2.Data.Interfaces;
 using System;
+using System.IO;
 
 namespace Dev2.Data.HelperClasses
 {
     public static class OperationsHelper
-    {
+    {        
+        public static bool FileExist(IActivityIOPath path) => File.Exists(path.Path);
         public static string ExtractUserName(IPathAuth path)
         {
             if (path == null)

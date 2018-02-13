@@ -62,7 +62,6 @@ namespace Dev2.PathOperations
 
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
-        static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         readonly LogonProvider _logOnprovider;
 
         public Dev2FileSystemProvider()
@@ -77,80 +76,17 @@ namespace Dev2.PathOperations
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public Stream Get(IActivityIOPath path, List<string> filesToCleanup)
-            => new DoGetAction(path).GetOperation();
-            
+        public Stream Get(IActivityIOPath path, List<string> filesToCleanup) 
+            => new DoGetAction(path).ExecuteOperation();
+
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public int Put(Stream src, IActivityIOPath dst, IDev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
-        {
-            var destination = dst;
-            var result = -1;
-            using (src)
-            {
-                if (!Path.IsPathRooted(destination.Path) && whereToPut != null)
-                {
-                    destination = ActivityIOFactory.CreatePathFromString(whereToPut + "\\" + destination.Path, destination.Username, destination.Password, destination.PrivateKeyFile);
-                }
-                _fileLock.EnterWriteLock();
-                try
-                {
-                    if (!RequiresAuth(destination))
-                    {
-                        result = WriteData(src, args, destination);
-                    }
-                    else
-                    {
-                        var loginOk = _logOnprovider.DoLogon(ExtractUserName(destination), ExtractDomain(destination), destination.Password, destination.Path, out SafeTokenHandle safeTokenHandle);
-                        if (loginOk)
-                        {
-                            using (safeTokenHandle)
-                            {
-                                var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                                using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                                {
-                                    result = WriteData(src, args, destination);
-                                    impersonatedUser.Undo();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, destination.Username, destination.Path));
-                        }
-                    }
-                }
-                finally
-                {
-                    _fileLock.ExitWriteLock();
-                }
-            }
-            return result;
-        }
+            => new DoPutAction(src, dst, args, whereToPut).ExecuteOperation();
 
-        static int WriteData(Stream src, IDev2CRUDOperationTO args, IActivityIOPath destination)
-        {
-            int result;
 
-            if (FileExist(destination) && !args.Overwrite)
-            {
-                using (var stream = new FileStream(destination.Path, FileMode.Append))
-                {
-                    src.CopyTo(stream);
-                }
-                result = (int)src.Length;
-            }
-            else if (args.Overwrite)
-            {
-                File.WriteAllBytes(destination.Path, src.ToByteArray());
-                result = (int)src.Length;
-            }
-            else
-            {
-                result = -1;
-            }
-            return result;
-        }
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool Delete(IActivityIOPath src)
@@ -196,9 +132,6 @@ namespace Dev2.PathOperations
                 return false;
             }
         }
-
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool PathExist(IActivityIOPath dst)
