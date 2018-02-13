@@ -65,10 +65,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        static bool IsStandardFtp(IActivityIOPath path)
-        {
-            return path.PathType == enActivityIOPathType.FTP || path.PathType == enActivityIOPathType.FTPES || path.PathType == enActivityIOPathType.FTPS;
-        }
+        static bool IsStandardFtp(IActivityIOPath path) => path.PathType == enActivityIOPathType.FTP || path.PathType == enActivityIOPathType.FTPES || path.PathType == enActivityIOPathType.FTPS;
 
         void ReadFromFtp(IActivityIOPath path, ref Stream result)
         {
@@ -538,10 +535,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        public bool RequiresLocalTmpStorage()
-        {
-            return true;
-        }
+        public bool RequiresLocalTmpStorage() => true;
 
         public bool HandlesType(enActivityIOPathType type)
         {
@@ -560,10 +554,7 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        public string PathSeperator()
-        {
-            return @"/";
-        }
+        public string PathSeperator() => @"/";
 
         public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src)
         {

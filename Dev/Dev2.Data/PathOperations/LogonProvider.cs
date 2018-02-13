@@ -3,6 +3,8 @@ using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
 using System;
 using System.Runtime.InteropServices;
+using Warewolf.Resource.Errors;
+using Dev2.Data.HelperClasses;
 
 namespace Dev2.Data.PathOperations
 {
@@ -16,33 +18,39 @@ namespace Dev2.Data.PathOperations
         public bool LoggedOn { get; set; }
 
         [DllImport("advapi32.dll", EntryPoint = "LogonUserW", SetLastError = true, CharSet = CharSet.Unicode)]
-        static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword, 
+        static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword,
             int dwLogonType, int dwLogonProvider, out SafeTokenHandle token);
 
-        public bool DoLogon(string lpszUsername, string lpszDomain, string lpszPassword, out SafeTokenHandle phToken)
+        public SafeTokenHandle DoLogon(IActivityIOPath path)
         {
-            var loggedOn = false;
-            phToken = new SafeTokenHandle();
+            var lpszUsername = OperationsHelper.ExtractUserName(path);
+            var lpszDomain = OperationsHelper.ExtractDomain(path);
+            var lpszPassword = path.Password;
+            var lpszPath = path.Path;
             try
             {
-                loggedOn = LogonUser(lpszUsername, lpszDomain, lpszPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeToken);
-                phToken = safeToken;
-                if (!loggedOn)
+                var loggedOn = LogonUser(lpszUsername, lpszDomain, lpszPassword, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeToken);
+                if (loggedOn)
                 {
-                    loggedOn = LogonUser(lpszUsername, lpszDomain, lpszPassword, LOGON32_LOGON_NETWORK, LOGON32_PROVIDER_WINNT50, out SafeTokenHandle safeTokenHandle);
-                    phToken = safeTokenHandle;
+                    return safeToken;
                 }
-                return loggedOn;
+                loggedOn = LogonUser(lpszUsername, lpszDomain, lpszPassword, LOGON32_LOGON_NETWORK, LOGON32_PROVIDER_WINNT50, out SafeTokenHandle safeTokenHandle);
+                if (loggedOn)
+                {
+                    return safeTokenHandle;
+                }
             }
+
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex.Message, ex, GlobalConstants.WarewolfError);
             }
             finally
             {
-                Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+                var ex = Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
+                Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
             }
-            return loggedOn;
+            throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, lpszUsername, lpszPath));
         }
     }
 }

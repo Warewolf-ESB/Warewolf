@@ -8,12 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
+using Dev2.PathOperations;
 namespace Dev2.Data.Interfaces
 {
     public interface IDev2LogonProvider
     {
-        bool DoLogon(String lpszUsername, String lpszDomain, String lpszPassword
-            , out Dev2.PathOperations.SafeTokenHandle phToken);
+        SafeTokenHandle DoLogon(IActivityIOPath path);
     }
 }
