@@ -242,7 +242,7 @@ namespace Dev2
 
         void OpenCOMStream()
         {
-            Write("Openning Named Pipe Client Stream for COM IPC... ");
+            Write("Opening Named Pipe Client Stream for COM IPC... ");
             _ipcIpcClient = IpcClient.GetIPCExecutor();
             WriteLine("done.");
         }
