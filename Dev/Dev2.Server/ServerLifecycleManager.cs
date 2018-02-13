@@ -242,7 +242,7 @@ namespace Dev2
 
         void OpenCOMStream()
         {
-            Write("Opening Named Pipe Client Stream for COM IPC... ");
+            Write("Opening named pipe client stream for COM IPC... ");
             _ipcIpcClient = IpcClient.GetIPCExecutor();
             WriteLine("done.");
         }
@@ -547,7 +547,7 @@ namespace Dev2
         static void LoadTestCatalog()
         {
             
-            Write("Loading Test catalog...  ");
+            Write("Loading test catalog...  ");
             TestCatalog.Instance.Load();
             WriteLine("done.");
         }
@@ -631,7 +631,7 @@ namespace Dev2
 
         static void LoadHostSecurityProvider()
         {
-            Write("Loading Security Provider...  ");
+            Write("Loading security provider...  ");
             var instance = HostSecurityProvider.Instance;
             if (instance != null)
             {
