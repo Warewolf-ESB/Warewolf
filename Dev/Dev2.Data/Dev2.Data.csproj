@@ -164,6 +164,8 @@
     <Compile Include="PathOperations\Interfaces\IDev2LogonProvider.cs" />
     <Compile Include="PathOperations\LogonProvider.cs" />
     <Compile Include="PathOperations\Operations\DoGetAction.cs" />
+    <Compile Include="PathOperations\Operations\DoPutAction.cs" />
+    <Compile Include="PathOperations\PerformIntegerIOOperation.cs" />
     <Compile Include="PathOperations\PerformStreamIOOperation.cs" />
     <Compile Include="PathOperations\TO\Dev2PutOperationTOFactory.cs" />
     <Compile Include="PulseLogger.cs" />

@@ -21,14 +21,15 @@ namespace Dev2.Data.PathOperations.Operations
         {
             _logOnProvider = new LogonProvider();
             _fileWrapper = new FileWrapper();
-            _safeToken = RequiresAuth(path, _logOnProvider);
             _path = path;
+            _safeToken = RequiresAuth(_path, _logOnProvider);
+            
         }
-        public override Stream GetOperation()
+        public override Stream ExecuteOperation()
         {
             if (_safeToken != null)
             {
-                return GetOperationWithAuth();
+                return ExecuteOperationWithAuth();
             }
             if (_fileWrapper.Exists(_path.Path))
             {
@@ -37,7 +38,7 @@ namespace Dev2.Data.PathOperations.Operations
             throw new Exception(string.Format(ErrorResource.FileNotFound, _path.Path));
         }
 
-        public override Stream GetOperationWithAuth()
+        public override Stream ExecuteOperationWithAuth()
         {
             WindowsImpersonationContext impersonatedUser = null;
             try
