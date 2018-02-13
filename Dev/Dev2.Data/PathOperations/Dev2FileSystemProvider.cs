@@ -76,7 +76,7 @@ namespace Dev2.PathOperations
         }
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public Stream Get(IActivityIOPath path, List<string> filesToCleanup) 
+        public Stream Get(IActivityIOPath path, List<string> filesToCleanup)
             => new DoGetAction(path).ExecuteOperation();
 
 
@@ -85,53 +85,10 @@ namespace Dev2.PathOperations
             => new DoPutAction(src, dst, args, whereToPut).ExecuteOperation();
 
 
-        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool Delete(IActivityIOPath src)
-        {
-            try
-            {
-                if (!RequiresAuth(src))
-                {
-                    return DeleteHelper.Delete(src.Path);
-                }
-                WindowsImpersonationContext impersonatedUser = null;
-                try
-                {
-                    var loginOk = _logOnprovider.DoLogon(ExtractUserName(src), ExtractDomain(src), src.Password, src.Path, out SafeTokenHandle safeTokenHandle);
-                    if (loginOk)
-                    {
-                        using (safeTokenHandle)
-                        {
-
-                            var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                            using (WindowsImpersonationContext user = newID.Impersonate())
-                            {
-                                impersonatedUser = user;
-                                return DeleteHelper.Delete(src.Path);
-                            }
-                        }
-                    }
-                    throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, src.Username, src.Path));
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
-                    return false;
-                }
-                finally
-                {
-                    impersonatedUser?.Undo();
-                }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error("Error getting file: " + src.Path, ex, GlobalConstants.WarewolfError);
-                return false;
-            }
-        }
+            => new DoDeleteOperation(src).ExecuteOperation();
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool PathExist(IActivityIOPath dst)
@@ -146,7 +103,7 @@ namespace Dev2.PathOperations
             {
                 try
                 {
-                    var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, dst.Path, out SafeTokenHandle safeTokenHandle);
+                    var loginOk = _logOnprovider.DoLogon(username, domain, dst.Password, dst.Path, out SafeTokenHandle safeTokenHandle);
                     if (loginOk)
                     {
                         using (safeTokenHandle)
@@ -221,7 +178,7 @@ namespace Dev2.PathOperations
             bool result;
             try
             {
-                var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, dst.Path, out SafeTokenHandle safeTokenHandle);
+                var loginOk = _logOnprovider.DoLogon(username, domain, dst.Password, dst.Path, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
                 {
@@ -257,7 +214,7 @@ namespace Dev2.PathOperations
             bool result;
             try
             {
-                var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, dst.Path, out SafeTokenHandle safeTokenHandle);
+                var loginOk = _logOnprovider.DoLogon(username, domain, dst.Password, dst.Path, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
                 {
@@ -334,42 +291,14 @@ namespace Dev2.PathOperations
 
         public string PathSeperator() => "\\";
 
-        public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.Folders);
-        public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.Files);
-
-
-        static string ExtractUserName(IPathAuth path)
-        {
-            if (path == null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-            var idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
-            var result = idx > 0 ? path.Username.Substring(idx + 1) : path.Username;
-            return result;
-        }
-
-        static string ExtractDomain(IActivityIOPath path)
-        {
-            if (path == null)
-            {
-                throw new ArgumentNullException(nameof(path));
-            }
-            var result = string.Empty;
-
-            var idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
-
-            if (idx > 0)
-            {
-                result = path.Username.Substring(0, idx);
-            }
-
-            return result;
-        }
-
         static bool FileExist(IActivityIOPath path) => File.Exists(path.Path);
         static bool DirectoryExist(IActivityIOPath dir) => Directory.Exists(dir.Path);
         static bool RequiresAuth(IActivityIOPath path) => path.Username != string.Empty;
+        public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.Folders);
+        public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.Files);
+
+        [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
 
         IList<IActivityIOPath> ListDirectoriesAccordingToType(IActivityIOPath src, ReadTypes type)
         {
@@ -427,7 +356,7 @@ namespace Dev2.PathOperations
 
                 try
                 {
-                    var loginOk = _logOnprovider.DoLogon(ExtractUserName(src), ExtractDomain(src), src.Password, src.Path, out SafeTokenHandle safeTokenHandle);
+                    var loginOk = _logOnprovider.DoLogon(username, domain, src.Password, src.Path, out SafeTokenHandle safeTokenHandle);
 
                     if (loginOk)
                     {
@@ -523,7 +452,7 @@ namespace Dev2.PathOperations
             }
             else
             {
-                var loginOk = _logOnprovider.DoLogon(ExtractUserName(IOPath), ExtractDomain(IOPath), IOPath.Password, IOPath.Path, out SafeTokenHandle safeTokenHandle);
+                var loginOk = _logOnprovider.DoLogon(username, domain, IOPath.Password, IOPath.Path, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
                 {

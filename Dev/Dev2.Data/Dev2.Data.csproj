@@ -162,9 +162,12 @@
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Extension\PathExtensions.cs" />
     <Compile Include="PathOperations\Interfaces\IDev2LogonProvider.cs" />
+    <Compile Include="PathOperations\Interfaces\IPutOperationArguments.cs" />
     <Compile Include="PathOperations\LogonProvider.cs" />
+    <Compile Include="PathOperations\Operations\DoDeleteOperation.cs" />
     <Compile Include="PathOperations\Operations\DoGetAction.cs" />
     <Compile Include="PathOperations\Operations\DoPutAction.cs" />
+    <Compile Include="PathOperations\PerformBoolIOOperation.cs" />
     <Compile Include="PathOperations\PerformIntegerIOOperation.cs" />
     <Compile Include="PathOperations\PerformStreamIOOperation.cs" />
     <Compile Include="PathOperations\TO\Dev2PutOperationTOFactory.cs" />
