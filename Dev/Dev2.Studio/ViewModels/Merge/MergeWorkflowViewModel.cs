@@ -344,13 +344,12 @@ namespace Dev2.ViewModels.Merge
 
         private void Handler(IConflictItem changedItem, IConflictRow row)
         {
-            if (row.IsStartNode)
-            {
-                return;
-            }
-
             if (changedItem is IToolConflictItem toolItem)
             {
+                if (row.IsStartNode)
+                {
+                    return;
+                }
                 ToolModelHandler(toolItem);
             }
             else if (changedItem is IConnectorConflictItem connectorItem && row is IConnectorConflictRow connectorRow)
@@ -418,6 +417,9 @@ namespace Dev2.ViewModels.Merge
             var startToolRow = conflictList.GetStartToolRow();
 
             var toolConflictItem = row.Different.IsChecked ? startToolRow.DiffViewModel : startToolRow.CurrentViewModel;
+
+            toolConflictItem.SetAutoChecked();
+            AddActivity(toolConflictItem);
 
             mergePreviewWorkflowDesignerViewModel.LinkStartNode(toolConflictItem);
         }

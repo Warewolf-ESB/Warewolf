@@ -42,7 +42,8 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var a = new ConnectorConflictItem();
+            var id = Guid.NewGuid();
+            var a = new ConnectorConflictItem(id, "", id, id, "a");
             var completeConflict = new ConnectorConflictRow {CurrentArmConnector= a, DifferentArmConnector=a };
             var completeConflict1 = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
 
@@ -56,7 +57,8 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var a = new ConnectorConflictItem();
+            var id = Guid.NewGuid();
+            var a = new ConnectorConflictItem(id, "", id, id, "a");
             var completeConflict = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
             var completeConflict1 = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
 
@@ -71,7 +73,8 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var a = new ConnectorConflictItem();
+            var id = Guid.NewGuid();
+            var a = new ConnectorConflictItem(id, "", id, id, "a");
             var completeConflict = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
             var completeConflict1 = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
 
@@ -86,8 +89,9 @@ namespace Dev2.Core.Tests.Merge
         public void GetHashCode_TwoNewObjectsDiffSides_Returns_SameValue()
         {
             //------------Setup for test--------------------------
-            var a = new ConnectorConflictItem();
-            var completeConflict = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a, UniqueId = Guid.NewGuid() };
+            var id = Guid.NewGuid();
+            var a = new ConnectorConflictItem(id, "", id, id, "a");
+            var completeConflict = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a};
             var completeConflict1 = new ConnectorConflictRow { CurrentArmConnector = a, DifferentArmConnector = a };
             //------------Execute Test---------------------------
             Assert.IsFalse(completeConflict.HasConflict);
@@ -137,7 +141,6 @@ namespace Dev2.Core.Tests.Merge
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.AreEqual(System.Guid.Empty, completeConflict.UniqueId);
-            completeConflict.UniqueId = new System.Guid();
             Assert.IsFalse(wasCalled);
         }
 
@@ -154,7 +157,6 @@ namespace Dev2.Core.Tests.Merge
             //------------Assert Results-------------------------
 
             model.Key = "";
-            model.UniqueId = Guid.NewGuid();
             model.IsChecked = true;
 
             Assert.AreNotEqual(default(string), model.Key);

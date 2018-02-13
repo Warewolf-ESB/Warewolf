@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using Dev2.Common.Interfaces;
 
 namespace Dev2.ViewModels.Merge
@@ -23,8 +22,6 @@ namespace Dev2.ViewModels.Merge
         public string Key { get; set; }
         
         public override bool IsChecked { get; set; }
-
-        public override Guid UniqueId { get; set; }
 
         public override bool IsEmptyItemSelected { get; set; }
 

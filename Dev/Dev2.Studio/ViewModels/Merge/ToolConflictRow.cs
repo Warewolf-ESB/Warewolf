@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 
@@ -17,7 +16,6 @@ namespace Dev2.ViewModels.Merge
     public class ToolConflictRow : ConflictRow, IToolConflictRow
     {
         bool _isMergeExpanded;
-        bool _hasNodeArmConflict;
         bool _isContainerTool;
         bool _isEmptyItemSelected;
 
@@ -26,19 +24,7 @@ namespace Dev2.ViewModels.Merge
         public IToolConflictItem DiffViewModel { get; set; }
         public override IConflictItem Different => DiffViewModel;
 
-        public override Guid UniqueId { get; set; }
-
         public override bool IsChecked { get; set; }
-
-        public bool HasNodeArmConflict
-        {
-            get => _hasNodeArmConflict;
-            set
-            {
-                _hasNodeArmConflict = value;
-                OnPropertyChanged(() => HasNodeArmConflict);
-            }
-        }
 
         public bool IsMergeExpanded
         {

@@ -334,7 +334,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var toolUniqueId = new Guid();
-            var conflicts = new List<IConflict> { new ToolConflictRow { UniqueId = toolUniqueId } };
+            var conflicts = new List<IConflictRow> { new ToolConflictRow() };
 
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
@@ -429,7 +429,7 @@ namespace Dev2.Core.Tests
             var calcActivity = new DsfCalculateActivity();
             var conflictTreeNode = new ConflictTreeNode(calcActivity, new Point());
             var guid = calcActivity.UniqueID.ToGuid();
-            var itemsToAdd = new List<IConflict>();
+            var itemsToAdd = new List<IConflictRow>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
@@ -482,7 +482,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
-            var itemsToAdd = new List<IConflict>();
+            var itemsToAdd = new List<IConflictRow>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
@@ -493,8 +493,6 @@ namespace Dev2.Core.Tests
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { armConnectorConflicts, conflictTreeNode, iniqueId.ToGuid() });
                 //---------------Test Result -----------------------
                 Assert.AreEqual(1, armConnectorConflicts.Count);
-                var hasConflict = armConnectorConflicts.Single().HasConflict;
-                Assert.IsTrue(hasConflict);
             }
         }
 
@@ -535,11 +533,10 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
             var empty = Guid.Empty;
-            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "");
+            b.CurrentArmConnector = new ConnectorConflictItem(empty, "", empty, empty, "");
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
-            var itemsToAdd = new List<IConflict>();
+            var itemsToAdd = new List<IConflictRow>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
             armConnectorConflicts.Add(b);
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
@@ -551,9 +548,6 @@ namespace Dev2.Core.Tests
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { armConnectorConflicts, conflictTreeNode, iniqueId.ToGuid() });
                 //---------------Test Result -----------------------
                 Assert.AreEqual(1, armConnectorConflicts.Count);
-
-                var hasConflict = armConnectorConflicts.Single().HasConflict;
-                Assert.IsTrue(hasConflict);
             }
         }
 
@@ -594,11 +588,10 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
             var empty = Guid.Empty;
-            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "");
+            b.CurrentArmConnector = new ConnectorConflictItem(empty, "", empty, empty, "");
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
-            var itemsToAdd = new List<IConflict>();
+            var itemsToAdd = new List<IConflictRow>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
             armConnectorConflicts.Add(b);
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
@@ -610,8 +603,6 @@ namespace Dev2.Core.Tests
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { armConnectorConflicts, conflictTreeNode, iniqueId.ToGuid() });
                 //---------------Test Result -----------------------
                 Assert.AreEqual(1, armConnectorConflicts.Count);
-                var hasConflict = armConnectorConflicts.Single().HasConflict;
-                Assert.IsFalse(hasConflict);
             }
         }
 
@@ -652,9 +643,8 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
             var empty = Guid.Empty;
-            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "");
+            b.CurrentArmConnector = new ConnectorConflictItem(empty, "", empty, empty, "");
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
             var itemsToAdd = new List<IConflictRow>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
@@ -709,11 +699,10 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
             var empty = Guid.Empty;
-            b.CurrentArmConnector = new ConnectorConflictItem("", empty, empty, "");
+            b.CurrentArmConnector = new ConnectorConflictItem(empty, "", empty, empty, "");
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
-            var itemsToAdd = new List<IConflict>();
+            var itemsToAdd = new List<IConflictRow>();
             var armConnectorConflicts = new List<IConnectorConflictRow>();
             armConnectorConflicts.Add(b);
             var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
@@ -903,8 +892,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
+            Func<IConflictRow, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 //---------------Assert Precondition----------------
@@ -952,8 +940,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
+            Func<IConflictRow, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             currentResourceModel.Setup(p => p.Environment.ExplorerRepository.UpdateManagerProxy.Rename(It.IsAny<Guid>(), It.IsAny<string>()));
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
@@ -1004,8 +991,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
+            Func<IConflictRow, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             currentResourceModel.Setup(p => p.Environment.ExplorerRepository.UpdateManagerProxy.Rename(It.IsAny<Guid>(), It.IsAny<string>()));
             var currentFactory = new Mock<IConflictModelFactory>();
             currentFactory.Setup(p => p.DataListViewModel.WriteToResourceModel()).Verifiable();
@@ -1063,8 +1049,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
+            Func<IConflictRow, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             currentResourceModel.Setup(p => p.Environment.ExplorerRepository.UpdateManagerProxy.Rename(It.IsAny<Guid>(), It.IsAny<string>()));
             var currentFactory = new Mock<IConflictModelFactory>();
             var diffFactory = new Mock<IConflictModelFactory>();
@@ -1121,8 +1106,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
+            Func<IConflictRow, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             currentResourceModel.Setup(p => p.Environment.ExplorerRepository.UpdateManagerProxy.Rename(It.IsAny<Guid>(), It.IsAny<string>())).Throws(new Exception());
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
@@ -1174,8 +1158,7 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
-            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
+            Func<IConflictRow, bool> check = (c) => { if (c.UniqueId == Guid.Empty) { return false; } return true; };
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
@@ -1221,7 +1204,6 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
@@ -1280,7 +1262,6 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
@@ -1339,7 +1320,6 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
@@ -1398,7 +1378,6 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
@@ -1460,7 +1439,6 @@ namespace Dev2.Core.Tests
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
-            b.UniqueId = iniqueId.ToGuid();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");

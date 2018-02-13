@@ -60,14 +60,12 @@ namespace Dev2.ViewModels.Merge.Utils
 
         ToolConflictRow CreateConflictRow(ConflictTreeNode current, ConflictTreeNode diff)
         {
-            var row = new ToolConflictRow();
-
-            var id = Guid.Parse(current.UniqueId);
-            row.UniqueId = id;
-            row.CurrentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current);
-            row.DiffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff);
-
-            row.Connectors = GenerateConnectorConflictRows(current, diff);
+            var row = new ToolConflictRow
+            {
+                CurrentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current),
+                DiffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff),
+                Connectors = GenerateConnectorConflictRows(current, diff)
+            };
 
             return row;
         }
@@ -84,7 +82,7 @@ namespace Dev2.ViewModels.Merge.Utils
                 if (index < armConnectorsCurrent.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsCurrent[index];
-                    row.CurrentArmConnector = new ConnectorConflictItem(Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
+                    row.CurrentArmConnector = new ConnectorConflictItem(row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
                 }
                 else
                 {
@@ -93,7 +91,7 @@ namespace Dev2.ViewModels.Merge.Utils
                 if (index < armConnectorsDiff.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsDiff[index];
-                    row.DifferentArmConnector = new ConnectorConflictItem(Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
+                    row.DifferentArmConnector = new ConnectorConflictItem(row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
                 }
                 else
                 {
@@ -135,9 +133,9 @@ namespace Dev2.ViewModels.Merge.Utils
             const string description = "Start";
             var row = new ToolConflictRow
             {
-                UniqueId = Guid.Empty,
                 CurrentViewModel = new ToolConflictItem { MergeDescription = description },
-                DiffViewModel = new ToolConflictItem { MergeDescription = description }
+                DiffViewModel = new ToolConflictItem { MergeDescription = description },
+                IsStartNode = true
             };
             CreateStartNodeConnectors(row, current, diff);
 
@@ -154,11 +152,12 @@ namespace Dev2.ViewModels.Merge.Utils
             var emptyGuid = Guid.Empty;
             var row = new ConnectorConflictRow
             {
-                UniqueId = emptyGuid,
                 Key = key,
-                CurrentArmConnector = new ConnectorConflictItem("Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key),
-                DifferentArmConnector = new ConnectorConflictItem("Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key)
+                IsStartNode = true
             };
+            row.CurrentArmConnector = new ConnectorConflictItem(row.UniqueId, "Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key);
+            row.DifferentArmConnector = new ConnectorConflictItem(row.UniqueId, "Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key);
+
             toolConflictRow.Connectors = new List<IConnectorConflictRow> { row };
         }
 

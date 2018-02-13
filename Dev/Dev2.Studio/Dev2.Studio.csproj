@@ -422,7 +422,7 @@
     <Compile Include="ViewModels\Merge\ConnectorConflictRow.cs" />
     <Compile Include="ViewModels\Merge\ConflictModelFactory.cs" />
     <Compile Include="ViewModels\Merge\ConnectorConflictItem.cs" />
-    <Compile Include="ViewModels\Merge\ToolModelConflictItem.cs" />
+    <Compile Include="ViewModels\Merge\ToolConflictItem.cs" />
     <Compile Include="ViewModels\Merge\MergeWorkflowViewModel.cs" />
     <Compile Include="ViewModels\Merge\ToolConflictRow.cs" />
     <Compile Include="ViewModels\SourceViewModel.cs" />

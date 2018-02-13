@@ -16,6 +16,7 @@ using Newtonsoft.Json;
 using System.Activities.Statements;
 using System.Activities.Presentation.Model;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -31,17 +32,6 @@ namespace Dev2.ViewModels.Merge
 
         public ToolConflictItem()
         {
-            RegisterEventHandlers();
-        }
-
-        private void RegisterEventHandlers()
-        {
-            PropertyChanged += (sender, eventArg) => {
-                if (eventArg.PropertyName == nameof(IsChecked))
-                {
-                    NotifyIsCheckedChanged?.Invoke(this, IsChecked);
-                }
-            };
             NotifyIsCheckedChanged += PropagateCheckedState;
         }
         private void PropagateCheckedState(IConflictItem item, bool isChecked)
@@ -76,7 +66,7 @@ namespace Dev2.ViewModels.Merge
 
         // Add AutoSelect IsChecked
 
-        public bool IsChecked
+        public override bool IsChecked
         {
             get => _isChecked;
             set => SetProperty(ref _isChecked, value);
@@ -127,6 +117,22 @@ namespace Dev2.ViewModels.Merge
 
         public event Action<IToolConflictItem> NotifyToolModelChanged;
 
-        public event Action<IConflictItem, bool> NotifyIsCheckedChanged;
+        public override bool Equals(object obj)
+        {
+            var item = obj as ToolConflictItem;
+            return item != null &&
+                   MergeDescription == item.MergeDescription &&
+                   UniqueId.Equals(item.UniqueId) &&
+                   EqualityComparer<ModelItem>.Default.Equals(ModelItem, item.ModelItem);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 1531919647;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(MergeDescription);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Guid>.Default.GetHashCode(UniqueId);
+            hashCode = hashCode * -1521134295 + EqualityComparer<ModelItem>.Default.GetHashCode(ModelItem);
+            return hashCode;
+        }
     }
 }
