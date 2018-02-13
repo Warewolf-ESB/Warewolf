@@ -16,17 +16,16 @@ using System.Windows.Media;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IToolModelConflictItem : IConflictItem
+    public interface IToolConflictItem : IConflictItem
     {
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
         Guid UniqueId { get; set; }
-        event ToolModelChangedHandler NotifyToolModelChanged;
+        event Action<IToolConflictItem> NotifyToolModelChanged;
         FlowNode FlowNode { get; set; }
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
         bool IsMergeVisible { get; set; }
         string NodeArmDescription { get; set; }
     }
-    public delegate void ToolModelChangedHandler(IToolModelConflictItem args);
 }

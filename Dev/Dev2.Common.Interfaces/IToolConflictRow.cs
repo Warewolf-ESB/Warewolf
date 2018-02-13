@@ -12,8 +12,8 @@ namespace Dev2.Common.Interfaces
 {
     public interface IToolConflictRow : IConflictRow
     {
-        IToolModelConflictItem CurrentViewModel { get; set; }
-        IToolModelConflictItem DiffViewModel { get; set; }
+        IToolConflictItem CurrentViewModel { get; set; }
+        IToolConflictItem DiffViewModel { get; set; }
         bool IsMergeExpanded { get; set; }
         bool IsContainerTool { get; set; }
     }

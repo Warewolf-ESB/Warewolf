@@ -1,11 +1,20 @@
-﻿using System.Collections.Generic;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
 using System.Collections;
 using Dev2.Common;
 using System;
 using Dev2.Studio.Interfaces;
 using System.Linq;
-using System.Activities.Statements;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
@@ -127,8 +136,8 @@ namespace Dev2.ViewModels.Merge.Utils
             var row = new ToolConflictRow
             {
                 UniqueId = Guid.Empty,
-                CurrentViewModel = new ToolModelConflictItem { MergeDescription = description },
-                DiffViewModel = new ToolModelConflictItem { MergeDescription = description }
+                CurrentViewModel = new ToolConflictItem { MergeDescription = description },
+                DiffViewModel = new ToolConflictItem { MergeDescription = description }
             };
             CreateStartNodeConnectors(row, current, diff);
 
@@ -153,20 +162,10 @@ namespace Dev2.ViewModels.Merge.Utils
             toolConflictRow.Connectors = new List<IConnectorConflictRow> { row };
         }
 
-        
-
-
+        public IToolConflictRow GetStartToolRow() => toolConflictRowList[0];
 
         public int Count => toolConflictRowList.Count;
-        public int IndexOf(IConflictRow conflict) => 0;
-
-        // TODO: remove?
-        public IConflictRow GetNextConlictToUpdate(IConflictRow container)
-        {
-            return null;
-        }
-
-
+        
         public ToolConflictRow this[int key]
         {
             get

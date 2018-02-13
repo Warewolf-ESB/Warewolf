@@ -113,6 +113,6 @@ namespace Dev2.ViewModels.Merge
             return hashCode;
         }
 
-        public event ToggledEventHandler NotifyIsCheckedChanged;
+        public event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
 }

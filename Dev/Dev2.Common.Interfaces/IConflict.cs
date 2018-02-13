@@ -12,15 +12,13 @@ using System;
 
 namespace Dev2.Common.Interfaces
 {
-    public delegate void ToggledEventHandler(IConflictItem item, bool isChecked);
-
     public interface IConflictCheckable
     {
         bool IsCurrentChecked { get; set; }
     }
     public interface ICheckable {
         bool IsChecked { get; set; }
-        event ToggledEventHandler NotifyIsCheckedChanged;
+        event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
     public interface IConflict
     {
@@ -43,7 +41,7 @@ namespace Dev2.Common.Interfaces
     public interface IConflictItem
     {
         bool IsChecked { get; set; }
-        event ToggledEventHandler NotifyIsCheckedChanged;
+        event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
     public interface IConflictRow : IConflict
     {

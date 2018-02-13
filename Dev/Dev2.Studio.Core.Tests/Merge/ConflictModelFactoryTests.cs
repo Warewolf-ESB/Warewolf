@@ -229,7 +229,7 @@ namespace Dev2.Core.Tests.Merge
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
             var mergeToolModel = completeConflict.Model;
             Assert.AreEqual("a", mergeToolModel.MergeDescription);
-            Assert.AreEqual(typeof(DecisionDesignerViewModel).FullName, ((ToolModelConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
+            Assert.AreEqual(typeof(DecisionDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
 
 
@@ -263,7 +263,7 @@ namespace Dev2.Core.Tests.Merge
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
             var mergeToolModel = completeConflict.Model;
             Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
-            Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolModelConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
+            Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
 
         [TestMethod]
@@ -312,7 +312,7 @@ namespace Dev2.Core.Tests.Merge
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
             var mergeToolModel = completeConflict.Model;
             Assert.AreEqual("bbb", mergeToolModel.MergeDescription);
-            Assert.AreEqual(typeof(SwitchDesignerViewModel).FullName, ((ToolModelConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
+            Assert.AreEqual(typeof(SwitchDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
 
         [TestMethod]

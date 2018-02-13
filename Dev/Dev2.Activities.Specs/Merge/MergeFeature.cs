@@ -123,7 +123,7 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenISelectCurrentTool()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && a.HasConflict && !a.IsChecked).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).FirstOrDefault() as IToolModelConflictItem;
+            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && a.HasConflict && !a.IsChecked).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).FirstOrDefault() as IToolConflictItem;
             Assert.IsNotNull(mergeToolModel);
             mergeToolModel.IsChecked = true;
         }

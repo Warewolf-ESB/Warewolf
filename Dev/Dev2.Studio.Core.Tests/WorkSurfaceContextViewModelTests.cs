@@ -1199,12 +1199,12 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
-        public void RemoveItem(IToolModelConflictItem model)
+        public void RemoveItem(IToolConflictItem model)
         {
             throw new NotImplementedException();
         }
 
-        public void AddItem(IToolModelConflictItem model)
+        public void AddItem(IToolConflictItem model)
         {
             throw new NotImplementedException();
         }
@@ -1218,11 +1218,11 @@ namespace Dev2.Core.Tests
         {
             
         }
-        public void LinkStartNode(IToolModelConflictItem model)
+        public void LinkStartNode(IToolConflictItem model)
         {
 
         }
-        public void UpdateModelItem(ModelItem modelItem, IToolModelConflictItem modelTool)
+        public void UpdateModelItem(ModelItem modelItem, IToolConflictItem modelTool)
         {
             throw new NotImplementedException();
         }

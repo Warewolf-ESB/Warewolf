@@ -723,7 +723,7 @@ namespace Dev2.Core.Tests
                 //---------------Assert Precondition----------------
                 Assert.IsNotNull(methodToRun);
                 //---------------Execute Test ----------------------
-                var aaaa = methodToRun.Invoke(null, new object[] { b.UniqueId, wfDesignerVm.Object }) as ToolModelConflictItem;
+                var aaaa = methodToRun.Invoke(null, new object[] { b.UniqueId, wfDesignerVm.Object }) as ToolConflictItem;
                 //---------------Test Result -----------------------
                 Assert.AreEqual(b.UniqueId, aaaa.UniqueId);
                 Assert.AreEqual(null, aaaa.ModelItem);
@@ -805,11 +805,11 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var mergeToolModel = new Mock<IToolConflictRow>();
-            mergeToolModel.SetupGet(p => p.CurrentViewModel).Returns(new Mock<IToolModelConflictItem>().Object);
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            mergeToolModel.SetupGet(p => p.CurrentViewModel).Returns(new Mock<IToolConflictItem>().Object);
+            var wfDesignerVm = new Mock<IMergePreviewWorkflowDesignerViewModel>();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
-                mergeWorkflowViewModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
+                mergeWorkflowViewModel.MergePreviewWorkflowDesignerViewModel = wfDesignerVm.Object;
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("SetupBindings", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 //---------------Assert Precondition----------------
                 Assert.IsNotNull(methodToRun);
@@ -851,11 +851,11 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var mergeToolModel = new Mock<IToolConflictRow>();
-            mergeToolModel.SetupGet(p => p.DiffViewModel).Returns(new Mock<IToolModelConflictItem>().Object);
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            mergeToolModel.SetupGet(p => p.DiffViewModel).Returns(new Mock<IToolConflictItem>().Object);
+            var wfDesignerVm = new Mock<IMergePreviewWorkflowDesignerViewModel>();
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
-                mergeWorkflowViewModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
+                mergeWorkflowViewModel.MergePreviewWorkflowDesignerViewModel = wfDesignerVm.Object;
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("SetupBindings", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 //---------------Assert Precondition----------------
                 Assert.IsNotNull(methodToRun);

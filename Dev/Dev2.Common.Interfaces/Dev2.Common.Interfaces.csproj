@@ -286,7 +286,7 @@
     <Compile Include="IManageWcfSourceViewModel.cs" />
     <Compile Include="IManageWebserviceSourceViewModel.cs" />
     <Compile Include="IMenuView.cs" />
-    <Compile Include="IToolModelConflictItem.cs" />
+    <Compile Include="IToolConflictItem.cs" />
     <Compile Include="IMergeView.cs" />
     <Compile Include="IMethodParameter.cs" />
     <Compile Include="INamespaceItem.cs" />
