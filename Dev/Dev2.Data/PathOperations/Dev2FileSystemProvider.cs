@@ -25,8 +25,7 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.PathOperations;
 using Microsoft.Win32.SafeHandles;
 using Warewolf.Resource.Errors;
-
-
+using Dev2.Data.PathOperations.Operations;
 
 namespace Dev2.PathOperations
 {
@@ -71,7 +70,6 @@ namespace Dev2.PathOperations
             _logOnprovider = new LogonProvider();
         }
 
-
         public IActivityIOPath IOPath
         {
             get;
@@ -80,59 +78,8 @@ namespace Dev2.PathOperations
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public Stream Get(IActivityIOPath path, List<string> filesToCleanup)
-        {
-            Stream result;
-
-            if (!RequiresAuth(path))
-            {
-                if (File.Exists(path.Path))
-                {
-                    result = new MemoryStream(File.ReadAllBytes(path.Path));
-                }
-                else
-                {
-                    var error = string.Format(ErrorResource.FileNotFound, path.Path);
-                    throw new Exception(error);
-                }
-            }
-            else
-            {
-                try
-                {
-                    var user = ExtractUserName(path);
-                    var domain = ExtractDomain(path);
-                    var loginOk = _logOnprovider.DoLogon(user, domain, path.Password, out SafeTokenHandle safeTokenHandle);
-
-
-                    if (loginOk)
-                    {
-                        using (safeTokenHandle)
-                        {
-
-                            var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                            using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                            {
-                                result = new MemoryStream(File.ReadAllBytes(path.Path));
-
-                                impersonatedUser.Undo();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, path.Username, path.Path));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                    throw new Exception(ex.Message, ex);
-                }
-
-            }
-
-            return result;
-        }
+            => new DoGetAction(path).GetOperation();
+            
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public int Put(Stream src, IActivityIOPath dst, IDev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
@@ -154,8 +101,7 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                        var loginOk = _logOnprovider.DoLogon(ExtractUserName(destination), ExtractDomain(destination), destination.Password, out SafeTokenHandle safeTokenHandle);
-
+                        var loginOk = _logOnprovider.DoLogon(ExtractUserName(destination), ExtractDomain(destination), destination.Password, destination.Path, out SafeTokenHandle safeTokenHandle);
                         if (loginOk)
                         {
                             using (safeTokenHandle)
@@ -182,7 +128,7 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        private static int WriteData(Stream src, IDev2CRUDOperationTO args, IActivityIOPath destination)
+        static int WriteData(Stream src, IDev2CRUDOperationTO args, IActivityIOPath destination)
         {
             int result;
 
@@ -218,7 +164,7 @@ namespace Dev2.PathOperations
                 WindowsImpersonationContext impersonatedUser = null;
                 try
                 {
-                    var loginOk = _logOnprovider.DoLogon(ExtractUserName(src), ExtractDomain(src), src.Password, out SafeTokenHandle safeTokenHandle);
+                    var loginOk = _logOnprovider.DoLogon(ExtractUserName(src), ExtractDomain(src), src.Password, src.Path, out SafeTokenHandle safeTokenHandle);
                     if (loginOk)
                     {
                         using (safeTokenHandle)
@@ -267,7 +213,7 @@ namespace Dev2.PathOperations
             {
                 try
                 {
-                    var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, out SafeTokenHandle safeTokenHandle);
+                    var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, dst.Path, out SafeTokenHandle safeTokenHandle);
                     if (loginOk)
                     {
                         using (safeTokenHandle)
@@ -342,7 +288,7 @@ namespace Dev2.PathOperations
             bool result;
             try
             {
-                var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, out SafeTokenHandle safeTokenHandle);
+                var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, dst.Path, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
                 {
@@ -378,7 +324,7 @@ namespace Dev2.PathOperations
             bool result;
             try
             {
-                var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, out SafeTokenHandle safeTokenHandle);
+                var loginOk = _logOnprovider.DoLogon(ExtractUserName(dst), ExtractDomain(dst), dst.Password, dst.Path, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
                 {
@@ -548,7 +494,7 @@ namespace Dev2.PathOperations
 
                 try
                 {
-                    var loginOk = _logOnprovider.DoLogon(ExtractUserName(src), ExtractDomain(src), src.Password, out SafeTokenHandle safeTokenHandle);
+                    var loginOk = _logOnprovider.DoLogon(ExtractUserName(src), ExtractDomain(src), src.Password, src.Path, out SafeTokenHandle safeTokenHandle);
 
                     if (loginOk)
                     {
@@ -596,7 +542,7 @@ namespace Dev2.PathOperations
                     }
                     else
                     {
-                       throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, src.Username, src.Path));
+                        throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, src.Username, src.Path));
                     }
                 }
                 catch (Exception ex)
@@ -644,7 +590,7 @@ namespace Dev2.PathOperations
             }
             else
             {
-                var loginOk = _logOnprovider.DoLogon(ExtractUserName(IOPath), ExtractDomain(IOPath), IOPath.Password, out SafeTokenHandle safeTokenHandle);
+                var loginOk = _logOnprovider.DoLogon(ExtractUserName(IOPath), ExtractDomain(IOPath), IOPath.Password, IOPath.Path, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
                 {
