@@ -20,7 +20,6 @@ namespace Dev2.Data.Interfaces
         IActivityIOPath IOPath { get; set; }
         
         Stream Get(IActivityIOPath path, List<string> filesToCleanup);
-        
         int Put(Stream src, IActivityIOPath dst, IDev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup);
         
         bool Delete(IActivityIOPath src);
