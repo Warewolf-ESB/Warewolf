@@ -84,10 +84,6 @@ namespace Dev2.Activities.Specs.Deploy
                     {
                         throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
                     }
-                    else
-                    {
-                        Thread.Sleep(120000);
-                    }
                 }
             }
         }
@@ -100,7 +96,7 @@ namespace Dev2.Activities.Specs.Deploy
   ""AttachStdin"": false,
   ""AttachStdout"": false,
   ""AttachStderr"": true,
-  ""Cmd"": [""sc.exe"", ""start"", ""Warewolf Server""""],
+  ""Cmd"": [""sc.exe"", ""start"", ""Warewolf Server""],
   ""Privileged"": true,
   ""Tty"": false
 }
@@ -146,7 +142,8 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                     else
                     {
-                        Console.Write("Started Warewolf Server." + reader.ReadToEnd());
+                        Thread.Sleep(120000);
+                        Console.Write("Started Warewolf Server. " + reader.ReadToEnd());
                     }
                 }
             }
