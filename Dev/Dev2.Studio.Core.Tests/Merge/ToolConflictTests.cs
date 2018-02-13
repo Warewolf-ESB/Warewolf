@@ -145,21 +145,21 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual(default(Guid), model.UniqueId);
             Assert.AreEqual(default(bool), model.IsChecked);
             Assert.AreEqual(default(bool), model.IsContainerTool);
-            Assert.AreEqual(default(IToolModelConflictItem), model.DiffViewModel);
-            Assert.AreEqual(default(IToolModelConflictItem), model.CurrentViewModel);
+            Assert.AreEqual(default(IToolConflictItem), model.DiffViewModel);
+            Assert.AreEqual(default(IToolConflictItem), model.CurrentViewModel);
             //------------Assert Results-------------------------
 
             model.UniqueId = Guid.NewGuid();
             model.IsChecked = true;
             model.IsContainerTool = true;
-            model.CurrentViewModel = new Mock<IToolModelConflictItem>().Object;
-            model.DiffViewModel = new Mock<IToolModelConflictItem>().Object;
+            model.CurrentViewModel = new Mock<IToolConflictItem>().Object;
+            model.DiffViewModel = new Mock<IToolConflictItem>().Object;
 
             Assert.AreNotEqual(default(Guid), model.UniqueId);
             Assert.AreNotEqual(default(bool), model.IsChecked);
             Assert.AreNotEqual(default(bool), model.IsContainerTool);
-            Assert.AreNotEqual(default(IToolModelConflictItem), model.DiffViewModel);
-            Assert.AreNotEqual(default(IToolModelConflictItem), model.CurrentViewModel);
+            Assert.AreNotEqual(default(IToolConflictItem), model.DiffViewModel);
+            Assert.AreNotEqual(default(IToolConflictItem), model.CurrentViewModel);
 
         }
     }

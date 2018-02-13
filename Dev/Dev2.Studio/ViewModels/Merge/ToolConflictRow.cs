@@ -21,9 +21,9 @@ namespace Dev2.ViewModels.Merge
         bool _isContainerTool;
         bool _isEmptyItemSelected;
 
-        public IToolModelConflictItem CurrentViewModel { get; set; }
+        public IToolConflictItem CurrentViewModel { get; set; }
         public override IConflictItem Current => CurrentViewModel;
-        public IToolModelConflictItem DiffViewModel { get; set; }
+        public IToolConflictItem DiffViewModel { get; set; }
         public override IConflictItem Different => DiffViewModel;
 
         public override Guid UniqueId { get; set; }

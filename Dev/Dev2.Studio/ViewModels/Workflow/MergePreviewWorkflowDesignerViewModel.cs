@@ -40,12 +40,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         public MergePreviewWorkflowDesignerViewModel(IContextualResourceModel resource)
-            : base(resource, true)
+            : base(resource, false)
         {
         }
 
         // TODO: Create Common interface AddOrRemove?
-        public void AddItem(IToolModelConflictItem model)
+        public void AddItem(IToolConflictItem model)
         {
             var bbb = _workflowDesignerHelper.GetService<ModelService>(_wd);
             var root = bbb.Root;
@@ -98,7 +98,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         // TODO: Create Common interface AddOrRemove?
-        public void RemoveItem(IToolModelConflictItem model)
+        public void RemoveItem(IToolConflictItem model)
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
             var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
@@ -195,7 +195,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        public void LinkStartNode(IToolModelConflictItem model)
+        public void LinkStartNode(IToolConflictItem model)
         {
             if (model == null)
             {

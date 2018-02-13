@@ -20,7 +20,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -42,7 +42,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -64,7 +64,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -86,7 +86,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -108,7 +108,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             var eventCalled = false;
             model.PropertyChanged += (a, b) =>
@@ -136,7 +136,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -159,7 +159,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -182,7 +182,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -207,7 +207,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -231,7 +231,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
@@ -254,7 +254,7 @@ namespace Dev2.Core.Tests.Merge
         public void MergeToolModel_AutoProperties_tests()
         {
             //------------Setup for test--------------------------
-            var model = new ToolModelConflictItem();
+            var model = new ToolConflictItem();
             //------------Execute Test---------------------------
             Assert.AreEqual(default(Point), model.NodeLocation);
             Assert.AreEqual(default(FlowNode), model.FlowNode);
@@ -276,24 +276,24 @@ namespace Dev2.Core.Tests.Merge
         {
             //---------------Set up test pack-------------------
             var id = Guid.NewGuid();
-            var mergeToolModel = new ToolModelConflictItem
+            var mergeToolModel = new ToolConflictItem
             {
                 UniqueId = id,
                 IsChecked = true,
                 ModelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity())
             };
             object sender = mergeToolModel;
-            IToolModelConflictItem args = new ToolModelConflictItem();
+            IToolConflictItem args = new ToolConflictItem();
             var wfDesignerVm = new Mock<IMergePreviewWorkflowDesignerViewModel>();
-            wfDesignerVm.Setup(p => p.AddItem(It.IsAny<IToolModelConflictItem>()));
+            wfDesignerVm.Setup(p => p.AddItem(It.IsAny<IToolConflictItem>()));
 
-            var methodToRun = typeof(ToolModelConflictItem).GetMethod("AddActivity", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            var methodToRun = typeof(ToolConflictItem).GetMethod("AddActivity", System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodToRun);
             //---------------Execute Test ----------------------
             var aaaa = methodToRun.Invoke(mergeToolModel, new object[] { });
             //---------------Test Result -----------------------
-            wfDesignerVm.Verify(p => p.AddItem(It.IsAny<IToolModelConflictItem>()), Times.Exactly(1));
+            wfDesignerVm.Verify(p => p.AddItem(It.IsAny<IToolConflictItem>()), Times.Exactly(1));
         }
     }
 }

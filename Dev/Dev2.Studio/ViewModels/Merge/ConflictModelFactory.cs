@@ -32,8 +32,8 @@ namespace Dev2.ViewModels.Merge
         bool _isWorkflowNameChecked;
         bool _isVariablesChecked;
 
-        public IToolModelConflictItem Model { get; set; }
-        public delegate void ModelItemChanged(ModelItem modelItem, ToolModelConflictItem mergeToolModel);
+        public IToolConflictItem Model { get; set; }
+        public delegate void ModelItemChanged(ModelItem modelItem, ToolConflictItem mergeToolModel);
         public event ModelItemChanged OnModelItemChanged;
 
         public ConflictModelFactory(IContextualResourceModel resourceModel)
@@ -138,13 +138,13 @@ namespace Dev2.ViewModels.Merge
         }
         public IDataListViewModel DataListViewModel { get; set; }
 
-        public IToolModelConflictItem CreateToolModelConfictItem(IConflictTreeNode node)
+        public IToolConflictItem CreateToolModelConfictItem(IConflictTreeNode node)
         {
             var modelItem = ModelItemUtils.CreateModelItem(node.Activity);
             return GetModel(modelItem, node);
         }
 
-        public IToolModelConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node)
+        public IToolConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node)
         {
             if (modelItem == null || node == null || node.Activity == null)
             {
@@ -185,9 +185,9 @@ namespace Dev2.ViewModels.Merge
             return mergeToolModel;
         }
 
-        ToolModelConflictItem CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
+        ToolConflictItem CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
         {
-            var mergeToolModel = new ToolModelConflictItem
+            var mergeToolModel = new ToolConflictItem
             {
                 ActivityDesignerViewModel = instance,
                 MergeIcon = modelItem.GetImageSourceForTool(),

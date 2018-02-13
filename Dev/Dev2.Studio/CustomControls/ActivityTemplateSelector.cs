@@ -13,7 +13,7 @@ namespace Dev2.CustomControls
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var mergeVm = item as ToolModelConflictItem;
+            var mergeVm = item as ToolConflictItem;
             var vm = mergeVm?.ActivityDesignerViewModel;
             if (vm == null)
             {

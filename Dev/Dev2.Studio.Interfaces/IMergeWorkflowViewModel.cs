@@ -12,7 +12,7 @@ namespace Dev2.Studio.Interfaces
         bool IsDirty { get; }
         string DisplayName { get; set; }
         void Save();
-        IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
+        IMergePreviewWorkflowDesignerViewModel MergePreviewWorkflowDesignerViewModel { get; set; }
         IDataListViewModel DataListViewModel { get; set; }
         bool HasMergeStarted { get; set; }
         bool HasWorkflowNameConflict { get; set; }

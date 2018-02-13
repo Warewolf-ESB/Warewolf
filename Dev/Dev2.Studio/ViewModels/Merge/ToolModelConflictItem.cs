@@ -19,7 +19,7 @@ using System.Windows;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class ToolModelConflictItem : ConflictItem, IToolModelConflictItem, ICheckable
+    public class ToolConflictItem : ConflictItem, IToolConflictItem, ICheckable
     {
         ImageSource _mergeIcon;
         string _mergeDescription;
@@ -29,7 +29,7 @@ namespace Dev2.ViewModels.Merge
         FlowNode _flowNode;
         string _nodeArmDescription;
 
-        public ToolModelConflictItem()
+        public ToolConflictItem()
         {
             RegisterEventHandlers();
         }
@@ -125,8 +125,8 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public event ToolModelChangedHandler NotifyToolModelChanged;
+        public event Action<IToolConflictItem> NotifyToolModelChanged;
 
-        public event ToggledEventHandler NotifyIsCheckedChanged;
+        public event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
 }
