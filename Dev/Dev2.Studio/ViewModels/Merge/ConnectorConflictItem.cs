@@ -24,22 +24,11 @@ namespace Dev2.ViewModels.Merge
         public string Key { get; set; }
         bool _isChecked;
 
-        // Add AutoSelect IsChecked
-        public void SetAutoChecked()
-        {
-            // TODO: call this from state applier
-            IsChecked = true;
-            AutoChecked = true;
-        }
-        public bool AutoChecked { get; set; }
-
-        public string Grouping => SourceUniqueId + Key ?? "";
-
-        public event Action<IConnectorConflictRow, bool> OnChecked;
+        public Guid Grouping { get; private set; }
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 
-        public bool IsChecked
+        public override bool IsChecked
         {
             get => _isChecked;
             set {
@@ -50,11 +39,7 @@ namespace Dev2.ViewModels.Merge
 
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
-        public ConnectorConflictItem()
-        {
-            RegisterEventHandlers();
-        }
-        public ConnectorConflictItem(string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key)
+        public ConnectorConflictItem(Guid Grouping, string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             ArmDescription = armDescription;
             if (!string.IsNullOrWhiteSpace(armDescription))
@@ -66,18 +51,7 @@ namespace Dev2.ViewModels.Merge
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
             Key = key;
-
-            RegisterEventHandlers();
-        }
-
-        private void RegisterEventHandlers()
-        {
-            PropertyChanged += (sender, eventArg) => {
-                if (eventArg.PropertyName == nameof(IsChecked))
-                {
-                    NotifyIsCheckedChanged?.Invoke(this, IsChecked);
-                }
-            };
+            this.Grouping = Grouping;
         }
 
         public bool Equals(IConnectorConflictItem other)
@@ -95,15 +69,11 @@ namespace Dev2.ViewModels.Merge
 
         public override bool Equals(object obj)
         {
-            if (obj is null)
+            if (obj is IConnectorConflictItem other)
             {
-                return false;
+                return Equals(other);
             }
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((IConnectorConflictItem)obj);
+            return false;
         }
 
         public override int GetHashCode()
@@ -112,7 +82,5 @@ namespace Dev2.ViewModels.Merge
             hashCode = (hashCode * 397) ^ (DestinationUniqueId.GetHashCode());
             return hashCode;
         }
-
-        public event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
 }

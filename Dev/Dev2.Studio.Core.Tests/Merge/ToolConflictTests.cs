@@ -66,28 +66,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsFalse(completeConflict.HasConflict);
             Assert.IsTrue(wasCalled);
         }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ToolConflict_HasNodeArmConflict_DefaultConstruction_ShouldBeFalse()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var completeConflict = new ToolConflictRow();
-            var wasCalled = false;
-            completeConflict.PropertyChanged += (a, b) =>
-            {
-                if (b.PropertyName == "HasNodeArmConflict")
-                {
-                    wasCalled = true;
-                }
-            };
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict);
-            Assert.IsFalse(completeConflict.HasNodeArmConflict);
-            completeConflict.HasNodeArmConflict = true;
-            Assert.IsTrue(wasCalled);
-        }
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -129,7 +107,6 @@ namespace Dev2.Core.Tests.Merge
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.AreEqual(System.Guid.Empty, completeConflict.UniqueId);
-            completeConflict.UniqueId = new System.Guid();
             Assert.IsFalse(wasCalled);
         }
 
@@ -149,7 +126,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual(default(IToolConflictItem), model.CurrentViewModel);
             //------------Assert Results-------------------------
 
-            model.UniqueId = Guid.NewGuid();
             model.IsChecked = true;
             model.IsContainerTool = true;
             model.CurrentViewModel = new Mock<IToolConflictItem>().Object;

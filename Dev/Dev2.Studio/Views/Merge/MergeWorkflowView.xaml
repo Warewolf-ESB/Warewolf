@@ -909,9 +909,9 @@
                   Grid.Row="1" 
                   AutomationProperties.AutomationId="UI_WorkflowDesignerViewGrid_AutoID">
                 <ContentControl x:Name="WorkflowDesignerView"
-                                Content="{Binding WorkflowDesignerViewModel.DesignerView}"
+                                Content="{Binding MergePreviewWorkflowDesignerViewModel.DesignerView}"
                                 AllowDrop="False"
-                                AutomationProperties.AutomationId="{Binding WorkflowDesignerViewModel.DesignerText}">
+                                AutomationProperties.AutomationId="{Binding MergePreviewWorkflowDesignerViewModel.DesignerText}">
                     <ig:DragDropManager.DropTarget >
                         <ig:DropTarget IsDropTarget="False" />
                     </ig:DragDropManager.DropTarget>

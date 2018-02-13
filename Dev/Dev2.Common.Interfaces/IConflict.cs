@@ -20,13 +20,6 @@ namespace Dev2.Common.Interfaces
         bool IsChecked { get; set; }
         event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
-    public interface IConflict
-    {
-        bool IsEmptyItemSelected { get; set; }
-        bool HasConflict { get; }
-        bool IsChecked { get; set; }
-        Guid UniqueId { get; set; }
-    }
 
     public interface IConnectorConflictItem : IConflictItem, IEquatable<IConnectorConflictItem>
     {
@@ -34,21 +27,25 @@ namespace Dev2.Common.Interfaces
         Guid SourceUniqueId { get; set; }
         Guid DestinationUniqueId { get; set; }
         string Key { get; set; }
-        event Action<IConnectorConflictRow, bool> OnChecked;
         // TODO: implement List<IConnectorConflictItem> Conflicts(conflictsList) which returns the connectors that conflict with this connector
     }
 
     public interface IConflictItem
     {
+        void SetAutoChecked();
         bool IsChecked { get; set; }
         event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
-    public interface IConflictRow : IConflict
+    public interface IConflictRow
     {
         IConflictItem Current { get; }
         IConflictItem Different { get; }
         bool IsCurrentChecked { get; set; }
         bool IsStartNode { get; set; }
+        bool IsEmptyItemSelected { get; set; }
+        bool HasConflict { get; }
+        bool IsChecked { get; set; }
+        Guid UniqueId { get; }
     }
 
     public interface IConnectorConflictRow : IConflictRow, IEquatable<IConnectorConflictRow>
