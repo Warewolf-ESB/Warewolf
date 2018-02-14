@@ -17,67 +17,24 @@ using System.Activities.Statements;
 using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Collections.Generic;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.ViewModels.Merge
 {
     public class ToolConflictItem : ConflictItem, IToolConflictItem, ICheckable
     {
-        ImageSource _mergeIcon;
-        string _mergeDescription;
-        bool _isChecked;
-        Guid _uniqueId;
-        FlowNode _flowNode;
-
-        public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
-
-        [JsonIgnore]
-        public ImageSource MergeIcon
+        protected ToolConflictItem()
         {
-            get => _mergeIcon;
-            set
-            {
-                _mergeIcon = value;
-                OnPropertyChanged(() => MergeIcon);
-            }
-        }
-        public string MergeDescription
-        {
-            get => _mergeDescription;
-            set
-            {
-                _mergeDescription = value;
-                OnPropertyChanged(() => MergeDescription);
-            }
         }
 
-        public override bool IsChecked
-        {
-            get => _isChecked;
-            set => SetProperty(ref _isChecked, value);
-        }
-
-        public Guid UniqueId
-        {
-            get => _uniqueId;
-            set
-            {
-                _uniqueId = value;
-                OnPropertyChanged(() => UniqueId);
-            }
-        }
-
-        public FlowNode FlowNode
-        {
-            get => _flowNode;
-            set
-            {
-                _flowNode = value;
-                OnPropertyChanged(() => FlowNode);
-            }
-        }
-
+        public Guid UniqueId { get; set; }
+        public string MergeDescription { get; set; }
         public ModelItem ModelItem { get; set; }
+        public FlowNode FlowNode { get; set; }
         public Point NodeLocation { get; set; }
+        [JsonIgnore]
+        public ImageSource MergeIcon { get; set; }
+        public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
 
         public override bool Equals(object obj)
         {
@@ -95,6 +52,27 @@ namespace Dev2.ViewModels.Merge
             hashCode = hashCode * -1521134295 + EqualityComparer<Guid>.Default.GetHashCode(UniqueId);
             hashCode = hashCode * -1521134295 + EqualityComparer<ModelItem>.Default.GetHashCode(ModelItem);
             return hashCode;
+        }
+
+        internal static ToolConflictItem NewStartConflictItem() => new ToolConflictItem
+        {
+            MergeDescription = "Start",
+            MergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource
+        };
+
+        internal static ToolConflictItem NewFromActivity(IDev2Activity activity, ModelItem modelItem, Point location) => new ToolConflictItem
+        {
+            UniqueId = activity.UniqueID.ToGuid(),
+            MergeDescription = activity.GetDisplayName(),
+            FlowNode = activity.GetFlowNode(),
+            ModelItem = modelItem,
+            NodeLocation = location
+        };
+
+        public void SetUserInterface(ImageSource mergeIcon, ActivityDesignerViewModel instance)
+        {
+            MergeIcon = mergeIcon;
+            ActivityDesignerViewModel = instance;
         }
     }
 }

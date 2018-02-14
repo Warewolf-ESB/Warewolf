@@ -16,16 +16,14 @@ namespace Dev2.ViewModels.Merge
 {
     public class ConnectorConflictItem : ConflictItem, IConnectorConflictItem, ICheckable
     {
-        bool _isChecked;
-
         public ConnectorConflictItem(Guid Grouping, string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             ArmDescription = armDescription;
             if (!string.IsNullOrWhiteSpace(armDescription))
             {
                 var description = armDescription.Split(new[] { "->" }, StringSplitOptions.None);
-                LeftArmDescription = description[0];
-                RightArmDescription = description[1];
+                LeftArmDescription = description[0].Trim();
+                RightArmDescription = description[1].Trim();
             }
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
@@ -40,12 +38,6 @@ namespace Dev2.ViewModels.Merge
         public Guid DestinationUniqueId { get; set; }
         public string Key { get; set; }
         public Guid Grouping { get; private set; }
-
-        public override bool IsChecked
-        {
-            get => _isChecked;
-            set => SetProperty(ref _isChecked, value);
-        }
 
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 

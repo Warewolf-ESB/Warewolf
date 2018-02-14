@@ -138,11 +138,9 @@ namespace Dev2.ViewModels.Merge.Utils
             {
                 return _cacheStartToolRow;
             }
-            var toolConflictItem = new ToolConflictItem
-            {
-                MergeDescription = "Start",
-                MergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource
-            };
+
+            var toolConflictItem = ToolConflictItem.NewStartConflictItem();
+            
             var row = new ToolConflictRow
             {
                 CurrentViewModel = toolConflictItem,
