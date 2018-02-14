@@ -48,7 +48,7 @@ namespace Dev2.Data.PathOperations
             finally
             {
                 var ex = Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error());
-                Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
+                Dev2Logger.Info(ex.Message, GlobalConstants.Warewolf);
             }
             throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, lpszUsername, lpszPath));
         }
