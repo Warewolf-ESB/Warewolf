@@ -15,19 +15,19 @@ namespace Dev2.Data.PathOperations.Operations
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
         protected readonly IFile _fileWrapper;
-        protected readonly SafeTokenHandle _safeToken;
+        readonly WindowsImpersonationContext ImpersonatedUser;
 
         public DoGetAction(IActivityIOPath path)
         {
             _logOnProvider = new LogonProvider();
             _fileWrapper = new FileWrapper();
             _path = path;
-            _safeToken = RequiresAuth(_path, _logOnProvider);
-            
+            ImpersonatedUser = RequiresAuth(_path, _logOnProvider);
+
         }
         public override Stream ExecuteOperation()
         {
-            if (_safeToken != null)
+            if (ImpersonatedUser != null)
             {
                 return ExecuteOperationWithAuth();
             }
@@ -40,16 +40,11 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override Stream ExecuteOperationWithAuth()
         {
-            WindowsImpersonationContext impersonatedUser = null;
             try
             {
-                using (_safeToken)
+                using (ImpersonatedUser)
                 {
-                    var newID = new WindowsIdentity(_safeToken.DangerousGetHandle());
-                    using (impersonatedUser = newID.Impersonate())
-                    {
-                        return new MemoryStream(_fileWrapper.ReadAllBytes(_path.Path));
-                    }
+                    return new MemoryStream(_fileWrapper.ReadAllBytes(_path.Path));
                 }
             }
             catch (Exception exception)
@@ -59,7 +54,7 @@ namespace Dev2.Data.PathOperations.Operations
             }
             finally
             {
-                impersonatedUser?.Undo();
+                ImpersonatedUser.Undo();
             }
         }
     }

@@ -88,14 +88,14 @@ namespace Dev2.PathOperations
         public bool CreateDirectory(IActivityIOPath dst, IDev2CRUDOperationTO args)
             => new DoCreateDirectory(dst, args).ExecuteOperation();
 
-        public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.Folders);
-        public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.Files);
+        public IList<IActivityIOPath> ListFoldersInDirectory(IActivityIOPath src) 
+            => new DoGetFilesAsPerTypeOperation(src, ReadTypes.Folders).ExecuteOperation();
+        public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src) 
+            => new DoGetFilesAsPerTypeOperation(src, ReadTypes.Files).ExecuteOperation();
 
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
-        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src) => ListDirectoriesAccordingToType(src, ReadTypes.FilesAndFolders);
-
-        IList<IActivityIOPath> ListDirectoriesAccordingToType(IActivityIOPath src, ReadTypes type)
-            => new DoGetFilesAsPerTypeOperation(src, type).ExecuteOperation();
+        public IList<IActivityIOPath> ListDirectory(IActivityIOPath src) 
+            => new DoGetFilesAsPerTypeOperation(src, ReadTypes.FilesAndFolders).ExecuteOperation();
         
         public bool RequiresLocalTmpStorage() => false;
 
