@@ -20,7 +20,7 @@ using System.Windows.Media;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
-    public class ToolConflictRowList : IEnumerable<IConflictRow>
+    public class ConflictRowList : IEnumerable<IConflictRow>
     {
         readonly ConflictTreeNode[] currentTree;
         readonly ConflictTreeNode[] diffTree;
@@ -28,7 +28,7 @@ namespace Dev2.ViewModels.Merge.Utils
         readonly IConflictModelFactory modelFactoryDifferent;
         readonly List<ToolConflictRow> toolConflictRowList;
 
-        public ToolConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
+        public ConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
         {
             this.modelFactoryCurrent = modelFactoryCurrent;
             this.modelFactoryDifferent = modelFactoryDifferent;
@@ -139,7 +139,8 @@ namespace Dev2.ViewModels.Merge.Utils
                 return _cacheStartToolRow;
             }
 
-            var toolConflictItem = ToolConflictItem.NewStartConflictItem();
+            var mergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource;
+            var toolConflictItem = ToolConflictItem.NewStartConflictItem(mergeIcon);
             
             var row = new ToolConflictRow
             {
