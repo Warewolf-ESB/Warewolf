@@ -16,6 +16,8 @@ namespace Dev2.ViewModels.Merge
 {
     public abstract class ConflictItem : BindableBase , IConflictItem
     {
+        bool _isChecked;
+
         public abstract override bool Equals(object obj);
         public abstract override int GetHashCode();
 
@@ -41,7 +43,11 @@ namespace Dev2.ViewModels.Merge
             };
         }
 
-        public abstract bool IsChecked { get; set; }
+        public bool IsChecked
+        {
+            get => _isChecked;
+            set => SetProperty(ref _isChecked, value);
+        }
         public event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
 }
