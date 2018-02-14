@@ -25,6 +25,7 @@ namespace Dev2.Data.PathOperations.Operations
         {
             _logOnProvider = new LogonProvider();
             _pathWrapper = new FilePathWrapper();
+            _fileWrapper = new FileWrapper();
             _currentStream = currentStream;
             Destination = destination;
             _arguments = crudArgument;
