@@ -96,7 +96,7 @@ namespace Dev2.ViewModels.Merge
                     DataListViewModel = conflictModel.DataListViewModel;
                 }
                 var completeConflict = Conflicts.First() as IToolConflictRow;
-                completeConflict.IsStartNode = true;
+                completeConflict.ContainsStart = true;
                 if (completeConflict.IsChecked)
                 {
                     return;
@@ -346,7 +346,7 @@ namespace Dev2.ViewModels.Merge
         {
             if (changedItem is IToolConflictItem toolItem)
             {
-                if (row.IsStartNode)
+                if (row.ContainsStart)
                 {
                     return;
                 }
@@ -354,7 +354,7 @@ namespace Dev2.ViewModels.Merge
             }
             else if (changedItem is IConnectorConflictItem connectorItem && row is IConnectorConflictRow connectorRow)
             {
-                ConnectorHandler(connectorRow);
+                ConnectorHandler(connectorItem, connectorRow);
             }
             else
             {
@@ -383,40 +383,21 @@ namespace Dev2.ViewModels.Merge
             mergePreviewWorkflowDesignerViewModel.RemoveItem(toolModelConflictItem);
         }
 
-        private void ConnectorHandler(IConnectorConflictRow row)
+        private void ConnectorHandler(IConnectorConflictItem changedItem, IConnectorConflictRow row)
         {
-            if (row.IsStartNode)
+            if (row.ContainsStart)
             {
                 mergePreviewWorkflowDesignerViewModel.RemoveStartNodeConnection();
                 LinkStartNode(row);
                 return;
             }
-            if (row.Current is IConnectorConflictItem currentItem && row.Different is IConnectorConflictItem diffItem)
+            if (changedItem.IsChecked)
             {
-                if (currentItem.IsChecked)
-                {
-                    var toolConflictItem = conflictList.GetToolItemFromId(currentItem.DestinationUniqueId, true);
-                    toolConflictItem.SetAutoChecked();
-                    AddActivity(toolConflictItem);
-
-                    LinkActivities(currentItem.SourceUniqueId, currentItem.DestinationUniqueId, currentItem.Key);
-                }
-                else
-                {
-                    DeLinkActivities(currentItem.SourceUniqueId, currentItem.DestinationUniqueId, currentItem.Key);
-                }
-                if (diffItem.IsChecked)
-                {
-                    var toolConflictItem = conflictList.GetToolItemFromId(diffItem.DestinationUniqueId, true);
-                    toolConflictItem.SetAutoChecked();
-                    AddActivity(toolConflictItem);
-
-                    LinkActivities(diffItem.SourceUniqueId, diffItem.DestinationUniqueId, diffItem.Key);
-                }
-                else
-                {
-                    DeLinkActivities(diffItem.SourceUniqueId, diffItem.DestinationUniqueId, diffItem.Key);
-                }
+                AddAndLinkActivity(changedItem, row);
+            }
+            else
+            {
+                DeLinkActivities(changedItem.SourceUniqueId, changedItem.DestinationUniqueId, changedItem.Key);
             }
         }
 
@@ -430,6 +411,17 @@ namespace Dev2.ViewModels.Merge
             AddActivity(toolConflictItem);
 
             mergePreviewWorkflowDesignerViewModel.LinkStartNode(toolConflictItem);
+        }
+
+        private void AddAndLinkActivity(IConnectorConflictItem changedItem, IConnectorConflictRow row)
+        {
+            var isCurrent = changedItem.DestinationUniqueId.Equals(row.CurrentArmConnector.DestinationUniqueId);
+
+            var toolConflictItem = conflictList.GetToolItemFromId(changedItem.DestinationUniqueId, isCurrent);
+            toolConflictItem.SetAutoChecked();
+            AddActivity(toolConflictItem);
+
+            LinkActivities(changedItem.SourceUniqueId, changedItem.DestinationUniqueId, changedItem.Key);
         }
 
         private void LinkActivities(Guid SourceUniqueId, Guid DestinationUniqueId, string Key)

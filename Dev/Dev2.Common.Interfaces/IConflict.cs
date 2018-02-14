@@ -40,7 +40,7 @@ namespace Dev2.Common.Interfaces
         IConflictItem Current { get; }
         IConflictItem Different { get; }
         bool IsCurrentChecked { get; set; }
-        bool IsStartNode { get; set; }
+        bool ContainsStart { get; set; }
         bool IsEmptyItemSelected { get; set; }
         bool HasConflict { get; }
         bool IsChecked { get; set; }

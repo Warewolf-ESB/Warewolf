@@ -22,7 +22,7 @@ namespace Dev2.ViewModels.Merge
         readonly private Guid _uniqueId = Guid.NewGuid();
         public abstract IConflictItem Current { get; }
         public abstract IConflictItem Different { get; }
-        public abstract bool IsStartNode { get; set; }
+        public abstract bool ContainsStart { get; set; }
 
         protected ConflictRow()
         {
