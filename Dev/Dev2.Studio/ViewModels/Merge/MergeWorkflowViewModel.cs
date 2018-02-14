@@ -30,7 +30,7 @@ namespace Dev2.ViewModels.Merge
         bool _hasVariablesConflict;
         bool _isVariablesEnabled;
         readonly IContextualResourceModel _resourceModel;
-        readonly ToolModelConflictRowList conflictList;
+        readonly ToolConflictRowList conflictList;
         readonly IConflictModelFactory modelFactoryCurrent;
         readonly IConflictModelFactory modelFactoryDifferent;
 
@@ -50,7 +50,7 @@ namespace Dev2.ViewModels.Merge
             modelFactoryDifferent = new ConflictModelFactory(differenceResourceModel);
             modelFactoryDifferent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
 
-            conflictList = new ToolModelConflictRowList(modelFactoryCurrent, modelFactoryDifferent, currentTree, diffTree);
+            conflictList = new ToolConflictRowList(modelFactoryCurrent, modelFactoryDifferent, currentTree, diffTree);
 
             Conflicts = conflictList;
             SetupNamesAndVariables(currentResourceModel, differenceResourceModel);
@@ -257,9 +257,9 @@ namespace Dev2.ViewModels.Merge
     /// </summary>
     public class ConflictListStateApplier
     {
-        readonly ToolModelConflictRowList conflicts;
+        readonly ToolConflictRowList conflicts;
         // TODO: this state applier should also be used to disable Connectors that are unavailable
-        public ConflictListStateApplier(ToolModelConflictRowList conflicts)
+        public ConflictListStateApplier(ToolConflictRowList conflicts)
         {
             this.conflicts = conflicts;
             RegisterEventHandlerForConflictItemChanges();
@@ -308,8 +308,8 @@ namespace Dev2.ViewModels.Merge
     public class MergePreviewWorkflowStateApplier
     {
         readonly IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel;
-        readonly ToolModelConflictRowList conflictList;
-        public MergePreviewWorkflowStateApplier(ToolModelConflictRowList conflictList, IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel)
+        readonly ToolConflictRowList conflictList;
+        public MergePreviewWorkflowStateApplier(ToolConflictRowList conflictList, IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel)
         {
             this.mergePreviewWorkflowDesignerViewModel = mergePreviewWorkflowDesignerViewModel;
             this.conflictList = conflictList;
@@ -395,6 +395,10 @@ namespace Dev2.ViewModels.Merge
             {
                 if (currentItem.IsChecked)
                 {
+                    var toolConflictItem = conflictList.GetToolItemFromId(currentItem.DestinationUniqueId, true);
+                    toolConflictItem.SetAutoChecked();
+                    AddActivity(toolConflictItem);
+
                     LinkActivities(currentItem.SourceUniqueId, currentItem.DestinationUniqueId, currentItem.Key);
                 }
                 else
@@ -403,6 +407,10 @@ namespace Dev2.ViewModels.Merge
                 }
                 if (diffItem.IsChecked)
                 {
+                    var toolConflictItem = conflictList.GetToolItemFromId(diffItem.DestinationUniqueId, true);
+                    toolConflictItem.SetAutoChecked();
+                    AddActivity(toolConflictItem);
+
                     LinkActivities(diffItem.SourceUniqueId, diffItem.DestinationUniqueId, diffItem.Key);
                 }
                 else

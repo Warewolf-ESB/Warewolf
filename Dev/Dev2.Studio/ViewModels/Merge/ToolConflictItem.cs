@@ -30,18 +30,6 @@ namespace Dev2.ViewModels.Merge
         FlowNode _flowNode;
         string _nodeArmDescription;
 
-        public ToolConflictItem()
-        {
-            NotifyIsCheckedChanged += PropagateCheckedState;
-        }
-        private void PropagateCheckedState(IConflictItem item, bool isChecked)
-        {
-            if (isChecked)
-            {
-                NotifyToolModelChanged?.Invoke(this);
-            }
-        }
-
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
 
         [JsonIgnore]
@@ -63,8 +51,6 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged(() => MergeDescription);
             }
         }
-
-        // Add AutoSelect IsChecked
 
         public override bool IsChecked
         {
@@ -114,8 +100,6 @@ namespace Dev2.ViewModels.Merge
                 OnPropertyChanged(() => NodeArmDescription);
             }
         }
-
-        public event Action<IToolConflictItem> NotifyToolModelChanged;
 
         public override bool Equals(object obj)
         {

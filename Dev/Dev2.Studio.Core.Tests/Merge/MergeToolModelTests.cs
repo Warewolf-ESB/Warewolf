@@ -118,10 +118,6 @@ namespace Dev2.Core.Tests.Merge
                     wasCalled = true;
                 }
             };
-            model.NotifyToolModelChanged += (_) =>
-            {
-                eventCalled = true;
-            };
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsFalse(model.IsChecked);

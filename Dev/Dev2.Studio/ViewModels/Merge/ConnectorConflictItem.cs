@@ -9,35 +9,14 @@
 */
 
 using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces;
-using Dev2.Studio.Interfaces;
 
 namespace Dev2.ViewModels.Merge
 {
-    public class ConnectorConflictItem : ConflictItem, IConnectorConflictItem
+    public class ConnectorConflictItem : ConflictItem, IConnectorConflictItem, ICheckable
     {
-        public string ArmDescription { get; set; }
-        public string LeftArmDescription { get; set; }
-        public string RightArmDescription { get; set; }
-        public Guid SourceUniqueId { get; set; }
-        public Guid DestinationUniqueId { get; set; }
-        public string Key { get; set; }
         bool _isChecked;
-
-        public Guid Grouping { get; private set; }
-
-        public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
-
-        public override bool IsChecked
-        {
-            get => _isChecked;
-            set {
-                SetProperty(ref _isChecked, value);
-                AutoChecked = false;
-            }
-        }
-
-        public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
         public ConnectorConflictItem(Guid Grouping, string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
@@ -54,32 +33,37 @@ namespace Dev2.ViewModels.Merge
             this.Grouping = Grouping;
         }
 
-        public bool Equals(IConnectorConflictItem other)
+        public string ArmDescription { get; set; }
+        public string LeftArmDescription { get; set; }
+        public string RightArmDescription { get; set; }
+        public Guid SourceUniqueId { get; set; }
+        public Guid DestinationUniqueId { get; set; }
+        public string Key { get; set; }
+        public Guid Grouping { get; private set; }
+
+        public override bool IsChecked
         {
-            if (other == null)
-            {
-                return false;
-            }
-            var equals = true;
-            equals &= other.SourceUniqueId == SourceUniqueId;
-            equals &= other.DestinationUniqueId == DestinationUniqueId;
-            equals &= other.Key == Key;
-            return equals;
+            get => _isChecked;
+            set => SetProperty(ref _isChecked, value);
         }
+
+        public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
         public override bool Equals(object obj)
         {
-            if (obj is IConnectorConflictItem other)
-            {
-                return Equals(other);
-            }
-            return false;
+            var item = obj as ConnectorConflictItem;
+            return item != null &&
+                   SourceUniqueId == item.SourceUniqueId &&
+                   DestinationUniqueId.Equals(item.DestinationUniqueId) &&
+                   Key.Equals(item.Key);
         }
 
         public override int GetHashCode()
         {
-            var hashCode = (397) ^ SourceUniqueId.GetHashCode();
-            hashCode = (hashCode * 397) ^ (DestinationUniqueId.GetHashCode());
+            var hashCode = 1531919647;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Guid>.Default.GetHashCode(SourceUniqueId);
+            hashCode = hashCode * -1521134295 + EqualityComparer<Guid>.Default.GetHashCode(DestinationUniqueId);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Key);
             return hashCode;
         }
     }
