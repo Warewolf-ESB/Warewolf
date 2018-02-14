@@ -25,6 +25,6 @@ namespace Dev2.ViewModels.Merge
 
         public override bool IsEmptyItemSelected { get; set; }
 
-        public override bool IsStartNode { get; set; }
+        public override bool ContainsStart { get; set; }
     }
 }

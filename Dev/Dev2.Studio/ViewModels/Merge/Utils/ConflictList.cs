@@ -39,10 +39,8 @@ namespace Dev2.ViewModels.Merge.Utils
             CreateList();
         }
 
-        // TODO: Link tools not working as yet, only link start node is working
-        //       Set enabled / disabled connector state
+        // TODO: Set enabled / disabled connector state
         //       Add new switch connector template to allow checkbox
-        //       Possible that the Handler is being created before the yield row return happens?
 
         void CreateList()
         {
@@ -148,7 +146,7 @@ namespace Dev2.ViewModels.Merge.Utils
             {
                 CurrentViewModel = toolConflictItem,
                 DiffViewModel = toolConflictItem,
-                IsStartNode = true,
+                ContainsStart = true,
             };
             CreateStartNodeConnectors(row, current, diff);
 
@@ -166,7 +164,7 @@ namespace Dev2.ViewModels.Merge.Utils
             var row = new ConnectorConflictRow
             {
                 Key = key,
-                IsStartNode = true
+                ContainsStart = true
             };
             row.CurrentArmConnector = new ConnectorConflictItem(row.UniqueId, "Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key);
             row.DifferentArmConnector = new ConnectorConflictItem(row.UniqueId, "Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key);
@@ -176,19 +174,9 @@ namespace Dev2.ViewModels.Merge.Utils
 
         public IToolConflictRow GetStartToolRow() => toolConflictRowList[0];
 
-        public IToolConflictItem GetToolItemFromId(Guid id, bool isCurrent)
-        {
-            IToolConflictItem toolConflictItem;
-            if (isCurrent)
-            {
-                toolConflictItem = toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id).CurrentViewModel;
-            }
-            else
-            {
-                toolConflictItem = toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id).DiffViewModel;
-            }
-            return toolConflictItem;
-        }
+        public IToolConflictItem GetToolItemFromId(Guid id, bool isCurrent) => isCurrent 
+                                                                                        ? toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id).CurrentViewModel
+                                                                                        : toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id).DiffViewModel;
 
         public int Count => toolConflictRowList.Count;
         
