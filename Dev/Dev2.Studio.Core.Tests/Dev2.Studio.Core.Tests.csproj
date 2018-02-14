@@ -265,9 +265,11 @@
     <Compile Include="MainViewModelBase.cs" />
     <Compile Include="Merge\ArmConnectorConflictTests.cs" />
     <Compile Include="Merge\ConflictModelFactoryTests.cs" />
+    <Compile Include="Merge\ConflictRowListTests.cs" />
     <Compile Include="Merge\ConnectorConflictItemTests.cs" />
     <Compile Include="Merge\ToolConflictItemTests.cs" />
     <Compile Include="Merge\ToolConflictTests.cs" />
+    <Compile Include="Merge\Utils\MergeTestUtils.cs" />
     <Compile Include="ShellViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="ModelTests\RecordSetItemModelTests.cs" />

@@ -1,36 +1,16 @@
 ﻿using Dev2.Activities.Designers2.MultiAssign;
-using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Core.Tests.Merge.Utils;
 using Dev2.ViewModels.Merge;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Windows.Media;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Merge
 {
     [TestClass]
-    public class ToolConflictItemTests
+    public class ToolConflictItemTests : MergeTestUtils
     {
-        Guid uniqueId = Guid.NewGuid();
-        const string description = "MultiAssign";
-        Point location = new Point(10, 10);
-        ModelItem modelItem;
-
-        private ToolConflictItem CreateToolConflictItem()
-        {
-            var multiAssign = new DsfMultiAssignActivity
-            {
-                UniqueID = uniqueId.ToString(),
-                DisplayName = description
-            };
-            modelItem = ModelItemUtils.CreateModelItem(multiAssign);
-
-            var toolConflictItem = ToolConflictItem.NewFromActivity(multiAssign, modelItem, location);
-            return toolConflictItem;
-        }
-
         [TestMethod]
         [Owner("Pieter Terblanche")]
         public void ToolConflictItem_NewFromActivity()
@@ -40,8 +20,8 @@ namespace Dev2.Core.Tests.Merge
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(toolConflictItem);
-            Assert.AreEqual(uniqueId, toolConflictItem.UniqueId);
-            Assert.AreEqual(description, toolConflictItem.MergeDescription);
+            Assert.AreEqual(multiAssign.UniqueID, toolConflictItem.UniqueId);
+            Assert.AreEqual(multiAssign.DisplayName, toolConflictItem.MergeDescription);
             Assert.IsNotNull(toolConflictItem.FlowNode);
             Assert.AreEqual(modelItem, toolConflictItem.ModelItem);
             Assert.AreEqual(location, toolConflictItem.NodeLocation);
