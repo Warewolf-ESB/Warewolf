@@ -15,10 +15,12 @@ using Dev2.Common;
 using System;
 using Dev2.Studio.Interfaces;
 using System.Linq;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
-    public class ToolModelConflictRowList : IEnumerable<IConflictRow>
+    public class ToolConflictRowList : IEnumerable<IConflictRow>
     {
         readonly ConflictTreeNode[] currentTree;
         readonly ConflictTreeNode[] diffTree;
@@ -26,7 +28,7 @@ namespace Dev2.ViewModels.Merge.Utils
         readonly IConflictModelFactory modelFactoryDifferent;
         readonly List<ToolConflictRow> toolConflictRowList;
 
-        public ToolModelConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
+        public ToolConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
         {
             this.modelFactoryCurrent = modelFactoryCurrent;
             this.modelFactoryDifferent = modelFactoryDifferent;
@@ -36,6 +38,11 @@ namespace Dev2.ViewModels.Merge.Utils
             toolConflictRowList = new List<ToolConflictRow>();
             CreateList();
         }
+
+        // TODO: Link tools not working as yet, only link start node is working
+        //       Set enabled / disabled connector state
+        //       Add new switch connector template to allow checkbox
+        //       Possible that the Handler is being created before the yield row return happens?
 
         void CreateList()
         {
@@ -130,12 +137,16 @@ namespace Dev2.ViewModels.Merge.Utils
             {
                 return _cacheStartToolRow;
             }
-            const string description = "Start";
+            var toolConflictItem = new ToolConflictItem
+            {
+                MergeDescription = "Start",
+                MergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource
+            };
             var row = new ToolConflictRow
             {
-                CurrentViewModel = new ToolConflictItem { MergeDescription = description },
-                DiffViewModel = new ToolConflictItem { MergeDescription = description },
-                IsStartNode = true
+                CurrentViewModel = toolConflictItem,
+                DiffViewModel = toolConflictItem,
+                IsStartNode = true,
             };
             CreateStartNodeConnectors(row, current, diff);
 
@@ -162,6 +173,20 @@ namespace Dev2.ViewModels.Merge.Utils
         }
 
         public IToolConflictRow GetStartToolRow() => toolConflictRowList[0];
+
+        public IToolConflictItem GetToolItemFromId(Guid id, bool isCurrent)
+        {
+            IToolConflictItem toolConflictItem;
+            if (isCurrent)
+            {
+                toolConflictItem = toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id).CurrentViewModel;
+            }
+            else
+            {
+                toolConflictItem = toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id).DiffViewModel;
+            }
+            return toolConflictItem;
+        }
 
         public int Count => toolConflictRowList.Count;
         

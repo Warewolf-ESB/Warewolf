@@ -465,7 +465,7 @@
                                                         </Grid.ColumnDefinitions>
                                                         <StackPanel Orientation="Horizontal">
                                                             <TextBlock x:Name="CurrentNodeLeftArmText" 
-                                                                       Margin="45,0,0,0" 
+                                                                       Margin="38,0,0,0" 
                                                                        Text="{Binding LeftArmDescription}" 
                                                                        ToolTip="{Binding LeftArmDescription}"
                                                                        ToolTipService.ShowOnDisabled="True"
@@ -593,7 +593,7 @@
                                                         </i:Interaction.Behaviors>
                                                     </RadioButton>
                                                     <TextBlock x:Name="DifferenceNodeArmText" 
-                                                               Margin="25,0,0,0" 
+                                                               Margin="23,0,0,0" 
                                                                Text="{Binding LeftArmDescription}" 
                                                                ToolTip="{Binding LeftArmDescription}"
                                                                ToolTipService.ShowOnDisabled="True"

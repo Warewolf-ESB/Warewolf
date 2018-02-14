@@ -21,7 +21,6 @@ namespace Dev2.Common.Interfaces
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
         Guid UniqueId { get; set; }
-        event Action<IToolConflictItem> NotifyToolModelChanged;
         FlowNode FlowNode { get; set; }
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }

@@ -26,37 +26,5 @@ namespace Dev2.ViewModels.Merge
         public override bool IsEmptyItemSelected { get; set; }
 
         public override bool IsStartNode { get; set; }
-
-        public bool Equals(IConnectorConflictRow other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-            var equals = true;
-            equals &= (other.CurrentArmConnector?.Equals(CurrentArmConnector)).GetValueOrDefault(false);
-            equals &= (other.DifferentArmConnector?.Equals(DifferentArmConnector)).GetValueOrDefault(false);
-            return equals;
-        }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((IConnectorConflictRow)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            var hashCode = (397) ^ UniqueId.GetHashCode();
-            hashCode = (hashCode * 397) ^ (Key != null ? Key.GetHashCode() : 0);
-            return hashCode;
-        }
     }
 }

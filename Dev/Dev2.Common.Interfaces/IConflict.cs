@@ -18,10 +18,9 @@ namespace Dev2.Common.Interfaces
     }
     public interface ICheckable {
         bool IsChecked { get; set; }
-        event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
 
-    public interface IConnectorConflictItem : IConflictItem, IEquatable<IConnectorConflictItem>
+    public interface IConnectorConflictItem : IConflictItem
     {
         string ArmDescription { get; set; }
         Guid SourceUniqueId { get; set; }
@@ -48,7 +47,7 @@ namespace Dev2.Common.Interfaces
         Guid UniqueId { get; }
     }
 
-    public interface IConnectorConflictRow : IConflictRow, IEquatable<IConnectorConflictRow>
+    public interface IConnectorConflictRow : IConflictRow
     {
         IConnectorConflictItem CurrentArmConnector { get; set; }
         IConnectorConflictItem DifferentArmConnector { get; set; }
