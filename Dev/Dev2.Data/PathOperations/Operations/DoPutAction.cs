@@ -12,13 +12,12 @@ namespace Dev2.Data.PathOperations.Operations
     public class DoPutAction : PerformIntegerIOOperation
     {
         static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
-        WindowsImpersonationContext ImpersonatedUser;
+        readonly WindowsImpersonationContext ImpersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath Destination;
         protected readonly IFile _fileWrapper;
         protected readonly IFilePath _pathWrapper;
         protected readonly IDev2CRUDOperationTO _arguments;
-        protected readonly SafeTokenHandle _safeToken;
         protected readonly Stream _currentStream;
         protected readonly string _whereToPut;
 
@@ -29,7 +28,7 @@ namespace Dev2.Data.PathOperations.Operations
             _currentStream = currentStream;
             Destination = destination;
             _arguments = crudArgument;
-            _safeToken = RequiresAuth(Destination, _logOnProvider);
+            ImpersonatedUser = RequiresAuth(Destination, _logOnProvider);
             _whereToPut = whereToPut;
         }
         public override int ExecuteOperation()
@@ -44,7 +43,7 @@ namespace Dev2.Data.PathOperations.Operations
             {
                 using (_currentStream)
                 {
-                    if (_safeToken != null)
+                    if (ImpersonatedUser != null)
                     {
                         return ExecuteOperationWithAuth(_currentStream, destination);
                     }
@@ -60,13 +59,16 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override int ExecuteOperationWithAuth(Stream src, IActivityIOPath dst)
         {
-            using (_safeToken)
+            try
             {
-                var newID = new WindowsIdentity(_safeToken.DangerousGetHandle());
-                using (ImpersonatedUser = newID.Impersonate())
+                using (ImpersonatedUser)
                 {
                     return WriteData(src, dst);
                 }
+            }
+            finally
+            {
+                ImpersonatedUser.Undo();
             }
         }
 
