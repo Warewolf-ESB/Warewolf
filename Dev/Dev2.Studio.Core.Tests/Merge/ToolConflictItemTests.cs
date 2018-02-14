@@ -20,7 +20,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(toolConflictItem);
-            Assert.AreEqual(multiAssign.UniqueID, toolConflictItem.UniqueId);
+            Assert.AreEqual(multiAssign.UniqueID, toolConflictItem.UniqueId.ToString());
             Assert.AreEqual(multiAssign.DisplayName, toolConflictItem.MergeDescription);
             Assert.IsNotNull(toolConflictItem.FlowNode);
             Assert.AreEqual(modelItem, toolConflictItem.ModelItem);
