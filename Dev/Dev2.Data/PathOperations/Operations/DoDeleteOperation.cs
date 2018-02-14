@@ -9,21 +9,25 @@ namespace Dev2.Data.PathOperations.Operations
 {
     public class DoDeleteOperation : PerformBoolIOOperation
     {
-        WindowsImpersonationContext ImpersonatedUser;
+        readonly WindowsImpersonationContext ImpersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
-        protected readonly SafeTokenHandle _safeToken;
         public DoDeleteOperation(IActivityIOPath path)
         {
             _logOnProvider = new LogonProvider();
             _path = path;
-            _safeToken = RequiresAuth(_path, _logOnProvider);
+            ImpersonatedUser = RequiresAuth(_path, _logOnProvider);
+        }
+        public DoDeleteOperation(IActivityIOPath path, IDev2LogonProvider logOnProvider)
+        {
+            _logOnProvider = logOnProvider;
+            _path = path;
         }
         public override bool ExecuteOperation()
         {
             try
             {
-                if (_safeToken != null)
+                if (ImpersonatedUser != null)
                 {
                     return ExecuteOperationWithAuth();
                 }
@@ -38,14 +42,10 @@ namespace Dev2.Data.PathOperations.Operations
         public override bool ExecuteOperationWithAuth()
         {
             try
-            {                
-                using (_safeToken)
+            {
+                using (ImpersonatedUser)
                 {
-                    var newID = new WindowsIdentity(_safeToken.DangerousGetHandle());
-                    using (ImpersonatedUser = newID.Impersonate())
-                    {
-                        return DeleteHelper.Delete(_path.Path);
-                    }
+                    return DeleteHelper.Delete(_path.Path);
                 }
             }
             catch (Exception ex)
