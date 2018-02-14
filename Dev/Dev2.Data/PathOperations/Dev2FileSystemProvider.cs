@@ -62,13 +62,6 @@ namespace Dev2.PathOperations
 
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
-        readonly LogonProvider _logOnprovider;
-
-        public Dev2FileSystemProvider()
-        {
-            _logOnprovider = new LogonProvider();
-        }
-
         public IActivityIOPath IOPath
         {
             get;
@@ -103,58 +96,7 @@ namespace Dev2.PathOperations
 
         IList<IActivityIOPath> ListDirectoriesAccordingToType(IActivityIOPath src, ReadTypes type)
             => new DoGetFilesAsPerTypeOperation(src, type).ExecuteOperation();
-
-        public void WriteDataToFile(IDev2PutRawOperationTO args, string path, IFile fileWrapper)
-        {
-            if (!RequiresAuth(IOPath))
-            {
-                DoWrite(args, path, fileWrapper);
-            }
-            else
-            {
-                var loginOk = _logOnprovider.DoLogon(username, domain, IOPath.Password, IOPath.Path, out SafeTokenHandle safeTokenHandle);
-
-                if (loginOk)
-                {
-                    using (safeTokenHandle)
-                    {
-
-                        var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
-                        using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
-                        {
-                            DoWrite(args, path, fileWrapper);
-                            impersonatedUser.Undo();
-                            newID.Dispose();
-                        }
-                    }
-                }
-            }
-        }
-
-        void DoWrite(IDev2PutRawOperationTO args, string path, IFile fileWrapper)
-        {
-            try
-            {
-                if (IsBase64(args.FileContents))
-                {
-                    var data = GetBytesFromBase64String(args);
-                    fileWrapper.WriteAllBytes(path, data);
-                }
-                else
-                {
-                    fileWrapper.WriteAllText(path, args.FileContents);
-                }
-
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                throw new Exception(string.Format(ErrorResource.FailedToAuthenticateUser, IOPath.Username));
-            }
-        }
-
-        static byte[] GetBytesFromBase64String(IDev2PutRawOperationTO args) => Convert.FromBase64String(args.FileContents.Replace(@"Content-Type:BASE64", @""));
-        static bool IsBase64(string fileContents) => fileContents.StartsWith(@"Content-Type:BASE64");
+        
         public bool RequiresLocalTmpStorage() => false;
 
         public bool HandlesType(enActivityIOPathType type) => type == enActivityIOPathType.FileSystem;

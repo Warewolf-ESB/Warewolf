@@ -11,23 +11,22 @@ namespace Dev2.Data.PathOperations.Operations
 {
     public class DoPathExistOperation : PerformBoolIOOperation
     {
-        WindowsImpersonationContext ImpersonatedUser;
+        readonly WindowsImpersonationContext ImpersonatedUser;
         protected readonly IDev2LogonProvider _logOnProvider;
         protected readonly IActivityIOPath _path;
         protected readonly IFile _fileWrapper;
         protected readonly IDirectory _dirWrapper;
-        protected readonly SafeTokenHandle _safeToken;
         public DoPathExistOperation(IActivityIOPath path)
         {
             _logOnProvider = new LogonProvider();
             _fileWrapper = new FileWrapper();
             _dirWrapper = new DirectoryWrapper();
             _path = path;
-            _safeToken = RequiresAuth(_path, _logOnProvider);
+            ImpersonatedUser = RequiresAuth(_path, _logOnProvider);
         }
         public override bool ExecuteOperation()
         {
-            if (_safeToken != null)
+            if (ImpersonatedUser != null)
             {
                 return ExecuteOperationWithAuth();
             }
@@ -38,13 +37,9 @@ namespace Dev2.Data.PathOperations.Operations
         {
             try
             {
-                using (_safeToken)
+                using (ImpersonatedUser)
                 {
-                    var newID = new WindowsIdentity(_safeToken.DangerousGetHandle());
-                    using (ImpersonatedUser = newID.Impersonate())
-                    {
-                        return PathIs(_path, _fileWrapper, _dirWrapper) == enPathType.Directory ? _dirWrapper.Exists(_path.Path) : _fileWrapper.Exists(_path.Path);
-                    }
+                    return PathIs(_path, _fileWrapper, _dirWrapper) == enPathType.Directory ? _dirWrapper.Exists(_path.Path) : _fileWrapper.Exists(_path.Path);
                 }
             }
             catch (Exception ex)
