@@ -121,6 +121,10 @@ namespace Dev2.PathOperations
                     return ResultBad;
                 }
             }
+            catch
+            {
+                return ResultBad;
+            }
             finally
             {
                 _filesToDelete.ForEach(RemoveTmpFile);
