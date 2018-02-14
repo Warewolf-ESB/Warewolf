@@ -1,17 +1,52 @@
-﻿using Dev2.Data.Interfaces;
+﻿using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Interfaces.Enums;
+using Dev2.Data.PathOperations.Operations;
 using Dev2.PathOperations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Security.Principal;
 
 namespace Dev2.Data.PathOperations
 {
     public abstract class PerformBoolIOOperation
     {
+        public static enPathType PathIs(IActivityIOPath path, IFile fileWrapper, IDirectory dirWrapper)
+        {
+            if (Dev2ActivityIOPathUtils.IsDirectory(path.Path))
+            {
+                return enPathType.Directory;
+            }
+
+            if ((FileExist(path, fileWrapper) || DirectoryExist(path, dirWrapper))
+                && !Dev2ActivityIOPathUtils.IsStarWildCard(path.Path))
+            {
+                var fa = fileWrapper.GetAttributes(path.Path);
+                if ((fa & FileAttributes.Directory) == FileAttributes.Directory)
+                {
+                    return enPathType.Directory;
+                }
+            }
+            return enPathType.File;
+        }
+        public static DoDeleteOperation RequiresOverwrite(IDev2CRUDOperationTO arg, IActivityIOPath path, IDev2LogonProvider dev2LogonProvider)
+         => arg.Overwrite ? new DoDeleteOperation(path, dev2LogonProvider) : null;
+
+        public static bool FileExist(IActivityIOPath path, IFile fileWrapper) => fileWrapper.Exists(path.Path);
+        public static bool DirectoryExist(IActivityIOPath path, IDirectory dirWrapper) => dirWrapper.Exists(path.Path);
         public static SafeTokenHandle DoLogOn(IDev2LogonProvider dev2Logon, IActivityIOPath path) => dev2Logon.DoLogon(path);
-        public static SafeTokenHandle RequiresAuth(IActivityIOPath path, IDev2LogonProvider dev2LogonProvider) => string.IsNullOrEmpty(path.Username) ? null : DoLogOn(dev2LogonProvider, path);
+        public static WindowsImpersonationContext RequiresAuth(IActivityIOPath path, IDev2LogonProvider dev2LogonProvider)
+        {
+            var safeToken = string.IsNullOrEmpty(path.Username) ? null : DoLogOn(dev2LogonProvider, path);
+            if (safeToken != null)
+            {
+                using (safeToken)
+                {
+                    var newID = new WindowsIdentity(safeToken.DangerousGetHandle());
+                    return newID.Impersonate();
+                }
+            }
+            return null;
+        }
         public abstract bool ExecuteOperationWithAuth();
         public abstract bool ExecuteOperation();
     }

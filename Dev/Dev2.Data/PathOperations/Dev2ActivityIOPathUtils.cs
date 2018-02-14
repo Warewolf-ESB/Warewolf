@@ -116,7 +116,7 @@ namespace Dev2.PathOperations
                 return !isFile;
             }
 
-            if (path.EndsWith(@"\\") || path.EndsWith(@"/"))
+            if (path.EndsWith(@"\\", StringComparison.Ordinal) || path.EndsWith(@"/", StringComparison.Ordinal))
             {
                 result = true;
             }
