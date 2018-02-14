@@ -71,14 +71,15 @@ namespace Dev2.ViewModels.Merge.Utils
             {
                 CurrentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current),
                 DiffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff),
-                Connectors = GenerateConnectorConflictRows(current, diff)
+                Connectors = GetConnectorConflictRows(current, diff)
             };
 
             return row;
         }
 
-        internal static IEnumerable<IConnectorConflictRow> GenerateConnectorConflictRows(ConflictTreeNode current, ConflictTreeNode diff)
+        private static List<IConnectorConflictRow> GetConnectorConflictRows(ConflictTreeNode current, ConflictTreeNode diff)
         {
+            var rows = new List<IConnectorConflictRow>();
             int index = 0;
             var armConnectorsCurrent = current.Activity.ArmConnectors();
             var armConnectorsDiff = diff.Activity.ArmConnectors();
@@ -104,8 +105,9 @@ namespace Dev2.ViewModels.Merge.Utils
                 {
                     // Do we absolutely require empty ConflictItems in our rows?
                 }
-                yield return row;
+                rows.Add(row);
             }
+            return rows;
         }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
