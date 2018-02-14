@@ -24,7 +24,5 @@ namespace Dev2.Common.Interfaces
         FlowNode FlowNode { get; set; }
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
-        bool IsMergeVisible { get; set; }
-        string NodeArmDescription { get; set; }
     }
 }

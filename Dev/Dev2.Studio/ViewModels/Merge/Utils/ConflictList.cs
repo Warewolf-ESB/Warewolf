@@ -71,6 +71,7 @@ namespace Dev2.ViewModels.Merge.Utils
                 DiffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff),
                 Connectors = GetConnectorConflictRows(current, diff)
             };
+            row.IsMergeVisible = row.HasConflict;
 
             return row;
         }
@@ -147,6 +148,7 @@ namespace Dev2.ViewModels.Merge.Utils
                 CurrentViewModel = toolConflictItem,
                 DiffViewModel = toolConflictItem,
                 ContainsStart = true,
+                IsMergeVisible = false
             };
             CreateStartNodeConnectors(row, current, diff);
 

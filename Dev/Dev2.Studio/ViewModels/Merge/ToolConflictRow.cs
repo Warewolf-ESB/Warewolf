@@ -18,6 +18,7 @@ namespace Dev2.ViewModels.Merge
         bool _isMergeExpanded;
         bool _isContainerTool;
         bool _isEmptyItemSelected;
+        bool _isMergeVisible;
 
         public IToolConflictItem CurrentViewModel { get; set; }
         public override IConflictItem Current => CurrentViewModel;
@@ -25,6 +26,16 @@ namespace Dev2.ViewModels.Merge
         public override IConflictItem Different => DiffViewModel;
 
         public override bool IsChecked { get; set; }
+
+        public bool IsMergeVisible
+        {
+            get => _isMergeVisible;
+            set
+            {
+                _isMergeVisible = value;
+                OnPropertyChanged(() => IsMergeVisible);
+            }
+        }
 
         public bool IsMergeExpanded
         {

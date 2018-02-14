@@ -716,7 +716,6 @@ namespace Dev2.Core.Tests
                 //---------------Test Result -----------------------
                 Assert.AreEqual(b.UniqueId, aaaa.UniqueId);
                 Assert.AreEqual(null, aaaa.ModelItem);
-                Assert.AreEqual(false, aaaa.IsMergeVisible);
             }
         }
 

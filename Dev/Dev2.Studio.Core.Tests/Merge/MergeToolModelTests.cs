@@ -38,28 +38,6 @@ namespace Dev2.Core.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void MergeToolModel_NodeArmDescription_DefaultConstruction()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var model = new ToolConflictItem();
-            var wasCalled = false;
-            model.PropertyChanged += (a, b) =>
-            {
-                if (b.PropertyName == "NodeArmDescription")
-                {
-                    wasCalled = true;
-                }
-            };
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(null, model.MergeDescription);
-            model.NodeArmDescription = "NodeArmDescription";
-            Assert.IsTrue(wasCalled);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void FlowNode_NodeArmDescription_DefaultConstruction()
         {
             //------------Setup for test--------------------------
@@ -128,29 +106,6 @@ namespace Dev2.Core.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void MergeToolModel_IsMergeVisible_DefaultConstruction()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var model = new ToolConflictItem();
-            var wasCalled = false;
-            model.PropertyChanged += (a, b) =>
-            {
-                if (b.PropertyName == "IsMergeVisible")
-                {
-                    wasCalled = true;
-                }
-            };
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.IsFalse(model.IsMergeVisible);
-            model.IsMergeVisible = true;
-            Assert.IsTrue(wasCalled);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_UniqueId_DefaultConstruction()
         {
             //------------Setup for test--------------------------
@@ -167,7 +122,6 @@ namespace Dev2.Core.Tests.Merge
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
-            Assert.IsFalse(model.IsMergeVisible);
             model.UniqueId =new Guid();
             Assert.IsTrue(wasCalled);
         }
@@ -190,7 +144,6 @@ namespace Dev2.Core.Tests.Merge
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
-            Assert.IsFalse(model.IsMergeVisible);
             var point = new Point();
             model.NodeLocation = point;
             Assert.IsFalse(wasCalled);
@@ -215,7 +168,6 @@ namespace Dev2.Core.Tests.Merge
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
-            Assert.IsFalse(model.IsMergeVisible);
             model.ModelItem = ModelItemUtils.CreateModelItem(new object());
             Assert.IsFalse(wasCalled);
             Assert.IsNotNull(model.ModelItem);
@@ -239,7 +191,6 @@ namespace Dev2.Core.Tests.Merge
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
-            Assert.IsFalse(model.IsMergeVisible);
             model.ActivityDesignerViewModel = null ;
             Assert.IsFalse(wasCalled);
             Assert.IsNull(model.ActivityDesignerViewModel);
@@ -255,16 +206,13 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual(default(Point), model.NodeLocation);
             Assert.AreEqual(default(FlowNode), model.FlowNode);
             Assert.AreEqual(default(Guid), model.UniqueId);
-            Assert.AreEqual(default(string), model.NodeArmDescription);
             //------------Assert Results-------------------------
             model.NodeLocation = new Point(1, 1);
             model.FlowNode = new FlowStep();
             model.UniqueId = Guid.NewGuid();
-            model.NodeArmDescription = "";
             Assert.AreNotEqual(default(Point), model.NodeLocation);
             Assert.AreNotEqual(default(FlowNode), model.FlowNode);
             Assert.AreNotEqual(default(Guid), model.UniqueId);
-            Assert.AreNotEqual(default(string), model.NodeArmDescription);
         }
 
         [TestMethod]

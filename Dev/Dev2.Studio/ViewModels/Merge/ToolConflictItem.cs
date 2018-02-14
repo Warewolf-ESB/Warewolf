@@ -25,10 +25,8 @@ namespace Dev2.ViewModels.Merge
         ImageSource _mergeIcon;
         string _mergeDescription;
         bool _isChecked;
-        bool _isMergeVisible;
         Guid _uniqueId;
         FlowNode _flowNode;
-        string _nodeArmDescription;
 
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
 
@@ -58,16 +56,6 @@ namespace Dev2.ViewModels.Merge
             set => SetProperty(ref _isChecked, value);
         }
 
-        public bool IsMergeVisible
-        {
-            get => _isMergeVisible;
-            set
-            {
-                _isMergeVisible = value;
-                OnPropertyChanged(() => IsMergeVisible);
-            }
-        }
-
         public Guid UniqueId
         {
             get => _uniqueId;
@@ -90,16 +78,6 @@ namespace Dev2.ViewModels.Merge
 
         public ModelItem ModelItem { get; set; }
         public Point NodeLocation { get; set; }
-
-        public string NodeArmDescription
-        {
-            get => _nodeArmDescription;
-            set
-            {
-                _nodeArmDescription = value;
-                OnPropertyChanged(() => NodeArmDescription);
-            }
-        }
 
         public override bool Equals(object obj)
         {

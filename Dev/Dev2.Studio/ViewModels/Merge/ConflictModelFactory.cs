@@ -194,10 +194,8 @@ namespace Dev2.ViewModels.Merge
                 MergeDescription = node.Activity.GetDisplayName(),
                 UniqueId = node.Activity.UniqueID.ToGuid(),
                 FlowNode = node.Activity.GetFlowNode(),
-                IsMergeVisible = node.IsInConflict,
                 ModelItem = modelItem,
-                NodeLocation = node.Location,
-                NodeArmDescription = node.Activity.GetDisplayName() + " -> " + " Assign",
+                NodeLocation = node.Location
             };
 
             modelItem.PropertyChanged += (sender, e) =>
