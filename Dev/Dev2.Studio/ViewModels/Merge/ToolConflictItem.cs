@@ -54,10 +54,10 @@ namespace Dev2.ViewModels.Merge
             return hashCode;
         }
 
-        internal static ToolConflictItem NewStartConflictItem() => new ToolConflictItem
+        internal static ToolConflictItem NewStartConflictItem(ImageSource mergeIcon) => new ToolConflictItem
         {
             MergeDescription = "Start",
-            MergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource
+            MergeIcon = mergeIcon
         };
 
         internal static ToolConflictItem NewFromActivity(IDev2Activity activity, ModelItem modelItem, Point location) => new ToolConflictItem

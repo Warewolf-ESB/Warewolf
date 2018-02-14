@@ -30,7 +30,7 @@ namespace Dev2.ViewModels.Merge
         bool _hasVariablesConflict;
         bool _isVariablesEnabled;
         readonly IContextualResourceModel _resourceModel;
-        readonly ToolConflictRowList conflictList;
+        readonly ConflictRowList conflictList;
         readonly IConflictModelFactory modelFactoryCurrent;
         readonly IConflictModelFactory modelFactoryDifferent;
 
@@ -50,7 +50,7 @@ namespace Dev2.ViewModels.Merge
             modelFactoryDifferent = new ConflictModelFactory(differenceResourceModel);
             modelFactoryDifferent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
 
-            conflictList = new ToolConflictRowList(modelFactoryCurrent, modelFactoryDifferent, currentTree, diffTree);
+            conflictList = new ConflictRowList(modelFactoryCurrent, modelFactoryDifferent, currentTree, diffTree);
 
             Conflicts = conflictList;
             SetupNamesAndVariables(currentResourceModel, differenceResourceModel);
@@ -257,9 +257,9 @@ namespace Dev2.ViewModels.Merge
     /// </summary>
     public class ConflictListStateApplier
     {
-        readonly ToolConflictRowList conflicts;
+        readonly ConflictRowList conflicts;
         // TODO: this state applier should also be used to disable Connectors that are unavailable
-        public ConflictListStateApplier(ToolConflictRowList conflicts)
+        public ConflictListStateApplier(ConflictRowList conflicts)
         {
             this.conflicts = conflicts;
             RegisterEventHandlerForConflictItemChanges();
@@ -308,8 +308,8 @@ namespace Dev2.ViewModels.Merge
     public class MergePreviewWorkflowStateApplier
     {
         readonly IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel;
-        readonly ToolConflictRowList conflictList;
-        public MergePreviewWorkflowStateApplier(ToolConflictRowList conflictList, IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel)
+        readonly ConflictRowList conflictList;
+        public MergePreviewWorkflowStateApplier(ConflictRowList conflictList, IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel)
         {
             this.mergePreviewWorkflowDesignerViewModel = mergePreviewWorkflowDesignerViewModel;
             this.conflictList = conflictList;
