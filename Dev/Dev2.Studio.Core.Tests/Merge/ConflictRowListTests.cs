@@ -1,5 +1,4 @@
 ﻿using Dev2.Core.Tests.Merge.Utils;
-using Dev2.ViewModels.Merge.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Merge
@@ -10,13 +9,9 @@ namespace Dev2.Core.Tests.Merge
         [TestMethod]
         public void ConflictRowList_Constructor()
         {
-            var modelFactoryCurrent = CreateCurrentConflictModelFactory();
-            var modelFactoryDifferent = CreateDiffConflictModelFactory();
+            var conflictRowList = CreateConflictRowList();
 
-            var (currentTree, diffTree) = CreateConflictTreeNodeList();
-
-            var conflictRowList = new ConflictRowList(modelFactoryCurrent, modelFactoryDifferent, currentTree, diffTree);
-
+            Assert.AreEqual(2, conflictRowList.Count);
             Assert.AreEqual(2, conflictRowList.Count);
 
             Assert.IsNotNull(conflictRowList[0].Current);

@@ -40,7 +40,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         public MergePreviewWorkflowDesignerViewModel(IContextualResourceModel resource)
-            : base(resource, false)
+            : base(resource, true)
         {
         }
 

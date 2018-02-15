@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Core.Tests.Merge.Utils;
+using System.Linq;
 
 namespace Dev2.Core.Tests
 {
@@ -15,6 +16,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(mergeWorkflowViewModel);
             Assert.IsNotNull(mergeWorkflowViewModel.MergePreviewWorkflowDesignerViewModel);
             Assert.IsNotNull(mergeWorkflowViewModel.Conflicts);
+            Assert.AreEqual(2, mergeWorkflowViewModel.Conflicts.Count());
         }
     }
 }
