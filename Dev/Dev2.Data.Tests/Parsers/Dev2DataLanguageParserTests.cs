@@ -105,6 +105,20 @@ namespace Dev2.Data.Tests.Parsers
         }
 
         [TestMethod]
+        public void ParseDataLanguageForIntellisense_GivenInvalidDatalist_ShouldSwallowException()
+        {
+            //---------------Set up test pack-------------------
+            var parser = new Dev2DataLanguageParser();
+            var datalist = "Invalid Datalist!!!";
+            //---------------Assert Precondition----------------
+
+            //---------------Execute Test ----------------------
+            var expressionIntoParts = parser.ParseDataLanguageForIntellisense("some value", datalist);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, expressionIntoParts.Count);
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ParseDataLanguageForIntellisense_GivenEmpty_ShouldExecutesCorreclty()
         {
