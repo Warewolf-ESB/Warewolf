@@ -9,13 +9,12 @@ using System.Security.Principal;
 
 namespace Dev2.Data.PathOperations
 {
-    public abstract class PerformListOfIOPathOperation
+    public abstract class PerformListOfIOPathOperation : ValidateAuthorization
     {
         public abstract IList<IActivityIOPath> ExecuteOperation();
         public abstract IList<IActivityIOPath> ExecuteOperationWithAuth();
         public static bool DirectoryExist(IActivityIOPath path, IDirectory dirWrapper) => dirWrapper.Exists(path.Path);
         public static bool FileExist(IActivityIOPath path, IFile fileWrapper) => fileWrapper.Exists(path.Path);
-        public static SafeTokenHandle DoLogOn(IDev2LogonProvider dev2Logon, IActivityIOPath path) => dev2Logon.DoLogon(path);
         public static enPathType PathIs(IActivityIOPath path, IFile fileWrapper, IDirectory dirWrapper)
         {
             if (Dev2ActivityIOPathUtils.IsDirectory(path.Path))
@@ -56,20 +55,7 @@ namespace Dev2.Data.PathOperations
             }
             return results;
         }
-        public static WindowsImpersonationContext RequiresAuth(IActivityIOPath path, IDev2LogonProvider dev2LogonProvider)
-        {
-            var safeToken = string.IsNullOrEmpty(path.Username) ? null : DoLogOn(dev2LogonProvider, path);
-            if (safeToken != null)
-            {
-                using (safeToken)
-                {
-                    var newID = new WindowsIdentity(safeToken.DangerousGetHandle());
-                    return newID.Impersonate();
-                }
-            }
-            return null;
-        }
-        public static IEnumerable<string> GetDirectoriesForType(string path, string pattern, ReadTypes type, IDirectory dirWrapper)
+       public static IEnumerable<string> GetDirectoriesForType(string path, string pattern, ReadTypes type, IDirectory dirWrapper)
         {
             if (string.IsNullOrEmpty(pattern))
             {
