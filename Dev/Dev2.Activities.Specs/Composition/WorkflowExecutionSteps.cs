@@ -326,7 +326,6 @@ namespace Dev2.Activities.Specs.Composition
                                 {
                                     Assert.AreEqual(cnt.RawValue, int.Parse(tableRow[1]));
                                 }
-
                             }
                         }
                     }
@@ -341,6 +340,7 @@ namespace Dev2.Activities.Specs.Composition
                 _scenarioContext.Add("ConnectTimeoutCountdown", 3000);
                 throw new TimeoutException("Connection to Warewolf server \"" + server.Name + "\" timed out.");
             }
+
             if (!server.IsConnected)
             {
                 server.Connect();
@@ -354,10 +354,7 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-        void Add(string key, object value)
-        {
-            _scenarioContext.Add(key, value);
-        }
+        void Add(string key, object value) => _scenarioContext.Add(key, value);
 
         void Append(IDebugState debugState)
         {
