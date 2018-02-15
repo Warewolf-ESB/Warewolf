@@ -4,7 +4,7 @@ using Dev2.PathOperations;
 using System;
 using System.Runtime.InteropServices;
 using Warewolf.Resource.Errors;
-using Dev2.Data.HelperClasses;
+using Dev2.Data.Util;
 
 namespace Dev2.Data.PathOperations
 {
