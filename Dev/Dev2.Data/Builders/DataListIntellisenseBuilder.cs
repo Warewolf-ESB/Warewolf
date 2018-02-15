@@ -125,21 +125,12 @@ namespace Dev2.DataList.Contract
 
         string ExtractDescription(XmlNode node)
         {
-            var result = string.Empty;
-
-            try
+            var result = string.Empty;            
+            var attribute = node.Attributes?[DescAttribute];
+            if (attribute != null)
             {
-                var attribute = node.Attributes?[DescAttribute];
-                if (attribute != null)
-                {
-                    result = attribute.Value;
-                }
+                result = attribute.Value;
             }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-            }
-
             return result;
         }
     }
