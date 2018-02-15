@@ -239,7 +239,7 @@ namespace Dev2.Studio.Controller
                           "Yes - Save with the new name." + Environment.NewLine +
                           "No - Save with the old name." + Environment.NewLine +
                           "Cancel - Returns you to Scheduler.";
-            AssignCommonValues("Rename Conflicts", description, MessageBoxButton.YesNo);
+            AssignCommonValues("Rename Conflicts", description, MessageBoxButton.YesNoCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -408,7 +408,7 @@ namespace Dev2.Studio.Controller
                               "Yes - Save the settings." + Environment.NewLine +
                               "No - Discard your changes." + Environment.NewLine +
                               "Cancel - Returns you to settings.";
-            AssignCommonValues("Settings Have Changed", description, MessageBoxButton.YesNo);
+            AssignCommonValues("Settings Have Changed", description, MessageBoxButton.YesNoCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -428,7 +428,7 @@ namespace Dev2.Studio.Controller
                               "Yes - Save the Task." + Environment.NewLine +
                               "No - Discard your changes." + Environment.NewLine +
                               "Cancel - Returns you to Scheduler.";
-            AssignCommonValues("Scheduler Task Has Changes", description, MessageBoxButton.YesNo);
+            AssignCommonValues("Scheduler Task Has Changes", description, MessageBoxButton.YesNoCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
