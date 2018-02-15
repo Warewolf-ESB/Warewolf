@@ -16,7 +16,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(mergeWorkflowViewModel);
             Assert.IsNotNull(mergeWorkflowViewModel.MergePreviewWorkflowDesignerViewModel);
             Assert.IsNotNull(mergeWorkflowViewModel.Conflicts);
-            Assert.AreEqual(2, mergeWorkflowViewModel.Conflicts.Count());
+            Assert.AreEqual(5, mergeWorkflowViewModel.Conflicts.Count());
         }
     }
 }
