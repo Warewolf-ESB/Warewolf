@@ -17,6 +17,7 @@ using System.Net.Http;
 using System.Text;
 using System.Diagnostics;
 using System.Management;
+using Dev2.Activities.Specs.Composition;
 
 namespace Dev2.Activities.Specs.Deploy
 {
@@ -137,8 +138,8 @@ namespace Dev2.Activities.Specs.Deploy
             Assert.AreEqual(originalName, localResource.ResourceName, "Failed to Update " + localResource.ResourceName + " after deploy");
         }
         
-        [When(@"I select and deploy resource from source server")]
-        public void GivenISelectResourceFromSourceServer()
+        [When(@"I deploy the workflow")]
+        public void GivenISelectResource(string resourceName)
         {
             _scenarioContext.TryGetValue("resourceId", out Guid resourceId);
             var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
@@ -161,6 +162,18 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                 }
             }
+        }
+
+        [When(@"I rename ""(.*)"" to ""(.*)"" and re deploy")]
+        public void WhenIRenameToAndReDeploy(string parentName, string newName)
+        {
+            ScenarioContext.Current.TryGetValue("resourceId", out Guid resourceId);
+            ScenarioContext.Current.Add("newName", newName);
+            ScenarioContext.Current.TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
+            ScenarioContext.Current.TryGetValue(workflowName, out IContextualResourceModel resourceModel);
+            var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
+            resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceModel.ID, newName);
         }
     }
 }
