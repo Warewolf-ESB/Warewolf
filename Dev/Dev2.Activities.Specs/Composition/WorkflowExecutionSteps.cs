@@ -349,7 +349,7 @@ namespace Dev2.Activities.Specs.Composition
             if (!server.IsConnected)
             {
                 timeout--;
-                Thread.Sleep(10);
+                Thread.Sleep(100);
                 EnsureEnvironmentConnected(server, timeout);
             }
         }
