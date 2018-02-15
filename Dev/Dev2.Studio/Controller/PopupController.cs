@@ -72,7 +72,7 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion, bool isDeleteAnywayButtonVisible) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, isDeleteAnywayButtonVisible, false);
         public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion, bool isDeleteAnywayButtonVisible, bool applyToAll)
         {
-            Buttons = buttons;
+            AssignCommonValues(header, description, buttons);
             Description = description;
             Header = header;
             ImageType = image;
@@ -86,13 +86,12 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
-        internal Func<string, string, MessageBoxButton, MessageBoxImage, string, bool, bool, bool, bool, List<string>, bool, bool, MessageBoxViewModel> ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll);
+        internal Func<string, string, MessageBoxButton, MessageBoxImage, string, bool, bool, bool, bool, List<string>, bool, bool, MessageBoxViewModel>
+            ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll);
 
         public MessageBoxResult ShowNotConnected()
         {
-            Buttons = MessageBoxButton.OK;
-            Header = "Server Unreachable";
-            Description = "You can not change the settings for a server that is unreachable.";
+            AssignCommonValues("Server Unreachable", "You can not change the settings for a server that is unreachable.", MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -105,10 +104,8 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowRollbackVersionMessage(string displayName)
         {
-            Header = Warewolf.Studio.Resources.Languages.Core.RollbackHeader;
             var description = String.Format(Warewolf.Studio.Resources.Languages.Core.RollbackMessage, displayName, Environment.NewLine);
-            Description = description;
-            Buttons = MessageBoxButton.YesNo;
+            AssignCommonValues(Warewolf.Studio.Resources.Languages.Core.RollbackHeader, description, MessageBoxButton.YesNo);
             ImageType = MessageBoxImage.Warning;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -122,10 +119,8 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowNoInputsSelectedWhenClickLink()
         {
-            Header = Warewolf.Studio.Resources.Languages.Core.VariablesInput_Information_Title;
             var description = string.Format(Warewolf.Studio.Resources.Languages.Core.VariablesInput_Information, Environment.NewLine);
-            Description = description;
-            Buttons = MessageBoxButton.OK;
+            AssignCommonValues(Warewolf.Studio.Resources.Languages.Core.VariablesInput_Information_Title, description, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Information;
             DontShowAgainKey = GlobalConstants.Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog;
             IsDependenciesButtonVisible = false;
@@ -139,10 +134,8 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowResourcesConflict(List<string> resourceDuplicates)
         {
-            Buttons = MessageBoxButton.OK;
-            Header = "Duplicated Resources";
             UrlsFound = resourceDuplicates;
-            Description = "Duplicate resources found. Please resolve the files on File Explorer. \nTo view the resource, click on the individual items below.";
+            AssignCommonValues("Duplicated Resources", "Duplicate resources found. Please resolve the files on File Explorer. \nTo view the resource, click on the individual items below.", MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -155,9 +148,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowResourcesNotInCorrectPath()
         {
-            Buttons = MessageBoxButton.OKCancel;
-            Header = "Unknown Resource";
-            Description = "The Resource you are attempting to open is unknown by the server. \nClick Ok to have the resource moved to the server or Cancel to Exit.";
+            AssignCommonValues("Unknown Resource", "The Resource you are attempting to open is unknown by the server. \nClick Ok to have the resource moved to the server or Cancel to Exit.", MessageBoxButton.OKCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -170,9 +161,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowCanNotMoveResource()
         {
-            Buttons = MessageBoxButton.OKCancel;
-            Header = "Source data contains encrypted connections strings.";
-            Description = "If the Source was created on this Server, Click Continue Warewolf will attempt to Open it. \nIf the Source was created on the Remote server, click Cancel and then deploy it to this machine from the resources originating server.";
+            AssignCommonValues("Source data contains encrypted connections strings.", "If the Source was created on this Server, Click Continue Warewolf will attempt to Open it. \nIf the Source was created on the Remote server, click Cancel and then deploy it to this machine from the resources originating server.", MessageBoxButton.OKCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -185,9 +174,8 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowServerNotConnected(string server)
         {
-            Buttons = MessageBoxButton.OK;
-            Header = "Server Unreachable";
-            Description = "The server " + server + " is unreachable. \n \nPlease make sure the Warewolf Server service is running on that machine.";
+            var description = "The server " + server + " is unreachable. \n \nPlease make sure the Warewolf Server service is running on that machine.";
+            AssignCommonValues("Server Unreachable", description, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -200,9 +188,8 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeleteConfirmation(string nameOfItemBeingDeleted)
         {
-            Buttons = MessageBoxButton.YesNo;
-            Header = "Are you sure?";
-            Description = "Are you sure you want to delete " + nameOfItemBeingDeleted + "?";
+            var description = "Are you sure you want to delete " + nameOfItemBeingDeleted + "?";
+            AssignCommonValues("Are you sure?", description, MessageBoxButton.YesNo);
             ImageType = MessageBoxImage.Warning;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -214,10 +201,9 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowExceptionViewAppreciation()
         {
-            Buttons = MessageBoxButton.OK;
-            Header = "We've got your feedback!";
-            Description = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine +
+            var description = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine +
                 "in the Community to keep updated on the progress.";
+            AssignCommonValues("We've got your feedback!", description, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -229,12 +215,11 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowCorruptTaskResult(string errorMessage)
         {
-            Buttons = MessageBoxButton.OK;
-            Header = "Scheduler Load Error";
-            Description = "Unable to retrieve tasks." + Environment.NewLine +
+            var description = "Unable to retrieve tasks." + Environment.NewLine +
                           "ERROR: " + errorMessage + ". " + Environment.NewLine +
                           "Please check that there a no corrupt files." + Environment.NewLine +
                          @"C:\Windows\System32\Tasks\Warewolf";
+            AssignCommonValues("Scheduler Load Error", description, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -247,15 +232,14 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowNameChangedConflict(string oldName, string newName)
         {
-            Buttons = MessageBoxButton.YesNoCancel;
-            Header = "Rename Conflicts";
-            Description = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task." + Environment.NewLine +
+            var description = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task." + Environment.NewLine +
                           " Would you like to save the new name?" + Environment.NewLine +
                           "-----------------------------------------------------------------" +
                               Environment.NewLine +
                           "Yes - Save with the new name." + Environment.NewLine +
                           "No - Save with the old name." + Environment.NewLine +
                           "Cancel - Returns you to Scheduler.";
+            AssignCommonValues("Rename Conflicts", description, MessageBoxButton.YesNo);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -269,8 +253,6 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowDeployConflict(int conflictCount)
         {
             var correctDesc = String.Empty;
-            Buttons = MessageBoxButton.OKCancel;
-            Header = "Deploy Conflicts";
             if (conflictCount == 1)
             {
                 correctDesc = "There is [ " + conflictCount + " ] conflict that occurs";
@@ -279,11 +261,12 @@ namespace Dev2.Studio.Controller
             {
                 correctDesc = "There are [ " + conflictCount + " ] conflicts that occur";
             }
-            Description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
+            var description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
                           "--------------------------------------------------------------------------------" +
                               Environment.NewLine +
                           "OK - Continue to deploy resources." + Environment.NewLine +
                           "Cancel - Cancel the deploy and view the conflicts.";
+            AssignCommonValues("Deploy Conflicts", description, MessageBoxButton.OKCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -296,9 +279,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeployNoResourcesToDeploy(string header, string description)
         {
-            Buttons = MessageBoxButton.OK;
-            Header = header;
-            Description = description;
+            AssignCommonValues(header, description, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -311,9 +292,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeployServerVersionConflict(string sourceServerVersion, string destinationServerVersion)
         {
-            Buttons = MessageBoxButton.OKCancel;
-            Header = "Deploy Version Conflicts";
-            Description = "There is a conflict between the two versions in this deploy." +
+            var description = "There is a conflict between the two versions in this deploy." +
                 Environment.NewLine + "Source Server Version: " + sourceServerVersion +
                 Environment.NewLine + "Destination Server Version: " + destinationServerVersion +
                 Environment.NewLine + "Click OK to continue or Cancel to return." +
@@ -322,6 +301,7 @@ namespace Dev2.Studio.Controller
                               Environment.NewLine +
                           "OK - Continue to deploy resources." + Environment.NewLine +
                           "Cancel - Cancel the deploy.";
+            AssignCommonValues("Deploy Version Conflicts", description, MessageBoxButton.OKCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -334,9 +314,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeployServerMinVersionConflict(string sourceServerVersion, string destinationServerVersion)
         {
-            Buttons = MessageBoxButton.OKCancel;
-            Header = "Deploy Version Conflicts";
-            Description = "There is a conflict between the two versions in this deploy." +
+            var description = "There is a conflict between the two versions in this deploy." +
                 Environment.NewLine + "Source Server Version: " + sourceServerVersion +
                 Environment.NewLine + "Destination Minimum supported version: " + destinationServerVersion +
                 Environment.NewLine + "The destination server does not support all the same features as the source server and your deployment is not guaranteed to work. " +
@@ -346,6 +324,7 @@ namespace Dev2.Studio.Controller
                               Environment.NewLine +
                           "OK - Continue to deploy resources." + Environment.NewLine +
                           "Cancel - Cancel the deploy.";
+            AssignCommonValues("Deploy Version Conflicts", description, MessageBoxButton.OKCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -358,12 +337,11 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowConnectServerVersionConflict(string selectedServerVersion, string currentServerVersion)
         {
-            Buttons = MessageBoxButton.OK;
-            Header = "Server Version Conflict";
-            Description = "There is a version conflict with the current selected server." + Environment.NewLine +
+            var description = "There is a version conflict with the current selected server." + Environment.NewLine +
                 Environment.NewLine + "Selected Server Version: " + selectedServerVersion +
                 Environment.NewLine + "Current Server Version: " + currentServerVersion + Environment.NewLine +
                 Environment.NewLine + "Please make sure that the server you are trying to connect to has the latest version.";
+            AssignCommonValues("Server Version Conflict", description, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -376,15 +354,15 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeployResourceNameConflict(string conflictResourceName)
         {
-            Buttons = MessageBoxButton.OK;
-            Header = "Deploy ResourceName Conflicts";
-            Description = "There is a conflict between the two resources in this deploy." +
+
+            var description = "There is a conflict between the two resources in this deploy." +
                 Environment.NewLine + "Conflict Resource Name: " + conflictResourceName +
                 Environment.NewLine + "Click OK and rename the conflicting resource/s." +
                 Environment.NewLine +
                           "--------------------------------------------------------------------------------" +
                               Environment.NewLine +
                           "OK - Cancel the deploy.";
+            AssignCommonValues("Deploy ResourceName Conflicts", description, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -397,9 +375,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeployNameConflict(string message)
         {
-            Buttons = MessageBoxButton.OK;
-            Header = "Deploy Name Conflicts";
-            Description = message;
+            AssignCommonValues("Deploy Name Conflicts", message, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -412,9 +388,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeploySuccessful(string message)
         {
-            Buttons = MessageBoxButton.OK;
-            Header = "Resource(s) Deployed Successfully";
-            Description = message;
+            AssignCommonValues("Resource(s) Deployed Successfully", message, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -427,7 +401,6 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowSettingsCloseConfirmation()
         {
-            Header = "Settings Have Changed";
             var description = "Settings have not been saved." + Environment.NewLine
                               + "Would you like to save the settings? " + Environment.NewLine +
                               "-----------------------------------------------------------------" +
@@ -435,8 +408,7 @@ namespace Dev2.Studio.Controller
                               "Yes - Save the settings." + Environment.NewLine +
                               "No - Discard your changes." + Environment.NewLine +
                               "Cancel - Returns you to settings.";
-            Description = description;
-            Buttons = MessageBoxButton.YesNoCancel;
+            AssignCommonValues("Settings Have Changed", description, MessageBoxButton.YesNo);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -449,7 +421,6 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowSchedulerCloseConfirmation()
         {
-            Header = "Scheduler Task Has Changes";
             var description = "Scheduler Task has not been saved." + Environment.NewLine
                               + "Would you like to save the Task? " + Environment.NewLine +
                               "-----------------------------------------------------------------" +
@@ -457,8 +428,7 @@ namespace Dev2.Studio.Controller
                               "Yes - Save the Task." + Environment.NewLine +
                               "No - Discard your changes." + Environment.NewLine +
                               "Cancel - Returns you to Scheduler.";
-            Description = description;
-            Buttons = MessageBoxButton.YesNoCancel;
+            AssignCommonValues("Scheduler Task Has Changes", description, MessageBoxButton.YesNo);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -472,11 +442,9 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowSaveErrorDialog(string errorMessage)
         {
-            Header = "Saving Error";
             var description = "The following error occurred on save:" + Environment.NewLine
                               + errorMessage;
-            Description = description;
-            Buttons = MessageBoxButton.OK;
+            AssignCommonValues("Saving Error", description, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -489,13 +457,11 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName)
         {
-            Header = "Server Is Unreachable";
             var description = " Unable to reach " + serverName + ": Connection timed out." + Environment.NewLine
                               + " Make sure the remote computer is powered on." + Environment.NewLine
                               + Environment.NewLine
                               + " Would you like to re-try? " + Environment.NewLine;
-            Description = description;
-            Buttons = MessageBoxButton.YesNo;
+            AssignCommonValues("Server Is Unreachable", description, MessageBoxButton.YesNo);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -508,9 +474,8 @@ namespace Dev2.Studio.Controller
 
         public void ShowInvalidCharacterMessage(string invalidText)
         {
-            Description = $"{invalidText} is invalid. Warewolf only supports latin characters";
-            Header = "Invalid text";
-            Buttons = MessageBoxButton.OK;
+            var description = $"{invalidText} is invalid. Warewolf only supports latin characters";
+            AssignCommonValues("Invalid text", description, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -523,10 +488,8 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeleteVersionMessage(string displayName)
         {
-            Header = "Delete Version";
             var description = $"Are you sure you want to delete {displayName}?";
-            Description = description;
-            Buttons = MessageBoxButton.YesNo;
+            AssignCommonValues("Delete Version", description, MessageBoxButton.YesNo);
             ImageType = MessageBoxImage.Warning;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -538,9 +501,8 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowInvalidResourcePermission()
         {
-            Header = StringResources.SaveSettingErrorPrefix;
-            Description = StringResources.SaveSettingsInvalidPermissionEntry;
-            Buttons = MessageBoxButton.OK;
+            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
+            StringResources.SaveSettingsInvalidPermissionEntry, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -552,9 +514,8 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowHasDuplicateResourcePermissions()
         {
-            Header = StringResources.SaveSettingErrorPrefix;
-            Description = StringResources.SaveSettingsDuplicateResourcePermissions;
-            Buttons = MessageBoxButton.OK;
+            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
+            StringResources.SaveSettingsDuplicateResourcePermissions, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -566,9 +527,8 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowHasDuplicateServerPermissions()
         {
-            Header = StringResources.SaveSettingErrorPrefix;
-            Description = StringResources.SaveSettingsDuplicateServerPermissions;
-            Buttons = MessageBoxButton.OK;
+            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
+            StringResources.SaveSettingsDuplicateServerPermissions, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -580,9 +540,8 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowSaveSettingsNotReachableErrorMsg()
         {
-            Header = StringResources.SaveSettingErrorPrefix;
-            Description = StringResources.SaveSettingsNotReachableErrorMsg;
-            Buttons = MessageBoxButton.OK;
+            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
+            StringResources.SaveSettingsNotReachableErrorMsg, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -594,9 +553,8 @@ namespace Dev2.Studio.Controller
         }
         public MessageBoxResult ShowSaveSettingsPermissionsErrorMsg()
         {
-            Header = StringResources.SaveSettingErrorPrefix;
-            Description = StringResources.SaveSettingsPermissionsErrorMsg;
-            Buttons = MessageBoxButton.OK;
+            AssignCommonValues(StringResources.SaveSettingErrorPrefix,
+            StringResources.SaveSettingsPermissionsErrorMsg, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;
@@ -627,5 +585,12 @@ namespace Dev2.Studio.Controller
             Header = Warewolf.Studio.Resources.Languages.Core.InvalidPermissionHeader,
             Description = $"The name {name} already exists. Please choose a different name."
         };
+
+        void AssignCommonValues(string header, string description, MessageBoxButton button)
+        {
+            Header = header;
+            Description = description;
+            Buttons = button;
+        }
     }
 }

@@ -275,8 +275,8 @@ namespace Dev2.Activities.Specs.Composition
             Add("debugStates", new List<IDebugState>());
         }
 
-        [Given(@"I have reset local perfromance Counters")]
-        public void GivenIHaveResetLocalPerfromanceCounters()
+        [Given(@"I have reset local performance Counters")]
+        public void GivenIHaveResetLocalPerformanceCounters()
         {
             try
             {
