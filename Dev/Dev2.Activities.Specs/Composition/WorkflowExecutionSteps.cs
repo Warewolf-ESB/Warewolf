@@ -103,7 +103,7 @@ namespace Dev2.Activities.Specs.Composition
             AppUsageStats.LocalHost = "http://localhost:3142";
         }
 
-        const int EnvironmentConnectionTimeout = 3000;
+        const int EnvironmentConnectionTimeout = 5;
 
         SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         SpecExternalProcessExecutor _externalProcessExecutor;
@@ -337,7 +337,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (timeout <= 0)
             {
-                _scenarioContext.Add("ConnectTimeoutCountdown", 3000);
+                _scenarioContext.Add("ConnectTimeoutCountdown", 5);
                 throw new TimeoutException("Connection to Warewolf server \"" + server.Name + "\" timed out.");
             }
 
@@ -349,7 +349,6 @@ namespace Dev2.Activities.Specs.Composition
             if (!server.IsConnected)
             {
                 timeout--;
-                Thread.Sleep(100);
                 EnsureEnvironmentConnected(server, timeout);
             }
         }
