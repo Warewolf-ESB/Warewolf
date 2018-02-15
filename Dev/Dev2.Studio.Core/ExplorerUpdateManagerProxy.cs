@@ -57,13 +57,11 @@ namespace Dev2.Studio.Core
             var controller = CommunicationControllerFactory.CreateController("DeleteItemService");
             controller.AddPayloadArgument("itemToDelete", id.ToString());
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, GlobalConstants.ServerWorkspaceID);
-            if (result?.Status != ExecStatus.Success)
+            if (result?.Status != ExecStatus.Success && result != null)
             {
-                if(result != null)
-                {
-                    throw new WarewolfSaveException(result.Message, null);
-                }
+                throw new WarewolfSaveException(result.Message, null);
             }
+
         }
         
         public void Rename(Guid id, string newName)
