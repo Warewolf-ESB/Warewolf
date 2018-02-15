@@ -269,6 +269,8 @@
     <Compile Include="Merge\ConnectorConflictItemTests.cs" />
     <Compile Include="Merge\ToolConflictItemTests.cs" />
     <Compile Include="Merge\ToolConflictRowTests.cs" />
+    <Compile Include="Merge\MergePreviewWorkflowStateApplierTests.cs" />
+    <Compile Include="Merge\ConflictListStateApplierTests.cs" />
     <Compile Include="Merge\Utils\MergeTestUtils.cs" />
     <Compile Include="ShellViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />

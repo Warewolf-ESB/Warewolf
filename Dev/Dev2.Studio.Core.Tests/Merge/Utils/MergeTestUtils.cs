@@ -7,7 +7,9 @@ using Dev2.Communication;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.ViewModels.Workflow;
 using Dev2.ViewModels.Merge;
+using Dev2.ViewModels.Merge.Utils;
 using Moq;
 using System;
 using System.Activities.Presentation.Model;
@@ -159,5 +161,31 @@ namespace Dev2.Core.Tests.Merge.Utils
             return new MergeWorkflowViewModel(resourceModelCurrent.Object, resourceModelDiff.Object, false);
         }
 
+        protected ConflictRowList CreateConflictRowList()
+        {
+            var modelFactoryCurrent = CreateCurrentConflictModelFactory();
+            var modelFactoryDifferent = CreateDiffConflictModelFactory();
+
+            var (currentTree, diffTree) = CreateConflictTreeNodeList();
+
+            var conflictList = new ConflictRowList(modelFactoryCurrent, modelFactoryDifferent, currentTree, diffTree);
+            return conflictList;
+        }
+
+        private MergePreviewWorkflowDesignerViewModel CreateMergePreviewWorkflowDesignerViewModel()
+        {
+            var resourceModelCurrent = CreateResourceModel(WorkflowTestResources.MergePositionChange.Current);
+            return new MergePreviewWorkflowDesignerViewModel(resourceModelCurrent.Object);
+        }
+
+        protected MergePreviewWorkflowStateApplier CreateMergePreviewWorkflowStateApplier()
+        {
+            return new MergePreviewWorkflowStateApplier(CreateConflictRowList(), CreateMergePreviewWorkflowDesignerViewModel());
+        }
+
+        protected ConflictListStateApplier CreateConflictListStateApplier()
+        {
+            return new ConflictListStateApplier(CreateConflictRowList());
+        }
     }
 }
