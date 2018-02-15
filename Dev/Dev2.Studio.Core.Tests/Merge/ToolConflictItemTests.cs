@@ -49,8 +49,7 @@ namespace Dev2.Core.Tests.Merge
         public void ToolConflictItem_NewStartConflictItem()
         {
             //------------Setup for test--------------------------
-            var imageSource = new DrawingImage();
-            var startConflictItem = ToolConflictItem.NewStartConflictItem(imageSource);
+            NewStartConflictItem(out DrawingImage imageSource, out ToolConflictItem startConflictItem);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(startConflictItem);

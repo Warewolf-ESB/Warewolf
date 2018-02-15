@@ -59,21 +59,15 @@ namespace Dev2.ViewModels.Merge.Utils
                     diff = diffTree[index];
                 }
                 // TODO: add an event for when items are added to the list so that we can listen for events on each Item in the row without adding an event listener in here.
-                toolConflictRowList.Add(CreateConflictRow(current, diff));
+
+                var currentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current);
+                var diffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff);
+                var connectors = GetConnectorConflictRows(current, diff);
+
+                var toolConflictRow = ToolConflictRow.CreateConflictRow(currentViewModel, diffViewModel, connectors);
+                toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
+                toolConflictRowList.Add(toolConflictRow);
             }
-        }
-
-        ToolConflictRow CreateConflictRow(ConflictTreeNode current, ConflictTreeNode diff)
-        {
-            var row = new ToolConflictRow
-            {
-                CurrentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current),
-                DiffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff),
-                Connectors = GetConnectorConflictRows(current, diff)
-            };
-            row.IsMergeVisible = row.HasConflict;
-
-            return row;
         }
 
         private static List<IConnectorConflictRow> GetConnectorConflictRows(ConflictTreeNode current, ConflictTreeNode diff)
@@ -141,14 +135,8 @@ namespace Dev2.ViewModels.Merge.Utils
 
             var mergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource;
             var toolConflictItem = ToolConflictItem.NewStartConflictItem(mergeIcon);
-            
-            var row = new ToolConflictRow
-            {
-                CurrentViewModel = toolConflictItem,
-                DiffViewModel = toolConflictItem,
-                ContainsStart = true,
-                IsMergeVisible = false
-            };
+
+            var row = ToolConflictRow.CreateStartRow(toolConflictItem, toolConflictItem);
             CreateStartNodeConnectors(row, current, diff);
 
             return _cacheStartToolRow = row;
