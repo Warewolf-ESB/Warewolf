@@ -505,17 +505,18 @@ namespace Dev2.Settings.Security
 
         public bool HasInvalidResourcePermission()
         {
-            var hasInvalid = true;
             foreach (var item in ResourcePermissions)
             {
-                var valid = (string.IsNullOrEmpty(item.ResourceName) 
+                if ((string.IsNullOrEmpty(item.ResourceName)
                     && string.IsNullOrEmpty(item.WindowsGroup))
                     || (!string.IsNullOrEmpty(item.ResourceName)
-                    && !string.IsNullOrEmpty(item.WindowsGroup));
-                hasInvalid = !valid;
-                return hasInvalid;
+                    && !string.IsNullOrEmpty(item.WindowsGroup)))
+                {
+                    return false;
+                }
+                return true;
             }
-            return hasInvalid;
+            return true;
         }
         #region Implementation of IUpdatesHelp
 

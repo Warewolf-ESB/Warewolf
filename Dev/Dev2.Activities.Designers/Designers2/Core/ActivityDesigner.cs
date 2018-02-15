@@ -137,10 +137,11 @@ namespace Dev2.Activities.Designers2.Core
                         ContentDesignerTemplate.LeftButtons.Clear();
                     }
                 }
-                if (ViewModel != null)
+                if (dataContext.GetType().Name == "MergeWorkflowViewModel")
                 {
-                    ViewModel.IsMerge = dataContext.GetType().Name == "MergeWorkflowViewModel";
+                    ViewModel.IsMerge = true;
                 }
+
                 return true;
             }
             return false;
