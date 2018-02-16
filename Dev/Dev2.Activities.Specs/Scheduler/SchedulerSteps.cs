@@ -129,15 +129,14 @@ namespace Dev2.Activities.Specs.Scheduler
                 if (scheduler.HasErrors)
                 {
                     _scenarioContext["Error"] = scheduler.Error;
+                    Console.WriteLine("Error creating schedule: " + scheduler.Error);
                 }
             }
             catch (Exception e)
             {
-
                 _scenarioContext["Error"] = e.Message;
+                Console.WriteLine("Error creating schedule: " + e.Message);
             }
-
-
         }
 
         void UpdateTrigger(IScheduledResource task, Table table)
