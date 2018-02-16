@@ -505,18 +505,17 @@ namespace Dev2.Settings.Security
 
         public bool HasInvalidResourcePermission()
         {
-            foreach (var item in ResourcePermissions)
+            foreach (var item in ResourcePermissions.Where(perm => !perm.IsDeleted))
             {
-                if ((string.IsNullOrEmpty(item.ResourceName)
+                if ((!string.IsNullOrEmpty(item.ResourceName)
                     && string.IsNullOrEmpty(item.WindowsGroup))
-                    || (!string.IsNullOrEmpty(item.ResourceName)
-                    && !string.IsNullOrEmpty(item.WindowsGroup)))
+                || (string.IsNullOrEmpty(item.ResourceName)
+                && !string.IsNullOrEmpty(item.WindowsGroup)))
                 {
-                    return false;
+                    return true;
                 }
-                return true;
             }
-            return true;
+            return false;
         }
         #region Implementation of IUpdatesHelp
 
