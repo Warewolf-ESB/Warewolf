@@ -135,7 +135,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 if (!canExecute)
                 {
-                    allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                    dataObject.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, dataObject.ExecutingUser.Identity.Name, dataObject.ServiceName));
                 }
             }
 
