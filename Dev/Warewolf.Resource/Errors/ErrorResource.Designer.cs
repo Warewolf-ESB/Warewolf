@@ -3501,6 +3501,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User: {0} requires View and Execute permissions to Execute resource {1}..
+        /// </summary>
+        public static string UserNotAuthorizedToExecuteOuterWorkflowException {
+            get {
+                return ResourceManager.GetString("UserNotAuthorizedToExecuteOuterWorkflowException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The &apos;Using&apos; value must be a real number..
         /// </summary>
         public static string USINGMustBeARealNumber {

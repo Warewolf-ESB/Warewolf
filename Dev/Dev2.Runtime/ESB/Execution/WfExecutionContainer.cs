@@ -111,7 +111,7 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     wfappUtils.DispatchDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, true, false, false);
                 }
-                if (CanExecute(DataObject.ResourceID, DataObject, AuthorizationContext.Execute))
+                if (CanExecute(DataObject.ResourceID, DataObject, AuthorizationContext.View) && CanExecute(DataObject.ResourceID, DataObject, AuthorizationContext.Execute))
                 {
                     Eval(DataObject.ResourceID, DataObject);
                 }
