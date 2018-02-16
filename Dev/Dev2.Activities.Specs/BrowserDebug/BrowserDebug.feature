@@ -131,10 +131,10 @@ Scenario: Executing Workflow with Execute Permissions and Nested Workflow With N
 		Given I have a workflow "OuterWorkflow"
 		And Public "Has" Permissions to Execute "OuterWorkflow"
 		And I Debug "http://localhost:3142/public/OuterWorkflow.json?" in Browser
-		Then Browser content is "does not have Execute Permission to resource Nested."
+		Then Browser content is "requires View and Execute permissions to Execute resource OuterWorkflow."
 
 		Scenario: Executing Workflow with No Execute Permissions
 		Given I have a workflow "Nested"
 		And Public "" Permissions to Execute "Nested"
 		And I Debug "http://localhost:3142/public/Nested.json?" in Browser
-		Then Browser content is "does not have Execute Permission to resource Nested."
+		Then Browser content is "requires View and Execute permissions to Execute resource Nested."
