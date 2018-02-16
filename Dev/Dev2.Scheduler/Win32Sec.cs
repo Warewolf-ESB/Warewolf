@@ -324,8 +324,9 @@ public class SecurityWrapper : ISecurityWrapper
         {
             identity = new WindowsPrincipal(new WindowsIdentity(userName));
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Dev2Logger.Warn("Failed to get windows security principal for " + userName + " as a windows identity. " + e.Message, GlobalConstants.WarewolfWarn);
             var groups = GetLocalUserGroupsForTaskSchedule(userName);
             var tmp = new GenericIdentity(userName);
             identity = new GenericPrincipal(tmp, groups.ToArray());
@@ -335,6 +336,7 @@ public class SecurityWrapper : ISecurityWrapper
         {
             return true;
         }
+        Dev2Logger.Warn("User " + userName + " was denied permission to create a scheduled task.", GlobalConstants.WarewolfWarn);
 
         return false;
     }
