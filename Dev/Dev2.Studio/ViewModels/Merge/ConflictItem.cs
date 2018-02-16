@@ -20,6 +20,7 @@ namespace Dev2.ViewModels.Merge
 
         public abstract override bool Equals(object obj);
         public abstract override int GetHashCode();
+        public abstract bool AllowSelection { get; set; }
 
         public void SetAutoChecked()
         {
@@ -49,5 +50,21 @@ namespace Dev2.ViewModels.Merge
             set => SetProperty(ref _isChecked, value);
         }
         public event Action<IConflictItem, bool> NotifyIsCheckedChanged;
+
+        public class Empty : ConflictItem
+        {
+            readonly int HashCode;
+
+            public Empty()
+            {
+                HashCode = new Random(178697).Next();
+            }
+
+            public override bool AllowSelection { get; set; }
+
+            public override bool Equals(object obj) => GetHashCode() == obj.GetHashCode();
+
+            public override int GetHashCode() => HashCode;
+        }
     }
 }

@@ -37,14 +37,20 @@ namespace Dev2.ViewModels.Merge.Utils
             {
                 var innerConflictRow = conflictRow;
 
-                conflictRow.Current.NotifyIsCheckedChanged += (current, isChecked) =>
+                if (!(conflictRow.Current is ToolConflictItem.Empty))
                 {
-                    Handler(current, innerConflictRow);
-                };
-                conflictRow.Different.NotifyIsCheckedChanged += (diff, isChecked) =>
+                    conflictRow.Current.NotifyIsCheckedChanged += (current, isChecked) =>
+                    {
+                        Handler(current, innerConflictRow);
+                    };
+                }
+                if (!(conflictRow.Different is ToolConflictItem.Empty))
                 {
-                    Handler(diff, innerConflictRow);
-                };
+                    conflictRow.Different.NotifyIsCheckedChanged += (diff, isChecked) =>
+                    {
+                        Handler(diff, innerConflictRow);
+                    };
+                }
             }
         }
 
@@ -60,6 +66,10 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             if (changedItem is IToolConflictItem toolItem)
             {
+                if (row.Current is ToolConflictItem.Empty || row.Different is ToolConflictItem.Empty)
+                {
+                    return;
+                }
                 if (row.ContainsStart)
                 {
                     return;
@@ -68,6 +78,18 @@ namespace Dev2.ViewModels.Merge.Utils
             }
             else if (changedItem is IConnectorConflictItem connectorItem && row is IConnectorConflictRow connectorRow)
             {
+                if (connectorRow.Current is ConnectorConflictItem.Empty || connectorRow.Different is ConnectorConflictItem.Empty)
+                {
+                    var isCurrent = connectorItem.DestinationUniqueId.Equals(connectorRow.CurrentArmConnector.DestinationUniqueId);
+
+                    var toolConflictItem = conflictList.GetToolItemFromId(connectorItem.DestinationUniqueId, isCurrent);
+                    if (toolConflictItem != null)
+                    {
+                        toolConflictItem.AllowSelection = false;
+                    }
+
+                    return;
+                }
                 ConnectorHandler(connectorItem, connectorRow);
             }
             else
@@ -135,6 +157,13 @@ namespace Dev2.ViewModels.Merge.Utils
 
             var toolConflictItem = conflictList.GetToolItemFromId(changedItem.DestinationUniqueId, isCurrent);
             toolConflictItem.SetAutoChecked();
+
+            if (!toolConflictItem.AllowSelection)
+            {
+                var connectorConflictItem = conflictList.GetConnectorItemFromToolId(toolConflictItem.UniqueId, isCurrent);
+                connectorConflictItem.AllowSelection = true;
+            }
+
             AddActivity(toolConflictItem);
 
             LinkActivities(changedItem.SourceUniqueId, changedItem.DestinationUniqueId, changedItem.Key);

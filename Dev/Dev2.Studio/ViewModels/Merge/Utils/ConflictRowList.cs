@@ -20,88 +20,149 @@ using System.Windows.Media;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
-    public class ConflictRowList : IEnumerable<IConflictRow>
+    public class CreateConflictRowList
     {
-        readonly ConflictTreeNode[] currentTree;
-        readonly ConflictTreeNode[] diffTree;
         readonly IConflictModelFactory modelFactoryCurrent;
         readonly IConflictModelFactory modelFactoryDifferent;
-        readonly List<ToolConflictRow> toolConflictRowList;
 
-        public ConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
+        public CreateConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent)
         {
             this.modelFactoryCurrent = modelFactoryCurrent;
             this.modelFactoryDifferent = modelFactoryDifferent;
-            this.currentTree = currentTree.ToArray();
-            this.diffTree = diffTree.ToArray();
-
-            toolConflictRowList = new List<ToolConflictRow>();
-            CreateList();
         }
 
-        // TODO: Set enabled / disabled connector state
-        //       Add new switch connector template to allow checkbox
-
-        void CreateList()
+        public List<ToolConflictRow> CreateList(ConflictTreeNode[] currentTree, ConflictTreeNode[] diffTree)
         {
-            int index = 0;
+            var toolConflictRowList = new List<ToolConflictRow>();
             var maxCount = Math.Max(currentTree.Length, diffTree.Length);
-            for (; index < maxCount; index++)
+            int indexDiff = 0;
+            int indexCurr = 0;
+
+            while (indexDiff < maxCount)
             {
                 ConflictTreeNode current = null;
                 ConflictTreeNode diff = null;
-                if (index < currentTree.Length)
-                {
-                    current = currentTree[index];
-                }
-                if (index < diffTree.Length)
-                {
-                    diff = diffTree[index];
-                }
-                // TODO: add an event for when items are added to the list so that we can listen for events on each Item in the row without adding an event listener in here.
 
-                var currentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current);
-                var diffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff);
-                var connectors = GetConnectorConflictRows(current, diff);
+                if (indexCurr < currentTree.Length)
+                {
+                    current = currentTree[indexCurr];
+                }
+                if (indexDiff < diffTree.Length)
+                {
+                    diff = diffTree[indexDiff];
+                }
 
-                var toolConflictRow = ToolConflictRow.CreateConflictRow(currentViewModel, diffViewModel, connectors);
+                bool diffFoundInCurrent = currentTree.Contains(diff);
+                bool currFoundInDifferent = diffTree.Contains(current);
+
+                var toolConflictRow = BuildToolConflictRow(current, diff, diffFoundInCurrent, currFoundInDifferent);
                 toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
                 toolConflictRowList.Add(toolConflictRow);
+
+                if (diffFoundInCurrent)
+                {
+                    indexCurr++;
+                }
+                if (currFoundInDifferent)
+                {
+                    indexDiff++;
+                }
             }
+            return toolConflictRowList;
+        }
+
+        private ToolConflictRow BuildToolConflictRow(ConflictTreeNode current, ConflictTreeNode diff, bool diffFoundInCurrent, bool currFoundInDifferent)
+        {
+            bool found = diffFoundInCurrent && currFoundInDifferent;
+
+            IToolConflictItem currentViewModel = null;
+            IToolConflictItem diffViewModel = null;
+            if (!found)
+            {
+                if (!diffFoundInCurrent)
+                {
+                    currentViewModel = ToolConflictItem.EmptyConflictItem();
+                }
+                if (!currFoundInDifferent)
+                {
+                    diffViewModel = ToolConflictItem.EmptyConflictItem();
+                }
+            }
+
+            if (currentViewModel == null)
+            {
+                currentViewModel = modelFactoryCurrent.CreateToolModelConfictItem(current);
+            }
+            if (diffViewModel == null)
+            {
+                diffViewModel = modelFactoryDifferent.CreateToolModelConfictItem(diff);
+            }
+            currentViewModel.AllowSelection = !(diffViewModel is ToolConflictItem.Empty);
+            diffViewModel.AllowSelection = !(currentViewModel is ToolConflictItem.Empty);
+
+            var connectors = GetConnectorConflictRows(current, diff);
+
+            var toolConflictRow = ToolConflictRow.CreateConflictRow(currentViewModel, diffViewModel, connectors);
+            return toolConflictRow;
         }
 
         private static List<IConnectorConflictRow> GetConnectorConflictRows(ConflictTreeNode current, ConflictTreeNode diff)
         {
             var rows = new List<IConnectorConflictRow>();
             int index = 0;
-            var armConnectorsCurrent = current.Activity.ArmConnectors();
-            var armConnectorsDiff = diff.Activity.ArmConnectors();
-            var maxCount = Math.Max(armConnectorsCurrent.Count, armConnectorsDiff.Count);
+            var armConnectorsCurrent = current?.Activity.ArmConnectors();
+            var armConnectorsDiff = diff?.Activity.ArmConnectors();
+            var maxCount = current == null
+                ? armConnectorsDiff.Count
+                : diff == null
+                ? armConnectorsCurrent.Count
+                : Math.Max(armConnectorsCurrent.Count, armConnectorsDiff.Count);
             for (; index < maxCount; index++)
             {
                 var row = new ConnectorConflictRow();
-                if (index < armConnectorsCurrent.Count)
+                if (armConnectorsCurrent != null && index < armConnectorsCurrent.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsCurrent[index];
                     row.CurrentArmConnector = new ConnectorConflictItem(row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
                 }
                 else
                 {
-                    // Do we absolutely require empty ConflictItems in our rows?
+                    row.CurrentArmConnector = ConnectorConflictItem.EmptyConflictItem();
                 }
-                if (index < armConnectorsDiff.Count)
+                if (armConnectorsDiff != null && index < armConnectorsDiff.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsDiff[index];
                     row.DifferentArmConnector = new ConnectorConflictItem(row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
                 }
                 else
                 {
-                    // Do we absolutely require empty ConflictItems in our rows?
+                    row.DifferentArmConnector = ConnectorConflictItem.EmptyConflictItem();
                 }
+                row.CurrentArmConnector.AllowSelection = !(row.DifferentArmConnector is ConnectorConflictItem.Empty);
+                row.DifferentArmConnector.AllowSelection = !(row.CurrentArmConnector is ConnectorConflictItem.Empty);
                 rows.Add(row);
             }
             return rows;
         }
+    }
+
+    public class ConflictRowList : IEnumerable<IConflictRow>
+    {
+        readonly ConflictTreeNode[] currentTree;
+        readonly ConflictTreeNode[] diffTree;
+        readonly List<ToolConflictRow> toolConflictRowList;
+
+        public ConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
+        {
+            this.currentTree = currentTree.ToArray();
+            this.diffTree = diffTree.ToArray();
+
+            var createConflictRowList = new CreateConflictRowList(modelFactoryCurrent, modelFactoryDifferent);
+            toolConflictRowList = createConflictRowList.CreateList(this.currentTree, this.diffTree);
+        }
+
+        // TODO: Set enabled / disabled connector state
+        //       Add new switch connector template to allow checkbox
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -163,12 +224,18 @@ namespace Dev2.ViewModels.Merge.Utils
 
         public IToolConflictRow GetStartToolRow() => toolConflictRowList[0];
 
-        public IToolConflictItem GetToolItemFromId(Guid id, bool isCurrent) => isCurrent 
+        public IToolConflictItem GetToolItemFromId(Guid id, bool isCurrent) => isCurrent
                                                                                         ? toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id).CurrentViewModel
                                                                                         : toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id).DiffViewModel;
 
+        public IConnectorConflictItem GetConnectorItemFromToolId(Guid id, bool isCurrent) => isCurrent
+                                                                                        ? toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id)
+                                                                                          .Connectors.FirstOrDefault(con => con.CurrentArmConnector?.SourceUniqueId == id).CurrentArmConnector
+                                                                                        : toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id)
+                                                                                          .Connectors.FirstOrDefault(con => con.DifferentArmConnector?.SourceUniqueId == id).DifferentArmConnector;
+
         public int Count => toolConflictRowList.Count;
-        
+
         public ToolConflictRow this[int key]
         {
             get

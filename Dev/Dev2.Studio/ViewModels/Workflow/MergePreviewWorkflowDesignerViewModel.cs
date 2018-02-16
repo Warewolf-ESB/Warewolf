@@ -15,15 +15,19 @@ using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Linq;
 using System.Windows;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
+using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    class MergePreviewWorkflowDesignerViewModel : WorkflowDesignerViewModel, IMergePreviewWorkflowDesignerViewModel
+    public class MergePreviewWorkflowDesignerViewModel : WorkflowDesignerViewModel, IMergePreviewWorkflowDesignerViewModel
     {
         public ModelItemCollection NodesCollection
         {
@@ -42,6 +46,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         public MergePreviewWorkflowDesignerViewModel(IContextualResourceModel resource)
             : base(resource, true)
         {
+        }
+
+        public MergePreviewWorkflowDesignerViewModel(IWorkflowDesignerWrapper workflowDesignerHelper, IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner, bool liteInit)
+            : base(eventPublisher, resource, workflowHelper, popupController, asyncWorker, createDesigner, liteInit)
+        {
+            
         }
 
         // TODO: Create Common interface AddOrRemove?

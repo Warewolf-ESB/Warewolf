@@ -23,6 +23,7 @@ namespace Dev2.ViewModels.Merge
 {
     public class ToolConflictItem : ConflictItem, IToolConflictItem, ICheckable
     {
+        private bool _allowSelection;
         protected ToolConflictItem()
         {
         }
@@ -35,6 +36,11 @@ namespace Dev2.ViewModels.Merge
         [JsonIgnore]
         public ImageSource MergeIcon { get; set; }
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
+        public override bool AllowSelection
+        {
+            get => _allowSelection;
+            set => SetProperty(ref _allowSelection, value);
+        }
 
         public override bool Equals(object obj)
         {
@@ -54,6 +60,7 @@ namespace Dev2.ViewModels.Merge
             return hashCode;
         }
 
+        internal static IToolConflictItem EmptyConflictItem() => new Empty();
         internal static ToolConflictItem NewStartConflictItem(ImageSource mergeIcon) => new ToolConflictItem
         {
             MergeDescription = "Start",
@@ -74,5 +81,17 @@ namespace Dev2.ViewModels.Merge
             MergeIcon = mergeIcon;
             ActivityDesignerViewModel = instance;
         }
+
+        public new class Empty : ConflictItem.Empty, IToolConflictItem
+        {
+            public ImageSource MergeIcon { get; set; }
+            public string MergeDescription { get; set; }
+            public Guid UniqueId { get; set; }
+            public FlowNode FlowNode { get; set; }
+            public ModelItem ModelItem { get; set; }
+            public Point NodeLocation { get; set; }
+        }
     }
+
+    
 }

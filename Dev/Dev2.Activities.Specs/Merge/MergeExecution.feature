@@ -128,14 +128,14 @@ Scenario: Merge Workflow Containing Position Change tools
 	 And Merge variable conflicts is false
 	 And conflict "0" Current matches tool "Start"
 	 And conflict "0" Different matches tool "Start"
-	 And conflict "0" Current Connector matches tool "Start -> Data Merge (0)"
-	 And conflict "0" Different Connector matches tool "Start -> Assign (0)"
-	 And conflict "1" Current matches tool "Data Merge (0)"
-	 And conflict "1" Different matches tool "Assign (0)"
-	 And conflict "1" Current Connector matches tool "Data Merge (0) -> Assign (0)"
-	 And conflict "1" Different Connector matches tool "Assign (0) -> Data Merge (0)"
-	 And conflict "2" Current matches tool "Assign (0)"
-	 And conflict "2" Different matches tool "Data Merge (0)"
+	 And conflict "1" Current Connector matches tool "Start -> Data Merge (0)"
+	 And conflict "1" Different Connector matches tool "Start -> Assign (0)"
+	 And conflict "2" Current matches tool "Data Merge (0)"
+	 And conflict "2" Different matches tool "Assign (0)"
+	 And conflict "3" Current Connector matches tool "Data Merge (0) -> Assign (0)"
+	 And conflict "3" Different Connector matches tool "Assign (0) -> Data Merge (0)"
+	 And conflict "4" Current matches tool "Assign (0)"
+	 And conflict "4" Different matches tool "Data Merge (0)"
 	 And I select Current Tool
 	 And I select Current Arm
 	 Then Save is enabled
