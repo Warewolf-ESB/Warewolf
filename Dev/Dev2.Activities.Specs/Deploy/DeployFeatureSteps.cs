@@ -139,7 +139,7 @@ namespace Dev2.Activities.Specs.Deploy
         }
         
         [When(@"I deploy the workflow")]
-        public void GivenISelectResource(string resourceName)
+        public void GivenISelectResource()
         {
             _scenarioContext.TryGetValue("resourceId", out Guid resourceId);
             var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
