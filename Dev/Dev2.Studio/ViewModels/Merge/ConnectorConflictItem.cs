@@ -16,6 +16,7 @@ namespace Dev2.ViewModels.Merge
 {
     public class ConnectorConflictItem : ConflictItem, IConnectorConflictItem, ICheckable
     {
+        private bool _allowSelection;
         public ConnectorConflictItem(Guid Grouping, string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             ArmDescription = armDescription;
@@ -41,6 +42,14 @@ namespace Dev2.ViewModels.Merge
 
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
+        internal static IConnectorConflictItem EmptyConflictItem() => new Empty();
+
+        public override bool AllowSelection
+        {
+            get => _allowSelection;
+            set => SetProperty(ref _allowSelection, value);
+        }
+
         public override bool Equals(object obj)
         {
             var item = obj as ConnectorConflictItem;
@@ -57,6 +66,14 @@ namespace Dev2.ViewModels.Merge
             hashCode = hashCode * -1521134295 + EqualityComparer<Guid>.Default.GetHashCode(DestinationUniqueId);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Key);
             return hashCode;
+        }
+
+        public new class Empty : ConflictItem.Empty, IConnectorConflictItem
+        {
+            public string ArmDescription { get; set; }
+            public Guid SourceUniqueId { get; set; }
+            public Guid DestinationUniqueId { get; set; }
+            public string Key { get; set; }
         }
     }
 }
