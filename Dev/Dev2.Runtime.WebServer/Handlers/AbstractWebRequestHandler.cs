@@ -129,7 +129,6 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
-                allErrors.MergeErrors(errors);
             }
             else
             {
