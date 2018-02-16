@@ -277,16 +277,14 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             try
             {
-
                 var i = 0;
                 var x = new TaskService();
                 x.GetFolder("Warewolf");
                 var task = x.FindTask(scheduleName);
+                Assert.IsNotNull(task, "Task " + scheduleName + " not found in Warewolf folder");
                 do
                 {
                     task.Run();
-
-
                     const int TimeOut = 10;
                     var time = 0;
                     while (task.State == TaskState.Running && time < TimeOut)
