@@ -512,7 +512,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 133
   testRunner.And("I Debug \"http://localhost:3142/public/OuterWorkflow.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 134
-  testRunner.Then("Browser content is \"does not have Execute Permission to resource Nested.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("Browser content is \"requires View and Execute permissions to Execute resource Out" +
+                    "erWorkflow.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -532,7 +533,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 139
   testRunner.And("I Debug \"http://localhost:3142/public/Nested.json?\" in Browser", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
-  testRunner.Then("Browser content is \"does not have Execute Permission to resource Nested.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.Then("Browser content is \"requires View and Execute permissions to Execute resource Nes" +
+                    "ted.\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
