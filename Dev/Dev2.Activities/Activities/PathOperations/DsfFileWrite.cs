@@ -32,7 +32,7 @@ using Warewolf.Storage;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     [ToolDescriptorInfo("FileFolder-Write", "Write File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Write_File")]
-    public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite,IEquatable<DsfFileWrite>
+    public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite, IEquatable<DsfFileWrite>
     {
 
         public DsfFileWrite()
@@ -54,22 +54,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var inputItr = new WarewolfIterator(context.Environment.Eval(OutputPath, update));
             colItr.AddVariableToIterateOn(inputItr);
 
-            var unameItr = new WarewolfIterator(context.Environment.Eval(Username, update));
-            colItr.AddVariableToIterateOn(unameItr);
-
-            var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword,update));
+            var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword, update));
             colItr.AddVariableToIterateOn(passItr);
 
             var privateKeyItr = new WarewolfIterator(context.Environment.Eval(PrivateKeyFile, update));
             colItr.AddVariableToIterateOn(privateKeyItr);
 
-            var contentItr =new WarewolfIterator(context.Environment.Eval(FileContents, update));
+            var contentItr = new WarewolfIterator(context.Environment.Eval(FileContents, update));
             colItr.AddVariableToIterateOn(contentItr);
 
             outputs.Add(DataListFactory.CreateOutputTO(Result));
 
 
-            if(context.IsDebugMode())
+            if (context.IsDebugMode())
             {
                 AddDebugInputItem(OutputPath, "Output Path", context.Environment, update);
                 AddDebugInputItem(new DebugItemStaticDataParams(GetMethod(), "Method"));
@@ -81,20 +78,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugInputItem(FileContents, "File Contents", context.Environment, update);
             }
 
-            while(colItr.HasMoreData())
+            while (colItr.HasMoreData())
             {
                 var broker = ActivityIOFactory.CreateOperationsBroker();
                 var writeType = GetCorrectWriteType();
                 var putTo = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextValue(contentItr)));
-                var opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
-                                                                                colItr.FetchNextValue(unameItr),
+                var opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr), Username,
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
                 var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(opath);
 
                 try
                 {
-                    if(error.HasErrors())
+                    if (error.HasErrors())
                     {
                         outputs[0].OutputStrings.Add(null);
                     }
@@ -104,7 +100,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         outputs[0].OutputStrings.Add(result);
                     }
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     outputs[0].OutputStrings.Add(null);
                     error.AddError(e.Message);
@@ -117,15 +113,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         WriteType GetCorrectWriteType()
         {
-            if(AppendBottom)
+            if (AppendBottom)
             {
                 return WriteType.AppendBottom;
             }
-            if(AppendTop)
+            if (AppendTop)
             {
                 return WriteType.AppendTop;
             }
-            if(Overwrite)
+            if (Overwrite)
             {
                 return WriteType.Overwrite;
             }
@@ -199,16 +195,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(Tuple<string, string> t in updates)
+                foreach (Tuple<string, string> t in updates)
                 {
-                    if(t.Item1 == OutputPath)
+                    if (t.Item1 == OutputPath)
                     {
                         OutputPath = t.Item2;
                     }
 
-                    if(t.Item1 == FileContents)
+                    if (t.Item1 == FileContents)
                     {
                         FileContents = t.Item2;
                     }
@@ -219,7 +215,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == Result);
-            if(itemUpdate != null)
+            if (itemUpdate != null)
             {
                 Result = itemUpdate.Item2;
             }
@@ -242,11 +238,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return true;
             }
 
-            return base.Equals(other) 
+            return base.Equals(other)
                 && Append == other.Append
-                && string.Equals(FileContents, other.FileContents) 
-                && string.Equals(OutputPath, other.OutputPath) 
-                && Overwrite == other.Overwrite 
+                && string.Equals(FileContents, other.FileContents)
+                && string.Equals(OutputPath, other.OutputPath)
+                && Overwrite == other.Overwrite
                 && AppendTop == other.AppendTop
                 && AppendBottom == other.AppendBottom;
         }
@@ -268,7 +264,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            return Equals((DsfFileWrite) obj);
+            return Equals((DsfFileWrite)obj);
         }
 
         public override int GetHashCode()

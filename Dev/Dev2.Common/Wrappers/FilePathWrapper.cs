@@ -16,6 +16,8 @@ namespace Dev2.Common.Wrappers
     {
         public string GetFileName(string path) => Path.GetFileName(path);
 
-        public string Combine(params string[] paths) => System.IO.Path.Combine(paths);
+        public string Combine(params string[] paths) => Path.Combine(paths);
+
+        public bool IsPathRooted(string path) => Path.IsPathRooted(path);
     }
 }
