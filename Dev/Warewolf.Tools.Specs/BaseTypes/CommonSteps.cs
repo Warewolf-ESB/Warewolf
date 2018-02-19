@@ -562,6 +562,9 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public void AddActivityToActivityList(string parentName, string activityName, Activity activity)
         {
+            scenarioContext.TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
+
             if (!scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList))
             {
                 activityList = new Dictionary<string, Activity>();
