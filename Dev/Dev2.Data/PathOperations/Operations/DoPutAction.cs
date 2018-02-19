@@ -60,16 +60,16 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override int ExecuteOperationWithAuth(Stream src, IActivityIOPath dst)
         {
-            try
+            using (ImpersonatedUser)
             {
-                using (ImpersonatedUser)
+                try
                 {
                     return WriteData(src, dst);
                 }
-            }
-            finally
-            {
-                ImpersonatedUser.Undo();
+                finally
+                {
+                    ImpersonatedUser.Undo();
+                }
             }
         }
 
