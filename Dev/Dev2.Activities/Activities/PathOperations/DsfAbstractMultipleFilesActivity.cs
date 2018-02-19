@@ -61,21 +61,12 @@ namespace Dev2.Activities.PathOperations
            
             var outputItr = new WarewolfIterator(context.Environment.Eval(OutputPath, update));
             ColItr.AddVariableToIterateOn(outputItr);
-
-           
-            var unameItr = new WarewolfIterator(context.Environment.Eval(Username, update));
-            ColItr.AddVariableToIterateOn(unameItr);
-
             
             var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword,update));
             ColItr.AddVariableToIterateOn(passItr);
 
             var privateKeyItr = new WarewolfIterator(context.Environment.Eval(PrivateKeyFile, update));
             ColItr.AddVariableToIterateOn(privateKeyItr);
-            
-            var desunameItr = new WarewolfIterator(context.Environment.Eval(DestinationUsername, update));
-            ColItr.AddVariableToIterateOn(desunameItr);
-
             
             var despassItr = new WarewolfIterator(context.Environment.Eval(DecryptedDestinationPassword,update));
             ColItr.AddVariableToIterateOn(despassItr);
@@ -113,7 +104,7 @@ namespace Dev2.Activities.PathOperations
                 try
                 {
                     src = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextValue(inputItr),
-                                                                                 ColItr.FetchNextValue(unameItr),
+                                                                                 Username,
                                                                                  ColItr.FetchNextValue(passItr),
                                                                                  true, ColItr.FetchNextValue(privateKeyItr));
 
@@ -126,7 +117,7 @@ namespace Dev2.Activities.PathOperations
                 try
                 {
                     dst = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextValue(outputItr),
-                                                                                     ColItr.FetchNextValue(desunameItr),
+                                                                                     DestinationUsername,
                                                                                      ColItr.FetchNextValue(despassItr),
                                                                                      true, ColItr.FetchNextValue(destPrivateKeyItr));
                 }

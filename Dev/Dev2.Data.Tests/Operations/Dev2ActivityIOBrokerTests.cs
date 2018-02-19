@@ -92,7 +92,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
-            var obj = new PrivateObject(activityOperationsBroker);
+            var obj = new PrivateType(activityOperationsBroker.GetType());
             var mockEndpoint = new Mock<IActivityIOOperationsEndPoint>();
             var mockActIo = new Mock<IActivityIOPath>();
             const string path = "C:\\Home\\txt\\a.srx";
@@ -101,7 +101,7 @@ namespace Dev2.Data.Tests.Operations
             mockEndpoint.Setup(point => point.IOPath).Returns(mockActIo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var pathReturned = obj.Invoke("GetFileNameFromEndPoint", mockEndpoint.Object);
+            var pathReturned = obj.InvokeStatic("GetFileNameFromEndPoint", mockEndpoint.Object);
             //---------------Test Result -----------------------
             Assert.AreEqual(path, pathReturned);
         }
@@ -112,7 +112,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //---------------Set up test pack-------------------
             var activityOperationsBroker = CreateBroker();
-            var obj = new PrivateObject(activityOperationsBroker);
+            var prType = new PrivateType(activityOperationsBroker.GetType());
             var mockEndpoint = new Mock<IActivityIOOperationsEndPoint>();
             var mockActIo = new Mock<IActivityIOPath>();
             const string path = "C:\\Home\\txt\\a.srx";
@@ -121,7 +121,11 @@ namespace Dev2.Data.Tests.Operations
             mockEndpoint.Setup(point => point.IOPath).Returns(mockActIo.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var pathReturned = obj.Invoke("GetFileNameFromEndPoint", mockEndpoint.Object, mockActIo.Object);
+            var args = new object[]
+            {
+                mockEndpoint.Object, mockActIo.Object
+            };
+            var pathReturned = prType.InvokeStatic("GetFileNameFromEndPoint", args);
             //---------------Test Result -----------------------
             Assert.AreEqual(path, pathReturned);
         }
@@ -772,30 +776,6 @@ namespace Dev2.Data.Tests.Operations
                 File.Delete(tempFileName);
                 File.Delete(tempSrcName);
             }
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void PutRaw_GivenAppendFromBottom_RemovesTempFile()
-        {
-            //------------Setup for test-------------------------
-            var commonMock = new Mock<ICommon>();
-            var fileMock = new Mock<IFile>();
-            var ioPathMock = new Mock<IActivityIOPath>();
-            var putRawOperationMock = new Mock<IDev2PutRawOperationTO>();
-            fileMock.Setup(file => file.WriteAllBytes(It.IsAny<string>(), It.IsAny<byte[]>()));
-            fileMock.Setup(file => file.Exists(It.IsAny<string>())).Returns(true);
-            var activityOperationsBroker = CreateBroker(fileMock.Object, commonMock.Object);
-            var privateObject = new PrivateObject(activityOperationsBroker);
-            var activityIOOperationsEndPointMock = new Mock<IActivityIOOperationsEndPoint>();
-            activityIOOperationsEndPointMock.Setup(point => point.IOPath).Returns(ioPathMock.Object);
-            activityIOOperationsEndPointMock.Setup(point =>point.Get(ioPathMock.Object, It.IsAny<List<string>>())).Returns(new MemoryStream());
-            putRawOperationMock.Setup(to => to.WriteType).Returns(WriteType.AppendBottom);
-            //------------Execute Test---------------------------
-            var args = new object[] { activityIOOperationsEndPointMock.Object, putRawOperationMock.Object };
-            privateObject.Invoke("PutRaw", args);
-            //------------Assert Results-------------------------
-            fileMock.Verify(file => file.Delete(It.IsAny<string>()), Times.AtLeastOnce);
-        }
+        }                    
     }
 }
