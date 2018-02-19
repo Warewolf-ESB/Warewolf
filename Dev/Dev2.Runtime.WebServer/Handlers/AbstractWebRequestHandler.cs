@@ -72,6 +72,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog)
         {
+            _dataObject = null;
             _resourceCatalog = catalog;
             _testCatalog = testCatalog;
 #pragma warning restore S3010
@@ -177,14 +178,16 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         }
 
-        static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid) => _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
-        {
-            IsFromWebServer = true,
-            ExecutingUser = user,
-            ServiceName = serviceName,
-            WorkspaceID = workspaceGuid,
-            ExecutionID = Guid.NewGuid()
-        };
+        static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid) =>
+            _dataObject ??
+            new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
+            {
+                IsFromWebServer = true,
+                ExecutingUser = user,
+                ServiceName = serviceName,
+                WorkspaceID = workspaceGuid,
+                ExecutionID = Guid.NewGuid()
+            };
 
         static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
         {
