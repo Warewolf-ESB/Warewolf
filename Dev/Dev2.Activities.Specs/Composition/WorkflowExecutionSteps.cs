@@ -2629,6 +2629,9 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"""(.*)"" contains an Assign ""(.*)"" as")]
         public void ThenContainsAnAssignAs(string parentName, string assignName, Table table)
         {
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
+
             var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
 
             foreach (var tableRow in table.Rows)
