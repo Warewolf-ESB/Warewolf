@@ -2,7 +2,7 @@
 
 namespace Dev2.Data.PathOperations
 {
-    public abstract class PerformStreamIOOperation : ValidateAuthorization
+    public abstract class PerformStreamIOOperation
     {                        
         public abstract Stream ExecuteOperationWithAuth();
         public abstract Stream ExecuteOperation();

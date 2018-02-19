@@ -16,7 +16,7 @@ namespace Dev2.Data.PathOperations.Operations
         {
             _logOnProvider = new LogonProvider();
             _path = path;
-            ImpersonatedUser = RequiresAuth(_path, _logOnProvider);
+            ImpersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
         }
         public DoDeleteOperation(IActivityIOPath path, IDev2LogonProvider logOnProvider)
         {
@@ -41,21 +41,21 @@ namespace Dev2.Data.PathOperations.Operations
         }
         public override bool ExecuteOperationWithAuth()
         {
-            try
+            using (ImpersonatedUser)
             {
-                using (ImpersonatedUser)
+                try
                 {
                     return DeleteHelper.Delete(_path.Path);
                 }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
-                return false;
-            }
-            finally
-            {
-                ImpersonatedUser?.Undo();
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
+                    return false;
+                }
+                finally
+                {
+                    ImpersonatedUser?.Undo();
+                }
             }
         }
     }

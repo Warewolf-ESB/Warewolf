@@ -6,11 +6,8 @@ using Dev2.PathOperations;
 
 namespace Dev2.Data.PathOperations
 {
-    public class ValidateAuthorization
-    {
-        protected ValidateAuthorization()
-        {
-        }
+    public static class ValidateAuthorization
+    {      
         public static SafeTokenHandle DoLogOn(IDev2LogonProvider dev2Logon, IActivityIOPath path) => dev2Logon.DoLogon(path);
         public static WindowsImpersonationContext RequiresAuth(IActivityIOPath path, IDev2LogonProvider dev2LogonProvider)
         {

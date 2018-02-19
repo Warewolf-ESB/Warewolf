@@ -22,7 +22,7 @@ namespace Dev2.Data.PathOperations.Operations
             _fileWrapper = new FileWrapper();
             _dirWrapper = new DirectoryWrapper();
             _path = path;
-            ImpersonatedUser = RequiresAuth(_path, _logOnProvider);
+            ImpersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
         }
         public override bool ExecuteOperation()
         {
@@ -35,21 +35,21 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperationWithAuth()
         {
-            try
+            using (ImpersonatedUser)
             {
-                using (ImpersonatedUser)
+                try
                 {
                     return PathIs(_path, _fileWrapper, _dirWrapper) == enPathType.Directory ? _dirWrapper.Exists(_path.Path) : _fileWrapper.Exists(_path.Path);
                 }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
-                return false;
-            }
-            finally
-            {
-                ImpersonatedUser?.Undo();
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error(ex.Message, GlobalConstants.Warewolf);
+                    return false;
+                }
+                finally
+                {
+                    ImpersonatedUser?.Undo();
+                }
             }
         }
     }

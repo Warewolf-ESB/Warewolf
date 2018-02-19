@@ -9,7 +9,7 @@ using System.Security.Principal;
 
 namespace Dev2.Data.PathOperations
 {
-    public abstract class PerformListOfIOPathOperation : ValidateAuthorization
+    public abstract class PerformListOfIOPathOperation
     {
         public abstract IList<IActivityIOPath> ExecuteOperation();
         public abstract IList<IActivityIOPath> ExecuteOperationWithAuth();

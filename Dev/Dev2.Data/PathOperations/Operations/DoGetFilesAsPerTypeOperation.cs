@@ -30,7 +30,7 @@ namespace Dev2.Data.PathOperations.Operations
             _dirWrapper = new DirectoryWrapper();
             _path = path;
             _type = type;
-            ImpersonatedUser = RequiresAuth(_path, _logOnProvider);
+            ImpersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
             _newPath = AppendBackSlashes(_path, _fileWrapper, _dirWrapper);
         }
         public override IList<IActivityIOPath> ExecuteOperation()
@@ -64,10 +64,11 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override IList<IActivityIOPath> ExecuteOperationWithAuth()
         {
-            try
+            using (ImpersonatedUser)
             {
-                using (ImpersonatedUser)
+                try
                 {
+
                     if (!Dev2ActivityIOPathUtils.IsStarWildCard(_newPath))
                     {
                         return AddDirsToResults(GetDirectoriesForType(_newPath, string.Empty, _type, _dirWrapper), _path);
@@ -75,16 +76,17 @@ namespace Dev2.Data.PathOperations.Operations
                     var baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(_newPath);
                     var pattern = Dev2ActivityIOPathUtils.ExtractFileName(_newPath);
                     return AddDirsToResults(GetDirectoriesForType(baseDir, pattern, _type, _dirWrapper), _path);
+
                 }
-            }
-            catch (Exception ex)
-            {
-                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                throw new Exception(string.Format(ErrorResource.DirectoryNotFound, _path.Path));
-            }
-            finally
-            {
-                ImpersonatedUser.Undo();
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                    throw new Exception(string.Format(ErrorResource.DirectoryNotFound, _path.Path));
+                }
+                finally
+                {
+                    ImpersonatedUser.Undo();
+                }
             }
         }
     }

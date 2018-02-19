@@ -22,7 +22,7 @@ namespace Dev2.Data.PathOperations.Operations
             _logOnProvider = new LogonProvider();
             _fileWrapper = new FileWrapper();
             _path = path;
-            ImpersonatedUser = RequiresAuth(_path, _logOnProvider);
+            ImpersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
 
         }
         public override Stream ExecuteOperation()
@@ -40,21 +40,22 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override Stream ExecuteOperationWithAuth()
         {
-            try
+            using (ImpersonatedUser)
             {
-                using (ImpersonatedUser)
+                try
                 {
                     return new MemoryStream(_fileWrapper.ReadAllBytes(_path.Path));
+
                 }
-            }
-            catch (Exception exception)
-            {
-                Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
-                throw new Exception(exception.Message, exception);
-            }
-            finally
-            {
-                ImpersonatedUser.Undo();
+                catch (Exception exception)
+                {
+                    Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
+                    throw new Exception(exception.Message, exception);
+                }
+                finally
+                {
+                    ImpersonatedUser.Undo();
+                }
             }
         }
     }
