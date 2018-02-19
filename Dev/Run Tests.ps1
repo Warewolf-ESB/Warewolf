@@ -346,22 +346,18 @@ function Get-ContainerName([string]$JobName) {
 }
 
 function Stop-JobContainer([string]$ContainerName) {
-    if ($(docker $ContainerHost container ls --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
-        docker $ContainerHost exec -d $JobContainerName -Cleanup
+    $ResultsDirectory = $TestsResultsPath + "\" + $ContainerName
+    if ($(docker $ContainerHost container ls --format 'table {{.Names}}' | % { $_ -eq $ContainerName }) -eq $true) {
+        docker $ContainerHost exec -d $ContainerName -Cleanup
     }
-    if ($(docker $ContainerHost container ls -a --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
-		docker $ContainerHost cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory" 2>&1
-		docker $ContainerHost container rm $JobContainerName
-        Write-Host $JobContainerName Removed. See $ResultsDirectory
+    if ($(docker $ContainerHost container ls -a --format 'table {{.Names}}' | % { $_ -eq $ContainerName }) -eq $true) {
+		docker $ContainerHost cp $($ContainerName + ":C:\Build\TestResults") "$ResultsDirectory" 2>&1
+		docker $ContainerHost container rm $ContainerName 2>&1
+        Write-Host $ContainerName Removed. See $ResultsDirectory
     }
 }
 
 function Stop-JobContainers {
-    if ($TestsPath.EndsWith("\")) {
-        $ResultsDirectory = $TestsPath + "TestResults\" + $JobContainerName
-    } else {
-        $ResultsDirectory = $TestsPath + "\TestResults\" + $JobContainerName
-    }
     foreach ($Job in $JobNames.Split(",")) {
         $JobContainerName = Get-ContainerName $Job
         Stop-JobContainer $JobContainerName
@@ -1081,7 +1077,6 @@ ADD . Build
 ENTRYPOINT & "Build\\Run Tests.ps1"
 ENV SCRIPT_PATH "Build\Run Tests.ps1"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
-RUN Out-File -LiteralPath 'C:\Windows\System32\drivers\etc\hosts' -Encoding default -InputObject '127.0.0.1    ash.dev2.local'
 "@
         Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject @"
 dockerfile
@@ -1121,12 +1116,12 @@ TestResults
             $JobContainerResult = "", "Insufficient system resources exist to complete the requested service. The paging file is too small for this operation to complete."
             while(([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
                 if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent) {
-                    $JobContainerResult = docker $ContainerHost run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
+                    $JobContainerResult = docker $ContainerHost run --memory="1500m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
                 } else {
-                    $JobContainerResult = docker $ContainerHost run --name $JobContainerName -di jobsenvironment -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
+                    $JobContainerResult = docker $ContainerHost run --memory="700m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
                 }
                 if (([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
-                    docker $ContainerHost container rm $JobContainerName
+                    docker $ContainerHost container rm $JobContainerName 2>&1
                     Write-Host Out of memory. Timing out containers and waiting 30s before trying to start $JobContainerName again.
                     Timeout-JobContainers
                     sleep 30
