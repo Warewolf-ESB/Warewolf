@@ -29,7 +29,7 @@ namespace Dev2.Data.PathOperations.Operations
             _currentStream = currentStream;
             Destination = destination;
             _arguments = crudArgument;
-            ImpersonatedUser = RequiresAuth(Destination, _logOnProvider);
+            ImpersonatedUser = ValidateAuthorization.RequiresAuth(Destination, _logOnProvider);
             _whereToPut = whereToPut;
         }
         public override int ExecuteOperation()

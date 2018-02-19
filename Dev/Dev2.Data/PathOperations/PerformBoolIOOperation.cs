@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Dev2.Data.PathOperations
 {
-    public abstract class PerformBoolIOOperation : ValidateAuthorization
+    public abstract class PerformBoolIOOperation
     {
         public static enPathType PathIs(IActivityIOPath path, IFile fileWrapper, IDirectory dirWrapper)
         {

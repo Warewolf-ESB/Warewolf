@@ -25,7 +25,7 @@ namespace Dev2.Data.PathOperations.Operations
             _dirWrapper = new DirectoryWrapper();
             _path = path;
             _crudArguments = args;
-            ImpersonatedUser = RequiresAuth(_path, _logOnProvider);
+            ImpersonatedUser = ValidateAuthorization.RequiresAuth(_path, _logOnProvider);
             _handleOverwrite = RequiresOverwrite(_crudArguments, _path, _logOnProvider);
 
         }
@@ -46,9 +46,9 @@ namespace Dev2.Data.PathOperations.Operations
 
         public override bool ExecuteOperationWithAuth()
         {
-            try
+            using (ImpersonatedUser)
             {
-                using (ImpersonatedUser)
+                try
                 {
                     if (_handleOverwrite == null)
                     {
@@ -61,16 +61,17 @@ namespace Dev2.Data.PathOperations.Operations
                     }
                     _dirWrapper.CreateDirectory(_path.Path);
                     return true;
+
                 }
-            }
-            catch (Exception exception)
-            {
-                Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
-                throw;
-            }
-            finally
-            {
-                ImpersonatedUser.Undo();
+                catch (Exception exception)
+                {
+                    Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
+                    throw;
+                }
+                finally
+                {
+                    ImpersonatedUser.Undo();
+                }
             }
         }
     }
