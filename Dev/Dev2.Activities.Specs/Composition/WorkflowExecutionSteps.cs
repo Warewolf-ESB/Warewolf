@@ -2659,7 +2659,7 @@ namespace Dev2.Activities.Specs.Composition
 
                 assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
-            _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
+            _commonSteps.AddActivityToActivityList(workflowName, assignName, assignActivity);
         }
 
         [Given(@"""(.*)"" contains a recordset name randomizing Assign ""(.*)"" as")]
@@ -3201,7 +3201,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
 
-            _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetNullHandlerActivity);
+            _commonSteps.AddActivityToActivityList(workflowName, activityName, countRecordsetNullHandlerActivity);
         }
 
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
