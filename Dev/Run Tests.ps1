@@ -341,8 +341,12 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobNames"
 }
 
+function Get-ImageName([string]$JobContainerVersion) {
+    "jobsenvironment" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion.ToLower()}})
+}
+
 function Get-ContainerName([string]$JobName) {
-    $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion}})
+    $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion.ToLower()}})
 }
 
 function Stop-JobContainer([string]$ContainerName) {
@@ -1083,7 +1087,7 @@ dockerfile
 TestResults/**/*
 TestResults
 "@
-        $ImageName = "jobsenvironment" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion}})
+        $ImageName = Get-ImageName $JobContainerVersion
         docker $ContainerHost build -t $ImageName "$TestsPath"
     }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
@@ -1540,23 +1544,26 @@ if ($MergeDotCoverSnapshotsInDirectory -ne "") {
 }
 
 if ($Cleanup.IsPresent) {
-    Cleanup-ServerContainer
     if ($JobContainers.IsPresent) {
         Cleanup-JobContainers
     } else {
-        if ($ApplyDotCover) {
-            Cleanup-ServerStudio $false
+        if ($ServerContainer.IsPresent) {
+            Cleanup-ServerContainer
         } else {
-            Cleanup-ServerStudio
+            if ($ApplyDotCover) {
+                Cleanup-ServerStudio $false
+            } else {
+                Cleanup-ServerStudio
+            }
+	        if (!$JobNames -or $JobNames.Contains(",")) {
+		        if ($ProjectName) {
+			        $JobNames = $ProjectName
+		        } else {
+			        $JobNames = "Manual Tests"
+		        }
+	        }
+            Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log") $JobNames
         }
-	    if (!$JobNames -or $JobNames.Contains(",")) {
-		    if ($ProjectName) {
-			    $JobNames = $ProjectName
-		    } else {
-			    $JobNames = "Manual Tests"
-		    }
-	    }
-        Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log") $JobNames
     }
 }
 
