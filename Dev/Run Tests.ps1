@@ -341,7 +341,7 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobNames"
 }
 
-function Get-ImageName([string]$JobContainerVersion) {
+function Get-ImageName {
     "jobsenvironment" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion.ToLower()}})
 }
 
@@ -1087,7 +1087,7 @@ dockerfile
 TestResults/**/*
 TestResults
 "@
-        $ImageName = Get-ImageName $JobContainerVersion
+        $ImageName = Get-ImageName
         docker $ContainerHost build -t $ImageName "$TestsPath"
     }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
@@ -1116,22 +1116,31 @@ TestResults
             }
         }
         if ($JobContainers.IsPresent) {
-            $JobContainerName = $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion}})
-            $JobContainerResult = "", "Insufficient system resources exist to complete the requested service. The paging file is too small for this operation to complete."
-            while(([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
+            $JobContainerName = Get-ContainerName $JobName
+            if ((docker node ls 2>&1).GetType() -eq [System.Management.Automation.ErrorRecord]) {
+                $JobContainerResult = "", "Insufficient system resources exist to complete the requested service. The paging file is too small for this operation to complete."
+                while(([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
+                    if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent) {
+                        $JobContainerResult = docker $ContainerHost run --memory="1500m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
+                    } else {
+                        $JobContainerResult = docker $ContainerHost run --memory="700m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
+                    }
+                    if (([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
+                        docker $ContainerHost container rm $JobContainerName 2>&1
+                        Write-Host Out of memory. Timing out containers and waiting 30s before trying to start $JobContainerName again.
+                        Timeout-JobContainers
+                        sleep 30
+                    } else {
+                        Write-Host Started $JobContainerName as $JobContainerResult
+                    }
+                }
+            } else {
                 if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent) {
-                    $JobContainerResult = docker $ContainerHost run --memory="1500m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
+                    $JobContainerResult = docker $ContainerHost service create --limit-memory="1500m" --name $JobContainerName $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
                 } else {
-                    $JobContainerResult = docker $ContainerHost run --memory="700m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
+                    $JobContainerResult = docker $ContainerHost service create --limit-memory="700m" --name $JobContainerName $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
                 }
-                if (([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
-                    docker $ContainerHost container rm $JobContainerName 2>&1
-                    Write-Host Out of memory. Timing out containers and waiting 30s before trying to start $JobContainerName again.
-                    Timeout-JobContainers
-                    sleep 30
-                } else {
-                    Write-Host Started $JobContainerName as $JobContainerResult
-                }
+                Write-Host Started $JobContainerName as $JobContainerResult
             }
         } else {
             if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
