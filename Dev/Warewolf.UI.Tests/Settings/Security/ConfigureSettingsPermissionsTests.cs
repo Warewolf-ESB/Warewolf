@@ -116,18 +116,6 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [TestCategory("Explorer")]
-        public void Save_With_Invalid_Resource_Permission()
-        {
-            UIMap.Click_Settings_RibbonButton();
-            SettingsUIMap.Set_FirstResource_ResourcePermissions("Hello World", "", true, true, true);
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save button is not enabled after clicking delete row button on existing resource permission in the security tab of the settings tab.");
-            UIMap.Click_Save_RibbonButton();
-            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists);
-            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.UITosavearesourcepersmText.Exists);
-        }
-
-        [TestMethod]
-        [TestCategory("Explorer")]
         public void PublicApisJson_Requires_ExecutePermission()
         {
             UIMap.Click_Settings_RibbonButton();

@@ -118,18 +118,20 @@ namespace Warewolf.UI.Tests.ServerSource
             var ServerSourceName = "Try_Create_Server_Source_On_Restricted_Server";
             var ServerSourceDefinitionXml = @"\\tst-ci-remote.dev2.local\c$\ProgramData\Warewolf\Resources\" + ServerSourceName + ".xml";
             var ServerSourceDefinitionBite = @"\\tst-ci-remote.dev2.local\c$\ProgramData\Warewolf\Resources\" + ServerSourceName + ".bite";
-            if (File.Exists(ServerSourceDefinitionXml))
-            {
-                File.Delete(ServerSourceDefinitionXml);
-            }
-            else if (File.Exists(ServerSourceDefinitionBite))
-            {
-                File.Delete(ServerSourceDefinitionBite);
-            }
-
             try
             {
                 ExplorerUIMap.ConnectToRestrictedRemoteServer();
+                UIMap.WaitForControlVisible(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem);
+                if (File.Exists(ServerSourceDefinitionXml))
+                {
+                    File.Delete(ServerSourceDefinitionXml);
+                    ExplorerUIMap.Click_Explorer_Refresh_Button();
+                }
+                else if (File.Exists(ServerSourceDefinitionBite))
+                {
+                    File.Delete(ServerSourceDefinitionBite);
+                    ExplorerUIMap.Click_Explorer_Refresh_Button();
+                }
                 ExplorerUIMap.Click_NewServerButton_From_ExplorerConnectControl();
                 ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
                 ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("localhost");
@@ -150,6 +152,7 @@ namespace Warewolf.UI.Tests.ServerSource
                     File.Delete(ServerSourceDefinitionBite);
                     Assert.Fail("Created new server source on server without permission to do so.");
                 }
+                Keyboard.SendKeys(UIMap.MainStudioWindow, "^%{F4}");
             }
         }
 
