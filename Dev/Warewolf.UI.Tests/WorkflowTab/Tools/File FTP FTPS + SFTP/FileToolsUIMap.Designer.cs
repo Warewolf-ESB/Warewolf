@@ -66,12 +66,26 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
                 return this.mMainStudioWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
         
         private MainStudioWindow mMainStudioWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -933,14 +947,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox : WpfComboBox
+    public class UserNameComboBox : WpfEdit
     {
         
         public UserNameComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1042,15 +1056,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class DestinationUserNameComboBox : WpfComboBox
+    public class DestinationUserNameComboBox : WpfEdit
     {
         
         public DestinationUserNameComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
-            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.Instance] = "2";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1716,14 +1730,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox1 : WpfComboBox
+    public class UserNameComboBox1 : WpfEdit
     {
         
         public UserNameComboBox1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -2321,14 +2335,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox2 : WpfComboBox
+    public class UserNameComboBox2 : WpfEdit
     {
         
         public UserNameComboBox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -3004,14 +3018,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox3 : WpfComboBox
+    public class UserNameComboBox3 : WpfEdit
     {
         
         public UserNameComboBox3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -3113,15 +3127,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class DestinationUserNameComboBox1 : WpfComboBox
+    public class DestinationUserNameComboBox1 : WpfEdit
     {
         
         public DestinationUserNameComboBox1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
-            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.Instance] = "2";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -3848,14 +3862,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox4 : WpfComboBox
+    public class UserNameComboBox4 : WpfEdit
     {
         
         public UserNameComboBox4(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -3957,15 +3971,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class NewFileUserNameComboBox : WpfComboBox
+    public class NewFileUserNameComboBox : WpfEdit
     {
         
         public NewFileUserNameComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
-            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.Instance] = "2";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -4667,14 +4681,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox5 : WpfComboBox
+    public class UserNameComboBox5 : WpfEdit
     {
         
         public UserNameComboBox5(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -5318,14 +5332,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox6 : WpfComboBox
+    public class UserNameComboBox6 : WpfEdit
     {
         
         public UserNameComboBox6(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -5426,15 +5440,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UnZipUserNameComboBox : WpfComboBox
+    public class UnZipUserNameComboBox : WpfEdit
     {
         
         public UnZipUserNameComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
-            this.SearchProperties[WpfComboBox.PropertyNames.Instance] = "2";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.Instance] = "2";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6192,14 +6206,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox7 : WpfComboBox
+    public class UserNameComboBox7 : WpfEdit
     {
         
         public UserNameComboBox7(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -6301,14 +6315,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class ZipDestinationUsernComboBox : WpfComboBox
+    public class ZipDestinationUsernComboBox : WpfEdit
     {
         
         public ZipDestinationUsernComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__DestinationUsernametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__DestinationUsernametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -7200,14 +7214,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox8 : WpfComboBox
+    public class UserNameComboBox8 : WpfEdit
     {
         
         public UserNameComboBox8(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -8343,14 +8357,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UserNameComboBox9 : WpfComboBox
+    public class UserNameComboBox9 : WpfEdit
     {
         
         public UserNameComboBox9(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+            this.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -8736,6 +8750,108 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.FileFTPFTPSSFTP.FileToolsUIMapClas
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDsfUnZipCustom UIDsfUnZipCustom
+        {
+            get
+            {
+                if ((this.mUIDsfUnZipCustom == null))
+                {
+                    this.mUIDsfUnZipCustom = new UIDsfUnZipCustom(this);
+                }
+                return this.mUIDsfUnZipCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDsfUnZipCustom mUIDsfUnZipCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIDsfUnZipCustom : WpfCustom
+    {
+        
+        public UIDsfUnZipCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.UnzipDesigner";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unzip(UnzipDesigner)";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UILargeViewContentCustom UILargeViewContentCustom
+        {
+            get
+            {
+                if ((this.mUILargeViewContentCustom == null))
+                {
+                    this.mUILargeViewContentCustom = new UILargeViewContentCustom(this);
+                }
+                return this.mUILargeViewContentCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UILargeViewContentCustom mUILargeViewContentCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UILargeViewContentCustom : WpfCustom
+    {
+        
+        public UILargeViewContentCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Large";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "LargeViewContent";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIUI__UserNametxt_AutoEdit
+        {
+            get
+            {
+                if ((this.mUIUI__UserNametxt_AutoEdit == null))
+                {
+                    this.mUIUI__UserNametxt_AutoEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIUI__UserNametxt_AutoEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI__UserNametxt_AutoID";
+                    this.mUIUI__UserNametxt_AutoEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIUI__UserNametxt_AutoEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIUI__UserNametxt_AutoEdit;
         #endregion
     }
 }
