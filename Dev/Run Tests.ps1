@@ -1070,6 +1070,7 @@ RUN choco install visualstudio2017testagent --package-parameters "--passive --lo
 SHELL ["powershell"]
 RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe\")) {Write-Host VSTest did not install correctly; exit 1}
 "@
+            Write-Host docker $ContainerHost build -t warewolftestenvironment "$TestsPath"
             docker $ContainerHost build -t warewolftestenvironment "$TestsPath"
         }
         Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
@@ -1088,6 +1089,7 @@ TestResults/**/*
 TestResults
 "@
         $ImageName = Get-ImageName
+        Write-Host docker $ContainerHost build -t $ImageName "$TestsPath"
         docker $ContainerHost build -t $ImageName "$TestsPath"
     }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
