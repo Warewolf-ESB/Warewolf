@@ -304,14 +304,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -399,14 +399,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="DestinationUserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="DestinationUserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                         <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                       </AndCondition>
@@ -784,14 +784,14 @@
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants />
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -1114,14 +1114,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -1443,14 +1443,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -1538,14 +1538,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="DestinationUserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="DestinationUserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                         <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                       </AndCondition>
@@ -1910,14 +1910,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -2005,14 +2005,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="NewFileUserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="NewFileUserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                         <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                       </AndCondition>
@@ -2416,14 +2416,14 @@
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants />
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -2718,14 +2718,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -2812,14 +2812,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UnZipUserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UnZipUserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                         <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                       </AndCondition>
@@ -3197,14 +3197,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -3292,14 +3292,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="ZipDestinationUsernComboBox" FriendlyName="UI__DestinationUsernametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="ZipDestinationUsernComboBox" FriendlyName="UI__DestinationUsernametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__DestinationUsernametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -3833,14 +3833,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -4443,14 +4443,14 @@
                                                                         </UIObject>
                                                                       </Descendants>
                                                                     </UIObject>
-                                                                    <UIObject ControlType="ComboBox" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="Edit" Id="UserNameComboBox" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
                                                                         <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
@@ -4726,6 +4726,64 @@
                           </Descendants>
                         </UIObject>
                       </Descendants>
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="264312">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\SANELE.MTHEMBU)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UIDsfUnZipCustom" FriendlyName="DsfUnZip" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.UnzipDesigner</PropertyCondition>
+                <PropertyCondition Name="AutomationId">Unzip(UnzipDesigner)</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Custom" Id="UILargeViewContentCustom" FriendlyName="LargeViewContent" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.Large</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">LargeViewContent</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="Edit" Id="UIUI__UserNametxt_AutoEdit" FriendlyName="UI__UserNametxt_AutoID" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI__UserNametxt_AutoID</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
                     </UIObject>
                   </Descendants>
                 </UIObject>
