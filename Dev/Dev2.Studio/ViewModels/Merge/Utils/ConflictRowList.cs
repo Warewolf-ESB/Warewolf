@@ -20,9 +20,13 @@ using System.Windows.Media;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
-    
     public class ConflictRowList : IEnumerable<IConflictRow>
     {
+        public enum Column
+        {
+            Current,
+            Different
+        }
         readonly ConflictTreeNode[] currentTree;
         readonly ConflictTreeNode[] diffTree;
         readonly List<ToolConflictRow> toolConflictRowList;
@@ -33,11 +37,10 @@ namespace Dev2.ViewModels.Merge.Utils
             this.diffTree = diffTree.ToArray();
 
             var createConflictRowList = new ConflictRowListBuilder(modelFactoryCurrent, modelFactoryDifferent);
-            toolConflictRowList = createConflictRowList.CreateList(this.currentTree, this.diffTree);
-        }
+            toolConflictRowList = createConflictRowList.CreateList(this, this.currentTree, this.diffTree);
 
-        // TODO: Set enabled / disabled connector state
-        //       Add new switch connector template to allow checkbox
+            Ready = true;
+        }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
@@ -70,15 +73,15 @@ namespace Dev2.ViewModels.Merge.Utils
             }
 
             var mergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource;
-            var toolConflictItem = ToolConflictItem.NewStartConflictItem(mergeIcon);
+            var toolConflictItem = ToolConflictItem.NewStartConflictItem(this, Column.Current, mergeIcon);
 
-            var row = ToolConflictRow.CreateStartRow(toolConflictItem, toolConflictItem);
+            var row = ToolConflictRow.CreateStartRow(toolConflictItem, new ToolConflictItem.Empty());
             CreateStartNodeConnectors(row, current, diff);
 
             return _cacheStartToolRow = row;
         }
 
-        static void CreateStartNodeConnectors(ToolConflictRow toolConflictRow, ConflictTreeNode current, ConflictTreeNode diff)
+        void CreateStartNodeConnectors(ToolConflictRow toolConflictRow, ConflictTreeNode current, ConflictTreeNode diff)
         {
             if (toolConflictRow.Connectors != null && toolConflictRow.Connectors.Any())
             {
@@ -91,8 +94,8 @@ namespace Dev2.ViewModels.Merge.Utils
                 Key = key,
                 ContainsStart = true
             };
-            row.CurrentArmConnector = new ConnectorConflictItem(row.UniqueId, "Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key);
-            row.DifferentArmConnector = new ConnectorConflictItem(row.UniqueId, "Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key);
+            row.CurrentArmConnector = new ConnectorConflictItem(this, Column.Current, row.UniqueId, "Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key);
+            row.DifferentArmConnector = new ConnectorConflictItem(this, Column.Different, row.UniqueId, "Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key);
 
             toolConflictRow.Connectors = new List<IConnectorConflictRow> { row };
         }
@@ -144,6 +147,11 @@ namespace Dev2.ViewModels.Merge.Utils
             {
                 toolConflictRowList[key] = value;
             }
+        }
+
+        public bool Ready
+        {
+            get; private set;
         }
     }
 }

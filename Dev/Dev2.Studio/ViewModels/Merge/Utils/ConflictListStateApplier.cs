@@ -46,19 +46,12 @@ namespace Dev2.ViewModels.Merge.Utils
             }
         }
 
-        // NEW
         public void RegisterEventHandlerForConflictItemChanges()
         {
             foreach (var row in conflictRowList)
             {
-                row.Current.NotifyIsCheckedChanged += (current, isChecked) =>
-                {
-                    Handler(current, row.Different);
-                };
-                row.Different.NotifyIsCheckedChanged += (diff, isChecked) =>
-                {
-                    Handler(row.Current, diff);
-                };
+                row.Current.NotifyIsCheckedChanged += ConflictItemIsCheckedChangedHandler;
+                row.Different.NotifyIsCheckedChanged += ConflictItemIsCheckedChangedHandler;
             }
         }
 
@@ -87,41 +80,11 @@ namespace Dev2.ViewModels.Merge.Utils
             }
         }
 
-        private void Handler(IConflictItem currentItem, IConflictItem diffItem)
+        static void ConflictItemIsCheckedChangedHandler(IConflictItem changedItem, bool isChecked)
         {
-            if (currentItem is ConnectorConflictItem connectorConflictItemCurrent)
+            if (changedItem is ConnectorConflictItem connectorConflictItem)
             {
-                SetDependentConnectorsToDisabled(connectorConflictItemCurrent);
-            }
-            if (diffItem is ConnectorConflictItem connectorConflictItemDiff)
-            {
-                SetDependentConnectorsToDisabled(connectorConflictItemDiff);
-            }
-        }
-
-        private void SetDependentConnectorsToDisabled(IConnectorConflictItem conflictItem)
-        {
-            if (conflictItem.IsChecked)
-            {
-                return;
-            }
-
-            var found = false;
-            foreach (var row in conflictRowList)
-            {
-                // get as connector
-
-                // test if same as event item
-                if (row.Current.Equals(conflictItem))
-                {
-                    found = true;
-                }
-                // set all connectors after we find the disabled connector
-                // unless we find a connector that was manually set by the user (then we should break)
-                if (found)
-                {
-                    row.Current.AllowSelection = false;
-                }
+                connectorConflictItem.DestinationConflictItem().IsChecked = true;
             }
         }
     }

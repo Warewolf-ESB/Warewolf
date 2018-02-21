@@ -25,7 +25,7 @@ namespace Dev2.Common.Interfaces
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
 
-        IConnectorConflictItem[] inboundConnectors { get; set; }
-        IConnectorConflictItem[] outboundConnectors { get; set; }
+        IConnectorConflictItem[] InboundConnectors { get; }
+        IConnectorConflictItem[] OutboundConnectors { get; }
     }
 }

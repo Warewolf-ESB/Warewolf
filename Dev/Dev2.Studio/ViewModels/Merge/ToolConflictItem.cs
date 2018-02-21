@@ -18,14 +18,18 @@ using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Collections.Generic;
 using Dev2.Common.ExtMethods;
+using Dev2.ViewModels.Merge.Utils;
 
 namespace Dev2.ViewModels.Merge
 {
     public class ToolConflictItem : ConflictItem, IToolConflictItem, ICheckable
     {
         private bool _allowSelection;
-        protected ToolConflictItem()
+        readonly (ConflictRowList list, ConflictRowList.Column column) context;
+        public ToolConflictItem(ConflictRowList list, ConflictRowList.Column column)
         {
+            context.list = list;
+            context.column = column;
         }
 
         public Guid UniqueId { get; set; }
@@ -41,6 +45,8 @@ namespace Dev2.ViewModels.Merge
             get => _allowSelection;
             set => SetProperty(ref _allowSelection, value);
         }
+        public IConnectorConflictItem[] InboundConnectors { get => throw new NotImplementedException(); }
+        public IConnectorConflictItem[] OutboundConnectors { get => throw new NotImplementedException(); }
 
         public override bool Equals(object obj)
         {
@@ -62,20 +68,20 @@ namespace Dev2.ViewModels.Merge
         }
 
         internal static IToolConflictItem EmptyConflictItem() => new Empty();
-        internal static ToolConflictItem NewStartConflictItem(ImageSource mergeIcon) => new ToolConflictItem
+        internal static ToolConflictItem NewStartConflictItem(ConflictRowList list, ConflictRowList.Column column, ImageSource mergeIcon) => new ToolConflictItem(list, column)
         {
             MergeDescription = "Start",
             MergeIcon = mergeIcon
         };
 
-        internal static ToolConflictItem NewFromActivity(IDev2Activity activity, ModelItem modelItem, Point location) => new ToolConflictItem
+        internal void InitializeFromActivity(IDev2Activity activity, ModelItem modelItem, Point location)
         {
-            UniqueId = activity.UniqueID.ToGuid(),
-            MergeDescription = activity.GetDisplayName(),
-            FlowNode = activity.GetFlowNode(),
-            ModelItem = modelItem,
-            NodeLocation = location
-        };
+            UniqueId = activity.UniqueID.ToGuid();
+            MergeDescription = activity.GetDisplayName();
+            FlowNode = activity.GetFlowNode();
+            ModelItem = modelItem;
+            NodeLocation = location;
+        }
 
         public void SetUserInterface(ImageSource mergeIcon, ActivityDesignerViewModel instance)
         {
@@ -91,8 +97,10 @@ namespace Dev2.ViewModels.Merge
             public FlowNode FlowNode { get; set; }
             public ModelItem ModelItem { get; set; }
             public Point NodeLocation { get; set; }
+            public IConnectorConflictItem[] InboundConnectors { get => throw new NotImplementedException(); }
+            public IConnectorConflictItem[] OutboundConnectors { get => throw new NotImplementedException(); }
         }
     }
 
-    
+
 }
