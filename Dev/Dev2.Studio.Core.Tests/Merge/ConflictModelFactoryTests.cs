@@ -3,6 +3,7 @@ using Dev2.Activities.Designers2.Decision;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.Switch;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Studio.Core.Interfaces;
@@ -116,8 +117,9 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
+            var toolConflictItem = new Mock<IToolConflictItem>().Object;
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Model);
@@ -147,8 +149,9 @@ namespace Dev2.Core.Tests.Merge
             var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            var toolConflictItem = new Mock<IToolConflictItem>().Object;
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -179,8 +182,9 @@ namespace Dev2.Core.Tests.Merge
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             currentResourceModel.Setup(resModel => resModel.DataList).Returns("");
+            var toolConflictItem = new Mock<IToolConflictItem>().Object;
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -221,8 +225,9 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
+            var toolConflictItem = new Mock<IToolConflictItem>().Object;
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Model);
@@ -254,9 +259,10 @@ namespace Dev2.Core.Tests.Merge
             var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
             node.Setup(p => p.Activity).Returns(value);
             contextualResource.Setup(p => p.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentResourceModel.Object);
+            var toolConflictItem = new Mock<IToolConflictItem>().Object;
             //------------Execute Test---------------------------
 
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Model);
@@ -304,8 +310,9 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
+            var toolConflictItem = new Mock<IToolConflictItem>().Object;
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Model);
@@ -327,8 +334,9 @@ namespace Dev2.Core.Tests.Merge
             var contextualResource = new Mock<IContextualResourceModel>();
 
             node.Setup(p => p.Activity).Returns(new DsfCalculateActivity());
+            var toolConflictItem = new Mock<IToolConflictItem>().Object;
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict.Model);
         }

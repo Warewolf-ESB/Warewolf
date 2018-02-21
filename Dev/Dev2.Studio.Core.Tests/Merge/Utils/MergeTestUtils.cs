@@ -141,9 +141,10 @@ namespace Dev2.Core.Tests.Merge.Utils
 
             var currentConflictModelFactory = CreateCurrentConflictModelFactory();
             var diffConflictModelFactory = CreateDiffConflictModelFactory();
-
-            var currentViewModel = currentConflictModelFactory.CreateToolModelConfictItem(currentTree[0]);
-            var diffViewModel = diffConflictModelFactory.CreateToolModelConfictItem(diffTree[0]);
+            var rowList = new Mock<ConflictRowList>().Object;
+            var toolConflictItem = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
+            var currentViewModel = currentConflictModelFactory.CreateToolModelConfictItem(toolConflictItem, currentTree[0]);
+            var diffViewModel = diffConflictModelFactory.CreateToolModelConfictItem(toolConflictItem, diffTree[0]);
 
             var connectors = new List<IConnectorConflictRow>();
 
@@ -163,12 +164,16 @@ namespace Dev2.Core.Tests.Merge.Utils
         protected ToolConflictItem CreateToolConflictItem()
         {
             modelItem = ModelItemUtils.CreateModelItem(multiAssign);
-            return ToolConflictItem.NewFromActivity(multiAssign, modelItem, location);
+            var rowList = new Mock<ConflictRowList>().Object;
+            var toolConflictItem = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
+            toolConflictItem.InitializeFromActivity(multiAssign, modelItem, location);
+            return toolConflictItem;
         }
 
         protected static ToolConflictItem NewStartConflictItem(DrawingImage imageSource)
         {
-            return ToolConflictItem.NewStartConflictItem(imageSource);
+            var rowList = new Mock<ConflictRowList>().Object;
+            return ToolConflictItem.NewStartConflictItem(rowList, ConflictRowList.Column.Current,imageSource);
         }
 
         protected MergeWorkflowViewModel CreateMergeWorkflowViewModel()

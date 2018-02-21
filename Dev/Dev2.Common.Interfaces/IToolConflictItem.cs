@@ -11,6 +11,7 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
@@ -26,7 +27,7 @@ namespace Dev2.Common.Interfaces
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
 
-        IConnectorConflictItem[] InboundConnectors { get; }
-        IConnectorConflictItem[] OutboundConnectors { get; }
+        List<IConnectorConflictItem> InboundConnectors { get; }
+        List<IConnectorConflictItem> OutboundConnectors { get; }
     }
 }
