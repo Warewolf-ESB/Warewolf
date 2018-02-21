@@ -28,6 +28,7 @@ namespace Dev2.ViewModels.Merge
         readonly (ConflictRowList list, ConflictRowList.Column column) context;
         public ToolConflictItem(ConflictRowList list, ConflictRowList.Column column)
         {
+            OutboundConnectors = new List<IConnectorConflictItem>();
             context.list = list;
             context.column = column;
         }
@@ -46,7 +47,7 @@ namespace Dev2.ViewModels.Merge
             get => _allowSelection;
             set => SetProperty(ref _allowSelection, value);
         }
-        public List<IConnectorConflictItem> InboundConnectors { get => throw new NotImplementedException(); }
+        public List<IConnectorConflictItem> InboundConnectors { get; set; }
         public List<IConnectorConflictItem> OutboundConnectors { get; private set; }
 
         public override bool Equals(object obj)
@@ -107,7 +108,8 @@ namespace Dev2.ViewModels.Merge
             public object Activity { get; set; }
             public ModelItem ModelItem { get; set; }
             public Point NodeLocation { get; set; }
-            public List<IConnectorConflictItem> InboundConnectors { get => throw new NotImplementedException(); }
+            List<IConnectorConflictItem> _inboundConnectors;
+            public List<IConnectorConflictItem> InboundConnectors { get => null; set => _inboundConnectors = value; }
             public List<IConnectorConflictItem> OutboundConnectors { get => throw new NotImplementedException(); }
         }
     }

@@ -38,9 +38,46 @@ namespace Dev2.ViewModels.Merge.Utils
 
             var createConflictRowList = new ConflictRowListBuilder(modelFactoryCurrent, modelFactoryDifferent);
             toolConflictRowList = createConflictRowList.CreateList(this, this.currentTree, this.diffTree);
-
+            BindInboundConnections();
             Ready = true;
         }
+
+        void BindInboundConnections()
+        {
+            List<IConnectorConflictItem> FindConnectorsForTool(IToolConflictItem conflictItem, Column column)
+            {
+                var inboundConnectors = new List<IConnectorConflictItem>();
+                foreach (var row in toolConflictRowList)
+                {
+                    if (column == Column.Current)
+                    {
+                        var toolConnectors = row.Connectors
+                                                        .Where(item => item.CurrentArmConnector.DestinationUniqueId == conflictItem.UniqueId)
+                                                        .Select(item => item.CurrentArmConnector);
+                        inboundConnectors.AddRange(toolConnectors);
+                    } else
+                    {
+                        var toolConnectors = row.Connectors
+                                                        .Where(item => item.DifferentArmConnector.DestinationUniqueId == conflictItem.UniqueId)
+                                                        .Select(item => item.DifferentArmConnector);
+                        inboundConnectors.AddRange(toolConnectors);
+                    }
+                }
+                return inboundConnectors;
+            }
+            foreach (var row in toolConflictRowList)
+            {
+                if (!(row.CurrentViewModel is ToolConflictItem.Empty))
+                {
+                    row.CurrentViewModel.InboundConnectors = FindConnectorsForTool(row.CurrentViewModel, Column.Current);
+                }
+                if (!(row.DiffViewModel is ToolConflictItem.Empty))
+                {
+                    row.DiffViewModel.InboundConnectors = FindConnectorsForTool(row.DiffViewModel, Column.Different);
+                }
+            }
+        }
+
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

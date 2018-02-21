@@ -66,7 +66,7 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             if (changedItem is IToolConflictItem toolItem)
             {
-                if (row.Current is ToolConflictItem.Empty || row.Different is ToolConflictItem.Empty)
+                if (changedItem is ToolConflictItem.Empty)
                 {
                     return;
                 }
