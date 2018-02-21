@@ -27,6 +27,9 @@ namespace Dev2.Common.Interfaces
         Guid DestinationUniqueId { get; set; }
         string Key { get; set; }
         // TODO: implement List<IConnectorConflictItem> Conflicts(conflictsList) which returns the connectors that conflict with this connector
+
+        IToolConflictItem sourceConflictItem { get; set; } // the conflict item that needs to be IsChecked for this conflict item to be enabled
+        IToolConflictItem destinationConflictItem { get; set; } // the conflict item to set to IsChecked if this conflict item IsChecked
     }
 
     public interface IConflictItem

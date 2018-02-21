@@ -78,18 +78,7 @@ namespace Dev2.ViewModels.Merge.Utils
             }
             else if (changedItem is IConnectorConflictItem connectorItem && row is IConnectorConflictRow connectorRow)
             {
-                if (connectorRow.Current is ConnectorConflictItem.Empty || connectorRow.Different is ConnectorConflictItem.Empty)
-                {
-                    var isCurrent = connectorItem.DestinationUniqueId.Equals(connectorRow.CurrentArmConnector.DestinationUniqueId);
-
-                    var toolConflictItem = conflictList.GetToolItemFromId(connectorItem.DestinationUniqueId, isCurrent);
-                    if (toolConflictItem != null)
-                    {
-                        toolConflictItem.AllowSelection = false;
-                    }
-
-                    return;
-                }
+                
                 ConnectorHandler(connectorItem, connectorRow);
             }
             else
@@ -114,6 +103,9 @@ namespace Dev2.ViewModels.Merge.Utils
         private void AddActivity(IToolConflictItem toolModelConflictItem)
         {
             mergePreviewWorkflowDesignerViewModel.AddItem(toolModelConflictItem);
+
+            // TODO: if there is a connector that IsChecked then connect it back to this tool
+
         }
 
         private void RemoveActivity(IToolConflictItem toolModelConflictItem)
@@ -155,14 +147,17 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             var isCurrent = changedItem.DestinationUniqueId.Equals(row.CurrentArmConnector.DestinationUniqueId);
 
-            var toolConflictItem = conflictList.GetToolItemFromId(changedItem.DestinationUniqueId, isCurrent);
+            var toolConflictItem = isCurrent ? conflictList.GetToolItemFromIdCurrent(changedItem.DestinationUniqueId)
+                                             : conflictList.GetToolItemFromIdDifferent(changedItem.DestinationUniqueId);
             toolConflictItem.SetAutoChecked();
 
-            if (!toolConflictItem.AllowSelection)
-            {
-                var connectorConflictItem = conflictList.GetConnectorItemFromToolId(toolConflictItem.UniqueId, isCurrent);
-                connectorConflictItem.AllowSelection = true;
-            }
+            //if !toolConflictItem.AllowSelection
+            //
+            //    var connectorConflictItem = isCurrent ?
+            //        conflictList.GetConnectorItemFromToolIdCurrent(toolConflictItem.UniqueId) :
+            //        conflictList.GetConnectorItemFromToolIdDifferent(toolConflictItem.UniqueId)
+            //    connectorConflictItem.AllowSelection = true
+            //
 
             AddActivity(toolConflictItem);
 

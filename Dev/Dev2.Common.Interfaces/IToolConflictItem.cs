@@ -24,5 +24,8 @@ namespace Dev2.Common.Interfaces
         FlowNode FlowNode { get; set; }
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
+
+        IConnectorConflictItem[] inboundConnectors { get; set; }
+        IConnectorConflictItem[] outboundConnectors { get; set; }
     }
 }

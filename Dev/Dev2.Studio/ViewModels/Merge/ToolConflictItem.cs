@@ -45,6 +45,7 @@ namespace Dev2.ViewModels.Merge
         public override bool Equals(object obj)
         {
             var item = obj as ToolConflictItem;
+
             return item != null &&
                    MergeDescription == item.MergeDescription &&
                    UniqueId.Equals(item.UniqueId) &&
