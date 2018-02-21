@@ -44,11 +44,11 @@ namespace Dev2.ViewModels.Merge
             GetDataList(_resourceModel);
         }
 
-        public ConflictModelFactory(IContextualResourceModel resourceModel, IConflictTreeNode conflict)
+        public ConflictModelFactory(IToolConflictItem toolConflictItem, IContextualResourceModel resourceModel, IConflictTreeNode conflict)
         {
             _resourceModel = resourceModel;
             var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
-            Model = GetModel(modelItem, conflict);
+            Model = GetModel(toolConflictItem, modelItem, conflict);
         }
 
         public ConflictModelFactory()
@@ -138,13 +138,13 @@ namespace Dev2.ViewModels.Merge
         }
         public IDataListViewModel DataListViewModel { get; set; }
 
-        public IToolConflictItem CreateToolModelConfictItem(IConflictTreeNode node)
+        public IToolConflictItem CreateToolModelConfictItem(IToolConflictItem toolConflictItem, IConflictTreeNode node)
         {
             var modelItem = ModelItemUtils.CreateModelItem(node.Activity);
-            return GetModel(modelItem, node);
+            return GetModel(toolConflictItem, modelItem, node);
         }
 
-        public IToolConflictItem GetModel(ModelItem modelItem, IConflictTreeNode node)
+        public IToolConflictItem GetModel(IToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node)
         {
             if (modelItem == null || node == null || node.Activity == null)
             {
@@ -181,20 +181,29 @@ namespace Dev2.ViewModels.Merge
             }
             instance.IsMerge = true;
 
-            var mergeToolModel = CreateNewMergeToolModel(modelItem, node, instance);
-            return mergeToolModel;
+            if (toolConflictItem is ToolConflictItem toolConflictItemObject)
+            {
+                var mergeToolModel = CreateNewMergeToolModel(toolConflictItemObject, modelItem, node, instance);
+                return mergeToolModel;
+            } else
+            {
+                throw new Exception("unexpected ToolConflictItem type");
+            }
         }
 
-        ToolConflictItem CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
+        ToolConflictItem CreateNewMergeToolModel(ToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
         {
-            var mergeToolModel = ToolConflictItem.NewFromActivity(node.Activity, modelItem, node.Location);
-            mergeToolModel.SetUserInterface(modelItem.GetImageSourceForTool(), instance);
+            toolConflictItem.InitializeFromActivity(node.Activity, modelItem, node.Location);
+            toolConflictItem.SetUserInterface(modelItem.GetImageSourceForTool(), instance);
 
             modelItem.PropertyChanged += (sender, e) =>
             {
-                OnModelItemChanged?.Invoke(modelItem, mergeToolModel);
+                if (e.PropertyName == nameof(ModelItem))
+                {
+                    OnModelItemChanged?.Invoke(modelItem, toolConflictItem);
+                }
             };
-            return mergeToolModel;
+            return toolConflictItem;
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;

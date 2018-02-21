@@ -20,19 +20,21 @@ namespace Dev2.ViewModels.Merge
         bool _isEmptyItemSelected;
         bool _isMergeVisible;
 
-        internal static ToolConflictRow CreateConflictRow(IToolConflictItem currentViewModel, IToolConflictItem diffViewModel, List<IConnectorConflictRow> connectors) => new ToolConflictRow
+        internal static ToolConflictRow CreateConflictRow(IToolConflictItem currentToolConflictItem, IToolConflictItem diffToolConflictItem, List<IConnectorConflictRow> connectors) => new ToolConflictRow
         {
-            CurrentViewModel = currentViewModel,
-            DiffViewModel = diffViewModel,
-            Connectors = connectors
+            CurrentViewModel = currentToolConflictItem,
+            DiffViewModel = diffToolConflictItem,
+            Connectors = connectors,
+            HasConflict = !currentToolConflictItem.Equals(diffToolConflictItem)
         };
 
-        internal static ToolConflictRow CreateStartRow(IToolConflictItem currentViewModel, IToolConflictItem diffViewModel) => new ToolConflictRow
+        internal static ToolConflictRow CreateStartRow(IToolConflictItem currentToolConflictItem, IToolConflictItem diffToolConflictItem) => new ToolConflictRow
         {
-            CurrentViewModel = currentViewModel,
-            DiffViewModel = diffViewModel,
+            CurrentViewModel = currentToolConflictItem,
+            DiffViewModel = diffToolConflictItem,
             ContainsStart = true,
-            IsMergeVisible = false
+            IsMergeVisible = false,
+            HasConflict = false
         };
 
         public IToolConflictItem CurrentViewModel { get; set; }
