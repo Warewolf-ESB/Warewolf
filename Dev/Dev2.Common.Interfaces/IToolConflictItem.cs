@@ -22,6 +22,7 @@ namespace Dev2.Common.Interfaces
         string MergeDescription { get; set; }
         Guid UniqueId { get; set; }
         FlowNode FlowNode { get; set; }
+        object Activity { get; set; }
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
 
