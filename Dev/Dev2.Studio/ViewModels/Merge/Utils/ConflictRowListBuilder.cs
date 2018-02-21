@@ -103,13 +103,13 @@ namespace Dev2.ViewModels.Merge.Utils
             currentToolConflictItem.AllowSelection = !(diffToolConflictItem is ToolConflictItem.Empty);
             diffToolConflictItem.AllowSelection = !(currentToolConflictItem is ToolConflictItem.Empty);
 
-            var connectors = GetConnectorConflictRows(list, current, diff);
+            var connectors = GetConnectorConflictRows(list, currentToolConflictItem, diffToolConflictItem, current, diff);
 
             var toolConflictRow = ToolConflictRow.CreateConflictRow(currentToolConflictItem, diffToolConflictItem, connectors);
             return toolConflictRow;
         }
 
-        private static List<IConnectorConflictRow> GetConnectorConflictRows(ConflictRowList list, ConflictTreeNode current, ConflictTreeNode diff)
+        private static List<IConnectorConflictRow> GetConnectorConflictRows(ConflictRowList list, IToolConflictItem currentConflictItem, IToolConflictItem diffConflictItem, ConflictTreeNode current, ConflictTreeNode diff)
         {
             var rows = new List<IConnectorConflictRow>();
             int index = 0;
@@ -126,22 +126,27 @@ namespace Dev2.ViewModels.Merge.Utils
                 if (armConnectorsCurrent != null && index < armConnectorsCurrent.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsCurrent[index];
-                    row.CurrentArmConnector = new ConnectorConflictItem(list, ConflictRowList.Column.Current, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key)
+                    var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Current, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key)
                     {
                         AllowSelection = false
                     };
+                    row.CurrentArmConnector = connector;
+                    currentConflictItem.OutboundConnectors.Add(connector);
                 }
                 else
                 {
                     row.CurrentArmConnector = ConnectorConflictItem.EmptyConflictItem();
                 }
+
                 if (armConnectorsDiff != null && index < armConnectorsDiff.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsDiff[index];
-                    row.DifferentArmConnector = new ConnectorConflictItem(list, ConflictRowList.Column.Different, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key)
+                    var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Different, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key)
                     {
                         AllowSelection = false
                     };
+                    row.DifferentArmConnector = connector;
+                    diffConflictItem.OutboundConnectors.Add(connector);
                 }
                 else
                 {

@@ -46,8 +46,8 @@ namespace Dev2.ViewModels.Merge
             get => _allowSelection;
             set => SetProperty(ref _allowSelection, value);
         }
-        public IConnectorConflictItem[] InboundConnectors { get => throw new NotImplementedException(); }
-        public IConnectorConflictItem[] OutboundConnectors { get => throw new NotImplementedException(); }
+        public List<IConnectorConflictItem> InboundConnectors { get => throw new NotImplementedException(); }
+        public List<IConnectorConflictItem> OutboundConnectors { get; private set; }
 
         public override bool Equals(object obj)
         {
@@ -107,8 +107,8 @@ namespace Dev2.ViewModels.Merge
             public object Activity { get; set; }
             public ModelItem ModelItem { get; set; }
             public Point NodeLocation { get; set; }
-            public IConnectorConflictItem[] InboundConnectors { get => throw new NotImplementedException(); }
-            public IConnectorConflictItem[] OutboundConnectors { get => throw new NotImplementedException(); }
+            public List<IConnectorConflictItem> InboundConnectors { get => throw new NotImplementedException(); }
+            public List<IConnectorConflictItem> OutboundConnectors { get => throw new NotImplementedException(); }
         }
     }
 

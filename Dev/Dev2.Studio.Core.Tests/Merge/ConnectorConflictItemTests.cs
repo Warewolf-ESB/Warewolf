@@ -1,5 +1,7 @@
 ﻿using Dev2.ViewModels.Merge;
+using Dev2.ViewModels.Merge.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 
 namespace Dev2.Core.Tests.Merge
@@ -16,14 +18,16 @@ namespace Dev2.Core.Tests.Merge
         Guid SourceUniqueIdDiff = Guid.NewGuid();
         Guid DestinationUniqueIdDiff = Guid.NewGuid();
         const string KeyDiff = "KeyDiff";
-
+        
         private ConnectorConflictItem CreateConnectorConflictItem()
         {
-            return new ConnectorConflictItem(Grouping, ArmDescription, SourceUniqueId, DestinationUniqueId, Key);
+            var rowList = new Mock<ConflictRowList>().Object;
+            return new ConnectorConflictItem(rowList, ConflictRowList.Column.Current, Grouping, ArmDescription, SourceUniqueId, DestinationUniqueId, Key);
         }
         private ConnectorConflictItem CreateConnectorConflictItemDiff()
         {
-            return new ConnectorConflictItem(Grouping, ArmDescription, SourceUniqueIdDiff, DestinationUniqueIdDiff, KeyDiff);
+            var rowList = new Mock<ConflictRowList>().Object;
+            return new ConnectorConflictItem(rowList, ConflictRowList.Column.Different, Grouping, ArmDescription, SourceUniqueIdDiff, DestinationUniqueIdDiff, KeyDiff);
         }
 
         [TestMethod]
