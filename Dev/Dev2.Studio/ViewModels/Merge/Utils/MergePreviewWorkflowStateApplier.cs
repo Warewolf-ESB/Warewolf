@@ -21,19 +21,19 @@ namespace Dev2.ViewModels.Merge.Utils
     /// </summary>
     public class MergePreviewWorkflowStateApplier
     {
-        readonly IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel;
-        readonly ConflictRowList conflictList;
+        readonly IMergePreviewWorkflowDesignerViewModel _mergePreviewWorkflowDesignerViewModel;
+        readonly ConflictRowList _conflictList;
         public MergePreviewWorkflowStateApplier(ConflictRowList conflictList, IMergePreviewWorkflowDesignerViewModel mergePreviewWorkflowDesignerViewModel)
         {
-            this.mergePreviewWorkflowDesignerViewModel = mergePreviewWorkflowDesignerViewModel;
-            this.conflictList = conflictList;
+            _mergePreviewWorkflowDesignerViewModel = mergePreviewWorkflowDesignerViewModel;
+            _conflictList = conflictList;
             RegisterEventHandlerForConflictItemChanges();
             Apply();
         }
 
         public void RegisterEventHandlerForConflictItemChanges()
         {
-            foreach (var conflictRow in conflictList)
+            foreach (var conflictRow in _conflictList)
             {
                 var innerConflictRow = conflictRow;
 
@@ -56,7 +56,7 @@ namespace Dev2.ViewModels.Merge.Utils
 
         public void Apply()
         {
-            foreach (var conflictRow in conflictList)
+            foreach (var conflictRow in _conflictList)
             {
                 Handler(conflictRow.Current, conflictRow);
             }
@@ -102,7 +102,7 @@ namespace Dev2.ViewModels.Merge.Utils
 
         private void AddActivity(IToolConflictItem toolModelConflictItem)
         {
-            mergePreviewWorkflowDesignerViewModel.AddItem(toolModelConflictItem);
+            _mergePreviewWorkflowDesignerViewModel.AddItem(toolModelConflictItem);
 
             // TODO: if there is a connector that IsChecked then connect it back to this tool
 
@@ -110,14 +110,14 @@ namespace Dev2.ViewModels.Merge.Utils
 
         private void RemoveActivity(IToolConflictItem toolModelConflictItem)
         {
-            mergePreviewWorkflowDesignerViewModel.RemoveItem(toolModelConflictItem);
+            _mergePreviewWorkflowDesignerViewModel.RemoveItem(toolModelConflictItem);
         }
 
         private void ConnectorHandler(IConnectorConflictItem changedItem, IConnectorConflictRow row)
         {
             if (row.ContainsStart)
             {
-                mergePreviewWorkflowDesignerViewModel.RemoveStartNodeConnection();
+                _mergePreviewWorkflowDesignerViewModel.RemoveStartNodeConnection();
                 LinkStartNode(row);
                 return;
             }
@@ -133,22 +133,22 @@ namespace Dev2.ViewModels.Merge.Utils
 
         private void LinkStartNode(IConnectorConflictRow row)
         {
-            var startToolRow = conflictList.GetStartToolRow();
+            var startToolRow = _conflictList.GetStartToolRow();
 
             var toolConflictItem = row.Different.IsChecked ? startToolRow.DiffViewModel : startToolRow.CurrentViewModel;
 
             toolConflictItem.SetAutoChecked();
             AddActivity(toolConflictItem);
 
-            mergePreviewWorkflowDesignerViewModel.LinkStartNode(toolConflictItem);
+            _mergePreviewWorkflowDesignerViewModel.LinkStartNode(toolConflictItem);
         }
 
         private void AddAndLinkActivity(IConnectorConflictItem changedItem, IConnectorConflictRow row)
         {
             var isCurrent = changedItem.DestinationUniqueId.Equals(row.CurrentArmConnector.DestinationUniqueId);
 
-            var toolConflictItem = isCurrent ? conflictList.GetToolItemFromIdCurrent(changedItem.DestinationUniqueId)
-                                             : conflictList.GetToolItemFromIdDifferent(changedItem.DestinationUniqueId);
+            var toolConflictItem = isCurrent ? _conflictList.GetToolItemFromIdCurrent(changedItem.DestinationUniqueId)
+                                             : _conflictList.GetToolItemFromIdDifferent(changedItem.DestinationUniqueId);
             toolConflictItem.SetAutoChecked();
 
             //if !toolConflictItem.AllowSelection
@@ -166,12 +166,12 @@ namespace Dev2.ViewModels.Merge.Utils
 
         private void LinkActivities(Guid SourceUniqueId, Guid DestinationUniqueId, string Key)
         {
-            mergePreviewWorkflowDesignerViewModel?.LinkActivities(SourceUniqueId, DestinationUniqueId, Key);
+            _mergePreviewWorkflowDesignerViewModel?.LinkActivities(SourceUniqueId, DestinationUniqueId, Key);
         }
 
         private void DeLinkActivities(Guid SourceUniqueId, Guid DestinationUniqueId, string Key)
         {
-            mergePreviewWorkflowDesignerViewModel?.DeLinkActivities(SourceUniqueId, DestinationUniqueId, Key);
+            _mergePreviewWorkflowDesignerViewModel?.DeLinkActivities(SourceUniqueId, DestinationUniqueId, Key);
         }
     }
 }
