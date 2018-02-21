@@ -22,13 +22,13 @@ namespace Dev2.ViewModels.Merge.Utils
 {
     public class ConflictRowListBuilder
     {
-        readonly IConflictModelFactory modelFactoryCurrent;
-        readonly IConflictModelFactory modelFactoryDifferent;
+        readonly IConflictModelFactory _modelFactoryCurrent;
+        readonly IConflictModelFactory _modelFactoryDifferent;
 
         public ConflictRowListBuilder(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent)
         {
-            this.modelFactoryCurrent = modelFactoryCurrent;
-            this.modelFactoryDifferent = modelFactoryDifferent;
+            _modelFactoryCurrent = modelFactoryCurrent;
+            _modelFactoryDifferent = modelFactoryDifferent;
         }
 
         public List<ToolConflictRow> CreateList(ConflictRowList list, ConflictTreeNode[] currentTree, ConflictTreeNode[] diffTree)
@@ -38,7 +38,7 @@ namespace Dev2.ViewModels.Merge.Utils
             int indexDiff = 0;
             int indexCurr = 0;
 
-            while (indexDiff < maxCount)
+            while (indexDiff < maxCount || indexCurr < maxCount)
             {
                 ConflictTreeNode current = null;
                 ConflictTreeNode diff = null;
@@ -52,20 +52,29 @@ namespace Dev2.ViewModels.Merge.Utils
                     diff = diffTree[indexDiff];
                 }
 
-                bool diffFoundInCurrent = currentTree.Contains(diff);
-                bool currFoundInDifferent = diffTree.Contains(current);
-
-                var toolConflictRow = BuildToolConflictRow(list, current, diff, diffFoundInCurrent, currFoundInDifferent);
-                toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
-                toolConflictRowList.Add(toolConflictRow);
-
-                if (diffFoundInCurrent)
+                if (current is null && diff is null)
                 {
                     indexCurr++;
-                }
-                if (currFoundInDifferent)
-                {
                     indexDiff++;
+                }
+                else
+                {
+
+                    bool diffFoundInCurrent = currentTree.Contains(diff);
+                    bool currFoundInDifferent = diffTree.Contains(current);
+
+                    var toolConflictRow = BuildToolConflictRow(list, current, diff, diffFoundInCurrent, currFoundInDifferent);
+                    toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
+                    toolConflictRowList.Add(toolConflictRow);
+
+                    if (diffFoundInCurrent)
+                    {
+                        indexCurr++;
+                    }
+                    if (currFoundInDifferent)
+                    {
+                        indexDiff++;
+                    }
                 }
             }
             return toolConflictRowList;
@@ -93,12 +102,12 @@ namespace Dev2.ViewModels.Merge.Utils
             {
 
                 currentToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Current);
-                modelFactoryCurrent.CreateToolModelConfictItem(currentToolConflictItem, current);
+                _modelFactoryCurrent.CreateToolModelConfictItem(currentToolConflictItem, current);
             }
             if (diffToolConflictItem == null)
             {
                 diffToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Different);
-                modelFactoryDifferent.CreateToolModelConfictItem(diffToolConflictItem, diff);
+                _modelFactoryDifferent.CreateToolModelConfictItem(diffToolConflictItem, diff);
             }
             currentToolConflictItem.AllowSelection = !(diffToolConflictItem is ToolConflictItem.Empty);
             diffToolConflictItem.AllowSelection = !(currentToolConflictItem is ToolConflictItem.Empty);
