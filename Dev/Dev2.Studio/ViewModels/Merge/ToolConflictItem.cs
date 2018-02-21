@@ -35,6 +35,7 @@ namespace Dev2.ViewModels.Merge
         public Guid UniqueId { get; set; }
         public string MergeDescription { get; set; }
         public ModelItem ModelItem { get; set; }
+        public object Activity { get; set; }
         public FlowNode FlowNode { get; set; }
         public Point NodeLocation { get; set; }
         [JsonIgnore]
@@ -51,11 +52,19 @@ namespace Dev2.ViewModels.Merge
         public override bool Equals(object obj)
         {
             var item = obj as ToolConflictItem;
-
-            return item != null &&
-                   MergeDescription == item.MergeDescription &&
-                   UniqueId.Equals(item.UniqueId) &&
-                   EqualityComparer<ModelItem>.Default.Equals(ModelItem, item.ModelItem);
+            if (item == null)
+            {
+                return false;
+            }
+            var equal = UniqueId.Equals(item.UniqueId);
+            equal &= MergeDescription == item.MergeDescription;
+            equal &= ModelItem.Attributes.Equals(item.ModelItem.Attributes);
+            equal &= ModelItem.GetModelPath().Equals(item.ModelItem.GetModelPath());
+            if (Activity != null)
+            {
+                equal &= Activity.Equals(item.Activity);
+            }
+            return equal;
         }
 
         public override int GetHashCode()
@@ -95,6 +104,7 @@ namespace Dev2.ViewModels.Merge
             public string MergeDescription { get; set; }
             public Guid UniqueId { get; set; }
             public FlowNode FlowNode { get; set; }
+            public object Activity { get; set; }
             public ModelItem ModelItem { get; set; }
             public Point NodeLocation { get; set; }
             public IConnectorConflictItem[] InboundConnectors { get => throw new NotImplementedException(); }

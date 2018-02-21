@@ -193,6 +193,7 @@ namespace Dev2.ViewModels.Merge
 
         ToolConflictItem CreateNewMergeToolModel(ToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
         {
+            toolConflictItem.Activity = node.Activity;
             toolConflictItem.InitializeFromActivity(node.Activity, modelItem, node.Location);
             toolConflictItem.SetUserInterface(modelItem.GetImageSourceForTool(), instance);
 
