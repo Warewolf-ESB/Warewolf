@@ -103,7 +103,13 @@ namespace Dev2.ViewModels.Merge.Utils
         private void AddActivity(IToolConflictItem toolModelConflictItem)
         {
             _mergePreviewWorkflowDesignerViewModel.AddItem(toolModelConflictItem);
-
+            if (!(toolModelConflictItem.InboundConnectors is null) && toolModelConflictItem.InboundConnectors.Count != 0)
+            {
+                var sourceUniqueId = toolModelConflictItem.InboundConnectors[0].SourceUniqueId;
+                var destinationUniqueId = toolModelConflictItem.UniqueId;
+                var key = toolModelConflictItem.InboundConnectors[0].Key;
+                LinkActivities(sourceUniqueId, destinationUniqueId, key);
+            }
             // TODO: if there is a connector that IsChecked then connect it back to this tool
 
         }

@@ -27,17 +27,17 @@ namespace Dev2.ViewModels.Merge.Utils
             Current,
             Different
         }
-        readonly ConflictTreeNode[] currentTree;
-        readonly ConflictTreeNode[] diffTree;
-        readonly List<ToolConflictRow> toolConflictRowList;
+        readonly ConflictTreeNode[] _currentTree;
+        readonly ConflictTreeNode[] _diffTree;
+        readonly List<ToolConflictRow> _toolConflictRowList;
 
         public ConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
         {
-            this.currentTree = currentTree.ToArray();
-            this.diffTree = diffTree.ToArray();
+            _currentTree = currentTree.ToArray();
+            _diffTree = diffTree.ToArray();
 
             var createConflictRowList = new ConflictRowListBuilder(modelFactoryCurrent, modelFactoryDifferent);
-            toolConflictRowList = createConflictRowList.CreateList(this, this.currentTree, this.diffTree);
+            _toolConflictRowList = createConflictRowList.CreateList(this, _currentTree, _diffTree);
             BindInboundConnections();
             Ready = true;
         }
@@ -47,7 +47,7 @@ namespace Dev2.ViewModels.Merge.Utils
             List<IConnectorConflictItem> FindConnectorsForTool(IToolConflictItem conflictItem, Column column)
             {
                 var inboundConnectors = new List<IConnectorConflictItem>();
-                foreach (var row in toolConflictRowList)
+                foreach (var row in _toolConflictRowList)
                 {
                     if (column == Column.Current)
                     {
@@ -65,7 +65,7 @@ namespace Dev2.ViewModels.Merge.Utils
                 }
                 return inboundConnectors;
             }
-            foreach (var row in toolConflictRowList)
+            foreach (var row in _toolConflictRowList)
             {
                 if (!(row.CurrentViewModel is ToolConflictItem.Empty))
                 {
@@ -83,14 +83,14 @@ namespace Dev2.ViewModels.Merge.Utils
 
         public IEnumerator<IConflictRow> GetEnumerator()
         {
-            var startToolRow = CreateStartRow(currentTree[0], diffTree[0]);
+            var startToolRow = CreateStartRow(_currentTree[0], _diffTree[0]);
             yield return startToolRow;
             foreach (var connectorRow in startToolRow.Connectors)
             {
                 yield return connectorRow;
             }
 
-            foreach (var toolRow in toolConflictRowList)
+            foreach (var toolRow in _toolConflictRowList)
             {
                 yield return toolRow;
 
@@ -137,14 +137,14 @@ namespace Dev2.ViewModels.Merge.Utils
             toolConflictRow.Connectors = new List<IConnectorConflictRow> { row };
         }
 
-        public IToolConflictRow GetStartToolRow() => toolConflictRowList[0];
+        public IToolConflictRow GetStartToolRow() => _toolConflictRowList[0];
 
-        public IToolConflictItem GetToolItemFromIdCurrent(Guid id) => toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id).CurrentViewModel;
-        public IToolConflictItem GetToolItemFromIdDifferent(Guid id) => toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id).DiffViewModel;
+        public IToolConflictItem GetToolItemFromIdCurrent(Guid id) => _toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id).CurrentViewModel;
+        public IToolConflictItem GetToolItemFromIdDifferent(Guid id) => _toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id).DiffViewModel;
 
         public IConnectorConflictItem GetConnectorItemFromToolIdCurrent(Guid id)
         {
-            var foundTool = toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id);
+            var foundTool = _toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id);
             if (foundTool == null)
             {
                 return null;
@@ -158,7 +158,7 @@ namespace Dev2.ViewModels.Merge.Utils
         }
         public IConnectorConflictItem GetConnectorItemFromToolIdDifferent(Guid id)
         {
-            var foundTool = toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id);
+            var foundTool = _toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id);
             if (foundTool == null)
             {
                 return null;
@@ -172,17 +172,17 @@ namespace Dev2.ViewModels.Merge.Utils
             return connector.DifferentArmConnector;
         }
 
-        public int Count => toolConflictRowList.Count;
+        public int Count => _toolConflictRowList.Count;
 
         public ToolConflictRow this[int key]
         {
             get
             {
-                return toolConflictRowList[key];
+                return _toolConflictRowList[key];
             }
             set
             {
-                toolConflictRowList[key] = value;
+                _toolConflictRowList[key] = value;
             }
         }
 
