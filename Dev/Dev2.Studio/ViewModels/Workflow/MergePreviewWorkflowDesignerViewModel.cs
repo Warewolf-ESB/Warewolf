@@ -104,6 +104,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     break;
             }
             var modelItem = GetItemFromNodeCollection(model.UniqueId);
+            if (modelItem == null)
+            {
+                return;
+            }
             SetShapeLocation(modelItem, model.NodeLocation);
         }
 
@@ -265,7 +269,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (next.GetCurrentValue() is FlowNode nodeItem)
                     {
-                        UpdateSwithArm(key, switchItem, nodeItem, delink);
+                        UpdateSwitchArm(key, switchItem, nodeItem, delink);
                     }
                     if (!delink)
                     {
@@ -273,7 +277,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     return true;
                 }
-                UpdateSwithArm(key, switchItem, null, delink);
+                UpdateSwitchArm(key, switchItem, null, delink);
             }
             return false;
         }
@@ -302,7 +306,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        static void UpdateSwithArm(string key, ModelItem switchItem, FlowNode nodeItem, bool delink = false)
+        static void UpdateSwitchArm(string key, ModelItem switchItem, FlowNode nodeItem, bool delink = false)
         {
             if (key != "Default")
             {

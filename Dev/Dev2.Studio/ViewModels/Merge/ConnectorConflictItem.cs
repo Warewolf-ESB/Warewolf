@@ -52,11 +52,15 @@ namespace Dev2.ViewModels.Merge
 
         public override bool Equals(object obj)
         {
-            var item = obj as ConnectorConflictItem;
-            return item != null &&
-                   SourceUniqueId == item.SourceUniqueId &&
-                   DestinationUniqueId.Equals(item.DestinationUniqueId) &&
-                   Key.Equals(item.Key);
+            if (obj is ConnectorConflictItem item)
+            {
+                var sourceEqual = SourceUniqueId.Equals(item.SourceUniqueId);
+                var destinationEqual = DestinationUniqueId.Equals(item.DestinationUniqueId);
+                var keyEqual = (Key != null && Key.Equals(item.Key));
+                return sourceEqual && destinationEqual && keyEqual;
+            }
+
+            return false;
         }
 
         public override int GetHashCode()
@@ -74,6 +78,8 @@ namespace Dev2.ViewModels.Merge
             public Guid SourceUniqueId { get; set; }
             public Guid DestinationUniqueId { get; set; }
             public string Key { get; set; }
+            public bool IsArmConnectorVisible => false;
+
         }
     }
 }
