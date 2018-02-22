@@ -27,7 +27,6 @@ namespace Dev2.Activities.Specs.Deploy
             Build(GetServerPath());
             CreateContainer();
             StartContainer();
-            StartServer();
             return GetContainerHostname();
         }
 
@@ -84,82 +83,12 @@ namespace Dev2.Activities.Specs.Deploy
                     {
                         throw new HttpRequestException("Error starting remote server container. " + reader.ReadToEnd());
                     }
-                }
-            }
-        }
-
-        void StartServer()
-        {
-            var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/exec";
-            HttpContent containerExecContent = new StringContent(@"
-{
-  ""AttachStdin"": false,
-  ""AttachStdout"": false,
-  ""AttachStderr"": true,
-  ""Cmd"": [""sc.exe"", ""start"", ""Warewolf Server""],
-  ""Privileged"": true,
-  ""Tty"": false
-}
-");
-            containerExecContent.Headers.Remove("Content-Type");
-            containerExecContent.Headers.Add("Content-Type", "application/json");
-            string startWarewolfServerCommandID = "";
-            using (var client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.PostAsync(url, containerExecContent).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Console.Write("Error Creating Start Warewolf Server Command: " + reader.ReadToEnd());
-                    }
                     else
                     {
-                        startWarewolfServerCommandID = ParseForCommandID(reader.ReadToEnd());
+                        Thread.Sleep(300000);
+                        Console.Write("Started Remote Warewolf Server. " + reader.ReadToEnd());
                     }
                 }
-            }
-            url = "http://" + _remoteDockerApi + ":2375/exec/" + startWarewolfServerCommandID + "/start";
-            HttpContent containerExecStartContent = new StringContent(@"
-{
- ""Detach"": false,
- ""Tty"": false
-}");
-            containerExecStartContent.Headers.Remove("Content-Type");
-            containerExecStartContent.Headers.Add("Content-Type", "application/json");
-            using (var client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(0, 20, 0);
-                var response = client.PostAsync(url, containerExecStartContent).Result;
-                var streamingResult = response.Content.ReadAsStreamAsync().Result;
-                using (StreamReader reader = new StreamReader(streamingResult, Encoding.UTF8))
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        Console.Write("Error Starting Warewolf Server: " + reader.ReadToEnd());
-                    }
-                    else
-                    {
-                        Thread.Sleep(120000);
-                        Console.Write("Started Warewolf Server. " + reader.ReadToEnd());
-                    }
-                }
-            }
-        }
-
-        string ParseForCommandID(string responseText)
-        {
-            var parseAround = "\"Id\":\"";
-            if (responseText.Contains(parseAround))
-            {
-                Console.Write("Exec Command Created: " + responseText);
-                return responseText.Substring(responseText.IndexOf(parseAround) + parseAround.Length, 64);
-            }
-            else
-            {
-                throw new HttpRequestException("Error parsing for image ID. " + responseText);
             }
         }
 
@@ -168,7 +97,6 @@ namespace Dev2.Activities.Specs.Deploy
             var url = "http://" + _remoteDockerApi + ":2375/containers/create";
             HttpContent containerContent = new StringContent(@"
 {
-     ""Cmd"": [""ping"", ""-t"", ""4.2.2.1""],
      ""Image"":""" + _remoteImageID + @"""
 }
 ");
@@ -209,7 +137,7 @@ namespace Dev2.Activities.Specs.Deploy
                 {
                     if (!response.IsSuccessStatusCode)
                     {
-                        throw new HttpRequestException("Error creating remote server image. " + reader.ReadToEnd());
+                        throw new HttpRequestException("Error building remote server image. " + reader.ReadToEnd());
                     }
                     else
                     {
@@ -331,7 +259,7 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                     else
                     {
-                        ExtractTar(reader.BaseStream);
+                        Console.Write(ExtractTar(reader.BaseStream));
                     }
                 }
             }

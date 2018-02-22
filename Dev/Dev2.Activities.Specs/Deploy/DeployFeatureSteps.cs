@@ -58,7 +58,7 @@ namespace Dev2.Activities.Specs.Deploy
             string destinationServerHostname = _containerOps.hostname;
 
             var formattableString = $"http://{destinationServerHostname}:3142";
-            IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfUser", "Dev2@dmin123"))
+            IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfAdmin", "W@rEw0lf@dm1n"))
             {
                 Name = destinationServerHostname
             };
@@ -158,7 +158,7 @@ namespace Dev2.Activities.Specs.Deploy
                 {
                     if (result.HasError)
                     {
-                        Assert.Fail("Error returned from deploy operation. " + result.Message);
+                        Assert.Fail("Error returned from deploy operation. " + result.ErrorDetails);
                     }
                 }
             }
