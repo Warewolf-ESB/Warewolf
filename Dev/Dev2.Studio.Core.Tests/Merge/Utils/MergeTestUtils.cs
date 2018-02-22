@@ -143,8 +143,8 @@ namespace Dev2.Core.Tests.Merge.Utils
             var diffConflictModelFactory = CreateDiffConflictModelFactory();
             var rowList = new Mock<ConflictRowList>().Object;
             var toolConflictItem = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
-            var currentViewModel = currentConflictModelFactory.CreateToolModelConfictItem(toolConflictItem, currentTree[0]);
-            var diffViewModel = diffConflictModelFactory.CreateToolModelConfictItem(toolConflictItem, diffTree[0]);
+            var currentViewModel = currentConflictModelFactory.CreateModelItem(toolConflictItem, currentTree[0]);
+            var diffViewModel = diffConflictModelFactory.CreateModelItem(toolConflictItem, diffTree[0]);
 
             var connectors = new List<IConnectorConflictRow>();
 
