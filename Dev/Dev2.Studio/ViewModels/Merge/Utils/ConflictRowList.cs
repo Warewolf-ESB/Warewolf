@@ -78,6 +78,23 @@ namespace Dev2.ViewModels.Merge.Utils
             }
         }
 
+        internal bool ActivityIsInWorkflow(IDev2Activity activity)
+        {
+            foreach (var row in _toolConflictRowList)
+            {
+                var current = row.CurrentViewModel;
+                if (current.Activity != null && current.Activity.Equals(activity) && current.IsChecked)
+                {
+                    return true;
+                }
+                var diff = row.DiffViewModel;
+                if (diff.Activity != null && diff.Activity.Equals(activity) && diff.IsChecked)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

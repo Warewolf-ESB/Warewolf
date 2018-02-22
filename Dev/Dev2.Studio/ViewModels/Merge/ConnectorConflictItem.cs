@@ -51,8 +51,8 @@ namespace Dev2.ViewModels.Merge
         public override bool AllowSelection { get {
                 var sourceItem = SourceConflictItem();
                 var destinationItem = DestinationConflictItem();
-                return sourceItem != null && sourceItem.IsChecked
-                        && destinationItem != null && destinationItem.IsChecked;
+                return sourceItem != null && sourceItem.IsInWorkflow
+                        && destinationItem != null && destinationItem.IsInWorkflow;
             }
         }
         public IToolConflictItem SourceConflictItem() {

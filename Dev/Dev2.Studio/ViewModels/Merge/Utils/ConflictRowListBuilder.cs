@@ -77,20 +77,15 @@ namespace Dev2.ViewModels.Merge.Utils
 
         private ToolConflictRow BuildToolConflictRow(ConflictRowList list, ConflictTreeNode current, ConflictTreeNode diff, bool diffFoundInCurrent, bool currFoundInDifferent)
         {
-            bool found = diffFoundInCurrent && currFoundInDifferent;
-
             IToolConflictItem currentToolConflictItem = null;
             IToolConflictItem diffToolConflictItem = null;
-            if (!found)
+            if (!diffFoundInCurrent)
             {
-                if (!diffFoundInCurrent)
-                {
-                    currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
-                }
-                if (!currFoundInDifferent)
-                {
-                    diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
-                }
+                currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
+            }
+            if (!currFoundInDifferent)
+            {
+                diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
             }
 
             if (currentToolConflictItem == null)
@@ -109,7 +104,9 @@ namespace Dev2.ViewModels.Merge.Utils
             //currentToolConflictItem.AllowSelection = !(diffToolConflictItem is ToolConflictItem.Empty)
             //diffToolConflictItem.AllowSelection = !(currentToolConflictItem is ToolConflictItem.Empty)
 
-            var connectors = GetConnectorConflictRows(list, currentToolConflictItem, diffToolConflictItem, current, diff);
+            var currentConnectorConflictTreeNode = currentToolConflictItem is ToolConflictItem.Empty ? null : current;
+            var diffConnectorConflictTreeNode = diffToolConflictItem is ToolConflictItem.Empty ? null : diff;
+            var connectors = GetConnectorConflictRows(list, currentToolConflictItem, diffToolConflictItem, currentConnectorConflictTreeNode, diffConnectorConflictTreeNode);
 
             if (currentToolConflictItem.Activity != null && diffToolConflictItem.Activity != null && currentToolConflictItem.Activity.Equals(diffToolConflictItem.Activity))
             {
