@@ -138,7 +138,7 @@ namespace Dev2.ViewModels.Merge
         }
         public IDataListViewModel DataListViewModel { get; set; }
 
-        public IToolConflictItem CreateToolModelConfictItem(IToolConflictItem toolConflictItem, IConflictTreeNode node)
+        public IToolConflictItem CreateModelItem(IToolConflictItem toolConflictItem, IConflictTreeNode node)
         {
             var modelItem = ModelItemUtils.CreateModelItem(node.Activity);
             return GetModel(toolConflictItem, modelItem, node);
