@@ -291,7 +291,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (delink)
                     {
-                        SetNextProperty(source, null);
+                        var currentlyLinkedItem = GetNextItem(source);
+                        if (currentlyLinkedItem != null && currentlyLinkedItem == next)
+                        {
+                            SetNextProperty(source, null);
+                        }
                     }
                     else
                     {
@@ -302,7 +306,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             else
             {
-                SetNextProperty(source, null);
+                var currentlyLinkedItem = GetNextItem(source);
+                if (currentlyLinkedItem is null)
+                {
+                    SetNextProperty(source, null);
+                }
             }
         }
 
@@ -351,6 +359,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
             parentNodeProperty.SetValue(nextStep);
+        }
+
+        ModelItem GetNextItem(ModelItem source)
+        {
+            var parentNodeProperty = source.Properties["Next"];
+            if (parentNodeProperty == null)
+            {
+                return null;
+            }
+            return parentNodeProperty.Value;
         }
 
         ModelItem GetRegularActivityFromNodeCollection(Guid uniqueId) => NodesCollection.FirstOrDefault(q =>
