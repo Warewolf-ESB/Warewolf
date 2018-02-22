@@ -141,7 +141,7 @@ namespace Dev2.Core.Tests.Merge.Utils
 
             var currentConflictModelFactory = CreateCurrentConflictModelFactory();
             var diffConflictModelFactory = CreateDiffConflictModelFactory();
-            var rowList = new Mock<ConflictRowList>().Object;
+            var rowList = CreateMockConflictRowList();
             var toolConflictItem = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
             var currentViewModel = currentConflictModelFactory.CreateToolModelConfictItem(toolConflictItem, currentTree[0]);
             var diffViewModel = diffConflictModelFactory.CreateToolModelConfictItem(toolConflictItem, diffTree[0]);
@@ -154,26 +154,33 @@ namespace Dev2.Core.Tests.Merge.Utils
         protected static ToolConflictRow CreateStartRow()
         {
             var imageSource = new DrawingImage();
-
+            
             var startConflictItemCurrent = NewStartConflictItem(imageSource);
             var startConflictItemDiff = NewStartConflictItem(imageSource);
-
             return ToolConflictRow.CreateStartRow(startConflictItemCurrent, startConflictItemDiff);
         }
 
         protected ToolConflictItem CreateToolConflictItem()
         {
             _modelItem = ModelItemUtils.CreateModelItem(_multiAssign);
-            var rowList = new Mock<ConflictRowList>().Object;
+            var rowList = CreateMockConflictRowList();
             var toolConflictItem = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
             toolConflictItem.InitializeFromActivity(_multiAssign, _modelItem, _location);
             return toolConflictItem;
         }
+        static ConflictRowList CreateMockConflictRowList()
+        {
+            var modelFactoryCurrent = new Mock<IConflictModelFactory>();
+            var modelFactoryDifferent = new Mock<IConflictModelFactory>();
+            var currentTree = new List<ConflictTreeNode>();
+            var diffTree = new List<ConflictTreeNode>();
+            return new ConflictRowList(modelFactoryCurrent.Object, modelFactoryDifferent.Object, currentTree, diffTree);
+        }
 
         protected static ToolConflictItem NewStartConflictItem(DrawingImage imageSource)
         {
-            var rowList = new Mock<ConflictRowList>().Object;
-            return ToolConflictItem.NewStartConflictItem(rowList, ConflictRowList.Column.Current,imageSource);
+            var rowList = CreateMockConflictRowList();
+            return ToolConflictItem.NewStartConflictItem(rowList, ConflictRowList.Column.Current, imageSource);
         }
 
         protected MergeWorkflowViewModel CreateMergeWorkflowViewModel()
