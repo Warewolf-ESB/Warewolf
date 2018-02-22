@@ -11,6 +11,7 @@ SHELL ["powershell"]
 RUN New-Item -Path Build -ItemType Directory
 ADD . Build
 ENV SCRIPT_PATH "Build\Run Tests.ps1"
-ENTRYPOINT & $env:SCRIPT_PATH
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
+
+ENTRYPOINT & $env:SCRIPT_PATH
 CMD ["-StartServerAsConsole", "-ResourcesType", "Release"]
