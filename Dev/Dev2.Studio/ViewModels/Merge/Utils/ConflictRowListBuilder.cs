@@ -79,11 +79,11 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             IToolConflictItem currentToolConflictItem = null;
             IToolConflictItem diffToolConflictItem = null;
-            if (!diffFoundInCurrent)
+            if (!diffFoundInCurrent && currFoundInDifferent)
             {
                 currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
             }
-            if (!currFoundInDifferent)
+            if (!currFoundInDifferent && diffFoundInCurrent)
             {
                 diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
             }
