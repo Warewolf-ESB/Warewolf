@@ -104,10 +104,17 @@ namespace Dev2.ViewModels.Merge.Utils
                 diffToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Different);
                 _modelFactoryDifferent.CreateToolModelConfictItem(diffToolConflictItem, diff);
             }
+
+
             //currentToolConflictItem.AllowSelection = !(diffToolConflictItem is ToolConflictItem.Empty)
             //diffToolConflictItem.AllowSelection = !(currentToolConflictItem is ToolConflictItem.Empty)
 
             var connectors = GetConnectorConflictRows(list, currentToolConflictItem, diffToolConflictItem, current, diff);
+
+            if (currentToolConflictItem.Activity != null && diffToolConflictItem.Activity != null && currentToolConflictItem.Activity.Equals(diffToolConflictItem.Activity))
+            {
+                diffToolConflictItem = currentToolConflictItem;
+            }
 
             var toolConflictRow = ToolConflictRow.CreateConflictRow(currentToolConflictItem, diffToolConflictItem, connectors);
             return toolConflictRow;
