@@ -20,11 +20,11 @@ namespace Dev2.Core.Tests.Merge
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.IsNotNull(toolConflictItem);
-            Assert.AreEqual(multiAssign.UniqueID, toolConflictItem.UniqueId.ToString());
-            Assert.AreEqual(multiAssign.DisplayName, toolConflictItem.MergeDescription);
+            Assert.AreEqual(_multiAssign.UniqueID, toolConflictItem.UniqueId.ToString());
+            Assert.AreEqual(_multiAssign.DisplayName, toolConflictItem.MergeDescription);
             Assert.IsNotNull(toolConflictItem.FlowNode);
-            Assert.AreEqual(modelItem, toolConflictItem.ModelItem);
-            Assert.AreEqual(location, toolConflictItem.NodeLocation);
+            Assert.AreEqual(_modelItem, toolConflictItem.ModelItem);
+            Assert.AreEqual(_location, toolConflictItem.NodeLocation);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace Dev2.Core.Tests.Merge
             var toolConflictItem = CreateToolConflictItem();
 
             var imageSource = new DrawingImage();
-            var instance = new MultiAssignDesignerViewModel(modelItem);
+            var instance = new MultiAssignDesignerViewModel(_modelItem);
 
             toolConflictItem.SetUserInterface(imageSource, instance);
             //------------Execute Test---------------------------

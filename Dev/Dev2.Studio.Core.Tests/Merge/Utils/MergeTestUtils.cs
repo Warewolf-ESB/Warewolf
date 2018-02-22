@@ -24,8 +24,8 @@ namespace Dev2.Core.Tests.Merge.Utils
 {
     public struct WorkflowData
     {
-        public string Current;
-        public string Different;
+        public string Current { get; set; }
+        public string Different { get; set; }
     }
 
     public static class WorkflowTestResources
@@ -64,13 +64,13 @@ namespace Dev2.Core.Tests.Merge.Utils
 
     public class MergeTestUtils
     {
-        protected readonly Point location = new Point(10, 10);
-        protected DsfMultiAssignActivity multiAssign = new DsfMultiAssignActivity
+        protected readonly Point _location = new Point(10, 10);
+        protected DsfMultiAssignActivity _multiAssign = new DsfMultiAssignActivity
         {
             UniqueID = Guid.NewGuid().ToString(),
             DisplayName = "MultiAssign"
         };
-        protected ModelItem modelItem;
+        protected ModelItem _modelItem;
         readonly IServiceDifferenceParser _serviceDifferenceParser = new ServiceDifferenceParser(new ActivityParser(), new ResourceDefinationCleaner());
 
         private static Mock<IContextualResourceModel> CreateResourceModel(string xamlDefinition)
@@ -163,10 +163,10 @@ namespace Dev2.Core.Tests.Merge.Utils
 
         protected ToolConflictItem CreateToolConflictItem()
         {
-            modelItem = ModelItemUtils.CreateModelItem(multiAssign);
+            _modelItem = ModelItemUtils.CreateModelItem(_multiAssign);
             var rowList = new Mock<ConflictRowList>().Object;
             var toolConflictItem = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
-            toolConflictItem.InitializeFromActivity(multiAssign, modelItem, location);
+            toolConflictItem.InitializeFromActivity(_multiAssign, _modelItem, _location);
             return toolConflictItem;
         }
 

@@ -155,19 +155,21 @@ namespace Dev2.ViewModels.Merge.Utils
 
             var toolConflictItem = isCurrent ? _conflictList.GetToolItemFromIdCurrent(changedItem.DestinationUniqueId)
                                              : _conflictList.GetToolItemFromIdDifferent(changedItem.DestinationUniqueId);
-            toolConflictItem.SetAutoChecked();
+            if (!(toolConflictItem is null))
+            {
+                toolConflictItem.SetAutoChecked();
 
-            //if !toolConflictItem.AllowSelection
-            //
-            //    var connectorConflictItem = isCurrent ?
-            //        conflictList.GetConnectorItemFromToolIdCurrent(toolConflictItem.UniqueId) :
-            //        conflictList.GetConnectorItemFromToolIdDifferent(toolConflictItem.UniqueId)
-            //    connectorConflictItem.AllowSelection = true
-            //
+                //if !toolConflictItem.AllowSelection
+                //
+                //    var connectorConflictItem = isCurrent ?
+                //        conflictList.GetConnectorItemFromToolIdCurrent(toolConflictItem.UniqueId) :
+                //        conflictList.GetConnectorItemFromToolIdDifferent(toolConflictItem.UniqueId)
+                //    connectorConflictItem.AllowSelection = true
+                //
 
-            AddActivity(toolConflictItem);
-
-            LinkActivities(changedItem.SourceUniqueId, changedItem.DestinationUniqueId, changedItem.Key);
+                AddActivity(toolConflictItem);
+                LinkActivities(changedItem.SourceUniqueId, changedItem.DestinationUniqueId, changedItem.Key);
+            }
         }
 
         private void LinkActivities(Guid SourceUniqueId, Guid DestinationUniqueId, string Key)
