@@ -42,6 +42,7 @@ namespace Dev2.ViewModels.Merge.Utils
             Ready = true;
         }
 
+
         void BindInboundConnections()
         {
             List<IConnectorConflictItem> FindConnectorsForTool(IToolConflictItem conflictItem, Column column)
