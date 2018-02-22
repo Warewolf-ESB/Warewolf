@@ -38,7 +38,7 @@ namespace Dev2.ViewModels.Merge.Utils
             int indexDiff = 0;
             int indexCurr = 0;
 
-            while (indexDiff < maxCount || indexCurr < maxCount)
+            for (int i = 0; i < maxCount; i++)
             {
                 ConflictTreeNode current = null;
                 ConflictTreeNode diff = null;
@@ -51,30 +51,25 @@ namespace Dev2.ViewModels.Merge.Utils
                 {
                     diff = diffTree[indexDiff];
                 }
+                if (current == null && diff == null)
+                {
+                    break;
+                }
 
-                if (current is null && diff is null)
+                bool diffFoundInCurrent = currentTree.Contains(diff);
+                bool currFoundInDifferent = diffTree.Contains(current);
+
+                var toolConflictRow = BuildToolConflictRow(list, current, diff, diffFoundInCurrent, currFoundInDifferent);
+                toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
+                toolConflictRowList.Add(toolConflictRow);
+
+                if (diffFoundInCurrent)
                 {
                     indexCurr++;
-                    indexDiff++;
                 }
-                else
+                if (currFoundInDifferent)
                 {
-
-                    bool diffFoundInCurrent = currentTree.Contains(diff);
-                    bool currFoundInDifferent = diffTree.Contains(current);
-
-                    var toolConflictRow = BuildToolConflictRow(list, current, diff, diffFoundInCurrent, currFoundInDifferent);
-                    toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
-                    toolConflictRowList.Add(toolConflictRow);
-
-                    if (diffFoundInCurrent)
-                    {
-                        indexCurr++;
-                    }
-                    if (currFoundInDifferent)
-                    {
-                        indexDiff++;
-                    }
+                    indexDiff++;
                 }
             }
             return toolConflictRowList;
@@ -109,8 +104,8 @@ namespace Dev2.ViewModels.Merge.Utils
                 diffToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Different);
                 _modelFactoryDifferent.CreateToolModelConfictItem(diffToolConflictItem, diff);
             }
-            currentToolConflictItem.AllowSelection = !(diffToolConflictItem is ToolConflictItem.Empty);
-            diffToolConflictItem.AllowSelection = !(currentToolConflictItem is ToolConflictItem.Empty);
+            //currentToolConflictItem.AllowSelection = !(diffToolConflictItem is ToolConflictItem.Empty)
+            //diffToolConflictItem.AllowSelection = !(currentToolConflictItem is ToolConflictItem.Empty)
 
             var connectors = GetConnectorConflictRows(list, currentToolConflictItem, diffToolConflictItem, current, diff);
 
@@ -135,12 +130,12 @@ namespace Dev2.ViewModels.Merge.Utils
                 if (armConnectorsCurrent != null && index < armConnectorsCurrent.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsCurrent[index];
-                    var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Current, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key)
-                    {
-                        AllowSelection = false
-                    };
+                    var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Current, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
                     row.CurrentArmConnector = connector;
-                    currentConflictItem.OutboundConnectors.Add(connector);
+                    if (!(currentConflictItem is ToolConflictItem.Empty))
+                    {
+                        currentConflictItem.OutboundConnectors.Add(connector);
+                    }
                 }
                 else
                 {
@@ -150,12 +145,12 @@ namespace Dev2.ViewModels.Merge.Utils
                 if (armConnectorsDiff != null && index < armConnectorsDiff.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsDiff[index];
-                    var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Different, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key)
-                    {
-                        AllowSelection = false
-                    };
+                    var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Different, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
                     row.DifferentArmConnector = connector;
-                    diffConflictItem.OutboundConnectors.Add(connector);
+                    if (!(diffConflictItem is ToolConflictItem.Empty))
+                    {
+                        diffConflictItem.OutboundConnectors.Add(connector);
+                    }
                 }
                 else
                 {

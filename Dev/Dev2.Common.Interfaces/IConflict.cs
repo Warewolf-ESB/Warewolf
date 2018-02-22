@@ -36,7 +36,7 @@ namespace Dev2.Common.Interfaces
     {
         void SetAutoChecked();
         bool IsChecked { get; set; }
-        bool AllowSelection { get; set; }
+        bool AllowSelection { get; }
         event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
     public interface IConflictRow

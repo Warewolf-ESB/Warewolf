@@ -139,8 +139,8 @@ namespace Dev2.ViewModels.Merge.Utils
 
         public IToolConflictRow GetStartToolRow() => _toolConflictRowList[0];
 
-        public IToolConflictItem GetToolItemFromIdCurrent(Guid id) => _toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id).CurrentViewModel;
-        public IToolConflictItem GetToolItemFromIdDifferent(Guid id) => _toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id).DiffViewModel;
+        public IToolConflictItem GetToolItemFromIdCurrent(Guid id) => _toolConflictRowList.FirstOrDefault(tool => tool.CurrentViewModel.UniqueId == id)?.CurrentViewModel;
+        public IToolConflictItem GetToolItemFromIdDifferent(Guid id) => _toolConflictRowList.FirstOrDefault(tool => tool.DiffViewModel.UniqueId == id)?.DiffViewModel;
 
         public IConnectorConflictItem GetConnectorItemFromToolIdCurrent(Guid id)
         {
