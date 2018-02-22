@@ -173,7 +173,7 @@ namespace Dev2.Activities.Specs.Deploy
             var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
             ScenarioContext.Current.TryGetValue(workflowName, out IContextualResourceModel resourceModel);
             var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
-            resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceModel.ID, newName);
+            localhost.ExplorerRepository.UpdateManagerProxy.Rename(resourceModel.ID, newName);
         }
     }
 }
