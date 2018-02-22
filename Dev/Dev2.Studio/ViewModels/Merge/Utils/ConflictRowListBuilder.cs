@@ -79,13 +79,20 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             IToolConflictItem currentToolConflictItem = null;
             IToolConflictItem diffToolConflictItem = null;
-            if (!diffFoundInCurrent)
+            if (!diffFoundInCurrent && !currFoundInDifferent)
             {
-                currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
+                 //This is a gaurd clause
             }
-            if (!currFoundInDifferent)
+            else
             {
-                diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
+                if (!diffFoundInCurrent)
+                {
+                    currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
+                }
+                if (!currFoundInDifferent)
+                {
+                    diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
+                }
             }
 
             if (currentToolConflictItem == null)
