@@ -18,16 +18,16 @@ namespace Dev2.ViewModels.Merge.Utils
     /// </summary>
     public class ConflictListStateApplier
     {
-        readonly ConflictRowList conflictRowList;
+        readonly ConflictRowList _conflictRowList;
         // TODO: this state applier should also be used to disable Connectors that are unavailable
         public ConflictListStateApplier(ConflictRowList conflicts)
         {
-            this.conflictRowList = conflicts;
-            //RegisterEventHandlerForConflictItemChanges()
+            this._conflictRowList = conflicts;
+            RegisterEventHandlerForConflictItemChanges();
         }
         public void SetConnectorSelectionsToCurrentState()
         {
-            foreach (var row in conflictRowList)
+            foreach (var row in _conflictRowList)
             {
                 if (row.Current is IToolConflictItem toolConflictItem && !(row.Current is ToolConflictItem.Empty))
                 {
@@ -42,7 +42,7 @@ namespace Dev2.ViewModels.Merge.Utils
 
         public void RegisterEventHandlerForConflictItemChanges()
         {
-            foreach (var row in conflictRowList)
+            foreach (var row in _conflictRowList)
             {
                 row.Current.NotifyIsCheckedChanged += ConflictItemIsCheckedChangedHandler;
                 row.Different.NotifyIsCheckedChanged += ConflictItemIsCheckedChangedHandler;
@@ -53,7 +53,11 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             if (changedItem is ConnectorConflictItem connectorConflictItem)
             {
-                connectorConflictItem.DestinationConflictItem().IsChecked = true;
+                var destItem = connectorConflictItem.DestinationConflictItem();
+                if (!(destItem is null))
+                {
+                    destItem.IsChecked = true;
+                }
             }
         }
     }
