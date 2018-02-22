@@ -103,7 +103,7 @@ namespace Dev2.ViewModels.Merge.Utils
         private void AddActivity(IToolConflictItem toolModelConflictItem)
         {
             _mergePreviewWorkflowDesignerViewModel.AddItem(toolModelConflictItem);
-            if (!(toolModelConflictItem.InboundConnectors is null) && toolModelConflictItem.InboundConnectors.Count != 0)
+            if (!(toolModelConflictItem.InboundConnectors is null) && toolModelConflictItem.InboundConnectors.Count > 0)
             {
                 var sourceUniqueId = toolModelConflictItem.InboundConnectors[0].SourceUniqueId;
                 var destinationUniqueId = toolModelConflictItem.UniqueId;
@@ -129,7 +129,7 @@ namespace Dev2.ViewModels.Merge.Utils
             }
             if (changedItem.IsChecked)
             {
-                AddAndLinkActivity(changedItem, row);
+                AddAndLinkActivity(changedItem);
             }
             else
             {
@@ -149,26 +149,16 @@ namespace Dev2.ViewModels.Merge.Utils
             _mergePreviewWorkflowDesignerViewModel.LinkStartNode(toolConflictItem);
         }
 
-        private void AddAndLinkActivity(IConnectorConflictItem changedItem, IConnectorConflictRow row)
+        private void AddAndLinkActivity(IConnectorConflictItem changedItem)
         {
-            var isCurrent = changedItem.DestinationUniqueId.Equals(row.CurrentArmConnector.DestinationUniqueId);
-
-            var toolConflictItem = isCurrent ? _conflictList.GetToolItemFromIdCurrent(changedItem.DestinationUniqueId)
-                                             : _conflictList.GetToolItemFromIdDifferent(changedItem.DestinationUniqueId);
-            if (!(toolConflictItem is null))
+            var sourceConflictItem = changedItem.SourceConflictItem();
+            var destinationConflictItem = changedItem.DestinationConflictItem();
+            if (changedItem.IsChecked)
             {
-                toolConflictItem.SetAutoChecked();
-
-                //if !toolConflictItem.AllowSelection
-                //
-                //    var connectorConflictItem = isCurrent ?
-                //        conflictList.GetConnectorItemFromToolIdCurrent(toolConflictItem.UniqueId) :
-                //        conflictList.GetConnectorItemFromToolIdDifferent(toolConflictItem.UniqueId)
-                //    connectorConflictItem.AllowSelection = true
-                //
-
-                AddActivity(toolConflictItem);
-                LinkActivities(changedItem.SourceUniqueId, changedItem.DestinationUniqueId, changedItem.Key);
+                LinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, sourceConflictItem.UniqueId.ToString());
+            } else
+            {
+                DeLinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, sourceConflictItem.UniqueId.ToString());
             }
         }
 

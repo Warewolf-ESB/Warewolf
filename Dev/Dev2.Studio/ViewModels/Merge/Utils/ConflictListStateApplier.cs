@@ -54,7 +54,7 @@ namespace Dev2.ViewModels.Merge.Utils
             if (changedItem is ConnectorConflictItem connectorConflictItem)
             {
                 var destItem = connectorConflictItem.DestinationConflictItem();
-                if (!(destItem is null))
+                if (!(destItem is null) && connectorConflictItem.IsChecked)
                 {
                     destItem.IsChecked = true;
                 }

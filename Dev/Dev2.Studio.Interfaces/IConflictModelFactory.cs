@@ -24,7 +24,7 @@ namespace Dev2.Studio.Interfaces
         IDataListViewModel DataListViewModel { get; set; }
         void GetDataList(IContextualResourceModel resourceModel);
 
-        IToolConflictItem CreateToolModelConfictItem(IToolConflictItem toolConflictItem, IConflictTreeNode node);
+        IToolConflictItem CreateModelItem(IToolConflictItem toolConflictItem, IConflictTreeNode node);
 
         event ConflictModelChanged SomethingConflictModelChanged;
     }
