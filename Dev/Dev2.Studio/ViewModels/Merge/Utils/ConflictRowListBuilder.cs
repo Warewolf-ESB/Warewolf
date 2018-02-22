@@ -59,61 +59,64 @@ namespace Dev2.ViewModels.Merge.Utils
                 bool diffFoundInCurrent = currentTree.Contains(diff);
                 bool currFoundInDifferent = diffTree.Contains(current);
 
-                var toolConflictRow = BuildToolConflictRow(list, current, diff, diffFoundInCurrent, currFoundInDifferent);
-                toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
-                toolConflictRowList.Add(toolConflictRow);
-
-                if (diffFoundInCurrent)
+                #region get tool conflict item
+                IToolConflictItem currentToolConflictItem = null;
+                IToolConflictItem diffToolConflictItem = null;
+                if (!diffFoundInCurrent && !currFoundInDifferent)
                 {
+                    //This is a guard clause
+
+                    // NOTE: if we want to allow a tool that was deleted to not conflict with a tool that was added
+                    // this is where it would be implemented
+                }
+                else
+                {
+                    if (!diffFoundInCurrent)
+                    {
+                        currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
+                    }
+                    if (!currFoundInDifferent)
+                    {
+                        diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
+                    }
+                }
+
+                if (currentToolConflictItem == null)
+                {
+                    currentToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Current);
+                    _modelFactoryCurrent.CreateModelItem(currentToolConflictItem, current);
                     indexCurr++;
                 }
-                if (currFoundInDifferent)
+                if (diffToolConflictItem == null)
                 {
+                    diffToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Different);
+                    _modelFactoryDifferent.CreateModelItem(diffToolConflictItem, diff);
                     indexDiff++;
                 }
+                #endregion
+
+                var toolConflictRow = BuildToolConflictRow(list, current, diff, currentToolConflictItem, diffToolConflictItem);
+                toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
+                toolConflictRowList.Add(toolConflictRow);
             }
             return toolConflictRowList;
         }
 
-        private ToolConflictRow BuildToolConflictRow(ConflictRowList list, ConflictTreeNode current, ConflictTreeNode diff, bool diffFoundInCurrent, bool currFoundInDifferent)
+        static ToolConflictRow BuildToolConflictRow(ConflictRowList list, ConflictTreeNode current, ConflictTreeNode diff, IToolConflictItem currentToolConflictItem, IToolConflictItem diffToolConflictItem)
         {
-            IToolConflictItem currentToolConflictItem = null;
-            IToolConflictItem diffToolConflictItem = null;
-            if (!diffFoundInCurrent)
-            {
-                currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
-            }
-            if (!currFoundInDifferent)
-            {
-                diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
-            }
-
-            if (currentToolConflictItem == null)
-            {
-
-                currentToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Current);
-                _modelFactoryCurrent.CreateToolModelConfictItem(currentToolConflictItem, current);
-            }
-            if (diffToolConflictItem == null)
-            {
-                diffToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Different);
-                _modelFactoryDifferent.CreateToolModelConfictItem(diffToolConflictItem, diff);
-            }
-
-
-            //currentToolConflictItem.AllowSelection = !(diffToolConflictItem is ToolConflictItem.Empty)
-            //diffToolConflictItem.AllowSelection = !(currentToolConflictItem is ToolConflictItem.Empty)
-
             var currentConnectorConflictTreeNode = currentToolConflictItem is ToolConflictItem.Empty ? null : current;
             var diffConnectorConflictTreeNode = diffToolConflictItem is ToolConflictItem.Empty ? null : diff;
             var connectors = GetConnectorConflictRows(list, currentToolConflictItem, diffToolConflictItem, currentConnectorConflictTreeNode, diffConnectorConflictTreeNode);
 
+            var diffToolConflictItem_override = diffToolConflictItem;
             if (currentToolConflictItem.Activity != null && diffToolConflictItem.Activity != null && currentToolConflictItem.Activity.Equals(diffToolConflictItem.Activity))
             {
-                diffToolConflictItem = currentToolConflictItem;
+                // TODO: the diff conflictitem has now changed. We need to set all connectors that refer to the diff tool
+                // so that they are also referencing the currentTool
+                diffToolConflictItem_override = currentToolConflictItem;
             }
 
-            var toolConflictRow = ToolConflictRow.CreateConflictRow(currentToolConflictItem, diffToolConflictItem, connectors);
+            var toolConflictRow = ToolConflictRow.CreateConflictRow(currentToolConflictItem, diffToolConflictItem_override, connectors);
             return toolConflictRow;
         }
 
