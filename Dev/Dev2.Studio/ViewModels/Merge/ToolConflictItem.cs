@@ -24,7 +24,6 @@ namespace Dev2.ViewModels.Merge
 {
     public class ToolConflictItem : ConflictItem, IToolConflictItem, ICheckable
     {
-        private bool _allowSelection;
         readonly (ConflictRowList list, ConflictRowList.Column column) context;
         public ToolConflictItem(ConflictRowList list, ConflictRowList.Column column)
         {
@@ -42,11 +41,7 @@ namespace Dev2.ViewModels.Merge
         [JsonIgnore]
         public ImageSource MergeIcon { get; set; }
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
-        public override bool AllowSelection
-        {
-            get => _allowSelection;
-            set => SetProperty(ref _allowSelection, value);
-        }
+        public override bool AllowSelection { get; }
         public List<IConnectorConflictItem> InboundConnectors { get; set; }
         public List<IConnectorConflictItem> OutboundConnectors { get; private set; }
 

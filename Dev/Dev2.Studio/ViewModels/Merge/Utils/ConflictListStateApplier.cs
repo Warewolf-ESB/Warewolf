@@ -24,7 +24,6 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             this.conflictRowList = conflicts;
             RegisterEventHandlerForConflictItemChanges();
-            RegisterConnectorEventHandlerForTool();
         }
         public void SetConnectorSelectionsToCurrentState()
         {
@@ -52,31 +51,6 @@ namespace Dev2.ViewModels.Merge.Utils
             {
                 row.Current.NotifyIsCheckedChanged += ConflictItemIsCheckedChangedHandler;
                 row.Different.NotifyIsCheckedChanged += ConflictItemIsCheckedChangedHandler;
-            }
-        }
-
-        private void RegisterConnectorEventHandlerForTool()
-        {
-            ToolConflictRow lastToolRow = null;
-            foreach (var row in conflictRowList)
-            {
-                if (row is ToolConflictRow toolRow)
-                {
-                    lastToolRow = toolRow;
-                }
-                if (row is ConnectorConflictRow connectorRow)
-                {
-                    if (lastToolRow == null)
-                    {
-                        throw new System.Exception("Invalid connector sequence detected");
-                    }
-                    lastToolRow.Current.NotifyIsCheckedChanged += (item, isChecked) => {
-                        connectorRow.CurrentArmConnector.AllowSelection = item.IsChecked;
-                    };
-                    lastToolRow.Different.NotifyIsCheckedChanged += (item, isChecked) => {
-                        connectorRow.DifferentArmConnector.AllowSelection = item.IsChecked;
-                    };
-                }
             }
         }
 

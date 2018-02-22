@@ -48,11 +48,12 @@ namespace Dev2.ViewModels.Merge
 
         internal static IConnectorConflictItem EmptyConflictItem() => new Empty();
 
-        private bool _allowSelection;
-        public override bool AllowSelection
-        {
-            get => _allowSelection;
-            set => SetProperty(ref _allowSelection, value);
+        public override bool AllowSelection { get {
+                var sourceItem = SourceConflictItem();
+                var destinationItem = DestinationConflictItem();
+                return sourceItem != null && sourceItem.IsChecked
+                        && destinationItem != null && destinationItem.IsChecked;
+            }
         }
         public IToolConflictItem SourceConflictItem() {
             if (!context.list.Ready) {
