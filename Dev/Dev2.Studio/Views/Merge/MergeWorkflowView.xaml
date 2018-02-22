@@ -569,7 +569,6 @@
                                                                  HorizontalAlignment="Left"
                                                                  GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
                                                                  Margin="3,0,3,0"
-                                                                 IsEnabled="{Binding AllowSelection}"
                                                                  AutomationProperties.AutomationId="UI_DifferenceNodeArmRB_AutoID">
                                                         <RadioButton.Style>
                                                             <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">

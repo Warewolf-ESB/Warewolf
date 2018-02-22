@@ -42,6 +42,9 @@ namespace Dev2.ViewModels.Merge
         public ImageSource MergeIcon { get; set; }
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
         public override bool AllowSelection { get; }
+        public bool IsInWorkflow {
+            get => context.list.ActivityIsInWorkflow(Activity as IDev2Activity);
+        }
         public List<IConnectorConflictItem> InboundConnectors { get; set; }
         public List<IConnectorConflictItem> OutboundConnectors { get; private set; }
 
@@ -106,6 +109,7 @@ namespace Dev2.ViewModels.Merge
             List<IConnectorConflictItem> _inboundConnectors;
             public List<IConnectorConflictItem> InboundConnectors { get => null; set => _inboundConnectors = value; }
             public List<IConnectorConflictItem> OutboundConnectors { get => throw new NotImplementedException(); }
+            public bool IsInWorkflow => false;
         }
     }
 

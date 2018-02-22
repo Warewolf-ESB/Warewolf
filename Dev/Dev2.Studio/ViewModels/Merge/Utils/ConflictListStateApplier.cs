@@ -23,24 +23,19 @@ namespace Dev2.ViewModels.Merge.Utils
         public ConflictListStateApplier(ConflictRowList conflicts)
         {
             this.conflictRowList = conflicts;
-            RegisterEventHandlerForConflictItemChanges();
+            //RegisterEventHandlerForConflictItemChanges()
         }
         public void SetConnectorSelectionsToCurrentState()
         {
-            foreach (var conflict in conflictRowList)
+            foreach (var row in conflictRowList)
             {
-                if (conflict is IConflictCheckable check)
+                if (row.Current is IToolConflictItem toolConflictItem && !(row.Current is ToolConflictItem.Empty))
                 {
-                    check.IsCurrentChecked = true;
-                }
-
-                if (conflict.Current is ConnectorConflictItem.Empty)
-                {
-                    conflict.Different.IsChecked = true;
-                }
-                if (conflict.Different is ConnectorConflictItem.Empty)
-                {
-                    conflict.Current.IsChecked = true;
+                    toolConflictItem.IsChecked = true;
+                    foreach (var connector in toolConflictItem.OutboundConnectors)
+                    {
+                        connector.IsChecked = true;
+                    }
                 }
             }
         }
