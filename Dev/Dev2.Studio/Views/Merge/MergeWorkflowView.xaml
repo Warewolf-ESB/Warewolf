@@ -608,7 +608,7 @@
                                                                     ToolTip="Connects to" 
                                                                     FontSize="18" 
                                                                     Foreground="Gray" 
-                                                                    Visibility="{Binding IsArmConnectorVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                                    Visibility="{Binding AllowSelection, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                                     <TextBlock x:Name="DifferenceNodeRightArmText" 
                                                                Margin="5,0,0,0" 
