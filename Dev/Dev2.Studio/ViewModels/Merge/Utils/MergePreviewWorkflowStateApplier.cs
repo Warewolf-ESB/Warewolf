@@ -159,7 +159,6 @@ namespace Dev2.ViewModels.Merge.Utils
             var destinationConflictItem = changedItem.DestinationConflictItem();
             if (sourceConflictItem == null || destinationConflictItem == null)
             {
-                // fixme
                 throw new Exception("Invalid connector state detected");
             }
             if (changedItem.IsChecked)
