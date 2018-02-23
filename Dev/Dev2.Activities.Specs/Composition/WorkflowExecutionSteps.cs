@@ -2623,15 +2623,16 @@ namespace Dev2.Activities.Specs.Composition
 
         [Given(@"the workflow contains an Assign ""(.*)"" as")]
         [Then(@"the workflow contains an Assign ""(.*)"" as")]
-        public void ThenContainsAnAssignAs(string assignName, Table table) => ThenContainsAnAssignAs(null, assignName, table);
+        public void ThenContainsAnAssignAs(string assignName, Table table)
+        {
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            ThenContainsAnAssignAs(parentWorkflowName, assignName, table);
+        }
 
         [Given(@"""(.*)"" contains an Assign ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign ""(.*)"" as")]
         public void ThenContainsAnAssignAs(string parentName, string assignName, Table table)
         {
-            TryGetValue("parentWorkflowName", out string parentWorkflowName);
-            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
-
             var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
 
             foreach (var tableRow in table.Rows)
@@ -3189,19 +3190,18 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"the workflow contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenCountOnIntoTheWorkflow(string activityName, string recordSet, string result)
         {
-            GivenCountOnInto(null, activityName, recordSet, result);
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            GivenCountOnInto(parentWorkflowName, activityName, recordSet, result);
         }
 
         [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenCountOnInto(string parentName, string activityName, string recordSet, string result)
         {
-            TryGetValue("parentWorkflowName", out string parentWorkflowName);
-            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
             _commonSteps.AddVariableToVariableList(result);
 
             var countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
 
-            _commonSteps.AddActivityToActivityList(workflowName, activityName, countRecordsetNullHandlerActivity);
+            _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetNullHandlerActivity);
         }
 
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
