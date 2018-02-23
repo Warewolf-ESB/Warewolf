@@ -30,6 +30,8 @@ namespace Dev2.Common.Interfaces
 
         IToolConflictItem SourceConflictItem(); // the conflict item that needs to be IsChecked for this conflict item to be enabled
         IToolConflictItem DestinationConflictItem(); // the conflict item to set to IsChecked if this conflict item IsChecked
+
+        IConnectorConflictItem Clone();
     }
 
     public interface IConflictItem
