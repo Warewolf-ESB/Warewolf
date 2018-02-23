@@ -68,5 +68,10 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowResourcesConflict(List<string> resourceDuplicates);
         MessageBoxResult ShowResourcesNotInCorrectPath();
         MessageBoxResult ShowCanNotMoveResource();
+        MessageBoxResult ShowInvalidResourcePermission();
+        MessageBoxResult ShowHasDuplicateResourcePermissions();
+        MessageBoxResult ShowHasDuplicateServerPermissions();
+        MessageBoxResult ShowSaveSettingsNotReachableErrorMsg();
+        MessageBoxResult ShowSaveSettingsPermissionsErrorMsg();
     }
 }

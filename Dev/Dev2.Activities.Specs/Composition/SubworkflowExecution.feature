@@ -191,7 +191,7 @@ Scenario: ForEach with NestedStarTest and Inner WF
 
 Scenario: Workflow with Performance counters
 	Given I have a workflow "PerfCounterTest"
-	And I have reset local perfromance Counters
+	And I have reset local performance Counters
 	And "PerfCounterTest" contains "PerfCounter" from server "localhost" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable |
 	|                  |               | Result              | [[Result]]  |

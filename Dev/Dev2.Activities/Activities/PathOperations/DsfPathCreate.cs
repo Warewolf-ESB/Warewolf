@@ -51,9 +51,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var outputItr = new WarewolfIterator(context.Environment.Eval(OutputPath, update));
             colItr.AddVariableToIterateOn(outputItr);
 
-            var unameItr = new WarewolfIterator(context.Environment.Eval(Username, update));
-            colItr.AddVariableToIterateOn(unameItr);
-
             var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword,update));
             colItr.AddVariableToIterateOn(passItr);
 
@@ -79,7 +76,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     var dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(outputItr),
-                                                                                colItr.FetchNextValue(unameItr),
+                                                                                Username,
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
                     var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);

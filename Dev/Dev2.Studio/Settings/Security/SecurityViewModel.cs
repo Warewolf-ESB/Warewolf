@@ -503,6 +503,20 @@ namespace Dev2.Settings.Security
             return duplicates.Any();
         }
 
+        public bool HasInvalidResourcePermission()
+        {
+            foreach (var item in ResourcePermissions.Where(perm => !perm.IsDeleted))
+            {
+                if ((!string.IsNullOrEmpty(item.ResourceName)
+                    && string.IsNullOrEmpty(item.WindowsGroup))
+                || (string.IsNullOrEmpty(item.ResourceName)
+                && !string.IsNullOrEmpty(item.WindowsGroup)))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
         #region Implementation of IUpdatesHelp
 
         public void UpdateHelpDescriptor(string helpText)
