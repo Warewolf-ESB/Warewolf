@@ -600,7 +600,8 @@
                                                                ToolTipService.ShowOnDisabled="True"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_DifferenceNodeArmText_AutoID"
-                                                               HorizontalAlignment="Stretch"/>
+                                                               HorizontalAlignment="Stretch"
+                                                               Visibility="{Binding AllowSelection, Converter={StaticResource BoolToVisibilityConverter}}" />
 
                                                     <fa:FontAwesome Margin="5,2,0,0" 
                                                                     Icon="LongArrowRight" 
@@ -616,7 +617,8 @@
                                                                ToolTipService.ShowOnDisabled="True"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
-                                                               HorizontalAlignment="Stretch"/>
+                                                               HorizontalAlignment="Stretch"
+                                                               Visibility="{Binding AllowSelection, Converter={StaticResource BoolToVisibilityConverter}}" />
                                                 </StackPanel>
                                             </DockPanel>
                                         </Border>
