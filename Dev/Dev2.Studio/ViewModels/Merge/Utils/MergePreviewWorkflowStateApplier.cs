@@ -110,7 +110,6 @@ namespace Dev2.ViewModels.Merge.Utils
                 var key = toolModelConflictItem.InboundConnectors[0].Key;
                 LinkActivities(sourceUniqueId, destinationUniqueId, key);
             }
-            // TODO: if there is a connector that IsChecked then connect it back to this tool
 
         }
 
@@ -158,12 +157,16 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             var sourceConflictItem = changedItem.SourceConflictItem();
             var destinationConflictItem = changedItem.DestinationConflictItem();
-            if (changedItem.IsChecked)
-            {                
-                LinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
-            } else
+            if (!(sourceConflictItem is null) && !(destinationConflictItem is null))
             {
-                DeLinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
+                if (changedItem.IsChecked)
+                {
+                    LinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
+                }
+                else
+                {
+                    DeLinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
+                }
             }
         }
 

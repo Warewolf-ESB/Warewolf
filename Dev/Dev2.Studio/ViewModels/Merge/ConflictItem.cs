@@ -20,7 +20,7 @@ namespace Dev2.ViewModels.Merge
 
         public abstract override bool Equals(object obj);
         public abstract override int GetHashCode();
-        public abstract bool AllowSelection { get; }
+        public abstract bool AllowSelection { get; set; }
 
         public void SetAutoChecked()
         {
@@ -60,7 +60,7 @@ namespace Dev2.ViewModels.Merge
                 HashCode = new Random(178697).Next();
             }
 
-            public override bool AllowSelection { get; }
+            public override bool AllowSelection { get; set; }
 
             public override bool Equals(object obj) => GetHashCode() == obj.GetHashCode();
 
