@@ -1,32 +1,48 @@
-﻿using Dev2.ViewModels.Merge;
+﻿
+
+
+
+using Dev2.Common;
+using Dev2.Studio.Interfaces;
+using Dev2.ViewModels.Merge;
 using Dev2.ViewModels.Merge.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
+using System.Collections.Generic;
 
 namespace Dev2.Core.Tests.Merge
 {
     [TestClass]
     public class ConnectorConflictItemTests
     {
-        Guid Grouping = Guid.Empty;
+        readonly Guid Grouping = Guid.Empty;
         const string ArmDescription = "Arm -> Arm";
-        Guid SourceUniqueId = Guid.Empty;
-        Guid DestinationUniqueId = Guid.Empty;
+        readonly Guid SourceUniqueId = Guid.Empty;
+        readonly Guid DestinationUniqueId = Guid.Empty;
         const string Key = "Key";
 
-        Guid SourceUniqueIdDiff = Guid.NewGuid();
-        Guid DestinationUniqueIdDiff = Guid.NewGuid();
+        readonly Guid SourceUniqueIdDiff = Guid.NewGuid();
+        readonly Guid DestinationUniqueIdDiff = Guid.NewGuid();
         const string KeyDiff = "KeyDiff";
-        
-        private ConnectorConflictItem CreateConnectorConflictItem()
+
+        ConflictRowList CreateConflictRowList()
         {
-            var rowList = new Mock<ConflictRowList>().Object;
+            var modelFactoryCurrent = new Mock<IConflictModelFactory>();
+            var modelFactoryDifferent = new Mock<IConflictModelFactory>();
+            var currentTree = new List<ConflictTreeNode>();
+            var diffTree = new List<ConflictTreeNode>();
+            return new ConflictRowList(modelFactoryCurrent.Object, modelFactoryDifferent.Object, currentTree, diffTree);
+        }
+
+        ConnectorConflictItem CreateConnectorConflictItem()
+        {
+            var rowList = CreateConflictRowList();
             return new ConnectorConflictItem(rowList, ConflictRowList.Column.Current, Grouping, ArmDescription, SourceUniqueId, DestinationUniqueId, Key);
         }
         private ConnectorConflictItem CreateConnectorConflictItemDiff()
         {
-            var rowList = new Mock<ConflictRowList>().Object;
+            var rowList = CreateConflictRowList();
             return new ConnectorConflictItem(rowList, ConflictRowList.Column.Different, Grouping, ArmDescription, SourceUniqueIdDiff, DestinationUniqueIdDiff, KeyDiff);
         }
 
