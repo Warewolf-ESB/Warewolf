@@ -46,8 +46,6 @@ namespace Dev2.ViewModels.Merge
 
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
-        internal static IConnectorConflictItem EmptyConflictItem() => new Empty();
-
         public override bool AllowSelection { get {
                 var sourceItem = SourceConflictItem();
                 var destinationItem = DestinationConflictItem();
@@ -97,11 +95,17 @@ namespace Dev2.ViewModels.Merge
 
         public new class Empty : ConflictItem.Empty, IConnectorConflictItem
         {
+            public Empty(Guid grouping)
+            {
+                this.Grouping = grouping;
+            }
             public string ArmDescription { get; set; }
             public Guid SourceUniqueId { get; set; }
             public Guid DestinationUniqueId { get; set; }
             public string Key { get; set; }
             public bool IsArmConnectorVisible => false;
+            public override bool AllowSelection { get => true; }
+            public Guid Grouping { get; private set; }
 
             public IToolConflictItem SourceConflictItem() { throw new NotImplementedException(); }
             public IToolConflictItem DestinationConflictItem() { throw new NotImplementedException(); }
