@@ -142,6 +142,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void GivenISelectResource()
         {
             _scenarioContext.TryGetValue("resourceId", out Guid resourceId);
+            Console.WriteLine("Deploying " + resourceId.ToString());
             var localhost = _scenarioContext.Get<IServer>("sourceServer");
             var remoteServer = _scenarioContext.Get<IServer>("destinationServer");
             var destConnection = new Connection
@@ -168,6 +169,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void WhenIRenameToAndReDeploy(string newName)
         {
             _scenarioContext.TryGetValue("resourceId", out Guid resourceId);
+            Console.WriteLine("Renaming " + resourceId.ToString());
             _scenarioContext.Add("newName", newName);
             var localhost = _scenarioContext.Get<IServer>("sourceServer");
             localhost.ExplorerRepository.UpdateManagerProxy.Rename(resourceId, newName);
