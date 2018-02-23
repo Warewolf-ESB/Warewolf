@@ -46,13 +46,12 @@ namespace Dev2.ViewModels.Merge
 
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
-        public override bool AllowSelection { get {
-                var sourceItem = SourceConflictItem();
-                var destinationItem = DestinationConflictItem();
-                return sourceItem != null && sourceItem.IsInWorkflow
-                        && destinationItem != null && destinationItem.IsInWorkflow;
-            }
+        private bool _allowSelection;
+        public override bool AllowSelection {
+            get => _allowSelection;
+            set => SetProperty(ref _allowSelection, value);
         }
+        
         public IToolConflictItem SourceConflictItem() {
             if (!context.list.Ready) {
                 throw new Exception("ConflictRowList not ready");
@@ -109,6 +108,10 @@ namespace Dev2.ViewModels.Merge
 
             public IToolConflictItem SourceConflictItem() { throw new NotImplementedException(); }
             public IToolConflictItem DestinationConflictItem() { throw new NotImplementedException(); }
+
+            public void ReCalculateAllowSelection()
+            {
+            }
         }
     }
 }

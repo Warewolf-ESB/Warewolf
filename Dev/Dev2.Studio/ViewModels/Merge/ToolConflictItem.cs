@@ -41,7 +41,7 @@ namespace Dev2.ViewModels.Merge
         [JsonIgnore]
         public ImageSource MergeIcon { get; set; }
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
-        public override bool AllowSelection { get; }
+        public override bool AllowSelection { get; set; }
         public bool IsInWorkflow {
             get => context.list.ActivityIsInWorkflow(Activity as IDev2Activity);
         }
