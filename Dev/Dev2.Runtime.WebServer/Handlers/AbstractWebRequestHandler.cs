@@ -72,6 +72,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog)
         {
+            _dataObject = null;
             _resourceCatalog = catalog;
             _testCatalog = testCatalog;
 #pragma warning restore S3010
@@ -129,13 +130,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
 
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
-                allErrors.MergeErrors(errors);
             }
             else
             {
                 if (!canExecute)
                 {
-                    allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                    dataObject.Environment.AddError(string.Format(Warewolf.Resource.Errors.ErrorResource.UserNotAuthorizedToExecuteOuterWorkflowException, dataObject.ExecutingUser.Identity.Name, dataObject.ServiceName));
                 }
             }
 
@@ -178,14 +178,16 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         }
 
-        static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid) => _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
-        {
-            IsFromWebServer = true,
-            ExecutingUser = user,
-            ServiceName = serviceName,
-            WorkspaceID = workspaceGuid,
-            ExecutionID = Guid.NewGuid()
-        };
+        static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid) =>
+            _dataObject ??
+            new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
+            {
+                IsFromWebServer = true,
+                ExecutingUser = user,
+                ServiceName = serviceName,
+                WorkspaceID = workspaceGuid,
+                ExecutionID = Guid.NewGuid()
+            };
 
         static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
         {

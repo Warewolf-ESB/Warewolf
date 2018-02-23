@@ -32,7 +32,7 @@ using Dev2.Activities.Scripting;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.Sharepoint;
-using Dev2.Activities.Specs.BaseTypes;            
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -86,7 +86,8 @@ using TestingDotnetDllCascading;
 using Warewolf.Sharepoint;
 using Dev2.Studio.ViewModels;
 using Caliburn.Micro;
-using Dev2.Studio.Core.Helpers;      
+using Dev2.Studio.Core.Helpers;
+using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -166,7 +167,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates").ToList();            
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             if (hasError == "AN")
             {
                 var hasErrorState = debugStates.FirstOrDefault(state => state.HasError);
@@ -274,8 +275,8 @@ namespace Dev2.Activities.Specs.Composition
             Add("debugStates", new List<IDebugState>());
         }
 
-        [Given(@"I have reset local perfromance Counters")]
-        public void GivenIHaveResetLocalPerfromanceCounters()
+        [Given(@"I have reset local performance Counters")]
+        public void GivenIHaveResetLocalPerformanceCounters()
         {
             try
             {
@@ -283,8 +284,11 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     PerformanceCounterCategory.Delete("Warewolf");
                 }
-                
-                catch { }
+
+                catch(Exception e)
+                {
+                    Assert.IsNotNull(e);
+                }
                 var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {   new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),
@@ -1225,7 +1229,7 @@ namespace Dev2.Activities.Specs.Composition
             return stringBuilder.ToString();
         }
 
-        
+
         public double GetServerCPUUsage()
         {
             var processorTimeCounter = new PerformanceCounter(
@@ -1366,7 +1370,7 @@ namespace Dev2.Activities.Specs.Composition
                 {
                     throw new InvalidOperationException("SpecFlow broke.");
                 }
-           }
+            }
 
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(toolName)).ToList();
@@ -1389,7 +1393,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsNotNull(debugItemResults);
             Assert.IsTrue(debugItemResults.Any(result => result.Value.Contains("{\r\n  \"Name\": \"Bob\"\r\n}")));
         }
-    
+
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" for testing as")]
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" as")]
         public void GivenContainsAnSQLBulkInsertUsingDatabaseAndTableAndKeepIdentitySetAndResultSetForTestingAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
@@ -1428,9 +1432,9 @@ namespace Dev2.Activities.Specs.Composition
             var mappings = new List<DataColumnMapping>();
 
             var pos = 1;
-            
+
             foreach (var row in table.Rows)
-            
+
             {
                 var outputColumn = row["Column"];
                 var inputColumn = row["Mapping"];
@@ -2258,7 +2262,7 @@ namespace Dev2.Activities.Specs.Composition
 
 
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
-        
+
         public void GivenContainsAnDeleteAs(string parentName, string activityName, Table table)
 
         {
@@ -2301,7 +2305,7 @@ namespace Dev2.Activities.Specs.Composition
 
 
         [Given(@"""(.*)"" contains workflow ""(.*)"" with mapping as")]
-        
+
         public void GivenContainsWorkflowWithMappingAs(string forEachName, string nestedWF, Table mappings)
 
         {
@@ -2320,9 +2324,9 @@ namespace Dev2.Activities.Specs.Composition
             }
             if (resource == null)
             {
-                
+
                 throw new ArgumentNullException("resource");
-                
+
             }
             var dataMappingViewModel = GetDataMappingViewModel(resource, mappings);
 
@@ -2938,13 +2942,13 @@ namespace Dev2.Activities.Specs.Composition
                     throw new Exception(errorMessage);
                 }
                 dsfEnhancedDotNetDllActivity.OutputDescription = responseService.Description;
-                
+
                 var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                 {
                     var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
-                
+
                 dsfEnhancedDotNetDllActivity.Outputs = outputMapping;
             }
 
@@ -3071,13 +3075,13 @@ namespace Dev2.Activities.Specs.Composition
             ExecuteWorkflow(resourceModel);
         }
 
-       [Then(@"I set logging to ""(.*)""")]
+        [Then(@"I set logging to ""(.*)""")]
         public void ThenISetLoggingTo(string logLevel)
         {
             var allowedLogLevels = new[] { "DEBUG", "NONE" };
             // TODO: refactor null empty checking into extension method
             if (logLevel == null ||
-                !allowedLogLevels.Contains(logLevel = logLevel.ToUpper()))
+                !allowedLogLevels.Contains(logLevel.ToUpper()))
             {
                 return;
             }
@@ -3627,6 +3631,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             using (var sw = File.Create(fileName))
             {
+                Assert.IsNotNull(sw);
             }
         }
 
@@ -3676,8 +3681,9 @@ namespace Dev2.Activities.Specs.Composition
             var dsfConsumeRabbitMqActivity = new DsfConsumeRabbitMQActivity
             {
                 RabbitMQSourceResourceId = ConfigurationManager.AppSettings["testRabbitMQSource"].ToGuid()
-                
-                ,Response = variable
+
+                ,
+                Response = variable
                 ,
                 DisplayName = activityName
             };
@@ -3874,7 +3880,7 @@ namespace Dev2.Activities.Specs.Composition
             var testResults = dbServiceModel.TestService(databaseService);
 
             var mappings = new List<IServiceOutputMapping>();
-            
+
             if (testResults?.Columns.Count > 1)
             {
                 var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
@@ -3986,7 +3992,7 @@ namespace Dev2.Activities.Specs.Composition
             };
 
             var mappings = new List<IServiceOutputMapping>();
-            
+
             if (testResults?.Columns.Count > 1)
             {
                 var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
@@ -4085,7 +4091,7 @@ namespace Dev2.Activities.Specs.Composition
             };
 
             var mappings = new List<IServiceOutputMapping>();
-            
+
             if (testResults?.Columns.Count > 1)
             {
                 var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
@@ -4163,7 +4169,7 @@ namespace Dev2.Activities.Specs.Composition
             };
 
             var mappings = new List<IServiceOutputMapping>();
-            
+
             if (testResults?.Columns.Count > 1)
             {
                 var recordsetName = string.IsNullOrEmpty(testResults.TableName) ? serviceName.Replace(".", "_") : testResults.TableName;
@@ -4276,15 +4282,15 @@ namespace Dev2.Activities.Specs.Composition
 
         [When(@"workflow ""(.*)"" merge is opened")]
         public void WhenWorkflowMergeIsOpened(string mergeWfName)
-        {            
+        {
             var environmentModel = ServerRepository.Instance.Source;
             var serverRepository = new Mock<IServerRepository>();
             serverRepository.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
             serverRepository.Setup(p => p.Source).Returns(new Mock<IServer>().Object);
-            var evntArg  = new Mock<IEventAggregator>().Object;
+            var evntArg = new Mock<IEventAggregator>().Object;
             var versionChecker = new Mock<IVersionChecker>().Object;
             var explorer = new Mock<IExplorerViewModel>().Object;
-            var viewFact = new Mock<IViewFactory>().Object;            
+            var viewFact = new Mock<IViewFactory>().Object;
             var versions = _scenarioContext["Versions"] as IList<IExplorerItem>;
             var repo = _scenarioContext.Get<IResourceRepository>("resourceRepo") as ResourceRepository;
             var localResource = repo.LoadContextualResourceModel(versions.First().ResourceId);

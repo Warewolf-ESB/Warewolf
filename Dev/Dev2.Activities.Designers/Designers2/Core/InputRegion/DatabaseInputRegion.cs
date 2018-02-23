@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _modelItem = modelItem;
             _action = action;
             _action.SomethingChanged += SourceOnSomethingChanged;
-            var inputsFromModel = _modelItem.GetProperty<ICollection<IServiceInput>>("Inputs");
+            var inputsFromModel = _modelItem.GetProperty<ICollection<IServiceInput>>(nameof(Inputs));
             var serviceInputs = inputsFromModel ?? new List<IServiceInput>();
             var inputs = new ObservableCollection<IServiceInput>();
             inputs.CollectionChanged += InputsCollectionChanged;
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
         
-        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e) => _modelItem.SetProperty("Inputs", _inputs.ToList());
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e) => _modelItem.SetProperty(nameof(Inputs), _inputs.ToList());
 
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
@@ -104,8 +104,8 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             {
                 Errors.Clear();
                 UpdateOnActionSelection();
-                OnPropertyChanged(@"Inputs");
-                OnPropertyChanged(@"IsEnabled");
+                OnPropertyChanged(nameof(Inputs));
+                OnPropertyChanged(nameof(IsEnabled));
             }
             catch (Exception e)
             {
@@ -146,7 +146,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                     IsEnabled = true;
                 }
             }
-            OnPropertyChanged("Inputs");
+            OnPropertyChanged(nameof(Inputs));
         }
 
         ICollection<IServiceInput> InputsFromSameAction(IList<IServiceInput> selectedActionInputs)
@@ -201,7 +201,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 {
                     Inputs = region.Inputs.ToList();
                 }
-                OnPropertyChanged("Inputs");
+                OnPropertyChanged(nameof(Inputs));
                 IsInputsEmptyRows = Inputs == null || Inputs.Count == 0;
             }
         }
@@ -242,13 +242,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 if (value != null)
                 {
                     _inputs = value;
-                    _modelItem.SetProperty("Inputs", value.ToList());
+                    _modelItem.SetProperty(nameof(Inputs), value.ToList());
                     OnPropertyChanged();
                 }
                 else
                 {
                     _inputs.Clear();
-                    _modelItem.SetProperty("Inputs", _inputs.ToList());
+                    _modelItem.SetProperty(nameof(Inputs), _inputs.ToList());
                     OnPropertyChanged();
                 }
 

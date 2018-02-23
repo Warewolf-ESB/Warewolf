@@ -213,7 +213,12 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.LoggingTab, new Point(57, 7));
         }
-
+        public void Click_Settings_Server_Permissions_Row3_Add_Resource_Button()
+        {
+            Assert.IsTrue(FindAddWindowsGroupButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Enabled);
+            Mouse.Click(FindAddResourceButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1));
+            Assert.IsTrue(DialogsUIMap.ServicePickerDialog.Exists, "Service picker dialog does not exist.");
+        }
         public void Click_Settings_Resource_Permissions_Row1_Add_Resource_Button()
         {
             Assert.IsTrue(FindAddWindowsGroupButton(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).Enabled);
@@ -381,7 +386,7 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
             if (deleteFirstResourceButton.Enabled)
             {
                 var selectedResource = FindSelectedResourceText(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ResourcePermissions.Row1).DisplayText;
-                if(!selectedResource.EndsWith(resource))
+                if (!selectedResource.EndsWith(resource))
                 {
                     Mouse.Click(deleteFirstResourceButton);
                     UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
