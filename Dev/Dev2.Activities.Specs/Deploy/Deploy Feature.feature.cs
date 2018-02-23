@@ -100,7 +100,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
  testRunner.And("I deploy the workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.And("I rename \"OriginalName\" to \"RenamedResource\" and re deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I rename the workflow to \"RenamedResource\" and re deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
  testRunner.Then("Remote server has updated name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

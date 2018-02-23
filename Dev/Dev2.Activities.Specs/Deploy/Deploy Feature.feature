@@ -14,5 +14,5 @@ Scenario: Deploy a renamed resource
 	And the workflow contains Count Record "CountRec" on "[[rec()]]" into "[[count]]"
 	When the workflow is Saved
 	And I deploy the workflow
-	And I rename "OriginalName" to "RenamedResource" and re deploy
+	And I rename the workflow to "RenamedResource" and re deploy
 	Then Remote server has updated name
