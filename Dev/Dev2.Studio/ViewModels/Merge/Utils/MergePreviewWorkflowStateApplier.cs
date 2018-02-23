@@ -103,7 +103,7 @@ namespace Dev2.ViewModels.Merge.Utils
         private void AddActivity(IToolConflictItem toolModelConflictItem)
         {
             _mergePreviewWorkflowDesignerViewModel.AddItem(toolModelConflictItem);
-            if (!(toolModelConflictItem.InboundConnectors is null) && toolModelConflictItem.InboundConnectors.Count > 0)
+            if (!(toolModelConflictItem.InboundConnectors is null) && toolModelConflictItem.InboundConnectors.Count > 0 && toolModelConflictItem.InboundConnectors[0].IsChecked)
             {
                 var sourceUniqueId = toolModelConflictItem.InboundConnectors[0].SourceUniqueId;
                 var destinationUniqueId = toolModelConflictItem.UniqueId;
@@ -121,6 +121,11 @@ namespace Dev2.ViewModels.Merge.Utils
 
         private void ConnectorHandler(IConnectorConflictItem changedItem, IConnectorConflictRow row)
         {
+            if (changedItem is ConnectorConflictItem.Empty)
+            {
+                return;
+            }
+
             if (row.ContainsStart)
             {
                 _mergePreviewWorkflowDesignerViewModel.RemoveStartNodeConnection();
@@ -154,11 +159,11 @@ namespace Dev2.ViewModels.Merge.Utils
             var sourceConflictItem = changedItem.SourceConflictItem();
             var destinationConflictItem = changedItem.DestinationConflictItem();
             if (changedItem.IsChecked)
-            {
-                LinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, sourceConflictItem.UniqueId.ToString());
+            {                
+                LinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
             } else
             {
-                DeLinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, sourceConflictItem.UniqueId.ToString());
+                DeLinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
             }
         }
 
