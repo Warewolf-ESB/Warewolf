@@ -159,11 +159,11 @@ namespace Dev2.ViewModels.Merge.Utils
             var sourceConflictItem = changedItem.SourceConflictItem();
             var destinationConflictItem = changedItem.DestinationConflictItem();
             if (changedItem.IsChecked)
-            {
-                LinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, sourceConflictItem.UniqueId.ToString());
+            {                
+                LinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
             } else
             {
-                DeLinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, sourceConflictItem.UniqueId.ToString());
+                DeLinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
             }
         }
 
