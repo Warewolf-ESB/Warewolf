@@ -23,7 +23,6 @@ namespace Dev2.ViewModels.Merge.Utils
         public ConflictListStateApplier(ConflictRowList conflicts)
         {
             this._conflictRowList = conflicts;
-            RegisterEventHandlerForConflictItemChanges();
         }
         public void SetConnectorSelectionsToCurrentState()
         {
@@ -34,31 +33,12 @@ namespace Dev2.ViewModels.Merge.Utils
                     toolConflictItem.IsChecked = true;
                     foreach (var connector in toolConflictItem.OutboundConnectors)
                     {
+                        connector.DestinationConflictItem().IsChecked = true;
                         connector.IsChecked = true;
                     }
                 }
             }
         }
-
-        public void RegisterEventHandlerForConflictItemChanges()
-        {
-            foreach (var row in _conflictRowList)
-            {
-                row.Current.NotifyIsCheckedChanged += ConflictItemIsCheckedChangedHandler;
-                row.Different.NotifyIsCheckedChanged += ConflictItemIsCheckedChangedHandler;
-            }
-        }
-
-        static void ConflictItemIsCheckedChangedHandler(IConflictItem changedItem, bool isChecked)
-        {
-            if (changedItem is ConnectorConflictItem connectorConflictItem)
-            {
-                var destItem = connectorConflictItem.DestinationConflictItem();
-                if (!(destItem is null) && connectorConflictItem.IsChecked)
-                {
-                    destItem.IsChecked = true;
-                }
-            }
-        }
+        
     }
 }
