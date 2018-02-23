@@ -1,4 +1,5 @@
 ﻿@Deploy
+@RemoteServer
 Feature: Deploy Feature
 In order to deploy workflows
 	As a Warewolf user
