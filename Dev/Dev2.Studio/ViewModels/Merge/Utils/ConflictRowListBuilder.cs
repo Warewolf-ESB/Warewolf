@@ -127,7 +127,7 @@ namespace Dev2.ViewModels.Merge.Utils
             {
                 // TODO: the diff conflictitem has now changed. We need to set all connectors that refer to the diff tool
                 // so that they are also referencing the currentTool
-                diffToolConflictItem_override = currentToolConflictItem;
+                diffToolConflictItem_override = currentToolConflictItem.Clone();
             }
 
             var toolConflictRow = ToolConflictRow.CreateConflictRow(currentToolConflictItem, diffToolConflictItem_override, connectors);
