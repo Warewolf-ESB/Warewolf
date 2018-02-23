@@ -24,12 +24,12 @@ namespace Dev2.ViewModels.Merge
 {
     public class ToolConflictItem : ConflictItem, IToolConflictItem, ICheckable
     {
-        readonly (ConflictRowList list, ConflictRowList.Column column) context;
+        readonly (ConflictRowList list, ConflictRowList.Column column) _context;
         public ToolConflictItem(ConflictRowList list, ConflictRowList.Column column)
         {
             OutboundConnectors = new List<IConnectorConflictItem>();
-            context.list = list;
-            context.column = column;
+            _context.list = list;
+            _context.column = column;
         }
 
         public Guid UniqueId { get; set; }
@@ -43,10 +43,35 @@ namespace Dev2.ViewModels.Merge
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
         public override bool AllowSelection { get; }
         public bool IsInWorkflow {
-            get => context.list.ActivityIsInWorkflow(Activity as IDev2Activity);
+            get => _context.list.ActivityIsInWorkflow(Activity as IDev2Activity);
         }
         public List<IConnectorConflictItem> InboundConnectors { get; set; }
-        public List<IConnectorConflictItem> OutboundConnectors { get; private set; }
+        public List<IConnectorConflictItem> OutboundConnectors { get; set; }
+
+        public IToolConflictItem Clone()
+        {
+            IToolConflictItem clonedItem = MemberwiseClone() as IToolConflictItem;            
+            if (!(InboundConnectors is null))
+            {
+                var inboundConnectors = new List<IConnectorConflictItem>();
+                foreach (var inboundConnector in InboundConnectors)
+                {
+                    inboundConnectors.Add(inboundConnector.Clone());
+                }
+                clonedItem.InboundConnectors = inboundConnectors;
+            }
+            if (!(OutboundConnectors is null))
+            {
+                var outboundConnectors = new List<IConnectorConflictItem>();
+                foreach (var outboundConnector in OutboundConnectors)
+                {
+                    outboundConnectors.Add(outboundConnector.Clone());
+                }
+
+                clonedItem.OutboundConnectors = outboundConnectors;
+            }
+            return clonedItem;
+        }
 
         public override bool Equals(object obj)
         {
@@ -108,8 +133,14 @@ namespace Dev2.ViewModels.Merge
             public Point NodeLocation { get; set; }
             List<IConnectorConflictItem> _inboundConnectors;
             public List<IConnectorConflictItem> InboundConnectors { get => null; set => _inboundConnectors = value; }
-            public List<IConnectorConflictItem> OutboundConnectors { get => throw new NotImplementedException(); }
+            public List<IConnectorConflictItem> OutboundConnectors { get => throw new NotImplementedException(); set=> throw new NotImplementedException(); }
             public bool IsInWorkflow => false;
+
+            public IToolConflictItem Clone()
+            {
+                IToolConflictItem clonedItem = MemberwiseClone() as IToolConflictItem;                
+                return clonedItem;
+            }
         }
     }
 
