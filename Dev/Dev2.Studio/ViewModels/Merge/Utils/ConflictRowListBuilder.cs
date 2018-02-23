@@ -83,14 +83,28 @@ namespace Dev2.ViewModels.Merge.Utils
 
                 if (currentToolConflictItem == null)
                 {
-                    currentToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Current);
-                    _modelFactoryCurrent.CreateModelItem(currentToolConflictItem, current);
+                    if (current == null)
+                    {
+                        currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
+                    }
+                    else
+                    {
+                        currentToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Current);
+                        _modelFactoryCurrent.CreateModelItem(currentToolConflictItem, current);
+                    }
                     indexCurr++;
                 }
                 if (diffToolConflictItem == null)
                 {
-                    diffToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Different);
-                    _modelFactoryDifferent.CreateModelItem(diffToolConflictItem, diff);
+                    if (diff == null)
+                    {
+                        diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
+                    }
+                    else
+                    {
+                        diffToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Different);
+                        _modelFactoryDifferent.CreateModelItem(diffToolConflictItem, diff);
+                    }
                     indexDiff++;
                 }
                 #endregion
