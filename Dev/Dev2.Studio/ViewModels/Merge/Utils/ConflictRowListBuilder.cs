@@ -160,7 +160,7 @@ namespace Dev2.ViewModels.Merge.Utils
                 }
                 else
                 {
-                    row.CurrentArmConnector = ConnectorConflictItem.EmptyConflictItem();
+                    row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
                 }
 
                 if (armConnectorsDiff != null && index < armConnectorsDiff.Count)
@@ -175,13 +175,11 @@ namespace Dev2.ViewModels.Merge.Utils
                 }
                 else
                 {
-                    row.DifferentArmConnector = ConnectorConflictItem.EmptyConflictItem();
+                    row.DifferentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
                 }
                 var sameSourceAndDestination = row.CurrentArmConnector.SourceUniqueId != row.DifferentArmConnector.SourceUniqueId
                                     || row.CurrentArmConnector.DestinationUniqueId != row.DifferentArmConnector.DestinationUniqueId;
-                var eitherEmpty = row.CurrentArmConnector is ConnectorConflictItem.Empty
-                                    || row.DifferentArmConnector is ConnectorConflictItem.Empty;
-                row.HasConflict = !eitherEmpty && sameSourceAndDestination;
+                row.HasConflict = sameSourceAndDestination;
                 rows.Add(row);
             }
             return rows;
