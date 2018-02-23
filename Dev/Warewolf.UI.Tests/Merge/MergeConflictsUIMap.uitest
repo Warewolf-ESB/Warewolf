@@ -944,27 +944,27 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="RadioButton" Id="FisrAssign_Curr_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                            <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
                                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
                                                                                 <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants />
                                                                             </UIObject>
-                                                                            <UIObject ControlType="RadioButton" Id="FirstAssign_Diff_RadioButton" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                            <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
                                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
                                                                                 <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
@@ -990,6 +990,32 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
                                                                 <UIObject ControlType="Text" Id="NoConflicts" FriendlyName="" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
@@ -999,32 +1025,6 @@
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">MergeToolNoConflictIcon</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="FirstAssign_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="FirstAssign_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -1152,6 +1152,32 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
                                                                 <UIObject ControlType="Text" Id="NoConflicts" FriendlyName="" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
@@ -1161,84 +1187,6 @@
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">MergeToolNoConflictIcon</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="Difference_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="Current_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="SecondAssign_Diff_RadioButton_Curr_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="SecondAssign_Diff_RadioButton" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="OrganizeCustomers_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
-                                                                  </AndCondition>
-                                                                  <SupportLevel>0</SupportLevel>
-                                                                  <Descendants />
-                                                                </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="OrganizeCustomers_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
-                                                                  <TechnologyName>UIA</TechnologyName>
-                                                                  <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                  </WindowTitles>
-                                                                  <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -1308,15 +1256,28 @@
                                                                           </AndCondition>
                                                                           <SupportLevel>0</SupportLevel>
                                                                           <Descendants>
-                                                                            <UIObject ControlType="RadioButton" Id="SplitNames_Curr_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                            <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
                                                                                 <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
                                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
                                                                                 <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants />
+                                                                            </UIObject>
+                                                                            <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants />
@@ -1330,19 +1291,6 @@
                                                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                                 <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                                                 <PropertyCondition Name="AutomationId">MergeToolNoConflictIcon</PropertyCondition>
-                                                                              </AndCondition>
-                                                                              <SupportLevel>0</SupportLevel>
-                                                                              <Descendants />
-                                                                            </UIObject>
-                                                                            <UIObject ControlType="RadioButton" Id="SplitNames_Diff_RadioButton" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
-                                                                              <TechnologyName>UIA</TechnologyName>
-                                                                              <WindowTitles>
-                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                                                                              </WindowTitles>
-                                                                              <AndCondition>
-                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                                <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                                <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants />
@@ -1493,6 +1441,32 @@
                                                                               </AndCondition>
                                                                               <SupportLevel>0</SupportLevel>
                                                                               <Descendants>
+                                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants />
+                                                                                </UIObject>
+                                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants />
+                                                                                </UIObject>
                                                                                 <UIObject ControlType="Text" Id="NoConflicts" FriendlyName="" SpecialControlType="None">
                                                                                   <TechnologyName>UIA</TechnologyName>
                                                                                   <WindowTitles>
@@ -1526,7 +1500,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="RadioButton" Id="Decision_Current_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="RadioButton" Id="Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -1582,28 +1556,28 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -1768,7 +1742,7 @@
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
-                                                                    <UIObject ControlType="RadioButton" Id="Decision_Current_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="RadioButton" Id="Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -1781,7 +1755,7 @@
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants />
                                                                     </UIObject>
-                                                                    <UIObject ControlType="RadioButton" Id="Decision_Diff_RadioButton" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                    <UIObject ControlType="RadioButton" Id="Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
                                                                         <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
@@ -1824,28 +1798,28 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -1947,28 +1921,28 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -2057,28 +2031,28 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -2167,28 +2141,28 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -2277,28 +2251,28 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -2387,28 +2361,28 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -2497,28 +2471,28 @@
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Difference" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="CurrentCheckBox" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
                                                                 </UIObject>
-                                                                <UIObject ControlType="RadioButton" Id="ThirdAssign_Current" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                <UIObject ControlType="CheckBox" Id="DifferenceCheckBox" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
-                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -2911,110 +2885,6 @@
                                       </Descendants>
                                     </UIObject>
                                   </Descendants>
-                                </UIObject>
-                              </Descendants>
-                            </UIObject>
-                          </Descendants>
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-              </Descendants>
-            </UIObject>
-          </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2PIETERTEWindow" FriendlyName="Warewolf (DEV2\PIETER.TERBLANCHE)" SpecialControlType="None" SessionId="12325976">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-          </WindowTitles>
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\PIETER.TERBLANCHE)</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Custom" Id="UISmallViewContentCustom" FriendlyName="SmallViewContent" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.Small</PropertyCondition>
-                <PropertyCondition Name="AutomationId">SmallViewContent</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Table" Id="UISmallDataGridTable" FriendlyName="SmallDataGrid" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">SmallDataGrid</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Row" Id="UIUI_ActivityGridRow_0Row" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                      </WindowTitles>
-                      <SearchConfigurations>
-                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
-                      </SearchConfigurations>
-                      <AndCondition>
-                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_ActivityGridRow_0_AutoID</PropertyCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="Cell" Id="UIItemUnlimitedApplicaCell" FriendlyName="Item: Unlimited.Applications.BusinessDesignStudio...." SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="ColumnHeader" />
-                            <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants>
-                            <UIObject ControlType="ComboBox" Id="UIUI_TextBox_AutoIDComboBox" FriendlyName="UI_TextBox_AutoID" SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                              </WindowTitles>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
-                                <PropertyCondition Name="AutomationId">UI_TextBox_AutoID</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants>
-                                <UIObject ControlType="Edit" Id="UITextEdit" FriendlyName="Text" SpecialControlType="None">
-                                  <TechnologyName>UIA</TechnologyName>
-                                  <WindowTitles>
-                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
-                                  </WindowTitles>
-                                  <AndCondition>
-                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">Text</PropertyCondition>
-                                  </AndCondition>
-                                  <SupportLevel>0</SupportLevel>
-                                  <Descendants />
                                 </UIObject>
                               </Descendants>
                             </UIObject>

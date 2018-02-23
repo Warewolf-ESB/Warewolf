@@ -41,24 +41,10 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mMainWindow;
             }
         }
-        
-        public UIWarewolfDEV2PIETERTEWindow UIWarewolfDEV2PIETERTEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2PIETERTEWindow == null))
-                {
-                    this.mUIWarewolfDEV2PIETERTEWindow = new UIWarewolfDEV2PIETERTEWindow();
-                }
-                return this.mUIWarewolfDEV2PIETERTEWindow;
-            }
-        }
         #endregion
         
         #region Fields
         private MainWindow mMainWindow;
-        
-        private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
         #endregion
     }
     
@@ -2073,45 +2059,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton FisrAssign_Curr_RadioButton
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mFisrAssign_Curr_RadioButton == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mFisrAssign_Curr_RadioButton = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mFisrAssign_Curr_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mFisrAssign_Curr_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFisrAssign_Curr_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mFisrAssign_Curr_RadioButton;
+                return this.mCurrentCheckBox;
             }
         }
         
-        public WpfRadioButton FirstAssign_Diff_RadioButton
+        public WpfCheckBox DifferenceCheckBox
         {
             get
             {
-                if ((this.mFirstAssign_Diff_RadioButton == null))
+                if ((this.mDifferenceCheckBox == null))
                 {
-                    this.mFirstAssign_Diff_RadioButton = new WpfRadioButton(this);
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mFirstAssign_Diff_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mFirstAssign_Diff_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFirstAssign_Diff_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mFirstAssign_Diff_RadioButton;
+                return this.mDifferenceCheckBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRadioButton mFisrAssign_Curr_RadioButton;
+        private WpfCheckBox mCurrentCheckBox;
         
-        private WpfRadioButton mFirstAssign_Diff_RadioButton;
+        private WpfCheckBox mDifferenceCheckBox;
         #endregion
     }
     
@@ -2130,6 +2116,40 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfCheckBox CurrentCheckBox
+        {
+            get
+            {
+                if ((this.mCurrentCheckBox == null))
+                {
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrentCheckBox;
+            }
+        }
+        
+        public WpfCheckBox DifferenceCheckBox
+        {
+            get
+            {
+                if ((this.mDifferenceCheckBox == null))
+                {
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifferenceCheckBox;
+            }
+        }
+        
         public WpfText NoConflicts
         {
             get
@@ -2144,40 +2164,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                     #endregion
                 }
                 return this.mNoConflicts;
-            }
-        }
-        
-        public WpfRadioButton FirstAssign_Difference
-        {
-            get
-            {
-                if ((this.mFirstAssign_Difference == null))
-                {
-                    this.mFirstAssign_Difference = new WpfRadioButton(this);
-                    #region Search Criteria
-                    this.mFirstAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mFirstAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFirstAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mFirstAssign_Difference;
-            }
-        }
-        
-        public WpfRadioButton FirstAssign_Current
-        {
-            get
-            {
-                if ((this.mFirstAssign_Current == null))
-                {
-                    this.mFirstAssign_Current = new WpfRadioButton(this);
-                    #region Search Criteria
-                    this.mFirstAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mFirstAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mFirstAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mFirstAssign_Current;
             }
         }
         
@@ -2200,11 +2186,11 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfCheckBox mCurrentCheckBox;
+        
+        private WpfCheckBox mDifferenceCheckBox;
+        
         private WpfText mNoConflicts;
-        
-        private WpfRadioButton mFirstAssign_Difference;
-        
-        private WpfRadioButton mFirstAssign_Current;
         
         private WpfText mUIIfNameIsText;
         #endregion
@@ -2361,6 +2347,40 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfCheckBox CurrentCheckBox
+        {
+            get
+            {
+                if ((this.mCurrentCheckBox == null))
+                {
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrentCheckBox;
+            }
+        }
+        
+        public WpfCheckBox DifferenceCheckBox
+        {
+            get
+            {
+                if ((this.mDifferenceCheckBox == null))
+                {
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifferenceCheckBox;
+            }
+        }
+        
         public WpfText NoConflicts
         {
             get
@@ -2375,108 +2395,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                     #endregion
                 }
                 return this.mNoConflicts;
-            }
-        }
-        
-        public WpfRadioButton Difference_RadioButton
-        {
-            get
-            {
-                if ((this.mDifference_RadioButton == null))
-                {
-                    this.mDifference_RadioButton = new WpfRadioButton(this);
-                    #region Search Criteria
-                    this.mDifference_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mDifference_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDifference_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mDifference_RadioButton;
-            }
-        }
-        
-        public WpfRadioButton Current_RadioButton
-        {
-            get
-            {
-                if ((this.mCurrent_RadioButton == null))
-                {
-                    this.mCurrent_RadioButton = new WpfRadioButton(this);
-                    #region Search Criteria
-                    this.mCurrent_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mCurrent_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mCurrent_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mCurrent_RadioButton;
-            }
-        }
-        
-        public WpfRadioButton SecondAssign_Diff_RadioButton_Curr_RadioButton
-        {
-            get
-            {
-                if ((this.mSecondAssign_Diff_RadioButton_Curr_RadioButton == null))
-                {
-                    this.mSecondAssign_Diff_RadioButton_Curr_RadioButton = new WpfRadioButton(this);
-                    #region Search Criteria
-                    this.mSecondAssign_Diff_RadioButton_Curr_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mSecondAssign_Diff_RadioButton_Curr_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mSecondAssign_Diff_RadioButton_Curr_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mSecondAssign_Diff_RadioButton_Curr_RadioButton;
-            }
-        }
-        
-        public WpfRadioButton SecondAssign_Diff_RadioButton
-        {
-            get
-            {
-                if ((this.mSecondAssign_Diff_RadioButton == null))
-                {
-                    this.mSecondAssign_Diff_RadioButton = new WpfRadioButton(this);
-                    #region Search Criteria
-                    this.mSecondAssign_Diff_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mSecondAssign_Diff_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mSecondAssign_Diff_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mSecondAssign_Diff_RadioButton;
-            }
-        }
-        
-        public WpfRadioButton OrganizeCustomers_Difference
-        {
-            get
-            {
-                if ((this.mOrganizeCustomers_Difference == null))
-                {
-                    this.mOrganizeCustomers_Difference = new WpfRadioButton(this);
-                    #region Search Criteria
-                    this.mOrganizeCustomers_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mOrganizeCustomers_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOrganizeCustomers_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mOrganizeCustomers_Difference;
-            }
-        }
-        
-        public WpfRadioButton OrganizeCustomers_Current
-        {
-            get
-            {
-                if ((this.mOrganizeCustomers_Current == null))
-                {
-                    this.mOrganizeCustomers_Current = new WpfRadioButton(this);
-                    #region Search Criteria
-                    this.mOrganizeCustomers_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mOrganizeCustomers_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mOrganizeCustomers_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mOrganizeCustomers_Current;
             }
         }
         
@@ -2499,19 +2417,11 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfCheckBox mCurrentCheckBox;
+        
+        private WpfCheckBox mDifferenceCheckBox;
+        
         private WpfText mNoConflicts;
-        
-        private WpfRadioButton mDifference_RadioButton;
-        
-        private WpfRadioButton mCurrent_RadioButton;
-        
-        private WpfRadioButton mSecondAssign_Diff_RadioButton_Curr_RadioButton;
-        
-        private WpfRadioButton mSecondAssign_Diff_RadioButton;
-        
-        private WpfRadioButton mOrganizeCustomers_Difference;
-        
-        private WpfRadioButton mOrganizeCustomers_Current;
         
         private WpfButton mSplitNamesExpander;
         #endregion
@@ -2630,20 +2540,37 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton SplitNames_Curr_RadioButton
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mSplitNames_Curr_RadioButton == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mSplitNames_Curr_RadioButton = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mSplitNames_Curr_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mSplitNames_Curr_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mSplitNames_Curr_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mSplitNames_Curr_RadioButton;
+                return this.mCurrentCheckBox;
+            }
+        }
+        
+        public WpfCheckBox DifferenceCheckBox
+        {
+            get
+            {
+                if ((this.mDifferenceCheckBox == null))
+                {
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifferenceCheckBox;
             }
         }
         
@@ -2663,31 +2590,14 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mNoConflicts;
             }
         }
-        
-        public WpfRadioButton SplitNames_Diff_RadioButton
-        {
-            get
-            {
-                if ((this.mSplitNames_Diff_RadioButton == null))
-                {
-                    this.mSplitNames_Diff_RadioButton = new WpfRadioButton(this);
-                    #region Search Criteria
-                    this.mSplitNames_Diff_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mSplitNames_Diff_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mSplitNames_Diff_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mSplitNames_Diff_RadioButton;
-            }
-        }
         #endregion
         
         #region Fields
-        private WpfRadioButton mSplitNames_Curr_RadioButton;
+        private WpfCheckBox mCurrentCheckBox;
+        
+        private WpfCheckBox mDifferenceCheckBox;
         
         private WpfText mNoConflicts;
-        
-        private WpfRadioButton mSplitNames_Diff_RadioButton;
         #endregion
     }
     
@@ -2987,6 +2897,40 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfCheckBox CurrentCheckBox
+        {
+            get
+            {
+                if ((this.mCurrentCheckBox == null))
+                {
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrentCheckBox;
+            }
+        }
+        
+        public WpfCheckBox DifferenceCheckBox
+        {
+            get
+            {
+                if ((this.mDifferenceCheckBox == null))
+                {
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifferenceCheckBox;
+            }
+        }
+        
         public WpfText NoConflicts
         {
             get
@@ -3006,6 +2950,10 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfCheckBox mCurrentCheckBox;
+        
+        private WpfCheckBox mDifferenceCheckBox;
+        
         private WpfText mNoConflicts;
         #endregion
     }
@@ -3025,20 +2973,20 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton Decision_Current_RadioButton
+        public WpfRadioButton Current
         {
             get
             {
-                if ((this.mDecision_Current_RadioButton == null))
+                if ((this.mCurrent == null))
                 {
-                    this.mDecision_Current_RadioButton = new WpfRadioButton(this);
+                    this.mCurrent = new WpfRadioButton(this);
                     #region Search Criteria
-                    this.mDecision_Current_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mDecision_Current_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDecision_Current_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mDecision_Current_RadioButton;
+                return this.mCurrent;
             }
         }
         
@@ -3061,7 +3009,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
-        private WpfRadioButton mDecision_Current_RadioButton;
+        private WpfRadioButton mCurrent;
         
         private WpfRadioButton mDecision_Diff_RadioButton;
         #endregion
@@ -3115,45 +3063,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton ThirdAssign_Difference
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Difference == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Difference;
+                return this.mCurrentCheckBox;
             }
         }
         
-        public WpfRadioButton ThirdAssign_Current
+        public WpfCheckBox DifferenceCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Current == null))
+                if ((this.mDifferenceCheckBox == null))
                 {
-                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Current;
+                return this.mDifferenceCheckBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRadioButton mThirdAssign_Difference;
+        private WpfCheckBox mCurrentCheckBox;
         
-        private WpfRadioButton mThirdAssign_Current;
+        private WpfCheckBox mDifferenceCheckBox;
         #endregion
     }
     
@@ -3472,45 +3420,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton Decision_Current_RadioButton
+        public WpfRadioButton Current
         {
             get
             {
-                if ((this.mDecision_Current_RadioButton == null))
+                if ((this.mCurrent == null))
                 {
-                    this.mDecision_Current_RadioButton = new WpfRadioButton(this);
+                    this.mCurrent = new WpfRadioButton(this);
                     #region Search Criteria
-                    this.mDecision_Current_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mDecision_Current_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDecision_Current_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mDecision_Current_RadioButton;
+                return this.mCurrent;
             }
         }
         
-        public WpfRadioButton Decision_Diff_RadioButton
+        public WpfRadioButton Difference
         {
             get
             {
-                if ((this.mDecision_Diff_RadioButton == null))
+                if ((this.mDifference == null))
                 {
-                    this.mDecision_Diff_RadioButton = new WpfRadioButton(this);
+                    this.mDifference = new WpfRadioButton(this);
                     #region Search Criteria
-                    this.mDecision_Diff_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mDecision_Diff_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mDecision_Diff_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mDecision_Diff_RadioButton;
+                return this.mDifference;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRadioButton mDecision_Current_RadioButton;
+        private WpfRadioButton mCurrent;
         
-        private WpfRadioButton mDecision_Diff_RadioButton;
+        private WpfRadioButton mDifference;
         #endregion
     }
     
@@ -3562,37 +3510,37 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton ThirdAssign_Difference
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Difference == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Difference;
+                return this.mCurrentCheckBox;
             }
         }
         
-        public WpfRadioButton ThirdAssign_Current
+        public WpfCheckBox DifferenceCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Current == null))
+                if ((this.mDifferenceCheckBox == null))
                 {
-                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Current;
+                return this.mDifferenceCheckBox;
             }
         }
         
@@ -3615,9 +3563,9 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
-        private WpfRadioButton mThirdAssign_Difference;
+        private WpfCheckBox mCurrentCheckBox;
         
-        private WpfRadioButton mThirdAssign_Current;
+        private WpfCheckBox mDifferenceCheckBox;
         
         private WpfText mNoConflicts;
         #endregion
@@ -3760,45 +3708,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton ThirdAssign_Difference
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Difference == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Difference;
+                return this.mCurrentCheckBox;
             }
         }
         
-        public WpfRadioButton ThirdAssign_Current
+        public WpfCheckBox DifferenceCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Current == null))
+                if ((this.mDifferenceCheckBox == null))
                 {
-                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Current;
+                return this.mDifferenceCheckBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRadioButton mThirdAssign_Difference;
+        private WpfCheckBox mCurrentCheckBox;
         
-        private WpfRadioButton mThirdAssign_Current;
+        private WpfCheckBox mDifferenceCheckBox;
         #endregion
     }
     
@@ -3939,45 +3887,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton ThirdAssign_Difference
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Difference == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Difference;
+                return this.mCurrentCheckBox;
             }
         }
         
-        public WpfRadioButton ThirdAssign_Current
+        public WpfCheckBox DifferenceCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Current == null))
+                if ((this.mDifferenceCheckBox == null))
                 {
-                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Current;
+                return this.mDifferenceCheckBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRadioButton mThirdAssign_Difference;
+        private WpfCheckBox mCurrentCheckBox;
         
-        private WpfRadioButton mThirdAssign_Current;
+        private WpfCheckBox mDifferenceCheckBox;
         #endregion
     }
     
@@ -4118,45 +4066,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton ThirdAssign_Difference
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Difference == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Difference;
+                return this.mCurrentCheckBox;
             }
         }
         
-        public WpfRadioButton ThirdAssign_Current
+        public WpfCheckBox DifferenceCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Current == null))
+                if ((this.mDifferenceCheckBox == null))
                 {
-                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Current;
+                return this.mDifferenceCheckBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRadioButton mThirdAssign_Difference;
+        private WpfCheckBox mCurrentCheckBox;
         
-        private WpfRadioButton mThirdAssign_Current;
+        private WpfCheckBox mDifferenceCheckBox;
         #endregion
     }
     
@@ -4297,45 +4245,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton ThirdAssign_Difference
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Difference == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Difference;
+                return this.mCurrentCheckBox;
             }
         }
         
-        public WpfRadioButton ThirdAssign_Current
+        public WpfCheckBox DifferenceCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Current == null))
+                if ((this.mDifferenceCheckBox == null))
                 {
-                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Current;
+                return this.mDifferenceCheckBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRadioButton mThirdAssign_Difference;
+        private WpfCheckBox mCurrentCheckBox;
         
-        private WpfRadioButton mThirdAssign_Current;
+        private WpfCheckBox mDifferenceCheckBox;
         #endregion
     }
     
@@ -4476,45 +4424,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton ThirdAssign_Difference
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Difference == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Difference;
+                return this.mCurrentCheckBox;
             }
         }
         
-        public WpfRadioButton ThirdAssign_Current
+        public WpfCheckBox DifferenceCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Current == null))
+                if ((this.mDifferenceCheckBox == null))
                 {
-                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Current;
+                return this.mDifferenceCheckBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRadioButton mThirdAssign_Difference;
+        private WpfCheckBox mCurrentCheckBox;
         
-        private WpfRadioButton mThirdAssign_Current;
+        private WpfCheckBox mDifferenceCheckBox;
         #endregion
     }
     
@@ -4655,45 +4603,45 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
-        public WpfRadioButton ThirdAssign_Difference
+        public WpfCheckBox CurrentCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Difference == null))
+                if ((this.mCurrentCheckBox == null))
                 {
-                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    this.mCurrentCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
-                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mCurrentCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrentCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrentCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Difference;
+                return this.mCurrentCheckBox;
             }
         }
         
-        public WpfRadioButton ThirdAssign_Current
+        public WpfCheckBox DifferenceCheckBox
         {
             get
             {
-                if ((this.mThirdAssign_Current == null))
+                if ((this.mDifferenceCheckBox == null))
                 {
-                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    this.mDifferenceCheckBox = new WpfCheckBox(this);
                     #region Search Criteria
-                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
-                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
-                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mDifferenceCheckBox.SearchProperties[WpfCheckBox.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDifferenceCheckBox.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifferenceCheckBox.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mThirdAssign_Current;
+                return this.mDifferenceCheckBox;
             }
         }
         #endregion
         
         #region Fields
-        private WpfRadioButton mThirdAssign_Difference;
+        private WpfCheckBox mCurrentCheckBox;
         
-        private WpfRadioButton mThirdAssign_Current;
+        private WpfCheckBox mDifferenceCheckBox;
         #endregion
     }
     
@@ -5317,206 +5265,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         
         #region Fields
         private WpfEdit mDisplayNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2PIETERTEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2PIETERTEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\PIETER.TERBLANCHE)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISmallViewContentCustom1 UISmallViewContentCustom
-        {
-            get
-            {
-                if ((this.mUISmallViewContentCustom == null))
-                {
-                    this.mUISmallViewContentCustom = new UISmallViewContentCustom1(this);
-                }
-                return this.mUISmallViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISmallViewContentCustom1 mUISmallViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UISmallViewContentCustom1 : WpfCustom
-    {
-        
-        public UISmallViewContentCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISmallDataGridTable1 UISmallDataGridTable
-        {
-            get
-            {
-                if ((this.mUISmallDataGridTable == null))
-                {
-                    this.mUISmallDataGridTable = new UISmallDataGridTable1(this);
-                }
-                return this.mUISmallDataGridTable;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISmallDataGridTable1 mUISmallDataGridTable;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UISmallDataGridTable1 : WpfTable
-    {
-        
-        public UISmallDataGridTable1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_ActivityGridRow_0Row1 UIUI_ActivityGridRow_0Row
-        {
-            get
-            {
-                if ((this.mUIUI_ActivityGridRow_0Row == null))
-                {
-                    this.mUIUI_ActivityGridRow_0Row = new UIUI_ActivityGridRow_0Row1(this);
-                }
-                return this.mUIUI_ActivityGridRow_0Row;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_ActivityGridRow_0Row1 mUIUI_ActivityGridRow_0Row;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIUI_ActivityGridRow_0Row1 : WpfRow
-    {
-        
-        public UIUI_ActivityGridRow_0Row1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemUnlimitedApplicaCell1 UIItemUnlimitedApplicaCell
-        {
-            get
-            {
-                if ((this.mUIItemUnlimitedApplicaCell == null))
-                {
-                    this.mUIItemUnlimitedApplicaCell = new UIItemUnlimitedApplicaCell1(this);
-                }
-                return this.mUIItemUnlimitedApplicaCell;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemUnlimitedApplicaCell1 mUIItemUnlimitedApplicaCell;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIItemUnlimitedApplicaCell1 : WpfCell
-    {
-        
-        public UIItemUnlimitedApplicaCell1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_TextBox_AutoIDComboBox UIUI_TextBox_AutoIDComboBox
-        {
-            get
-            {
-                if ((this.mUIUI_TextBox_AutoIDComboBox == null))
-                {
-                    this.mUIUI_TextBox_AutoIDComboBox = new UIUI_TextBox_AutoIDComboBox(this);
-                }
-                return this.mUIUI_TextBox_AutoIDComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_TextBox_AutoIDComboBox mUIUI_TextBox_AutoIDComboBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIUI_TextBox_AutoIDComboBox : WpfComboBox
-    {
-        
-        public UIUI_TextBox_AutoIDComboBox(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI_TextBox_AutoID";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfEdit UITextEdit
-        {
-            get
-            {
-                if ((this.mUITextEdit == null))
-                {
-                    this.mUITextEdit = new WpfEdit(this);
-                    #region Search Criteria
-                    this.mUITextEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
-                    this.mUITextEdit.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mUITextEdit;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfEdit mUITextEdit;
         #endregion
     }
 }
