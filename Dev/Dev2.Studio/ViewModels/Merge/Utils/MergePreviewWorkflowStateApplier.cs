@@ -157,17 +157,16 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             var sourceConflictItem = changedItem.SourceConflictItem();
             var destinationConflictItem = changedItem.DestinationConflictItem();
-            if (sourceConflictItem == null || destinationConflictItem == null)
+            if (!(sourceConflictItem is null) && !(destinationConflictItem is null))
             {
-                // fixme
-                throw new Exception("Invalid connector state detected");
-            }
-            if (changedItem.IsChecked)
-            {                
-                LinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
-            } else
-            {
-                DeLinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
+                if (changedItem.IsChecked)
+                {
+                    LinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
+                }
+                else
+                {
+                    DeLinkActivities(sourceConflictItem.UniqueId, destinationConflictItem.UniqueId, changedItem.Key);
+                }
             }
         }
 
