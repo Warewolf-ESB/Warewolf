@@ -276,8 +276,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
                     }
                     return true;
-                }
-                UpdateSwitchArm(key, switchItem, null, delink);
+                }                
             }
             return false;
         }
