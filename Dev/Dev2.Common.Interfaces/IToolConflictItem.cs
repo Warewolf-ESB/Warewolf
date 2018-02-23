@@ -29,6 +29,8 @@ namespace Dev2.Common.Interfaces
         bool IsInWorkflow { get; }
 
         List<IConnectorConflictItem> InboundConnectors { get; set; }
-        List<IConnectorConflictItem> OutboundConnectors { get; }
+        List<IConnectorConflictItem> OutboundConnectors { get; set; }
+
+        IToolConflictItem Clone();
     }
 }

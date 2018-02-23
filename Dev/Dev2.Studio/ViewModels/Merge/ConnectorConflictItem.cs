@@ -17,11 +17,11 @@ namespace Dev2.ViewModels.Merge
 {
     public class ConnectorConflictItem : ConflictItem, IConnectorConflictItem, ICheckable
     {
-        readonly (ConflictRowList list, ConflictRowList.Column Column) context;
+        readonly (ConflictRowList list, ConflictRowList.Column Column) _context;
         public ConnectorConflictItem(ConflictRowList rowList, ConflictRowList.Column column, Guid Grouping, string armDescription, Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
-            context.list = rowList;
-            context.Column= column;
+            _context.list = rowList;
+            _context.Column= column;
 
             ArmDescription = armDescription;
             if (!string.IsNullOrWhiteSpace(armDescription))
@@ -46,29 +46,34 @@ namespace Dev2.ViewModels.Merge
 
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
-        public override bool AllowSelection { get {
-                var sourceItem = SourceConflictItem();
-                var destinationItem = DestinationConflictItem();
-                return sourceItem != null && sourceItem.IsInWorkflow
-                        && destinationItem != null && destinationItem.IsInWorkflow;
-            }
+        private bool _allowSelection;
+        public override bool AllowSelection {
+            get => _allowSelection;
+            set => SetProperty(ref _allowSelection, value);
         }
+        
         public IToolConflictItem SourceConflictItem() {
-            if (!context.list.Ready) {
+            if (!_context.list.Ready) {
                 throw new Exception("ConflictRowList not ready");
             }
-            return context.Column == ConflictRowList.Column.Current
-                            ? context.list.GetToolItemFromIdCurrent(SourceUniqueId)
-                            : context.list.GetToolItemFromIdDifferent(SourceUniqueId);
+            return _context.Column == ConflictRowList.Column.Current
+                            ? _context.list.GetToolItemFromIdCurrent(SourceUniqueId)
+                            : _context.list.GetToolItemFromIdDifferent(SourceUniqueId);
         }
         public IToolConflictItem DestinationConflictItem() {
-            if (!context.list.Ready)
+            if (!_context.list.Ready)
             {
                 throw new Exception("ConflictRowList not ready");
             }
-            return context.Column == ConflictRowList.Column.Current
-                            ? context.list.GetToolItemFromIdCurrent(DestinationUniqueId)
-                            : context.list.GetToolItemFromIdDifferent(DestinationUniqueId);
+            return _context.Column == ConflictRowList.Column.Current
+                            ? _context.list.GetToolItemFromIdCurrent(DestinationUniqueId)
+                            : _context.list.GetToolItemFromIdDifferent(DestinationUniqueId);
+        }
+
+        public IConnectorConflictItem Clone()
+        {
+            var clonedItem = MemberwiseClone() as IConnectorConflictItem;
+            return clonedItem;
         }
 
         public override bool Equals(object obj)
@@ -109,6 +114,14 @@ namespace Dev2.ViewModels.Merge
 
             public IToolConflictItem SourceConflictItem() { throw new NotImplementedException(); }
             public IToolConflictItem DestinationConflictItem() { throw new NotImplementedException(); }
+
+            public void ReCalculateAllowSelection()
+            { }
+            public IConnectorConflictItem Clone()
+            {
+                var clonedItem = MemberwiseClone() as IConnectorConflictItem;
+                return clonedItem;
+            }
         }
     }
 }

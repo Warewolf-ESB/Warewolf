@@ -30,13 +30,15 @@ namespace Dev2.Common.Interfaces
 
         IToolConflictItem SourceConflictItem(); // the conflict item that needs to be IsChecked for this conflict item to be enabled
         IToolConflictItem DestinationConflictItem(); // the conflict item to set to IsChecked if this conflict item IsChecked
+
+        IConnectorConflictItem Clone();
     }
 
     public interface IConflictItem
     {
         void SetAutoChecked();
         bool IsChecked { get; set; }
-        bool AllowSelection { get; }
+        bool AllowSelection { get; set; }
         event Action<IConflictItem, bool> NotifyIsCheckedChanged;
     }
     public interface IConflictRow
