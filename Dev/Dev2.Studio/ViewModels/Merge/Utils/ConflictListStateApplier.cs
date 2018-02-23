@@ -51,8 +51,14 @@ namespace Dev2.ViewModels.Merge.Utils
             if (conflictItem is IToolConflictItem toolConflictItem)
             {
                 var connectors = new List<IConnectorConflictItem>();
-                connectors.AddRange(toolConflictItem.InboundConnectors);
-                connectors.AddRange(toolConflictItem.OutboundConnectors);
+                if (toolConflictItem.InboundConnectors != null)
+                {
+                    connectors.AddRange(toolConflictItem.InboundConnectors);
+                }
+                if (toolConflictItem.OutboundConnectors != null)
+                {
+                    connectors.AddRange(toolConflictItem.OutboundConnectors);
+                }
                 foreach (var connector in connectors)
                 {
                     var sourceItem = connector.SourceConflictItem();
