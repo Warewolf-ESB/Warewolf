@@ -103,12 +103,19 @@ namespace Dev2.ViewModels.Merge.Utils
         private void AddActivity(IToolConflictItem toolModelConflictItem)
         {
             _mergePreviewWorkflowDesignerViewModel.AddItem(toolModelConflictItem);
-            if (!(toolModelConflictItem.InboundConnectors is null) && toolModelConflictItem.InboundConnectors.Count > 0 && toolModelConflictItem.InboundConnectors[0].IsChecked)
+            if (!(toolModelConflictItem.InboundConnectors is null) && toolModelConflictItem.InboundConnectors.Count > 0)
             {
-                var sourceUniqueId = toolModelConflictItem.InboundConnectors[0].SourceUniqueId;
-                var destinationUniqueId = toolModelConflictItem.UniqueId;
-                var key = toolModelConflictItem.InboundConnectors[0].Key;
-                LinkActivities(sourceUniqueId, destinationUniqueId, key);
+                var inboundConnectors = toolModelConflictItem.InboundConnectors;
+                foreach (var inboundConnector in inboundConnectors)
+                {
+                    if (inboundConnector.IsChecked)
+                    {
+                        var sourceUniqueId = inboundConnector.SourceUniqueId;
+                        var destinationUniqueId = toolModelConflictItem.UniqueId;
+                        var key = inboundConnector.Key;
+                        LinkActivities(sourceUniqueId, destinationUniqueId, key);
+                    }
+                }
             }
 
         }
