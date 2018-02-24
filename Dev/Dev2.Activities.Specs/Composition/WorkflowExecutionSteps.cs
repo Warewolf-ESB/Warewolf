@@ -4299,5 +4299,48 @@ namespace Dev2.Activities.Specs.Composition
             var wdvm = new Mock<IWorkflowDesignerViewModel>();
             vm.Setup(p => p.WorkflowDesignerViewModel).Returns(wdvm.Object);
         }
+
+        [Given(@"Public ""(.*)"" Permissions to Execute ""(.*)""")]
+        [When(@"Public ""(.*)"" Permissions to Execute ""(.*)""")]
+        [Then(@"Public ""(.*)"" Permissions to Execute ""(.*)""")]
+        public void GivenPublicPermissionsToExecuteButNotNested(string permited, string resourceName)
+        {
+            var hasPermissions = !string.IsNullOrEmpty(permited);
+            TryGetValue("environment", out IServer environmentModel);
+            EnsureEnvironmentConnected(environmentModel);
+            var resourceRepository = environmentModel.ResourceRepository;
+            var settings = resourceRepository.ReadSettings(environmentModel);
+            environmentModel.ForceLoadResources();
+            if (hasPermissions)
+            {
+                AddPermissionsForResource(resourceName, environmentModel, resourceRepository, settings);
+            }
+        }
+
+        private static void AddPermissionsForResource(string resourceName, IServer environmentModel, IResourceRepository resourceRepository, Data.Settings.Settings settings)
+        {
+            var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+            Assert.IsNotNull(resourceModel, "Did not find: " + resourceName);
+            settings.Security.WindowsGroupPermissions.RemoveAll(permission => permission.ResourceID == resourceModel.ID);
+            var resourcePerm = new WindowsGroupPermission
+            {
+                WindowsGroup = "Public",
+                ResourceID = resourceModel.ID,
+                ResourceName = resourceName,
+                IsServer = false,
+                Permissions = SecPermissions.Execute
+            };
+            settings.Security.WindowsGroupPermissions.Add(resourcePerm);
+            var SettingsWriteResult = resourceRepository.WriteSettings(environmentModel, settings);
+            Assert.IsFalse(SettingsWriteResult.HasError, "Cannot setup for security spec.\n Error writing initial resource permissions settings to localhost server.\n" + SettingsWriteResult.Message);
+        }
+
+        static void EnsureEnvironmentConnected(IServer server)
+        {
+            if (!server.IsConnected)
+            {
+                server.Connect();
+            }
+        }
     }
 }
