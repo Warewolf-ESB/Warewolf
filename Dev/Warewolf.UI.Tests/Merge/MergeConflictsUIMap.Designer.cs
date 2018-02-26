@@ -41,10 +41,24 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mMainWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private MainWindow mMainWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -718,6 +732,18 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public UITreeItem1 UITreeItem1
+        {
+            get
+            {
+                if ((this.mUITreeItem1 == null))
+                {
+                    this.mUITreeItem1 = new UITreeItem1(this);
+                }
+                return this.mUITreeItem1;
+            }
+        }
+        
         public UIATreeItem UIATreeItem
         {
             get
@@ -780,6 +806,8 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private UITreeItem1 mUITreeItem1;
+        
         private UIATreeItem mUIATreeItem;
         
         private UIBTreeItem mUIBTreeItem;
@@ -789,6 +817,78 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         private UIDTreeItem mUIDTreeItem;
         
         private UIETreeItem mUIETreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UITreeItem1 : WpfTreeItem
+    {
+        
+        public UITreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "CustomerCSV";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UICustomerCSVPane UICustomerCSVPane
+        {
+            get
+            {
+                if ((this.mUICustomerCSVPane == null))
+                {
+                    this.mUICustomerCSVPane = new UICustomerCSVPane(this);
+                }
+                return this.mUICustomerCSVPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UICustomerCSVPane mUICustomerCSVPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UICustomerCSVPane : WpfPane
+    {
+        
+        public UICustomerCSVPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIUI_NameTextBox_AutoIEdit
+        {
+            get
+            {
+                if ((this.mUIUI_NameTextBox_AutoIEdit == null))
+                {
+                    this.mUIUI_NameTextBox_AutoIEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIUI_NameTextBox_AutoIEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+                    this.mUIUI_NameTextBox_AutoIEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIUI_NameTextBox_AutoIEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIUI_NameTextBox_AutoIEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIUI_NameTextBox_AutoIEdit;
         #endregion
     }
     
@@ -5379,6 +5479,207 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         
         #region Fields
         private WpfEdit mDisplayNameTextBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_CurrentVariablesDCustom1 UIUI_CurrentVariablesDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_CurrentVariablesDCustom == null))
+                {
+                    this.mUIUI_CurrentVariablesDCustom = new UIUI_CurrentVariablesDCustom1(this);
+                }
+                return this.mUIUI_CurrentVariablesDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_CurrentVariablesDCustom1 mUIUI_CurrentVariablesDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_CurrentVariablesDCustom1 : WpfCustom
+    {
+        
+        public UIUI_CurrentVariablesDCustom1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DataListView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_CurrentVariablesDataListView_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_VariableTreeView_Tree2 UIUI_VariableTreeView_Tree
+        {
+            get
+            {
+                if ((this.mUIUI_VariableTreeView_Tree == null))
+                {
+                    this.mUIUI_VariableTreeView_Tree = new UIUI_VariableTreeView_Tree2(this);
+                }
+                return this.mUIUI_VariableTreeView_Tree;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_VariableTreeView_Tree2 mUIUI_VariableTreeView_Tree;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_VariableTreeView_Tree2 : WpfTree
+    {
+        
+        public UIUI_VariableTreeView_Tree2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "UI_VariableTreeView_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIVariableTreeItem2 UIVariableTreeItem
+        {
+            get
+            {
+                if ((this.mUIVariableTreeItem == null))
+                {
+                    this.mUIVariableTreeItem = new UIVariableTreeItem2(this);
+                }
+                return this.mUIVariableTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIVariableTreeItem2 mUIVariableTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIVariableTreeItem2 : WpfTreeItem
+    {
+        
+        public UIVariableTreeItem2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Variable";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UICustomerCSVTreeItem UICustomerCSVTreeItem
+        {
+            get
+            {
+                if ((this.mUICustomerCSVTreeItem == null))
+                {
+                    this.mUICustomerCSVTreeItem = new UICustomerCSVTreeItem(this);
+                }
+                return this.mUICustomerCSVTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UICustomerCSVTreeItem mUICustomerCSVTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UICustomerCSVTreeItem : WpfTreeItem
+    {
+        
+        public UICustomerCSVTreeItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "CustomerCSV";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UICustomerCSVPane1 UICustomerCSVPane
+        {
+            get
+            {
+                if ((this.mUICustomerCSVPane == null))
+                {
+                    this.mUICustomerCSVPane = new UICustomerCSVPane1(this);
+                }
+                return this.mUICustomerCSVPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UICustomerCSVPane1 mUICustomerCSVPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UICustomerCSVPane1 : WpfPane
+    {
+        
+        public UICustomerCSVPane1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.ScrollViewer";
+            this.SearchProperties[WpfPane.PropertyNames.AutomationId] = "varsScrolBar";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIUI_NameTextBox_AutoIEdit
+        {
+            get
+            {
+                if ((this.mUIUI_NameTextBox_AutoIEdit == null))
+                {
+                    this.mUIUI_NameTextBox_AutoIEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIUI_NameTextBox_AutoIEdit.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "UI_NameTextBox_AutoID";
+                    this.mUIUI_NameTextBox_AutoIEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIUI_NameTextBox_AutoIEdit.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIUI_NameTextBox_AutoIEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIUI_NameTextBox_AutoIEdit;
         #endregion
     }
 }
