@@ -1811,7 +1811,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -2235,7 +2235,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -2640,7 +2640,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -3030,6 +3030,40 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfText ConvertCase
+        {
+            get
+            {
+                if ((this.mConvertCase == null))
+                {
+                    this.mConvertCase = new WpfText(this);
+                    #region Search Criteria
+                    this.mConvertCase.SearchProperties[WpfText.PropertyNames.Name] = "Convert Case To Title Case (2)";
+                    this.mConvertCase.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mConvertCase.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConvertCase;
+            }
+        }
+        
+        public WpfText Sequence
+        {
+            get
+            {
+                if ((this.mSequence == null))
+                {
+                    this.mSequence = new WpfText(this);
+                    #region Search Criteria
+                    this.mSequence.SearchProperties[WpfText.PropertyNames.Name] = "Sequence";
+                    this.mSequence.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSequence.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSequence;
+            }
+        }
+        
         public MergeButton7 MergeButton
         {
             get
@@ -3044,6 +3078,10 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfText mConvertCase;
+        
+        private WpfText mSequence;
+        
         private MergeButton7 mMergeButton;
         #endregion
     }
@@ -3063,6 +3101,23 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
         public WpfCheckBox CurrentCheckBox
         {
             get
@@ -3099,6 +3154,8 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfText mNoConflicts;
+        
         private WpfCheckBox mCurrentCheckBox;
         
         private WpfCheckBox mDifferenceCheckBox;
@@ -3119,6 +3176,23 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
         public WpfRadioButton Current
         {
             get
@@ -3179,6 +3253,8 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfText mNoConflicts;
+        
         private WpfRadioButton mCurrent;
         
         private WpfRadioButton mDifference;
@@ -3390,7 +3466,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -3610,7 +3686,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -3708,6 +3784,23 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
         public WpfCheckBox CurrentCheckBox
         {
             get
@@ -3744,6 +3837,8 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfText mNoConflicts;
+        
         private WpfCheckBox mCurrentCheckBox;
         
         private WpfCheckBox mDifferenceCheckBox;
@@ -3789,7 +3884,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -3968,7 +4063,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -4147,7 +4242,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -4326,7 +4421,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -4505,7 +4600,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 {
                     this.mNoConflicts = new WpfText(this);
                     #region Search Criteria
-                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "NodeArmNoConflictIcon";
                     this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -4984,6 +5079,23 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mReplace;
             }
         }
+        
+        public WpfCustom UIDsfForEachActivityCustom
+        {
+            get
+            {
+                if ((this.mUIDsfForEachActivityCustom == null))
+                {
+                    this.mUIDsfForEachActivityCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIDsfForEachActivityCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ForeachDesigner";
+                    this.mUIDsfForEachActivityCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "For Each(ForeachDesigner)";
+                    this.mUIDsfForEachActivityCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIDsfForEachActivityCustom;
+            }
+        }
         #endregion
         
         #region Fields
@@ -5010,6 +5122,8 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         private WpfCustom mCommentActivityCustom;
         
         private WpfCustom mReplace;
+        
+        private WpfCustom mUIDsfForEachActivityCustom;
         #endregion
     }
     

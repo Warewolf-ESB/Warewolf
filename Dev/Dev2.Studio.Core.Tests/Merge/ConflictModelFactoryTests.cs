@@ -117,7 +117,7 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
-            var toolConflictItem = new Mock<IToolConflictItem>().Object;
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object,new List<ConflictTreeNode>(), new List<ConflictTreeNode>()),ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
@@ -149,7 +149,7 @@ namespace Dev2.Core.Tests.Merge
             var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var toolConflictItem = new Mock<IToolConflictItem>().Object;
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
@@ -182,7 +182,7 @@ namespace Dev2.Core.Tests.Merge
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             currentResourceModel.Setup(resModel => resModel.DataList).Returns("");
-            var toolConflictItem = new Mock<IToolConflictItem>().Object;
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
@@ -225,7 +225,7 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
-            var toolConflictItem = new Mock<IToolConflictItem>().Object;
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
@@ -259,7 +259,7 @@ namespace Dev2.Core.Tests.Merge
             var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
             node.Setup(p => p.Activity).Returns(value);
             contextualResource.Setup(p => p.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentResourceModel.Object);
-            var toolConflictItem = new Mock<IToolConflictItem>().Object;
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
 
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
@@ -310,7 +310,7 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
-            var toolConflictItem = new Mock<IToolConflictItem>().Object;
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
@@ -334,7 +334,7 @@ namespace Dev2.Core.Tests.Merge
             var contextualResource = new Mock<IContextualResourceModel>();
 
             node.Setup(p => p.Activity).Returns(new DsfCalculateActivity());
-            var toolConflictItem = new Mock<IToolConflictItem>().Object;
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------

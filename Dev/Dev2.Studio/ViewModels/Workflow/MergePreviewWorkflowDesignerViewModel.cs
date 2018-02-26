@@ -318,13 +318,16 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (key != "Default")
             {
                 var parentNodeProperty = switchItem.Properties["Cases"];
-                if (delink)
+                if (parentNodeProperty != null)
                 {
-                    parentNodeProperty.SetValue(null);
-                }
-                else
-                {
-                    if (parentNodeProperty != null)
+                    if (delink)
+                    {
+                        var cases = parentNodeProperty.Dictionary;
+                        cases.Remove(key);
+                        parentNodeProperty.SetValue(cases);
+
+                    }
+                    else
                     {
                         var cases = parentNodeProperty.Dictionary;
                         cases.Remove(key);
