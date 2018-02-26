@@ -591,13 +591,6 @@ function Find-Warewolf-Server-Exe {
 		Expand-Archive "$ServerPath" "$TestsResultsPath\Server" -Force
 		$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
 	}
-    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
-        sleep 30
-        exit 1
-    } else {
-        return $ServerPath
-    }
 }
 
 if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
@@ -605,6 +598,13 @@ if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
 }
 
 function Install-Server {
+    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
+        sleep 30
+        exit 1
+    } else {
+        return $ServerPath
+    }
     Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will be backed up to $TestsResultsPath."
     if ($ResourcesType -eq "") {
 	    $title = "Server Resources"
