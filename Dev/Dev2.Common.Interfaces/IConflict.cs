@@ -48,7 +48,7 @@ namespace Dev2.Common.Interfaces
         bool IsCurrentChecked { get; set; }
         bool ContainsStart { get; set; }
         bool IsEmptyItemSelected { get; set; }
-        bool HasConflict { get; }
+        bool HasConflict { get; set; }
         bool IsChecked { get; set; }
         Guid UniqueId { get; }
     }

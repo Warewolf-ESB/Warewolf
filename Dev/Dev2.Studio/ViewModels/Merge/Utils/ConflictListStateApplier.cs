@@ -25,7 +25,33 @@ namespace Dev2.ViewModels.Merge.Utils
         public ConflictListStateApplier(ConflictRowList conflicts)
         {
             this._conflictRowList = conflicts;
+            SetInitialStates();
             RegisterToolEventListeners();
+        }
+
+        private void SetInitialStates()
+        {
+            foreach (var row in _conflictRowList)
+            {
+                if (row is IConnectorConflictRow connectorRow)
+                {
+                    SetInitialConnectorRowState(connectorRow);
+                    SetConnectorAllowSelection(connectorRow.CurrentArmConnector);
+                    SetConnectorAllowSelection(connectorRow.DifferentArmConnector);
+                }
+            }
+        }
+
+        private static void SetInitialConnectorRowState(IConnectorConflictRow row)
+        {
+            bool sourceConflict = row.CurrentArmConnector.SourceUniqueId != row.DifferentArmConnector.SourceUniqueId;
+            bool destinationConflict = row.CurrentArmConnector.DestinationUniqueId != row.DifferentArmConnector.DestinationUniqueId;
+
+            var destinationToolCurrent = row.CurrentArmConnector.DestinationConflictItem();
+            var destinationToolDifferent = row.DifferentArmConnector.DestinationConflictItem();
+
+            var destinationToolConflict = destinationToolCurrent != null && destinationToolDifferent != null && !destinationToolCurrent.Equals(destinationToolDifferent);
+            row.HasConflict = sourceConflict || destinationConflict || destinationToolConflict;
         }
 
         private void RegisterToolEventListeners()
@@ -61,19 +87,27 @@ namespace Dev2.ViewModels.Merge.Utils
                 }
                 foreach (var connector in connectors)
                 {
-                    var sourceItem = connector.SourceConflictItem();
-                    var destinationItem = connector.DestinationConflictItem();
-
-                    var allow = sourceItem != null && sourceItem.IsInWorkflow
-                            && destinationItem != null && destinationItem.IsInWorkflow;
-
-                    connector.AllowSelection = allow;
-                    if (!connector.AllowSelection)
-                    {
-                        connector.IsChecked = false;
-                    }
+                    SetConnectorAllowSelection(connector);
                 }
             }
+        }
+
+        private static void SetConnectorAllowSelection(IConnectorConflictItem connector)
+        {
+            var sourceItem = connector.SourceConflictItem();
+            var destinationItem = connector.DestinationConflictItem();
+
+            bool allow;
+            if (connector.Key == "Start")
+            {
+                allow = destinationItem != null && destinationItem.IsInWorkflow;
+            }
+            else
+            {
+                allow = sourceItem != null && sourceItem.IsInWorkflow
+                        && destinationItem != null && destinationItem.IsInWorkflow;
+            }
+            connector.AllowSelection = allow;
         }
 
         public void SetConnectorSelectionsToCurrentState()
@@ -90,7 +124,8 @@ namespace Dev2.ViewModels.Merge.Utils
                     }
                 }
             }
+            SetInitialStates();
         }
-        
+
     }
 }
