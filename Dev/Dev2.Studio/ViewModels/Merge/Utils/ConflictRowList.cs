@@ -153,15 +153,16 @@ namespace Dev2.ViewModels.Merge.Utils
             }
 
             var mergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource;
-            var toolConflictItem = ToolConflictItem.NewStartConflictItem(this, Column.Current, mergeIcon);
+            var currentConflictItem = ToolConflictItem.NewStartConflictItem(this, Column.Current, mergeIcon);
+            var differentConflictItem = ToolConflictItem.NewStartConflictItem(this, Column.Current, mergeIcon);
 
-            var startRow = ToolConflictRow.CreateStartRow(toolConflictItem, new ToolConflictItem.Empty());
-            startRow.Connectors = CreateStartNodeConnectors(current, diff);
+            var startRow = ToolConflictRow.CreateStartRow(currentConflictItem, differentConflictItem);
+            startRow.Connectors = CreateStartNodeConnectors(currentConflictItem, differentConflictItem, current, diff);
 
             return _cacheStartToolRow = startRow;
         }
 
-        IList<IConnectorConflictRow> CreateStartNodeConnectors(ConflictTreeNode current, ConflictTreeNode diff)
+        IList<IConnectorConflictRow> CreateStartNodeConnectors(IToolConflictItem currentConflictItem, IToolConflictItem differentConflictItem, ConflictTreeNode current, ConflictTreeNode diff)
         {
             const string key = "Start";
             var emptyGuid = Guid.Empty;
@@ -176,7 +177,9 @@ namespace Dev2.ViewModels.Merge.Utils
             }
             else
             {
-                row.CurrentArmConnector = new ConnectorConflictItem(this, Column.Current, row.UniqueId, "Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key);
+                var connector = new ConnectorConflictItem(this, Column.Current, row.UniqueId, "Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key);
+                row.CurrentArmConnector = connector;
+                currentConflictItem.OutboundConnectors.Add(connector);
             }
             if (diff == null)
             {
@@ -184,7 +187,9 @@ namespace Dev2.ViewModels.Merge.Utils
             }
             else
             {
-                row.DifferentArmConnector = new ConnectorConflictItem(this, Column.Different, row.UniqueId, "Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key);
+                var connector = new ConnectorConflictItem(this, Column.Different, row.UniqueId, "Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key);
+                row.DifferentArmConnector = connector;
+                differentConflictItem.OutboundConnectors.Add(connector);
             }
             return new List<IConnectorConflictRow> { row };
         }
