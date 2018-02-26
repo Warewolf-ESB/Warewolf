@@ -38,6 +38,19 @@ namespace Dev2.ViewModels.Merge.Utils
 
             var createConflictRowList = new ConflictRowListBuilder(modelFactoryCurrent, modelFactoryDifferent);
             _toolConflictRowList = createConflictRowList.CreateList(this, _currentTree, _diffTree);
+
+            ConflictTreeNode currentNode = null;
+            ConflictTreeNode diffNode = null;
+
+            if(_currentTree.Length > 0)
+            {
+                currentNode = _currentTree[0];
+            }
+            if (_diffTree.Length > 0)
+            {
+                diffNode = _diffTree[0];
+            }
+            GetAndCreateStartRow(currentNode, diffNode);
             BindInboundConnections();
             Ready = true;
         }
@@ -48,6 +61,19 @@ namespace Dev2.ViewModels.Merge.Utils
             List<IConnectorConflictItem> FindConnectorsForTool(IToolConflictItem conflictItem, Column column)
             {
                 var inboundConnectors = new List<IConnectorConflictItem>();
+
+                if (column == Column.Current)
+                {
+                    inboundConnectors.AddRange(_cacheStartToolRow.Connectors
+                                                        .Where(item => item.CurrentArmConnector.DestinationUniqueId == conflictItem.UniqueId)
+                                                        .Select(item => item.CurrentArmConnector));
+                } else
+                {
+                    inboundConnectors.AddRange(_cacheStartToolRow.Connectors
+                                                        .Where(item => item.DifferentArmConnector.DestinationUniqueId == conflictItem.UniqueId)
+                                                        .Select(item => item.DifferentArmConnector));
+                }
+
                 foreach (var row in _toolConflictRowList)
                 {
                     if (column == Column.Current)
@@ -101,9 +127,8 @@ namespace Dev2.ViewModels.Merge.Utils
 
         public IEnumerator<IConflictRow> GetEnumerator()
         {
-            var startToolRow = CreateStartRow(_currentTree[0], _diffTree[0]);
-            yield return startToolRow;
-            foreach (var connectorRow in startToolRow.Connectors)
+            yield return _cacheStartToolRow;
+            foreach (var connectorRow in _cacheStartToolRow.Connectors)
             {
                 yield return connectorRow;
             }
@@ -120,7 +145,7 @@ namespace Dev2.ViewModels.Merge.Utils
         }
 
         ToolConflictRow _cacheStartToolRow;
-        private ToolConflictRow CreateStartRow(ConflictTreeNode current, ConflictTreeNode diff)
+        private ToolConflictRow GetAndCreateStartRow(ConflictTreeNode current, ConflictTreeNode diff)
         {
             if (_cacheStartToolRow != null)
             {
@@ -128,20 +153,17 @@ namespace Dev2.ViewModels.Merge.Utils
             }
 
             var mergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource;
-            var toolConflictItem = ToolConflictItem.NewStartConflictItem(this, Column.Current, mergeIcon);
+            var currentConflictItem = ToolConflictItem.NewStartConflictItem(this, Column.Current, mergeIcon);
+            var differentConflictItem = ToolConflictItem.NewStartConflictItem(this, Column.Current, mergeIcon);
 
-            var row = ToolConflictRow.CreateStartRow(toolConflictItem, new ToolConflictItem.Empty());
-            CreateStartNodeConnectors(row, current, diff);
+            var startRow = ToolConflictRow.CreateStartRow(currentConflictItem, differentConflictItem);
+            startRow.Connectors = CreateStartNodeConnectors(currentConflictItem, differentConflictItem, current, diff);
 
-            return _cacheStartToolRow = row;
+            return _cacheStartToolRow = startRow;
         }
 
-        void CreateStartNodeConnectors(ToolConflictRow toolConflictRow, ConflictTreeNode current, ConflictTreeNode diff)
+        IList<IConnectorConflictRow> CreateStartNodeConnectors(IToolConflictItem currentConflictItem, IToolConflictItem differentConflictItem, ConflictTreeNode current, ConflictTreeNode diff)
         {
-            if (toolConflictRow.Connectors != null && toolConflictRow.Connectors.Any())
-            {
-                return;
-            }
             const string key = "Start";
             var emptyGuid = Guid.Empty;
             var row = new ConnectorConflictRow
@@ -149,10 +171,27 @@ namespace Dev2.ViewModels.Merge.Utils
                 Key = key,
                 ContainsStart = true
             };
-            row.CurrentArmConnector = new ConnectorConflictItem(this, Column.Current, row.UniqueId, "Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key);
-            row.DifferentArmConnector = new ConnectorConflictItem(this, Column.Different, row.UniqueId, "Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key);
-
-            toolConflictRow.Connectors = new List<IConnectorConflictRow> { row };
+            if (current == null)
+            {
+                row.CurrentArmConnector = new ConnectorConflictItem.Empty(emptyGuid);
+            }
+            else
+            {
+                var connector = new ConnectorConflictItem(this, Column.Current, row.UniqueId, "Start -> " + current.Activity.GetDisplayName(), emptyGuid, Guid.Parse(current.UniqueId), key);
+                row.CurrentArmConnector = connector;
+                currentConflictItem.OutboundConnectors.Add(connector);
+            }
+            if (diff == null)
+            {
+                row.DifferentArmConnector = new ConnectorConflictItem.Empty(emptyGuid);
+            }
+            else
+            {
+                var connector = new ConnectorConflictItem(this, Column.Different, row.UniqueId, "Start -> " + diff.Activity.GetDisplayName(), emptyGuid, Guid.Parse(diff.UniqueId), key);
+                row.DifferentArmConnector = connector;
+                differentConflictItem.OutboundConnectors.Add(connector);
+            }
+            return new List<IConnectorConflictRow> { row };
         }
 
         public IToolConflictRow GetStartToolRow() => _toolConflictRowList[0];

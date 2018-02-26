@@ -69,7 +69,7 @@
                         <DockPanel x:Name="CurrentDockPanel" 
                                    LastChildFill="False" 
                                    AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
-                                   DataContext="{Binding CurrentConflictModel}">
+                                   DataContext="{Binding ModelFactoryCurrent}">
                             <StackPanel x:Name="CurrentWorkflowHeaderSp" 
                                         Background="{StaticResource WareWolfMenuBrush}" 
                                         HorizontalAlignment="Stretch" 
@@ -108,7 +108,7 @@
                         <DockPanel x:Name="DifferenceDockPanel" 
                                    LastChildFill="False" 
                                    AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
-                                   DataContext="{Binding DifferenceConflictModel}">
+                                   DataContext="{Binding ModelFactoryDifferent}">
                             <StackPanel x:Name="DifferenceWorkflowHeaderSp" 
                                         Background="{StaticResource WareWolfMenuBrush}" 
                                         DockPanel.Dock="Left" 
@@ -172,7 +172,7 @@
                                    Grid.Column="0" 
                                    LastChildFill="False" 
                                    AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
-                                   DataContext="{Binding CurrentConflictModel}">
+                                   DataContext="{Binding ModelFactoryCurrent}">
                             <StackPanel x:Name="CurrentWorkflowTextSp" 
                                         DockPanel.Dock="Left" 
                                         Orientation="Horizontal" 
@@ -225,7 +225,7 @@
                             <StackPanel x:Name="DifferenceWorkflowTextSp" 
                                         DockPanel.Dock="Left" 
                                         Orientation="Horizontal"
-                                        DataContext="{Binding DifferenceConflictModel}"
+                                        DataContext="{Binding ModelFactoryDifferent}"
                                         AutomationProperties.AutomationId="UI_DifferenceWorkflowTextSP_AutoID">
                                 <RadioButton x:Name="DifferenceWorkflowRb" 
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
@@ -283,7 +283,7 @@
                                                 AutomationProperties.AutomationId="UI_CurrentVariablesHeaderBorder_AutoID">
                                             <DockPanel x:Name="CurrentVariablesDockPanel" 
                                                        LastChildFill="False"
-                                                       DataContext="{Binding CurrentConflictModel}"
+                                                       DataContext="{Binding ModelFactoryCurrent}"
                                                        AutomationProperties.AutomationId="UI_CurrentVariablesDockPanel_AutoID">
                                                 <StackPanel x:Name="CurrentVariablesTextSP" 
                                                             DockPanel.Dock="Left" 
@@ -339,7 +339,7 @@
                                                 AutomationProperties.AutomationId="UI_DifferenceVariablesBorder_AutoID">
                                             <DockPanel x:Name="DifferenceVariablesDockPanel" 
                                                        LastChildFill="False"
-                                                       DataContext="{Binding DifferenceConflictModel}"
+                                                       DataContext="{Binding ModelFactoryDifferent}"
                                                        AutomationProperties.AutomationId="UI_DifferenceVariablesDockPanel_AutoID">
                                                 <StackPanel x:Name="DifferenceVariablesSP" 
                                                             DockPanel.Dock="Left" 
@@ -382,7 +382,7 @@
                                 <Border x:Name="CurrentVariablesTemplateBorder" 
                                         BorderBrush="#CFD6E1" 
                                         BorderThickness="1,0,1,1" 
-                                        DataContext="{Binding CurrentConflictModel}"
+                                        DataContext="{Binding ModelFactoryCurrent}"
                                         AutomationProperties.AutomationId="UI_CurrentVariablesTemplateBorder_AutoID">
                                     <datalist:DataListView x:Name="CurrentVariablesDataListView" 
                                                            DataContext="{Binding DataListViewModel}" 
@@ -395,7 +395,7 @@
                                         Grid.Column="1" 
                                         BorderBrush="#CFD6E1" 
                                         BorderThickness="1,0,1,1" 
-                                        DataContext="{Binding DifferenceConflictModel}"
+                                        DataContext="{Binding ModelFactoryDifferent}"
                                         AutomationProperties.AutomationId="UI_DifferenceVariablesTemplateBorder_AutoID">
                                     <datalist:DataListView x:Name="DifferenceVariablesDataListView" 
                                                            DataContext="{Binding DataListViewModel}" 
