@@ -47,8 +47,16 @@ namespace Dev2.ViewModels.Merge.Utils
             bool sourceConflict = row.CurrentArmConnector.SourceUniqueId != row.DifferentArmConnector.SourceUniqueId;
             bool destinationConflict = row.CurrentArmConnector.DestinationUniqueId != row.DifferentArmConnector.DestinationUniqueId;
 
-            var destinationToolCurrent = row.CurrentArmConnector.DestinationConflictItem();
-            var destinationToolDifferent = row.DifferentArmConnector.DestinationConflictItem();
+            IToolConflictItem destinationToolCurrent = null;
+            IToolConflictItem destinationToolDifferent = null;
+            if (!(row.CurrentArmConnector is ConnectorConflictItem.Empty))
+            {
+                destinationToolCurrent = row.CurrentArmConnector.DestinationConflictItem();
+            }
+            if (!(row.DifferentArmConnector is ConnectorConflictItem.Empty))
+            {
+                destinationToolDifferent = row.DifferentArmConnector.DestinationConflictItem();
+            }
 
             var destinationToolConflict = destinationToolCurrent != null && destinationToolDifferent != null && !destinationToolCurrent.Equals(destinationToolDifferent);
             row.HasConflict = sourceConflict || destinationConflict || destinationToolConflict;
@@ -94,6 +102,10 @@ namespace Dev2.ViewModels.Merge.Utils
 
         private static void SetConnectorAllowSelection(IConnectorConflictItem connector)
         {
+            if (connector is ConnectorConflictItem.Empty)
+            {
+                return;
+            }
             var sourceItem = connector.SourceConflictItem();
             var destinationItem = connector.DestinationConflictItem();
 
