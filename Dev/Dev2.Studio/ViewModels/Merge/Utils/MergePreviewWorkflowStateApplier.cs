@@ -132,10 +132,10 @@ namespace Dev2.ViewModels.Merge.Utils
                 return;
             }
 
-            if (row.ContainsStart)
+            if (row.ContainsStart && changedItem.IsChecked == true)
             {
                 _mergePreviewWorkflowDesignerViewModel.RemoveStartNodeConnection();
-                LinkStartNode(row);
+                LinkStartNode(changedItem);
                 return;
             }
             if (changedItem.IsChecked)
@@ -148,11 +148,9 @@ namespace Dev2.ViewModels.Merge.Utils
             }
         }
 
-        private void LinkStartNode(IConnectorConflictRow row)
+        private void LinkStartNode(IConnectorConflictItem changedItem)
         {
-            var startToolRow = _conflictList.GetStartToolRow();
-
-            var toolConflictItem = row.Different.IsChecked ? startToolRow.DiffViewModel : startToolRow.CurrentViewModel;
+            var toolConflictItem = changedItem.DestinationConflictItem();
 
             toolConflictItem.SetAutoChecked();
             AddActivity(toolConflictItem);

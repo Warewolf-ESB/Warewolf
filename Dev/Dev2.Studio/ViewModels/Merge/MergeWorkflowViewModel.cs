@@ -31,8 +31,8 @@ namespace Dev2.ViewModels.Merge
         bool _isVariablesEnabled;
         readonly IContextualResourceModel _resourceModel;
         readonly ConflictRowList conflictList;
-        readonly IConflictModelFactory modelFactoryCurrent;
-        readonly IConflictModelFactory modelFactoryDifferent;
+        public IConflictModelFactory ModelFactoryCurrent { get; private set; }
+        public IConflictModelFactory ModelFactoryDifferent { get; private set; }
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadworkflowFromServer)
         {
@@ -45,12 +45,12 @@ namespace Dev2.ViewModels.Merge
             _resourceModel = currentResourceModel;
             var (currentTree, diffTree) = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, loadworkflowFromServer);
 
-            modelFactoryCurrent = new ConflictModelFactory(currentResourceModel);
-            modelFactoryCurrent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
-            modelFactoryDifferent = new ConflictModelFactory(differenceResourceModel);
-            modelFactoryDifferent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
+            ModelFactoryCurrent = new ConflictModelFactory(currentResourceModel);
+            ModelFactoryCurrent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
+            ModelFactoryDifferent = new ConflictModelFactory(differenceResourceModel);
+            ModelFactoryDifferent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
 
-            conflictList = new ConflictRowList(modelFactoryCurrent, modelFactoryDifferent, currentTree, diffTree);
+            conflictList = new ConflictRowList(ModelFactoryCurrent, ModelFactoryDifferent, currentTree, diffTree);
 
             Conflicts = conflictList;
             SetupNamesAndVariables(currentResourceModel, differenceResourceModel);
@@ -73,8 +73,8 @@ namespace Dev2.ViewModels.Merge
 
             MergePreviewWorkflowDesignerViewModel.CanViewWorkflowLink = false;
             MergePreviewWorkflowDesignerViewModel.IsTestView = true;
-            modelFactoryCurrent.IsWorkflowNameChecked = !HasWorkflowNameConflict;
-            modelFactoryCurrent.IsVariablesChecked = !HasVariablesConflict;
+            ModelFactoryCurrent.IsWorkflowNameChecked = !HasWorkflowNameConflict;
+            ModelFactoryCurrent.IsVariablesChecked = !HasVariablesConflict;
         }
 
         void SourceOnConflictModelChanged(object sender, IConflictModelFactory conflictModel)
@@ -132,12 +132,12 @@ namespace Dev2.ViewModels.Merge
                 var resourceId = _resourceModel.ID;
                 if (HasWorkflowNameConflict)
                 {
-                    var resourceName = modelFactoryCurrent.IsWorkflowNameChecked ? modelFactoryCurrent.WorkflowName : modelFactoryDifferent.WorkflowName;
+                    var resourceName = ModelFactoryCurrent.IsWorkflowNameChecked ? ModelFactoryCurrent.WorkflowName : ModelFactoryDifferent.WorkflowName;
                     _resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceId, resourceName);
                 }
                 if (HasVariablesConflict)
                 {
-                    _resourceModel.DataList = modelFactoryCurrent.IsVariablesChecked ? modelFactoryCurrent.DataListViewModel.WriteToResourceModel() : modelFactoryDifferent.DataListViewModel.WriteToResourceModel();
+                    _resourceModel.DataList = ModelFactoryCurrent.IsVariablesChecked ? ModelFactoryCurrent.DataListViewModel.WriteToResourceModel() : ModelFactoryDifferent.DataListViewModel.WriteToResourceModel();
                 }
                 _resourceModel.WorkflowXaml = MergePreviewWorkflowDesignerViewModel.ServiceDefinition;
                 _resourceModel.Environment.ResourceRepository.SaveToServer(_resourceModel, "Merge");
@@ -178,8 +178,8 @@ namespace Dev2.ViewModels.Merge
         {
             get
             {
-                var canSave = modelFactoryCurrent.IsWorkflowNameChecked || modelFactoryDifferent.IsWorkflowNameChecked;
-                canSave &= modelFactoryCurrent.IsVariablesChecked || modelFactoryDifferent.IsVariablesChecked;
+                var canSave = ModelFactoryCurrent.IsWorkflowNameChecked || ModelFactoryDifferent.IsWorkflowNameChecked;
+                canSave &= ModelFactoryCurrent.IsVariablesChecked || ModelFactoryDifferent.IsVariablesChecked;
 
                 return canSave;
             }
