@@ -142,8 +142,8 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             var rows = new List<IConnectorConflictRow>();
             int index = 0;
-            var armConnectorsCurrent = current?.Activity.ArmConnectors();
-            var armConnectorsDiff = diff?.Activity.ArmConnectors();
+            var armConnectorsCurrent = current?.Activity.ArmConnectors().OrderBy(i=>i.Key??"").ToList();
+            var armConnectorsDiff = diff?.Activity.ArmConnectors().OrderBy(i=>i.Key??"").ToList();
             var maxCount = current == null
                 ? armConnectorsDiff.Count
                 : diff == null
