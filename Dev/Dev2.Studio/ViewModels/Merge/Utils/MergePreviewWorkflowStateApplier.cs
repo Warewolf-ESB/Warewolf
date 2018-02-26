@@ -12,6 +12,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using System;
+using System.Activities.Statements;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
@@ -92,7 +93,10 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             if (changedItem.IsChecked)
             {
-                AddActivity(changedItem);
+                if (!(changedItem.FlowNode is FlowDecision) && !(changedItem.FlowNode is FlowSwitch<string>))
+                {
+                    AddActivity(changedItem);
+                }
             }
             else
             {
@@ -104,7 +108,7 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             _mergePreviewWorkflowDesignerViewModel.AddItem(toolModelConflictItem);
             if (!(toolModelConflictItem.InboundConnectors is null) && toolModelConflictItem.InboundConnectors.Count > 0)
-            {
+            {                
                 var inboundConnectors = toolModelConflictItem.InboundConnectors;
                 foreach (var inboundConnector in inboundConnectors)
                 {
