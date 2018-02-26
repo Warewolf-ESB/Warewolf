@@ -24,6 +24,7 @@ namespace Dev2.ViewModels.Merge.Utils
     {
         readonly IConflictModelFactory _modelFactoryCurrent;
         readonly IConflictModelFactory _modelFactoryDifferent;
+        const int MAX_WORKFLOW_ITEMS = 10000;
 
         public ConflictRowListBuilder(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent)
         {
@@ -34,12 +35,15 @@ namespace Dev2.ViewModels.Merge.Utils
         public List<ToolConflictRow> CreateList(ConflictRowList list, ConflictTreeNode[] currentTree, ConflictTreeNode[] diffTree)
         {
             var toolConflictRowList = new List<ToolConflictRow>();
-            var maxCount = Math.Max(currentTree.Length, diffTree.Length);
             int indexDiff = 0;
             int indexCurr = 0;
 
-            for (int i = 0; i < maxCount; i++)
+            for (int i = 0; i <= MAX_WORKFLOW_ITEMS; i++)
             {
+                if (i == MAX_WORKFLOW_ITEMS)
+                {
+                    throw new Exception("createlist expected to advance");
+                }
                 ConflictTreeNode current = null;
                 ConflictTreeNode diff = null;
 
