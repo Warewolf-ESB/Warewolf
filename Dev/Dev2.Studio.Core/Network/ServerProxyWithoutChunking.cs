@@ -631,6 +631,7 @@ namespace Dev2.Network
                 throw new ArgumentNullException(nameof(xmlRequest));
             }
 
+            // TODO: add a timeout here, this line often causes the studio to freeze indefinitely.
             var result = Task.Run(async () => await ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true)).Result;
             return result;
         }

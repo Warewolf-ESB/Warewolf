@@ -240,7 +240,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var parentNodeProperty = decisionItem.Properties[key];
                 if (parentNodeProperty != null)
                 {
-                    parentNodeProperty.SetValue(null);
                     if (next != null)
                     {
                         if (delink)

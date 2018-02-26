@@ -30,6 +30,7 @@ using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Interfaces;
+using Dev2.Threading;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
@@ -51,6 +52,8 @@ namespace Dev2.Activities.Designers2.PostgreSql
         const string OutputDisplayName = " - Outputs";
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
+
+        public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem) : this(modelItem, new AsyncWorker(), new ViewPropertyBuilder()) { }
 
         public PostgreSqlDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
