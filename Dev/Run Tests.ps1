@@ -747,10 +747,6 @@ function Start-Server {
 }
 
 function Start-my.warewolf.io {
-    if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
-        exit 1
-    }
     if ($TestsPath.EndsWith("\")) {
         $WebsPath = $TestsPath + "_PublishedWebsites\Dev2.Web"
     } else {
@@ -758,6 +754,10 @@ function Start-my.warewolf.io {
     }
     Write-Host Starting my.warewolf.io from $WebsPath
     if (!(Test-Path $WebsPath)) {
+        if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
+            exit 1
+        }
         $WebsPath = (Get-Item $ServerPath).Directory.FullName + "\_PublishedWebsites\Dev2.Web"
     }
     Cleanup-ServerStudio
