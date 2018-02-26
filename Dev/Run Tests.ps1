@@ -586,16 +586,17 @@ function Move-ScreenRecordings-To-TestResults {
 }
 
 function Find-Warewolf-Server-Exe {
-    if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        $ServerPath = FindFile-InParent $ServerPathSpecs
-        if ($ServerPath.EndsWith(".zip")) {
-		    Expand-Archive "$ServerPath" "$TestsResultsPath\Server" -Force
-		    $ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
-	    }
-        return $ServerPath
-    }
+    $ServerPath = FindFile-InParent $ServerPathSpecs
+    if ($ServerPath.EndsWith(".zip")) {
+		Expand-Archive "$ServerPath" "$TestsResultsPath\Server" -Force
+		$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
+	}
+    return $ServerPath
 }
-$ServerPath = Find-Warewolf-Server-Exe
+
+if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+    $ServerPath = Find-Warewolf-Server-Exe
+}
 
 function Install-Server {
     if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
@@ -856,9 +857,11 @@ EXPOSE 3143
 SHELL ["powershell"]
 RUN New-Item -Path Build -ItemType Directory
 ADD . Build
-ENTRYPOINT & "Build\\Run Tests.ps1"
 ENV SCRIPT_PATH "Build\Run Tests.ps1"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
+
+ENTRYPOINT & $env:SCRIPT_PATH
+CMD ["-StartServerAsConsole", "-ResourcesType", "Release"]
 "@
     docker $ContainerRemoteApiHost build -t warewolfserver "$ServerFolderPath"
     docker $ContainerRemoteApiHost container inspect warewolfserver
