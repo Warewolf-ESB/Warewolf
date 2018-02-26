@@ -586,21 +586,20 @@ function Move-ScreenRecordings-To-TestResults {
 }
 
 function Find-Warewolf-Server-Exe {
-    $ServerPath = FindFile-InParent $ServerPathSpecs
-    if ($ServerPath.EndsWith(".zip")) {
-		Expand-Archive "$ServerPath" "$TestsResultsPath\Server" -Force
-		$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
-	}
+    if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        $ServerPath = FindFile-InParent $ServerPathSpecs
+        if ($ServerPath.EndsWith(".zip")) {
+		    Expand-Archive "$ServerPath" "$TestsResultsPath\Server" -Force
+		    $ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
+	    }
+        return $ServerPath
+    }
 }
-
-if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-    $ServerPath = Find-Warewolf-Server-Exe
-}
+$ServerPath = Find-Warewolf-Server-Exe
 
 function Install-Server {
     if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
-        sleep 30
         exit 1
     }
     Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will be backed up to $TestsResultsPath."
@@ -747,6 +746,10 @@ function Start-Server {
 }
 
 function Start-my.warewolf.io {
+    if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
+        exit 1
+    }
     if ($TestsPath.EndsWith("\")) {
         $WebsPath = $TestsPath + "_PublishedWebsites\Dev2.Web"
     } else {
