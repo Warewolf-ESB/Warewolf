@@ -57,8 +57,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         // TODO: Create Common interface AddOrRemove?
         public void AddItem(IToolConflictItem model)
         {
-            var bbb = _workflowDesignerHelper.GetService<ModelService>(_wd);
-            var root = bbb.Root;
+            var service = _workflowDesignerHelper.GetService<ModelService>(_wd);
+            var root = service.Root;
             var chart = _workflowDesignerHelper.GetService<ModelService>(_wd).Find(root, typeof(Flowchart)).FirstOrDefault();
 
             var nodes = chart?.Properties["Nodes"]?.Collection;

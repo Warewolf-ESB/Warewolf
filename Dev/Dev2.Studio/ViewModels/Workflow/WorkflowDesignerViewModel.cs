@@ -124,7 +124,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
 
-        protected readonly IWorkflowDesignerWrapper _workflowDesignerHelper;
+        protected IWorkflowDesignerWrapper _workflowDesignerHelper;
 
         public WorkflowDesignerViewModel(IContextualResourceModel resource)
             : this(resource, true)
