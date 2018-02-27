@@ -1149,9 +1149,9 @@ TestResults
                 }
             } else {
                 if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent) {
-                    $JobContainerResult = docker $ContainerRemoteApiHost service create --limit-memory="1500m" --replicas 1 --name $JobContainerName $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
+                    $JobContainerResult = docker $ContainerRemoteApiHost service create --replicas 1 --restart-condition none --limit-memory="1500m" --name $JobContainerName $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
                 } else {
-                    $JobContainerResult = docker $ContainerRemoteApiHost service create --limit-memory="700m" --replicas 1 --name $JobContainerName $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
+                    $JobContainerResult = docker $ContainerRemoteApiHost service create --replicas 1 --restart-condition none --limit-memory="700m" --name $JobContainerName $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
                 }
                 Write-Host Started $JobContainerName as $JobContainerResult
             }
