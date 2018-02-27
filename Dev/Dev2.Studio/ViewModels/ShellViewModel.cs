@@ -600,7 +600,6 @@ namespace Dev2.Studio.ViewModels
                     var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
                     if (resourceModel != null && resourceVersion != null)
                     {
-                        resourceVersion.ResourceName = resourceModel.ResourceName;
                         workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
                         workSurfaceKey.ResourceID = resourceModel.ID;
                         workSurfaceKey.ServerID = resourceModel.ServerID;
