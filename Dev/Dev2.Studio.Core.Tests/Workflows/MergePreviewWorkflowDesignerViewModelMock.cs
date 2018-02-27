@@ -25,6 +25,7 @@ namespace Dev2.Core.Tests.Workflows
            : base(workflowDesignerWrapper, eventAggregator, resource, workflowHelper, new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), createDesigner, false)
         {
             _wd = workflowDesigner;
+            _workflowDesignerHelper = workflowDesignerWrapper;
         }
     }
 }
