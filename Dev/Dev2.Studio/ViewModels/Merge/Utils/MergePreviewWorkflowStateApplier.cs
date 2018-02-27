@@ -89,6 +89,7 @@ namespace Dev2.ViewModels.Merge.Utils
                 throw new NotImplementedException("Only ConflictRow and ConflictItem are supported");
             }
         }
+
         private void ToolModelHandler(IToolConflictItem changedItem)
         {
             if (changedItem.IsChecked)
@@ -96,15 +97,7 @@ namespace Dev2.ViewModels.Merge.Utils
                 if (!(changedItem.FlowNode is FlowDecision) && !(changedItem.FlowNode is FlowSwitch<string>))
                 {
                     AddActivity(changedItem);
-                }
-                else
-                {
-                    var allConnectorsConnected = changedItem.OutboundConnectors.TrueForAll(i => i.IsChecked);
-                    if (allConnectorsConnected)
-                    {
-                        AddActivity(changedItem);
-                    }
-                }
+                }                
             }
             else
             {
