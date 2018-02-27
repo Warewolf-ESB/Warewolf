@@ -11,9 +11,21 @@ namespace Warewolf.UI.Tests.Merge
     public class MergeAllToolsConflictsTest
     {
         public const string MergeWithCopiedTool = "MergeWithCopiedTool";
+        public const string Merge_FileNames = "Merge_FileNames";
         public const string MergeLoopingConnector = "MergeLoopingConnector";
         public const string MergePositionChange = "MergePositionChange";
         public const string Merge3ToolsWorkflow = "Merge3ToolsWorkflow";
+
+
+        [TestMethod]
+        [TestCategory("Merge All Tools Conflicts")]
+        public void Open_Merge_For_Wit_Updated_Name_Should_Show_Conflict_On_Names()
+        {
+            ExplorerUIMap.Open_Context_Menu_For_Service(Merge_FileNames);
+            MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
+            Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
+            Assert.Fail("Put an Assert for name Conflicts");
+        }
 
 
         [TestMethod]
@@ -121,6 +133,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsFalse(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem6.Current.Enabled);
             Assert.IsFalse(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem6.Difference.Enabled);
         }
+
         #region Additional test attributes
 
         [TestInitialize]
