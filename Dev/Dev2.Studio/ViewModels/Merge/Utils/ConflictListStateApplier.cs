@@ -59,7 +59,8 @@ namespace Dev2.ViewModels.Merge.Utils
             }
 
             var destinationToolConflict = destinationToolCurrent != null && destinationToolDifferent != null && !destinationToolCurrent.Equals(destinationToolDifferent);
-            row.HasConflict = sourceConflict || destinationConflict || destinationToolConflict;
+            var keyConflict = row.CurrentArmConnector.Key != row.DifferentArmConnector.Key;
+            row.HasConflict = sourceConflict || destinationConflict || destinationToolConflict || keyConflict;
         }
 
         private void RegisterToolEventListeners()
