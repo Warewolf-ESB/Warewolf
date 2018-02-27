@@ -45,6 +45,8 @@ namespace Dev2.ViewModels.Merge
         public bool IsInWorkflow {
             get => _context.list.ActivityIsInWorkflow(Activity as IDev2Activity);
         }
+
+        public bool IsAddedToWorkflow { get; set; }
         public List<IConnectorConflictItem> InboundConnectors { get; set; }
         public List<IConnectorConflictItem> OutboundConnectors { get; set; }
 
@@ -142,6 +144,7 @@ namespace Dev2.ViewModels.Merge
             public List<IConnectorConflictItem> InboundConnectors { get => null; set => _inboundConnectors = value; }
             public List<IConnectorConflictItem> OutboundConnectors { get => throw new NotImplementedException(); set=> throw new NotImplementedException(); }
             public bool IsInWorkflow => false;
+            public bool IsAddedToWorkflow { get; set; }
 
             public IToolConflictItem Clone()
             {

@@ -94,7 +94,7 @@ namespace Dev2.ViewModels.Merge.Utils
         {
             if (changedItem.IsChecked)
             {
-                if (!(changedItem.FlowNode is FlowDecision) && !(changedItem.FlowNode is FlowSwitch<string>))
+                if (!changedItem.IsAddedToWorkflow)
                 {
                     AddActivity(changedItem);
                 }                
