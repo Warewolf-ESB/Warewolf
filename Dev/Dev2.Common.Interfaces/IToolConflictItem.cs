@@ -27,7 +27,7 @@ namespace Dev2.Common.Interfaces
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
         bool IsInWorkflow { get; }
-
+        bool IsAddedToWorkflow { get; set; }
         List<IConnectorConflictItem> InboundConnectors { get; set; }
         List<IConnectorConflictItem> OutboundConnectors { get; set; }
 

@@ -109,6 +109,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
             SetShapeLocation(modelItem, model.NodeLocation);
+            model.IsAddedToWorkflow = true;
         }
 
         // TODO: Create Common interface AddOrRemove?
