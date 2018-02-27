@@ -63,6 +63,13 @@ namespace Dev2.ViewModels.Merge.Utils
                 bool diffFoundInCurrent = currentTree.Contains(diff);
                 bool currFoundInDifferent = diffTree.Contains(current);
 
+                if(diffFoundInCurrent && currFoundInDifferent)
+                {
+                    diff = diffTree.FirstOrDefault(o => o.UniqueId==current.UniqueId);
+                    current = currentTree.FirstOrDefault(o => o.UniqueId==current.UniqueId);
+                }
+                
+
                 #region get tool conflict item
                 IToolConflictItem currentToolConflictItem = null;
                 IToolConflictItem diffToolConflictItem = null;
