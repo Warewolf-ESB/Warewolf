@@ -82,8 +82,15 @@ namespace Dev2.ViewModels.Merge
             }
             var equal = UniqueId.Equals(item.UniqueId);
             equal &= MergeDescription == item.MergeDescription;
-            equal &= ModelItem.Attributes.Equals(item.ModelItem.Attributes);
-            equal &= ModelItem.GetModelPath().Equals(item.ModelItem.GetModelPath());
+            if (ModelItem is null || item.ModelItem is null)
+            {
+                equal &= ModelItem == item.ModelItem;
+            }
+            else
+            {
+                equal &= ModelItem.Attributes.Equals(item.ModelItem.Attributes);
+                equal &= ModelItem.GetModelPath().Equals(item.ModelItem.GetModelPath());
+            }
             if (Activity != null)
             {
                 equal &= Activity.Equals(item.Activity);
