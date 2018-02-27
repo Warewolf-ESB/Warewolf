@@ -142,9 +142,10 @@ namespace Dev2.Core.Tests.Merge.Utils
             var currentConflictModelFactory = CreateCurrentConflictModelFactory();
             var diffConflictModelFactory = CreateDiffConflictModelFactory();
             var rowList = CreateMockConflictRowList();
-            var toolConflictItem = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
-            var currentViewModel = currentConflictModelFactory.CreateModelItem(toolConflictItem, currentTree[0]);
-            var diffViewModel = diffConflictModelFactory.CreateModelItem(toolConflictItem, diffTree[0]);
+            var toolConflictItem1 = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
+            var toolConflictItem2 = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
+            var currentViewModel = currentConflictModelFactory.CreateModelItem(toolConflictItem1, currentTree[0]);
+            var diffViewModel = diffConflictModelFactory.CreateModelItem(toolConflictItem2, diffTree[0]);
 
             var connectors = new List<IConnectorConflictRow>();
 
@@ -153,6 +154,10 @@ namespace Dev2.Core.Tests.Merge.Utils
 
         protected static ToolConflictRow CreateStartRow()
         {
+            var mockApplicationAdapter = new Mock<IApplicationAdaptor>();
+            mockApplicationAdapter.Setup(a => a.Current).Returns(Application.Current);
+            CustomContainer.Register(mockApplicationAdapter.Object);
+
             var imageSource = new DrawingImage();
             
             var startConflictItemCurrent = NewStartConflictItem(imageSource);
