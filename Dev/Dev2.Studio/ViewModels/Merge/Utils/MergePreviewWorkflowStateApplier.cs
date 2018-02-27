@@ -97,6 +97,14 @@ namespace Dev2.ViewModels.Merge.Utils
                 {
                     AddActivity(changedItem);
                 }
+                else
+                {
+                    var allConnectorsConnected = changedItem.OutboundConnectors.TrueForAll(i => i.IsChecked);
+                    if (allConnectorsConnected)
+                    {
+                        AddActivity(changedItem);
+                    }
+                }
             }
             else
             {
