@@ -19,9 +19,9 @@ Scenario: Merge VersionHelloWorld Workflow
 	 Given I Load workflow "MergeHelloWorld" from "localhost"
 	 And I Load workflow "VersionHelloWorld" from "Remote Connection Integration"	 
 	 When Merge Window is opened with remote "VersionHelloWorld"
-	 Then Current workflow contains "9" tools
-	 And Different workflow contains "9" tools
-	 And Merge conflicts count is "9"
+	 Then Current workflow contains "11" tools
+	 And Different workflow contains "11" tools
+	 And Merge conflicts count is "11"
 	 And Merge variable conflicts is false
 	 And Merge window has "3" Conflicting tools
 
@@ -33,7 +33,7 @@ Scenario: Merge WorkFlowWithOneScalar different input mapping
 	 And Different workflow contains "3" tools
 	 And Merge conflicts count is "3"
 	 And Merge variable conflicts is true
-	 And Merge window has "1" Conflicting tools
+	 And Merge window has "2" Conflicting tools
 
 Scenario: Merge WorkFlowWithOneRecordSet different input mapping
 	 Given I Load workflow "WorkFlowWithOneRecordSet" from "localhost"
@@ -43,7 +43,7 @@ Scenario: Merge WorkFlowWithOneRecordSet different input mapping
 	 And Different workflow contains "3" tools
 	 And Merge conflicts count is "3"
 	 And Merge variable conflicts is true
-	 And Merge window has "1" Conflicting tools
+	 And Merge window has "2" Conflicting tools
 
 Scenario: Merge WorkFlowWithOneObject different input mapping
 	 Given I Load workflow "WorkFlowWithOneObject" from "localhost"
@@ -53,7 +53,7 @@ Scenario: Merge WorkFlowWithOneObject different input mapping
 	 And Different workflow contains "3" tools
 	 And Merge conflicts count is "3"
 	 And Merge variable conflicts is true
-	 And Merge window has "1" Conflicting tools
+	 And Merge window has "2" Conflicting tools
 
 Scenario: Merge Workflow with Assign tool As First Tool And Split tool as Second tool count
 	 Given I Load workflow "WorkflowWithDifferentToolSequence" from "localhost"
@@ -95,9 +95,9 @@ Scenario: Merge Workflow Containing Removed tool with same Variable List
 	 Given I Load workflow "MergeRemovedTool" from "localhost"
 	 And I Load workflow version "1" of "MergeRemovedTool" from "localhost"	 
 	 When Merge Window is opened with local "MergeRemovedTool"
-	 Then Current workflow contains "5" tools
-	 And Different workflow contains "5" tools
-	 And Merge conflicts count is "5"
+	 Then Current workflow contains "7" tools
+	 And Different workflow contains "7" tools
+	 And Merge conflicts count is "7"
 	 And Merge variable conflicts is false
 	 And I select Current Tool
 	 And I select Current Arm
@@ -108,9 +108,9 @@ Scenario: Merge Workflow Containing Switch tool
 	 Given I Load workflow "MergeSwitchTool" from "localhost"
 	 And I Load workflow version "1" of "MergeSwitchTool" from "localhost"	 
 	 When Merge Window is opened with local "MergeSwitchTool"
-	 Then Current workflow contains "5" tools
-	 And Different workflow contains "5" tools
-	 And Merge conflicts count is "5"
+	 Then Current workflow contains "7" tools
+	 And Different workflow contains "7" tools
+	 And Merge conflicts count is "7"
 	 And Merge variable conflicts is false
 	 And I select Current Tool
 	 And I select Current Arm
