@@ -139,8 +139,8 @@ namespace Dev2.ViewModels.Merge
         public IDataListViewModel DataListViewModel { get; set; }
 
         public IToolConflictItem CreateModelItem(IToolConflictItem toolConflictItem, IConflictTreeNode node)
-        {
-            var modelItem = ModelItemUtils.CreateModelItem(node.Activity);
+        {           
+            var modelItem = ModelItemUtils.CreateModelItem(node.Activity);            
             return GetModel(toolConflictItem, modelItem, node);
         }
 
@@ -161,8 +161,9 @@ namespace Dev2.ViewModels.Merge
             ActivityDesignerViewModel instance;
             if (actual == typeof(SwitchDesignerViewModel))
             {
-                var dsfSwitch = node as DsfSwitch;
-                instance = Activator.CreateInstance(actual, modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
+                var dsfSwitch = node.Activity as DsfSwitch;
+                var innerModelItem = ModelItemUtils.CreateModelItem(dsfSwitch.Inner);
+                instance = Activator.CreateInstance(actual, innerModelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
             }
             else if (actual == typeof(ServiceDesignerViewModel))
             {
