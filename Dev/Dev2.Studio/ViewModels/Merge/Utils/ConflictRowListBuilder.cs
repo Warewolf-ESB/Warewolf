@@ -136,8 +136,6 @@ namespace Dev2.ViewModels.Merge.Utils
             var diffToolConflictItem_override = diffToolConflictItem;
             if (currentToolConflictItem.Activity != null && diffToolConflictItem.Activity != null && currentToolConflictItem.Activity.Equals(diffToolConflictItem.Activity))
             {
-                // TODO: the diff conflictitem has now changed. We need to set all connectors that refer to the diff tool
-                // so that they are also referencing the currentTool
                 diffToolConflictItem_override = currentToolConflictItem.Clone();
             }
 

@@ -54,7 +54,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             
         }
 
-        // TODO: Create Common interface AddOrRemove?
         public void AddItem(IToolConflictItem model)
         {
             var service = _workflowDesignerHelper.GetService<ModelService>(_wd);
@@ -112,7 +111,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             model.IsAddedToWorkflow = true;
         }
 
-        // TODO: Create Common interface AddOrRemove?
         public void RemoveItem(IToolConflictItem model)
         {
             var root = _wd.Context.Services.GetService<ModelService>().Root;
@@ -149,7 +147,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     break;
             }
         }
-        // TODO: Create Common interface AddOrRemove?
+
         public void DeLinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key, true))
@@ -167,7 +165,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 SetNext(next, step, true);
             }
         }
-        // TODO: Create Common interface AddOrRemove?
+
         public void LinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key))

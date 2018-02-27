@@ -21,7 +21,6 @@ namespace Dev2.ViewModels.Merge.Utils
     public class ConflictListStateApplier
     {
         readonly ConflictRowList _conflictRowList;
-        // TODO: this state applier should also be used to disable Connectors that are unavailable
         public ConflictListStateApplier(ConflictRowList conflicts)
         {
             this._conflictRowList = conflicts;

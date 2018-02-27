@@ -85,7 +85,6 @@ namespace Dev2.ViewModels.Merge.Utils
             else
             {
                 Dev2Logger.Error("Only ConflictRow and ConflictItem are supported", GlobalConstants.WarewolfError);
-                // TODO: Remove?
                 throw new NotImplementedException("Only ConflictRow and ConflictItem are supported");
             }
         }
