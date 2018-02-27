@@ -151,7 +151,13 @@ namespace Dev2.ViewModels.Merge.Utils
                 return _cacheStartToolRow;
             }
 
-            var mergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource;
+            ImageSource mergeIcon = null;
+            if (Application.Current != null)
+            {
+                // TODO: replace Application.Current.TryFindResource with a mockable resource loader
+                mergeIcon = Application.Current.TryFindResource("System-StartNode") as ImageSource;
+            }
+
             var currentConflictItem = ToolConflictItem.NewStartConflictItem(this, Column.Current, mergeIcon);
             var differentConflictItem = ToolConflictItem.NewStartConflictItem(this, Column.Current, mergeIcon);
 
