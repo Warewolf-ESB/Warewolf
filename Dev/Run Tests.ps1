@@ -1108,9 +1108,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             $TestEnvironmentImageName = "warewolftestenvironment"
             if ("$ContainerRegistryHost" -ne "") {
                 $TestEnvironmentImageName = $ContainerRegistryHost + "/" + $TestEnvironmentImageName
-                docker $JobContainerRemoteApiHost pull $TestEnvironmentImageName
             }
             if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null -and ($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName }) -eq $null) {
+                docker $JobContainerRemoteApiHost pull $TestEnvironmentImageName 2>&1
                 $DockerfileContent = @"
 FROM microsoft/windowsservercore
 
@@ -1130,13 +1130,13 @@ RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestA
             $ImageName = "jobsenvironment"
             if ("$ContainerRegistryHost" -ne "") {
                 $ImageName = $ContainerRegistryHost + "/" + $ImageName
+            }
+            if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
                 if ("$JobContainerVersion" -ne "") {
                     docker $JobContainerRemoteApiHost pull ($ImageName + ":" + $JobContainerVersion) 2>&1
                 } else {
                     docker $JobContainerRemoteApiHost pull $ImageName 2>&1
                 }
-            }
-            if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
                 $DockerfileContent = @"
 FROM warewolftestenvironment
 SHELL ["powershell"]
