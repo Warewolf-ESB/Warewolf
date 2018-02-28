@@ -20,7 +20,6 @@ namespace Dev2.Studio.Interfaces
         string ServerName { get; set; }
         bool IsVariablesChecked { get; set; }
         bool IsWorkflowNameChecked { get; set; }
-        IToolConflictItem Model { get; set; }
         IDataListViewModel DataListViewModel { get; set; }
         void GetDataList(IContextualResourceModel resourceModel);
 

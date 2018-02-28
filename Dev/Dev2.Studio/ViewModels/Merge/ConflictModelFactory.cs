@@ -32,7 +32,6 @@ namespace Dev2.ViewModels.Merge
         bool _isWorkflowNameChecked;
         bool _isVariablesChecked;
 
-        public IToolConflictItem Model { get; set; }
         public delegate void ModelItemChanged(ModelItem modelItem, ToolConflictItem mergeToolModel);
         public event ModelItemChanged OnModelItemChanged;
 
@@ -48,7 +47,6 @@ namespace Dev2.ViewModels.Merge
         {
             _resourceModel = resourceModel;
             var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
-            Model = GetModel(toolConflictItem, modelItem, conflict);
         }
 
         public ConflictModelFactory()
@@ -141,10 +139,19 @@ namespace Dev2.ViewModels.Merge
         public IToolConflictItem CreateModelItem(IToolConflictItem toolConflictItem, IConflictTreeNode node)
         {           
             var modelItem = ModelItemUtils.CreateModelItem(node.Activity);            
-            return GetModel(toolConflictItem, modelItem, node);
+            var viewModel = GetViewModel(toolConflictItem, modelItem, node);
+
+            if (toolConflictItem is ToolConflictItem toolConflictItemObject)
+            {
+                return ConfigureToolConflictItem(toolConflictItemObject, modelItem, node, viewModel);
+            }
+            else
+            {
+                throw new Exception("unexpected ToolConflictItem type");
+            }
         }
 
-        public IToolConflictItem GetModel(IToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node)
+        public ActivityDesignerViewModel GetViewModel(IToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node)
         {
             if (modelItem == null || node == null || node.Activity == null)
             {
@@ -153,47 +160,40 @@ namespace Dev2.ViewModels.Merge
 
             var activityType = node.Activity.GetType();
 
-            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var actual);
-            if (actual == null)
+            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out Type actualType);
+            if (actualType == null)
             {
                 return null;
             }
             ActivityDesignerViewModel instance;
-            if (actual == typeof(SwitchDesignerViewModel))
+            if (actualType == typeof(SwitchDesignerViewModel))
             {
                 var dsfSwitch = node.Activity as DsfSwitch;
-                var switchInstance = Activator.CreateInstance(actual, modelItem, dsfSwitch.DisplayName) as SwitchDesignerViewModel;
+                var switchInstance = Activator.CreateInstance(actualType, modelItem, dsfSwitch.DisplayName) as SwitchDesignerViewModel;
                 switchInstance.SwitchVariable = dsfSwitch.Switch;
                 instance = switchInstance;
             }
-            else if (actual == typeof(ServiceDesignerViewModel))
+            else if (actualType == typeof(ServiceDesignerViewModel))
             {
                 var resourceId = ModelItemUtils.TryGetResourceID(modelItem);
                 var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
-                instance = Activator.CreateInstance(actual, modelItem, childResourceModel) as ActivityDesignerViewModel;
+                instance = Activator.CreateInstance(actualType, modelItem, childResourceModel) as ActivityDesignerViewModel;
             }
             else if (node.Activity is IAdapterActivity a)
             {
                 var inode = ModelItemUtils.CreateModelItem(a.GetInnerNode());
-                instance = Activator.CreateInstance(actual, inode) as ActivityDesignerViewModel;
+                instance = Activator.CreateInstance(actualType, inode) as ActivityDesignerViewModel;
             }
             else
             {
-                instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
+                instance = Activator.CreateInstance(actualType, modelItem) as ActivityDesignerViewModel;
             }
             instance.IsMerge = true;
 
-            if (toolConflictItem is ToolConflictItem toolConflictItemObject)
-            {
-                var mergeToolModel = CreateNewMergeToolModel(toolConflictItemObject, modelItem, node, instance);
-                return mergeToolModel;
-            } else
-            {
-                throw new Exception("unexpected ToolConflictItem type");
-            }
+            return instance;
         }
 
-        ToolConflictItem CreateNewMergeToolModel(ToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
+        ToolConflictItem ConfigureToolConflictItem(ToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
         {
             toolConflictItem.Activity = node.Activity;
             toolConflictItem.InitializeFromActivity(node.Activity, modelItem, node.Location);
