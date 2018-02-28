@@ -162,8 +162,9 @@ namespace Dev2.ViewModels.Merge
             if (actual == typeof(SwitchDesignerViewModel))
             {
                 var dsfSwitch = node.Activity as DsfSwitch;
-                var innerModelItem = ModelItemUtils.CreateModelItem(dsfSwitch.Inner);
-                instance = Activator.CreateInstance(actual, innerModelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
+                var switchInstance = Activator.CreateInstance(actual, modelItem, dsfSwitch.DisplayName) as SwitchDesignerViewModel;
+                switchInstance.SwitchVariable = dsfSwitch.Switch;
+                instance = switchInstance;
             }
             else if (actual == typeof(ServiceDesignerViewModel))
             {
