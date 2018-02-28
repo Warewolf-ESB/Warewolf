@@ -424,5 +424,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs() => (from item in FieldsCollection
                                                                       where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
                                                                       select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
+
+        public override bool Equals(object obj)
+        {
+            var activity = obj as DsfDotNetMultiAssignActivity;
+            return activity != null &&
+                   base.Equals(obj) &&
+                   EqualityComparer<IList<ActivityDTO>>.Default.Equals(FieldsCollection, activity.FieldsCollection);
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = -838835648;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<IList<ActivityDTO>>.Default.GetHashCode(FieldsCollection);
+            return hashCode;
+        }
     }
 }
