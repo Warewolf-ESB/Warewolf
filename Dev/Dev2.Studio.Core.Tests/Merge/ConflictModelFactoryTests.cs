@@ -31,11 +31,9 @@ namespace Dev2.Core.Tests.Merge
             var conflictModelFactory = new ConflictModelFactory();
             //------------Assert Results-------------------------
             Assert.IsNotNull(conflictModelFactory);
-            Assert.IsNull(conflictModelFactory.Model);
             Assert.IsTrue(string.IsNullOrEmpty(conflictModelFactory.ServerName));
             Assert.IsTrue(string.IsNullOrEmpty(conflictModelFactory.WorkflowName));
             Assert.IsNull(conflictModelFactory.DataListViewModel);
-            Assert.IsNull(conflictModelFactory.Model);
         }
 
         [TestMethod]
@@ -122,7 +120,6 @@ namespace Dev2.Core.Tests.Merge
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Model);
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
         }
 
@@ -230,9 +227,8 @@ namespace Dev2.Core.Tests.Merge
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Model);
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
-            var mergeToolModel = completeConflict.Model;
+            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
             Assert.AreEqual("a", mergeToolModel.MergeDescription);
             Assert.AreEqual(typeof(DecisionDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
@@ -265,9 +261,8 @@ namespace Dev2.Core.Tests.Merge
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Model);
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
-            var mergeToolModel = completeConflict.Model;
+            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
             Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
             Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
@@ -315,9 +310,8 @@ namespace Dev2.Core.Tests.Merge
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Model);
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
-            var mergeToolModel = completeConflict.Model;
+            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
             Assert.AreEqual("bbb", mergeToolModel.MergeDescription);
             Assert.AreEqual(typeof(SwitchDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
@@ -338,7 +332,8 @@ namespace Dev2.Core.Tests.Merge
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict.Model);
+            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
+            Assert.IsNotNull(mergeToolModel);
         }
     }
 }
