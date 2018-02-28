@@ -342,10 +342,6 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobNames"
 }
 
-function Get-ImageName {
-    (&{If("$ContainerRegistryHost" -eq "") {""} Else {$ContainerRegistryHost + "/"}}) + "jobsenvironment"
-}
-
 function Get-ContainerName([string]$JobName) {
     $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion.ToLower().SubString(0,8)}})
 }
@@ -1078,7 +1074,15 @@ RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestA
             Write-Host docker $ContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
             docker $ContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
         }
-        $ImageName = Get-ImageName
+        $ImageName = "jobsenvironment"
+        if ("$ContainerRegistryHost" -ne "") {
+            $ImageName = $ContainerRegistryHost + "/" + $ImageName
+            if ("$JobContainerVersion" -ne "") {
+                docker $ContainerRemoteApiHost pull $ImageName + ":" + $JobContainerVersion.ToLower()
+            } else {
+                docker $ContainerRemoteApiHost pull $ImageName
+            }
+        }
         if (($(docker $ContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
             $DockerfileContent = @"
 FROM warewolftestenvironment
@@ -1100,7 +1104,11 @@ TestResults
             Write-Host dockerfile written as $DockerfileContent
             Write-Host docker ignore file written as $DockerIgnorefileContent
             Write-Host docker $ContainerRemoteApiHost build -t $ImageName "$TestsPath"
-            docker $ContainerRemoteApiHost build -t $ImageName "$TestsPath"
+            docker $ContainerRemoteApiHost build -t $ImageName "$TestsPath"            
+            if ("$JobContainerVersion" -ne "") {
+                docker $ContainerRemoteApiHost tag $ImageName $JobContainerVersion
+                docker $ContainerRemoteApiHost push $ImageName
+            }
         }
     }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
