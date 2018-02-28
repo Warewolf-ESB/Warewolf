@@ -16,7 +16,7 @@ namespace Dev2.Activities.Specs.Deploy
         string _remoteImageID = null;
         public string hostname;
 
-        public ContainerOps(string remoteDockerApi = "test-load")
+        public ContainerOps(string remoteDockerApi = "rsaklfsvrhst4")
         {
             _remoteDockerApi = remoteDockerApi;
             hostname = StartRemoteContainer();
