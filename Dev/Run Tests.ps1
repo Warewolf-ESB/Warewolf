@@ -947,7 +947,7 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
 
 function Pick-TestAgent {
     foreach($JobContainerRemoteApiHost in $ContainerRemoteApiHost.Split(",")) {
-        if ([int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).MemTotal /2000000000) - [int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).ContainersRunning) -ge 0) {
+        if ([int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).MemTotal /2147483648) - [int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).ContainersRunning) -ge 0) {
             return $JobContainerRemoteApiHost
         }
     }
@@ -1110,8 +1110,10 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $TestEnvironmentImageName = $ContainerRegistryHost + "/" + $TestEnvironmentImageName
             }
             if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null -and ($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName }) -eq $null) {
+                Write-Host Image $ImageName missing from $JobContainerRemoteApiHost
                 docker $JobContainerRemoteApiHost pull $TestEnvironmentImageName 2>&1
                 if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName }) -eq $null) {
+                    Write-Host Image $ImageName still missing from $JobContainerRemoteApiHost after pull
                     $DockerfileContent = @"
 FROM microsoft/windowsservercore
 
@@ -1134,12 +1136,14 @@ RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestA
                 $ImageName = $ContainerRegistryHost + "/" + $ImageName
             }
             if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
+                Write-Host Version $JobContainerVersion of image $ImageName missing from $JobContainerRemoteApiHost
                 if ("$JobContainerVersion" -ne "") {
                     docker $JobContainerRemoteApiHost pull ($ImageName + ":" + $JobContainerVersion) 2>&1
                 } else {
                     docker $JobContainerRemoteApiHost pull $ImageName 2>&1
                 }
                 if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
+                    Write-Host Version $JobContainerVersion of image $ImageName still missing from $JobContainerRemoteApiHost after pull
                     $DockerfileContent = @"
 FROM warewolftestenvironment
 SHELL ["powershell"]
