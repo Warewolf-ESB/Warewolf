@@ -856,7 +856,7 @@ ADD . Build
 ENV SCRIPT_PATH "Build\Run Tests.ps1"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
 
-ENTRYPOINT & $env:SCRIPT_PATH
+ENTRYPOINT & `$env:SCRIPT_PATH
 CMD ["-StartServerAsConsole", "-ResourcesType", "Release"]
 "@
     docker $ContainerRemoteApiHost build -t warewolfserver "$ServerFolderPath"
@@ -1057,60 +1057,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
         }
     }
-    if ($JobContainers.IsPresent) {
-        Cleanup-JobContainers
-        if (($(docker $ContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq "warewolftestenvironment" }) -eq $null) {
-            Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
-FROM microsoft/windowsservercore
-
-ENV chocolateyUseWindowsCompression=false
-RUN @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
-
-RUN choco install visualstudio2017testagent --package-parameters "--passive --locale en-US --includeOptional" --confirm --limit-output --timeout 216000
-
-SHELL ["powershell"]
-RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe\")) {Write-Host VSTest did not install correctly; exit 1}
-"@
-            Write-Host docker $ContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
-            docker $ContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
-        }
-        $ImageName = "jobsenvironment"
-        if ("$ContainerRegistryHost" -ne "") {
-            $ImageName = $ContainerRegistryHost + "/" + $ImageName
-            if ("$JobContainerVersion" -ne "") {
-                docker $ContainerRemoteApiHost pull $ImageName + ":" + $JobContainerVersion.ToLower()
-            } else {
-                docker $ContainerRemoteApiHost pull $ImageName
-            }
-        }
-        if (($(docker $ContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
-            $DockerfileContent = @"
-FROM warewolftestenvironment
-SHELL ["powershell"]
-
-RUN New-Item -Path Build -ItemType Directory
-ADD . Build
-ENTRYPOINT & "Build\\Run Tests.ps1"
-ENV SCRIPT_PATH "Build\Run Tests.ps1"
-ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
-"@
-            Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject $DockerfileContent
-            $DockerIgnorefileContent = @"
-dockerfile
-TestResults/**/*
-TestResults
-"@
-            Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject $DockerIgnorefileContent
-            Write-Host dockerfile written as $DockerfileContent
-            Write-Host docker ignore file written as $DockerIgnorefileContent
-            Write-Host docker $ContainerRemoteApiHost build -t $ImageName "$TestsPath"
-            docker $ContainerRemoteApiHost build -t $ImageName "$TestsPath"            
-            if ("$JobContainerVersion" -ne "") {
-                docker $ContainerRemoteApiHost tag $ImageName $JobContainerVersion
-                docker $ContainerRemoteApiHost push $ImageName
-            }
-        }
-    }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
         $JobName = $JobNamesList[$_].ToString()
         $ProjectSpec = $JobAssemblySpecs[$_].ToString()
@@ -1137,6 +1083,62 @@ TestResults
             }
         }
         if ($JobContainers.IsPresent) {
+            Cleanup-JobContainers
+            if (($(docker $ContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq "warewolftestenvironment" }) -eq $null) {
+                Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
+FROM microsoft/windowsservercore
+
+ENV chocolateyUseWindowsCompression=false
+RUN @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+
+RUN choco install visualstudio2017testagent --package-parameters "--passive --locale en-US --includeOptional" --confirm --limit-output --timeout 216000
+
+SHELL ["powershell"]
+RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe\")) {Write-Host VSTest did not install correctly; exit 1}
+"@
+                Write-Host docker $ContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
+                docker $ContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
+            }
+            $ImageName = "jobsenvironment"
+            if ("$ContainerRegistryHost" -ne "") {
+                $ImageName = $ContainerRegistryHost + "/" + $ImageName
+                if ("$JobContainerVersion" -ne "") {
+                    docker $ContainerRemoteApiHost pull ($ImageName + ":" + $JobContainerVersion)
+                } else {
+                    docker $ContainerRemoteApiHost pull $ImageName
+                }
+            }
+            if (($(docker $ContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
+                $DockerfileContent = @"
+FROM warewolftestenvironment
+SHELL ["powershell"]
+
+RUN New-Item -Path Build -ItemType Directory
+ADD . Build
+ENV SCRIPT_PATH "Build\Run Tests.ps1"
+ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
+
+ENTRYPOINT & `$env:SCRIPT_PATH
+"@
+                Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject $DockerfileContent
+                $DockerIgnorefileContent = @"
+dockerfile
+TestResults/**/*
+TestResults
+"@
+                Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject $DockerIgnorefileContent
+                Write-Host Docker dockerfile written as:`n$DockerfileContent
+                Write-Host `nDocker ignore file written as:`n$DockerIgnorefileContent
+                Write-Host docker $ContainerRemoteApiHost build -t $ImageName "$TestsPath"
+                docker $ContainerRemoteApiHost build -t $ImageName "$TestsPath"
+                if ("$JobContainerVersion" -ne "") {
+                    docker $ContainerRemoteApiHost tag $ImageName $JobContainerVersion
+                    docker $ContainerRemoteApiHost push $ImageName
+                }
+            }
+            if ("$JobContainerVersion" -ne "") {
+                $ImageName = $ImageName + ":" + $JobContainerVersion
+            }
             $JobContainerName = Get-ContainerName $JobName
             if ((docker $ContainerRemoteApiHost node ls 2>&1).GetType() -eq [System.Management.Automation.ErrorRecord]) {
                 $JobContainerResult = "", "Insufficient system resources exist to complete the requested service. The paging file is too small for this operation to complete."
