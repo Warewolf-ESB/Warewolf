@@ -1111,7 +1111,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
             if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null -and ($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName }) -eq $null) {
                 docker $JobContainerRemoteApiHost pull $TestEnvironmentImageName 2>&1
-                $DockerfileContent = @"
+                if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName }) -eq $null) {
+                    $DockerfileContent = @"
 FROM microsoft/windowsservercore
 
 ENV chocolateyUseWindowsCompression=false
@@ -1122,10 +1123,11 @@ RUN choco install visualstudio2017testagent --package-parameters "--passive --lo
 SHELL ["powershell"]
 RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe\")) {Write-Host VSTest did not install correctly; exit 1}
 "@
-                Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject $DockerfileContent
-                Write-Host Docker dockerfile written as:`n$DockerfileContent
-                Write-Host Docker $JobContainerRemoteApiHost build -t $TestEnvironmentImageName "$TestsPath"
-                docker $JobContainerRemoteApiHost build -t $TestEnvironmentImageName "$TestsPath"
+                    Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject $DockerfileContent
+                    Write-Host Docker dockerfile written as:`n$DockerfileContent
+                    Write-Host Docker $JobContainerRemoteApiHost build -t $TestEnvironmentImageName "$TestsPath"
+                    docker $JobContainerRemoteApiHost build -t $TestEnvironmentImageName "$TestsPath"
+                }
             }
             $ImageName = "jobsenvironment"
             if ("$ContainerRegistryHost" -ne "") {
@@ -1137,7 +1139,8 @@ RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestA
                 } else {
                     docker $JobContainerRemoteApiHost pull $ImageName 2>&1
                 }
-                $DockerfileContent = @"
+                if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
+                    $DockerfileContent = @"
 FROM warewolftestenvironment
 SHELL ["powershell"]
 
@@ -1148,20 +1151,21 @@ ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
 
 ENTRYPOINT & `$env:SCRIPT_PATH
 "@
-                Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject $DockerfileContent
-                $DockerIgnorefileContent = @"
+                    Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject $DockerfileContent
+                    $DockerIgnorefileContent = @"
 dockerfile
 TestResults/**/*
 TestResults
 "@
-                Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject $DockerIgnorefileContent
-                Write-Host Docker dockerfile written as:`n$DockerfileContent
-                Write-Host `nDocker ignore file written as:`n$DockerIgnorefileContent
-                Write-Host docker $JobContainerRemoteApiHost build -t $ImageName "$TestsPath"
-                docker $JobContainerRemoteApiHost build -t $ImageName "$TestsPath"
-                if ("$JobContainerVersion" -ne "") {
-                    docker $JobContainerRemoteApiHost tag $ImageName $JobContainerVersion
-                    docker $JobContainerRemoteApiHost push $ImageName
+                    Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject $DockerIgnorefileContent
+                    Write-Host Docker dockerfile written as:`n$DockerfileContent
+                    Write-Host `nDocker ignore file written as:`n$DockerIgnorefileContent
+                    Write-Host docker $JobContainerRemoteApiHost build -t $ImageName "$TestsPath"
+                    docker $JobContainerRemoteApiHost build -t $ImageName "$TestsPath"
+                    if ("$JobContainerVersion" -ne "") {
+                        docker $JobContainerRemoteApiHost tag $ImageName $JobContainerVersion
+                        docker $JobContainerRemoteApiHost push $ImageName
+                    }
                 }
             }
             if ("$JobContainerVersion" -ne "") {
