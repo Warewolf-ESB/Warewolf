@@ -71,12 +71,20 @@ namespace Dev2.Activities
                     armConnectors.Add(($"{GetDisplayName()}: TRUE -> {next.GetDisplayName()}", "True", UniqueID, next.UniqueID));
                 }
             }
+            else
+            {
+                armConnectors.Add(($"{GetDisplayName()}: TRUE -> ", "True", UniqueID, Guid.Empty.ToString()));
+            }
             if (FalseArm != null)
             {
                 foreach (var next in FalseArm)
                 {
                     armConnectors.Add(($"{GetDisplayName()}: FALSE -> {next.GetDisplayName()}", "False", UniqueID, next.UniqueID));
                 }
+            }
+            else
+            {
+                armConnectors.Add(($"{GetDisplayName()}: FALSE -> ", "False", UniqueID, Guid.Empty.ToString()));
             }
             return armConnectors;
         }

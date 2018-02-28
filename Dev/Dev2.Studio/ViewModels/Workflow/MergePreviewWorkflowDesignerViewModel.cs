@@ -121,7 +121,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
-
+            model.IsAddedToWorkflow = false;
             var step = model.FlowNode;
             switch (step)
             {
@@ -168,6 +168,10 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void LinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
+            if (sourceUniqueId == destinationUniqueId)
+            {
+                return;
+            }
             if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key))
             {
                 return;
@@ -231,7 +235,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         bool SetNextForDecision(Guid sourceUniqueId, Guid destinationUniqueId, string key, bool delink = false)
-        {
+        {            
             var decisionItem = GetDecisionFromNodeCollection(sourceUniqueId);
             if (decisionItem != null)
             {
