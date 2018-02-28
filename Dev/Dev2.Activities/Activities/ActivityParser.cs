@@ -268,6 +268,9 @@ namespace Dev2.Activities
                 swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
                 swi.Switch = ds.SwitchVariable;
                 swi.DisplayName = switchFlowSwitch.DisplayName;
+                swi.OnErrorVariable = activity.OnErrorVariable;
+                swi.OnErrorWorkflow = activity.OnErrorWorkflow;
+                swi.IsEndedOnError = activity.IsEndedOnError;
 
                 return new List<IDev2Activity>
                 {  swi
