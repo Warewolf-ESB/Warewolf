@@ -358,7 +358,7 @@ function Stop-JobContainer([string]$ContainerName) {
         if ($(docker $JobContainerRemoteApiHost container ls -a --format 'table {{.Names}}' | % { $_ -eq $ContainerName }) -eq $true) {
 		    docker $JobContainerRemoteApiHost cp $($ContainerName + ":C:\Build\TestResults") "$ResultsDirectory" 2>&1
 		    docker $JobContainerRemoteApiHost container rm $ContainerName 2>&1
-            Write-Host $ContainerName Removed from $JobContainerRemoteApiHost. See $ResultsDirectory
+            Write-Host $ContainerName Removed from $JobContainerRemoteApiHost See $ResultsDirectory
         }
     }
 }
@@ -947,7 +947,7 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
 
 function Pick-TestAgent {
     foreach($JobContainerRemoteApiHost in $ContainerRemoteApiHost.Split(",")) {
-        if ([int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).MemTotal /2000000000) - [int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).ContainersRunning) -gt 0) {
+        if ([int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).MemTotal /2000000000) - [int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).ContainersRunning) -ge 0) {
             return $JobContainerRemoteApiHost
         }
     }
@@ -1105,8 +1105,13 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if ($ContainerRemoteApiHost.Contains(",")) {
                 $JobContainerRemoteApiHost = Pick-TestAgent
             }
-            if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq "warewolftestenvironment" }) -eq $null) {
-                Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
+            $TestEnvironmentImageName = "warewolftestenvironment"
+            if ("$ContainerRegistryHost" -ne "") {
+                $TestEnvironmentImageName = $ContainerRegistryHost + "/" + $TestEnvironmentImageName
+                docker $JobContainerRemoteApiHost pull $TestEnvironmentImageName
+            }
+            if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null -and ($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName }) -eq $null) {
+                $DockerfileContent = @"
 FROM microsoft/windowsservercore
 
 ENV chocolateyUseWindowsCompression=false
@@ -1117,16 +1122,18 @@ RUN choco install visualstudio2017testagent --package-parameters "--passive --lo
 SHELL ["powershell"]
 RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe\")) {Write-Host VSTest did not install correctly; exit 1}
 "@
-                Write-Host docker $JobContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
-                docker $JobContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
+                Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject $DockerfileContent
+                Write-Host Docker dockerfile written as:`n$DockerfileContent
+                Write-Host Docker $JobContainerRemoteApiHost build -t $TestEnvironmentImageName "$TestsPath"
+                docker $JobContainerRemoteApiHost build -t $TestEnvironmentImageName "$TestsPath"
             }
             $ImageName = "jobsenvironment"
             if ("$ContainerRegistryHost" -ne "") {
                 $ImageName = $ContainerRegistryHost + "/" + $ImageName
                 if ("$JobContainerVersion" -ne "") {
-                    docker $JobContainerRemoteApiHost pull ($ImageName + ":" + $JobContainerVersion)
+                    docker $JobContainerRemoteApiHost pull ($ImageName + ":" + $JobContainerVersion) 2>&1
                 } else {
-                    docker $JobContainerRemoteApiHost pull $ImageName
+                    docker $JobContainerRemoteApiHost pull $ImageName 2>&1
                 }
             }
             if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
@@ -1175,7 +1182,7 @@ TestResults
                         Timeout-JobContainers
                         sleep 30
                     } else {
-                        Write-Host Started $JobContainerName as $JobContainerResult
+                        Write-Host Started $JobContainerName as $JobContainerResult on $JobContainerRemoteApiHost
                     }
                 }
             } else {
@@ -1184,7 +1191,7 @@ TestResults
                 } else {
                     $JobContainerResult = docker $JobContainerRemoteApiHost service create --replicas 1 --restart-condition none --limit-memory="700m" --name $JobContainerName $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
                 }
-                Write-Host Started $JobContainerName as $JobContainerResult
+                Write-Host Started $JobContainerName as $JobContainerResult on $JobContainerRemoteApiHost
             }
         } else {
             if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
