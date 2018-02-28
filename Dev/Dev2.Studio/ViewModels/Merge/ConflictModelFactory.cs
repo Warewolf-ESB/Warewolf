@@ -46,7 +46,7 @@ namespace Dev2.ViewModels.Merge
         public ConflictModelFactory(IToolConflictItem toolConflictItem, IContextualResourceModel resourceModel, IConflictTreeNode conflict)
         {
             _resourceModel = resourceModel;
-            var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
+            CreateModelItem(toolConflictItem,conflict);
         }
 
         public ConflictModelFactory()
