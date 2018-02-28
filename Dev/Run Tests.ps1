@@ -1178,13 +1178,13 @@ TestResults
             $JobContainerName = Get-ContainerName $JobName
             if ((docker $JobContainerRemoteApiHost node ls 2>&1).GetType() -eq [System.Management.Automation.ErrorRecord]) {
                 $JobContainerResult = "", "Insufficient system resources exist to complete the requested service. The paging file is too small for this operation to complete."
-                while(([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
+                while(([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.") -or ([string]$JobContainerResult[1]).Contains("This operation returned because the timeout period expired. (0x5b4).")) {
                     if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent) {
                         $JobContainerResult = docker $JobContainerRemoteApiHost run --memory="1500m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
                     } else {
                         $JobContainerResult = docker $JobContainerRemoteApiHost run --memory="700m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
                     }
-                    if (([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
+                    if (([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.") -or ([string]$JobContainerResult[1]).Contains("This operation returned because the timeout period expired. (0x5b4).")) {
                         docker $JobContainerRemoteApiHost container rm $JobContainerName 2>&1
                         Write-Host Out of memory. Timing out containers and waiting 30s before trying to start $JobContainerName again.
                         Timeout-JobContainers
