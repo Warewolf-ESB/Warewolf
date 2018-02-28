@@ -310,7 +310,6 @@ namespace Dev2.Core.Tests.Merge
             var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
             var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
             Assert.AreEqual("bbb", mergeToolModel.MergeDescription);
             Assert.AreEqual(typeof(SwitchDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
