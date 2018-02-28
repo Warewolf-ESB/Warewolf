@@ -87,11 +87,11 @@ namespace Warewolf.MergeParser
             {
                 return new List<ConflictTreeNode>();
             }
-            var nodes = BuildNoteItems(wd, modelService, flowchartDiff);
+            var nodes = BuildNodeItems(wd, modelService, flowchartDiff);
             return nodes;
         }
 
-        List<ConflictTreeNode> BuildNoteItems(WorkflowDesigner wd, ModelService modelService, Flowchart flowchartDiff)
+        List<ConflictTreeNode> BuildNodeItems(WorkflowDesigner wd, ModelService modelService, Flowchart flowchartDiff)
         {
             var idsLocations = GetIdLocations(wd, modelService);
             var nodes = new List<ConflictTreeNode>();
