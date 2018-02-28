@@ -343,11 +343,11 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
 }
 
 function Get-ImageName {
-    (&{If("$ContainerRegistryHost" -eq "") {""} Else {$ContainerRegistryHost + "/"}}) + "jobsenvironment" + (&{If("$JobContainerVersion" -eq "") {""} Else {":" + $JobContainerVersion.ToLower()}})
+    (&{If("$ContainerRegistryHost" -eq "") {""} Else {$ContainerRegistryHost + "/"}}) + "jobsenvironment"
 }
 
 function Get-ContainerName([string]$JobName) {
-    $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion.ToLower()}})
+    $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion.ToLower().SubString(0,8)}})
 }
 
 function Stop-JobContainer([string]$ContainerName) {
@@ -1079,7 +1079,7 @@ RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestA
             docker $ContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
         }
         $ImageName = Get-ImageName
-        if (($(docker $ContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName }) -eq $null) {
+        if (($(docker $ContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
             $DockerfileContent = @"
 FROM warewolftestenvironment
 SHELL ["powershell"]
