@@ -1109,11 +1109,11 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             if ("$ContainerRegistryHost" -ne "") {
                 $TestEnvironmentImageName = $ContainerRegistryHost + "/" + $TestEnvironmentImageName
             }
-            if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null -and ($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName }) -eq $null) {
-                Write-Host Image $ImageName missing from $JobContainerRemoteApiHost
+            if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null -and ($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName }) -eq $null) {
+                Write-Host Image $TestEnvironmentImageName missing from $JobContainerRemoteApiHost
                 docker $JobContainerRemoteApiHost pull $TestEnvironmentImageName 2>&1
                 if (($(docker $JobContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $TestEnvironmentImageName }) -eq $null) {
-                    Write-Host Image $ImageName still missing from $JobContainerRemoteApiHost after pull
+                    Write-Host Image $TestEnvironmentImageName still missing from $JobContainerRemoteApiHost after pull
                     $DockerfileContent = @"
 FROM microsoft/windowsservercore
 
