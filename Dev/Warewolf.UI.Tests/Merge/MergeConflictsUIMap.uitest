@@ -3301,6 +3301,71 @@
                                                     </UIObject>
                                                   </Descendants>
                                                 </UIObject>
+                                                <UIObject ControlType="Text" Id="UILocalhostText" FriendlyName="localhost" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_CurrentWorkflowHeaderText_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="Text" Id="UIMerge_FileNamesText" FriendlyName="Merge_FileNames" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_CurrentWorkflowText_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="Text" Id="UIMerge_WorkflowNamesText" FriendlyName="Merge_WorkflowNames" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_DifferenceWorkflowText_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="RadioButton" Id="UIUI_CurrentWorkflowRBRadioButton" FriendlyName="UI_CurrentWorkflowRB_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_CurrentWorkflowRB_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
+                                                <UIObject ControlType="RadioButton" Id="UIUI_DifferenceWorkfloRadioButton" FriendlyName="UI_DifferenceWorkflowRB_AutoID" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                  </WindowTitles>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId">UI_DifferenceWorkflowRB_AutoID</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants />
+                                                </UIObject>
                                               </Descendants>
                                             </UIObject>
                                             <UIObject ControlType="Custom" Id="DesignerView" FriendlyName="UserControl_1" SpecialControlType="None">
@@ -3697,95 +3762,6 @@
                                   </Descendants>
                                 </UIObject>
                               </Descendants>
-                            </UIObject>
-                          </Descendants>
-                        </UIObject>
-                      </Descendants>
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-              </Descendants>
-            </UIObject>
-          </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="49808834">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-          </WindowTitles>
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\SANELE.MTHEMBU)</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Custom" Id="UIMergeWorkflowUserConCustom" FriendlyName="MergeWorkflowUserControl" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.MergeWorkflowView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">MergeWorkflowUserControl</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Tree" Id="UIUI_ConflictsTreeViewTree" FriendlyName="UI_ConflictsTreeView_AutoID" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Tree</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">UI_ConflictsTreeView_AutoID</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="TreeItem" Id="UIDev2ViewModelsMergeTTreeItem" FriendlyName="Dev2.ViewModels.Merge.ToolConflictRow" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <SearchConfigurations>
-                        <SearchConfiguration>Expand</SearchConfiguration>
-                      </SearchConfigurations>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                        <PropertyCondition Name="Name">Dev2.ViewModels.Merge.ToolConflictRow</PropertyCondition>
-                        <PropertyCondition Name="Instance">2</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants>
-                        <UIObject ControlType="Expander" Id="UIDev2ViewModelsMergeTExpander" FriendlyName="Dev2.ViewModels.Merge.ToolConflictRow" SpecialControlType="None">
-                          <TechnologyName>UIA</TechnologyName>
-                          <WindowTitles>
-                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                          </WindowTitles>
-                          <AndCondition>
-                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Expander</PropertyCondition>
-                            <PropertyCondition Name="AutomationId">TreeViewExpander</PropertyCondition>
-                          </AndCondition>
-                          <SupportLevel>0</SupportLevel>
-                          <Descendants>
-                            <UIObject ControlType="Button" Id="UIDev2ViewModelsMergeTButton" FriendlyName="Dev2.ViewModels.Merge.ToolConflictRow" SpecialControlType="None">
-                              <TechnologyName>UIA</TechnologyName>
-                              <WindowTitles>
-                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                              </WindowTitles>
-                              <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                                <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
-                              </AndCondition>
-                              <SupportLevel>0</SupportLevel>
-                              <Descendants />
                             </UIObject>
                           </Descendants>
                         </UIObject>
