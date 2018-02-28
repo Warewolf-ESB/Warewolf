@@ -160,11 +160,18 @@ namespace Dev2.ViewModels.Merge.Utils
                 if (armConnectorsCurrent != null && index < armConnectorsCurrent.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsCurrent[index];
-                    var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Current, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
-                    row.CurrentArmConnector = connector;
-                    if (!(currentConflictItem is ToolConflictItem.Empty))
+                    if (DestinationUniqueId == Guid.Empty.ToString())
                     {
-                        currentConflictItem.OutboundConnectors.Add(connector);
+                        row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
+                    }
+                    else
+                    {
+                        var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Current, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
+                        row.CurrentArmConnector = connector;
+                        if (!(currentConflictItem is ToolConflictItem.Empty))
+                        {
+                            currentConflictItem.OutboundConnectors.Add(connector);
+                        }
                     }
                 }
                 else
@@ -175,11 +182,18 @@ namespace Dev2.ViewModels.Merge.Utils
                 if (armConnectorsDiff != null && index < armConnectorsDiff.Count)
                 {
                     var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsDiff[index];
-                    var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Different, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
-                    row.DifferentArmConnector = connector;
-                    if (!(diffConflictItem is ToolConflictItem.Empty))
+                    if (DestinationUniqueId == Guid.Empty.ToString())
                     {
-                        diffConflictItem.OutboundConnectors.Add(connector);
+                        row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
+                    }
+                    else
+                    {
+                        var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Different, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
+                        row.DifferentArmConnector = connector;
+                        if (!(diffConflictItem is ToolConflictItem.Empty))
+                        {
+                            diffConflictItem.OutboundConnectors.Add(connector);
+                        }
                     }
                 }
                 else
@@ -190,7 +204,7 @@ namespace Dev2.ViewModels.Merge.Utils
                                     || row.CurrentArmConnector.DestinationUniqueId != row.DifferentArmConnector.DestinationUniqueId;
                 row.HasConflict = sameSourceAndDestination;
                 rows.Add(row);
-            }
+            }            
             return rows;
         }
     }
