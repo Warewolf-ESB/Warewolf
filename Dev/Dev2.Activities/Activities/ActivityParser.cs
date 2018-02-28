@@ -267,7 +267,7 @@ namespace Dev2.Activities
                 swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary(a => a.Item1, a => a.Item2);
                 swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
                 swi.Switch = ds.SwitchVariable;
-
+                swi.DisplayName = switchFlowSwitch.DisplayName;
 
                 return new List<IDev2Activity>
                 {  swi
