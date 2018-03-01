@@ -376,12 +376,12 @@ function Cleanup-JobContainers([bool]$force=$false) {
             $JobContainerName = Get-ContainerName $Job
             if ($(docker $JobContainerRemoteApiHost container ls --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
                 if ($force) {
-					Write-Host Forcing $JobContainerName on $JobContainerRemoteApiHost to stop.
+                    Write-Host Forcing $JobContainerName on $JobContainerRemoteApiHost to stop.
                     docker $JobContainerRemoteApiHost container stop $JobContainerName
-				} else {
-					Write-Host Waiting for $JobContainerName on $JobContainerRemoteApiHost
-					docker $JobContainerRemoteApiHost container logs --follow $JobContainerName
-				}
+                } else {
+                    Write-Host Waiting for $JobContainerName on $JobContainerRemoteApiHost
+                    docker $JobContainerRemoteApiHost container logs --follow $JobContainerName
+                }
             }
 	    }
     }
@@ -1078,7 +1078,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
     }    
     if ($JobContainers.IsPresent) {
-        Cleanup-JobContainers
+        Cleanup-JobContainers $true
     }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
         $JobName = $JobNamesList[$_].ToString()
@@ -1392,7 +1392,6 @@ TestResults
         }
     }
     if ($JobContainers.IsPresent) {
-	    Cleanup-JobContainers
         if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1) {
             Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
         }
@@ -1618,7 +1617,7 @@ if ($MergeDotCoverSnapshotsInDirectory -ne "") {
 
 if ($Cleanup.IsPresent) {
     if ($JobContainers.IsPresent) {
-        Cleanup-JobContainers
+        Cleanup-JobContainers $true
     } else {
         if ($ServerContainer.IsPresent) {
             Cleanup-ServerContainer
