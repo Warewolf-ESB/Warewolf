@@ -370,13 +370,18 @@ function Stop-JobContainers {
     }
 }
 
-function Cleanup-JobContainers {
+function Cleanup-JobContainers([bool]$force=$false) {
     foreach($JobContainerRemoteApiHost in $ContainerRemoteApiHost.Split(",")) {
         foreach ($Job in $JobNames.Split(",")) {
             $JobContainerName = Get-ContainerName $Job
             if ($(docker $JobContainerRemoteApiHost container ls --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
-                Write-Host Waiting for $JobContainerName on $JobContainerRemoteApiHost
-                docker $JobContainerRemoteApiHost container logs --follow $JobContainerName
+                if ($force) {
+					Write-Host Forcing $JobContainerName on $JobContainerRemoteApiHost to stop.
+                    docker $JobContainerRemoteApiHost container stop $JobContainerName
+				} else {
+					Write-Host Waiting for $JobContainerName on $JobContainerRemoteApiHost
+					docker $JobContainerRemoteApiHost container logs --follow $JobContainerName
+				}
             }
 	    }
     }
