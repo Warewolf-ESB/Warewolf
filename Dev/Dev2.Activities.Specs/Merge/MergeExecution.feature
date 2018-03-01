@@ -114,7 +114,7 @@ Scenario: Merge Workflow Containing Switch tool
 	 And Merge variable conflicts is false
 	 And conflict "2" Current matches tool "[[a]]"
 	 And conflict "2" Different matches tool "[[a]]"
-	 And conflict "3" Current Connector matches tool "Switch : 5 -> Assign (0)"
+	 And conflict "3" Current Connector matches tool "Switch : 1 -> Assign (0)"
 	 And conflict "3" Different Connector matches tool is null
 	 And conflict "4" Current Connector matches tool "Switch : Default -> Assign (0)"
 	 And conflict "4" Different Connector matches tool is null
