@@ -370,18 +370,13 @@ function Stop-JobContainers {
     }
 }
 
-function Cleanup-JobContainers([bool]$force=$false) {
+function Cleanup-JobContainers {
     foreach($JobContainerRemoteApiHost in $ContainerRemoteApiHost.Split(",")) {
         foreach ($Job in $JobNames.Split(",")) {
             $JobContainerName = Get-ContainerName $Job
             if ($(docker $JobContainerRemoteApiHost container ls --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
-                if ($force) {
-                    Write-Host Forcing $JobContainerName on $JobContainerRemoteApiHost to stop.
-                    docker $JobContainerRemoteApiHost container stop $JobContainerName
-                } else {
-                    Write-Host Waiting for $JobContainerName on $JobContainerRemoteApiHost
-                    docker $JobContainerRemoteApiHost container logs --follow $JobContainerName
-                }
+                Write-Host Waiting for $JobContainerName on $JobContainerRemoteApiHost
+                docker $JobContainerRemoteApiHost container logs --follow $JobContainerName
             }
 	    }
     }
@@ -1078,7 +1073,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
     }    
     if ($JobContainers.IsPresent) {
-        Cleanup-JobContainers $true
+        Cleanup-JobContainers
     }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
         $JobName = $JobNamesList[$_].ToString()
@@ -1617,7 +1612,7 @@ if ($MergeDotCoverSnapshotsInDirectory -ne "") {
 
 if ($Cleanup.IsPresent) {
     if ($JobContainers.IsPresent) {
-        Cleanup-JobContainers $true
+        Cleanup-JobContainers
     } else {
         if ($ServerContainer.IsPresent) {
             Cleanup-ServerContainer
