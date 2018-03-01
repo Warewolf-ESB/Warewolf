@@ -905,23 +905,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
+            var environmentViewModel = shellViewModel.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == shellViewModel.ActiveServer.EnvironmentID);
 
-            var explorerItem = shellViewModel.ActiveItem.ContextualResourceModel.IsVersionResource 
-                             ? GetMergeResourceVersion(shellViewModel) 
-                             : GetMergeCurrentResource(shellViewModel);
+            var contextualResourceModel = shellViewModel.ActiveItem.ContextualResourceModel;
+            var resourceId = contextualResourceModel.IsVersionResource ? contextualResourceModel.OriginalId : contextualResourceModel.ID;
 
+            var explorerItem = environmentViewModel?.UnfilteredChildren?.Flatten(model => model.UnfilteredChildren).FirstOrDefault(c => c.ResourceId == resourceId);
             if (explorerItem == null)
             {
                 return;
             }
             shellViewModel.OpenMergeDialogView(explorerItem);
-        }
-
-        private static IExplorerItemViewModel GetMergeResourceVersion(ShellViewModel shellViewModel)
-        {
-            var resourceId = shellViewModel.ActiveItem.ContextualResourceModel.OriginalId;
-            var environmentViewModel = shellViewModel.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == shellViewModel.ActiveServer.EnvironmentID);
-            return environmentViewModel?.UnfilteredChildren?.Flatten(model => model.UnfilteredChildren).FirstOrDefault(c => c.ResourceId == resourceId);
         }
 
         private static IExplorerItemViewModel GetMergeCurrentResource(ShellViewModel shellViewModel)
