@@ -1,4 +1,5 @@
 ﻿using Dev2.Core.Tests.Merge.Utils;
+using Dev2.ViewModels.Merge;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Merge
@@ -29,17 +30,31 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreNotEqual(conflictRowList[1].Current, conflictRowList[0].Different);
             Assert.AreNotEqual(conflictRowList[1].Different, conflictRowList[0].Current);
 
-            Assert.IsNotNull(conflictRowList[0].UniqueId);
-            Assert.IsNotNull(conflictRowList[0].Connectors);
-            Assert.IsFalse(conflictRowList[0].HasConflict);
+            var toolConflictRow = conflictRowList[0] as ToolConflictRow;
+            if (toolConflictRow != null)
+            {
+                Assert.IsNotNull(toolConflictRow.UniqueId);
+                Assert.IsNotNull(toolConflictRow.Connectors);
+                Assert.IsFalse(toolConflictRow.HasConflict);
+            } else
+            {
+                Assert.Fail();
+            }
 
-            Assert.IsNotNull(conflictRowList[1].UniqueId);
-            Assert.IsNotNull(conflictRowList[1].Connectors);
-            Assert.IsFalse(conflictRowList[1].HasConflict);
+            var toolConflictRow2 = conflictRowList[1] as ToolConflictRow;
+            if (toolConflictRow2 != null)
+            {
+                Assert.IsNotNull(toolConflictRow2.UniqueId);
+                Assert.IsNotNull(toolConflictRow2.Connectors);
+                Assert.IsFalse(toolConflictRow2.HasConflict);
+            } else
+            {
+                Assert.Fail();
+            }
 
             // Validate User Interface properties are Visible
-            Assert.IsFalse(conflictRowList[0].IsMergeVisible);
-            Assert.IsFalse(conflictRowList[1].IsMergeVisible);
+            Assert.IsFalse(toolConflictRow.IsMergeVisible);
+            Assert.IsFalse(toolConflictRow2.IsMergeVisible);
         }
     }
 }
