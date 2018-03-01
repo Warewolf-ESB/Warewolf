@@ -573,7 +573,7 @@ Scenario: Example Executing Control Flow - Switch example workflow
 	  | Input to Service | From Variable | Output from Service | To Variable     |
 	  When "Control Flow - Switch Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the "Switch" in Workflow "Control Flow - Switch" debug outputs as
+	  And the "[[DiceRollValue]]" in Workflow "Control Flow - Switch" debug outputs as
 	  |   |
 	  | 4 |
 
