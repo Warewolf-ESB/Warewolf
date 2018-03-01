@@ -394,7 +394,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 116
   testRunner.And("conflict \"2\" Different matches tool \"[[a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 117
-  testRunner.And("conflict \"3\" Current Connector matches tool \"Switch : 5 -> Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"3\" Current Connector matches tool \"Switch : 1 -> Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 118
   testRunner.And("conflict \"3\" Different Connector matches tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 119
