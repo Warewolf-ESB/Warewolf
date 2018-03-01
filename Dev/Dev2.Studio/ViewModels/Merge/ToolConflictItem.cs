@@ -119,6 +119,10 @@ namespace Dev2.ViewModels.Merge
         internal void InitializeFromActivity(IDev2Activity activity, ModelItem modelItem, Point location)
         {
             UniqueId = activity.UniqueID.ToGuid();
+            if (string.IsNullOrWhiteSpace(MergeDescription))
+            {
+                MergeDescription = activity.GetDisplayName();
+            }
             FlowNode = activity.GetFlowNode();
             ModelItem = modelItem;
             NodeLocation = location;
