@@ -171,6 +171,7 @@ namespace Dev2.ViewModels.Merge
                 var dsfSwitch = node.Activity as DsfSwitch;
                 var switchInstance = Activator.CreateInstance(actualType, modelItem, dsfSwitch.DisplayName) as SwitchDesignerViewModel;
                 switchInstance.SwitchVariable = dsfSwitch.Switch;
+                toolConflictItem.MergeDescription = switchInstance.DisplayText;
                 instance = switchInstance;
             }
             else if (actualType == typeof(ServiceDesignerViewModel))

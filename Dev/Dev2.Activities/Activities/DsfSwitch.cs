@@ -55,7 +55,7 @@ namespace Dev2.Activities
         public Dictionary<string, IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
 
-        public override string GetDisplayName() => !string.IsNullOrWhiteSpace(Switch) ? Switch : DisplayName;
+        public override string GetDisplayName() => !string.IsNullOrWhiteSpace(DisplayName) ? DisplayName : Switch;
 
         public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
