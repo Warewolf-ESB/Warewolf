@@ -946,11 +946,17 @@ function Resolve-Test-Assembly-File-Specs([string]$TestAssemblyFileSpecs) {
 }
 
 function Pick-TestAgent {
-    foreach($JobContainerRemoteApiHost in $ContainerRemoteApiHost.Split(",")) {
-        if ([int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).MemTotal /2147483648) - [int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).ContainersRunning) -ge 0) {
-            return $JobContainerRemoteApiHost
+    $Timeout = 30
+    while($Timeout-- -gt 0) {
+        foreach($JobContainerRemoteApiHost in $ContainerRemoteApiHost.Split(",")) {
+            if ([int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).MemTotal /2147483648) - [int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).ContainersRunning) -ge 0) {
+                return $JobContainerRemoteApiHost
+            }
         }
+        sleep 10
     }
+    Write-Error -Message "Test Controller timed out waiting for a test agent to be available."
+    exit 1
 }
 
 #Unpack jobs
