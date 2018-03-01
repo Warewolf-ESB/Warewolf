@@ -235,18 +235,36 @@ namespace Dev2.ViewModels.Merge.Utils
         }
 
         // TODO: should we keep this returning only the tools or should we keep coherence with the enumerator?
-        public int Count => _toolConflictRowList.Count;
-
-        // TODO: should we keep this returning only the tools or should we keep coherence with the enumerator?
-        public ToolConflictRow this[int key]
+        public int Count
         {
             get
             {
-                return _toolConflictRowList[key];
+                var enumerator = GetEnumerator();
+                int i = 0;
+                while (enumerator.MoveNext())
+                {
+                    i++;
+                }
+                return i;
             }
-            set
+        }
+
+        // TODO: should we keep this returning only the tools or should we keep coherence with the enumerator?
+        public IConflictRow this[int key]
+        {
+            get
             {
-                _toolConflictRowList[key] = value;
+                var enumerator = GetEnumerator();
+                int i = 0;
+                while (enumerator.MoveNext())
+                {
+                    if (i == key)
+                    {
+                        return enumerator.Current;
+                    }
+                    i++;
+                }
+                throw new IndexOutOfRangeException();
             }
         }
 
