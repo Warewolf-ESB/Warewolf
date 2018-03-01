@@ -949,7 +949,8 @@ function Pick-TestAgent {
     $Timeout = 30
     while($Timeout-- -gt 0) {
         foreach($JobContainerRemoteApiHost in $ContainerRemoteApiHost.Split(",")) {
-            if ([int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).MemTotal /2147483648) - [int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).ContainersRunning) -ge 0) {
+            if ([int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).MemTotal /2147483648) - 
+                [int]((docker $JobContainerRemoteApiHost info --format '{{json .}}' | ConvertFrom-Json).ContainersRunning) -ge 0) {
                 return $JobContainerRemoteApiHost
             }
         }
