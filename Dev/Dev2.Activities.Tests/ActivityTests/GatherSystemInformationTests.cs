@@ -203,14 +203,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             var dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.FullDateTime);
             //------------Assert Results-------------------------
             var result = DateTime.Parse(dateTimeInformation,CultureInfo.InvariantCulture);
-            if (result.Second == 0)
+            if (result.Ticks == 0)
             {
                 Thread.Sleep(100);
                 dateTimeInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.FullDateTime);
                 result = DateTime.Parse(dateTimeInformation);
-                Assert.IsTrue(result.Second > 0);
+                Assert.IsTrue(result.Ticks > 0);
             }
-            Assert.IsTrue(result.Second > 0);
+            Assert.IsTrue(result.Ticks > 0);
         }
 
         [TestMethod]
