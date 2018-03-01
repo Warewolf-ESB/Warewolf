@@ -244,7 +244,14 @@ namespace Dev2.Activities
                 return true;
             }
 
-            return base.Equals(other) && string.Equals(Switch, other.Switch) && string.Equals(Result, other.Result);
+            var eq = base.Equals(other);
+            eq &= string.Equals(Switch, other.Switch);
+            eq &= string.Equals(Result, other.Result);
+            eq &= string.Equals(OnErrorVariable, other.OnErrorVariable);
+            eq &= string.Equals(OnErrorWorkflow, other.OnErrorWorkflow);
+            eq &= IsEndedOnError == other.IsEndedOnError;
+
+            return eq;
         }
 
         public override bool Equals(object obj)

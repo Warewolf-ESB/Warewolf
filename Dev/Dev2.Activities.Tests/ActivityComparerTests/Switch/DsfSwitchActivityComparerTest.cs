@@ -299,5 +299,90 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Equals_Given_DifferentErrorVariable_SwitchActivity_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqId = Guid.NewGuid().ToString();
+            var defaults = new List<IDev2Activity>();
+            var activity = new DsfSwitch
+            {
+                UniqueID = uniqId,
+                Default = defaults,
+                OnErrorVariable = "[[err]]",
+            };
+            var activity1 = new DsfSwitch { UniqueID = uniqId, Default = defaults };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Equals_Given_DifferentErrorWorkflow_SwitchActivity_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqId = Guid.NewGuid().ToString();
+            var defaults = new List<IDev2Activity>();
+            var activity = new DsfSwitch
+            {
+                UniqueID = uniqId,
+                Default = defaults,
+                OnErrorWorkflow = "https://host:4321/err",
+            };
+            var activity1 = new DsfSwitch { UniqueID = uniqId, Default = defaults };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Equals_Given_DifferentIsEndedOnError_SwitchActivity_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqId = Guid.NewGuid().ToString();
+            var defaults = new List<IDev2Activity>();
+            var activity = new DsfSwitch
+            {
+                UniqueID = uniqId,
+                Default = defaults,
+                IsEndedOnError = true,
+            };
+            var activity1 = new DsfSwitch { UniqueID = uniqId, Default = defaults };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Equals_Given_DifferentDisplayName_SwitchActivity_AreNotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var uniqId = Guid.NewGuid().ToString();
+            var defaults = new List<IDev2Activity>();
+            var activity = new DsfSwitch
+            {
+                UniqueID = uniqId,
+                Default = defaults,
+                DisplayName = "The Switch Display Name",
+            };
+            var activity1 = new DsfSwitch { UniqueID = uniqId, Default = defaults };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity);
+            //---------------Execute Test ----------------------
+            var @equals = activity.Equals(activity1);
+            //---------------Test Result -----------------------
+            Assert.IsFalse(@equals);
+        }
     }
 }

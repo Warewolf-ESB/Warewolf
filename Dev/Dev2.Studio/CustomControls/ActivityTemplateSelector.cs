@@ -17,7 +17,7 @@ namespace Dev2.CustomControls
             var vm = mergeVm?.ActivityDesignerViewModel;
             if (vm == null)
             {
-                return null;
+                return TemplateGenerator.CreateDataTemplate(() => new UserControl());
             }
 
             string assemblyName;
