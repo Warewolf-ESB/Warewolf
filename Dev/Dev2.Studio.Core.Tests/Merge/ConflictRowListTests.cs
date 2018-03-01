@@ -12,8 +12,8 @@ namespace Dev2.Core.Tests.Merge
         {
             var conflictRowList = CreateConflictRowList();
 
-            Assert.AreEqual(2, conflictRowList.Count);
-            Assert.AreEqual(2, conflictRowList.Count);
+            Assert.AreEqual(6, conflictRowList.Count);
+            Assert.AreEqual(6, conflictRowList.Count);
 
             Assert.IsNotNull(conflictRowList[0].Current);
             Assert.IsNotNull(conflictRowList[0].Different);
@@ -41,7 +41,7 @@ namespace Dev2.Core.Tests.Merge
                 Assert.Fail();
             }
 
-            var toolConflictRow2 = conflictRowList[1] as ToolConflictRow;
+            var toolConflictRow2 = conflictRowList[2] as ToolConflictRow;
             if (toolConflictRow2 != null)
             {
                 Assert.IsNotNull(toolConflictRow2.UniqueId);
