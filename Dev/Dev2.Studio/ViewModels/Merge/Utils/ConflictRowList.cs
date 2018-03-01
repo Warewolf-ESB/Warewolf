@@ -234,8 +234,10 @@ namespace Dev2.ViewModels.Merge.Utils
             return connector.DifferentArmConnector;
         }
 
+        // TODO: should we keep this returning only the tools or should we keep coherence with the enumerator?
         public int Count => _toolConflictRowList.Count;
 
+        // TODO: should we keep this returning only the tools or should we keep coherence with the enumerator?
         public ToolConflictRow this[int key]
         {
             get

@@ -123,7 +123,10 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenISelectCurrentTool()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && a.HasConflict && !a.IsChecked).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).FirstOrDefault() as IToolConflictItem;
+            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && !a.HasConflict && a.IsCurrentChecked)
+                                                  .Cast<ToolConflictRow>()
+                                                  .Select(p => p.CurrentViewModel)
+                                                  .FirstOrDefault() as IToolConflictItem;
             Assert.IsNotNull(mergeToolModel);
             mergeToolModel.IsChecked = true;
         }
@@ -133,6 +136,15 @@ namespace Dev2.Activities.Specs.Merge
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
             var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IConnectorConflictItem;
+            Assert.IsNotNull(mergeArmConnector);
+            mergeArmConnector.IsChecked = true;
+        }
+
+        [Then(@"I select Different Arm")]
+        public void ThenISelectDifferentArm()
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.Different.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).FirstOrDefault() as IConnectorConflictItem;
             Assert.IsNotNull(mergeArmConnector);
             mergeArmConnector.IsChecked = true;
         }
@@ -215,11 +227,25 @@ namespace Dev2.Activities.Specs.Merge
             Assert.AreEqual(connectorDescription, connector.CurrentArmConnector.ArmDescription);
         }
 
+        [Then(@"conflict ""(.*)"" Current Connector matches tool is null")]
+        public void ThenConflictCurrentConnectorMatchesToolIsNull(int conflictRow)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.IsNull(connector.CurrentArmConnector.ArmDescription);
+        }
+
         [Then(@"conflict ""(.*)"" Different Connector matches tool ""(.*)""")]
         public void ThenConflictDifferentConnectorMatchesTool(int conflictRow, string connectorDescription)
         {
             var connector = GetArmConnectorFromRow(conflictRow);
             Assert.AreEqual(connectorDescription, connector.DifferentArmConnector.ArmDescription);
+        }
+
+        [Then(@"conflict ""(.*)"" Different Connector matches tool is null")]
+        public void ThenConflictDifferentConnectorMatchesToolIsNull(int conflictRow)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.IsNull(connector.DifferentArmConnector.ArmDescription);
         }
 
         [Then(@"Merge variable conflicts is true")]
