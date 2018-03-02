@@ -54,9 +54,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var inputItr = new WarewolfIterator(context.Environment.Eval(InputPath, update));
             colItr.AddVariableToIterateOn(inputItr);
 
-            var unameItr = new WarewolfIterator(context.Environment.Eval(Username, update));
-            colItr.AddVariableToIterateOn(unameItr);
-
             var passItr = new WarewolfIterator(context.Environment.Eval(DecryptedPassword,update));
             colItr.AddVariableToIterateOn(passItr);
 
@@ -80,7 +77,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var broker = ActivityIOFactory.CreateOperationsBroker();
                 var ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
-                                                                                colItr.FetchNextValue(unameItr),
+                                                                                Username,
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
                 var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ioPath);

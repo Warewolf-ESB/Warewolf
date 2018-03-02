@@ -53,15 +53,27 @@ namespace Dev2.Integration.Tests.Server_Refresh
         public void Run_a_Tests_to_Verify_ParallelSqlExecutionONAllDatabaseTools()
         {
             var url1 = "http://localhost:3142/secure/AllDatabaseTests.tests";
-            List<Task> list = new List<Task>();
 
-            Parallel.For(1, 10, a =>
+            var list = new List<Task<string>>
             {
-                var passRequest = ExecuteRequest(new Uri(url1));
-                list.Add(passRequest);
-                passRequest.ContinueWith((b) =>
-                {
-                    StringAssert.Contains(b.Result, "\"Result\": \"Passed\""); }
+                ExecuteRequest(new Uri(url1)),
+                ExecuteRequest(new Uri(url1)),
+                ExecuteRequest(new Uri(url1)),
+                ExecuteRequest(new Uri(url1)),
+                ExecuteRequest(new Uri(url1)),
+                ExecuteRequest(new Uri(url1)),
+                ExecuteRequest(new Uri(url1)),
+                ExecuteRequest(new Uri(url1)),
+                ExecuteRequest(new Uri(url1)),
+                ExecuteRequest(new Uri(url1))
+            };
+
+            Parallel.For(1, list.Count, a =>
+            {
+                list[a - 1].ContinueWith((b) =>
+                  {
+                      StringAssert.Contains(b.Result, "\"Result\": \"Passed\"");
+                  }
                 );
 
             });

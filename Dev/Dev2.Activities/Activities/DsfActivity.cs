@@ -398,7 +398,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var isAuthorized = AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
             if (!isAuthorized)
             {
-                var message = $"User: {dataObject.ExecutingUser.Identity.Name} does not have Execute Permission to resource {ServiceName}.";
+                
+                var message = string.Format(ErrorResource.UserNotAuthorizedToExecuteException, dataObject.ExecutingUser.Identity.Name,ServiceName);
                 tmpErrors.AddError(message);
                 dataObject.Environment.AddError(message);
                 throw new InvalidCredentialException(message);

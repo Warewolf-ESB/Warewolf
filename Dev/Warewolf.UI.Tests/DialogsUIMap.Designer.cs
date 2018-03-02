@@ -556,6 +556,41 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                 return this.mUITheTestNamealreadyexText;
             }
         }
+        
+        public WpfText UITosavearesourcepersmText
+        {
+            get
+            {
+                if ((this.mUITosavearesourcepersmText == null))
+                {
+                    this.mUITosavearesourcepersmText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUITosavearesourcepersmText.SearchProperties[WpfText.PropertyNames.Name] = "To save a resource persmission, you must have Resource Name and Windows group ent" +
+                        "ered";
+                    this.mUITosavearesourcepersmText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mUITosavearesourcepersmText;
+            }
+        }
+        
+        public WpfText UIThereareduplicateserText
+        {
+            get
+            {
+                if ((this.mUIThereareduplicateserText == null))
+                {
+                    this.mUIThereareduplicateserText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIThereareduplicateserText.SearchProperties[WpfText.PropertyNames.Name] = "There are duplicate server permissions, \r\n    i.e. Server permissions have been s" +
+                        "etup up with the same group twice. \r\n    Please clear the duplicates before savi" +
+                        "ng.";
+                    this.mUIThereareduplicateserText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mUIThereareduplicateserText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -600,6 +635,10 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         private WpfButton mUIYesButton;
         
         private WpfText mUITheTestNamealreadyexText;
+        
+        private WpfText mUITosavearesourcepersmText;
+        
+        private WpfText mUIThereareduplicateserText;
         #endregion
     }
     
