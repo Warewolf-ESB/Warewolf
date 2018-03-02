@@ -36,8 +36,8 @@ namespace Dev2.Core.Tests.Merge
 
             var imageSource = new DrawingImage();
             var instance = new MultiAssignDesignerViewModel(_modelItem);
-
-            toolConflictItem.SetUserInterface(imageSource, instance);
+            toolConflictItem.MergeIcon = imageSource;
+            toolConflictItem.ActivityDesignerViewModel = instance;
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.AreEqual(imageSource, toolConflictItem.MergeIcon);
@@ -61,6 +61,28 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsNull(startConflictItem.FlowNode);
             Assert.AreEqual(default(Point), startConflictItem.NodeLocation);
             Assert.IsNull(startConflictItem.ActivityDesignerViewModel);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void ToolConflictItem_ShowCheckbox_ExpectedTrue()
+        {
+            //------------Setup for test--------------------------
+            var toolConflictItem = CreateToolConflictItem();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsTrue(toolConflictItem.ShowCheckbox);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void ToolConflictItem_ShowCheckbox_ExpectedFalse()
+        {
+            //------------Setup for test--------------------------
+            var toolConflictItem = ToolConflictItem.EmptyConflictItem();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsFalse(toolConflictItem.ShowCheckbox);
         }
 
         [TestMethod]

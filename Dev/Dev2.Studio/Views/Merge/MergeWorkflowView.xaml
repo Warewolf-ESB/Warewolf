@@ -509,9 +509,6 @@
                                                                             <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
                                                                                 <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
                                                                             </DataTrigger>
-                                                                            <DataTrigger Binding="{Binding IsContained}" Value="True">
-                                                                                <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
-                                                                            </DataTrigger>
                                                                             <Trigger Property="IsEnabled" Value="False">
                                                                                 <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentArmRBDisabledTooltip}" />
                                                                             </Trigger>
@@ -575,9 +572,6 @@
                                                             <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
                                                                 <Style.Triggers>
                                                                     <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
-                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding IsContained}" Value="True">
                                                                         <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
                                                                     </DataTrigger>
                                                                     <Trigger Property="IsEnabled" Value="False">
@@ -705,7 +699,7 @@
                                                                                             <DataTrigger Binding="{Binding ElementName=MergeToolNoConflictIcon, Path=Visibility}" Value="Visible">
                                                                                                 <Setter Property="CheckBox.Visibility" Value="Collapsed"/>
                                                                                             </DataTrigger>
-                                                                                            <DataTrigger Binding="{Binding IsContained}" Value="True">
+                                                                                            <DataTrigger Binding="{Binding ShowCheckbox}" Value="False">
                                                                                                 <Setter Property="CheckBox.Visibility" Value="Collapsed"/>
                                                                                             </DataTrigger>
                                                                                         </Style.Triggers>
@@ -745,7 +739,7 @@
                                                                               HorizontalAlignment="Left"
                                                                               Margin="3,0,3,0"
                                                                               Style="{StaticResource MergeCheckBoxStyle}"
-                                                                              Visibility="{Binding IsContained, Converter={StaticResource BoolToVisibilityConverterNegative}}"
+                                                                              Visibility="{Binding ShowCheckbox, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                               AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID"
                                                                               ToolTip="{x:Static languages:Tooltips.MergeDifferenceConflictRBTooltip}">
                                                                         <i:Interaction.Behaviors>

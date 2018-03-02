@@ -27,14 +27,12 @@ namespace Dev2.ViewModels.Merge.Utils
             Current,
             Different
         }
-        readonly ConflictTreeNode[] _currentTree;
-        readonly ConflictTreeNode[] _diffTree;
         readonly List<ToolConflictRow> _toolConflictRowList;
 
         public ConflictRowList(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent, List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree)
         {
-            _currentTree = currentTree.ToArray();
-            _diffTree = diffTree.ToArray();
+            var _currentTree = currentTree.ToArray();
+            var _diffTree = diffTree.ToArray();
 
             var createConflictRowList = new ConflictRowListBuilder(modelFactoryCurrent, modelFactoryDifferent);
             _toolConflictRowList = createConflictRowList.CreateList(this, _currentTree, _diffTree);
@@ -50,7 +48,7 @@ namespace Dev2.ViewModels.Merge.Utils
             {
                 diffNode = _diffTree[0];
             }
-            GetAndCreateStartRow(currentNode, diffNode);
+            CreateStartRow(currentNode, diffNode);
             BindInboundConnections();
             Ready = true;
         }
@@ -66,7 +64,8 @@ namespace Dev2.ViewModels.Merge.Utils
                     inboundConnectors.AddRange(_cacheStartToolRow.Connectors
                                                         .Where(item => item.CurrentArmConnector.DestinationUniqueId == conflictItem.UniqueId)
                                                         .Select(item => item.CurrentArmConnector));
-                } else
+                }
+                else
                 {
                     inboundConnectors.AddRange(_cacheStartToolRow.Connectors
                                                         .Where(item => item.DifferentArmConnector.DestinationUniqueId == conflictItem.UniqueId)
@@ -144,11 +143,11 @@ namespace Dev2.ViewModels.Merge.Utils
         }
 
         ToolConflictRow _cacheStartToolRow;
-        private ToolConflictRow GetAndCreateStartRow(ConflictTreeNode current, ConflictTreeNode diff)
+        private void CreateStartRow(ConflictTreeNode current, ConflictTreeNode diff)
         {
             if (_cacheStartToolRow != null)
             {
-                return _cacheStartToolRow;
+                return;
             }
 
             ImageSource mergeIcon = null;
@@ -164,7 +163,7 @@ namespace Dev2.ViewModels.Merge.Utils
             var startRow = ToolConflictRow.CreateStartRow(currentConflictItem, differentConflictItem);
             startRow.Connectors = CreateStartNodeConnectors(currentConflictItem, differentConflictItem, current, diff);
 
-            return _cacheStartToolRow = startRow;
+            _cacheStartToolRow = startRow;
         }
 
         IList<IConnectorConflictRow> CreateStartNodeConnectors(IToolConflictItem currentConflictItem, IToolConflictItem differentConflictItem, ConflictTreeNode current, ConflictTreeNode diff)
@@ -234,7 +233,6 @@ namespace Dev2.ViewModels.Merge.Utils
             return connector.DifferentArmConnector;
         }
 
-        // TODO: should we keep this returning only the tools or should we keep coherence with the enumerator?
         public int Count
         {
             get
@@ -249,7 +247,6 @@ namespace Dev2.ViewModels.Merge.Utils
             }
         }
 
-        // TODO: should we keep this returning only the tools or should we keep coherence with the enumerator?
         public IConflictRow this[int key]
         {
             get

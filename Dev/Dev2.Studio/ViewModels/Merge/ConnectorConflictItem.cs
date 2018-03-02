@@ -47,7 +47,8 @@ namespace Dev2.ViewModels.Merge
         public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
 
         private bool _allowSelection;
-        public override bool AllowSelection {
+        public override bool AllowSelection
+        {
             get => _allowSelection;
             set => SetProperty(ref _allowSelection, value);
         }
@@ -115,8 +116,6 @@ namespace Dev2.ViewModels.Merge
             public IToolConflictItem SourceConflictItem() { throw new NotImplementedException(); }
             public IToolConflictItem DestinationConflictItem() { throw new NotImplementedException(); }
 
-            public void ReCalculateAllowSelection()
-            { }
             public IConnectorConflictItem Clone()
             {
                 var clonedItem = MemberwiseClone() as IConnectorConflictItem;

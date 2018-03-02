@@ -164,29 +164,12 @@ namespace Warewolf.MergeParser
                 }
                 if (node is FlowDecision nextDecNode)
                 {
-                    if (nextDecNode?.True is IDev2Activity decTrue)
-                    {
-                        AddMissingNode(idsLocations, nodes, missingConflictNodes, decTrue);
-                    }
-                    if (nextDecNode?.False is IDev2Activity decFalse)
-                    {
-                        AddMissingNode(idsLocations, nodes, missingConflictNodes, decFalse);
-                    }
+                    AddMissingFlowDecisionTrueAndFalse(idsLocations, nodes, missingConflictNodes, nextDecNode);
                     continue;
                 }
                 if (node is FlowSwitch<string> nextSwitchNode)
                 {
-                    if (nextSwitchNode?.Default is IDev2Activity switchDefault)
-                    {
-                        AddMissingNode(idsLocations, nodes, missingConflictNodes, switchDefault);
-                    }
-                    foreach (var switchCase in nextSwitchNode.Cases)
-                    {
-                        if (switchCase.Value is IDev2Activity switchValue)
-                        {
-                            AddMissingNode(idsLocations, nodes, missingConflictNodes, switchValue);
-                        }
-                    }
+                    AddMissingFlowSwitchCases(idsLocations, nodes, missingConflictNodes, nextSwitchNode);
                     continue;
                 }
             }
@@ -194,6 +177,33 @@ namespace Warewolf.MergeParser
             foreach (var missingNode in missingConflictNodes)
             {
                 nodes.Add(missingNode);
+            }
+        }
+
+        private static void AddMissingFlowDecisionTrueAndFalse(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, List<ConflictTreeNode> missingConflictNodes, FlowDecision nextDecNode)
+        {
+            if (nextDecNode?.True is IDev2Activity decTrue)
+            {
+                AddMissingNode(idsLocations, nodes, missingConflictNodes, decTrue);
+            }
+            if (nextDecNode?.False is IDev2Activity decFalse)
+            {
+                AddMissingNode(idsLocations, nodes, missingConflictNodes, decFalse);
+            }
+        }
+
+        private static void AddMissingFlowSwitchCases(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, List<ConflictTreeNode> missingConflictNodes, FlowSwitch<string> nextSwitchNode)
+        {
+            if (nextSwitchNode?.Default is IDev2Activity switchDefault)
+            {
+                AddMissingNode(idsLocations, nodes, missingConflictNodes, switchDefault);
+            }
+            foreach (var switchCase in nextSwitchNode.Cases)
+            {
+                if (switchCase.Value is IDev2Activity switchValue)
+                {
+                    AddMissingNode(idsLocations, nodes, missingConflictNodes, switchValue);
+                }
             }
         }
 
