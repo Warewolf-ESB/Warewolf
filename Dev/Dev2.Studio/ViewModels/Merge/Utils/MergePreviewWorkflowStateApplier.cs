@@ -12,7 +12,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using System;
-using System.Activities.Statements;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
@@ -29,7 +28,6 @@ namespace Dev2.ViewModels.Merge.Utils
             _mergePreviewWorkflowDesignerViewModel = mergePreviewWorkflowDesignerViewModel;
             _conflictList = conflictList;
             RegisterEventHandlerForConflictItemChanges();
-            Apply();
         }
 
         public void RegisterEventHandlerForConflictItemChanges()
@@ -79,13 +77,13 @@ namespace Dev2.ViewModels.Merge.Utils
             }
             else if (changedItem is IConnectorConflictItem connectorItem && row is IConnectorConflictRow connectorRow)
             {
-                
                 ConnectorHandler(connectorItem, connectorRow);
             }
             else
             {
-                Dev2Logger.Error("Only ConflictRow and ConflictItem are supported", GlobalConstants.WarewolfError);
-                throw new NotImplementedException("Only ConflictRow and ConflictItem are supported");
+                var exception = new NotImplementedException("Only ConflictRow and ConflictItem are supported");
+                Dev2Logger.Error("Unsupported ConflictRow and ConflictItem", exception, GlobalConstants.WarewolfError);
+                throw exception;
             }
         }
 
@@ -121,7 +119,6 @@ namespace Dev2.ViewModels.Merge.Utils
                     }
                 }
             }
-
         }
 
         private void RemoveActivity(IToolConflictItem toolModelConflictItem)
@@ -136,7 +133,7 @@ namespace Dev2.ViewModels.Merge.Utils
                 return;
             }
 
-            if (row.ContainsStart && changedItem.IsChecked == true)
+            if (row.ContainsStart && changedItem.IsChecked)
             {
                 _mergePreviewWorkflowDesignerViewModel.RemoveStartNodeConnection();
                 LinkStartNode(changedItem);

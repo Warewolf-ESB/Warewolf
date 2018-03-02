@@ -116,8 +116,7 @@ namespace Dev2.ViewModels.Merge.Utils
             }
             else
             {
-                allow = sourceItem != null && sourceItem.IsInWorkflow
-                        && destinationItem != null && destinationItem.IsInWorkflow;
+                allow = sourceItem != null && sourceItem.IsInWorkflow && destinationItem != null && destinationItem.IsInWorkflow;
             }
             connector.AllowSelection = allow;
         }
@@ -138,6 +137,5 @@ namespace Dev2.ViewModels.Merge.Utils
             }
             SetInitialStates();
         }
-
     }
 }

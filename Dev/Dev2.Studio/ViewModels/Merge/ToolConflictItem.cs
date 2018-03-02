@@ -17,7 +17,6 @@ using System.Activities.Statements;
 using System.Activities.Presentation.Model;
 using System.Windows;
 using System.Collections.Generic;
-using Dev2.Common.ExtMethods;
 using Dev2.ViewModels.Merge.Utils;
 
 namespace Dev2.ViewModels.Merge
@@ -42,17 +41,16 @@ namespace Dev2.ViewModels.Merge
         public ImageSource MergeIcon { get; set; }
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
         public override bool AllowSelection { get; set; }
-        public bool IsInWorkflow {
-            get => _context.list.ActivityIsInWorkflow(Activity as IDev2Activity);
-        }
+        public bool IsInWorkflow => _context.list.ActivityIsInWorkflow(Activity as IDev2Activity);
 
+        public bool ShowCheckbox => true;
         public bool IsAddedToWorkflow { get; set; }
         public List<IConnectorConflictItem> InboundConnectors { get; set; }
         public List<IConnectorConflictItem> OutboundConnectors { get; set; }
 
         public IToolConflictItem Clone()
         {
-            IToolConflictItem clonedItem = MemberwiseClone() as IToolConflictItem;            
+            var clonedItem = MemberwiseClone() as IToolConflictItem;            
             if (!(InboundConnectors is null))
             {
                 var inboundConnectors = new List<IConnectorConflictItem>();
@@ -116,24 +114,6 @@ namespace Dev2.ViewModels.Merge
             MergeIcon = mergeIcon
         };
 
-        internal void InitializeFromActivity(IDev2Activity activity, ModelItem modelItem, Point location)
-        {
-            UniqueId = activity.UniqueID.ToGuid();
-            if (string.IsNullOrWhiteSpace(MergeDescription))
-            {
-                MergeDescription = activity.GetDisplayName();
-            }
-            FlowNode = activity.GetFlowNode();
-            ModelItem = modelItem;
-            NodeLocation = location;
-        }
-
-        public void SetUserInterface(ImageSource mergeIcon, ActivityDesignerViewModel instance)
-        {
-            MergeIcon = mergeIcon;
-            ActivityDesignerViewModel = instance;
-        }
-
         public new class Empty : ConflictItem.Empty, IToolConflictItem
         {
             public ImageSource MergeIcon { get; set; }
@@ -147,15 +127,14 @@ namespace Dev2.ViewModels.Merge
             public List<IConnectorConflictItem> InboundConnectors { get => null; set => _inboundConnectors = value; }
             public List<IConnectorConflictItem> OutboundConnectors { get => throw new NotImplementedException(); set=> throw new NotImplementedException(); }
             public bool IsInWorkflow => false;
+            public bool ShowCheckbox => false;
             public bool IsAddedToWorkflow { get; set; }
 
             public IToolConflictItem Clone()
             {
-                IToolConflictItem clonedItem = MemberwiseClone() as IToolConflictItem;                
+                var clonedItem = MemberwiseClone() as IToolConflictItem;                
                 return clonedItem;
             }
         }
     }
-
-
 }
