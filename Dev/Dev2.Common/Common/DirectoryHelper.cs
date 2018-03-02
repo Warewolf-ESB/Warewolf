@@ -100,12 +100,12 @@ namespace Dev2.Common.Common
 
         static void CheckIfDeleteIsValid(FileSystemInfo fsi)
         {
-            if (fsi.FullName.ToLower() == @"C:\".ToLower())
+            if (string.Equals(fsi.FullName, @"C:\", StringComparison.CurrentCultureIgnoreCase))
             {
                 throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
                     fsi.FullName));
             }
-            if (fsi.FullName.ToLower() == @"C:\Windows\System".ToLower())
+            if (string.Equals(fsi.FullName, @"C:\Windows\System", StringComparison.CurrentCultureIgnoreCase))
             {
                 throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
                     fsi.FullName));

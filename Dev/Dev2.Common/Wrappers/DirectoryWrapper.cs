@@ -12,6 +12,7 @@ using System;
 using Dev2.Common.Interfaces.Wrappers;
 using System.IO;
 using Microsoft.VisualBasic.FileIO;
+using System.Collections.Generic;
 
 namespace Dev2.Common.Wrappers
 { // not required for code coverage this is simply a pass through required for unit testing
@@ -51,22 +52,37 @@ namespace Dev2.Common.Wrappers
         public static string GetDirectoryName(string path)
         {
             var validPath = path.TrimEnd('\\');
-            var index = validPath.LastIndexOf("\\",StringComparison.InvariantCultureIgnoreCase);
+            var index = validPath.LastIndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
             if (index != -1)
             {
-                return path.Substring(index+1);
+                return path.Substring(index + 1);
             }
             return path;
         }
 
         public void Move(string directoryStructureFromPath, string directoryStructureToPath)
         {
-            FileSystem.MoveDirectory(directoryStructureFromPath,directoryStructureToPath,true);
+            FileSystem.MoveDirectory(directoryStructureFromPath, directoryStructureToPath, true);
         }
 
         public void Delete(string directoryStructureFromPath, bool recursive)
         {
             Directory.Delete(directoryStructureFromPath, recursive);
         }
+
+        public DirectoryInfo CreateDirectory(string dir) => Directory.CreateDirectory(dir);
+
+        public IEnumerable<string> EnumerateFiles(string path)
+            => Directory.EnumerateFiles(path);
+        public IEnumerable<string> EnumerateDirectories(string path)
+            => Directory.EnumerateDirectories(path);
+        public IEnumerable<string> EnumerateFileSystemEntries(string path)
+            => Directory.EnumerateFileSystemEntries(path);
+        public IEnumerable<string> EnumerateFiles(string path, string pattern)
+            => Directory.EnumerateFiles(path, pattern);
+        public IEnumerable<string> EnumerateDirectories(string path, string pattern)
+            => Directory.EnumerateDirectories(path, pattern);
+        public IEnumerable<string> EnumerateFileSystemEntries(string path, string pattern)
+            => Directory.EnumerateFileSystemEntries(path, pattern);
     }
 }
