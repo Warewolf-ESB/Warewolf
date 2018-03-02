@@ -20,192 +20,244 @@ using System.Windows.Media;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
-    public class ConflictRowListBuilder
-    {
-        readonly IConflictModelFactory _modelFactoryCurrent;
-        readonly IConflictModelFactory _modelFactoryDifferent;
-        const int MAX_WORKFLOW_ITEMS = 10000;
 
-        public ConflictRowListBuilder(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent)
-        {
-            _modelFactoryCurrent = modelFactoryCurrent;
-            _modelFactoryDifferent = modelFactoryDifferent;
-        }
+	public class ConflictRowListBuilder
+	{
+		readonly IConflictModelFactory _modelFactoryCurrent;
+		readonly IConflictModelFactory _modelFactoryDifferent;
+		const int MAX_WORKFLOW_ITEMS = 10000;
+		ConflictRowList _list;
+		IToolConflictItem currentToolConflictItem;
+		IToolConflictItem diffToolConflictItem;
+		int indexDiff;
+		int indexCurr;
+		ConnectorConflictRow row;
+		ConflictTreeNode[] _currentTree;
+		ConflictTreeNode[] _diffTree;
+		public ConflictRowListBuilder(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent)
+		{
+			_modelFactoryCurrent = modelFactoryCurrent;
+			_modelFactoryDifferent = modelFactoryDifferent;
+		}
 
-        public List<ToolConflictRow> CreateList(ConflictRowList list, ConflictTreeNode[] currentTree, ConflictTreeNode[] diffTree)
-        {
-            var toolConflictRowList = new List<ToolConflictRow>();
-            int indexDiff = 0;
-            int indexCurr = 0;
+		public List<ToolConflictRow> CreateList(ConflictRowList list, ConflictTreeNode[] currentTree, ConflictTreeNode[] diffTree)
+		{
+		
+			_currentTree = currentTree;
+			_diffTree = diffTree;
+			_list = list;
 
-            for (int i = 0; i <= MAX_WORKFLOW_ITEMS; i++)
-            {
-                if (i == MAX_WORKFLOW_ITEMS)
-                {
-                    throw new Exception("createlist expected to advance");
-                }
-                ConflictTreeNode current = null;
-                ConflictTreeNode diff = null;
+			var toolConflictRowList = new List<ToolConflictRow>();
+			indexDiff = 0;
+			indexCurr = 0;
 
-                if (indexCurr < currentTree.Length)
-                {
-                    current = currentTree[indexCurr];
-                }
-                if (indexDiff < diffTree.Length)
-                {
-                    diff = diffTree[indexDiff];
-                }
-                if (current == null && diff == null)
-                {
-                    break;
-                }
+			for (int i = 0; i <= MAX_WORKFLOW_ITEMS; i++)
+			{
+				if (i == MAX_WORKFLOW_ITEMS)
+				{
+					throw new Exception("createlist expected to advance");
+				}
+				ConflictTreeNode current = null;
+				ConflictTreeNode diff = null;
 
-                bool diffFoundInCurrent = currentTree.Contains(diff);
-                bool currFoundInDifferent = diffTree.Contains(current);
+				current = GetConflictTreeNode(true, indexCurr, indexDiff, _currentTree);
+				diff = GetConflictTreeNode(false, indexCurr, indexDiff, _diffTree);
+				if (current == null && diff == null)
+				{
+					break;
+				}
+				currentToolConflictItem = null;
+				diffToolConflictItem = null;
+				bool diffFoundInCurrent = _currentTree.Contains(diff);
+				bool currFoundInDifferent = _diffTree.Contains(current);
 
-                if(diffFoundInCurrent && currFoundInDifferent)
-                {
-                    diff = diffTree.FirstOrDefault(o => o.UniqueId==current.UniqueId);
-                    current = currentTree.FirstOrDefault(o => o.UniqueId==current.UniqueId);
-                }
-                
+				if (diffFoundInCurrent && currFoundInDifferent)
+				{
+					diff = _diffTree.FirstOrDefault(o => o.UniqueId == current.UniqueId);
+					current = _currentTree.FirstOrDefault(o => o.UniqueId == current.UniqueId);
+				}
+				GetToolConflictItems(current, diff, diffFoundInCurrent, currFoundInDifferent);
 
-                #region get tool conflict item
-                IToolConflictItem currentToolConflictItem = null;
-                IToolConflictItem diffToolConflictItem = null;
-                if (!diffFoundInCurrent && !currFoundInDifferent)
-                {
-                    //This is a guard clause
+				var toolConflictRow = BuildToolConflictRow(list, current, diff, currentToolConflictItem, diffToolConflictItem);
+				toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
+				toolConflictRowList.Add(toolConflictRow);
+			}
+			return toolConflictRowList;
+		}
+		private static ConflictTreeNode GetConflictTreeNode(bool IsCurrent, int indexCurr, int indexDiff, ConflictTreeNode[] nodes)
+		{
+			ConflictTreeNode node = null;
+			if (IsCurrent)
+			{
+				if (indexCurr < nodes.Length)
+				{
+					node = nodes[indexCurr];
+				}
+			}
+			else
+			{
+				if (indexDiff < nodes.Length)
+				{
+					node = nodes[indexDiff];
+				}
+			}
+			return node;
+		}
 
-                    // NOTE: if we want to allow a tool that was deleted to not conflict with a tool that was added
-                    // this is where it would be implemented
-                }
-                else
-                {
-                    if (!diffFoundInCurrent)
-                    {
-                        currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
-                    }
-                    if (!currFoundInDifferent)
-                    {
-                        diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
-                    }
-                }
+		void GetToolConflictItems(ConflictTreeNode current, ConflictTreeNode diff, bool diffFoundInCurrent, bool currFoundInDifferent)
+		{
 
-                if (currentToolConflictItem == null)
-                {
-                    if (current == null)
-                    {
-                        currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
-                    }
-                    else
-                    {
-                        currentToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Current);
-                        _modelFactoryCurrent.CreateModelItem(currentToolConflictItem, current);
-                    }
-                    indexCurr++;
-                }
-                if (diffToolConflictItem == null)
-                {
-                    if (diff == null)
-                    {
-                        diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
-                    }
-                    else
-                    {
-                        diffToolConflictItem = new ToolConflictItem(list, ConflictRowList.Column.Different);
-                        _modelFactoryDifferent.CreateModelItem(diffToolConflictItem, diff);
-                    }
-                    indexDiff++;
-                }
-                #endregion
+			if (!diffFoundInCurrent && !currFoundInDifferent)
+			{
+				//This is a guard clause
+				// NOTE: if we want to allow a tool that was deleted to not conflict with a tool that was added
+				// this is where it would be implemented
+			}
+			else
+			{
+				if (!diffFoundInCurrent)
+				{
+					currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
+				}
+				if (!currFoundInDifferent)
+				{
+					diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
+				}
+			}
 
-                var toolConflictRow = BuildToolConflictRow(list, current, diff, currentToolConflictItem, diffToolConflictItem);
-                toolConflictRow.IsMergeVisible = toolConflictRow.HasConflict;
-                toolConflictRowList.Add(toolConflictRow);
-            }
-            return toolConflictRowList;
-        }
+			if (currentToolConflictItem == null)
+			{
+				if (current == null)
+				{
+					currentToolConflictItem = ToolConflictItem.EmptyConflictItem();
+				}
+				else
+				{
+					currentToolConflictItem = new ToolConflictItem(_list, ConflictRowList.Column.Current);
+					_modelFactoryCurrent.CreateModelItem(currentToolConflictItem, current);
+				}
+				indexCurr++;
 
-        static ToolConflictRow BuildToolConflictRow(ConflictRowList list, ConflictTreeNode current, ConflictTreeNode diff, IToolConflictItem currentToolConflictItem, IToolConflictItem diffToolConflictItem)
-        {
-            var currentConnectorConflictTreeNode = currentToolConflictItem is ToolConflictItem.Empty ? null : current;
-            var diffConnectorConflictTreeNode = diffToolConflictItem is ToolConflictItem.Empty ? null : diff;
-            var connectors = GetConnectorConflictRows(list, currentToolConflictItem, diffToolConflictItem, currentConnectorConflictTreeNode, diffConnectorConflictTreeNode);
+			}
+			if (diffToolConflictItem == null)
+			{
+				if (diff == null)
+				{
+					diffToolConflictItem = ToolConflictItem.EmptyConflictItem();
+				}
+				else
+				{
+					diffToolConflictItem = new ToolConflictItem(_list, ConflictRowList.Column.Different);
+					_modelFactoryDifferent.CreateModelItem(diffToolConflictItem, diff);
+				}
+				indexDiff++;
+			}
+		}
 
-            var diffToolConflictItem_override = diffToolConflictItem;
-            if (currentToolConflictItem.Activity != null && diffToolConflictItem.Activity != null && currentToolConflictItem.Activity.Equals(diffToolConflictItem.Activity))
-            {
-                diffToolConflictItem_override = currentToolConflictItem.Clone();
-            }
+		private ToolConflictRow BuildToolConflictRow(ConflictRowList list, ConflictTreeNode current, ConflictTreeNode diff, IToolConflictItem currentToolConflictItem, IToolConflictItem diffToolConflictItem)
+		{
+			var currentConnectorConflictTreeNode = currentToolConflictItem is ToolConflictItem.Empty ? null : current;
+			var diffConnectorConflictTreeNode = diffToolConflictItem is ToolConflictItem.Empty ? null : diff;
+			var connectors = GetConnectorConflictRows(list,currentToolConflictItem, diffToolConflictItem, currentConnectorConflictTreeNode, diffConnectorConflictTreeNode);
 
-            var toolConflictRow = ToolConflictRow.CreateConflictRow(currentToolConflictItem, diffToolConflictItem_override, connectors);
-            return toolConflictRow;
-        }
+			var diffToolConflictItem_override = diffToolConflictItem;
+			if (currentToolConflictItem.Activity != null && diffToolConflictItem.Activity != null && currentToolConflictItem.Activity.Equals(diffToolConflictItem.Activity))
+			{
+				diffToolConflictItem_override = currentToolConflictItem.Clone();
+			}
 
-        private static List<IConnectorConflictRow> GetConnectorConflictRows(ConflictRowList list, IToolConflictItem currentConflictItem, IToolConflictItem diffConflictItem, ConflictTreeNode current, ConflictTreeNode diff)
-        {
-            var rows = new List<IConnectorConflictRow>();
-            int index = 0;
-            var armConnectorsCurrent = current?.Activity.ArmConnectors().OrderBy(i=>i.Key??"").ToList();
-            var armConnectorsDiff = diff?.Activity.ArmConnectors().OrderBy(i=>i.Key??"").ToList();
-            var maxCount = current == null
-                ? armConnectorsDiff.Count
-                : diff == null
-                ? armConnectorsCurrent.Count
-                : Math.Max(armConnectorsCurrent.Count, armConnectorsDiff.Count);
-            for (; index < maxCount; index++)
-            {
-                var row = new ConnectorConflictRow();
-                if (armConnectorsCurrent != null && index < armConnectorsCurrent.Count)
-                {
-                    var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsCurrent[index];
-                    if (DestinationUniqueId == Guid.Empty.ToString())
-                    {
-                        row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
-                    }
-                    else
-                    {
-                        var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Current, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
-                        row.CurrentArmConnector = connector;
-                        if (!(currentConflictItem is ToolConflictItem.Empty))
-                        {
-                            currentConflictItem.OutboundConnectors.Add(connector);
-                        }
-                    }
-                }
-                else
-                {
-                    row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
-                }
+			var toolConflictRow = ToolConflictRow.CreateConflictRow(currentToolConflictItem, diffToolConflictItem_override, connectors);
+			return toolConflictRow;
+		}
 
-                if (armConnectorsDiff != null && index < armConnectorsDiff.Count)
-                {
-                    var (Description, Key, SourceUniqueId, DestinationUniqueId) = armConnectorsDiff[index];
-                    if (DestinationUniqueId == Guid.Empty.ToString())
-                    {
-                        row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
-                    }
-                    else
-                    {
-                        var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Different, row.UniqueId, Description, Guid.Parse(SourceUniqueId), Guid.Parse(DestinationUniqueId), Key);
-                        row.DifferentArmConnector = connector;
-                        if (!(diffConflictItem is ToolConflictItem.Empty))
-                        {
-                            diffConflictItem.OutboundConnectors.Add(connector);
-                        }
-                    }
-                }
-                else
-                {
-                    row.DifferentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
-                }
-                var sameSourceAndDestination = row.CurrentArmConnector.SourceUniqueId != row.DifferentArmConnector.SourceUniqueId
-                                    || row.CurrentArmConnector.DestinationUniqueId != row.DifferentArmConnector.DestinationUniqueId;
-                row.HasConflict = sameSourceAndDestination;
-                rows.Add(row);
-            }            
-            return rows;
-        }
-    }
+		private List<IConnectorConflictRow> GetConnectorConflictRows(ConflictRowList list, IToolConflictItem currentConflictItem, IToolConflictItem diffConflictItem, ConflictTreeNode current, ConflictTreeNode diff)
+		{
+			var rows = new List<IConnectorConflictRow>();
+			int index = 0;
+			var armConnectorsCurrent = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+			var armConnectorsDiff = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+
+			SetConnectorConflict(current, diff, out armConnectorsCurrent, out armConnectorsDiff, out int maxCount);
+
+			for (; index < maxCount; index++)
+			{
+				row = new ConnectorConflictRow();
+
+				if (armConnectorsCurrent != null )
+				{
+					if (index < armConnectorsCurrent.Count)
+					{ SetCurrentConnectorConflict(armConnectorsCurrent[index], list, currentConflictItem); }
+					else { row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId); }
+				}
+				else
+				{
+					row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
+				}
+
+				if (armConnectorsDiff != null)
+				{
+					if (index < armConnectorsDiff.Count)
+					{
+						SetDiffConnectorConflict(armConnectorsDiff[index], list, diffConflictItem);
+					}
+					else { row.DifferentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId); }
+
+				}
+				else
+				{
+					row.DifferentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
+				}
+
+				var sameSourceAndDestination = row.CurrentArmConnector.SourceUniqueId != row.DifferentArmConnector.SourceUniqueId || row.CurrentArmConnector.DestinationUniqueId != row.DifferentArmConnector.DestinationUniqueId;
+				row.HasConflict = sameSourceAndDestination;
+				rows.Add(row);
+			}
+			return rows;
+		}
+		private void SetCurrentConnectorConflict((string Description, string Key, string SourceUniqueId, string DestinationUniqueId) armConnectorsCurrent, ConflictRowList list, IToolConflictItem currentConflictItem)
+		{
+
+			if (armConnectorsCurrent.DestinationUniqueId == Guid.Empty.ToString())
+			{
+				row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
+			}
+			else
+			{
+				var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Current, row.UniqueId, armConnectorsCurrent.Description, Guid.Parse(armConnectorsCurrent.SourceUniqueId), Guid.Parse(armConnectorsCurrent.DestinationUniqueId), armConnectorsCurrent.Key);
+				row.CurrentArmConnector = connector;
+				if (!(currentConflictItem is ToolConflictItem.Empty))
+				{
+					currentConflictItem.OutboundConnectors.Add(connector);
+				}
+			}
+		}
+		private void SetDiffConnectorConflict((string Description, string Key, string SourceUniqueId, string DestinationUniqueId) armConnectorsCurrent,ConflictRowList list, IToolConflictItem diffConflictItem)
+		{
+			if (armConnectorsCurrent.DestinationUniqueId == Guid.Empty.ToString())
+			{
+				row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
+			}
+			else
+			{
+				var connector = new ConnectorConflictItem(list, ConflictRowList.Column.Different, row.UniqueId, armConnectorsCurrent.Description, Guid.Parse(armConnectorsCurrent.SourceUniqueId), Guid.Parse(armConnectorsCurrent.DestinationUniqueId), armConnectorsCurrent.Key);
+				row.DifferentArmConnector = connector;
+				if (!(diffConflictItem is ToolConflictItem.Empty))
+				{
+					diffConflictItem.OutboundConnectors.Add(connector);
+				}
+			}
+		}
+		private static void SetConnectorConflict(ConflictTreeNode current, ConflictTreeNode diff, out List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> armConnectorsCurrent, out List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> armConnectorsDiff, out int maxCount)
+		{
+
+			armConnectorsCurrent = current?.Activity.ArmConnectors().OrderBy(i => i.Key ?? "").ToList();
+			armConnectorsDiff = diff?.Activity.ArmConnectors().OrderBy(i => i.Key ?? "").ToList();
+
+			maxCount = current == null
+				? armConnectorsDiff.Count()
+				: diff == null
+				? armConnectorsCurrent.Count()
+				: Math.Max(armConnectorsCurrent.Count, armConnectorsDiff.Count);
+		}
+	}
 }
