@@ -13,5 +13,4 @@ ADD . Build
 ENV SCRIPT_PATH "Build\Run Tests.ps1"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
 
-ENTRYPOINT & $env:SCRIPT_PATH
-CMD ["-StartServerAsConsole", "-ResourcesType", "Release"]
+ENTRYPOINT & $env:SCRIPT_PATH -StartServerAsConsole -ResourcesType Release
