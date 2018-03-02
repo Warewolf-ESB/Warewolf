@@ -600,17 +600,11 @@ namespace Dev2.Studio.ViewModels
 
                 if (selectedMergeItem is VersionViewModel differenceVersion)
                 {
-                    var differenceResourceModel = differenceVersion.VersionInfo.ToContextualResourceModel(server, differenceVersion.ResourceId);
-                    var currentResourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differenceVersion.ResourceId);
-
-                    BuildAndViewCurrentVersion(currentResourceModel, differenceResourceModel, differenceVersion);
+                    BuildAndViewSelectedVersion(server, differenceVersion);
                 }
                 else if (currentResource is VersionViewModel currentVersion)
                 {
-                    var currentResourceModel = currentVersion.VersionInfo.ToContextualResourceModel(currentResource.Server, currentVersion.ResourceId);
-                    var differenceResourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(currentResource.Parent.ResourceId);
-
-                    BuildAndViewCurrentVersion(currentResourceModel, differenceResourceModel, currentVersion);
+                    BuildAndViewCurrentVersion(currentResource.Parent as IExplorerItemViewModel, currentResource.Server, currentVersion);
                 }
                 else
                 {
@@ -622,25 +616,35 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private void BuildAndViewCurrentVersion(IContextualResourceModel resourceModel, IContextualResourceModel otherResourceModel, VersionViewModel version)
+        private void BuildAndViewCurrentVersion(IExplorerItemViewModel selectedMergeItem, IServer server, VersionViewModel currentVersion)
         {
-            if (otherResourceModel != null && resourceModel != null)
-            {
-                resourceModel.ResourceName = otherResourceModel.ResourceName;
-                if (resourceModel.IsVersionResource)
-                {
-                    resourceModel.VersionInfo = version.VersionInfo;
-                }
-                if (otherResourceModel.IsVersionResource)
-                {
-                    otherResourceModel.VersionInfo = version.VersionInfo;
-                }
+            var currentResourceModel = currentVersion.VersionInfo.ToContextualResourceModel(server, currentVersion.ResourceId);
+            var differenceResourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(selectedMergeItem.ResourceId);
 
-                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
-                workSurfaceKey.EnvironmentID = otherResourceModel.Environment.EnvironmentID;
-                workSurfaceKey.ResourceID = otherResourceModel.ID;
-                workSurfaceKey.ServerID = otherResourceModel.ServerID;
-                _worksurfaceContextManager.ViewMergeConflictsService(resourceModel, otherResourceModel, true, workSurfaceKey);
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+            if (differenceResourceModel != null && currentResourceModel != null)
+            {
+                currentResourceModel.ResourceName = differenceResourceModel.ResourceName;
+                workSurfaceKey.EnvironmentID = differenceResourceModel.Environment.EnvironmentID;
+                workSurfaceKey.ResourceID = differenceResourceModel.ID;
+                workSurfaceKey.ServerID = differenceResourceModel.ServerID;
+                _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, true, workSurfaceKey);
+            }
+        }
+
+        private void BuildAndViewSelectedVersion(IServer server, VersionViewModel differenceVersion)
+        {
+            var differenceResourceModel = differenceVersion.VersionInfo.ToContextualResourceModel(server, differenceVersion.ResourceId);
+            var currentResourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differenceVersion.ResourceId);
+
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+            if (currentResourceModel != null && differenceResourceModel != null)
+            {
+                differenceResourceModel.ResourceName = currentResourceModel.ResourceName;
+                workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
+                workSurfaceKey.ResourceID = currentResourceModel.ID;
+                workSurfaceKey.ServerID = currentResourceModel.ServerID;
+                _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, false, workSurfaceKey);
             }
         }
 
