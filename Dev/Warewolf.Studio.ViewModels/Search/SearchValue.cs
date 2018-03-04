@@ -24,6 +24,14 @@ namespace Dev2.ViewModels.Search
         string _type;
         string _match;
 
+        public SearchValue(Guid resourceId, string name, string path, IEnvironmentViewModel selectedEnvironment)
+        {
+            ResourceId = resourceId;
+            Name = name;
+            Path = path;
+            OpenResourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => OpenResource(selectedEnvironment));
+        }
+
         public SearchValue(Guid resourceId, string name, string path, string type, string match, IEnvironmentViewModel selectedEnvironment)
         {
             ResourceId = resourceId;
@@ -49,6 +57,8 @@ namespace Dev2.ViewModels.Search
                         break;
                     case "Test":
                         shellViewModel.OpenSelectedTest(ResourceId, Name);
+                        break;
+                    default:
                         break;
                 }
             }
