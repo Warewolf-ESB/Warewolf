@@ -20,7 +20,6 @@ using Dev2.Common;
 using System;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Interfaces.DataList;
-using System.Collections.Generic;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Windows;
 
@@ -50,13 +49,13 @@ namespace Dev2.ViewModels.Search
             : base(shellViewModel, aggregator, false)
         {
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
-            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server); };
+            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server).ConfigureAwait(false); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new DelegateCommand((o) => RefreshEnvironment(SelectedEnvironment.ResourceId));
             SearchInputCommand = new DelegateCommand(async (o) =>
             {
-                await SearchWarewolfAsync();
+                SearchWarewolfAsync();
             });
             SearchResults = new ObservableCollection<ISearchValue>();
             IsAllSelected = true;
@@ -74,7 +73,7 @@ namespace Dev2.ViewModels.Search
 
         async Task<IEnvironmentViewModel> ServerConnectedAsync(object sender, IServer server)
         {
-            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID);
+            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID).ConfigureAwait(false);
             environmentViewModel?.Server?.GetServerVersion();
             environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;
@@ -97,7 +96,7 @@ namespace Dev2.ViewModels.Search
             }
         }
 
-        async Task SearchWarewolfAsync()
+        void SearchWarewolfAsync()
         {
             IsSearching = true;
 
@@ -105,116 +104,157 @@ namespace Dev2.ViewModels.Search
             SearchResults.Clear();
             if (!string.IsNullOrWhiteSpace(SearchInput))
             {
-                await Task.Run(() =>
+                if (IsWorkflowNameSelected)
                 {
-                    if (IsWorkflowNameSelected)
-                    {
-                        var children = SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).Where(model => FilterText(model.ResourceName));
-                        foreach (var child in children)
-                        {
-                            var search = new SearchValue(child.ResourceId, child.ResourceName, child.ResourcePath, "Workflow", child.ResourceName, SelectedEnvironment);
-                            Application.Current.Dispatcher.Invoke(delegate
-                            {
-                                SearchResults.Add(search);
-                            });
-                        }
-                    }
-                    if (IsTestNameSelected)
-                    {
-                        var loadTests = SelectedEnvironment.Server?.ResourceRepository.LoadResourceTests(Guid.Empty);
-                        if (loadTests != null)
-                        {
-                            var tests = loadTests.Where(model => FilterText(model.TestName));
-                            foreach (var test in tests)
-                            {
-                                var resource = SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == test.ResourceId);
-                                var search = new SearchValue(resource.ResourceId, test.TestName, resource.ResourcePath, "Test", test.TestName, SelectedEnvironment);
-                                Application.Current.Dispatcher.Invoke(delegate
-                                {
-                                    SearchResults.Add(search);
-                                });
-                            }
-                        }
-                    }
-                    if (IsScalarNameSelected || IsRecSetNameSelected || IsObjectNameSelected)
-                    {
-                        var resources = SelectedEnvironment.Server?.ResourceRepository.All();
-                        foreach (var resource in resources)
-                        {
-                            var dtlist = DataListViewModelFactory.CreateDataListViewModel(resource);
-                            if (IsScalarNameSelected)
-                            {
-                                foreach (var scalar in dtlist.ScalarCollection)
-                                {
-                                    if (FilterText(scalar.Name))
-                                    {
-                                        var resourcePath = resource.GetSavePath() + resource.ResourceName;
-                                        var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, "Scalar", scalar.Name, SelectedEnvironment);
-                                        Application.Current.Dispatcher.Invoke(delegate
-                                        {
-                                            SearchResults.Add(search);
-                                        });
-                                    }
-                                }
-                            }
-                            if (IsRecSetNameSelected)
-                            {
-                                foreach (var recset in dtlist.RecsetCollection)
-                                {
-                                    if (FilterText(recset.Name))
-                                    {
-                                        var resourcePath = resource.GetSavePath() + resource.ResourceName;
-                                        var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, "RecordSet", recset.Name, SelectedEnvironment);
-                                        Application.Current.Dispatcher.Invoke(delegate
-                                        {
-                                            SearchResults.Add(search);
-                                        });
-                                    }
-                                }
-                            }
-                            if (IsObjectNameSelected)
-                            {
-                                foreach (var complexObj in dtlist.ComplexObjectCollection)
-                                {
-                                    if (FilterText(complexObj.Name))
-                                    {
-                                        var resourcePath = resource.GetSavePath() + resource.ResourceName;
-                                        var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, "Object", complexObj.Name, SelectedEnvironment);
-                                        Application.Current.Dispatcher.Invoke(delegate
-                                        {
-                                            SearchResults.Add(search);
-                                        });
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (IsToolNameSelected)
-                    {
-
-                    }
-                    SearchResults.GroupBy(o => o.Type);
-                });
+                    FilterWorkflows();
+                }
+                if (IsTestNameSelected)
+                {
+                    FilterTestNames();
+                }
+                if (IsAnyVariableOptionSelected)
+                {
+                    FilterVariables();
+                }
             }
             IsSearching = false;
+        }
+
+        private bool IsAnyVariableOptionSelected => IsScalarNameSelected || IsRecSetNameSelected || IsObjectNameSelected || IsInputFieldSelected || IsOutputVariableSelected;
+
+        private void FilterWorkflows()
+        {
+            var children = SelectedEnvironment.Children.Flatten(model => model.Children).Where(model => FilterText(model.ResourceName));
+            foreach (var child in children)
+            {
+                var search = new SearchValue(child.ResourceId, child.ResourceName, child.ResourcePath, "Workflow", child.ResourceName, SelectedEnvironment);
+                SearchResults.Add(search);
+            }
+        }
+
+        private void FilterTestNames()
+        {
+            var loadTests = SelectedEnvironment.Server?.ResourceRepository.LoadResourceTests(Guid.Empty);
+            if (loadTests != null)
+            {
+                var tests = loadTests.Where(model => FilterText(model.TestName));
+                foreach (var test in tests)
+                {
+                    var resource = SelectedEnvironment.Children.Flatten(model => model.Children).FirstOrDefault(model => model.ResourceId == test.ResourceId);
+                    var search = new SearchValue(resource.ResourceId, test.TestName, resource.ResourcePath, "Test", test.TestName, SelectedEnvironment);
+                    SearchResults.Add(search);
+                }
+            }
+        }
+
+        private void FilterVariables()
+        {
+            var resources = SelectedEnvironment.Server?.ResourceRepository.All();
+            if (resources != null)
+            {
+                foreach (var resource in resources)
+                {
+                    var dtlist = DataListViewModelFactory.CreateDataListViewModel(resource);
+                    FilterScalars(resource, dtlist);
+                    FilterRecordSets(resource, dtlist);
+                    FilterComplexObjects(resource, dtlist);
+                }
+            }
+        }
+
+        private void FilterScalars(IResourceModel resource, IDataListViewModel dtlist)
+        {
+            var resourcePath = resource.GetSavePath() + resource.ResourceName;
+            foreach (var scalar in dtlist.ScalarCollection)
+            {
+                var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, SelectedEnvironment)
+                {
+                    Match = scalar.Name
+                };
+                if (IsScalarNameSelected && FilterText(scalar.Name))
+                {
+                    search.Type = "Scalar";
+                    SearchResults.Add(search);
+                }
+                if (scalar.Input && IsInputFieldSelected)
+                {
+                    search.Type = "Scalar Input";
+                    SearchResults.Add(search);
+                }
+                if (scalar.Output && IsOutputVariableSelected)
+                {
+                    search.Type = "Scalar Output";
+                    SearchResults.Add(search);
+                }
+            }
+        }
+
+        private void FilterRecordSets(IResourceModel resource, IDataListViewModel dtlist)
+        {
+            var resourcePath = resource.GetSavePath() + resource.ResourceName;
+            foreach (var recset in dtlist.RecsetCollection)
+            {
+                var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, SelectedEnvironment)
+                {
+                    Match = recset.Name
+                };
+                if (IsRecSetNameSelected && FilterText(recset.Name))
+                {
+                    search.Type = "RecordSet";
+                    SearchResults.Add(search);
+                }
+                if (recset.Input && IsInputFieldSelected)
+                {
+                    search.Type = "RecordSet Input";
+                    SearchResults.Add(search);
+                }
+                if (recset.Output && IsOutputVariableSelected)
+                {
+                    search.Type = "RecordSet Output";
+                    SearchResults.Add(search);
+                }
+            }
+        }
+
+        private void FilterComplexObjects(IResourceModel resource, IDataListViewModel dtlist)
+        {
+            var resourcePath = resource.GetSavePath() + resource.ResourceName;
+            foreach (var complexObj in dtlist.ComplexObjectCollection)
+            {
+                var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, SelectedEnvironment)
+                {
+                    Match = complexObj.Name
+                };
+                if (IsObjectNameSelected && FilterText(complexObj.Name))
+                {
+                    search.Type = "Object";
+                    SearchResults.Add(search);
+                }
+                if (complexObj.Input && IsInputFieldSelected)
+                {
+                    search.Type = "Object Input";
+                    SearchResults.Add(search);
+                }
+                if (complexObj.Output && IsOutputVariableSelected)
+                {
+                    search.Type = "Object Output";
+                    SearchResults.Add(search);
+                }
+            }
         }
 
         bool FilterText(string filterValue)
         {
             var searchText = filterValue;
             var valueToFilter = SearchInput;
-            if (IsMatchCaseSelected)
+            if (!IsMatchCaseSelected)
             {
-                searchText.ToLower();
-                valueToFilter.ToLower();
+                searchText = filterValue.ToLower();
+                valueToFilter = SearchInput.ToLower();
             }
-            var isMatch = IsMatchWholeWordSelected ? filterValue.Contains(valueToFilter) : filterValue.Equals(valueToFilter);
+            var isMatch = IsMatchWholeWordSelected ? searchText.Equals(valueToFilter) : searchText.Contains(valueToFilter);
             return isMatch;
         }
-
-        List<IScalarItemModel> ScalarCollection { get; set; }
-        List<IRecordSetItemModel> RecsetCollection { get; set; }
-        List<IComplexObjectItemModel> ComplexObjectCollection { get; set; }
 
         public bool IsAllSelected
         {
@@ -291,7 +331,6 @@ namespace Dev2.ViewModels.Search
                 OnPropertyChanged(() => IsToolNameSelected);
             }
         }
-
         public bool IsToolTitleSelected
         {
             get => _isToolTitleSelected;

@@ -34,6 +34,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -60,8 +61,13 @@
             </Button>
         </Grid>
 
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
+            <CheckBox x:Name="cbSearchMatchCase" Grid.Column="6" Grid.Row="0" IsChecked="{Binding IsMatchCaseSelected}">Match case</CheckBox>
+            <CheckBox x:Name="cbSearchMatchWholeWord" Grid.Column="6" Grid.Row="1" IsChecked="{Binding IsMatchWholeWordSelected}">Match whole word</CheckBox>
+        </StackPanel>
+        
         <!-- SEARCH OPTIONS -->
-        <Expander Grid.Row="2" Style="{StaticResource ServiceTestTestStepExpander}" Header="Search Options" Margin="0,3,0,0">
+        <Expander Grid.Row="3" Style="{StaticResource ServiceTestTestStepExpander}" Header="Search Options" Margin="0,3,0,0">
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -84,19 +90,17 @@
                 <CheckBox x:Name="cbSearchToolName" Grid.Column="3" Grid.Row="0" IsChecked="{Binding IsToolNameSelected}">Tool Name</CheckBox>
                 <CheckBox x:Name="cbSearchInputField" Grid.Column="4" Grid.Row="0" IsChecked="{Binding IsInputFieldSelected}">Tool Input Field</CheckBox>
                 <CheckBox x:Name="cbSearchScalarName" Grid.Column="5" Grid.Row="0" IsChecked="{Binding IsScalarNameSelected}">Scalar</CheckBox>
-                <CheckBox x:Name="cbSearchMatchCase" Grid.Column="6" Grid.Row="0" IsChecked="{Binding IsMatchCaseSelected}">Match case</CheckBox>
                 
                 <CheckBox x:Name="cbSearchObjectName" Grid.Column="1" Grid.Row="1" IsChecked="{Binding IsObjectNameSelected}">Object</CheckBox>
                 <CheckBox x:Name="cbSearchRecSetName" Grid.Column="2" Grid.Row="1" IsChecked="{Binding IsRecSetNameSelected}">Recordset</CheckBox>
                 <CheckBox x:Name="cbSearchInputVariable" Grid.Column="3" Grid.Row="1" IsChecked="{Binding IsInputVariableSelected}">Input Variable</CheckBox>
                 <CheckBox x:Name="cbSearchOutputVariable" Grid.Column="4" Grid.Row="1" IsChecked="{Binding IsOutputVariableSelected}">Output Variable</CheckBox>
                 <CheckBox x:Name="cbSearchTestName" Grid.Column="5" Grid.Row="1" IsChecked="{Binding IsTestNameSelected}">Test Name</CheckBox>
-                <CheckBox x:Name="cbSearchMatchWholeWord" Grid.Column="6" Grid.Row="1" IsChecked="{Binding IsMatchWholeWordSelected}">Match whole word</CheckBox>
                 
             </Grid>
         </Expander>
 
-        <Grid Grid.Row="3" Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverter}}">
+        <Grid Grid.Row="4" Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
@@ -107,7 +111,7 @@
             <views:CircularProgressBar Height="75" Width="75" VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
 
-        <Grid Grid.Row="3" Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+        <Grid Grid.Row="4" Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverterNegative}}">
             <!-- SEARCH RESULTS -->
             <controls:Dev2DataGrid x:Name="SearchResults"
                                    ItemsSource="{Binding SearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
