@@ -205,17 +205,7 @@ namespace Dev2.FindMissingStrategies
 
                 if (maAct.MethodsToRun != null)
                 {
-                    foreach (var pluginAction in maAct.MethodsToRun)
-                    {
-                        if (pluginAction?.Inputs != null)
-                        {
-                            results.AddRange(InternalFindMissing(pluginAction.Inputs));
-                        }
-                        if (!string.IsNullOrEmpty(pluginAction?.OutputVariable))
-                        {
-                            results.Add(pluginAction.OutputVariable);
-                        }
-                    }
+                    results.AddRange(AddMethodsToRun(results, maAct));
                 }
                 if (maAct.IsObject)
                 {
@@ -235,6 +225,22 @@ namespace Dev2.FindMissingStrategies
                 if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
                 {
                     results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> AddMethodsToRun(List<string> results, DsfEnhancedDotNetDllActivity maAct)
+        {
+            foreach (var pluginAction in maAct.MethodsToRun)
+            {
+                if (pluginAction?.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(pluginAction.Inputs));
+                }
+                if (!string.IsNullOrEmpty(pluginAction?.OutputVariable))
+                {
+                    results.Add(pluginAction.OutputVariable);
                 }
             }
             return results;
