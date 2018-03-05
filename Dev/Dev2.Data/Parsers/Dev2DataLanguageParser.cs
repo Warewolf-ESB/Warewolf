@@ -173,29 +173,12 @@ namespace Dev2.Data.Parsers
 
                 if (payload.Equals("[[]]"))
                 {
-                    result.Add(IntellisenseFactory.CreateErrorResult(0, 4, null, ErrorResource.VariableIsMissing, enIntellisenseErrorCode.SyntaxError, true));
-                    return result;
+                    return new List<IIntellisenseResult> { IntellisenseFactory.CreateErrorResult(0, 4, null, ErrorResource.VariableIsMissing, enIntellisenseErrorCode.SyntaxError, true) };
                 }
 
                 if (payload.Contains(DataListUtil.OpeningSquareBrackets))
                 {
-                    var rootItems = MakeParts(payload, addCompleteParts);
-                    IList<IParseTO> evalParts = new List<IParseTO>();
-                    var magicRegion = FindMagicRegion(rootItems, evalParts);
-                    if (magicRegion != null)
-                    {
-                        result = isFromIntellisense ? ExtractActualIntellisenseOptions(magicRegion, parts, false) : ExtractIntellisenseOptions(magicRegion, parts, false);
-                    }
-                    evalParts
-                        .ToList()
-                        .ForEach(evalPart =>
-                        {
-                            var tmp = ExtractIntellisenseOptions(evalPart, parts, !isFromIntellisense && addCompleteParts, additionalParts);
-                            if (tmp != null)
-                            {
-                                result = result.Union(tmp).ToList();
-                            }
-                        });
+                    result = OpenRegionPartsGeneration(payload, parts, addCompleteParts, isFromIntellisense, additionalParts);
                 }
             }
             catch (Dev2DataLanguageParseError e)
@@ -203,6 +186,48 @@ namespace Dev2.Data.Parsers
                 var p = IntellisenseFactory.CreateDataListValidationScalarPart(payload);
                 result.Add(IntellisenseFactory.CreateErrorResult(e.StartIndex, e.EndIndex, p, e.Message, e.ErrorCode, true));
             }
+            return result;
+        }
+
+        private IList<IIntellisenseResult> OpenRegionPartsGeneration(string payload, IList<IDev2DataLanguageIntellisensePart> parts, bool addCompleteParts, bool isFromIntellisense, IList<IDev2DataLanguageIntellisensePart> additionalParts)
+        {
+            IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
+            var rootItems = MakeParts(payload, addCompleteParts);
+            IParseTO magicRegion = null;
+            IList<IParseTO> evalParts = new List<IParseTO>();
+
+            rootItems
+                .ToList()
+                .ForEach(rootItem =>
+                {
+                    var eval = rootItem;
+                    while (eval != null)
+                    {
+                        if (eval.HangingOpen)
+                        {
+                            magicRegion = eval;
+                        }
+                        if (!eval.HangingOpen && eval != magicRegion)
+                        {
+                            evalParts.Add(eval);
+                        }
+                        eval = eval.Child;
+                    }
+                });
+            if (magicRegion != null)
+            {
+                result = isFromIntellisense ? ExtractActualIntellisenseOptions(magicRegion, parts, false) : ExtractIntellisenseOptions(magicRegion, parts, false);
+            }
+            evalParts
+                .ToList()
+                .ForEach(evalPart =>
+                {
+                    var tmp = ExtractIntellisenseOptions(evalPart, parts, !isFromIntellisense && addCompleteParts, additionalParts);
+                    if (tmp != null)
+                    {
+                        result = result.Union(tmp).ToList();
+                    }
+                });
             return result;
         }
 

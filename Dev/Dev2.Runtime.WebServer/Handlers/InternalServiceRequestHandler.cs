@@ -196,7 +196,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
                         else
                         {
-                            IsAuthorized(dataObject);
+                            IsAuthorizedForServiceTestRun(dataObject);
                         }
 
                         channel.ExecuteRequest(dataObject, request, workspaceId, out ErrorResultTO errors);
@@ -226,7 +226,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return serializer.SerializeToBuilder(msg);
         }
 
-        private void IsAuthorized(IDSFDataObject dataObject)
+        private void IsAuthorizedForServiceTestRun(IDSFDataObject dataObject)
         {
             if (dataObject.IsServiceTestExecution && _authorizationService != null)
             {

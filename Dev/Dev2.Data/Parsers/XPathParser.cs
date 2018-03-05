@@ -52,7 +52,7 @@ namespace Dev2.Data.Parsers
                 var namespaces = new List<KeyValuePair<string, string>>();
                 if (document.DocumentElement != null)
                 {
-                    namespaces = AddDocumentElementAttributesToNamepsace(document);
+                    namespaces = AddAttributesAsNamespaces(document, namespaces);
                 }
                 using (TextReader stringReader = new StringReader(useXmlData))
                 {
@@ -89,10 +89,9 @@ namespace Dev2.Data.Parsers
             }
         }
 
-        static List<KeyValuePair<string, string>> AddDocumentElementAttributesToNamepsace(XmlDocument document)
+        static List<KeyValuePair<string, string>> AddAttributesAsNamespaces(XmlDocument document, List<KeyValuePair<string, string>> namespaces)
         {
             var xmlAttributeCollection = document.DocumentElement.Attributes;
-            var namespaces = new List<KeyValuePair<string, string>>();
             foreach (XmlAttribute attrib in xmlAttributeCollection)
             {
                 if (attrib?.NodeType == XmlNodeType.Attribute && attrib.Name.Contains("xmlns:"))
