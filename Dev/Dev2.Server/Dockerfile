@@ -8,9 +8,12 @@ EXPOSE 3142
 EXPOSE 3143
 
 SHELL ["powershell"]
-RUN New-Item -Path Build -ItemType Directory
-ADD . Build
-ENV SCRIPT_PATH "Build\Run Tests.ps1"
+RUN New-Item -Path Server -ItemType Directory
+ADD . Server
+ENV SCRIPT_PATH "Server\Run Tests.ps1"
 ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
+
+RUN New-Item -Path "programdata\Warewolf\Resources" -ItemType Directory
+ADD NewAzureUser.bite programdata\Warewolf\Resources
 
 ENTRYPOINT & $env:SCRIPT_PATH -StartServerAsConsole -ResourcesType Release
