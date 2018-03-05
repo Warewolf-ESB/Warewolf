@@ -134,15 +134,18 @@ namespace Dev2.ViewModels.Search
 
         private void FilterTestNames()
         {
-            var loadTests = SelectedEnvironment.Server?.ResourceRepository.LoadResourceTests(Guid.Empty);
+            var loadTests = SelectedEnvironment.Server?.ResourceRepository.LoadAllTests();
             if (loadTests != null)
             {
                 var tests = loadTests.Where(model => FilterText(model.TestName));
                 foreach (var test in tests)
                 {
                     var resource = SelectedEnvironment.Children.Flatten(model => model.Children).FirstOrDefault(model => model.ResourceId == test.ResourceId);
-                    var search = new SearchValue(resource.ResourceId, test.TestName, resource.ResourcePath, "Test", test.TestName, SelectedEnvironment);
-                    SearchResults.Add(search);
+                    if (resource != null)
+                    {
+                        var search = new SearchValue(resource.ResourceId, test.TestName, resource.ResourcePath, "Test", test.TestName, SelectedEnvironment);
+                        SearchResults.Add(search);
+                    }
                 }
             }
         }
