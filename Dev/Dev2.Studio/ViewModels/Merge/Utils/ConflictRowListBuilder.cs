@@ -10,13 +10,11 @@
 
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
-using System.Collections;
 using Dev2.Common;
 using System;
 using Dev2.Studio.Interfaces;
 using System.Linq;
-using System.Windows;
-using System.Windows.Media;
+
 
 namespace Dev2.ViewModels.Merge.Utils
 {
@@ -32,8 +30,7 @@ namespace Dev2.ViewModels.Merge.Utils
 		int indexDiff;
 		int indexCurr;
 		ConnectorConflictRow row;
-		ConflictTreeNode[] _currentTree;
-		ConflictTreeNode[] _diffTree;
+
 		public ConflictRowListBuilder(IConflictModelFactory modelFactoryCurrent, IConflictModelFactory modelFactoryDifferent)
 		{
 			_modelFactoryCurrent = modelFactoryCurrent;
@@ -42,9 +39,8 @@ namespace Dev2.ViewModels.Merge.Utils
 
 		public List<ToolConflictRow> CreateList(ConflictRowList list, ConflictTreeNode[] currentTree, ConflictTreeNode[] diffTree)
 		{
-		
-			_currentTree = currentTree;
-			_diffTree = diffTree;
+			var _currentTree = currentTree;
+			var _diffTree = diffTree;
 			_list = list;
 
 			var toolConflictRowList = new List<ToolConflictRow>();
@@ -55,6 +51,7 @@ namespace Dev2.ViewModels.Merge.Utils
 			{
 				if (i == MAX_WORKFLOW_ITEMS)
 				{
+					Dev2Logger.Error("ConflictRowListBuilder.CreateList: createlist expected to advance", GlobalConstants.WarewolfError);
 					throw new Exception("createlist expected to advance");
 				}
 				ConflictTreeNode current = null;
@@ -158,7 +155,7 @@ namespace Dev2.ViewModels.Merge.Utils
 		{
 			var currentConnectorConflictTreeNode = currentToolConflictItem is ToolConflictItem.Empty ? null : current;
 			var diffConnectorConflictTreeNode = diffToolConflictItem is ToolConflictItem.Empty ? null : diff;
-			var connectors = GetConnectorConflictRows(list,currentToolConflictItem, diffToolConflictItem, currentConnectorConflictTreeNode, diffConnectorConflictTreeNode);
+			var connectors = GetConnectorConflictRows(list, currentToolConflictItem, diffToolConflictItem, currentConnectorConflictTreeNode, diffConnectorConflictTreeNode);
 
 			var diffToolConflictItem_override = diffToolConflictItem;
 			if (currentToolConflictItem.Activity != null && diffToolConflictItem.Activity != null && currentToolConflictItem.Activity.Equals(diffToolConflictItem.Activity))
@@ -182,32 +179,16 @@ namespace Dev2.ViewModels.Merge.Utils
 			for (; index < maxCount; index++)
 			{
 				row = new ConnectorConflictRow();
-
-				if (armConnectorsCurrent != null )
+				row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
+				if (armConnectorsCurrent != null && index < armConnectorsCurrent.Count)
 				{
-					if (index < armConnectorsCurrent.Count)
-					{ SetCurrentConnectorConflict(armConnectorsCurrent[index], list, currentConflictItem); }
-					else { row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId); }
+					SetCurrentConnectorConflict(armConnectorsCurrent[index], list, currentConflictItem);
 				}
-				else
+				row.DifferentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
+				if (armConnectorsDiff != null && index < armConnectorsDiff.Count)
 				{
-					row.CurrentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
+					SetDiffConnectorConflict(armConnectorsDiff[index], list, diffConflictItem);
 				}
-
-				if (armConnectorsDiff != null)
-				{
-					if (index < armConnectorsDiff.Count)
-					{
-						SetDiffConnectorConflict(armConnectorsDiff[index], list, diffConflictItem);
-					}
-					else { row.DifferentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId); }
-
-				}
-				else
-				{
-					row.DifferentArmConnector = new ConnectorConflictItem.Empty(row.UniqueId);
-				}
-
 				var sameSourceAndDestination = row.CurrentArmConnector.SourceUniqueId != row.DifferentArmConnector.SourceUniqueId || row.CurrentArmConnector.DestinationUniqueId != row.DifferentArmConnector.DestinationUniqueId;
 				row.HasConflict = sameSourceAndDestination;
 				rows.Add(row);
@@ -231,7 +212,7 @@ namespace Dev2.ViewModels.Merge.Utils
 				}
 			}
 		}
-		private void SetDiffConnectorConflict((string Description, string Key, string SourceUniqueId, string DestinationUniqueId) armConnectorsCurrent,ConflictRowList list, IToolConflictItem diffConflictItem)
+		private void SetDiffConnectorConflict((string Description, string Key, string SourceUniqueId, string DestinationUniqueId) armConnectorsCurrent, ConflictRowList list, IToolConflictItem diffConflictItem)
 		{
 			if (armConnectorsCurrent.DestinationUniqueId == Guid.Empty.ToString())
 			{
