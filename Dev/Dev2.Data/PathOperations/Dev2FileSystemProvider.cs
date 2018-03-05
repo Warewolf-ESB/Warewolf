@@ -29,11 +29,6 @@ using Dev2.Data.PathOperations.Operations;
 
 namespace Dev2.PathOperations
 {
-
-    /// <summary>
-    /// Used for internal security reasons
-    /// </summary>
-
     public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
         public SafeTokenHandle()
@@ -52,14 +47,8 @@ namespace Dev2.PathOperations
             return CloseHandle(handle);
         }
     }
-
-    /// <summary>
-    /// PBI : 1172
-    /// Status : New
-    /// Purpose : To provide file system IO operations to the File activities
-    /// </summary>
+    
     [Serializable]
-
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
         public IActivityIOPath IOPath
