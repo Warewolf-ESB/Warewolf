@@ -11,6 +11,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using System.Linq;
 using System.IO;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
+using System.Net.Http;
+using System.Text;
+using System.Diagnostics;
+using System.Management;
+using Dev2.Activities.Specs.Composition;
 
 namespace Dev2.Activities.Specs.Deploy
 {
@@ -19,39 +26,50 @@ namespace Dev2.Activities.Specs.Deploy
     {
         static ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
-        Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
+        readonly Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
+        static ContainerOps _containerOps = new ContainerOps();
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
+#pragma warning disable S3010 // Static fields should not be updated in constructors
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
+#pragma warning restore S3010 // Static fields should not be updated in constructors
             _commonSteps = new CommonSteps(_scenarioContext);
         }
 
-        [Given(@"localhost and destination server ""(.*)"" are connected")]
-        public void ConnectServers(string destinationServer)
+        [AfterScenario("Deploy")]
+        public void CleanupRemoteDocker()
         {
-            var formattableString = $"http://{destinationServer}:3142";
+            _containerOps.DeleteRemoteContainer();
+        }
+
+        [Given(@"localhost and destination server are connected")]
+        public void ConnectServers()
+        {
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
-            IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfUser", "Dev2@dmin123"))
-            {
-                Name = destinationServer
-            };
-            ScenarioContext.Current.Add("destinationServer", remoteServer);
-            remoteServer.Connect();
-            var previousVersions = remoteServer.ProxyLayer.GetVersions(_resourceId);
-            if (previousVersions != null && previousVersions.Count > 0)
-            {
-                remoteServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
-            }
+            ConnectToRemoteServerContainer();
             var localhost = ServerRepository.Instance.Source;
-            ScenarioContext.Current.Add("sourceServer", localhost);
+            _scenarioContext.Add("sourceServer", localhost);
             localhost.Connect();
+        }
+
+        void ConnectToRemoteServerContainer()
+        {
+            string destinationServerHostname = _containerOps.hostname;
+
+            var formattableString = $"http://{destinationServerHostname}:3142";
+            IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfAdmin", "W@rEw0lf@dm1n"))
+            {
+                Name = destinationServerHostname
+            };
+            _scenarioContext.Add("destinationServer", remoteServer);
+            remoteServer.Connect();
         }
 
         [Then(@"And the destination resource is ""(.*)""")]
         public void ThenAndTheLocalhostResourceIs(string p0)
         {
-            var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var remoteServer = _scenarioContext.Get<IServer>("destinationServer");
             var loadContextualResourceModel = remoteServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
             Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Expected Resource to be " + p0 + " on load for ci-remote");
         }
@@ -59,7 +77,7 @@ namespace Dev2.Activities.Specs.Deploy
         [Given(@"And the localhost resource is ""(.*)""")]
         public void GivenAndTheLocalhostResourceIs(string p0)
         {
-            var loaclHost = ScenarioContext.Current.Get<IServer>("sourceServer");
+            var loaclHost = _scenarioContext.Get<IServer>("sourceServer");
             var loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel(_resourceId);
             Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Expected Resource to be " + p0 + " on load for localhost");
             Assert.AreEqual(p0, loadContextualResourceModel.ResourceName, "Expected Resource to be " + p0 + " on load for localhost");
@@ -70,16 +88,17 @@ namespace Dev2.Activities.Specs.Deploy
         [Then(@"I reload the destination resources")]
         public void WhenIReloadTheRemoteServerResources()
         {
-            var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var remoteServer = _scenarioContext.Get<IServer>("destinationServer");
             var loadContextualResourceModel = remoteServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
-            ScenarioContext.Current["serverResource"] = loadContextualResourceModel;
+            _scenarioContext["serverResource"] = loadContextualResourceModel;
         }
+
         [Given(@"I reload the source resources")]
         [When(@"I reload the source resources")]
         [Then(@"I reload the source resources")]
         public void WhenIReloadTheSourceResources()
         {
-            var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
+            var localhost = _scenarioContext.Get<IServer>("sourceServer");
             localhost.ResourceRepository.ForceLoad();
         }
 
@@ -88,7 +107,7 @@ namespace Dev2.Activities.Specs.Deploy
         [When(@"the destination resource is ""(.*)""")]
         public void ThenDestinationResourceIs(string p0)
         {
-            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var destinationServer = _scenarioContext.Get<IServer>("destinationServer");
             var loadContextualResourceModel = destinationServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
             Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Failed to Update " + loadContextualResourceModel.DisplayName + " after deploy");
             Assert.AreEqual(p0, loadContextualResourceModel.ResourceName, "Failed to Update " + loadContextualResourceModel.ResourceName + " after deploy");
@@ -99,7 +118,7 @@ namespace Dev2.Activities.Specs.Deploy
         [Then(@"I RollBack Resource")]
         public void RollBackResource()
         {
-            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var destinationServer = _scenarioContext.Get<IServer>("destinationServer");
             var previousVersions = destinationServer.ProxyLayer.GetVersions(_resourceId);
             destinationServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
         }
@@ -110,7 +129,7 @@ namespace Dev2.Activities.Specs.Deploy
             _scenarioContext.TryGetValue("resourceId", out Guid resourceId);
             _scenarioContext.TryGetValue("parentWorkflowName", out string originalName);
 
-            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var destinationServer = _scenarioContext.Get<IServer>("destinationServer");
             var localResource = destinationServer.ResourceRepository.LoadContextualResourceModel(resourceId);
 
             Assert.IsNotNull(localResource, originalName + " failed to deploy.");
@@ -119,12 +138,13 @@ namespace Dev2.Activities.Specs.Deploy
             Assert.AreEqual(originalName, localResource.ResourceName, "Failed to Update " + localResource.ResourceName + " after deploy");
         }
         
-        [When(@"I select and deploy resource from source server")]
-        public void GivenISelectResourceFromSourceServer()
+        [When(@"I deploy the workflow")]
+        public void GivenISelectResource()
         {
             _scenarioContext.TryGetValue("resourceId", out Guid resourceId);
-            var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
-            var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            Console.WriteLine("Deploying " + resourceId.ToString());
+            var localhost = _scenarioContext.Get<IServer>("sourceServer");
+            var remoteServer = _scenarioContext.Get<IServer>("destinationServer");
             var destConnection = new Connection
             {
                 Address = remoteServer.Connection.AppServerUri.ToString(),
@@ -139,10 +159,20 @@ namespace Dev2.Activities.Specs.Deploy
                 {
                     if (result.HasError)
                     {
-                        Assert.Fail("Error returned from deploy operation. " + result.Message);
+                        Assert.Fail("Error returned from deploy operation. " + result.ErrorDetails);
                     }
                 }
             }
+        }
+
+        [When(@"I rename the workflow to ""(.*)"" and re deploy")]
+        public void WhenIRenameToAndReDeploy(string newName)
+        {
+            _scenarioContext.TryGetValue("resourceId", out Guid resourceId);
+            Console.WriteLine("Renaming " + resourceId.ToString());
+            _scenarioContext.Add("newName", newName);
+            var localhost = _scenarioContext.Get<IServer>("sourceServer");
+            localhost.ExplorerRepository.UpdateManagerProxy.Rename(resourceId, newName);
         }
     }
 }

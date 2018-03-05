@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
+using System.Security.Principal;
 
 
 
@@ -190,6 +190,7 @@ namespace Dev2.Tests
         [TestCategory("DsfDataObject_Clone")]
         public void DsfDataObject_Clone_NormalClone_FullDuplicationForProperties()
         {
+            var executingUser = new Mock<IPrincipal>().Object;
             //------------Setup for test--------------------------
             var wfInstanceID = Guid.NewGuid();
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
@@ -208,6 +209,7 @@ namespace Dev2.Tests
             dataObject.EnvironmentID = Guid.NewGuid();
             dataObject.ExecutionCallbackID = Guid.NewGuid();
             dataObject.ExecutionOrigin = ExecutionOrigin.Debug;
+            dataObject.ExecutingUser = executingUser;
             dataObject.ExecutionOriginDescription = "xxx";
             dataObject.ForceDeleteAtNextNativeActivityCleanup = true;
             dataObject.IsDataListScoped = false;
@@ -320,6 +322,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsSubExecution,clonedObject.IsSubExecution);
             Assert.AreEqual(dataObject.WebUrl,clonedObject.WebUrl);
             Assert.AreEqual(dataObject.QueryString,clonedObject.QueryString);
+            Assert.AreEqual(dataObject.ExecutingUser, clonedObject.ExecutingUser);
         }
 
         #region Debug Mode Test

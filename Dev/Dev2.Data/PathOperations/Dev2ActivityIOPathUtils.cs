@@ -13,6 +13,7 @@ using System.IO;
 using System.Text;
 using Dev2.Data.Interfaces.Enums;
 
+using static System.IO.Path;
 
 
 namespace Dev2.PathOperations
@@ -49,7 +50,7 @@ namespace Dev2.PathOperations
                     tmp = path.Split(spliter);
                 }
 
-                for(int i = 0; i < tmp.Length - 1; i++)
+                for (int i = 0; i < tmp.Length - 1; i++)
                 {
                     tmpBuilder.Append(tmp[i] + spliter);
                 }
@@ -68,21 +69,12 @@ namespace Dev2.PathOperations
         public static string ExtractFileName(string path)
         {
             string result;
-
             try
             {
-                if(!IsDirectory(path))
-                {
-                    var uri = new Uri(path);
-                    result = Path.GetFileName(uri.LocalPath);
-                }
-                else
-                {
-                    var uri = new Uri(path);
-                    result = Path.GetFileName(uri.LocalPath);
-                }
+                var uri = new Uri(path);
+                result = GetFileName(uri.LocalPath);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 result = path;
             }
@@ -98,11 +90,8 @@ namespace Dev2.PathOperations
         public static bool IsStarWildCard(string path)
         {
             var result = false;
-
             var uri = new Uri(path);
-
             var fileName = Path.GetFileName(uri.LocalPath);
-
             if (fileName.Contains(@"*") || fileName.Contains(@"?"))
             {
                 result = true;
@@ -127,7 +116,7 @@ namespace Dev2.PathOperations
                 return !isFile;
             }
 
-            if(path.EndsWith(@"\\") || path.EndsWith(@"/"))
+            if (path.EndsWith(@"\\", StringComparison.Ordinal) || path.EndsWith(@"/", StringComparison.Ordinal))
             {
                 result = true;
             }
@@ -137,7 +126,7 @@ namespace Dev2.PathOperations
 
                 if (idx > 0)
                 {
-                    if(!path.Substring(idx).Contains(@"."))
+                    if (!path.Substring(idx).Contains(@"."))
                     {
                         result = true;
                     }
@@ -145,16 +134,16 @@ namespace Dev2.PathOperations
                 else
                 {
                     idx = path.LastIndexOf(@"/", StringComparison.Ordinal);
-                    if(idx > 0)
+                    if (idx > 0)
                     {
-                        if(!path.Substring(idx).Contains(@"."))
+                        if (!path.Substring(idx).Contains(@"."))
                         {
                             result = true;
                         }
                     }
                     else
                     {
-                        if (!path.Contains(@"."))
+                        if (!HasExtension(path))
                         {
                             result = true;
                         }

@@ -377,6 +377,34 @@
               <SupportLevel>0</SupportLevel>
               <Descendants />
             </UIObject>
+            <UIObject ControlType="Text" Id="UITosavearesourcepersmText" FriendlyName="To save a resource persmission, you must have Reso..." SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>WarewolfMessageBox</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                <PropertyCondition Name="Name">To save a resource persmission, you must have Resource Name and Windows group entered</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
+            <UIObject ControlType="Text" Id="UIThereareduplicateserText" FriendlyName="There are duplicate server permissions, i.e. Serve..." SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>WarewolfMessageBox</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                <PropertyCondition Name="Name">There are duplicate server permissions, 
+    i.e. Server permissions have been setup up with the same group twice. 
+    Please clear the duplicates before saving.</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants />
+            </UIObject>
           </Descendants>
         </TopLevelWindow>
         <TopLevelWindow ControlType="Window" Id="SaveDialogWindow" FriendlyName="SaveDialogView" SpecialControlType="None" SessionId="395224">

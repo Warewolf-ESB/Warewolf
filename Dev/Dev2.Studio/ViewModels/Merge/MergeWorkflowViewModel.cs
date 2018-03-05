@@ -23,20 +23,18 @@ namespace Dev2.ViewModels.Merge
 {
     public class MergeWorkflowViewModel : BindableBase, IMergeWorkflowViewModel
     {
-        readonly IServiceDifferenceParser _serviceDifferenceParser;
         string _displayName;
         bool _hasMergeStarted;
         bool _hasWorkflowNameConflict;
         bool _hasVariablesConflict;
         bool _isVariablesEnabled;
         readonly IContextualResourceModel _resourceModel;
-        readonly ConflictRowList conflictList;
         public IConflictModelFactory ModelFactoryCurrent { get; private set; }
         public IConflictModelFactory ModelFactoryDifferent { get; private set; }
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadworkflowFromServer)
         {
-            _serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
+            var _serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
             UpdateHelpDescriptor(Warewolf.Studio.Resources.Languages.HelpText.MergeWorkflowStartupHelp);
 
             MergePreviewWorkflowDesignerViewModel = new MergePreviewWorkflowDesignerViewModel(currentResourceModel);
@@ -50,7 +48,7 @@ namespace Dev2.ViewModels.Merge
             ModelFactoryDifferent = new ConflictModelFactory(differenceResourceModel);
             ModelFactoryDifferent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
 
-            conflictList = new ConflictRowList(ModelFactoryCurrent, ModelFactoryDifferent, currentTree, diffTree);
+            var conflictList = new ConflictRowList(ModelFactoryCurrent, ModelFactoryDifferent, currentTree, diffTree);
 
             Conflicts = conflictList;
             SetupNamesAndVariables(currentResourceModel, differenceResourceModel);
@@ -59,6 +57,7 @@ namespace Dev2.ViewModels.Merge
             stateApplier.SetConnectorSelectionsToCurrentState();
 
             var mergePreviewWorkflowStateApplier = new MergePreviewWorkflowStateApplier(conflictList, MergePreviewWorkflowDesignerViewModel);
+            mergePreviewWorkflowStateApplier.Apply();
         }
 
         void SetupNamesAndVariables(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
