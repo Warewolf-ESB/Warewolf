@@ -104,7 +104,7 @@ namespace Dev2.Activities.Specs.Composition
             AppUsageStats.LocalHost = "http://localhost:3142";
         }
 
-        const int EnvironmentConnectionTimeout = 3000;
+        const int EnvironmentConnectionTimeout = 5;
 
         SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         SpecExternalProcessExecutor _externalProcessExecutor;
@@ -330,7 +330,6 @@ namespace Dev2.Activities.Specs.Composition
                                 {
                                     Assert.AreEqual(cnt.RawValue, int.Parse(tableRow[1]));
                                 }
-
                             }
                         }
                     }
@@ -342,9 +341,10 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (timeout <= 0)
             {
-                _scenarioContext.Add("ConnectTimeoutCountdown", 3000);
+                _scenarioContext.Add("ConnectTimeoutCountdown", 5);
                 throw new TimeoutException("Connection to Warewolf server \"" + server.Name + "\" timed out.");
             }
+
             if (!server.IsConnected)
             {
                 server.Connect();
@@ -353,15 +353,11 @@ namespace Dev2.Activities.Specs.Composition
             if (!server.IsConnected)
             {
                 timeout--;
-                Thread.Sleep(100);
                 EnsureEnvironmentConnected(server, timeout);
             }
         }
 
-        void Add(string key, object value)
-        {
-            _scenarioContext.Add(key, value);
-        }
+        void Add(string key, object value) => _scenarioContext.Add(key, value);
 
         void Append(IDebugState debugState)
         {
@@ -1029,12 +1025,15 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string workflowName)
         {
-            var resourceModel = SaveWorkflow(workflowName);
+            var resourceModel = SaveAWorkflow(workflowName);
             ExecuteWorkflow(resourceModel);
         }
 
+        [When(@"the workflow is Saved")]
+        private IContextualResourceModel SaveTheWorkflow() => SaveAWorkflow(null);
+
         [When(@"""(.*)"" is Saved")]
-        private IContextualResourceModel SaveWorkflow(string parentName)
+        private IContextualResourceModel SaveAWorkflow(string parentName)
         {
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
             var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
@@ -2626,6 +2625,14 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
         }
 
+        [Given(@"the workflow contains an Assign ""(.*)"" as")]
+        [Then(@"the workflow contains an Assign ""(.*)"" as")]
+        public void ThenContainsAnAssignAs(string assignName, Table table)
+        {
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            ThenContainsAnAssignAs(parentWorkflowName, assignName, table);
+        }
+
         [Given(@"""(.*)"" contains an Assign ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign ""(.*)"" as")]
         public void ThenContainsAnAssignAs(string parentName, string assignName, Table table)
@@ -3184,11 +3191,16 @@ namespace Dev2.Activities.Specs.Composition
 
         }
 
+        [Given(@"the workflow contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
+        public void GivenCountOnIntoTheWorkflow(string activityName, string recordSet, string result)
+        {
+            TryGetValue("parentWorkflowName", out string parentWorkflowName);
+            GivenCountOnInto(parentWorkflowName, activityName, recordSet, result);
+        }
+
         [Given(@"""(.*)"" contains Count Record ""(.*)"" on ""(.*)"" into ""(.*)""")]
         public void GivenCountOnInto(string parentName, string activityName, string recordSet, string result)
         {
-            TryGetValue("parentWorkflowName", out string parentWorkflowName);
-            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
             _commonSteps.AddVariableToVariableList(result);
 
             var countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
@@ -4267,6 +4279,7 @@ namespace Dev2.Activities.Specs.Composition
                 Add("debugStates", new List<IDebugState>());
             }
         }
+
         [When(@"workflow ""(.*)"" merge is opened")]
         public void WhenWorkflowMergeIsOpened(string mergeWfName)
         {
@@ -4287,54 +4300,6 @@ namespace Dev2.Activities.Specs.Composition
             vm.Setup(p => p.MergePreviewWorkflowDesignerViewModel).Returns(wdvm.Object);
         }
 
-        [Given(@"I select and deploy resource from remote server")]
-        [When(@"I select and deploy resource from remote server")]
-        [Then(@"I select and deploy resource from remote server")]
-        public void ThenISelectAndDeployResourceFromRemoteServer()
-        {
-            TryGetValue("resourceId", out Guid resourceId);
-            var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
-            var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
-            var destConnection = new Connection
-            {
-                Address = localhost.Connection.AppServerUri.ToString(),
-                AuthenticationType = localhost.Connection.AuthenticationType,
-                UserName = localhost.Connection.UserName,
-                Password = localhost.Connection.Password
-            };
-            remoteServer.UpdateRepository.Deploy(new List<Guid> { resourceId }, false, destConnection);
-        }
-
-        [When(@"I rename ""(.*)"" from Remote to ""(.*)"" and re deploy to localhost")]
-        public void WhenIRenameFromRemoteToAndReDeployToLocalhost(string parentName, string newName)
-        {
-            TryGetValue("resourceId", out Guid resourceId);
-            var someothername = newName.Replace(parentName, newName);
-            Add("newName", newName);
-            TryGetValue("parentWorkflowName", out string parentWorkflowName);
-
-            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
-            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
-
-            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
-            destinationServer.ExplorerRepository.UpdateManagerProxy.Rename(resourceModel.ID, someothername);
-
-            var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
-            resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceModel.ID, newName);
-        }
-
-        [When(@"I rename ""(.*)"" to ""(.*)"" and re deploy")]
-        public void WhenIRenameToAndReDeploy(string parentName, string newName)
-        {
-            TryGetValue("resourceId", out Guid resourceId);
-            Add("newName", newName);
-            TryGetValue("parentWorkflowName", out string parentWorkflowName);
-            var workflowName = string.IsNullOrEmpty(parentWorkflowName) ? parentName : parentWorkflowName;
-            TryGetValue(workflowName, out IContextualResourceModel resourceModel);
-            var localhost = ScenarioContext.Current.Get<IServer>("sourceServer");
-            resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceModel.ID, newName);
-        }
-
         [Given(@"Public ""(.*)"" Permissions to Execute ""(.*)""")]
         [When(@"Public ""(.*)"" Permissions to Execute ""(.*)""")]
         [Then(@"Public ""(.*)"" Permissions to Execute ""(.*)""")]
@@ -4349,7 +4314,7 @@ namespace Dev2.Activities.Specs.Composition
             if (hasPermissions)
             {
                 AddPermissionsForResource(resourceName, environmentModel, resourceRepository, settings);
-            }            
+            }
         }
 
         private static void AddPermissionsForResource(string resourceName, IServer environmentModel, IResourceRepository resourceRepository, Data.Settings.Settings settings)

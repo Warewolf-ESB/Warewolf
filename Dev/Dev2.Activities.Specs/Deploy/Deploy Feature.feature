@@ -1,20 +1,19 @@
 ﻿@Deploy
+@RemoteServer
 Feature: Deploy Feature
-In order to schedule workflows
+In order to deploy workflows
 	As a Warewolf user
-	I want to setup schedules
+	I want to setup deployments
 
-@ignore
-Scenario: Create and Deploy a renamed resource to localhost
-	Given localhost and destination server "localwarewolfservercontainer" are connected
+Scenario: Deploy a renamed resource
+	Given localhost and destination server are connected
 	And I have a workflow "OriginalName"
-	And "OriginalName" contains an Assign "Rec To Convert" as
+	And the workflow contains an Assign "Rec To Convert" as
 	| variable    | value |
 	| [[rec().a]] | yes   |
 	| [[rec().a]] | no    |
-	And "OriginalName" contains Count Record "CountRec" on "[[rec()]]" into "[[count]]"
-	When "OriginalName" is Saved
-	And I select and deploy resource from source server
-	When I rename "OriginalName" to "RenamedResource" and re deploy
-	Then I select and deploy resource from remote server
+	And the workflow contains Count Record "CountRec" on "[[rec()]]" into "[[count]]"
+	When the workflow is Saved
+	And I deploy the workflow
+	And I rename the workflow to "RenamedResource" and re deploy
 	Then Remote server has updated name
