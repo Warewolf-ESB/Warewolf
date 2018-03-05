@@ -353,7 +353,15 @@ namespace Dev2.Data.Parsers
                     search = search.Substring(0, search.Length - (search.Length - pos));
                 }
 
-                TryAddParts(payload, refParts, addCompleteParts, result, parts, search, isRs);
+                try
+                {
+                    var results = CreateResultsGeneric(refParts, payload, parts.Length == 1 ? search : parts[1], addCompleteParts);
+                    AddParts(result, parts, results);
+                }
+                catch (Dev2DataLanguageParseError e)
+                {
+                    result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
+                }
             }
 
             IList<IIntellisenseResult> realResults = new List<IIntellisenseResult>();
@@ -362,7 +370,9 @@ namespace Dev2.Data.Parsers
                 .ToList()
                 .ForEach(r =>
                 {
+
                     var addToFinal = true;
+
                     realResults
                         .ToList()
                         .ForEach(rr =>
@@ -384,35 +394,26 @@ namespace Dev2.Data.Parsers
             return result;
         }
 
-        private void TryAddParts(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, string search, bool isRs)
+        private static void AddParts(IList<IIntellisenseResult> result, string[] parts, IEnumerable<IIntellisenseResult> results)
         {
-            try
+            if (parts.Length == 2)
             {
-                var results = CreateResultsGeneric(refParts, payload, parts.Length == 1 ? search : parts[1], addCompleteParts);
+                var cmp = parts[1].ToLower();
 
-                if (parts.Length == 2)
+                foreach (IIntellisenseResult res in results)
                 {
-                    var cmp = parts[1].ToLower();
-
-                    foreach (IIntellisenseResult res in results)
-                    {
-                        if (res.Option.Field.ToLower().IndexOf(cmp, StringComparison.Ordinal) >= 0)
-                        {
-                            result.Add(res);
-                        }
-                    }
-                }
-                else
-                {
-                    foreach (IIntellisenseResult res in results)
+                    if (res.Option.Field.ToLower().IndexOf(cmp, StringComparison.Ordinal) >= 0)
                     {
                         result.Add(res);
                     }
                 }
             }
-            catch (Dev2DataLanguageParseError e)
+            else
             {
-                result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
+                foreach (IIntellisenseResult res in results)
+                {
+                    result.Add(res);
+                }
             }
         }
 
@@ -436,14 +437,14 @@ namespace Dev2.Data.Parsers
                 }
                 else
                 {
-                    AddOptions(refParts, payload, search, addCompleteParts, result);
+                    AddFields(refParts, payload, search, addCompleteParts, result);
                 }
             }
 
             return result;
         }
 
-        private static void AddOptions(IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IParseTO payload, string search, bool addCompleteParts, IList<IIntellisenseResult> result)
+        private static void AddFields(IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IParseTO payload, string search, bool addCompleteParts, IList<IIntellisenseResult> result)
         {
             foreach (IDev2DataLanguageIntellisensePart t in refParts)
             {
@@ -679,29 +680,17 @@ namespace Dev2.Data.Parsers
 
         bool ProcessFieldsForRecordSet(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, out string search, out bool emptyOk, string display, IDev2DataLanguageIntellisensePart recordsetPart, string partName)
             => _parserHelper.ProcessFieldsForRecordSet(payload, addCompleteParts, result, parts, out search, out emptyOk, display, recordsetPart, partName);
-
-
+        
         void MatchNonFieldVariables(IParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, StringBuilder tmp, IList<IIntellisenseResult> result, IList<IDev2DataLanguageIntellisensePart> additionalParts, bool isRs, string rawSearch, string search, bool emptyOk, string[] parts)
         {
             try
             {
                 var isRecName = isRs && rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.EndsWith(DataListUtil.RecordsetIndexClosingBracket);
-                if (!payload.HangingOpen)
+                bool isScalar = !payload.HangingOpen && !isRecName && ScalarMatch(result, isRs, rawSearch);
+                bool isRecordset = !payload.HangingOpen && isRecName && RecordsetMatch(result, rawSearch, search);
+                if (isScalar || isRecordset)
                 {
-                    if (!isRecName)
-                    {
-                        if (ScalarMatch(result, isRs, rawSearch))
-                        {
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        if (RecordsetMatch(result, rawSearch, search))
-                        {
-                            return;
-                        }
-                    }
+                    return;
                 }
                 if ((rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && IsValidIndex(payload)) || !rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket))
                 {

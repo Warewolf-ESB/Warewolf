@@ -18,551 +18,688 @@ using Dev2.Util;
 using Dev2.Utilities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-
-
 namespace Dev2.FindMissingStrategies
 {
-    /// <summary>
-    /// Responsible for the find missing logic that applys to all the activities that only have a collection property on them
-    /// </summary>
- //This is loaded based on SpookyAction implementing IFindMissingStrategy
     public class DataGridActivityFindMissingStrategy : IFindMissingStrategy
     {
-
         public Enum HandlesType() => enFindMissingType.DataGridActivity;
-
-        /// <summary>
-        /// Gets all the fields for a specific activity
-        /// </summary>
-        /// <param name="activity">The activity that the fields will be retrieved from</param>
-        /// <returns>Returns all the fields in a list of strings</returns>
+        
         public List<string> GetActivityFields(object activity)
         {
-            var results = new List<string>();
             var activityType = activity.GetType();
-
             if (activityType == typeof(DsfBaseConvertActivity))
             {
-                if (activity is DsfBaseConvertActivity bcAct)
-                {
-                    results.AddRange(InternalFindMissing(bcAct.ConvertCollection));
-                }
+                return GetDsfBaseConvertActivityFields(activity);
             }
             else if (activityType == typeof(DsfCaseConvertActivity))
             {
-                if (activity is DsfCaseConvertActivity ccAct)
-                {
-                    results.AddRange(InternalFindMissing(ccAct.ConvertCollection));
-                }
+                return GetDsfCaseConvertActivityFields(activity);
             }
             else if (activityType == typeof(DsfMultiAssignActivity))
             {
-                if (activity is DsfMultiAssignActivity maAct)
-                {
-                    results.AddRange(InternalFindMissing(maAct.FieldsCollection));
-                }
+                return GetDsfMultiAssignActivityFields(activity);
             }
             else if (activityType == typeof(DsfMultiAssignObjectActivity))
             {
-                if (activity is DsfMultiAssignObjectActivity maAct)
-                {
-                    results.AddRange(InternalFindMissing(maAct.FieldsCollection));
-                }
+                return GetDsfMultiAssignObjectActivityFields(activity);
             }
             else if (activityType == typeof(DsfDotNetMultiAssignActivity))
             {
-                if (activity is DsfDotNetMultiAssignActivity maAct)
-                {
-                    results.AddRange(InternalFindMissing(maAct.FieldsCollection));
-                }
+                return GetDsfDotNetMultiAssignActivityFields(activity);
             }
             else if (activityType == typeof(DsfDotNetMultiAssignObjectActivity))
             {
-                if (activity is DsfDotNetMultiAssignObjectActivity maAct)
-                {
-                    results.AddRange(InternalFindMissing(maAct.FieldsCollection));
-                }
+                return GetDsfDotNetMultiAssignObjectActivityFields(activity);
             }
             else if (activityType == typeof(DsfGatherSystemInformationActivity))
             {
-                if (activity is DsfGatherSystemInformationActivity maAct)
-                {
-                    results.AddRange(InternalFindMissing(maAct.SystemInformationCollection));
-                }
+                return GetDsfGatherSystemInformationActivityFields(activity);
             }
             else if (activityType == typeof(DsfDotNetGatherSystemInformationActivity))
             {
-                if (activity is DsfDotNetGatherSystemInformationActivity maAct)
-                {
-                    results.AddRange(InternalFindMissing(maAct.SystemInformationCollection));
-                }
+                return GetDsfDotNetGatherSystemInformationActivityFields(activity);
             }
             else if (activityType == typeof(DsfSqlServerDatabaseActivity))
             {
-                if (activity is DsfSqlServerDatabaseActivity maAct)
-                {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (maAct.Outputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Outputs));
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
-                    }
-                }
+                return GetDsfSqlServerDatabaseActivityFields(activity);
             }
             else if (activityType == typeof(DsfMySqlDatabaseActivity))
             {
-                if (activity is DsfMySqlDatabaseActivity maAct)
-                {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (maAct.Outputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Outputs));
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
-                    }
-                }
+                return GetDsfMySqlDatabaseActivityFields(activity);
             }
             else if (activityType == typeof(DsfPostgreSqlActivity))
             {
-                if (activity is DsfPostgreSqlActivity maAct)
-                {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (maAct.Outputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Outputs));
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
-                    }
-                }
+                return GetDsfPostgreSqlActivityFields(activity);
             }
             else if (activityType == typeof(DsfOracleDatabaseActivity))
             {
-                if (activity is DsfOracleDatabaseActivity maAct)
-                {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (maAct.Outputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Outputs));
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
-                    }
-                }
+                return GetDsfOracleDatabaseActivityFields(activity);
             }
             else if (activityType == typeof(DsfODBCDatabaseActivity))
             {
-                if (activity is DsfODBCDatabaseActivity maAct)
-                {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (maAct.CommandText != null)
-                    {
-                        results.Add(maAct.CommandText);
-                    }
-                    if (maAct.Outputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Outputs));
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
-                    }
-                }
+                return GetDsfODBCDatabaseActivityFields(activity);
             }
             else if (activityType == typeof(DsfWebPostActivity))
             {
-                if (activity is DsfWebPostActivity maAct)
-                {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-
-                    if (maAct.QueryString != null)
-                    {
-                        results.Add(maAct.QueryString);
-                    }
-                    if (maAct.PostData != null)
-                    {
-                        results.Add(maAct.PostData);
-                    }
-                    if (maAct.Headers != null)
-                    {
-                        foreach (var nameValue in maAct.Headers)
-                        {
-                            results.Add(nameValue.Name);
-                            results.Add(nameValue.Value);
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
-                    }
-                    if (maAct.IsObject)
-                    {
-                        if (!string.IsNullOrEmpty(maAct.ObjectName))
-                        {
-                            results.Add(maAct.ObjectName);
-                        }
-                    }
-                    else
-                    {
-
-                        if (maAct.Outputs != null)
-                        {
-                            results.AddRange(InternalFindMissing(maAct.Outputs));
-                        }
-                    }
-                }
+                return GetDsfWebPostActivityFields(activity);
             }
             else if (activityType == typeof(DsfWebDeleteActivity))
             {
-                if (activity is DsfWebDeleteActivity maAct)
-                {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (maAct.QueryString != null)
-                    {
-                        results.Add(maAct.QueryString);
-                    }
-                    if (maAct.Headers != null)
-                    {
-                        foreach (var nameValue in maAct.Headers)
-                        {
-                            results.Add(nameValue.Name);
-                            results.Add(nameValue.Value);
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-                    if (maAct.IsObject)
-                    {
-                        if (!string.IsNullOrEmpty(maAct.ObjectName))
-                        {
-                            results.Add(maAct.ObjectName);
-                        }
-                    }
-                    else
-                    {
-
-                        if (maAct.Outputs != null)
-                        {
-                            results.AddRange(InternalFindMissing(maAct.Outputs));
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
-                    }
-                }
+                return GetDsfWebDeleteActivityFields(activity);
             }
             else if (activityType == typeof(DsfWebPutActivity))
             {
-                if (activity is DsfWebPutActivity maAct)
-                {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (maAct.QueryString != null)
-                    {
-                        results.Add(maAct.QueryString);
-                    }
-                    if (maAct.PutData != null)
-                    {
-                        results.Add(maAct.PutData);
-                    }
-                    if (maAct.Headers != null)
-                    {
-                        foreach (var nameValue in maAct.Headers)
-                        {
-                            results.Add(nameValue.Name);
-                            results.Add(nameValue.Value);
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-                    if (maAct.IsObject)
-                    {
-                        if (!string.IsNullOrEmpty(maAct.ObjectName))
-                        {
-                            results.Add(maAct.ObjectName);
-                        }
-                    }
-                    else
-                    {
-
-                        if (maAct.Outputs != null)
-                        {
-                            results.AddRange(InternalFindMissing(maAct.Outputs));
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
-                    }
-                }
+                return GetDsfWebPutActivityFields(activity);
             }
             else if (activityType == typeof(DsfWebGetActivity))
             {
-                if (activity is DsfWebGetActivity maAct)
+                return GetDsfWebGetActivityFields(activity);
+            }
+            else if (activityType == typeof(DsfDotNetDllActivity))
+            {
+                return GetDsfDotNetDllActivityFields(activity);
+            }
+            else if (activityType == typeof(DsfEnhancedDotNetDllActivity))
+            {
+                return GetDsfEnhancedDotNetDllActivityFields(activity);
+            }
+            else if (activityType == typeof(DsfComDllActivity))
+            {
+                return GetDsfComDllActivityFields(activity);
+            }
+            else if (activityType == typeof(DsfWcfEndPointActivity))
+            {
+                return GetDsfWcfEndPointActivityFields(activity);
+            }
+            else
+            {
+                return new List<string>();
+            }
+        }
+
+        List<string> GetDsfWcfEndPointActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfWcfEndPointActivity maAct)
+            {
+                if (maAct.Inputs != null)
                 {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (maAct.QueryString != null)
-                    {
-                        results.Add(maAct.QueryString);
-                    }
-                    if (maAct.Headers != null)
-                    {
-                        foreach (var nameValue in maAct.Headers)
-                        {
-                            results.Add(nameValue.Name);
-                            results.Add(nameValue.Value);
-                        }
-                    }
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if (maAct.IsObject)
+                {
                     if (!string.IsNullOrEmpty(maAct.ObjectName))
                     {
                         results.Add(maAct.ObjectName);
                     }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-                    if (maAct.IsObject)
-                    {
-                        if (!string.IsNullOrEmpty(maAct.ObjectName))
-                        {
-                            results.Add(maAct.ObjectName);
-                        }
-                    }
-                    else
-                    {
+                }
+                else
+                {
 
-                        if (maAct.Outputs != null)
-                        {
-                            results.AddRange(InternalFindMissing(maAct.Outputs));
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                    if (maAct.Outputs != null)
                     {
-                        results.Add(maAct.OnErrorWorkflow);
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
                     }
                 }
-            }
-            else if (activityType == typeof(DsfDotNetDllActivity))
-            {
-                if (activity is DsfDotNetDllActivity maAct)
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
                 {
-                    if (maAct.Inputs != null)
-                    {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-                    if (maAct.IsObject)
-                    {
-                        if (!string.IsNullOrEmpty(maAct.ObjectName))
-                        {
-                            results.Add(maAct.ObjectName);
-                        }
-                    }
-                    else
-                    {
-
-                        if (maAct.Outputs != null)
-                        {
-                            results.AddRange(InternalFindMissing(maAct.Outputs));
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
-                    }
+                    results.Add(maAct.OnErrorWorkflow);
                 }
             }
-            else if (activityType == typeof(DsfEnhancedDotNetDllActivity))
+            return results;
+        }
+
+        List<string> GetDsfComDllActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfComDllActivity maAct)
             {
-                if (activity is DsfEnhancedDotNetDllActivity maAct)
+                if (maAct.Inputs != null)
                 {
-                    if (maAct.ConstructorInputs != null)
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if (maAct.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
                     {
-                        results.AddRange(InternalFindMissing(maAct.ConstructorInputs));
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-
-                    if (maAct.MethodsToRun != null)
-                    {
-                        foreach (var pluginAction in maAct.MethodsToRun)
-                        {
-                            if (pluginAction?.Inputs != null)
-                            {
-                                results.AddRange(InternalFindMissing(pluginAction.Inputs));
-                            }
-                            if (!string.IsNullOrEmpty(pluginAction?.OutputVariable))
-                            {
-                                results.Add(pluginAction.OutputVariable);
-                            }
-                        }
-                    }
-                    if (maAct.IsObject)
-                    {
-                        if (!string.IsNullOrEmpty(maAct.ObjectName))
-                        {
-                            results.Add(maAct.ObjectName);
-                        }
-                    }
-                    else
-                    {
-
-                        if (maAct.Outputs != null)
-                        {
-                            results.AddRange(InternalFindMissing(maAct.Outputs));
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
+                        results.Add(maAct.ObjectName);
                     }
                 }
-            }
-            else if (activityType == typeof(DsfComDllActivity))
-            {
-                if (activity is DsfComDllActivity maAct)
+                else
                 {
-                    if (maAct.Inputs != null)
+                    if (maAct.Outputs != null)
                     {
-                        results.AddRange(InternalFindMissing(maAct.Inputs));
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                    {
-                        results.Add(maAct.OnErrorVariable);
-                    }
-                    if (maAct.IsObject)
-                    {
-                        if (!string.IsNullOrEmpty(maAct.ObjectName))
-                        {
-                            results.Add(maAct.ObjectName);
-                        }
-                    }
-                    else
-                    {
-
-                        if (maAct.Outputs != null)
-                        {
-                            results.AddRange(InternalFindMissing(maAct.Outputs));
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                    {
-                        results.Add(maAct.OnErrorWorkflow);
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
                     }
                 }
-            }
-            else
-            {
-                if (activityType == typeof(DsfWcfEndPointActivity))
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
                 {
-                    if (activity is DsfWcfEndPointActivity maAct)
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfEnhancedDotNetDllActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfEnhancedDotNetDllActivity maAct)
+            {
+                if (maAct.ConstructorInputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.ConstructorInputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+
+                if (maAct.MethodsToRun != null)
+                {
+                    foreach (var pluginAction in maAct.MethodsToRun)
                     {
-                        if (maAct.Inputs != null)
+                        if (pluginAction?.Inputs != null)
                         {
-                            results.AddRange(InternalFindMissing(maAct.Inputs));
+                            results.AddRange(InternalFindMissing(pluginAction.Inputs));
                         }
+                        if (!string.IsNullOrEmpty(pluginAction?.OutputVariable))
+                        {
+                            results.Add(pluginAction.OutputVariable);
+                        }
+                    }
+                }
+                if (maAct.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
+                }
+                else
+                {
 
-                        if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
-                        {
-                            results.Add(maAct.OnErrorVariable);
-                        }
-                        if (maAct.IsObject)
-                        {
-                            if (!string.IsNullOrEmpty(maAct.ObjectName))
-                            {
-                                results.Add(maAct.ObjectName);
-                            }
-                        }
-                        else
-                        {
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
 
-                            if (maAct.Outputs != null)
-                            {
-                                results.AddRange(InternalFindMissing(maAct.Outputs));
-                            }
-                        }
-                        if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
-                        {
-                            results.Add(maAct.OnErrorWorkflow);
-                        }
+        List<string> GetDsfDotNetDllActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfDotNetDllActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if (maAct.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
+                }
+                else
+                {
+
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfWebGetActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfWebGetActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.QueryString != null)
+                {
+                    results.Add(maAct.QueryString);
+                }
+                if (maAct.Headers != null)
+                {
+                    foreach (var nameValue in maAct.Headers)
+                    {
+                        results.Add(nameValue.Name);
+                        results.Add(nameValue.Value);
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.ObjectName))
+                {
+                    results.Add(maAct.ObjectName);
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if (maAct.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
+                }
+                else
+                {
+
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfWebPutActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfWebPutActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.QueryString != null)
+                {
+                    results.Add(maAct.QueryString);
+                }
+                if (maAct.PutData != null)
+                {
+                    results.Add(maAct.PutData);
+                }
+                if (maAct.Headers != null)
+                {
+                    foreach (var nameValue in maAct.Headers)
+                    {
+                        results.Add(nameValue.Name);
+                        results.Add(nameValue.Value);
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if (maAct.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
+                }
+                else
+                {
+
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfWebDeleteActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfWebDeleteActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.QueryString != null)
+                {
+                    results.Add(maAct.QueryString);
+                }
+                if (maAct.Headers != null)
+                {
+                    foreach (var nameValue in maAct.Headers)
+                    {
+                        results.Add(nameValue.Name);
+                        results.Add(nameValue.Value);
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if (maAct.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
+                }
+                else
+                {
+
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
+                    }
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        private List<string> GetDsfWebPostActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfWebPostActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+
+                if (maAct.QueryString != null)
+                {
+                    results.Add(maAct.QueryString);
+                }
+                if (maAct.PostData != null)
+                {
+                    results.Add(maAct.PostData);
+                }
+                if (maAct.Headers != null)
+                {
+                    results = AddAllHeaders(maAct);
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+                if (maAct.IsObject)
+                {
+                    if (!string.IsNullOrEmpty(maAct.ObjectName))
+                    {
+                        results.Add(maAct.ObjectName);
+                    }
+                }
+                else
+                {
+                    if (maAct.Outputs != null)
+                    {
+                        results.AddRange(InternalFindMissing(maAct.Outputs));
                     }
                 }
             }
             return results;
         }
 
+        List<string> GetDsfODBCDatabaseActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfODBCDatabaseActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.CommandText != null)
+                {
+                    results.Add(maAct.CommandText);
+                }
+                if (maAct.Outputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Outputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfOracleDatabaseActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfOracleDatabaseActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.Outputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Outputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfPostgreSqlActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfPostgreSqlActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.Outputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Outputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfMySqlDatabaseActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfMySqlDatabaseActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.Outputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Outputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfSqlServerDatabaseActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfSqlServerDatabaseActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.Outputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Outputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfDotNetGatherSystemInformationActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfDotNetGatherSystemInformationActivity maAct)
+            {
+                results.AddRange(InternalFindMissing(maAct.SystemInformationCollection));
+            }
+            return results;
+        }
+
+        List<string> GetDsfGatherSystemInformationActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfGatherSystemInformationActivity maAct)
+            {
+                results.AddRange(InternalFindMissing(maAct.SystemInformationCollection));
+            }
+            return results;
+        }
+
+        List<string> GetDsfDotNetMultiAssignObjectActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfDotNetMultiAssignObjectActivity maAct)
+            {
+                results.AddRange(InternalFindMissing(maAct.FieldsCollection));
+            }
+            return results;
+        }
+
+        List<string> GetDsfDotNetMultiAssignActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfDotNetMultiAssignActivity maAct)
+            {
+                results.AddRange(InternalFindMissing(maAct.FieldsCollection));
+            }
+            return results;
+        }
+
+        List<string> GetDsfMultiAssignObjectActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfMultiAssignObjectActivity maAct)
+            {
+                results.AddRange(InternalFindMissing(maAct.FieldsCollection));
+            }
+            return results;
+        }
+
+        List<string> GetDsfMultiAssignActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfMultiAssignActivity maAct)
+            {
+                results.AddRange(InternalFindMissing(maAct.FieldsCollection));
+            }
+            return results;
+        }
+
+        List<string> GetDsfCaseConvertActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfCaseConvertActivity ccAct)
+            {
+                results.AddRange(InternalFindMissing(ccAct.ConvertCollection));
+            }
+            return results;
+        }
+
+        List<string> GetDsfBaseConvertActivityFields(object activity)
+        {
+            var results = new List<string>();
+            if (activity is DsfBaseConvertActivity bcAct)
+            {
+                results.AddRange(InternalFindMissing(bcAct.ConvertCollection));
+            }
+            return results;
+        }
+
+        static List<string> AddAllHeaders(DsfWebPostActivity maAct)
+        {
+            var results = new List<string>();
+            foreach (var nameValue in maAct.Headers)
+            {
+                results.Add(nameValue.Name);
+                results.Add(nameValue.Value);
+            }
+            return results;
+        }
 
         IList<string> InternalFindMissing<T>(IEnumerable<T> data)
         {
