@@ -114,34 +114,33 @@ namespace Dev2.PathOperations
             }
             else
             {
-                result = CheckFileExists(path, result);
-            }
-
-            return result;
-        }
-
-        private enPathType CheckFileExists(IActivityIOPath path, enPathType result)
-        {
-            if (FileExist(path) || DirectoryExist(path))
-            {
-                if (!Dev2ActivityIOPathUtils.IsStarWildCard(path.Path))
+                if (FileExist(path) || DirectoryExist(path))
                 {
-                    var fa = File.GetAttributes(path.Path);
-
-                    if ((fa & FileAttributes.Directory) == FileAttributes.Directory)
+                    result = IsDirectory(path, result);
+                }
+                else
+                {
+                    if (Dev2ActivityIOPathUtils.IsDirectory(path.Path))
                     {
                         result = enPathType.Directory;
                     }
                 }
             }
-            else
+
+            return result;
+        }
+
+        private static enPathType IsDirectory(IActivityIOPath path, enPathType result)
+        {
+            if (!Dev2ActivityIOPathUtils.IsStarWildCard(path.Path))
             {
-                if (Dev2ActivityIOPathUtils.IsDirectory(path.Path))
+                var fa = File.GetAttributes(path.Path);
+
+                if ((fa & FileAttributes.Directory) == FileAttributes.Directory)
                 {
                     result = enPathType.Directory;
                 }
             }
-
             return result;
         }
 
