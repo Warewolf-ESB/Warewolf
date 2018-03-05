@@ -169,8 +169,15 @@ namespace Dev2.Core.Tests.Merge.Utils
         {
             _modelItem = ModelItemUtils.CreateModelItem(_multiAssign);
             var rowList = CreateMockConflictRowList();
-            var toolConflictItem = new ToolConflictItem(rowList, ConflictRowList.Column.Current);
-            toolConflictItem.InitializeFromActivity(_multiAssign, _modelItem, _location);
+            var toolConflictItem = new ToolConflictItem(rowList, ConflictRowList.Column.Current)
+            {
+                Activity = _multiAssign,
+                UniqueId = Guid.Parse(_multiAssign.UniqueID),
+                MergeDescription = _multiAssign.GetDisplayName(),
+                FlowNode = _multiAssign.GetFlowNode(),
+                ModelItem = _modelItem,
+                NodeLocation = _location
+            };
             return toolConflictItem;
         }
         static ConflictRowList CreateMockConflictRowList()

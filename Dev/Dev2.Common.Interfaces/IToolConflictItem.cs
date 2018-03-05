@@ -28,6 +28,7 @@ namespace Dev2.Common.Interfaces
         Point NodeLocation { get; set; }
         bool IsInWorkflow { get; }
         bool IsAddedToWorkflow { get; set; }
+        bool ShowCheckbox { get; }
         List<IConnectorConflictItem> InboundConnectors { get; set; }
         List<IConnectorConflictItem> OutboundConnectors { get; set; }
 

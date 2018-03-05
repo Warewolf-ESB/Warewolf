@@ -106,6 +106,16 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [TestCategory("Explorer")]
+        public void Save_With_Duplicate_Server_Permission()
+        {
+            UIMap.Click_Settings_RibbonButton();
+            SettingsUIMap.Set_FirstResource_ResourcePermissions("Hello World", "", true, true, true);
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists);
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.UITosavearesourcepersmText.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
         public void PublicApisJson_Requires_ExecutePermission()
         {
             UIMap.Click_Settings_RibbonButton();

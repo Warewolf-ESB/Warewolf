@@ -101,15 +101,11 @@
         </CheckBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Username" Margin="0"/>
-        <ui:IntellisenseTextBox Grid.Column="1"
+        <TextBox Grid.Column="1"
                                 Grid.Row="2"
-                                DefaultText="[[UserName]]"
-                                AllowUserInsertLine="False"
-                                WrapInBrackets="False"
                                 Margin="0,-1,0,0"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Tooltips.CreateToolTipUsername}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -119,7 +115,7 @@
                                      SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+        </TextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="3" Text="Password" Margin="{StaticResource ActivityBorderTop}"/>
         <PasswordBox Grid.Column="1"

@@ -35,7 +35,6 @@ namespace Dev2.ViewModels.Merge
             ContainsStart = true,
             IsMergeVisible = false,
             HasConflict = false
-
         };
 
         public IToolConflictItem CurrentViewModel { get; set; }

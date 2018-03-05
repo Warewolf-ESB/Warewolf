@@ -32,7 +32,7 @@ namespace Dev2.ViewModels.Merge
         bool _isWorkflowNameChecked;
         bool _isVariablesChecked;
 
-        public delegate void ModelItemChanged(ModelItem modelItem, ToolConflictItem mergeToolModel);
+        public delegate void ModelItemChanged(ModelItem modelItem, IToolConflictItem mergeToolModel);
         public event ModelItemChanged OnModelItemChanged;
 
         public ConflictModelFactory(IContextualResourceModel resourceModel)
@@ -137,18 +137,11 @@ namespace Dev2.ViewModels.Merge
         public IDataListViewModel DataListViewModel { get; set; }
 
         public IToolConflictItem CreateModelItem(IToolConflictItem toolConflictItem, IConflictTreeNode node)
-        {           
-            var modelItem = ModelItemUtils.CreateModelItem(node.Activity);            
+        {
+            var modelItem = ModelItemUtils.CreateModelItem(node.Activity);
             var viewModel = GetViewModel(toolConflictItem, modelItem, node);
 
-            if (toolConflictItem is ToolConflictItem toolConflictItemObject)
-            {
-                return ConfigureToolConflictItem(toolConflictItemObject, modelItem, node, viewModel);
-            }
-            else
-            {
-                throw new Exception("unexpected ToolConflictItem type");
-            }
+            return ConfigureToolConflictItem(toolConflictItem, modelItem, node, viewModel);
         }
 
         public ActivityDesignerViewModel GetViewModel(IToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node)
@@ -171,6 +164,7 @@ namespace Dev2.ViewModels.Merge
                 var dsfSwitch = node.Activity as DsfSwitch;
                 var switchInstance = Activator.CreateInstance(actualType, modelItem, dsfSwitch.DisplayName) as SwitchDesignerViewModel;
                 switchInstance.SwitchVariable = dsfSwitch.Switch;
+                toolConflictItem.MergeDescription = switchInstance.DisplayText;
                 instance = switchInstance;
             }
             else if (actualType == typeof(ServiceDesignerViewModel))
@@ -193,11 +187,23 @@ namespace Dev2.ViewModels.Merge
             return instance;
         }
 
-        ToolConflictItem ConfigureToolConflictItem(ToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
+        IToolConflictItem ConfigureToolConflictItem(IToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
         {
             toolConflictItem.Activity = node.Activity;
-            toolConflictItem.InitializeFromActivity(node.Activity, modelItem, node.Location);
-            toolConflictItem.SetUserInterface(modelItem.GetImageSourceForTool(), instance);
+            toolConflictItem.UniqueId = node.Activity.UniqueID.ToGuid();
+            if (string.IsNullOrWhiteSpace(toolConflictItem.MergeDescription))
+            {
+                toolConflictItem.MergeDescription = node.Activity.GetDisplayName();
+            }
+            toolConflictItem.FlowNode = node.Activity.GetFlowNode();
+            toolConflictItem.ModelItem = modelItem;
+            toolConflictItem.NodeLocation = node.Location;
+
+            toolConflictItem.MergeIcon = modelItem.GetImageSourceForTool();
+            if (toolConflictItem is ToolConflictItem toolConflictItemObject)
+            {
+                toolConflictItemObject.ActivityDesignerViewModel = instance;
+            }
 
             modelItem.PropertyChanged += (sender, e) =>
             {

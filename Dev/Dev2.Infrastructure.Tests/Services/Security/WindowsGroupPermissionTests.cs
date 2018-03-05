@@ -24,7 +24,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_Permissions")]
         public void WindowsGroupPermission_Permissions_Get_CorrectPermissionsReturned()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             Assert.AreEqual(Permissions.None, new WindowsGroupPermission().Permissions);
@@ -41,7 +41,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_Permissions")]
         public void WindowsGroupPermission_Permissions_SetNone_CorrectlyApplied()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { Permissions = Permissions.None };
@@ -60,7 +60,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_Permissions")]
         public void WindowsGroupPermission_Permissions_SetView_CorrectlyApplied()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { Permissions = Permissions.View };
@@ -79,7 +79,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_Permissions")]
         public void WindowsGroupPermission_Permissions_SetExecute_CorrectlyApplied()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { Permissions = Permissions.Execute };
@@ -98,7 +98,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_Permissions")]
         public void WindowsGroupPermission_Permissions_SetContribute_CorrectlyApplied()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { Permissions = Permissions.Contribute };
@@ -117,7 +117,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_Permissions")]
         public void WindowsGroupPermission_Permissions_SetDeployTo_CorrectlyApplied()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { Permissions = Permissions.DeployTo };
@@ -136,7 +136,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_Permissions")]
         public void WindowsGroupPermission_Permissions_SetDeployFrom_CorrectlyApplied()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { Permissions = Permissions.DeployFrom };
@@ -155,7 +155,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_Permissions")]
         public void WindowsGroupPermission_Permissions_SetAdministrator_CorrectlyApplied()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { Permissions = Permissions.Administrator };
@@ -174,7 +174,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsBuiltInAdministrators")]
         public void WindowsGroupPermission_IsBuiltInAdministrators_IsNotServer_False()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = false, WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText };
@@ -188,7 +188,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsBuiltInAdministrators")]
         public void WindowsGroupPermission_IsBuiltInAdministrators_IsServerAndWindowsGroupIsNotBuiltInAdministrators_False()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = "xxxx" };
@@ -202,7 +202,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsBuiltInAdministrators")]
         public void WindowsGroupPermission_IsBuiltInAdministrators_IsServerAndWindowsGroupIsBuiltInAdministrators_True()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText };
@@ -216,7 +216,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsBuiltInGuests")]
         public void WindowsGroupPermission_IsBuiltInGuests_IsNotServer_False()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = false, WindowsGroup = WindowsGroupPermission.BuiltInGuestsText };
@@ -230,7 +230,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsBuiltInGuests")]
         public void WindowsGroupPermission_IsBuiltInGuests_IsServerAndWindowsGroupIsNotBuiltInAdministrators_False()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = "xxxx" };
@@ -244,7 +244,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsBuiltInGuests")]
         public void WindowsGroupPermission_IsBuiltInGuests_IsServerAndWindowsGroupIsBuiltInAdministrators_True()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = WindowsGroupPermission.BuiltInGuestsText };
@@ -258,7 +258,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsValid")]
         public void WindowsGroupPermission_IsValid_IsServerAndWindowsGroupIsEmpty_False()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = string.Empty };
@@ -272,7 +272,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsValid")]
         public void WindowsGroupPermission_IsValid_IsServerAndWindowsGroupIsNotEmpty_True()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = true, WindowsGroup = "xxx" };
@@ -286,7 +286,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsValid")]
         public void WindowsGroupPermission_IsValid_IsNotServerAndWindowsGroupIsEmpty_False()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = false, WindowsGroup = string.Empty, ResourceName = "xxx" };
@@ -300,7 +300,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsValid")]
         public void WindowsGroupPermission_IsValid_IsNotServerAndResourceNameIsEmpty_False()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = false, WindowsGroup = "xxx", ResourceName = string.Empty };
@@ -314,7 +314,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_IsValid")]
         public void WindowsGroupPermission_IsValid_IsNotServerAndWindowsGroupAndResourceNameAreNotEmpty_True()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = new WindowsGroupPermission { IsServer = false, WindowsGroup = "xxx", ResourceName = "xxx" };
@@ -328,7 +328,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_CreateAdministrators")]
         public void WindowsGroupPermission_CreateAdministrators_IsNotNull()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = WindowsGroupPermission.CreateAdministrators();
@@ -373,7 +373,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         [TestCategory("WindowsGroupPermission_CreateEveryone")]
         public void WindowsGroupPermission_CreateEveryone_IsNotNull()
         {
-            //------------Setup for test--------------------------            
+            //------------Setup for test-------------------------
 
             //------------Execute Test---------------------------
             var p = WindowsGroupPermission.CreateEveryone();
