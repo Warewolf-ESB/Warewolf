@@ -194,7 +194,7 @@ namespace Dev2.Data.Util
                 var inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
                 var inputScalarList = DataListFactory.CreateScalarList(inputs, false);
                 var inputObjectList = DataListFactory.CreateObjectList(inputs);
-                Common.CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
+                Common.TryCreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
                 Common.CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
                 Common.CreateObjectInputs(outerEnvironment, inputObjectList, env, update);
             }
@@ -522,7 +522,7 @@ namespace Dev2.Data.Util
             return db.Generate();
         }
 
-        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
+        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.TryGenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
 
         internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection) => ioDirection == dev2ColumnArgumentDirection ||
                    ioDirection == enDev2ColumnArgumentDirection.Both &&

@@ -231,30 +231,34 @@ namespace Dev2.Data.Util
             {
                 if (!string.IsNullOrEmpty(dev2Definition.RawValue))
                 {
-                    if (DataListUtil.RemoveLanguageBrackets(dev2Definition.RawValue).StartsWith("@"))
-                    {
-                        var jVal = outerEnvironment.EvalJContainer(dev2Definition.RawValue);
-                        env.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), jVal);
-                    }
-                    else
-                    {
-                        var result = outerEnvironment.Eval(dev2Definition.RawValue, update);
-                        if (result.IsWarewolfAtomListresult)
-                        {
-                            if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult data && data.Item.Any())
-                            {
-                                env.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
-                            }
-                        }
-                        else
-                        {
-                            if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data)
-                            {
-                                env.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
-                            }
-                        }
-                    }
+                    CreateObjectInputsFromRawValue(outerEnvironment, env, update, dev2Definition);
+                }
+            }
+        }
 
+        private static void CreateObjectInputsFromRawValue(IExecutionEnvironment outerEnvironment, IExecutionEnvironment env, int update, IDev2Definition dev2Definition)
+        {
+            if (DataListUtil.RemoveLanguageBrackets(dev2Definition.RawValue).StartsWith("@"))
+            {
+                var jVal = outerEnvironment.EvalJContainer(dev2Definition.RawValue);
+                env.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), jVal);
+            }
+            else
+            {
+                var result = outerEnvironment.Eval(dev2Definition.RawValue, update);
+                if (result.IsWarewolfAtomListresult)
+                {
+                    if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult data && data.Item.Any())
+                    {
+                        env.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
+                    }
+                }
+                else
+                {
+                    if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data)
+                    {
+                        env.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
+                    }
                 }
             }
         }
@@ -267,25 +271,23 @@ namespace Dev2.Data.Util
                 {
                     env.AssignDataShape("[[" + dev2Definition.Name + "]]");
                 }
-                if (!dev2Definition.IsRecordSet)
+                if (!dev2Definition.IsRecordSet && !string.IsNullOrEmpty(dev2Definition.RawValue))
                 {
-                    if (!string.IsNullOrEmpty(dev2Definition.RawValue))
+                    var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update);
+                    if (warewolfEvalResult.IsWarewolfAtomListresult)
                     {
-                        var warewolfEvalResult = outerEnvironment.Eval(dev2Definition.RawValue, update);
-                        if (warewolfEvalResult.IsWarewolfAtomListresult)
-                        {
-                            ScalarAtomList(warewolfEvalResult, env, dev2Definition);
-                        }
-                        else
-                        {
-                            ScalarAtom(warewolfEvalResult, env, dev2Definition);
-                        }
+                        ScalarAtomList(warewolfEvalResult, env, dev2Definition);
+                    }
+                    else
+                    {
+                        ScalarAtom(warewolfEvalResult, env, dev2Definition);
                     }
                 }
+
             }
         }
 
-        public void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, IExecutionEnvironment env, int update)
+        public void TryCreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IRecordSetCollection inputRecSets, IList<IDev2Definition> inputs, IExecutionEnvironment env, int update)
         {
             foreach (var recordSetDefinition in inputRecSets.RecordSets)
             {
@@ -293,33 +295,7 @@ namespace Dev2.Data.Util
                 if (outPutRecSet != null)
                 {
                     var emptyList = new List<string>();
-                    foreach (var dev2ColumnDefinition in recordSetDefinition.Columns)
-                    {
-                        if (dev2ColumnDefinition.IsRecordSet)
-                        {
-                            var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
-
-
-                            if (string.IsNullOrEmpty(dev2ColumnDefinition.RawValue))
-                            {
-                                if (!emptyList.Contains(defn))
-                                {
-                                    emptyList.Add(defn);
-                                    continue;
-                                }
-                            }
-                            var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue, update);
-
-                            if (warewolfEvalResult.IsWarewolfAtomListresult)
-                            {
-                                AtomListInputs(warewolfEvalResult, dev2ColumnDefinition, env);
-                            }
-                            if (warewolfEvalResult.IsWarewolfAtomResult)
-                            {
-                                AtomInputs(warewolfEvalResult, dev2ColumnDefinition, env);
-                            }
-                        }
-                    }
+                    CreateRecordSetsInputs(outerEnvironment, env, update, recordSetDefinition, emptyList);
                     foreach (var defn in emptyList)
                     {
                         env.AssignDataShape(defn);
@@ -328,7 +304,36 @@ namespace Dev2.Data.Util
             }
         }
 
-        public IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+        private void CreateRecordSetsInputs(IExecutionEnvironment outerEnvironment, IExecutionEnvironment env, int update, IRecordSetDefinition recordSetDefinition, List<string> emptyList)
+        {
+            foreach (var dev2ColumnDefinition in recordSetDefinition.Columns)
+            {
+                if (dev2ColumnDefinition.IsRecordSet)
+                {
+                    var defn = "[[" + dev2ColumnDefinition.RecordSetName + "()." + dev2ColumnDefinition.Name + "]]";
+
+                    if (string.IsNullOrEmpty(dev2ColumnDefinition.RawValue) && !emptyList.Contains(defn))
+                    {
+                        emptyList.Add(defn);
+                        continue;
+                    }
+
+                    var warewolfEvalResult = outerEnvironment.Eval(dev2ColumnDefinition.RawValue, update);
+
+                    if (warewolfEvalResult.IsWarewolfAtomListresult)
+                    {
+                        AtomListInputs(warewolfEvalResult, dev2ColumnDefinition, env);
+                    }
+
+                    if (warewolfEvalResult.IsWarewolfAtomResult)
+                    {
+                        AtomInputs(warewolfEvalResult, dev2ColumnDefinition, env);
+                    }
+                }
+            }
+        }
+
+        public IList<IDev2Definition> TryGenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
@@ -339,69 +344,76 @@ namespace Dev2.Data.Util
 
                 var tmpRootNl = xDoc.ChildNodes;
                 var nl = tmpRootNl[0].ChildNodes;
-
-                for (int i = 0; i < nl.Count; i++)
-                {
-                    var tmpNode = nl[i];
-
-                    var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
-
-                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
-                    {
-                        var jsonAttribute = false;
-                        var xmlAttribute = tmpNode.Attributes?["IsJson"];
-                        if (xmlAttribute != null)
-                        {
-                            bool.TryParse(xmlAttribute.Value, out jsonAttribute);
-                        }
-                        if (tmpNode.HasChildNodes && !jsonAttribute)
-                        {
-                            // it is a record set, make it as such
-                            var recordsetName = tmpNode.Name;
-                            // now extract child node defs
-                            var childNl = tmpNode.ChildNodes;
-                            for (int q = 0; q < childNl.Count; q++)
-                            {
-                                var xmlNode = childNl[q];
-                                if (xmlNode == null)
-                                {
-                                    continue;
-                                }
-
-                                var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
-                                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
-                                {
-                                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                                false, "", false));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            // scalar value, make it as such
-                            var name = jsonAttribute ? "@" + tmpNode.Name : tmpNode.Name;
-                            var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "");
-                            dev2Definition.IsObject = jsonAttribute;
-                            result.Add(dev2Definition);
-                        }
-                    }
-                }
+                GenerateDefsFromDataList(dev2ColumnArgumentDirection, result, nl);
             }
 
             return result;
+        }
+
+        private static void GenerateDefsFromDataList(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, IList<IDev2Definition> result, XmlNodeList nl)
+        {
+            for (int i = 0; i < nl.Count; i++)
+            {
+                var tmpNode = nl[i];
+
+                var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
+
+                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                {
+                    var jsonAttribute = false;
+                    var xmlAttribute = tmpNode.Attributes?["IsJson"];
+                    if (xmlAttribute != null)
+                    {
+                        bool.TryParse(xmlAttribute.Value, out jsonAttribute);
+                    }
+                    if (tmpNode.HasChildNodes && !jsonAttribute)
+                    {
+                        // it is a record set, make it as such
+                        var recordsetName = tmpNode.Name;
+                        // now extract child node defs
+                        var childNl = tmpNode.ChildNodes;
+                        GenerateRecordsetDefs(dev2ColumnArgumentDirection, result, recordsetName, childNl);
+                    }
+                    else
+                    {
+                        // scalar value, make it as such
+                        var name = jsonAttribute ? "@" + tmpNode.Name : tmpNode.Name;
+                        var dev2Definition = DataListFactory.CreateDefinition(name, "", "", false, "", false, "");
+                        dev2Definition.IsObject = jsonAttribute;
+                        result.Add(dev2Definition);
+                    }
+                }
+            }
+        }
+
+        private static void GenerateRecordsetDefs(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, IList<IDev2Definition> result, string recordsetName, XmlNodeList childNl)
+        {
+            for (int q = 0; q < childNl.Count; q++)
+            {
+                var xmlNode = childNl[q];
+                if (xmlNode == null)
+                {
+                    continue;
+                }
+
+                var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
+                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
+                {
+                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                false, "", false));
+                }
+            }
         }
 
         static bool IsObject(XmlNode tmpNode)
         {
             var isObjectAttribute = tmpNode.Attributes?["IsJson"];
 
-            if (isObjectAttribute != null)
+            if (isObjectAttribute != null && bool.TryParse(isObjectAttribute.Value, out bool isObject))
             {
-                if (bool.TryParse(isObjectAttribute.Value, out bool isObject))
-                {
-                    return isObject;
-                }
+                return isObject;
             }
+
             return false;
         }
 
@@ -409,13 +421,11 @@ namespace Dev2.Data.Util
         {
             var isObjectAttribute = tmpNode.Attributes?["IsArray"];
 
-            if (isObjectAttribute != null)
+            if (isObjectAttribute != null && bool.TryParse(isObjectAttribute.Value, out bool isArray))
             {
-                if (bool.TryParse(isObjectAttribute.Value, out bool isArray))
-                {
-                    return isArray;
-                }
+                return isArray;
             }
+
             return false;
         }
 
@@ -445,35 +455,42 @@ namespace Dev2.Data.Util
                     }
                     else if (tmpNode.HasChildNodes && !isObject)
                     {
-                        var recordsetName = tmpNode.Name;
-                        var childNl = tmpNode.ChildNodes;
-                        for (int q = 0; q < childNl.Count; q++)
-                        {
-                            var xmlNode = childNl[q];
-                            var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
-                            if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
-                            {
-                                result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                            false, "", false));
-                            }
-                        }
+                        GenerateDefsFromRecordset(dev2ColumnArgumentDirection, result, tmpNode);
                     }
                     else
                     {
-                        if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
-                        {
-                            var dev2Definition = isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray) : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
-                            result.Add(dev2Definition);
-                        }
+                        GenerateDefsFromObject(dev2ColumnArgumentDirection, result, tmpNode, ioDirection, isObject, isArray);
                     }
-
                 }
             }
 
             return result;
         }
 
+        private static void GenerateDefsFromObject(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, IList<IDev2Definition> result, XmlNode tmpNode, enDev2ColumnArgumentDirection ioDirection, bool isObject, bool isArray)
+        {
+            if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+            {
+                var dev2Definition = isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray) : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
+                result.Add(dev2Definition);
+            }
+        }
 
+        private static void GenerateDefsFromRecordset(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, IList<IDev2Definition> result, XmlNode tmpNode)
+        {
+            var recordsetName = tmpNode.Name;
+            var childNl = tmpNode.ChildNodes;
+            for (int q = 0; q < childNl.Count; q++)
+            {
+                var xmlNode = childNl[q];
+                var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
+                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
+                {
+                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                false, "", false));
+                }
+            }
+        }
 
         void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
         {
@@ -505,15 +522,12 @@ namespace Dev2.Data.Util
         void AtomInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
         {
             var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            if (dev2ColumnDefinition.IsRecordSet)
+            if (dev2ColumnDefinition.IsRecordSet && recsetResult != null)
             {
-                if (recsetResult != null)
-                {
-                    var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
-
-                    env.AssignWithFrame(new AssignValue(correctRecSet, PublicFunctions.AtomtoString(recsetResult.Item)), 0);
-                }
+                var correctRecSet = "[[" + dev2ColumnDefinition.RecordSetName + "(*)." + dev2ColumnDefinition.Name + "]]";
+                env.AssignWithFrame(new AssignValue(correctRecSet, PublicFunctions.AtomtoString(recsetResult.Item)), 0);
             }
+
         }
     }
 }
