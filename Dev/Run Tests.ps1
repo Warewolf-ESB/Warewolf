@@ -16,7 +16,6 @@ Param(
   [string]$ServerPassword,
   [string]$JobNames="",
   [string]$JobName="",
-  [switch]$RunAllJobs,
   [switch]$Cleanup,
   [switch]$AssemblyFileVersionsTest,
   [switch]$RecordScreen,
@@ -28,9 +27,14 @@ Param(
   [string]$MergeDotCoverSnapshotsInDirectory="",
   [switch]${Startmy.warewolf.io},
   [string]$sendRecordedMediaForPassedTestCase="false",
-  [switch]$StartServerContainer,
-  [string]$ServerContainerVersion,
-  [switch]$JobContainers
+  [string]$JobContainerVersion="",
+  [switch]$JobContainers,
+  [switch]$IsInContainer,
+  [string]$ContainerRemoteApiHost,
+  [switch]$StartServerAsService,
+  [switch]$StartServerAsConsole,
+  [switch]$ServerContainer,
+  [string]$ContainerRegistryHost
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -59,8 +63,7 @@ $JobSpecs["File And Folder Copy Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndF
 $JobSpecs["File And Folder Create Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderCreate"
 $JobSpecs["File And Folder Delete Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderDelete"
 $JobSpecs["File And Folder Move Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderMove"
-$JobSpecs["Folder Read Tool Specs"]		 		= "Warewolf.Tools.Specs", "ReadFolder"
-$JobSpecs["New Folder Read Tool Specs"]		 	= "Warewolf.Tools.Specs", "NewReadFolder"
+$JobSpecs["Folder Read Tool Specs"]		 		= "Warewolf.Tools.Specs", "ReadFolder"$JobSpecs["New Folder Read Tool Specs"]		 	= "Warewolf.Tools.Specs", "NewReadFolder"
 $JobSpecs["File Read Tool Specs"]		 		= "Warewolf.Tools.Specs", "ReadFile"
 $JobSpecs["File And Folder Rename Tool Specs"]	= "Warewolf.Tools.Specs", "FileAndFolderRename"
 $JobSpecs["Unzip Tool Specs"]		 			= "Warewolf.Tools.Specs", "Unzip"
@@ -74,6 +77,7 @@ $JobSpecs["UI Binding Tests"] 				 	= "Warewolf.UIBindingTests.*"
 $JobSpecs["Integration Tests"]				 									= "Dev2.Integration.Tests"
 $JobSpecs["Other Specs"]		 												= "Dev2.*.Specs,Warewolf.*.Specs"
 $JobSpecs["Other Activities Specs"]		 										= "Dev2.Activities.Specs"
+$JobSpecs["Remote Server Specs"]		 										= "Dev2.Activities.Specs", "RemoteServer"
 $JobSpecs["Workflow Merging Specs"]		 										= "Dev2.Activities.Specs", "WorkflowMerging"
 $JobSpecs["Example Workflow Execution Specs"] 									= "Dev2.Activities.Specs", "ExampleWorkflowExecution"
 $JobSpecs["Subworkflow Execution Specs"]										= "Dev2.Activities.Specs", "SubworkflowExecution"
@@ -189,6 +193,16 @@ if ($JobName -ne "") {
     $JobName = ""
 }
 
+if ($ContainerRemoteApiHost -ne "" -and -not $ContainerRemoteApiHost.StartsWith("-H ")) {
+    $ContainerRemoteApiHost = "-H " + $ContainerRemoteApiHost
+}
+
+if (!$StartServerAsConsole.IsPresent) {
+    [bool]$ConsoleServer = $False
+} else {
+    [bool]$ConsoleServer = $True
+}
+
 if ($JobNames.Contains(" DotCover")) {
     [bool]$ApplyDotCover = $True
     $JobNames = $JobNames.Replace(" DotCover", "")
@@ -287,31 +301,19 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     #Stop my.warewolf.io
     taskkill /im iisexpress.exe /f  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
 
-    #Stop Server
-    $ServiceOutput = ""
-    sc.exe stop "Warewolf Server" 2>&1 | %{$ServiceOutput += "`n" + $_}
-    if ($ServiceOutput -ne "`n[SC] ControlService FAILED 1062:`n`nThe service has not been started.`n") {
-        Write-Host $ServiceOutput.TrimStart("`n")
-        Wait-Process "Warewolf Server" -Timeout $WaitForCloseTimeout  2>&1 | out-null
+    if (!$ConsoleServer) {
+        #Stop Server
+        $ServiceOutput = ""
+        sc.exe stop "Warewolf Server" 2>&1 | %{$ServiceOutput += "`n" + $_}
+        if ($ServiceOutput -ne "`n[SC] ControlService FAILED 1062:`n`nThe service has not been started.`n") {
+            Write-Host $ServiceOutput.TrimStart("`n")
+            Wait-Process "Warewolf Server" -Timeout $WaitForCloseTimeout  2>&1 | out-null
+        }
     }
     taskkill /im "Warewolf Server.exe" /f  2>&1 | out-null
     taskkill /im "operadriver.exe" /f  2>&1 | out-null
     taskkill /im "geckodriver.exe" /f  2>&1 | out-null
     taskkill /im "IEDriverServer.exe" /f  2>&1 | out-null
-
-    #Stop Server Container
-    if (Get-Command docker -ErrorAction SilentlyContinue) {
-        docker container ls | %{if ($_.EndsWith("warewolfserver")) { 
-            docker exec warewolfserver sc stop "Warewolf Server"
-            $ServerContainerLogText = docker exec warewolfserver cmd /c type "C:\\ProgramData\\Warewolf\\Server Log\\warewolf-server.log"    
-            $ServerContainerLogText | Out-File -LiteralPath "$TestsResultsPath\ServerContainer.log" -Encoding utf8 -Force
-            docker stop warewolfserver
-        }}
-        docker container ls -a | %{if ($_.EndsWith("warewolfserver")) { 
-            docker container rm -f warewolfserver
-            docker images | ConvertFrom-String | where {$_.P2 -eq "<none>"} | % { docker rmi $_.P3 }
-        }}
-    }
 
     #Delete Certain Studio and Server Resources
     $ToClean = "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
@@ -340,25 +342,71 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobNames"
 }
 
-function Cleanup-JobContainers() {
+function Get-ContainerName([string]$JobName) {
+    $JobName.Replace(" ", "_") + "_Container" + (&{If("$JobContainerVersion" -eq "") {""} Else {"_" + $JobContainerVersion.ToLower().SubString(0,8)}})
+}
+
+function Stop-JobContainer([string]$ContainerName) {
+    $ResultsDirectory = $TestsResultsPath + "\" + $ContainerName
+    if ($(docker $ContainerRemoteApiHost container ls --format 'table {{.Names}}' | % { $_ -eq $ContainerName }) -eq $true) {
+        docker $ContainerRemoteApiHost exec -d $ContainerName -Cleanup
+    }
+    if ($(docker $ContainerRemoteApiHost container ls -a --format 'table {{.Names}}' | % { $_ -eq $ContainerName }) -eq $true) {
+		docker $ContainerRemoteApiHost cp $($ContainerName + ":C:\Build\TestResults") "$ResultsDirectory" 2>&1
+		docker $ContainerRemoteApiHost container rm $ContainerName 2>&1
+        Write-Host $ContainerName Removed. See $ResultsDirectory
+    }
+}
+
+function Stop-JobContainers {
     foreach ($Job in $JobNames.Split(",")) {
-		$JobContainerName = $Job.Replace(" ", "_") + "_Container"
-        if ($(docker container ls --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
+        $JobContainerName = Get-ContainerName $Job
+        Stop-JobContainer $JobContainerName
+    }
+}
+
+function Cleanup-JobContainers {
+    foreach ($Job in $JobNames.Split(",")) {
+        $JobContainerName = Get-ContainerName $Job
+        if ($(docker $ContainerRemoteApiHost container ls --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
             Write-Host Waiting for $JobContainerName
-            docker wait $JobContainerName
-        }
-        if ($(docker container ls -a --format 'table {{.Names}}' | % { $_ -eq $JobContainerName }) -eq $true) {
-            if ($TestsPath.EndsWith("\")) {
-                $ResultsDirectory = $TestsPath + "TestResults\" + $JobContainerName
-            } else {
-                $ResultsDirectory = $TestsPath + "\TestResults\" + $JobContainerName
-            }
-		    docker cp $($JobContainerName + ":C:\Build\TestResults") "$ResultsDirectory"
-		    docker container rm $JobContainerName
+            docker $ContainerRemoteApiHost container logs --follow $JobContainerName
         }
 	}
-    docker ps -a -q | % { docker rm $_ }
-    docker images | ConvertFrom-String | ? { $_.P2 -eq "jobsenvironment" -or $_.P2 -eq "<none>" } | % { docker rmi $_.P3 }
+    Stop-JobContainers
+}
+
+function Cleanup-ServerContainer {
+    if ($(docker $ContainerRemoteApiHost container ls --format 'table {{.Names}}' | % { $_ -eq "warewolfserver" }) -eq $true) {
+        Write-Host Recovering Warewolf server container program data to $TestsResultsPath
+        docker $ContainerRemoteApiHost stop "warewolfserver"
+    }
+    if ($(docker $ContainerRemoteApiHost container ls -a --format 'table {{.Names}}' | % { $_ -eq "warewolfserver" }) -eq $true) {
+        Write-Host Recovering Warewolf server container program data to $TestsResultsPath
+		docker $ContainerRemoteApiHost cp "warewolfserver:C:\ProgramData\Warewolf" "$TestsResultsPath" 2>&1
+		docker $ContainerRemoteApiHost container rm "warewolfserver" 2>&1
+    }
+    if ($(docker $ContainerRemoteApiHost images --format 'table {{.Repository}}' | % { $_ -eq "warewolfserver" }) -eq $true) {
+        docker $ContainerRemoteApiHost rmi "warewolfserver"
+    }
+}
+
+function Timeout-JobContainers {
+    $ContainerUpTimes = docker $ContainerRemoteApiHost container ls -a --format 'table {{.Names}} {{.Status}}'
+    foreach ($Job in $JobNames.Split(",")) {
+        $JobContainerName = Get-ContainerName $Job
+        foreach ($UpTime in $ContainerUpTimes) {
+            if ($UpTime.Split(" ").Count -ge 4) {
+                $ContainerName = $UpTime.Split(" ")[0]
+                $Status = $UpTime.Split(" ")[1]
+                $Duration = $UpTime.Split(" ")[2]
+                $DurationUnit = $UpTime.Split(" ")[3]
+                if ($ContainerName -eq $JobContainerName -and $Status -eq "Up" -and (($DurationUnit -eq "minutes" -and $Duration -is [int32] -and [int32]$Duration -gt 30) -or $DurationUnit -eq "hours")) {
+                    Stop-JobContainer $ContainerName
+                }
+            }
+        }
+    }
 }
 
 function Wait-For-FileUnlock([string]$FilePath) {
@@ -539,18 +587,17 @@ function Find-Warewolf-Server-Exe {
 		Expand-Archive "$ServerPath" "$TestsResultsPath\Server" -Force
 		$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
 	}
-    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
-        sleep 30
-        exit 1
-    } else {
-        return $ServerPath
-    }
+    return $ServerPath
 }
 
-function Install-Server([string]$ServerPath,[string]$ResourcesType) {
-    if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        $ServerPath = Find-Warewolf-Server-Exe
+if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+    $ServerPath = Find-Warewolf-Server-Exe
+}
+
+function Install-Server {
+    if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+        Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
+        exit 1
     }
     Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will be backed up to $TestsResultsPath."
     if ($ResourcesType -eq "") {
@@ -582,17 +629,18 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 		    }
     }
 
-    $ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
-    if (!$ApplyDotCover) {
-        if ($ServerService -eq $null) {
-            New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
-        } else {    
-		    Write-Host Configuring service to $ServerPath
-		    $ServiceOuput = sc.exe config "Warewolf Server" binPath= "$ServerPath"
-        }
-    } else {
-        $ServerBinDir = (Get-Item $ServerPath).Directory.FullName 
-        $RunnerXML = @"
+    if (!$ConsoleServer) {
+        $ServerService = Get-Service "Warewolf Server" -ErrorAction SilentlyContinue
+        if (!$ApplyDotCover) {
+            if ($ServerService -eq $null) {
+                New-Service -Name "Warewolf Server" -BinaryPathName "$ServerPath" -StartupType Manual
+            } else {    
+		        Write-Host Configuring service to $ServerPath
+		        $ServiceOuput = sc.exe config "Warewolf Server" binPath= "$ServerPath"
+            }
+        } else {
+            $ServerBinDir = (Get-Item $ServerPath).Directory.FullName 
+            $RunnerXML = @"
 <AnalyseParams>
     <TargetExecutable>$ServerPath</TargetExecutable>
     <Output>$env:ProgramData\Warewolf\Server Log\dotCover.dcvr</Output>
@@ -616,29 +664,34 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 </AnalyseParams>
 "@
 
-        if (!$JobNames) {
-			if ($ProjectName) {
-				$JobNames = $ProjectName
-			} else {
-				$JobNames = "Manual Tests"
-			}
+            if (!$JobNames) {
+			    if ($ProjectName) {
+				    $JobNames = $ProjectName
+			    } else {
+				    $JobNames = "Manual Tests"
+			    }
+            }
+            $DotCoverRunnerXMLPath = "$TestsResultsPath\Server DotCover Runner.xml"
+            Copy-On-Write $DotCoverRunnerXMLPath
+            Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
+            if ($IsInContainer.IsPresent) {
+                $BinPathWithDotCover = "`"" + $DotCoverPath + "`" cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\ServerDotCover.log`""
+            } else {
+                $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"$DotCoverRunnerXMLPath\`" /LogFile=\`"$TestsResultsPath\ServerDotCover.log\`""
+            }
+            if ($ServerService -eq $null) {
+                New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
+	        } else {
+		        Write-Host Configuring service to $BinPathWithDotCover
+		        $ServiceOuput = sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
+	        }
         }
-        $DotCoverRunnerXMLPath = "$TestsResultsPath\Server DotCover Runner.xml"
-        Copy-On-Write $DotCoverRunnerXMLPath
-        Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
-        $BinPathWithDotCover = "\`"" + $DotCoverPath + "\`" cover \`"$DotCoverRunnerXMLPath\`" /LogFile=\`"$TestsResultsPath\ServerDotCover.log\`""
-        if ($ServerService -eq $null) {
-            New-Service -Name "Warewolf Server" -BinaryPathName "$BinPathWithDotCover" -StartupType Manual
-	    } else {
-		    Write-Host Configuring service to $BinPathWithDotCover
-		    $ServiceOuput = sc.exe config "Warewolf Server" binPath= "$BinPathWithDotCover"
-	    }
-    }
-    if ($ServerUsername -ne "" -and $ServerPassword -eq "") {
-        $ServiceOuput = sc.exe config "Warewolf Server" obj= "$ServerUsername"
-    }
-    if ($ServerUsername -ne "" -and $ServerPassword -ne "") {
-        $ServiceOuput = sc.exe config "Warewolf Server" obj= "$ServerUsername" password= "$ServerPassword"
+        if ($ServerUsername -ne "" -and $ServerPassword -eq "") {
+            $ServiceOuput = sc.exe config "Warewolf Server" obj= "$ServerUsername"
+        }
+        if ($ServerUsername -ne "" -and $ServerPassword -ne "") {
+            $ServiceOuput = sc.exe config "Warewolf Server" obj= "$ServerUsername" password= "$ServerPassword"
+        }
     }
 
     $ResourcePathSpecs = @()
@@ -651,56 +704,41 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ResourcesDirectory -ne "" -and $ResourcesDirectory -ne (Get-Item $ServerPath).Directory.FullName + "\" + (Get-Item $ResourcesDirectory).Name ) {
         Copy-Item -Path "$ResourcesDirectory" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
     }
-    $ServerPath,$ResourcesType
 }
 
-function Start-Server([string]$ServerPath,[string]$ResourcesType) {
+function Start-Server {
     $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
     Write-Host Deploying New resources from $ServerFolderPath\Resources - $ResourcesType\*
+    if (!(Test-Path "$env:ProgramData\Warewolf")) {
+        New-Item "$env:ProgramData\Warewolf" -ItemType Directory
+    }
     Copy-Item -Path ($ServerFolderPath + "\Resources - $ResourcesType\*") -Destination "$env:ProgramData\Warewolf" -Recurse -Force
 	
-    Start-Service "Warewolf Server"
+    if (!$ConsoleServer) {
+        Start-Service "Warewolf Server"
 
-    #Check if started
-    $Output = @()
-    sc.exe interrogate "Warewolf Server" 2>&1 | %{$Output += $_}
-    if ($Output.Length -lt 4 -or !($Output[3].EndsWith("RUNNING "))) {
-        sc.exe start "Warewolf Server"
-    }
+        #Check if started
+        $Output = @()
+        sc.exe interrogate "Warewolf Server" 2>&1 | %{$Output += $_}
+        if ($Output.Length -lt 4 -or !($Output[3].EndsWith("RUNNING "))) {
+            sc.exe start "Warewolf Server"
+        }
 
-    #Wait for the ServerStarted file to appear.
-    $TimeoutCounter = 0
-    $ServerStartedFilePath = (Get-Item $ServerPath).Directory.FullName + "\ServerStarted"
-    while (!(Test-Path $ServerStartedFilePath) -and $TimeoutCounter++ -lt 100) {
-        sleep 3
-    }
-    if (!(Test-Path $ServerStartedFilePath)) {
-        Write-Error -Message "Server Cannot Start."
-        sleep 30
-        exit 1
+        #Wait for the ServerStarted file to appear.
+        $TimeoutCounter = 0
+        $ServerStartedFilePath = (Get-Item $ServerPath).Directory.FullName + "\ServerStarted"
+        while (!(Test-Path $ServerStartedFilePath) -and $TimeoutCounter++ -lt 100) {
+            sleep 3
+        }
+        if (!(Test-Path $ServerStartedFilePath)) {
+            Write-Error -Message "Server Cannot Start."
+            sleep 30
+            exit 1
+        }
+        Write-Host Server has started.
     } else {
         Write-Host Server has started.
-    }
-}
-
-function Start-Container {
-    if (Get-Command docker -ErrorAction SilentlyContinue) {
-        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-            $ServerPath = Find-Warewolf-Server-Exe
-        }
-        $ServerDirectory = (Get-Item $ServerPath).Directory.FullName
-        if ($ServerContainerVersion -eq $null -or $ServerContainerVersion -eq "") {
-            Write-Host Starting container from $ServerDirectory
-            docker build -t warewolfserver "$ServerDirectory"
-            docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver ping -t 4.2.2.3
-        } else {
-            Write-Host Starting container from warewolfserver/warewolfserver:$ServerContainerVersion
-            docker pull warewolfserver/warewolfserver:$ServerContainerVersion
-            docker run --name warewolfserver --hostname localwarewolfservercontainer --network nat -d warewolfserver/warewolfserver:$ServerContainerVersion ping -t 4.2.2.3
-        }
-        Write-Host Server container has started.
-    } else {
-        Write-Warning -Message "Cannot find Docker, container server not started."
+        Start-Process -FilePath "$ServerPath" -ArgumentList "--interactive" -Verb RunAs -Wait
     }
 }
 
@@ -712,8 +750,9 @@ function Start-my.warewolf.io {
     }
     Write-Host Starting my.warewolf.io from $WebsPath
     if (!(Test-Path $WebsPath)) {
-        if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-            $ServerPath = Find-Warewolf-Server-Exe
+        if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+            Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
+            exit 1
         }
         $WebsPath = (Get-Item $ServerPath).Directory.FullName + "\_PublishedWebsites\Dev2.Web"
     }
@@ -796,6 +835,33 @@ function Start-Studio {
         sleep 30
 		exit 1
     }
+}
+
+function Start-ServerContainer {
+    Cleanup-ServerContainer
+    $ServerFolderPath = (Get-Item $ServerPath).Directory.FullName
+    Out-File -LiteralPath "$ServerFolderPath\dockerfile" -Encoding default -InputObject @"
+FROM microsoft/windowsservercore
+
+RUN NET user WarewolfAdmin W@rEw0lf@dm1n /ADD
+RUN NET localgroup "Administrators" WarewolfAdmin /ADD
+RUN NET localgroup "Warewolf Administrators" /ADD
+RUN NET localgroup "Warewolf Administrators" WarewolfAdmin /ADD
+EXPOSE 3142
+EXPOSE 3143
+
+SHELL ["powershell"]
+RUN New-Item -Path Build -ItemType Directory
+ADD . Build
+ENV SCRIPT_PATH "Build\Run Tests.ps1"
+ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
+
+ENTRYPOINT & `$env:SCRIPT_PATH
+CMD ["-StartServerAsConsole", "-ResourcesType", "Release"]
+"@
+    docker $ContainerRemoteApiHost build -t warewolfserver "$ServerFolderPath"
+    docker $ContainerRemoteApiHost container inspect warewolfserver
+    docker $ContainerRemoteApiHost run --name "warewolfserver" -di warewolfserver -StartServerAsConsole -ResourcesType `'$ResourcesType`'
 }
 
 function AssemblyIsNotAlreadyDefinedWithoutWildcards([string]$AssemblyNameToCheck) {
@@ -911,6 +977,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         if (Test-Path $VSTestPath.Replace("Enterprise", "Community")) {
             $VSTestPath = $VSTestPath.Replace("Enterprise", "Community")
         }
+        if (Test-Path $VSTestPath.Replace("Enterprise", "TestAgent")) {
+            $VSTestPath = $VSTestPath.Replace("Enterprise", "TestAgent")
+        }
     }
     if ($MSTestPath -ne "" -and !(Test-Path "$MSTestPath" -ErrorAction SilentlyContinue)) {
         if (Test-Path $MSTestPath.Replace("Enterprise", "Professional")) {
@@ -918,6 +987,9 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
         if (Test-Path $MSTestPath.Replace("Enterprise", "Community")) {
             $MSTestPath = $MSTestPath.Replace("Enterprise", "Community")
+        }
+        if (Test-Path $MSTestPath.Replace("Enterprise", "TestAgent")) {
+            $MSTestPath = $MSTestPath.Replace("Enterprise", "TestAgent")
         }
     }
 
@@ -939,8 +1011,8 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Write-Host Removed loose TRX files from VS install directory.
         }
 
-        if (($StartServer.IsPresent -or $StartStudio.IsPresent) -and !$Parallelize.IsPresent) {
-            $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
+        if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent -or $StartStudio.IsPresent) {
+            Install-Server
         }
     }
 
@@ -985,36 +1057,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             }
         }
     }
-    if ($JobContainers.IsPresent) {
-        Cleanup-JobContainers
-        if (($(docker images) | ConvertFrom-String | ? {  $_.P1 -eq "warewolftestenvironment" }) -eq $null) {
-            Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
-FROM microsoft/windowsservercore
-
-ENV chocolateyUseWindowsCompression=false
-RUN @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
-
-RUN choco install visualstudio2017testagent --package-parameters "--passive --locale en-US --includeOptional" --confirm --limit-output --timeout 216000
-
-SHELL ["powershell"]
-RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe\")) {Write-Host VSTest did not install correctly; exit 1}
-"@
-            docker build -t warewolftestenvironment "$TestsPath"
-        }
-        Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
-FROM warewolftestenvironment
-SHELL ["powershell"]
-
-RUN New-Item -Path Build -ItemType Directory
-ADD . Build
-"@
-        Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject @"
-dockerfile
-TestResults/**/*
-TestResults
-"@
-        docker build -t jobsenvironment "$TestsPath"
-    }
     foreach ($_ in 0..($TotalNumberOfJobsToRun-1)) {
         $JobName = $JobNamesList[$_].ToString()
         $ProjectSpec = $JobAssemblySpecs[$_].ToString()
@@ -1041,8 +1083,88 @@ TestResults
             }
         }
         if ($JobContainers.IsPresent) {
-            $JobContainerName = $JobName.Replace(" ", "_") + "_Container"
-            docker run --name $JobContainerName -di jobsenvironment powershell `&`(`'.\Build\Run Tests.ps1`'`) -JobName `'$JobName`' -TestList `'$TestList`' -VSTest -VSTestPath `'`C:\Program Files `(x86`)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe`'
+            Cleanup-JobContainers
+            if (($(docker $ContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq "warewolftestenvironment" }) -eq $null) {
+                Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject @"
+FROM microsoft/windowsservercore
+
+ENV chocolateyUseWindowsCompression=false
+RUN @powershell -NoProfile -ExecutionPolicy Bypass -Command "iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"
+
+RUN choco install visualstudio2017testagent --package-parameters "--passive --locale en-US --includeOptional" --confirm --limit-output --timeout 216000
+
+SHELL ["powershell"]
+RUN if (!(Test-Path \"`C:\Program Files (x86)\Microsoft Visual Studio\2017\TestAgent\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe\")) {Write-Host VSTest did not install correctly; exit 1}
+"@
+                Write-Host docker $ContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
+                docker $ContainerRemoteApiHost build -t warewolftestenvironment "$TestsPath"
+            }
+            $ImageName = "jobsenvironment"
+            if ("$ContainerRegistryHost" -ne "") {
+                $ImageName = $ContainerRegistryHost + "/" + $ImageName
+                if ("$JobContainerVersion" -ne "") {
+                    docker $ContainerRemoteApiHost pull ($ImageName + ":" + $JobContainerVersion)
+                } else {
+                    docker $ContainerRemoteApiHost pull $ImageName
+                }
+            }
+            if (($(docker $ContainerRemoteApiHost images) | ConvertFrom-String | ? {  $_.P1 -eq $ImageName -and $_.P2 -eq $JobContainerVersion }) -eq $null) {
+                $DockerfileContent = @"
+FROM warewolftestenvironment
+SHELL ["powershell"]
+
+RUN New-Item -Path Build -ItemType Directory
+ADD . Build
+ENV SCRIPT_PATH "Build\Run Tests.ps1"
+ENV SERVER_LOG "programdata\Warewolf\Server Log\warewolf-server.log"
+
+ENTRYPOINT & `$env:SCRIPT_PATH
+"@
+                Out-File -LiteralPath "$TestsPath\dockerfile" -Encoding default -InputObject $DockerfileContent
+                $DockerIgnorefileContent = @"
+dockerfile
+TestResults/**/*
+TestResults
+"@
+                Out-File -LiteralPath "$TestsPath\.dockerignore" -Encoding default -InputObject $DockerIgnorefileContent
+                Write-Host Docker dockerfile written as:`n$DockerfileContent
+                Write-Host `nDocker ignore file written as:`n$DockerIgnorefileContent
+                Write-Host docker $ContainerRemoteApiHost build -t $ImageName "$TestsPath"
+                docker $ContainerRemoteApiHost build -t $ImageName "$TestsPath"
+                if ("$JobContainerVersion" -ne "") {
+                    docker $ContainerRemoteApiHost tag $ImageName $JobContainerVersion
+                    docker $ContainerRemoteApiHost push $ImageName
+                }
+            }
+            if ("$JobContainerVersion" -ne "") {
+                $ImageName = $ImageName + ":" + $JobContainerVersion
+            }
+            $JobContainerName = Get-ContainerName $JobName
+            if ((docker $ContainerRemoteApiHost node ls 2>&1).GetType() -eq [System.Management.Automation.ErrorRecord]) {
+                $JobContainerResult = "", "Insufficient system resources exist to complete the requested service. The paging file is too small for this operation to complete."
+                while(([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
+                    if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent) {
+                        $JobContainerResult = docker $ContainerRemoteApiHost run --memory="1500m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
+                    } else {
+                        $JobContainerResult = docker $ContainerRemoteApiHost run --memory="700m" --name $JobContainerName -di $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
+                    }
+                    if (([string]$JobContainerResult[1]).Contains("The paging file is too small for this operation to complete.") -or ([string]$JobContainerResult[1]).Contains("Insufficient system resources exist to complete the requested service.")) {
+                        docker $ContainerRemoteApiHost container rm $JobContainerName 2>&1
+                        Write-Host Out of memory. Timing out containers and waiting 30s before trying to start $JobContainerName again.
+                        Timeout-JobContainers
+                        sleep 30
+                    } else {
+                        Write-Host Started $JobContainerName as $JobContainerResult
+                    }
+                }
+            } else {
+                if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent) {
+                    $JobContainerResult = docker $ContainerRemoteApiHost service create --replicas 1 --restart-condition none --limit-memory="1500m" --name $JobContainerName $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer -StartServer -ServerPath `'C:\Build\Warewolf Server.exe`' -ResourcesType `'$ResourcesType`' 2>&1
+                } else {
+                    $JobContainerResult = docker $ContainerRemoteApiHost service create --replicas 1 --restart-condition none --limit-memory="700m" --name $JobContainerName $ImageName -JobName `'$JobName`' -TestList `'$TestList`' -DotCoverPath `'$DotCoverPath`' -IsInContainer 2>&1
+                }
+                Write-Host Started $JobContainerName as $JobContainerResult
+            }
         } else {
             if ($TestAssembliesList -eq $null -or $TestAssembliesList -eq "") {
 	            Write-Host Cannot find any $ProjectSpec project folders or assemblies at $TestsPath.
@@ -1146,29 +1268,26 @@ TestResults
                 }
                 $FullArgsList = $TestAssembliesList + " /resultsfile:`"" + $TestResultsFile + "`"" + $TestList + $TestSettings + $TestCategories
 
-            # Write full command including full argument string.
-            $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
-            Copy-On-Write "$TestRunnerPath"
-            Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
-        }
-        if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
-            if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
-                Start-my.warewolf.io
-                if ($StartServerContainer.IsPresent -or ($ServerContainerVersion -ne $null -and $ServerContainerVersion -ne "")) {
-                    Start-Container
-                }
-                if ($StartServer.IsPresent -or $StartStudio.IsPresent) {
-                    Start-Server $ServerPath $ResourcesType
-                    if ($StartStudio.IsPresent) {
-                        Start-Studio
+                # Write full command including full argument string.
+                $TestRunnerPath = "$TestsResultsPath\..\Run $JobName.bat"
+                Copy-On-Write "$TestRunnerPath"
+                Out-File -LiteralPath "$TestRunnerPath" -Encoding default -InputObject `"$MSTestPath`"$FullArgsList
+            }
+            if (Test-Path "$TestsResultsPath\..\Run $JobName.bat") {
+                if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
+                    Start-my.warewolf.io
+                    if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent -or $StartStudio.IsPresent) {
+                        Start-Server
+                        if ($StartStudio.IsPresent) {
+                            Start-Studio
+                        }
                     }
                 }
-            }
-            if ($ApplyDotCover -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
-                # Write DotCover Runner XML 
-                $DotCoverSnapshotFile = "$TestsResultsPath\$JobName DotCover Output.dcvr"
-                Copy-On-Write $DotCoverSnapshotFile
-                $DotCoverArgs = @"
+                if ($ApplyDotCover -and !$StartServerAsConsole.IsPresent -and !$StartServerAsService.IsPresent -and !$StartServer.IsPresent -and !$StartStudio.IsPresent) {
+                    # Write DotCover Runner XML 
+                    $DotCoverSnapshotFile = "$TestsResultsPath\$JobName DotCover Output.dcvr"
+                    Copy-On-Write $DotCoverSnapshotFile
+                    $DotCoverArgs = @"
 <AnalyseParams>
 	<TargetExecutable>$TestsResultsPath\..\Run $JobName.bat</TargetExecutable>
 	<Output>$DotCoverSnapshotFile</Output>
@@ -1215,26 +1334,28 @@ TestResults
                 
                     #Run DotCover Runner Batch File
                     &"$DotCoverRunnerPath"
-                    if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
+                    if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                         Cleanup-ServerStudio $false
                     }
                 } else {
                     &"$TestRunnerPath"
-                    if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
+                    if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
                         Cleanup-ServerStudio (!$ApplyDotCover)
                     }
                 }
-                Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent $JobName
+                Move-Artifacts-To-TestResults $ApplyDotCover ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent $JobName
             }
         }
+        if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1 -and !$JobContainers.IsPresent) {
+            Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
+        }
+    }
+    if ($JobContainers.IsPresent) {
+	    Cleanup-JobContainers
         if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1) {
             Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
         }
     }
-}
-
-if ($JobContainers.IsPresent) {
-	Cleanup-JobContainers
 }
 
 if ($AssemblyFileVersionsTest.IsPresent) {
@@ -1455,28 +1576,39 @@ if ($MergeDotCoverSnapshotsInDirectory -ne "") {
 }
 
 if ($Cleanup.IsPresent) {
-    if ($ApplyDotCover) {
-        Cleanup-ServerStudio $false
+    if ($JobContainers.IsPresent) {
+        Cleanup-JobContainers
     } else {
-        Cleanup-ServerStudio
+        if ($ServerContainer.IsPresent) {
+            Cleanup-ServerContainer
+        } else {
+            if ($ApplyDotCover) {
+                Cleanup-ServerStudio $false
+            } else {
+                Cleanup-ServerStudio
+            }
+	        if (!$JobNames -or $JobNames.Contains(",")) {
+		        if ($ProjectName) {
+			        $JobNames = $ProjectName
+		        } else {
+			        $JobNames = "Manual Tests"
+		        }
+	        }
+            Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log") $JobNames
+        }
     }
-	if (!$JobNames -or $JobNames.Contains(",")) {
-		if ($ProjectName) {
-			$JobNames = $ProjectName
-		} else {
-			$JobNames = "Manual Tests"
-		}
-	}
-    Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log") $JobNames
 }
 
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobNames -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "" -and !$StartServerContainer.IsPresent) {
+if ($ServerContainer.IsPresent) {
+    Start-ServerContainer
+}
+
+if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobNames -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "" -and !$ServerContainer.IsPresent) {
     Start-my.warewolf.io
-    Start-Container
     if (!${Startmy.warewolf.io}.IsPresent) {
-        $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType
-        Start-Server $ServerPath $ResourcesType
-        if (!$StartServer.IsPresent -and !${Startmy.warewolf.io}.IsPresent) {
+        Install-Server
+        Start-Server
+        if (!$StartServerAsConsole.IsPresent -and !$StartServerAsService.IsPresent -and !$StartServer.IsPresent -and !${Startmy.warewolf.io}.IsPresent) {
             Start-Studio
         }
     }

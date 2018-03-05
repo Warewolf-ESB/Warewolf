@@ -30,8 +30,9 @@ namespace Dev2.Activities.Specs.Deploy
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner(null, 0);
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Deploy Feature", "In order to schedule workflows\r\n\tAs a Warewolf user\r\n\tI want to setup schedules", ProgrammingLanguage.CSharp, new string[] {
-                        "Deploy"});
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Deploy Feature", "In order to deploy workflows\r\n\tAs a Warewolf user\r\n\tI want to setup deployments", ProgrammingLanguage.CSharp, new string[] {
+                        "Deploy",
+                        "RemoteServer"});
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -69,18 +70,17 @@ namespace Dev2.Activities.Specs.Deploy
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Create and Deploy a renamed resource to localhost")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy a renamed resource")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy Feature")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void CreateAndDeployARenamedResourceToLocalhost()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("RemoteServer")]
+        public virtual void DeployARenamedResource()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Create and Deploy a renamed resource to localhost", new string[] {
-                        "ignore"});
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy a renamed resource", ((string[])(null)));
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
- testRunner.Given("localhost and destination server \"localwarewolfservercontainer\" are connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("localhost and destination server are connected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
  testRunner.And("I have a workflow \"OriginalName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -94,18 +94,16 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec().a]]",
                         "no"});
 #line 11
- testRunner.And("\"OriginalName\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table1, "And ");
+ testRunner.And("the workflow contains an Assign \"Rec To Convert\" as", ((string)(null)), table1, "And ");
 #line 15
- testRunner.And("\"OriginalName\" contains Count Record \"CountRec\" on \"[[rec()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the workflow contains Count Record \"CountRec\" on \"[[rec()]]\" into \"[[count]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
- testRunner.When("\"OriginalName\" is Saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("the workflow is Saved", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 17
- testRunner.And("I select and deploy resource from source server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I deploy the workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
- testRunner.When("I rename \"OriginalName\" to \"RenamedResource\" and re deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I rename the workflow to \"RenamedResource\" and re deploy", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
- testRunner.Then("I select and deploy resource from remote server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 20
  testRunner.Then("Remote server has updated name", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
