@@ -685,6 +685,29 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
+        public List<IServiceTestModelTO> LoadAllTests()
+        {
+            if (GetCommunicationController != null)
+            {
+                var comsController = GetCommunicationController?.Invoke("FetchAllTests");
+                var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                var message = executeCommand.GetDecompressedMessage();
+                if (executeCommand.HasError)
+                {
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
+                var testsTO = serializer.Deserialize<List<IServiceTestModelTO>>(message);
+                if (testsTO != null)
+                {
+                    return testsTO;
+                }
+                return new List<IServiceTestModelTO>();
+            }
+            throw new NullReferenceException("Cannot load resource tests. Cannot get Communication Controller.");
+        }
+
         public List<IServiceTestModelTO> LoadResourceTestsForDeploy(Guid resourceId)
         {
             if (GetCommunicationController != null)

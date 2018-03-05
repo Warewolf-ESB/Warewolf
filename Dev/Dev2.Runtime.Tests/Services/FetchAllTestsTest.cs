@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces;
@@ -11,19 +11,18 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
-    public class FetchTestsTest
+    public class FetchAllTestsTest
     {
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Pieter Terblanche")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_GivenArgsWithResourceId_ShouldReturnResourceId()
         {
             //------------Setup for test--------------------------
-            var fetchTests = new FetchTests();
+            var fetchAllTests = new FetchAllTests();
             var stringBuilder = new StringBuilder();
             var resId = Guid.NewGuid();
             stringBuilder.Append(resId);
@@ -33,109 +32,103 @@ namespace Dev2.Tests.Runtime.Services
                 { "resourceID", stringBuilder }
             };
             //------------Execute Test---------------------------
-            var resourceID = fetchTests.GetResourceID(requestArgs);
+            var resourceID = fetchAllTests.GetResourceID(requestArgs);
             //------------Assert Results-------------------------
             Assert.AreEqual(resId, resourceID);
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Pieter Terblanche")]
         [TestCategory("GetResourceID")]
         public void GetResourceID_ShouldReturnEmptyGuid()
         {
             //------------Setup for test--------------------------
-            var fetchTests = new FetchTests();
-
+            var fetchAllTests = new FetchAllTests();
             //------------Execute Test---------------------------
-            var resId = fetchTests.GetResourceID(new Dictionary<string, StringBuilder>());
+            var resId = fetchAllTests.GetResourceID(new Dictionary<string, StringBuilder>());
             //------------Assert Results-------------------------
             Assert.AreEqual(Guid.Empty, resId);
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Pieter Terblanche")]
         [TestCategory("GetResourceID")]
         public void GetAuthorizationContextForService_ShouldReturnContext()
         {
             //------------Setup for test--------------------------
-            var fetchTests = new FetchTests();
-
+            var fetchAllTests = new FetchAllTests();
             //------------Execute Test---------------------------
-            var resId = fetchTests.GetAuthorizationContextForService();
+            var resId = fetchAllTests.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Contribute, resId);
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("FetchTests_HandlesType")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("FetchAllTests_HandlesType")]
         public void FetchTests_HandlesType_ExpectName()
         {
             //------------Setup for test--------------------------
-            var fetchTests = new FetchTests();
-
-
+            var fetchAllTests = new FetchAllTests();
             //------------Execute Test---------------------------
-
             //------------Assert Results-------------------------
-            Assert.AreEqual("FetchTests", fetchTests.HandlesType());
+            Assert.AreEqual("FetchAllTests", fetchAllTests.HandlesType());
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("FetchTests_Execute")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("FetchAllTests_Execute")]
         public void FetchTests_Execute_NullValues_ErrorResult()
         {
             //------------Setup for test--------------------------
-            var fetchTests = new FetchTests();
+            var fetchAllTests = new FetchAllTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            var jsonResult = fetchTests.Execute(null, null);
+            var jsonResult = fetchAllTests.Execute(null, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
-            Assert.IsTrue(result.HasError);
+            Assert.IsFalse(result.HasError);
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("FetchTests_Execute")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("FetchAllTests_Execute")]
         public void FetchTests_Execute_ResourceIDNotPresent_ErrorResult()
         {
             //------------Setup for test--------------------------
             var values = new Dictionary<string, StringBuilder> { { "item", new StringBuilder() } };
-            var fetchTests = new FetchTests();
+            var fetchAllTests = new FetchAllTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            var jsonResult = fetchTests.Execute(values, null);
+            var jsonResult = fetchAllTests.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
-            Assert.IsTrue(result.HasError);
+            Assert.IsFalse(result.HasError);
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("FetchTests_Execute")]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("FetchAllTests_Execute")]
         public void FetchTests_Execute_ResourceIDNotGuid_ErrorResult()
         {
             //------------Setup for test--------------------------
             var values = new Dictionary<string, StringBuilder> { { "resourceID", new StringBuilder("ABCDE") } };
-            var fetchTests = new FetchTests();
+            var fetchAllTests = new FetchAllTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            var jsonResult = fetchTests.Execute(values, null);
+            var jsonResult = fetchAllTests.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
-            Assert.IsTrue(result.HasError);
+            Assert.IsFalse(result.HasError);
         }
 
-
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Pieter Terblanche")]
         [TestCategory("FetchTests_Execute")]
-        public void FetchTests_Execute_ExpectTestList()
+        public void FetchAllTests_Execute_ExpectTestList()
         {
             //------------Setup for test--------------------------
-            var fetchTests = new FetchTests();
+            var fetchAllTests = new FetchAllTests();
 
             var listOfTests = new List<IServiceTestModelTO>
             {
@@ -149,25 +142,18 @@ namespace Dev2.Tests.Runtime.Services
             var repo = new Mock<ITestCatalog>();
             var ws = new Mock<IWorkspace>();
             var resID = Guid.Empty;
-            repo.Setup(a => a.Fetch(It.IsAny<Guid>())).Callback((Guid id) =>
-            {
-                resID = id;
-            }).Returns(listOfTests).Verifiable();
+            repo.Setup(a => a.FetchAllTests()).Returns(listOfTests).Verifiable();
 
             var serializer = new Dev2JsonSerializer();
-            var inputs = new Dictionary<string, StringBuilder>();
-            var resourceID = Guid.NewGuid();
-            inputs.Add("resourceID", new StringBuilder(resourceID.ToString()));
-            fetchTests.TestCatalog = repo.Object;
+            fetchAllTests.TestCatalog = repo.Object;
             //------------Execute Test---------------------------
-            var res = fetchTests.Execute(inputs, ws.Object);
+            var res = fetchAllTests.Execute(null, ws.Object);
             var msg = serializer.Deserialize<CompressedExecuteMessage>(res);
             var testModels = serializer.Deserialize<List<IServiceTestModelTO>>(msg.GetDecompressedMessage());
             //------------Assert Results-------------------------
-            repo.Verify(a => a.Fetch(It.IsAny<Guid>()));
+            repo.Verify(a => a.FetchAllTests());
             Assert.AreEqual(listOfTests.Count, testModels.Count);
             Assert.AreEqual(listOfTests[0].TestName, testModels[0].TestName);
-            Assert.AreEqual(resourceID, resID);
         }
     }
 }
