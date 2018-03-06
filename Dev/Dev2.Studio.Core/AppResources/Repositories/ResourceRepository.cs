@@ -21,6 +21,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
@@ -1044,6 +1045,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     }
                 }
             }
+        }
+
+        public List<ISearchResult> Filter(ISearchValue searchValue)
+        {
+            var comController = new CommunicationController { ServiceName = "GetFilterListService" };
+            comController.AddPayloadArgument("SearchValue", _serializer.Serialize(searchValue));
+            var lists = comController.ExecuteCommand<List<ISearchResult>>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+            return lists;
         }
     }
 }

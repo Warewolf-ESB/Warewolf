@@ -8,32 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
+using Dev2.Common.Interfaces.Search;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Dev2.Studio.Interfaces.Search
 {
     public delegate void ServerSate(object sender, IServer server);
-    public interface ISearchViewModel : IExplorerViewModel, INotifyPropertyChanged, IDisposable
+    public interface ISearchViewModel : IExplorerViewModel
     {
         event ServerSate ServerStateChanged;
-        bool IsAllSelected { get; set; }
-        bool IsWorkflowNameSelected { get; set; }
-        bool IsToolTitleSelected { get; set; }
-        bool IsToolNameSelected { get; set; }
-        bool IsInputFieldSelected { get; set; }
-        bool IsScalarNameSelected { get; set; }
-        bool IsObjectNameSelected { get; set; }
-        bool IsRecSetNameSelected { get; set; }
-        bool IsInputVariableSelected { get; set; }
-        bool IsOutputVariableSelected { get; set; }
-        bool IsTestNameSelected { get; set; }
-        bool IsMatchCaseSelected { get; set; }
-        bool IsMatchWholeWordSelected { get; set; }
-        string SearchInput { get; set; }
+        ISearchValue SearchValue { get; set; }
         ICommand SearchInputCommand { get; set; }
-        ObservableCollection<ISearchValue> SearchResults { get; set; }
+        ObservableCollection<ISearchResult> SearchResults { get; set; }
     }
 }

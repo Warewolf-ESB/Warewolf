@@ -17,37 +17,26 @@ using System.Threading.Tasks;
 using System.Linq;
 using Dev2.Studio.Interfaces.Search;
 using Dev2.Common;
-using System;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using System.Windows;
+using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Utils;
+using Dev2.Common.Search;
 
 namespace Dev2.ViewModels.Search
 {
     public class SearchViewModel : ExplorerViewModel, ISearchViewModel
     {
-        bool _isAllSelected;
-        bool _isWorkflowNameSelected;
-        bool _isToolTitleSelected;
-        bool _isToolNameSelected;
-        bool _isInputFieldSelected;
-        bool _isScalarNameSelected;
-        bool _isObjectNameSelected;
-        bool _isRecSetNameSelected;
-        bool _isInputVariableSelected;
-        bool _isOutputVariableSelected;
-        bool _isTestNameSelected;
-        bool _isMatchCaseSelected;
-        bool _isMatchWholeWordSelected;
-        string _searchInput;
         ICommand _searchInputCommand;
-        ObservableCollection<ISearchValue> _searchResults;
+        ObservableCollection<ISearchResult> _searchResults;
         bool _isSearching;
+        readonly IShellViewModel _shellViewModel;
 
         public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator, false)
         {
+            _shellViewModel = shellViewModel;
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
             ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server).ConfigureAwait(false); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
@@ -57,8 +46,8 @@ namespace Dev2.ViewModels.Search
             {
                 SearchWarewolfAsync();
             });
-            SearchResults = new ObservableCollection<ISearchValue>();
-            IsAllSelected = true;
+            SearchResults = new ObservableCollection<ISearchResult>();
+            SearchValue = new SearchValue();
             SelectedEnvironment?.Server?.ResourceRepository?.Load();
             IsSearching = false;
         }
@@ -100,15 +89,14 @@ namespace Dev2.ViewModels.Search
         {
             IsSearching = true;
 
-            var shellViewModel = CustomContainer.Get<IShellViewModel>();
             SearchResults.Clear();
-            if (!string.IsNullOrWhiteSpace(SearchInput))
+            if (!string.IsNullOrWhiteSpace(SearchValue.SearchInput))
             {
-                if (IsWorkflowNameSelected)
+                if (SearchValue.SearchOptions.IsWorkflowNameSelected)
                 {
                     FilterWorkflows();
                 }
-                if (IsTestNameSelected)
+                if (SearchValue.SearchOptions.IsTestNameSelected)
                 {
                     FilterTestNames();
                 }
@@ -116,18 +104,28 @@ namespace Dev2.ViewModels.Search
                 {
                     FilterVariables();
                 }
+                if (SearchValue.SearchOptions.IsToolTitleSelected)
+                {
+                    _shellViewModel.ActiveServer.ResourceRepository.Filter(SearchValue);
+                }
             }
             IsSearching = false;
         }
 
-        private bool IsAnyVariableOptionSelected => IsScalarNameSelected || IsRecSetNameSelected || IsObjectNameSelected || IsInputFieldSelected || IsOutputVariableSelected;
+        private bool IsAnyVariableOptionSelected => SearchValue.SearchOptions.IsScalarNameSelected || SearchValue.SearchOptions.IsRecSetNameSelected || SearchValue.SearchOptions.IsObjectNameSelected || SearchValue.SearchOptions.IsInputVariableSelected || SearchValue.SearchOptions.IsOutputVariableSelected;
 
         private void FilterWorkflows()
         {
             var children = SelectedEnvironment.Children.Flatten(model => model.Children).Where(model => FilterText(model.ResourceName));
             foreach (var child in children)
             {
-                var search = new SearchValue(child.ResourceId, child.ResourceName, child.ResourcePath, "Workflow", child.ResourceName, SelectedEnvironment);
+                var type = SearchItemType.WorkflowName;
+                if (child.IsSource)
+                {
+                    type = SearchItemType.SourceName;
+                }
+
+                var search = new SearchResult(child.ResourceId, child.ResourceName, child.ResourcePath, type, child.ResourceName);
                 SearchResults.Add(search);
             }
         }
@@ -143,7 +141,7 @@ namespace Dev2.ViewModels.Search
                     var resource = SelectedEnvironment.Children.Flatten(model => model.Children).FirstOrDefault(model => model.ResourceId == test.ResourceId);
                     if (resource != null)
                     {
-                        var search = new SearchValue(resource.ResourceId, test.TestName, resource.ResourcePath, "Test", test.TestName, SelectedEnvironment);
+                        var search = new SearchResult(resource.ResourceId, test.TestName, resource.ResourcePath, SearchItemType.TestName, test.TestName);
                         SearchResults.Add(search);
                     }
                 }
@@ -170,23 +168,19 @@ namespace Dev2.ViewModels.Search
             var resourcePath = resource.GetSavePath() + resource.ResourceName;
             foreach (var scalar in dtlist.ScalarCollection)
             {
-                var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, SelectedEnvironment)
+                var search = new SearchResult(resource.ID, resource.ResourceName, resourcePath, SearchItemType.Scalar, scalar.Name);
+                if (SearchValue.SearchOptions.IsScalarNameSelected && FilterText(scalar.Name))
                 {
-                    Match = scalar.Name
-                };
-                if (IsScalarNameSelected && FilterText(scalar.Name))
-                {
-                    search.Type = "Scalar";
                     SearchResults.Add(search);
                 }
-                if (scalar.Input && IsInputFieldSelected)
+                if (scalar.Input && SearchValue.SearchOptions.IsInputVariableSelected)
                 {
-                    search.Type = "Scalar Input";
+                    search.Type = SearchItemType.ScalarInput;
                     SearchResults.Add(search);
                 }
-                if (scalar.Output && IsOutputVariableSelected)
+                if (scalar.Output && SearchValue.SearchOptions.IsOutputVariableSelected)
                 {
-                    search.Type = "Scalar Output";
+                    search.Type = SearchItemType.ScalarOutput;
                     SearchResults.Add(search);
                 }
             }
@@ -197,23 +191,19 @@ namespace Dev2.ViewModels.Search
             var resourcePath = resource.GetSavePath() + resource.ResourceName;
             foreach (var recset in dtlist.RecsetCollection)
             {
-                var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, SelectedEnvironment)
+                var search = new SearchResult(resource.ID, resource.ResourceName, resourcePath, SearchItemType.RecordSet, recset.Name);
+                if (SearchValue.SearchOptions.IsRecSetNameSelected && FilterText(recset.Name))
                 {
-                    Match = recset.Name
-                };
-                if (IsRecSetNameSelected && FilterText(recset.Name))
-                {
-                    search.Type = "RecordSet";
                     SearchResults.Add(search);
                 }
-                if (recset.Input && IsInputFieldSelected)
+                if (recset.Input && SearchValue.SearchOptions.IsInputVariableSelected)
                 {
-                    search.Type = "RecordSet Input";
+                    search.Type = SearchItemType.RecordSetInput;
                     SearchResults.Add(search);
                 }
-                if (recset.Output && IsOutputVariableSelected)
+                if (recset.Output && SearchValue.SearchOptions.IsOutputVariableSelected)
                 {
-                    search.Type = "RecordSet Output";
+                    search.Type = SearchItemType.RecordSetOutput;
                     SearchResults.Add(search);
                 }
             }
@@ -224,179 +214,26 @@ namespace Dev2.ViewModels.Search
             var resourcePath = resource.GetSavePath() + resource.ResourceName;
             foreach (var complexObj in dtlist.ComplexObjectCollection)
             {
-                var search = new SearchValue(resource.ID, resource.ResourceName, resourcePath, SelectedEnvironment)
+                var search = new SearchResult(resource.ID, resource.ResourceName, resourcePath, SearchItemType.Object, complexObj.Name);
+                if (SearchValue.SearchOptions.IsObjectNameSelected && FilterText(complexObj.Name))
                 {
-                    Match = complexObj.Name
-                };
-                if (IsObjectNameSelected && FilterText(complexObj.Name))
-                {
-                    search.Type = "Object";
                     SearchResults.Add(search);
                 }
-                if (complexObj.Input && IsInputFieldSelected)
+                if (complexObj.Input && SearchValue.SearchOptions.IsInputVariableSelected)
                 {
-                    search.Type = "Object Input";
+                    search.Type = SearchItemType.ObjectInput;
                     SearchResults.Add(search);
                 }
-                if (complexObj.Output && IsOutputVariableSelected)
+                if (complexObj.Output && SearchValue.SearchOptions.IsOutputVariableSelected)
                 {
-                    search.Type = "Object Output";
+                    search.Type = SearchItemType.ObjectOutput;
                     SearchResults.Add(search);
                 }
             }
         }
 
-        bool FilterText(string filterValue)
-        {
-            var searchText = filterValue;
-            var valueToFilter = SearchInput;
-            if (!IsMatchCaseSelected)
-            {
-                searchText = filterValue.ToLower();
-                valueToFilter = SearchInput.ToLower();
-            }
-            var isMatch = IsMatchWholeWordSelected ? searchText.Equals(valueToFilter) : searchText.Contains(valueToFilter);
-            return isMatch;
-        }
+        bool FilterText(string filterValue) => SearchUtils.FilterText(filterValue, SearchValue);
 
-        public bool IsAllSelected
-        {
-            get => _isAllSelected;
-            set
-            {
-                _isAllSelected = value;
-
-                IsWorkflowNameSelected = value;
-                IsToolTitleSelected = value;
-                IsToolNameSelected = value;
-                IsInputFieldSelected = value;
-                IsScalarNameSelected = value;
-                IsObjectNameSelected = value;
-                IsRecSetNameSelected = value;
-                IsInputVariableSelected = value;
-                IsOutputVariableSelected = value;
-                IsTestNameSelected = value;
-
-                OnPropertyChanged(() => IsAllSelected);
-            }
-        }
-        public bool IsWorkflowNameSelected
-        {
-            get => _isWorkflowNameSelected;
-            set
-            {
-                _isWorkflowNameSelected = value;
-                OnPropertyChanged(() => IsWorkflowNameSelected);
-            }
-        }
-        public bool IsTestNameSelected
-        {
-            get => _isTestNameSelected;
-            set
-            {
-                _isTestNameSelected = value;
-                OnPropertyChanged(() => IsTestNameSelected);
-            }
-        }
-        public bool IsScalarNameSelected
-        {
-            get => _isScalarNameSelected;
-            set
-            {
-                _isScalarNameSelected = value;
-                OnPropertyChanged(() => IsScalarNameSelected);
-            }
-        }
-        public bool IsObjectNameSelected
-        {
-            get => _isObjectNameSelected;
-            set
-            {
-                _isObjectNameSelected = value;
-                OnPropertyChanged(() => IsObjectNameSelected);
-            }
-        }
-        public bool IsRecSetNameSelected
-        {
-            get => _isRecSetNameSelected;
-            set
-            {
-                _isRecSetNameSelected = value;
-                OnPropertyChanged(() => IsRecSetNameSelected);
-            }
-        }
-        public bool IsToolNameSelected
-        {
-            get => _isToolNameSelected;
-            set
-            {
-                _isToolNameSelected = value;
-                OnPropertyChanged(() => IsToolNameSelected);
-            }
-        }
-        public bool IsToolTitleSelected
-        {
-            get => _isToolTitleSelected;
-            set
-            {
-                _isToolTitleSelected = value;
-                OnPropertyChanged(() => IsToolTitleSelected);
-            }
-        }
-        public bool IsInputFieldSelected
-        {
-            get => _isInputFieldSelected;
-            set
-            {
-                _isInputFieldSelected = value;
-                OnPropertyChanged(() => IsInputFieldSelected);
-            }
-        }
-        public bool IsInputVariableSelected
-        {
-            get => _isInputVariableSelected;
-            set
-            {
-                _isInputVariableSelected = value;
-                OnPropertyChanged(() => IsInputVariableSelected);
-            }
-        }
-        public bool IsOutputVariableSelected
-        {
-            get => _isOutputVariableSelected;
-            set
-            {
-                _isOutputVariableSelected = value;
-                OnPropertyChanged(() => IsOutputVariableSelected);
-            }
-        }
-        public bool IsMatchCaseSelected
-        {
-            get => _isMatchCaseSelected;
-            set
-            {
-                _isMatchCaseSelected = value;
-                OnPropertyChanged(() => IsMatchCaseSelected);
-            }
-        }
-        public bool IsMatchWholeWordSelected
-        {
-            get => _isMatchWholeWordSelected;
-            set
-            {
-                _isMatchWholeWordSelected = value;
-                OnPropertyChanged(() => IsMatchWholeWordSelected);
-            }
-        }
-        public string SearchInput
-        {
-            get => _searchInput;
-            set
-            {
-                _searchInput = value;
-                OnPropertyChanged(() => SearchInput);
-            }
-        }
         public ICommand SearchInputCommand
         {
             get => _searchInputCommand;
@@ -406,7 +243,7 @@ namespace Dev2.ViewModels.Search
                 OnPropertyChanged(() => SearchInputCommand);
             }
         }
-        public ObservableCollection<ISearchValue> SearchResults
+        public ObservableCollection<ISearchResult> SearchResults
         {
             get => _searchResults;
             set
@@ -415,5 +252,7 @@ namespace Dev2.ViewModels.Search
                 OnPropertyChanged(() => SearchResults);
             }
         }
+
+        public ISearchValue SearchValue { get; set; }
     }
 }
