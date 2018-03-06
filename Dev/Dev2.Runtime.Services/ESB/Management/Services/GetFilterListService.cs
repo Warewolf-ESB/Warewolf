@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
@@ -48,9 +49,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     if (searchValue.SearchOptions.IsToolTitleSelected)
                     {
-                        var results = ResourceCatalog.Instance.FilterActivities(searchValue);
+                        var activities = ResourceCatalog.Instance.FilterActivities(searchValue);
 
-                        searchResults.AddRange(results);
+                        searchResults.AddRange(activities);
+                    }
+                    if (searchValue.SearchOptions.IsTestNameSelected)
+                    {
+                        var tests = TestCatalog.Instance.FilterTests(searchValue);
+
+                        searchResults.AddRange(tests);
                     }
                 }
 

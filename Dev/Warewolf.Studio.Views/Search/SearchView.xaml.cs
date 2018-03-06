@@ -24,14 +24,10 @@ namespace Dev2.Views.Search
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && DataContext is SearchViewModel viewModel)
             {
-                var viewModel = DataContext as SearchViewModel;
-                if (viewModel != null)
-                {
-                    viewModel.SearchValue.SearchInput = txtSearchInput.Text;
-                    viewModel.SearchInputCommand.Execute(null);
-                }
+                viewModel.SearchValue.SearchInput = txtSearchInput.Text;
+                viewModel.SearchInputCommand.Execute(null);
             }
         }
     }
