@@ -190,6 +190,12 @@
     <Compile Include="Scheduler\SchedulerUIMap.Designer.cs">
       <DependentUpon>SchedulerUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="Search\SearchUIMap.cs">
+      <DependentUpon>SearchUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Search\SearchUIMap.Designer.cs">
+      <DependentUpon>SearchUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="ServerSource\ServerSourceTests.cs" />
     <Compile Include="ServerSource\ServerSourceUIMap.cs">
       <DependentUpon>ServerSourceUIMap.uitest</DependentUpon>
@@ -433,6 +439,7 @@
     <None Include="packages.config" />
     <None Include="RabbitMQSource\RabbitMQSourceUIMap.uitest" />
     <None Include="Scheduler\SchedulerUIMap.uitest" />
+    <None Include="Search\SearchUIMap.uitest" />
     <None Include="ServerSource\ServerSourceUIMap.uitest" />
     <None Include="Settings\SettingsUIMap.uitest" />
     <None Include="SharepointSource\SharepointSourceUIMap.uitest" />
