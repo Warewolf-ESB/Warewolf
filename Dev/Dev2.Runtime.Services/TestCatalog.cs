@@ -8,10 +8,14 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Search;
+using Dev2.Common.Utils;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Util;
+using Dev2.Runtime.Hosting;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime
@@ -450,6 +454,25 @@ namespace Dev2.Runtime
                 }
             }
             return null;
+        }
+
+        public List<ISearchResult> FilterTests(ISearchValue searchValue)
+        {
+            var foundItems = new List<ISearchResult>();
+
+            var tests = FetchAllTests();
+            foreach (var test in tests)
+            {
+                var found = SearchUtils.FilterText(test.TestName, searchValue);
+                if (found)
+                {
+                    var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, test.ResourceId);
+                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.WorkflowName, test.TestName);
+                    foundItems.Add(searchResult);
+                }
+            }
+
+            return foundItems;
         }
     }
 }
