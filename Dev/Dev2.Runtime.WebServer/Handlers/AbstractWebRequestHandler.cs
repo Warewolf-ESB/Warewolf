@@ -143,6 +143,10 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (dataObject.IsServiceTestExecution)
             {
                 executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, esbExecuteRequest, dataObject);
+                if (!canExecute)
+                {
+                    return new StringResponseWriter(dataObject.Environment.FetchErrors(), formatter.ContentType);
+                }
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
             if (dataObject.IsDebugFromWeb)
