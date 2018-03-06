@@ -337,12 +337,6 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
         sleep 30
         exit 1
     }
-
-    if ("$JobNames" -eq "") {
-        $JobNames = "Test Run"
-    }
-    Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Resources" "Server Resources $JobNames"
-    Move-File-To-TestResults "$env:PROGRAMDATA\Warewolf\Tests" "Server Service Tests $JobNames"
 }
 
 function Get-ContainerName([string]$JobName) {
