@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
+namespace Warewolf.UI.Tests.Search
 {
     using System;
     using System.CodeDom.Compiler;
