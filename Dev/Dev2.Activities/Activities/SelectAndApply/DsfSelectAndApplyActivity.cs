@@ -21,7 +21,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.SelectAndApply
 {
-   
+
     [ToolDescriptorInfo("SelectApply", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_Select_and_Apply")]
     public class DsfSelectAndApplyActivity : DsfActivityAbstract<bool>, IEquatable<DsfSelectAndApplyActivity>
     {
@@ -42,7 +42,7 @@ namespace Dev2.Activities.SelectAndApply
         public override IEnumerable<IDev2Activity> GetChildrenNodes()
         {
             var act = ApplyActivityFunc.Handler as IDev2ActivityIOMapping;
-            if(act==null)
+            if (act == null)
             {
                 return new List<IDev2Activity>();
             }
@@ -218,7 +218,6 @@ namespace Dev2.Activities.SelectAndApply
             }
             finally
             {
-
                 if (dataObject.IsDebugMode())
                 {
                     if (dataObject.IsServiceTestExecution)
@@ -240,7 +239,19 @@ namespace Dev2.Activities.SelectAndApply
                             var itemToAdd = new DebugItem();
                             itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
                             debugStates?.AssertResultList?.Add(itemToAdd);
-
+                        }
+                    }
+                }
+                else
+                {
+                    if (dataObject.IsServiceTestExecution)
+                    {
+                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.FirstOrDefault(step => step.UniqueId == Guid.Parse(UniqueID));
+                        if (serviceTestStep != null)
+                        {
+                            var testRunResult = new TestRunResult();
+                            GetFinalTestRunResult(serviceTestStep, testRunResult, dataObject);
+                            serviceTestStep.Result = testRunResult;
                         }
                     }
                 }
@@ -335,12 +346,12 @@ namespace Dev2.Activities.SelectAndApply
             }
 
             var activityFuncComparer = new ActivityFuncComparer();
-            return base.Equals(other) 
+            return base.Equals(other)
                 && string.Equals(_previousParentId, other._previousParentId)
-                && Equals(_originalUniqueID,other._originalUniqueID)
+                && Equals(_originalUniqueID, other._originalUniqueID)
                 && string.Equals(_childUniqueID, other._childUniqueID)
-                && string.Equals(DataSource, other.DataSource) 
-                && string.Equals(Alias, other.Alias) 
+                && string.Equals(DataSource, other.DataSource)
+                && string.Equals(Alias, other.Alias)
                 && activityFuncComparer.Equals(ApplyActivityFunc, other.ApplyActivityFunc);
         }
 
@@ -361,7 +372,7 @@ namespace Dev2.Activities.SelectAndApply
                 return false;
             }
 
-            return Equals((DsfSelectAndApplyActivity) obj);
+            return Equals((DsfSelectAndApplyActivity)obj);
         }
 
         public override int GetHashCode()
@@ -380,5 +391,5 @@ namespace Dev2.Activities.SelectAndApply
         }
     }
 
-    
+
 }
