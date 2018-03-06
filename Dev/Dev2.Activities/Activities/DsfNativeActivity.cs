@@ -44,6 +44,8 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Activities.Statements;
+using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Search;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -1048,6 +1050,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected abstract void ExecuteTool(IDSFDataObject dataObject, int update);
 
+        protected virtual ISearchResult FilterTool(ISearchValue searchValue) => new SearchResult();
         public abstract List<string> GetOutputs();
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

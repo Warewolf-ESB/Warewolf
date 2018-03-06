@@ -29,7 +29,7 @@ namespace Dev2.Views.Search
                 var viewModel = DataContext as SearchViewModel;
                 if (viewModel != null)
                 {
-                    viewModel.SearchInput = txtSearchInput.Text;
+                    viewModel.SearchValue.SearchInput = txtSearchInput.Text;
                     viewModel.SearchInputCommand.Execute(null);
                 }
             }

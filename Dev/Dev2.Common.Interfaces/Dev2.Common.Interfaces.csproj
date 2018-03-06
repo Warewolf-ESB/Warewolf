@@ -391,6 +391,7 @@
     <Compile Include="Scheduler\Interfaces\SchedulerStatus.cs" />
     <Compile Include="Scheduler\Interfaces\ScheduleRunStatus.cs" />
     <Compile Include="Scripting\IScriptingContext.cs" />
+    <Compile Include="Search\ISearchValue.cs" />
     <Compile Include="Security\Permissions.cs" />
     <Compile Include="ServerProxyLayer\IDbSource.cs" />
     <Compile Include="ServerProxyLayer\IPluginProxy.cs" />
