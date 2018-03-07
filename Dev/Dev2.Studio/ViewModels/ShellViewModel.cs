@@ -625,6 +625,7 @@ namespace Dev2.Studio.ViewModels
             if (differenceResourceModel != null && currentResourceModel != null)
             {
                 currentResourceModel.ResourceName = differenceResourceModel.ResourceName;
+                currentResourceModel.VersionInfo = currentVersion.VersionInfo;
                 workSurfaceKey.EnvironmentID = differenceResourceModel.Environment.EnvironmentID;
                 workSurfaceKey.ResourceID = differenceResourceModel.ID;
                 workSurfaceKey.ServerID = differenceResourceModel.ServerID;
@@ -641,6 +642,7 @@ namespace Dev2.Studio.ViewModels
             if (currentResourceModel != null && differenceResourceModel != null)
             {
                 differenceResourceModel.ResourceName = currentResourceModel.ResourceName;
+                differenceResourceModel.VersionInfo = differenceVersion.VersionInfo;
                 workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
                 workSurfaceKey.ResourceID = currentResourceModel.ID;
                 workSurfaceKey.ServerID = currentResourceModel.ServerID;

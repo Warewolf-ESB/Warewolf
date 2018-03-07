@@ -58,7 +58,14 @@ namespace Warewolf.MergeParser
             var xaml = resourceModel.WorkflowXaml;
 
             var workspace = GlobalConstants.ServerWorkspaceID;
-            if (xaml == null)
+            if (resourceModel.IsVersionResource)
+            {
+                var se = new Dev2JsonSerializer();
+                var a = _definationCleaner.GetResourceDefinition(true, resourceModel.ID, resourceModel.WorkflowXaml);
+                var executeMessage = se.Deserialize<ExecuteMessage>(a);
+                xaml = executeMessage.Message;
+            }
+            else
             {
                 if (loadFromServer)
                 {
