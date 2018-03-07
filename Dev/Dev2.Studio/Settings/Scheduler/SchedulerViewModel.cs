@@ -46,7 +46,6 @@ using Dev2.Threading;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
-
 namespace Dev2.Settings.Scheduler
 {
     public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
@@ -60,7 +59,6 @@ namespace Dev2.Settings.Scheduler
         IScheduledResource _selectedTask;
         readonly IPopupController _popupController;
         readonly IAsyncWorker _asyncWorker;
-
         IResourceHistory _selectedHistory;
         IList<IResourceHistory> _history;
         TabItem _activeItem;
@@ -76,7 +74,6 @@ namespace Dev2.Settings.Scheduler
         bool _errorShown;
         DebugOutputViewModel _debugOutputViewModel;
         string _displayName;
-
 
         public SchedulerViewModel()
             : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), CustomContainer.Get<IShellViewModel>().ActiveServer, null)
@@ -127,10 +124,7 @@ namespace Dev2.Settings.Scheduler
 
         public override string DisplayName
         {
-            get
-            {
-                return _displayName;                
-            }
+            get =>_displayName;
             set
             {
                 _displayName = value;
@@ -138,12 +132,11 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
+        public override bool HasDebugOutput => true;
+
         public Func<IServer, IServer> ToEnvironmentModel
         {
-            private get
-            {
-                return _toEnvironmentModel ?? (a => a.ToEnvironmentModel());
-            }
+            private get => _toEnvironmentModel ?? (a => a.ToEnvironmentModel());
             set
             {
                 _toEnvironmentModel = value;
@@ -152,10 +145,7 @@ namespace Dev2.Settings.Scheduler
 
         public bool HasConnectionError
         {
-            get
-            {
-                return _hasConnectionError;
-            }
+            get => _hasConnectionError;
             set
             {
                 _hasConnectionError = value;
@@ -176,10 +166,7 @@ namespace Dev2.Settings.Scheduler
 
         public string ConnectionError
         {
-            get
-            {
-                return _connectionError;
-            }
+            get => _connectionError;
             set
             {
                 _connectionError = value;
@@ -189,10 +176,7 @@ namespace Dev2.Settings.Scheduler
 
         public bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             private set
             {
                 _isLoading = value;
@@ -204,10 +188,7 @@ namespace Dev2.Settings.Scheduler
 
         public IScheduleTrigger Trigger
         {
-            get
-            {
-                return SelectedTask.Trigger;
-            }
+            get => SelectedTask.Trigger;
             set
             {
                 if (SelectedTask != null)
@@ -221,10 +202,7 @@ namespace Dev2.Settings.Scheduler
 
         public SchedulerStatus Status
         {
-            get
-            {
-                return SelectedTask?.Status ?? SchedulerStatus.Enabled;
-            }
+            get => SelectedTask?.Status ?? SchedulerStatus.Enabled;
             set
             {
                 if (SelectedTask != null)
@@ -242,10 +220,7 @@ namespace Dev2.Settings.Scheduler
 
         public string WorkflowName
         {
-            get
-            {
-                return SelectedTask != null ? SelectedTask.WorkflowName : string.Empty;
-            }
+            get => SelectedTask != null ? SelectedTask.WorkflowName : string.Empty;
             set
             {
                 if (SelectedTask != null && !SelectedTask.IsNewItem)
@@ -273,10 +248,7 @@ namespace Dev2.Settings.Scheduler
 
         public string Name
         {
-            get
-            {
-                return SelectedTask != null ? SelectedTask.Name : string.Empty;
-            }
+            get => SelectedTask != null ? SelectedTask.Name : string.Empty;
             set
             {
                 if (SelectedTask == null || SelectedTask.Name == value)
@@ -312,10 +284,7 @@ namespace Dev2.Settings.Scheduler
 
         public bool RunAsapIfScheduleMissed
         {
-            get
-            {
-                return SelectedTask != null && SelectedTask.RunAsapIfScheduleMissed;
-            }
+            get => SelectedTask != null && SelectedTask.RunAsapIfScheduleMissed;
             set
             {
                 if (SelectedTask != null)
@@ -333,10 +302,7 @@ namespace Dev2.Settings.Scheduler
 
         public string NumberOfRecordsToKeep
         {
-            get
-            {
-                return SelectedTask?.NumberOfHistoryToKeep.ToString(CultureInfo.InvariantCulture) ?? string.Empty;
-            }
+            get => SelectedTask?.NumberOfHistoryToKeep.ToString(CultureInfo.InvariantCulture) ?? string.Empty;
             set
             {
                 if (SelectedTask != null)
@@ -390,10 +356,7 @@ namespace Dev2.Settings.Scheduler
 
         public IResourceHistory SelectedHistory
         {
-            get
-            {
-                return _selectedHistory;
-            }
+            get => _selectedHistory;
             set
             {
                 if (null == value)
@@ -425,10 +388,7 @@ namespace Dev2.Settings.Scheduler
 
         public IScheduledResource SelectedTask
         {
-            get
-            {
-                return _selectedTask;
-            }
+            get => _selectedTask;
             set
             {
                 if (value == null)
@@ -460,7 +420,6 @@ namespace Dev2.Settings.Scheduler
                     NotifyOfPropertyChange(() => SelectedHistory);
                     SelectedHistory = null;
                     NotifyOfPropertyChange(() => History);
-                    
                 }
             }
         }
@@ -468,10 +427,7 @@ namespace Dev2.Settings.Scheduler
 
         public IScheduledResourceModel ScheduledResourceModel
         {
-            get
-            {
-                return _scheduledResourceModel;
-            }
+            get => _scheduledResourceModel;
             set
             {
                 _scheduledResourceModel = value;
@@ -482,10 +438,7 @@ namespace Dev2.Settings.Scheduler
 
         public string AccountName
         {
-            get
-            {
-                return SelectedTask != null ? SelectedTask.UserName : string.Empty;
-            }
+            get => SelectedTask != null ? SelectedTask.UserName : string.Empty;
             set
             {
                 if (SelectedTask != null)
@@ -496,7 +449,7 @@ namespace Dev2.Settings.Scheduler
                     }
                     ClearError(Core.SchedulerLoginErrorMessage);
                     SelectedTask.UserName = value;
-                    NotifyOfPropertyChange(()=>IsDirty);
+                    NotifyOfPropertyChange(() => IsDirty);
                     NotifyOfPropertyChange(() => AccountName);
                 }
             }
@@ -504,10 +457,7 @@ namespace Dev2.Settings.Scheduler
 
         public string Password
         {
-            get
-            {
-                return SelectedTask != null ? SelectedTask.Password : string.Empty;
-            }
+            get => SelectedTask != null ? SelectedTask.Password : string.Empty;
             set
             {
                 if (SelectedTask != null)
@@ -526,10 +476,7 @@ namespace Dev2.Settings.Scheduler
 
         public IServer CurrentEnvironment
         {
-            get
-            {
-                return _currentEnvironment;
-            }
+            get => _currentEnvironment;
             set
             {
                 _currentEnvironment = value;
@@ -541,7 +488,7 @@ namespace Dev2.Settings.Scheduler
 
         public IErrorResultTO Errors
         {
-            get { return _selectedTask != null ? _selectedTask.Errors : new ErrorResultTO(); }
+            get => _selectedTask != null ? _selectedTask.Errors : new ErrorResultTO();
             private set
             {
                 if (_selectedTask != null)
@@ -555,10 +502,7 @@ namespace Dev2.Settings.Scheduler
 
         public bool IsHistoryTabVisible
         {
-            get
-            {
-                return _isHistoryTabVisible;
-            }
+            get => _isHistoryTabVisible;
             private set
             {
                 _isHistoryTabVisible = value;
@@ -568,10 +512,7 @@ namespace Dev2.Settings.Scheduler
 
         public bool IsProgressBarVisible
         {
-            get
-            {
-                return _isProgressBarVisible;
-            }
+            get => _isProgressBarVisible;
             set
             {
                 _isProgressBarVisible = value;
@@ -583,10 +524,7 @@ namespace Dev2.Settings.Scheduler
 
         public TabItem ActiveItem
         {
-            private get
-            {
-                return _activeItem;
-            }
+            private get => _activeItem;
             set
             {
                 if (Equals(value, _activeItem))
@@ -620,23 +558,25 @@ namespace Dev2.Settings.Scheduler
                        (_newCommand = new DelegateCommand(param => CreateNewTask()));
 
         public ICommand DeleteCommand => _deleteCommand ??
-                       (_deleteCommand = new DelegateCommand(param =>
-                       {
-                           var taskToBeDeleted = param as IScheduledResource;
-                           if (taskToBeDeleted == null)
-                           {
-                               return;
-                           }
+                       (_deleteCommand = new DelegateCommand(DeleteTask));
 
-                           SelectedTask = taskToBeDeleted;
-                           SchedulerTaskManager.DeleteTask();
-                       }));
+        private void DeleteTask(object param)
+        {
+            var taskToBeDeleted = param as IScheduledResource;
+            if (taskToBeDeleted == null)
+            {
+                return;
+            }
+
+            SelectedTask = taskToBeDeleted;
+            SchedulerTaskManager.DeleteTask();
+        }
 
         public ICommand EditTriggerCommand => _editTriggerCommand ??
                        (_editTriggerCommand = new DelegateCommand(param => SchedulerTaskManager.EditTrigger()));
 
         public ICommand AddWorkflowCommand => _addWorkflowCommand ??
-                                              (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SchedulerTaskManager.AddWorkflow, SchedulerTaskManager.CanSelectWorkflow));
+                       (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SchedulerTaskManager.AddWorkflow, SchedulerTaskManager.CanSelectWorkflow));
 
         void InitializeHelp()
         {
@@ -658,20 +598,13 @@ namespace Dev2.Settings.Scheduler
             if (CurrentEnvironment?.AuthorizationService != null && CurrentEnvironment.IsConnected && tmpEnv.Permissions.Any(a => a.Administrator))
             {
                 ClearConnectionError();
-                var serverRepository = CustomContainer.Get<IServerRepository>();
-                var server = CurrentEnvironment ?? serverRepository.ActiveServer;
-
-                if (server.Permissions == null)
-                {
-                    server.Permissions = new List<IWindowsGroupPermission>();
-                    server.Permissions.AddRange(server.AuthorizationService.SecurityService.Permissions);
-                }
-                SchedulerTaskManager.Source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
-
-                ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, CreateNewTask);
-                IsLoading = true;
+                CreateNewSchedulerTaskManagerSource();
+                
                 try
                 {
+                    ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, CreateNewTask);
+                    IsLoading = true;
+
                     var cmd = AddWorkflowCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                     cmd?.RaiseCanExecuteChanged();
 
@@ -691,7 +624,7 @@ namespace Dev2.Settings.Scheduler
                 {
                     if (!_errorShown)
                     {
-                        Dev2Logger.Error(ex, "Warewolf Error");
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                         _errorShown = true;
                     }
                 }
@@ -701,6 +634,19 @@ namespace Dev2.Settings.Scheduler
                 ClearConnectionError();
                 ClearViewModel();
             }
+        }
+
+        private void CreateNewSchedulerTaskManagerSource()
+        {
+            var serverRepository = CustomContainer.Get<IServerRepository>();
+            var server = CurrentEnvironment ?? serverRepository.ActiveServer;
+
+            if (server.Permissions == null)
+            {
+                server.Permissions = new List<IWindowsGroupPermission>();
+                server.Permissions.AddRange(server.AuthorizationService.SecurityService.Permissions);
+            }
+            SchedulerTaskManager.Source = new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true);
         }
 
         public void ClearConnectionError()
@@ -747,7 +693,6 @@ namespace Dev2.Settings.Scheduler
             {
                 try
                 {
-                    
                     if (SelectedTask == null)
                     {
                         SetDisplayName(false);
@@ -763,7 +708,7 @@ namespace Dev2.Settings.Scheduler
                     if (!_errorShown)
                     {
                         _popupController.ShowCorruptTaskResult(ex.Message);
-                        Dev2Logger.Error(ex, "Warewolf Error");
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                         _errorShown = true;
                     }
                 }
@@ -797,28 +742,22 @@ namespace Dev2.Settings.Scheduler
 
         public virtual bool DoDeactivate(bool showMessage)
         {
-            if (showMessage)
+            if (showMessage && SelectedTask != null && SelectedTask.IsDirty)
             {
-                if (SelectedTask != null && SelectedTask.IsDirty)
+                var showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
+                switch (showSchedulerCloseConfirmation)
                 {
-                    var showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
-                    switch (showSchedulerCloseConfirmation)
-                    {
-                        case MessageBoxResult.Cancel:
-                        case MessageBoxResult.None:
-                            return false;
-                        case MessageBoxResult.No:
-                            return true;
-                        case MessageBoxResult.OK:
-                            break;
-                        case MessageBoxResult.Yes:
-                            break;
-                        default:
-                            break;
-                    }
-                    return SchedulerTaskManager.SaveTasks();
+                    case MessageBoxResult.Cancel:
+                    case MessageBoxResult.None:
+                        return false;
+                    case MessageBoxResult.No:
+                        return true;
+                    default:
+                        break;
                 }
+                return SchedulerTaskManager.SaveTasks();
             }
+
             if (SelectedTask != null && !showMessage)
             {
                 return SchedulerTaskManager.SaveTasks();
@@ -834,10 +773,7 @@ namespace Dev2.Settings.Scheduler
 
         public string HelpText
         {
-            get
-            {
-                return _helpText;
-            }
+            get => _helpText;
             set
             {
                 if (value == _helpText)
@@ -858,7 +794,7 @@ namespace Dev2.Settings.Scheduler
 
         public DebugOutputViewModel DebugOutputViewModel
         {
-            get { return _debugOutputViewModel; }
+            get => _debugOutputViewModel;
             set
             {
                 _debugOutputViewModel = value;
@@ -883,7 +819,4 @@ namespace Dev2.Settings.Scheduler
             throw new Exception();
         }
     }
-
-
 }
-
