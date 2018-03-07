@@ -11,6 +11,8 @@
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace Dev2.Common
@@ -19,25 +21,31 @@ namespace Dev2.Common
     {
         readonly bool _isReversed;
         readonly int _masterLen;
-        private StringBuilder _sourceString;
+        private readonly string _sourceString;
+        private readonly MemoryStream _memoryStream;
         readonly IList<IDev2SplitOp> _ops;
 
         bool _disposing;
         bool _hasMoreOps;
         int _opPointer;
         int _startIdx;
+        private readonly StreamReader _streamReader;
 
-        internal Dev2Tokenizer(StringBuilder sourceString, IList<IDev2SplitOp> ops, bool reversed)
+        internal Dev2Tokenizer(string sourceString, IList<IDev2SplitOp> ops, bool reversed)
         {
             _ops = ops;
             _isReversed = reversed;
             _masterLen = sourceString.Length;
             _sourceString = sourceString;
+            _memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(sourceString));
+            _streamReader = new StreamReader(_memoryStream);            
             _opPointer = 0;
             _hasMoreOps = true;
             _startIdx = !_isReversed ? 0 : sourceString.Length - 1;
         }
 
+        #region Private Method
+      
         void MoveOpPointer()
         {
             _opPointer++;
@@ -73,7 +81,9 @@ namespace Dev2.Common
 
         public string NextToken()
         {
-            var result =_ops[_opPointer].ExecuteOperation(ref _sourceString, _startIdx, _masterLen, _isReversed);
+            _memoryStream.Position = 0;
+            _streamReader.DiscardBufferedData();
+            var result =_ops[_opPointer].ExecuteOperation(_sourceString, _startIdx, _masterLen, _isReversed);
             MoveStartIndex(result.Length + _ops[_opPointer].OpLength());
             MoveOpPointer();
             _hasMoreOps = !_ops[_opPointer].IsFinalOp() && HasMoreData();
@@ -92,7 +102,9 @@ namespace Dev2.Common
             {
                 if (disposing)
                 {
-                    _sourceString = null;
+                    _streamReader.BaseStream.Dispose();
+                    _streamReader.Dispose();
+                    _charEnumerator.Dispose();
                 }
                 _disposing = true;
             }
