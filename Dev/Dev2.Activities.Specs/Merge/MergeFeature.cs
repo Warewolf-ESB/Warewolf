@@ -89,6 +89,7 @@ namespace Dev2.Activities.Specs.Merge
                 var version = versions.FirstOrDefault(a => a.VersionNumber == versionNo.ToString());
                 Assert.IsNotNull(version, "Version \"" + versionNo + "\" of \"" + resourceName + "\" not found on remote server \"" + serverName + "\".");
                 var remoteResourceVersion = version.ToContextualResourceModel(remoteServer, remoteResource.ID);
+                remoteResourceVersion.VersionInfo = version;
                 _scenarioContext.Add(remoteResourceString, remoteResourceVersion);
             }
             else
@@ -100,6 +101,7 @@ namespace Dev2.Activities.Specs.Merge
                 var version = versions.Single(a => a.VersionNumber == versionNo.ToString());
                 Assert.IsNotNull(version, "Version \"" + versionNo + "\" of \"" + resourceName + "\" not found.");
                 var localResourceVersion = version.ToContextualResourceModel(localHost, localResource.ID);
+                localResourceVersion.VersionInfo = version;
                 _scenarioContext.Add(localResourceVersionString, localResourceVersion);
             }
         }
@@ -122,6 +124,15 @@ namespace Dev2.Activities.Specs.Merge
             _scenarioContext.Add(mergeVmString, mergeVm);
         }
 
+        [When(@"Merge Window is opened with local version ""(.*)""")]
+        public void WhenMergeWindowIsOpenedWithLocalVersion(string p0)
+        {
+            var localResourceVersion = _scenarioContext.Get<IContextualResourceModel>(localResourceVersionString);
+            var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
+            var mergeVm = new MergeWorkflowViewModel(localResourceVersion, localResource, true);
+            _scenarioContext.Add(mergeVmString, mergeVm);
+        }
+
         [Then(@"I select Current Tool")]
         public void ThenISelectCurrentTool()
         {
@@ -129,6 +140,18 @@ namespace Dev2.Activities.Specs.Merge
             var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && !a.HasConflict && a.IsCurrentChecked)
                                                   .Cast<ToolConflictRow>()
                                                   .Select(p => p.CurrentViewModel)
+                                                  .FirstOrDefault() as IToolConflictItem;
+            Assert.IsNotNull(mergeToolModel);
+            mergeToolModel.IsChecked = true;
+        }
+
+        [Then(@"I select Different Tool")]
+        public void ThenISelectDifferentTool()
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && !a.HasConflict && a.IsCurrentChecked)
+                                                  .Cast<ToolConflictRow>()
+                                                  .Select(p => p.DiffViewModel)
                                                   .FirstOrDefault() as IToolConflictItem;
             Assert.IsNotNull(mergeToolModel);
             mergeToolModel.IsChecked = true;
@@ -175,6 +198,20 @@ namespace Dev2.Activities.Specs.Merge
             var count = mergeVm.Conflicts.Where(a => a is ToolConflictRow).Cast<ToolConflictRow>().Select(p => p.DiffViewModel).Count();
             var count1 = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).Count();
             Assert.AreEqual(toolCount, count + count1);
+        }
+
+        [Then(@"Current workflow header is ""(.*)""")]
+        public void ThenCurrentWorkflowHeaderIs(string header)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            Assert.AreEqual(header, mergeVm.ModelFactoryCurrent.Header);
+        }
+
+        [Then(@"Different workflow header is ""(.*)""")]
+        public void ThenDifferentWorkflowHeaderIs(string header)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            Assert.AreEqual(header, mergeVm.ModelFactoryDifferent.Header);
         }
 
         [Then(@"Merge conflicts count is ""(.*)""")]

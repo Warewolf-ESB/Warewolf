@@ -132,6 +132,8 @@ Scenario: Merge Workflow Containing Position Change tools
 	 When Merge Window is opened with local "MergePositionChange"
 	 Then Current workflow contains "6" tools
 	 And Different workflow contains "6" tools
+	 And Current workflow header is "MergePositionChange"
+	 And Different workflow header is "MergePositionChange v.1"
 	 And Merge conflicts count is "6"
 	 And Merge variable conflicts is false
 	 And conflict "0" Current matches tool "Start"
@@ -149,6 +151,33 @@ Scenario: Merge Workflow Containing Position Change tools
 	 And I select Current Tool
 	 And I select Current Arm
 	 And I select Different Arm
+	 Then Save is enabled
+
+Scenario: Merge Workflow Version Containing Position Change tools
+	 Given I Load workflow "MergePositionChange" from "localhost"
+	 And I Load workflow version "1" of "MergePositionChange" from "localhost"
+	 When Merge Window is opened with local version "MergePositionChange"
+	 Then Current workflow contains "6" tools
+	 And Different workflow contains "6" tools
+	 And Current workflow header is "MergePositionChange v.1"
+	 And Different workflow header is "MergePositionChange"
+	 And Merge conflicts count is "6"
+	 And Merge variable conflicts is false
+	 And conflict "0" Current matches tool "Start"
+	 And conflict "0" Different matches tool "Start"
+	 And conflict "1" Current Connector matches tool "Start -> Assign (0)"
+	 And conflict "1" Different Connector matches tool "Start -> Data Merge (0)"
+	 And conflict "2" Current matches tool "Assign (0)"
+	 And conflict "2" Different matches tool "Assign (0)"
+	 And conflict "3" Current Connector matches tool "Assign (0) -> Data Merge (0)"
+	 And conflict "3" Different Connector matches tool is null
+	 And conflict "4" Current matches tool "Data Merge (0)"
+	 And conflict "4" Different matches tool "Data Merge (0)"
+	 And conflict "5" Current Connector matches tool is null
+	 And conflict "5" Different Connector matches tool "Data Merge (0) -> Assign (0)"
+	 And I select Different Tool
+	 And I select Different Arm
+	 And I select Current Arm
 	 Then Save is enabled
 
 
