@@ -453,7 +453,7 @@ namespace Dev2.FindMissingStrategies
                 }
                 if (maAct.Headers != null)
                 {
-                    results = AddAllHeaders(maAct);
+                    results.AddRange(AddAllHeaders(maAct));
                 }
                 if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
                 {
