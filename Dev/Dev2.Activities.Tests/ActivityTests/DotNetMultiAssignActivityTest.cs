@@ -828,6 +828,42 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("some value \"testData\" another", actual);
         }
 
+        [TestMethod]
+        public void DsfDotNetMultiAssignActivity_WhenDifferentFieldCollectionData_SHouldBeNotEqual()
+        {
+
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[a]]", "12", fieldCollection.Count));
+            var activity1 = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+
+            var fieldCollection2 = new ObservableCollection<ActivityDTO>();
+            fieldCollection2.Add(new ActivityDTO("[[b]]", "111", fieldCollection.Count));
+            var activity2 = new DsfDotNetMultiAssignActivity {
+                UniqueID = activity1.UniqueID, // simulate this assign being from a copied/cloned workflow
+                OutputMapping = null,
+                FieldsCollection = fieldCollection2
+            };
+
+            Assert.IsFalse(activity1.Equals(activity2));
+        }
+        [TestMethod]
+        public void DsfDotNetMultiAssignActivity_WhenSameFieldCollectionData_SHouldBeEqual()
+        {
+
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[a]]", "12", fieldCollection.Count));
+            var activity1 = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+
+            var fieldCollection2 = new ObservableCollection<ActivityDTO>();
+            fieldCollection2.Add(new ActivityDTO("[[a]]", "12", fieldCollection2.Count));
+            var activity2 = new DsfDotNetMultiAssignActivity {
+                UniqueID = activity1.UniqueID, // simulate this assign being from a copied/cloned workflow
+                OutputMapping = null,
+                FieldsCollection = fieldCollection2 };
+
+            Assert.IsTrue(activity1.Equals(activity2));
+        }
+
         #endregion Language Tests
 
         #region Calculate Mode Tests

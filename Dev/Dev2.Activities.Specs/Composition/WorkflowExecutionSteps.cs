@@ -4296,8 +4296,8 @@ namespace Dev2.Activities.Specs.Composition
             var localResource = repo.LoadContextualResourceModel(versions.First().ResourceId);
             var remoteResource = repo.LoadContextualResourceModel(versions.Last().ResourceId);
             var vm = new Mock<IMergeWorkflowViewModel>();
-            var wdvm = new Mock<IWorkflowDesignerViewModel>();
-            vm.Setup(p => p.WorkflowDesignerViewModel).Returns(wdvm.Object);
+            var wdvm = new Mock<IMergePreviewWorkflowDesignerViewModel>();
+            vm.Setup(p => p.MergePreviewWorkflowDesignerViewModel).Returns(wdvm.Object);
         }
 
         [Given(@"Public ""(.*)"" Permissions to Execute ""(.*)""")]

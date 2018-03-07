@@ -1199,34 +1199,37 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
-        public void RemoveItem(IMergeToolModel model)
+        public void RemoveItem(IToolConflictItem model)
         {
             throw new NotImplementedException();
         }
 
-        public void AddItem(IMergeToolModel model)
+        public void AddItem(IToolConflictItem model)
         {
             throw new NotImplementedException();
         }
 
-        public void LinkTools(string sourceUniqueId, string destinationUniqueId, string key)
+        public void LinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
 
         }
 
         public void RemoveStartNodeConnection()
         {
-            throw new NotImplementedException();
+            
         }
+        public void LinkStartNode(IToolConflictItem model)
+        {
 
-        public void UpdateModelItem(ModelItem modelItem, IMergeToolModel modelTool)
+        }
+        public void UpdateModelItem(ModelItem modelItem, IToolConflictItem modelTool)
         {
             throw new NotImplementedException();
         }
 
         public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel) => throw new NotImplementedException();
 
-        public void DeLinkTools(string sourceUniqueId, string destinationUniqueId, string key)
+        public void DeLinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key)
         {
             throw new NotImplementedException();
         }

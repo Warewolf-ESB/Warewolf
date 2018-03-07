@@ -618,7 +618,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var shareCollection = new ShareCollection(@"\\tst-ci-remote\");
-            Assert.AreEqual(6, shareCollection.Count);
+            Assert.AreEqual(5, shareCollection.Count);
         }
 
         static FileSystemQuery GetFileSystemQuery(bool hasShares = true)

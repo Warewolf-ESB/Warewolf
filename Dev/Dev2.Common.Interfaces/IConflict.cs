@@ -12,32 +12,50 @@ using System;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IConflict
+    public interface IConflictCheckable
     {
+        bool IsCurrentChecked { get; set; }
+    }
+    public interface ICheckable {
+        bool IsChecked { get; set; }
+    }
+
+    public interface IConnectorConflictItem : IConflictItem
+    {
+        string ArmDescription { get; set; }
+        Guid SourceUniqueId { get; set; }
+        Guid DestinationUniqueId { get; set; }
+        string Key { get; set; }
+
+        IToolConflictItem SourceConflictItem();
+        IToolConflictItem DestinationConflictItem();
+
+        IConnectorConflictItem Clone();
+    }
+
+    public interface IConflictItem
+    {
+        void SetAutoChecked();
+        bool IsChecked { get; set; }
+        bool AllowSelection { get; set; }
+        event Action<IConflictItem, bool> NotifyIsCheckedChanged;
+    }
+    public interface IConflictRow
+    {
+        IConflictItem Current { get; }
+        IConflictItem Different { get; }
+        bool IsCurrentChecked { get; set; }
+        bool ContainsStart { get; set; }
         bool IsEmptyItemSelected { get; set; }
         bool HasConflict { get; set; }
         bool IsChecked { get; set; }
-        bool IsMergeExpanderEnabled { get; set; }
-        Guid UniqueId { get; set; }
+        Guid UniqueId { get; }
     }
 
-    public interface IMergeArmConnectorConflict : IEquatable<IMergeArmConnectorConflict>
+    public interface IConnectorConflictRow : IConflictRow
     {
-        IArmConnectorConflict Container { get; set; }
-        string ArmDescription { get; set; }
-        string SourceUniqueId { get; set; }
-        string DestinationUniqueId { get; set; }
-        bool IsArmSelectionAllowed { get; set; }
-        bool IsChecked { get; set; }
-        string Key { get; set; }
-        event Action<IArmConnectorConflict, bool> OnChecked;
-        void DisableEvents();
-    }
-
-    public interface IArmConnectorConflict : IConflict, IEquatable<IArmConnectorConflict>
-    {
-        IMergeArmConnectorConflict CurrentArmConnector { get; set; }
-        IMergeArmConnectorConflict DifferentArmConnector { get; set; }
+        IConnectorConflictItem CurrentArmConnector { get; set; }
+        IConnectorConflictItem DifferentArmConnector { get; set; }
         string Key { get; set; }
     }
 }

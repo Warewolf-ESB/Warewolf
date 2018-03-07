@@ -11,33 +11,27 @@
 using System;
 using System.Activities.Presentation.Model;
 using System.Activities.Statements;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IMergeToolModel
+    public interface IToolConflictItem : IConflictItem
     {
         ImageSource MergeIcon { get; set; }
         string MergeDescription { get; set; }
-        bool IsMergeChecked { get; set; }
-        bool IsMergeEnabled { get; set; }
-        IMergeToolModel Parent { get; set; }
-        ObservableCollection<IMergeToolModel> Children { get; set; }
         Guid UniqueId { get; set; }
-        string ParentDescription { get; set; }
-        bool HasParent { get; set; }
-        event ModelToolChanged SomethingModelToolChanged;
         FlowNode FlowNode { get; set; }
+        object Activity { get; set; }
         ModelItem ModelItem { get; set; }
         Point NodeLocation { get; set; }
-        bool IsMergeVisible { get; set; }
-        IToolConflict Container { get; set; }
-        bool IsTrueArm { get; set; }
-        string NodeArmDescription { get; set; }
+        bool IsInWorkflow { get; }
+        bool IsAddedToWorkflow { get; set; }
+        bool ShowCheckbox { get; }
+        List<IConnectorConflictItem> InboundConnectors { get; set; }
+        List<IConnectorConflictItem> OutboundConnectors { get; set; }
 
-        void DisableEvents();
+        IToolConflictItem Clone();
     }
-    public delegate void ModelToolChanged(object sender, IMergeToolModel args);
 }

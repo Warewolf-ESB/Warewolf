@@ -12,14 +12,12 @@ namespace Dev2.Studio.Interfaces
         bool IsDirty { get; }
         string DisplayName { get; set; }
         void Save();
-        IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
+        IMergePreviewWorkflowDesignerViewModel MergePreviewWorkflowDesignerViewModel { get; set; }
         IDataListViewModel DataListViewModel { get; set; }
         bool HasMergeStarted { get; set; }
         bool HasWorkflowNameConflict { get; set; }
         bool HasVariablesConflict { get; set; }
-        IConflictModelFactory CurrentConflictModel { get; set; }
-        IConflictModelFactory DifferenceConflictModel { get; set; }
-        LinkedList<IConflict> Conflicts { get; set; }
+        IEnumerable<IConflictRow> Conflicts { get; set; }
         bool IsVariablesEnabled { get; set; }
     }
 }

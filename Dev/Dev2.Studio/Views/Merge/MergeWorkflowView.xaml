@@ -69,7 +69,7 @@
                         <DockPanel x:Name="CurrentDockPanel" 
                                    LastChildFill="False" 
                                    AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
-                                   DataContext="{Binding CurrentConflictModel}">
+                                   DataContext="{Binding ModelFactoryCurrent}">
                             <StackPanel x:Name="CurrentWorkflowHeaderSp" 
                                         Background="{StaticResource WareWolfMenuBrush}" 
                                         HorizontalAlignment="Stretch" 
@@ -108,7 +108,7 @@
                         <DockPanel x:Name="DifferenceDockPanel" 
                                    LastChildFill="False" 
                                    AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
-                                   DataContext="{Binding DifferenceConflictModel}">
+                                   DataContext="{Binding ModelFactoryDifferent}">
                             <StackPanel x:Name="DifferenceWorkflowHeaderSp" 
                                         Background="{StaticResource WareWolfMenuBrush}" 
                                         DockPanel.Dock="Left" 
@@ -172,7 +172,7 @@
                                    Grid.Column="0" 
                                    LastChildFill="False" 
                                    AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
-                                   DataContext="{Binding CurrentConflictModel}">
+                                   DataContext="{Binding ModelFactoryCurrent}">
                             <StackPanel x:Name="CurrentWorkflowTextSp" 
                                         DockPanel.Dock="Left" 
                                         Orientation="Horizontal" 
@@ -225,7 +225,7 @@
                             <StackPanel x:Name="DifferenceWorkflowTextSp" 
                                         DockPanel.Dock="Left" 
                                         Orientation="Horizontal"
-                                        DataContext="{Binding DifferenceConflictModel}"
+                                        DataContext="{Binding ModelFactoryDifferent}"
                                         AutomationProperties.AutomationId="UI_DifferenceWorkflowTextSP_AutoID">
                                 <RadioButton x:Name="DifferenceWorkflowRb" 
                                              IsChecked="{Binding IsWorkflowNameChecked}" 
@@ -283,7 +283,7 @@
                                                 AutomationProperties.AutomationId="UI_CurrentVariablesHeaderBorder_AutoID">
                                             <DockPanel x:Name="CurrentVariablesDockPanel" 
                                                        LastChildFill="False"
-                                                       DataContext="{Binding CurrentConflictModel}"
+                                                       DataContext="{Binding ModelFactoryCurrent}"
                                                        AutomationProperties.AutomationId="UI_CurrentVariablesDockPanel_AutoID">
                                                 <StackPanel x:Name="CurrentVariablesTextSP" 
                                                             DockPanel.Dock="Left" 
@@ -339,7 +339,7 @@
                                                 AutomationProperties.AutomationId="UI_DifferenceVariablesBorder_AutoID">
                                             <DockPanel x:Name="DifferenceVariablesDockPanel" 
                                                        LastChildFill="False"
-                                                       DataContext="{Binding DifferenceConflictModel}"
+                                                       DataContext="{Binding ModelFactoryDifferent}"
                                                        AutomationProperties.AutomationId="UI_DifferenceVariablesDockPanel_AutoID">
                                                 <StackPanel x:Name="DifferenceVariablesSP" 
                                                             DockPanel.Dock="Left" 
@@ -382,7 +382,7 @@
                                 <Border x:Name="CurrentVariablesTemplateBorder" 
                                         BorderBrush="#CFD6E1" 
                                         BorderThickness="1,0,1,1" 
-                                        DataContext="{Binding CurrentConflictModel}"
+                                        DataContext="{Binding ModelFactoryCurrent}"
                                         AutomationProperties.AutomationId="UI_CurrentVariablesTemplateBorder_AutoID">
                                     <datalist:DataListView x:Name="CurrentVariablesDataListView" 
                                                            DataContext="{Binding DataListViewModel}" 
@@ -395,7 +395,7 @@
                                         Grid.Column="1" 
                                         BorderBrush="#CFD6E1" 
                                         BorderThickness="1,0,1,1" 
-                                        DataContext="{Binding DifferenceConflictModel}"
+                                        DataContext="{Binding ModelFactoryDifferent}"
                                         AutomationProperties.AutomationId="UI_DifferenceVariablesTemplateBorder_AutoID">
                                     <datalist:DataListView x:Name="DifferenceVariablesDataListView" 
                                                            DataContext="{Binding DataListViewModel}" 
@@ -430,7 +430,195 @@
 			                      VirtualizingStackPanel.IsVirtualizingWhenGrouping="True"
 			                      VirtualizingStackPanel.IsContainerVirtualizable="True">
                             <TreeView.Resources>
-                                <HierarchicalDataTemplate DataType="{x:Type merge:ToolConflict}">
+                                <HierarchicalDataTemplate DataType="{x:Type merge:ConnectorConflictRow}">
+                                    <Grid Name="ConflictsTreeViewTemplateGrid" 
+                                          Background="{StaticResource WarewolfPanelGreyBrush}" 
+                                          Width="{Binding ElementName=ConflictsTreeView, Path=ActualWidth}"
+                                          AutomationProperties.AutomationId="UI_ConflictsTreeViewTemplateGrid_AutoID">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="50*" />
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="50*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Border x:Name="CurrentNodeArmBorder" 
+                                                Grid.Column="0" 
+                                                Background="{StaticResource WarewolfPanelGreyBrush}" 
+                                                BorderBrush="#CFD6E1" 
+                                                BorderThickness="0" 
+                                                Margin="0,0,-2,0" 
+                                                DataContext="{Binding CurrentArmConnector}"
+                                                AutomationProperties.AutomationId="UI_CurrentNodeArmBorder_AutoID">
+                                            <DockPanel x:Name="CurrentNodeArmDockPanel" 
+                                                       LastChildFill="False"
+                                                       AutomationProperties.AutomationId="UI_CurrentNodeArmDockPanel_AutoID">
+
+                                                <StackPanel x:Name="CurrentNodeArmSP" 
+                                                            Orientation="Horizontal" HorizontalAlignment="Stretch"
+                                                            Width="{Binding ElementName=CurrentNodeArmDockPanel, Path=ActualWidth}"
+                                                            AutomationProperties.AutomationId="UI_CurrentNodeArmSP_AutoID">
+                                                    <Grid HorizontalAlignment="Stretch" Width="{Binding ElementName=CurrentNodeArmDockPanel, Path=ActualWidth}">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*"/>
+                                                            <ColumnDefinition Width="Auto"/>
+                                                        </Grid.ColumnDefinitions>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock x:Name="CurrentNodeLeftArmText" 
+                                                                       Margin="38,0,0,0" 
+                                                                       Text="{Binding LeftArmDescription}" 
+                                                                       ToolTip="{Binding LeftArmDescription}"
+                                                                       ToolTipService.ShowOnDisabled="True"
+                                                                       FontWeight="Bold" 
+                                                                       AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
+                                                                       HorizontalAlignment="Stretch"/>
+
+                                                            <fa:FontAwesome Margin="5,2,0,0" 
+                                                                            Icon="LongArrowRight" 
+                                                                            Grid.Column="0"
+                                                                            ToolTip="Connects to" 
+                                                                            FontSize="18" 
+                                                                            Foreground="Gray" 
+                                                                            HorizontalAlignment="Stretch"
+                                                                            Visibility="{Binding IsArmConnectorVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                                            <TextBlock x:Name="CurrentNodeRightArmText" 
+                                                                       Margin="5,0,0,0" 
+                                                                       Grid.Column="0"
+                                                                       Text="{Binding RightArmDescription}" 
+                                                                       ToolTip="{Binding RightArmDescription}"
+                                                                       ToolTipService.ShowOnDisabled="True"
+                                                                       FontWeight="Bold"
+                                                                       AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
+                                                                       HorizontalAlignment="Stretch"/>
+                                                        </StackPanel>
+                                                        <Grid x:Name="CurrentNodeArmRBSP" 
+                                                              Grid.Column="1"
+                                                              IsEnabled="{Binding AllowSelection}"
+                                                              AutomationProperties.AutomationId="UI_CurrentNodeArmRBSP_AutoID">
+                                                            <RadioButton x:Name="CurrentNodeArmRB" 
+                                                                         IsChecked="{Binding IsChecked}" 
+                                                                         HorizontalAlignment="Right"
+                                                                         Margin="0,0,3,0"
+                                                                         IsEnabled="{Binding AllowSelection}"
+                                                                         GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
+                                                                         AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
+                                                                <RadioButton.Style>
+                                                                    <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
+                                                                        <Style.Triggers>
+                                                                            <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                                                <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                            </DataTrigger>
+                                                                            <Trigger Property="IsEnabled" Value="False">
+                                                                                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentArmRBDisabledTooltip}" />
+                                                                            </Trigger>
+                                                                            <Trigger Property="IsEnabled" Value="True">
+                                                                                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentArmRBTooltip}" />
+                                                                            </Trigger>
+                                                                        </Style.Triggers>
+                                                                    </Style>
+                                                                </RadioButton.Style>
+                                                                <i:Interaction.Behaviors>
+                                                                    <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentArmRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
+                                                                </i:Interaction.Behaviors>
+                                                            </RadioButton>
+                                                        </Grid>
+                                                    </Grid>
+                                                </StackPanel>
+                                            </DockPanel>
+                                        </Border>
+
+                                        <fa:FontAwesome Grid.Column="1" 
+                                                        x:Name="NodeArmNoConflictIcon"
+                                                        Margin="4,0,0,0"
+                                                        Style="{StaticResource MergeNoConflictIcon}"
+                                                        Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+
+                                        <Border x:Name="DifferenceNodeArmBorder" 
+                                                Grid.Column="2" 
+                                                Background="{StaticResource WarewolfPanelGreyBrush}" 
+                                                BorderBrush="#CFD6E1" 
+                                                Margin="2,0,0,0"
+                                                IsEnabled="{Binding AllowSelection}"
+                                                AutomationProperties.AutomationId="UI_DifferenceNodeArmBorder_AutoID">
+                                            <Border.Style>
+                                                <Style>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HasConflict}" Value="True">
+                                                            <Setter Property="Border.BorderThickness" Value="2,0,0,0"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding HasConflict}" Value="False">
+                                                            <Setter Property="Border.BorderThickness" Value="0"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
+                                            <DockPanel x:Name="DifferenceNodeArmDockPanel" 
+                                                       LastChildFill="False"
+                                                       DataContext="{Binding DifferentArmConnector}"
+                                                       AutomationProperties.AutomationId="UI_DifferenceNodeArmDockPanel_AutoID">
+                                                <StackPanel Name="DifferenceNodeArmSP" 
+                                                            DockPanel.Dock="Left" 
+                                                            Orientation="Horizontal" 
+                                                            IsEnabled="{Binding AllowSelection}"
+                                                            AutomationProperties.AutomationId="UI_DifferenceNodeArmSP_AutoID">
+                                                    <RadioButton x:Name="DifferenceNodeArmRB" 
+                                                                 IsChecked="{Binding IsChecked}" 
+                                                                 HorizontalAlignment="Left"
+                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
+                                                                 Margin="3,0,3,0"
+                                                                 AutomationProperties.AutomationId="UI_DifferenceNodeArmRB_AutoID">
+                                                        <RadioButton.Style>
+                                                            <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                    <Trigger Property="IsEnabled" Value="False">
+                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceArmRBDisabledTooltip}" />
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsEnabled" Value="True">
+                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceArmRBTooltip}" />
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </RadioButton.Style>
+                                                        <i:Interaction.Behaviors>
+                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceArmRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </RadioButton>
+                                                    <TextBlock x:Name="DifferenceNodeArmText" 
+                                                               Margin="23,0,0,0" 
+                                                               Text="{Binding LeftArmDescription}" 
+                                                               ToolTip="{Binding LeftArmDescription}"
+                                                               ToolTipService.ShowOnDisabled="True"
+                                                               FontWeight="Bold" 
+                                                               AutomationProperties.AutomationId="UI_DifferenceNodeArmText_AutoID"
+                                                               HorizontalAlignment="Stretch"
+                                                               Visibility="{Binding AllowSelection, Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                                                    <fa:FontAwesome Margin="5,2,0,0" 
+                                                                    Icon="LongArrowRight" 
+                                                                    ToolTip="Connects to" 
+                                                                    FontSize="18" 
+                                                                    Foreground="Gray" 
+                                                                    Visibility="{Binding AllowSelection, Converter={StaticResource BoolToVisibilityConverter}}"/>
+
+                                                    <TextBlock x:Name="DifferenceNodeRightArmText" 
+                                                               Margin="5,0,0,0" 
+                                                               Text="{Binding RightArmDescription}" 
+                                                               ToolTip="{Binding RightArmDescription}"
+                                                               ToolTipService.ShowOnDisabled="True"
+                                                               FontWeight="Bold" 
+                                                               AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
+                                                               HorizontalAlignment="Stretch"
+                                                               Visibility="{Binding AllowSelection, Converter={StaticResource BoolToVisibilityConverter}}" />
+                                                </StackPanel>
+                                            </DockPanel>
+                                        </Border>
+                                    </Grid>
+                                </HierarchicalDataTemplate>
+                                <HierarchicalDataTemplate DataType="{x:Type merge:ToolConflictRow}">
                                     <Grid Name="ConflictsTreeViewTemplateGrid" 
                                           Width="{Binding ElementName=ConflictsTreeView, Path=ActualWidth}"
                                           AutomationProperties.AutomationId="UI_ConflictsTreeViewTemplateGrid_AutoID">
@@ -446,9 +634,9 @@
                                                   Grid.Column="0"
                                                   Grid.ColumnSpan="2"
 							                      Header="{Binding .}"
-                                                  IsEnabled="{Binding IsMergeExpanderEnabled}"
 							                      IsExpanded="{Binding IsMergeExpanded}"
 							                      Style="{StaticResource MergeExpander}"
+                                                  IsEnabled="{Binding HasConflict}"
                                                   Visibility="{Binding IsContainerTool, Converter={StaticResource BoolToVisibilityConverterNegative}}"
 							                      AutomationProperties.AutomationId="{Binding StringFormat=UI_TreeViewExpander_{0}_AutoID, Path=MergeDescription}">
                                             <Expander.HeaderTemplate>
@@ -466,7 +654,6 @@
                                                                 BorderThickness="0" 
                                                                 Margin="0,0,7,0"
                                                                 DataContext="{Binding CurrentViewModel}"
-                                                                IsEnabled="{Binding IsMergeEnabled}"
                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderBorder_AutoID">
                                                             <DockPanel Name="TreeViewExpanderCurrentHeaderDockPanel" 
                                                                        LastChildFill="False" 
@@ -500,34 +687,28 @@
                                                                                     Grid.Column="1"
                                                                                     Orientation="Horizontal"
                                                                                     AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRBSP_AutoID">
-                                                                            <RadioButton Name="TreeViewExpanderCurrentHeaderRB" 
-                                                                                         IsChecked="{Binding IsMergeChecked}" 
-                                                                                         HorizontalAlignment="Right"
-                                                                                         Margin="0,0,3,0"
-                                                                                         GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
-                                                                                         AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRB_AutoID">
-                                                                                <RadioButton.Style>
-                                                                                    <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
+                                                                            <CheckBox Name="TreeViewExpanderCurrentHeaderRB" 
+                                                                                      IsChecked="{Binding IsChecked}" 
+                                                                                      HorizontalAlignment="Right"
+                                                                                      Margin="0,0,3,0"
+                                                                                      AutomationProperties.AutomationId="UI_TreeViewExpanderCurrentHeaderRB_AutoID"
+                                                                                      ToolTip="{x:Static languages:Tooltips.MergeCurrentConflictRBTooltip}">
+                                                                                <CheckBox.Style>
+                                                                                    <Style BasedOn="{StaticResource MergeCheckBoxStyle}" TargetType="{x:Type CheckBox}">
                                                                                         <Style.Triggers>
                                                                                             <DataTrigger Binding="{Binding ElementName=MergeToolNoConflictIcon, Path=Visibility}" Value="Visible">
-                                                                                                <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                                                <Setter Property="CheckBox.Visibility" Value="Collapsed"/>
                                                                                             </DataTrigger>
-                                                                                            <DataTrigger Binding="{Binding IsContained}" Value="True">
-                                                                                                <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                                            <DataTrigger Binding="{Binding ShowCheckbox}" Value="False">
+                                                                                                <Setter Property="CheckBox.Visibility" Value="Collapsed"/>
                                                                                             </DataTrigger>
-                                                                                            <Trigger Property="IsEnabled" Value="False">
-                                                                                                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentConflictRBDisabledTooltip}" />
-                                                                                            </Trigger>
-                                                                                            <Trigger Property="IsEnabled" Value="True">
-                                                                                                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentConflictRBTooltip}" />
-                                                                                            </Trigger>
                                                                                         </Style.Triggers>
                                                                                     </Style>
-                                                                                </RadioButton.Style>
+                                                                                </CheckBox.Style>
                                                                                 <i:Interaction.Behaviors>
                                                                                     <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentConflictRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                                                 </i:Interaction.Behaviors>
-                                                                            </RadioButton>
+                                                                            </CheckBox>
                                                                         </StackPanel>
                                                                     </Grid>
                                                                 </StackPanel>
@@ -548,35 +729,23 @@
                                                             <DockPanel Name="TreeViewExpanderDifferenceHeaderDockPanel" 
                                                                        LastChildFill="False" 
                                                                        DataContext="{Binding DiffViewModel}"
-                                                                       IsEnabled="{Binding IsMergeEnabled}"
                                                                        AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderDockPanel_AutoID">
                                                                 <StackPanel Name="TreeViewExpanderDifferenceHeaderSP" 
                                                                             DockPanel.Dock="Left" 
                                                                             Orientation="Horizontal"
                                                                             AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderSP_AutoID">
-                                                                    <RadioButton Name="TreeViewExpanderDifferenceHeaderRB" 
-                                                                                 IsChecked="{Binding IsMergeChecked}" 
-                                                                                 HorizontalAlignment="Left"
-                                                                                 Margin="3,0,3,0"
-                                                                                 GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
-                                                                                 Visibility="{Binding IsContained, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID">
-                                                                        <RadioButton.Style>
-                                                                            <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="RadioButton">
-                                                                                <Style.Triggers>
-                                                                                    <Trigger Property="IsEnabled" Value="False">
-                                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceConflictRBDisabledTooltip}" />
-                                                                                    </Trigger>
-                                                                                    <Trigger Property="IsEnabled" Value="True">
-                                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceConflictRBTooltip}" />
-                                                                                    </Trigger>
-                                                                                </Style.Triggers>
-                                                                            </Style>
-                                                                        </RadioButton.Style>
+                                                                    <CheckBox Name="TreeViewExpanderDifferenceHeaderRB" 
+                                                                              IsChecked="{Binding IsChecked}" 
+                                                                              HorizontalAlignment="Left"
+                                                                              Margin="3,0,3,0"
+                                                                              Style="{StaticResource MergeCheckBoxStyle}"
+                                                                              Visibility="{Binding ShowCheckbox, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                                              AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID"
+                                                                              ToolTip="{x:Static languages:Tooltips.MergeDifferenceConflictRBTooltip}">
                                                                         <i:Interaction.Behaviors>
                                                                             <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceConflictRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                                         </i:Interaction.Behaviors>
-                                                                    </RadioButton>
+                                                                    </CheckBox>
 
                                                                     <Image Name="TreeViewExpanderDifferenceHeaderIcon" 
                                                                            Source="{Binding MergeIcon}" 
@@ -705,200 +874,7 @@
                                         </Expander>
                                     </Grid>
                                 </HierarchicalDataTemplate>
-                                <HierarchicalDataTemplate DataType="{x:Type merge:ArmConnectorConflict}">
-                                    <Grid Name="ConflictsTreeViewTemplateGrid" 
-                                          Background="{StaticResource WarewolfPanelGreyBrush}" 
-                                          Width="{Binding ElementName=ConflictsTreeView, Path=ActualWidth}"
-                                          IsEnabled="{Binding IsMergeExpanderEnabled}"
-                                          AutomationProperties.AutomationId="UI_ConflictsTreeViewTemplateGrid_AutoID">
-
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="50*" />
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="50*" />
-                                        </Grid.ColumnDefinitions>
-
-                                        <Border x:Name="CurrentNodeArmBorder" 
-                                                Grid.Column="0" 
-                                                Background="{StaticResource WarewolfPanelGreyBrush}" 
-                                                BorderBrush="#CFD6E1" 
-                                                BorderThickness="0" 
-                                                Margin="0,0,-2,0" 
-                                                DataContext="{Binding CurrentArmConnector}"
-                                                IsEnabled="{Binding IsMergeEnabled}"
-                                                AutomationProperties.AutomationId="UI_CurrentNodeArmBorder_AutoID">
-                                            <DockPanel x:Name="CurrentNodeArmDockPanel" 
-                                                       LastChildFill="False"
-                                                       AutomationProperties.AutomationId="UI_CurrentNodeArmDockPanel_AutoID">
-
-                                                <StackPanel x:Name="CurrentNodeArmSP" 
-                                                            Orientation="Horizontal" HorizontalAlignment="Stretch"
-                                                            Width="{Binding ElementName=CurrentNodeArmDockPanel, Path=ActualWidth}"
-                                                            AutomationProperties.AutomationId="UI_CurrentNodeArmSP_AutoID">
-                                                    <Grid HorizontalAlignment="Stretch" Width="{Binding ElementName=CurrentNodeArmDockPanel, Path=ActualWidth}">
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="*"/>
-                                                            <ColumnDefinition Width="Auto"/>
-                                                        </Grid.ColumnDefinitions>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock x:Name="CurrentNodeLeftArmText" 
-                                                                       Margin="45,0,0,0" 
-                                                                       Text="{Binding LeftArmDescription}" 
-                                                                       ToolTip="{Binding LeftArmDescription}"
-                                                                       ToolTipService.ShowOnDisabled="True"
-                                                                       FontWeight="Bold" 
-                                                                       AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
-                                                                       HorizontalAlignment="Stretch"/>
-
-                                                            <fa:FontAwesome Margin="5,2,0,0" 
-                                                                            Icon="LongArrowRight" 
-                                                                            Grid.Column="0"
-                                                                            ToolTip="Connects to" 
-                                                                            FontSize="18" 
-                                                                            Foreground="Gray" 
-                                                                            HorizontalAlignment="Stretch"
-                                                                            Visibility="{Binding IsArmConnectorVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                                                            <TextBlock x:Name="CurrentNodeRightArmText" 
-                                                                       Margin="5,0,0,0" 
-                                                                       Grid.Column="0"
-                                                                       Text="{Binding RightArmDescription}" 
-                                                                       ToolTip="{Binding RightArmDescription}"
-                                                                       ToolTipService.ShowOnDisabled="True"
-                                                                       FontWeight="Bold"
-                                                                       AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
-                                                                       HorizontalAlignment="Stretch"/>
-                                                        </StackPanel>
-                                                        <Grid x:Name="CurrentNodeArmRBSP" 
-                                                              Grid.Column="1"
-                                                              IsEnabled="{Binding IsArmSelectionAllowed}"
-                                                              AutomationProperties.AutomationId="UI_CurrentNodeArmRBSP_AutoID">
-                                                            <RadioButton x:Name="CurrentNodeArmRB" 
-                                                                         IsChecked="{Binding IsChecked}" 
-                                                                         HorizontalAlignment="Right"
-                                                                         Margin="0,0,3,0"
-                                                                         GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
-                                                                         AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
-                                                                <RadioButton.Style>
-                                                                    <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
-                                                                        <Style.Triggers>
-                                                                            <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
-                                                                                <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
-                                                                            </DataTrigger>
-                                                                            <DataTrigger Binding="{Binding IsContained}" Value="True">
-                                                                                <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
-                                                                            </DataTrigger>
-                                                                            <Trigger Property="IsEnabled" Value="False">
-                                                                                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentArmRBDisabledTooltip}" />
-                                                                            </Trigger>
-                                                                            <Trigger Property="IsEnabled" Value="True">
-                                                                                <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeCurrentArmRBTooltip}" />
-                                                                            </Trigger>
-                                                                        </Style.Triggers>
-                                                                    </Style>
-                                                                </RadioButton.Style>
-                                                                <i:Interaction.Behaviors>
-                                                                    <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentArmRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
-                                                                </i:Interaction.Behaviors>
-                                                            </RadioButton>
-                                                        </Grid>
-                                                    </Grid>
-                                                </StackPanel>
-                                            </DockPanel>
-                                        </Border>
-
-                                        <fa:FontAwesome Grid.Column="1" 
-                                                        x:Name="NodeArmNoConflictIcon"
-                                                        Margin="4,0,0,0"
-                                                        Style="{StaticResource MergeNoConflictIcon}"
-                                                        Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
-
-                                        <Border x:Name="DifferenceNodeArmBorder" 
-                                                Grid.Column="2" 
-                                                Background="{StaticResource WarewolfPanelGreyBrush}" 
-                                                BorderBrush="#CFD6E1" 
-                                                Margin="2,0,0,0" 
-                                                Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverter}}"
-                                                AutomationProperties.AutomationId="UI_DifferenceNodeArmBorder_AutoID">
-                                            <Border.Style>
-                                                <Style>
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding HasConflict}" Value="True">
-                                                            <Setter Property="Border.BorderThickness" Value="2,0,0,0"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding HasConflict}" Value="False">
-                                                            <Setter Property="Border.BorderThickness" Value="0"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <DockPanel x:Name="DifferenceNodeArmDockPanel" 
-                                                       LastChildFill="False"
-                                                       DataContext="{Binding DifferentArmConnector}"
-                                                       IsEnabled="{Binding IsMergeEnabled}"
-                                                       AutomationProperties.AutomationId="UI_DifferenceNodeArmDockPanel_AutoID">
-                                                <StackPanel Name="DifferenceNodeArmSP" 
-                                                            DockPanel.Dock="Left" 
-                                                            Orientation="Horizontal" 
-                                                            IsEnabled="{Binding IsArmSelectionAllowed}"
-                                                            AutomationProperties.AutomationId="UI_DifferenceNodeArmSP_AutoID">
-                                                    <RadioButton x:Name="DifferenceNodeArmRB" 
-                                                                 IsChecked="{Binding IsChecked}" 
-                                                                 HorizontalAlignment="Left"
-                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
-                                                                 Margin="3,0,3,0"
-                                                                 AutomationProperties.AutomationId="UI_DifferenceNodeArmRB_AutoID">
-                                                        <RadioButton.Style>
-                                                            <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
-                                                                <Style.Triggers>
-                                                                    <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
-                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                    <DataTrigger Binding="{Binding IsContained}" Value="True">
-                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
-                                                                    </DataTrigger>
-                                                                    <Trigger Property="IsEnabled" Value="False">
-                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceArmRBDisabledTooltip}" />
-                                                                    </Trigger>
-                                                                    <Trigger Property="IsEnabled" Value="True">
-                                                                        <Setter Property="ToolTip" Value="{x:Static languages:Tooltips.MergeDifferenceArmRBTooltip}" />
-                                                                    </Trigger>
-                                                                </Style.Triggers>
-                                                            </Style>
-                                                        </RadioButton.Style>
-                                                        <i:Interaction.Behaviors>
-                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceArmRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
-                                                        </i:Interaction.Behaviors>
-                                                    </RadioButton>
-                                                    <TextBlock x:Name="DifferenceNodeArmText" 
-                                                               Margin="25,0,0,0" 
-                                                               Text="{Binding LeftArmDescription}" 
-                                                               ToolTip="{Binding LeftArmDescription}"
-                                                               ToolTipService.ShowOnDisabled="True"
-                                                               FontWeight="Bold" 
-                                                               AutomationProperties.AutomationId="UI_DifferenceNodeArmText_AutoID"
-                                                               HorizontalAlignment="Stretch"/>
-
-                                                    <fa:FontAwesome Margin="5,2,0,0" 
-                                                                    Icon="LongArrowRight" 
-                                                                    ToolTip="Connects to" 
-                                                                    FontSize="18" 
-                                                                    Foreground="Gray" 
-                                                                    Visibility="{Binding IsArmConnectorVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
-
-                                                    <TextBlock x:Name="DifferenceNodeRightArmText" 
-                                                               Margin="5,0,0,0" 
-                                                               Text="{Binding RightArmDescription}" 
-                                                               ToolTip="{Binding RightArmDescription}"
-                                                               ToolTipService.ShowOnDisabled="True"
-                                                               FontWeight="Bold" 
-                                                               AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
-                                                               HorizontalAlignment="Stretch"/>
-                                                </StackPanel>
-                                            </DockPanel>
-                                        </Border>
-                                    </Grid>
-                                </HierarchicalDataTemplate>
+                                
                             </TreeView.Resources>
                         </TreeView>
                     </Grid>
@@ -931,9 +907,9 @@
                   Grid.Row="1" 
                   AutomationProperties.AutomationId="UI_WorkflowDesignerViewGrid_AutoID">
                 <ContentControl x:Name="WorkflowDesignerView"
-                                Content="{Binding WorkflowDesignerViewModel.DesignerView}"
+                                Content="{Binding MergePreviewWorkflowDesignerViewModel.DesignerView}"
                                 AllowDrop="False"
-                                AutomationProperties.AutomationId="{Binding WorkflowDesignerViewModel.DesignerText}">
+                                AutomationProperties.AutomationId="{Binding MergePreviewWorkflowDesignerViewModel.DesignerText}">
                     <ig:DragDropManager.DropTarget >
                         <ig:DropTarget IsDropTarget="False" />
                     </ig:DragDropManager.DropTarget>

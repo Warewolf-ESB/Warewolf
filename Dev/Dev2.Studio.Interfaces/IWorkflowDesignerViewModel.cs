@@ -39,11 +39,16 @@ namespace Dev2.Studio.Interfaces
 
         string GetWorkflowInputs(string field);
         void CreateBlankWorkflow();
-        void RemoveItem(IMergeToolModel model);
-        void AddItem(IMergeToolModel model);
-        void RemoveStartNodeConnection();
-        void LinkTools(string sourceUniqueId, string destinationUniqueId, string key);
-        void DeLinkTools(string sourceUniqueId, string destinationUniqueId, string key);
         void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);
+    }
+
+    public interface IMergePreviewWorkflowDesignerViewModel : IWorkflowDesignerViewModel
+    {
+        void RemoveItem(IToolConflictItem model);
+        void AddItem(IToolConflictItem model);
+        void RemoveStartNodeConnection();
+        void LinkStartNode(IToolConflictItem model);
+        void LinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key);
+        void DeLinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key);
     }
 }

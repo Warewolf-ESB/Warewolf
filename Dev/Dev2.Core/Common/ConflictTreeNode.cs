@@ -21,7 +21,6 @@ namespace Dev2.Common
             Activity = act;
             UniqueId = act.UniqueID;
             Location = location;
-            IsInConflict = true;
         }
 
         public void AddChild(IConflictTreeNode node,string name)
@@ -39,7 +38,6 @@ namespace Dev2.Common
         {
             if (other == null)
             {
-                IsInConflict = true;
                 return false;
             }
             var equals = true;
@@ -48,8 +46,6 @@ namespace Dev2.Common
             equals &= (other.Children != null || Children == null);
             equals &= (other.Children == null || Children != null);
             equals &= (Children == null || Children.SequenceEqual(other.Children ?? new List<(string uniqueId, IConflictTreeNode node)>()));
-            IsInConflict = !equals;
-            other.IsInConflict = !equals;
             return equals;
         }
 

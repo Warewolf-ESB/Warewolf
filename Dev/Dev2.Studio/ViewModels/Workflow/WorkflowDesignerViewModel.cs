@@ -37,7 +37,6 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Collections;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -125,23 +124,23 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
 
-        private readonly IWorkflowDesignerWrapper _workflowDesignerHelper;
+        protected IWorkflowDesignerWrapper _workflowDesignerHelper;
 
         public WorkflowDesignerViewModel(IContextualResourceModel resource)
             : this(resource, true)
         {
         }
-        
+
         public WorkflowDesignerViewModel(IContextualResourceModel resource, bool createDesigner)
             : this(resource, new WorkflowHelper(), createDesigner)
         {
         }
-        
+
         public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper)
             : this(resource, workflowHelper, true)
         {
         }
-        
+
         public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner)
             : this(EventPublishers.Aggregator, resource, workflowHelper, createDesigner)
         {
@@ -885,9 +884,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public ICommand MergeCommand => _mergeCommand ?? (_mergeCommand = new DelegateCommand(param =>
                                                       {
-                    // OPEN WINDOW TO SELECT RESOURCE TO MERGE WITH
+                                                          // OPEN WINDOW TO SELECT RESOURCE TO MERGE WITH
 
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                                          if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                                                           {
                                                               var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                                                               if (mvm?.ActiveItem != null)
@@ -1392,7 +1391,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         public Action<ModelItem> ItemSelectedAction { get; set; }
-        
+
         public void Handle(AddStringListToDataListMessage message)
         {
             Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
@@ -1416,7 +1415,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void BindToModel() => _resourceModel.WorkflowXaml = ServiceDefinition;
 
         public void InitializeDesigner(IDictionary<Type, Type> designerAttributes) => InitializeDesigner(designerAttributes, false);
-        
+
         public void InitializeDesigner(IDictionary<Type, Type> designerAttributes, bool liteInit)
         {
             _wd = new WorkflowDesigner();
@@ -1471,7 +1470,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 LoadDesignerXaml();
                 _workflowHelper.EnsureImplementation(_modelService);
-                
+
                 WorkflowDesignerIcons.Activities.Flowchart = Application.Current.TryFindResource("Explorer-WorkflowService-Icon") as DrawingBrush;
                 WorkflowDesignerIcons.Activities.StartNode = Application.Current.TryFindResource("System-StartNode-Icon") as DrawingBrush;
                 SubscribeToDebugSelectionChanged();
@@ -2038,7 +2037,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return true;
         }
-        
+
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {
             UpdateDataList();
@@ -2059,7 +2058,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return selectedModelItem;
         }
-        
+
         void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent)
         {
             if (DataListViewModel != null)
@@ -2487,7 +2486,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         protected IServer ActiveEnvironment { get; set; }
-        
+
         void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Command.Equals(ApplicationCommands.Delete) ||      //triggered from deleting an activity
@@ -2498,7 +2497,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 PreventCommandFromBeingExecuted(e);
             }
         }
-        
+
         void PreviewExecutedRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command.Equals(ApplicationCommands.Delete))
@@ -2586,7 +2585,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 CEventHelper.RemoveAllEventHandlers(_wd);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Warn("Error disposing Workflow Designer View Model: " + e.Message, GlobalConstants.WarewolfWarn);
             }
@@ -2594,9 +2593,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             _debugSelectionChangedService?.Unsubscribe();
             base.OnDispose();
         }
-        
+
         public override WorkSurfaceContext WorkSurfaceContext => ResourceModel?.ResourceType.ToWorkSurfaceContext() ?? WorkSurfaceContext.Unknown;
-        
+
         public IServer Server => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
@@ -2744,343 +2743,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
         }
-
-        public void RemoveItem(IMergeToolModel model)
-        {
-            var root = _wd.Context.Services.GetService<ModelService>().Root;
-            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
-
-            var nodes = chart?.Properties["Nodes"]?.Collection;
-            if (nodes == null)
-            {
-                return;
-            }
-
-            var step = model.FlowNode;
-            switch (step)
-            {
-                case FlowStep normalStep:
-                    if (nodes.Contains(normalStep))
-                    {
-                        normalStep.Next = null;
-                        nodes.Remove(normalStep);
-                    }
-
-                    break;
-                case FlowDecision normalDecision:
-                    if (nodes.Contains(normalDecision))
-                    {
-                        nodes.Remove(normalDecision);
-                    }
-
-                    break;
-                case FlowSwitch<string> normalSwitch:
-                    nodes.Remove(normalSwitch);
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        public void DeLinkTools(string sourceUniqueId, string destinationUniqueId, string key)
-        {
-            if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key, true))
-            {
-                return;
-            }
-            if (SetNextForSwitch(sourceUniqueId, destinationUniqueId, key, true))
-            {
-                return;
-            }
-            var step = GetRegularActivityFromNodeCollection(sourceUniqueId);
-            if (step != null)
-            {
-                var next = GetItemFromNodeCollection(destinationUniqueId);
-                SetNext(next, step, true);
-            }
-        }
-
-        public void LinkTools(string sourceUniqueId, string destinationUniqueId, string key)
-        {
-            if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key))
-            {
-                return;
-            }
-            if (SetNextForSwitch(sourceUniqueId, destinationUniqueId, key))
-            {
-                return;
-            }
-            var step = GetRegularActivityFromNodeCollection(sourceUniqueId);
-            if (step != null)
-            {
-                var next = GetItemFromNodeCollection(destinationUniqueId);
-                SetNext(next, step);
-            }
-        }
-
-        bool SetNextForDecision(string sourceUniqueId, string destinationUniqueId, string key, bool delink = false)
-        {
-            var decisionItem = GetDecisionFromNodeCollection(sourceUniqueId);
-            if (decisionItem != null)
-            {
-                var next = GetItemFromNodeCollection(destinationUniqueId);
-                var parentNodeProperty = decisionItem.Properties[key];
-                if (parentNodeProperty != null)
-                {
-                    parentNodeProperty.SetValue(null);
-                    if (next != null)
-                    {
-                        if (delink)
-                        {
-                            parentNodeProperty.SetValue(null);
-                        }
-                        else
-                        {
-                            parentNodeProperty.SetValue(next);
-                            Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
-                        }
-                    }
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        ModelItem GetItemFromNodeCollection(string uniqueId) => GetDecisionFromNodeCollection(uniqueId) ?? GetSwitchFromNodeCollection(uniqueId) ?? GetRegularActivityFromNodeCollection(uniqueId);
-
-        bool SetNextForSwitch(string sourceUniqueId, string destinationUniqueId, string key, bool delink = false)
-        {
-            var switchItem = GetSwitchFromNodeCollection(sourceUniqueId);
-            if (switchItem != null)
-            {
-                var next = GetItemFromNodeCollection(destinationUniqueId);
-                if (next != null)
-                {
-                    if (next.GetCurrentValue() is FlowNode nodeItem)
-                    {
-                        UpdateSwithArm(key, switchItem, nodeItem, delink);
-                    }
-                    if (!delink)
-                    {
-                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
-                    }
-                    return true;
-                }
-                UpdateSwithArm(key, switchItem, null, delink);
-            }
-            return false;
-        }
-
-        static void UpdateSwithArm(string key, ModelItem switchItem, FlowNode nodeItem, bool delink = false)
-        {
-            if (key != "Default")
-            {
-                var parentNodeProperty = switchItem.Properties["Cases"];
-                if (delink)
-                {
-                    parentNodeProperty.SetValue(null);
-                }
-                else
-                {
-                    if (parentNodeProperty != null)
-                    {
-                        var cases = parentNodeProperty.Dictionary;
-                        cases.Remove(key);
-                        cases.Add(key, nodeItem);
-                        parentNodeProperty.SetValue(cases);
-                    }
-                }
-            }
-            else
-            {
-                var defaultProperty = switchItem.Properties["Default"];
-                if (defaultProperty != null)
-                {
-                    if (delink)
-                    {
-                        defaultProperty.SetValue(null);
-                    }
-                    else
-                    {
-                        defaultProperty.SetValue(nodeItem);
-                    }
-                }
-            }
-        }
-
-        ModelItem GetDecisionFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
-        {
-            var decision = q.GetProperty("Condition") as IDev2Activity;
-            if (decision == null)
-            {
-                return false;
-            }
-            var hasParent = decision.UniqueID == uniqueId && q.GetCurrentValue<FlowNode>() is FlowDecision;
-            return hasParent;
-        });
-
-        ModelItem GetSwitchFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
-        {
-            var decision = q.GetProperty("Expression") as IDev2Activity;
-            if (decision == null)
-            {
-                return false;
-            }
-            var hasParent = decision.UniqueID == uniqueId;
-            return hasParent;
-        });
-
-        void SetNext(ModelItem next, ModelItem source, bool delink = false)
-        {
-            if (next != null)
-            {
-                var nextStep = next.GetCurrentValue<FlowNode>();
-                if (nextStep != null)
-                {
-                    if (delink)
-                    {
-                        SetNextProperty(source, null);
-                    }
-                    else
-                    {
-                        SetNextProperty(source, nextStep);
-                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
-                    }
-                }
-            }
-            else
-            {
-                SetNextProperty(source, null);
-            }
-        }
-
-        void SetNextProperty(ModelItem source, FlowNode nextStep)
-        {
-            var parentNodeProperty = source.Properties["Next"];
-            if (parentNodeProperty == null)
-            {
-                return;
-            }
-            parentNodeProperty.SetValue(nextStep);
-        }
-
-        ModelItem GetRegularActivityFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
-        {
-            var s = q.GetCurrentValue() as FlowStep;
-            var act = s?.Action as IDev2Activity;
-            return act?.UniqueID == uniqueId;
-        });
-
-        public ModelItemCollection NodesCollection
-        {
-            get
-            {
-                var service = _workflowDesignerHelper.GetService<ModelService>(_wd);
-                var root = service.Root;
-                service = _workflowDesignerHelper.GetService<ModelService>(_wd);
-                var chart = service.Find(root, typeof(Flowchart)).FirstOrDefault();
-
-                var nodes = chart?.Properties["Nodes"]?.Collection;
-                return nodes;
-            }
-        }
-        
         protected bool _isPaste;
-
-        public void AddItem(IMergeToolModel model)
-        {
-            var bbb = _workflowDesignerHelper.GetService<ModelService>(_wd);
-            var root = bbb.Root;
-            var chart = _workflowDesignerHelper.GetService<ModelService>(_wd).Find(root, typeof(Flowchart)).FirstOrDefault();
-
-            var nodes = chart?.Properties["Nodes"]?.Collection;
-            if (nodes == null)
-            {
-                return;
-            }
-
-            var nodeToAdd = model.ModelItem;
-            var step = model.FlowNode;
-
-            switch (step)
-            {
-                case FlowStep normalStep:
-                    normalStep.Next = null;
-                    if (!nodes.Contains(normalStep))
-                    {
-                        nodes.Add(normalStep);
-                    }
-                    break;
-                case FlowDecision normalDecision:
-                    normalDecision.DisplayName = model.MergeDescription;
-                    normalDecision.False = null;
-                    normalDecision.True = null;
-                    nodes.Add(normalDecision);
-                    break;
-                case FlowSwitch<string> normalSwitch:
-                    var switchAct = new DsfFlowSwitchActivity
-                    {
-                        ExpressionText = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
-                                                    "(\"", nodeToAdd.GetProperty<string>("Switch"), "\",",
-                                                    GlobalConstants.InjectedDecisionDataListVariable,
-                                                    ")"),
-                        UniqueID = nodeToAdd.GetProperty<string>("UniqueID")
-                    };
-                    normalSwitch.DisplayName = model.MergeDescription;
-                    normalSwitch.Expression = switchAct;
-                    normalSwitch.Cases.Clear();
-                    normalSwitch.Default = null;
-                    nodes.Add(normalSwitch);
-                    break;
-                default:
-                    break;
-            }
-            var modelItem = GetItemFromNodeCollection(model.UniqueId.ToString());
-            SetShapeLocation(modelItem, model.NodeLocation);
-            var startNode = chart.Properties["StartNode"];
-            if (startNode?.ComputedValue == null)
-            {
-                AddStartNode(model.FlowNode, startNode);
-            }
-        }
-
-        void SetShapeLocation(ModelItem modelItem, Point location)
-        {
-            var service = _workflowDesignerHelper.GetService<ViewStateService>(_wd);
-            service.RemoveViewState(modelItem, "ShapeLocation");
-            service.StoreViewState(modelItem, "ShapeLocation", location);
-        }
-
-        public void RemoveStartNodeConnection()
-        {
-            var root = _wd.Context.Services.GetService<ModelService>().Root;
-            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
-
-            var nodes = chart?.Properties["Nodes"]?.Collection;
-            if (nodes == null)
-            {
-                return;
-            }
-            var startNode = chart.Properties["StartNode"];
-            if (startNode?.ComputedValue != null)
-            {
-                startNode.SetValue(null);
-            }
-        }
-
-        void AddStartNode(FlowNode flowNode, ModelProperty startNode)
-        {
-            if (flowNode == null)
-            {
-                return;
-            }
-
-            if (startNode.ComputedValue == null)
-            {
-                startNode.SetValue(flowNode);
-                Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
-            }
-        }
 
         public System.Action WorkflowChanged { get; set; }
     }

@@ -3,6 +3,7 @@ using Dev2.Activities.Designers2.Decision;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Activities.Designers2.Switch;
 using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Communication;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Studio.Core.Interfaces;
@@ -30,12 +31,9 @@ namespace Dev2.Core.Tests.Merge
             var conflictModelFactory = new ConflictModelFactory();
             //------------Assert Results-------------------------
             Assert.IsNotNull(conflictModelFactory);
-            Assert.IsNotNull(conflictModelFactory.Children);
-            Assert.IsNull(conflictModelFactory.Model);
             Assert.IsTrue(string.IsNullOrEmpty(conflictModelFactory.ServerName));
             Assert.IsTrue(string.IsNullOrEmpty(conflictModelFactory.WorkflowName));
             Assert.IsNull(conflictModelFactory.DataListViewModel);
-            Assert.IsNull(conflictModelFactory.Model);
         }
 
         [TestMethod]
@@ -74,7 +72,6 @@ namespace Dev2.Core.Tests.Merge
             };
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Children);
             Assert.IsFalse(completeConflict.IsVariablesChecked);
             completeConflict.IsVariablesChecked = true;
             Assert.IsTrue(wasCalled);
@@ -97,7 +94,6 @@ namespace Dev2.Core.Tests.Merge
             };
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Children);
             Assert.IsFalse(completeConflict.IsWorkflowNameChecked);
             completeConflict.IsWorkflowNameChecked = true;
             Assert.IsTrue(wasCalled);
@@ -119,14 +115,11 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object,new List<ConflictTreeNode>(), new List<ConflictTreeNode>()),ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Children);
-            Assert.IsNotNull(completeConflict.Model);
-            Assert.AreEqual(0, completeConflict.Children.Count);
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
         }
 
@@ -153,9 +146,9 @@ namespace Dev2.Core.Tests.Merge
             var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -186,9 +179,9 @@ namespace Dev2.Core.Tests.Merge
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             currentResourceModel.Setup(resModel => resModel.DataList).Returns("");
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -229,19 +222,15 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Children);
-            Assert.IsNotNull(completeConflict.Model);
-            Assert.AreEqual(0, completeConflict.Children.Count);
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
-            var mergeToolModel = completeConflict.Model;
+            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
             Assert.AreEqual("a", mergeToolModel.MergeDescription);
-            Assert.AreEqual(typeof(DecisionDesignerViewModel).FullName, ((MergeToolModel)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
-            Assert.IsFalse(mergeToolModel.HasParent);
+            Assert.AreEqual(typeof(DecisionDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
 
 
@@ -266,20 +255,16 @@ namespace Dev2.Core.Tests.Merge
             var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
             node.Setup(p => p.Activity).Returns(value);
             contextualResource.Setup(p => p.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentResourceModel.Object);
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
 
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Children);
-            Assert.IsNotNull(completeConflict.Model);
-            Assert.AreEqual(0, completeConflict.Children.Count);
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
-            var mergeToolModel = completeConflict.Model;
+            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
             Assert.AreEqual("DsfActivity", mergeToolModel.MergeDescription);
-            Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((MergeToolModel)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
-            Assert.IsFalse(mergeToolModel.HasParent);
+            Assert.AreEqual(typeof(ServiceDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
 
         [TestMethod]
@@ -320,19 +305,14 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
-            Assert.IsNotNull(completeConflict.Children);
-            Assert.IsNotNull(completeConflict.Model);
-            Assert.AreEqual(0, completeConflict.Model.Children.Count);
-            adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
-            var mergeToolModel = completeConflict.Model;
+            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
             Assert.AreEqual("bbb", mergeToolModel.MergeDescription);
-            Assert.AreEqual(typeof(SwitchDesignerViewModel).FullName, ((MergeToolModel)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
-            Assert.IsFalse(mergeToolModel.HasParent);
+            Assert.AreEqual(typeof(SwitchDesignerViewModel).FullName, ((ToolConflictItem)mergeToolModel).ActivityDesignerViewModel.GetType().FullName);
         }
 
         [TestMethod]
@@ -347,11 +327,12 @@ namespace Dev2.Core.Tests.Merge
             var contextualResource = new Mock<IContextualResourceModel>();
 
             node.Setup(p => p.Activity).Returns(new DsfCalculateActivity());
-            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            var toolConflictItem = new ToolConflictItem(new ViewModels.Merge.Utils.ConflictRowList(new Mock<IConflictModelFactory>().Object, new Mock<IConflictModelFactory>().Object, new List<ConflictTreeNode>(), new List<ConflictTreeNode>()), ViewModels.Merge.Utils.ConflictRowList.Column.Current);
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
+            var completeConflict = new ConflictModelFactory(toolConflictItem, contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
-            Assert.IsNotNull(completeConflict.Model);
+            var mergeToolModel = completeConflict.CreateModelItem(toolConflictItem, node.Object);
+            Assert.IsNotNull(mergeToolModel);
         }
     }
 }

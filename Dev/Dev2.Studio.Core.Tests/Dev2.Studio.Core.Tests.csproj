@@ -263,11 +263,15 @@
     <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
     <Compile Include="MainViewModelBase.cs" />
-    <Compile Include="Merge\ArmConnectorConflictTests.cs" />
+    <Compile Include="Merge\ConnectorConflictRowTests.cs" />
     <Compile Include="Merge\ConflictModelFactoryTests.cs" />
-    <Compile Include="Merge\MergeArmConnectorConflictTests.cs" />
-    <Compile Include="Merge\MergeToolModelTests.cs" />
-    <Compile Include="Merge\ToolConflictTests.cs" />
+    <Compile Include="Merge\ConflictRowListTests.cs" />
+    <Compile Include="Merge\ConnectorConflictItemTests.cs" />
+    <Compile Include="Merge\ToolConflictItemTests.cs" />
+    <Compile Include="Merge\ToolConflictRowTests.cs" />
+    <Compile Include="Merge\MergePreviewWorkflowStateApplierTests.cs" />
+    <Compile Include="Merge\ConflictListStateApplierTests.cs" />
+    <Compile Include="Merge\Utils\MergeTestUtils.cs" />
     <Compile Include="ShellViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="ModelTests\RecordSetItemModelTests.cs" />
@@ -353,6 +357,7 @@
     <Compile Include="Utils\UIElementExtensionMethods.cs" />
     <Compile Include="Utils\WorkflowDesignerUtilsTest.cs" />
     <Compile Include="ViewFactoryTests.cs" />
+    <Compile Include="Workflows\MergePreviewWorkflowDesignerViewModelMock.cs" />
     <Compile Include="Workflows\WorkflowDesignerUnitTest.Merge.cs" />
     <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
