@@ -143,25 +143,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var debugDictionary = new List<string>();
                 while (res.HasMoreData())
                 {
-                    const int OpCnt = 0;
-                    var item = res.GetNextValue(); // item is the thing we split on
+                    var item = res.GetNextValue();
                     if (!string.IsNullOrEmpty(item))
                     {
-                        var blankRows = new List<int>();
-                        using (var reader = new StringReader(item))
-                        {
-                            string line;
-                            var counter = 0;
-                            while ((line = reader.ReadLine()) != null)
-                            {
-                                if (!SkipBlankRows && String.IsNullOrEmpty(line))
-                                {
-                                    blankRows.Add(counter);
-                                    counter++;
-                                }
-                            }
-                        }
-
                         var tokenizer = CreateSplitPattern(ref item, ResultsCollection, env, out ErrorResultTO errors, update);
                         allErrors.MergeErrors(errors);
 
@@ -200,19 +184,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 var outputVar = resultsEnumerator.Current.OutputVariable;
                                 if (IsNullEmptyOrNewLine(tmp))
                                 {
-                                    tmp = tmp.Replace(Environment.NewLine, "");                                   
-                                }
-                                var outputVar = resultsEnumerator.Current.OutputVariable;
-                                if (SkipBlankRows && (IsNullEmptyOrNewLine(tmp)))
-                                {
-                                    //This should do nothing as we are skipping blank rows
+                                    if (!SkipBlankRows)
+                                    {
+                                        tmp = tmp.Replace(Environment.NewLine, "");
+                                    }
                                 }
                                 else
                                 {
                                     if (!String.IsNullOrEmpty(outputVar))
                                     {
-                                        var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
-                                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);                                        
+                                        var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);                                       
                                         positions[outputVar] = positions[outputVar] + 1;
                                     }
                                     if (dataObject.IsDebugMode())
