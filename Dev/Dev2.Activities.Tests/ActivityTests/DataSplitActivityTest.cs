@@ -383,22 +383,20 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void LargeRows_SplitOnNewLine_ShouldSplitCorrectly()
         {
-            _resultsCollection.Clear();
-            _resultsCollection.Add(new DataSplitDTO("[[rec().data]]", "New Line", "", 1));
+            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>();
+            resultsCollection.Add(new DataSplitDTO("[[rec().data]]", "New Line", "", 1));
             var sourceString = File.ReadAllText("LargeRowsDataSplit.txt");
-            var act = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = _resultsCollection };            
-            var dataObject = new DsfDataObject("", ExecutionId)
+            var act = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultsCollection,SkipBlankRows = true };            
+            var dataObject = new DsfDataObject("",Guid.Empty)
             {
-                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
-                //       if this is NOT provided which will cause the tests to fail!
-                ServerID = Guid.NewGuid(),
-                ExecutingUser = User,
                 IsDebug = false,
             };
             act.Execute(dataObject, 0);
 
             var totalCount = dataObject.Environment.GetCount("rec");
-            Assert.AreEqual(8388608, totalCount,CurrentDl);
+            var res = dataObject.Environment.Eval("[[rec().data]]",0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            Assert.AreEqual("0827373254", res.Item.First().ToString());            
+            Assert.AreEqual(8300000, totalCount,CurrentDl);
         }
 
 
