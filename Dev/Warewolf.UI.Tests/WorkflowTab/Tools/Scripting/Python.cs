@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Threading;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClasses;
@@ -31,7 +32,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
             Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.OnErrorPane.Exists, "Python OnError pane does not exist after openning large view with a double click.");
             Assert.IsTrue(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.DoneButton.Exists, "Python Done button does not exist after openning large view with a double click.");
         }
-
 
         [TestMethod]
         [TestCategory("Tools")]
@@ -68,6 +68,24 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
             Assert.IsNotNull(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.LargeView.AttachmentsIntellisenseCombobox.Textbox, "Python Include File is expecting to have a value");
         }
 
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void PytonScriptTool_LoseFocus_ChangeTab_UITest()
+        {
+            UIMap.InitializeABlankWorkflow();
+            WorkflowTabUIMap.Drag_Toolbox_Python_Onto_DesignSurface();
+
+            ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Python.SmallView.ScriptIntellisenseCombobox.Textbox.Text = "python";
+            Keyboard.SendKeys("{Enter}");
+            Keyboard.SendKeys("{Enter}");
+            Keyboard.SendKeys("{Enter}");
+            Keyboard.SendKeys("{Enter}");
+            Keyboard.SendKeys("{Enter}");
+
+            Mouse.Click(new Point(594, 43));
+
+            Assert.IsFalse(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.HasFocus, "Tab change did not occur as expected when entering data into python tool");
+        }
 
         #region Additional test attributes
 
@@ -92,15 +110,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
 
         bool WaitForFile(string fullPath)
         {
-            int numTries = 0;
+            var numTries = 0;
             while (true)
             {
                 ++numTries;
                 try
                 {
-                    using (FileStream fs = new FileStream(fullPath,
-                        FileMode.Open, FileAccess.ReadWrite,
-                        FileShare.None, 100))
+                    using (FileStream fs = new FileStream(fullPath, FileMode.Open, FileAccess.ReadWrite, FileShare.None, 100))
                     {
                         fs.ReadByte();
                         break;
@@ -115,7 +131,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
                     Thread.Sleep(500);
                 }
             }
-            
             return true;
         }
 

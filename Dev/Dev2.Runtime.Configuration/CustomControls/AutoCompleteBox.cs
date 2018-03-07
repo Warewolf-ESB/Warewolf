@@ -1041,15 +1041,6 @@ namespace System.Windows.Controls
             FocusChanged(HasFocus());
         }
 
-#if !SILVERLIGHT
-    
-        protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
-        {
-            base.OnIsKeyboardFocusWithinChanged(e);
-            FocusChanged((bool)e.NewValue);
-        }
-#endif
-        
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
