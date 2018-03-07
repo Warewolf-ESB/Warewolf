@@ -214,8 +214,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [ExcludeFromCodeCoverage] //This execution is no longer used
         protected override void OnExecute(NativeActivityContext context)
         {
-
-            // ???? Why is this here....
             context.Properties.ToObservableCollection();
 
             var esbChannel = DataObject.EsbChannel;
@@ -227,9 +225,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var resourceId = context.GetValue(ResourceID);
             var allErrors = new ErrorResultTO();
 
-
             ParentServiceName = dataObject.ServiceName;
-
 
             var parentServiceName = string.Empty;
             var serviceName = string.Empty;
@@ -247,74 +243,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                if (ServiceServer != Guid.Empty)
-                {
-                    dataObject.RemoteInvokerID = ServiceServer.ToString();
-                }
-
-
-                dataObject.RunWorkflowAsync = RunWorkflowAsync;
-                if (resourceId != Guid.Empty)
-                {
-                    dataObject.ResourceID = resourceId;
-                }
-
-                if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
-                {
-                    DispatchDebugState(dataObject, StateType.Before, 0);
-                }
-
-
-
-                // scrub it clean ;)
-
-                // set the parent service
-                parentServiceName = dataObject.ParentServiceName;
-                serviceName = dataObject.ServiceName;
-                dataObject.ParentServiceName = serviceName;
-
-                _previousInstanceId = dataObject.ParentInstanceID;
-                dataObject.ParentID = oldResourceId;
-
-                dataObject.ParentInstanceID = UniqueID;
-                dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
-
-                if (!DeferExecution)
-                {
-                    // In all cases the ShapeOutput will have merged the execution data up into the current
-                    var tmpErrors = new ErrorResultTO();
-
-                    if (esbChannel == null)
-                    {
-                        throw new Exception(ErrorResource.NullESBChannel);
-                    }
-                    else
-                    {
-                        // NEW EXECUTION MODEL ;)
-                        // PBI 7913
-                        if (datalistId != GlobalConstants.NullDataListID)
-                        {
-                            BeforeExecutionStart(dataObject, allErrors);
-                            allErrors.MergeErrors(tmpErrors);
-
-                            dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
-                            dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
-
-                            // Execute Request
-                            ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, 0); // careful of zero if wf comes back
-
-                            allErrors.MergeErrors(tmpErrors);
-
-                            AfterExecutionCompleted(tmpErrors);
-                            allErrors.MergeErrors(tmpErrors);
-                            dataObject.DataListID = datalistId; // re-set DL ID
-                            dataObject.ServiceName = ServiceName;
-                        }
-
-
-                    }
-
-                }
+                TryExecute(esbChannel, dataObject, datalistId, resourceId, allErrors, out parentServiceName, out serviceName, oldResourceId);
             }
             finally
             {
@@ -344,6 +273,72 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RemoteInvokerID = Guid.Empty.ToString();
                 dataObject.EnvironmentID = Guid.Empty;
                 dataObject.ResourceID = oldResourceId;
+            }
+        }
+
+        private void TryExecute(IEsbChannel esbChannel, IDSFDataObject dataObject, Guid datalistId, Guid resourceId, ErrorResultTO allErrors, out string parentServiceName, out string serviceName, Guid oldResourceId)
+        {
+            if (ServiceServer != Guid.Empty)
+            {
+                dataObject.RemoteInvokerID = ServiceServer.ToString();
+            }
+
+            dataObject.RunWorkflowAsync = RunWorkflowAsync;
+            if (resourceId != Guid.Empty)
+            {
+                dataObject.ResourceID = resourceId;
+            }
+
+            if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
+            {
+                DispatchDebugState(dataObject, StateType.Before, 0);
+            }
+
+            // scrub it clean ;)
+
+            // set the parent service
+            parentServiceName = dataObject.ParentServiceName;
+            serviceName = dataObject.ServiceName;
+            dataObject.ParentServiceName = serviceName;
+
+            _previousInstanceId = dataObject.ParentInstanceID;
+            dataObject.ParentID = oldResourceId;
+
+            dataObject.ParentInstanceID = UniqueID;
+            dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
+
+            if (!DeferExecution)
+            {
+                // In all cases the ShapeOutput will have merged the execution data up into the current
+                var tmpErrors = new ErrorResultTO();
+
+                if (esbChannel == null)
+                {
+                    throw new Exception(ErrorResource.NullESBChannel);
+                }
+                else
+                {
+                    // NEW EXECUTION MODEL ;)
+                    // PBI 7913
+                    if (datalistId != GlobalConstants.NullDataListID)
+                    {
+                        BeforeExecutionStart(dataObject, allErrors);
+                        allErrors.MergeErrors(tmpErrors);
+
+                        dataObject.ServiceName = ServiceName; // set up for sub-exection ;)
+                        dataObject.ResourceID = ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+
+                        // Execute Request
+                        ExecutionImpl(esbChannel, dataObject, InputMapping, OutputMapping, out tmpErrors, 0); // careful of zero if wf comes back
+
+                        allErrors.MergeErrors(tmpErrors);
+
+                        AfterExecutionCompleted(tmpErrors);
+                        allErrors.MergeErrors(tmpErrors);
+                        dataObject.DataListID = datalistId; // re-set DL ID
+                        dataObject.ServiceName = ServiceName;
+                    }
+                }
             }
         }
 
@@ -502,24 +497,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
 
-                if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
+                // Handle Errors
+                if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped && allErrors.HasErrors())
                 {
-                    // Handle Errors
-                    if (allErrors.HasErrors())
+                    DisplayAndWriteError("DsfActivity", allErrors);
+                    foreach (var allError in allErrors.FetchErrors())
                     {
-                        DisplayAndWriteError("DsfActivity", allErrors);
-                        foreach (var allError in allErrors.FetchErrors())
-                        {
-                            dataObject.Environment.Errors.Add(allError);
-                        }
-                        // add to datalist in variable specified
-                        if (!String.IsNullOrEmpty(OnErrorVariable))
-                        {
-                            var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
-                        }
+                        dataObject.Environment.Errors.Add(allError);
+                    }
+                    // add to datalist in variable specified
+                    if (!String.IsNullOrEmpty(OnErrorVariable))
+                    {
+                        var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
+                        dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
                     }
                 }
+
 
                 if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
@@ -572,53 +565,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var results = new List<IDebugItem>();
             if (Inputs != null && Inputs.Count > 0)
             {
-                foreach (var serviceInput in Inputs)
-                {
-                    if (string.IsNullOrEmpty(serviceInput.Value))
-                    {
-                        continue;
-                    }
-                    var tmpEntry = env.Eval(serviceInput.Value, update);
-                    var itemToAdd = new DebugItem();
-                    if (tmpEntry.IsWarewolfAtomResult)
-                    {
-                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
-                        {
-                            var variableName = serviceInput.Value;
-                            if (DataListUtil.IsEvaluated(variableName))
-                            {
-                                AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
-                            }
-                            else
-                            {
-                                AddDebugItem(new DebugItemStaticDataParams(warewolfAtomResult.Item.ToString(), ""), itemToAdd);
-                            }
-                        }
-                        results.Add(itemToAdd);
-                    }
-                    else
-                    {
-                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListResult)
-                        {
-                            var variableName = serviceInput.Value;
-                            if (DataListUtil.IsValueRecordset(variableName))
-                            {
-                                AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
-                            }
-                            else
-                            {
-                                var warewolfAtom = warewolfAtomListResult.Item.Last();
-                                AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
-                            }
-                        }
-                        results.Add(itemToAdd);
-                    }
-                }
+                AddInputsToResult(env, update, results);
             }
             else
             {
                 var inputs = parser.Parse(InputMapping);
-
 
                 foreach (IDev2Definition dev2Definition in inputs)
                 {
@@ -627,42 +578,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         continue;
                     }
                     var tmpEntry = env.Eval(dev2Definition.RawValue, update);
-
-                    var itemToAdd = new DebugItem();
-                    if (tmpEntry.IsWarewolfAtomResult)
-                    {
-
-                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
-                        {
-                            var variableName = dev2Definition.Name;
-                            if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
-                            {
-                                variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1");
-                            }
-                            AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
-                        }
-                        results.Add(itemToAdd);
-                    }
-                    else
-                    {
-
-                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListResult)
-                        {
-                            var variableName = dev2Definition.Name;
-                            if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
-                            {
-                                variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
-                                AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
-                            }
-                            else
-                            {
-                                var warewolfAtom = warewolfAtomListResult.Item.Last();
-                                AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
-                            }
-                        }
-                        results.Add(itemToAdd);
-                    }
-
+                    AddInputsAsDebugItems(results, dev2Definition, tmpEntry);
                 }
             }
             foreach (IDebugItem debugInput in results)
@@ -671,6 +587,108 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             return results;
+        }
+
+        private void AddInputsAsDebugItems(List<IDebugItem> results, IDev2Definition dev2Definition, CommonFunctions.WarewolfEvalResult tmpEntry)
+        {
+            var itemToAdd = new DebugItem();
+            if (tmpEntry.IsWarewolfAtomResult)
+            {
+                AddWarewolfAtomResult(results, dev2Definition, tmpEntry, itemToAdd);
+            }
+            else
+            {
+                AddWarewolfAtomListResult(results, dev2Definition, tmpEntry, itemToAdd);
+            }
+        }
+
+        private void AddWarewolfAtomListResult(List<IDebugItem> results, IDev2Definition dev2Definition, CommonFunctions.WarewolfEvalResult tmpEntry, DebugItem itemToAdd)
+        {
+            if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListResult)
+            {
+                var variableName = dev2Definition.Name;
+                if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                {
+                    variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "*");
+                    AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
+                }
+                else
+                {
+                    var warewolfAtom = warewolfAtomListResult.Item.Last();
+                    AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+                }
+            }
+            results.Add(itemToAdd);
+        }
+
+        private void AddWarewolfAtomResult(List<IDebugItem> results, IDev2Definition dev2Definition, CommonFunctions.WarewolfEvalResult tmpEntry, DebugItem itemToAdd)
+        {
+            if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
+            {
+                var variableName = dev2Definition.Name;
+                if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
+                {
+                    variableName = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "1");
+                }
+                AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+            }
+            results.Add(itemToAdd);
+        }
+
+        private void AddInputsToResult(IExecutionEnvironment env, int update, List<IDebugItem> results)
+        {
+            foreach (var serviceInput in Inputs)
+            {
+                if (string.IsNullOrEmpty(serviceInput.Value))
+                {
+                    continue;
+                }
+                var tmpEntry = env.Eval(serviceInput.Value, update);
+                var itemToAdd = new DebugItem();
+                if (tmpEntry.IsWarewolfAtomResult)
+                {
+                    if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
+                    {
+                        var variableName = serviceInput.Value;
+                        AddWarewolfAtmonResultAsDebugItem(itemToAdd, warewolfAtomResult, variableName);
+                    }
+                    results.Add(itemToAdd);
+                }
+                else
+                {
+                    if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListResult)
+                    {
+                        var variableName = serviceInput.Value;
+                        AddWarewolfAtom(itemToAdd, warewolfAtomListResult, variableName);
+                    }
+                    results.Add(itemToAdd);
+                }
+            }
+        }
+
+        private void AddWarewolfAtom(DebugItem itemToAdd, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListResult, string variableName)
+        {
+            if (DataListUtil.IsValueRecordset(variableName))
+            {
+                AddDebugItem(new DebugItemWarewolfAtomListResult(warewolfAtomListResult, "", "", DataListUtil.AddBracketsToValueIfNotExist(variableName), "", "", "="), itemToAdd);
+            }
+            else
+            {
+                var warewolfAtom = warewolfAtomListResult.Item.Last();
+                AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtom.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+            }
+        }
+
+        private void AddWarewolfAtmonResultAsDebugItem(DebugItem itemToAdd, CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult, string variableName)
+        {
+            if (DataListUtil.IsEvaluated(variableName))
+            {
+                AddDebugItem(new DebugItemWarewolfAtomResult(warewolfAtomResult.Item.ToString(), DataListUtil.AddBracketsToValueIfNotExist(variableName), ""), itemToAdd);
+            }
+            else
+            {
+                AddDebugItem(new DebugItemStaticDataParams(warewolfAtomResult.Item.ToString(), ""), itemToAdd);
+            }
         }
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
@@ -694,37 +712,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (Outputs != null && Outputs.Count > 0)
                 {
-                    foreach (var serviceOutputMapping in Outputs)
-                    {
-                        try
-                        {
-                            var itemToAdd = new DebugItem();
-                            AddDebugItem(new DebugEvalResult(serviceOutputMapping.MappedTo, "", environment, update), itemToAdd);
-                            results.Add(itemToAdd);
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                        }
-                    }
+                    AddServiceOutputMappingsToResults(environment, update, results);
                 }
                 else
                 {
-                    var parser = DataListFactory.CreateOutputParser();
-                    var outputs = parser.Parse(OutputMapping);
-                    foreach (IDev2Definition dev2Definition in outputs)
-                    {
-                        try
-                        {
-                            var itemToAdd = new DebugItem();
-                            AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
-                            results.Add(itemToAdd);
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                        }
-                    }
+                    AddRawOutputsToResults(environment, update, results);
                 }
             }
             foreach (IDebugItem debugOutput in results)
@@ -733,6 +725,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             _debugOutputs = results;
+        }
+
+        private void AddRawOutputsToResults(IExecutionEnvironment environment, int update, List<DebugItem> results)
+        {
+            var parser = DataListFactory.CreateOutputParser();
+            var outputs = parser.Parse(OutputMapping);
+            foreach (IDev2Definition dev2Definition in outputs)
+            {
+                try
+                {
+                    var itemToAdd = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
+                    results.Add(itemToAdd);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
+                }
+            }
+        }
+
+        private void AddServiceOutputMappingsToResults(IExecutionEnvironment environment, int update, List<DebugItem> results)
+        {
+            foreach (var serviceOutputMapping in Outputs)
+            {
+                try
+                {
+                    var itemToAdd = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(serviceOutputMapping.MappedTo, "", environment, update), itemToAdd);
+                    results.Add(itemToAdd);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
+                }
+            }
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
