@@ -199,11 +199,11 @@ namespace Warewolf.MergeParser.Tests
 
             Assert.AreEqual(4, count);
 
-            Assert.IsTrue(diffTree.Any(d => d.IsInConflict));
+            Assert.IsFalse(diffTree.Any(d => d.IsInConflict));
             Assert.AreEqual(randomActivityUniqueId, diffTree[0].UniqueId);
             Assert.AreEqual(calculateUniqueId, diffTree[1].UniqueId);
 
-            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
+            Assert.IsFalse(currentTree.Any(d => d.IsInConflict));
             Assert.AreEqual(randomActivityUniqueId, currentTree[0].UniqueId);
             Assert.AreEqual(calculateUniqueId, currentTree[1].UniqueId);
 
@@ -212,8 +212,8 @@ namespace Warewolf.MergeParser.Tests
             var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
-            Assert.IsTrue(tupleDifference.IsInConflict);
-            Assert.IsTrue(tupleCurrent.IsInConflict);
+            Assert.IsFalse(tupleDifference.IsInConflict);
+            Assert.IsFalse(tupleCurrent.IsInConflict);
 
             var devActivityDiff = tupleDifference.Activity;
             var devActivityCurr = tupleCurrent.Activity;
@@ -314,7 +314,7 @@ namespace Warewolf.MergeParser.Tests
 
             Assert.AreEqual(5, count);
 
-            Assert.IsTrue(diffTree.Any(d => d.IsInConflict));
+            Assert.IsFalse(diffTree.Any(d => d.IsInConflict));
             Assert.AreEqual(calculateUniqueId, diffTree[2].UniqueId);
             Assert.AreEqual(baseConvertId, diffTree[1].UniqueId);
 
@@ -424,7 +424,7 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(calculateUniqueId, diffTree[1].UniqueId);
             Assert.AreEqual(randomActivityUniqueId, diffTree[0].UniqueId);
 
-            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
+            Assert.IsFalse(currentTree.Any(d => d.IsInConflict));
             Assert.AreEqual(baseConvertId, currentTree[1].UniqueId);
             Assert.AreEqual(randomActivityUniqueId, currentTree[0].UniqueId);
 
@@ -541,7 +541,7 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(calculateUniqueId, diffTree[1].UniqueId);
             Assert.AreEqual(randomActivityUniqueId, diffTree[0].UniqueId);
 
-            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
+            Assert.IsFalse(currentTree.Any(d => d.IsInConflict));
             Assert.AreEqual(calculateUniqueId, currentTree[1].UniqueId);
             Assert.AreEqual(randomActivityUniqueId, currentTree[0].UniqueId);
 
@@ -633,10 +633,10 @@ namespace Warewolf.MergeParser.Tests
 
             Assert.AreEqual(2, count);
 
-            Assert.IsTrue(diffTree.Any(d => d.IsInConflict));
+            Assert.IsFalse(diffTree.Any(d => d.IsInConflict));
             Assert.AreEqual(assignId, diffTree[0].UniqueId);
 
-            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
+            Assert.IsFalse(currentTree.Any(d => d.IsInConflict));
             Assert.AreEqual(assignId, currentTree[0].UniqueId);
 
             //First Node chart
@@ -767,10 +767,10 @@ namespace Warewolf.MergeParser.Tests
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(8, count);
-            Assert.IsTrue(diffTree.First().IsInConflict);
-            Assert.IsTrue(currentTree.First().IsInConflict);
-            Assert.IsTrue(diffTree.Last().IsInConflict);
-            Assert.IsTrue(currentTree.Last().IsInConflict);
+            Assert.IsFalse(diffTree.First().IsInConflict);
+            Assert.IsFalse(currentTree.First().IsInConflict);
+            Assert.IsFalse(diffTree.Last().IsInConflict);
+            Assert.IsFalse(currentTree.Last().IsInConflict);
             Assert.AreEqual(assignId, diffTree[0].UniqueId);
             Assert.AreEqual(assignId, currentTree[0].UniqueId);
 
@@ -912,8 +912,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(4, count);
             Assert.IsFalse(diffTree.First().IsInConflict);
             Assert.IsFalse(currentTree.First().IsInConflict);
-            Assert.IsTrue(diffTree.Last().IsInConflict);
-            Assert.IsTrue(currentTree.Last().IsInConflict);
+            Assert.IsFalse(diffTree.Last().IsInConflict);
+            Assert.IsFalse(currentTree.Last().IsInConflict);
             Assert.AreEqual(assignId, diffTree[0].UniqueId);
             Assert.AreEqual(assignId, currentTree[0].UniqueId);
 
@@ -1060,10 +1060,8 @@ namespace Warewolf.MergeParser.Tests
 
             Assert.AreEqual(8, count);
 
-            Assert.IsTrue(diffTree.Any(d => d.IsInConflict));
-            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
-            Assert.IsTrue(diffTree.Any(d => !d.IsInConflict));
-            Assert.IsTrue(currentTree.Any(d => !d.IsInConflict));
+            Assert.IsFalse(diffTree.Any(d => d.IsInConflict));
+            Assert.IsFalse(currentTree.Any(d => d.IsInConflict));
             Assert.AreEqual(assignId, diffTree[0].UniqueId);
             Assert.AreEqual(assignId, currentTree[0].UniqueId);
 
@@ -1202,11 +1200,11 @@ namespace Warewolf.MergeParser.Tests
 
             Assert.AreEqual(6, count);
 
-            Assert.IsTrue(diffTree.First().IsInConflict);
-            Assert.IsTrue(currentTree.First().IsInConflict);
+            Assert.IsFalse(diffTree.First().IsInConflict);
+            Assert.IsFalse(currentTree.First().IsInConflict);
 
-            Assert.IsTrue(diffTree.Last().IsInConflict);
-            Assert.IsTrue(currentTree.Last().IsInConflict);
+            Assert.IsFalse(diffTree.Last().IsInConflict);
+            Assert.IsFalse(currentTree.Last().IsInConflict);
 
             Assert.AreEqual(assignId, diffTree[0].UniqueId);
             Assert.AreEqual(assignId, currentTree[0].UniqueId);

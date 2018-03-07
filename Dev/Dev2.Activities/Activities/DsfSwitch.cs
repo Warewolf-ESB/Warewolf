@@ -55,23 +55,23 @@ namespace Dev2.Activities
         public Dictionary<string, IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
 
-        public override string GetDisplayName() => !string.IsNullOrWhiteSpace(Switch) ? Switch : DisplayName;
+        public override string GetDisplayName() => !string.IsNullOrWhiteSpace(DisplayName) ? DisplayName : Switch;
 
         public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
             var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
-            if (Switches != null)
-            {
-                foreach (var swt in Switches)
-                {
-                    armConnectors.Add(($"{GetDisplayName()} : {swt.Key} -> {swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
-                }
-            }
             if (Default != null)
             {
                 foreach (var dft in Default)
                 {
                     armConnectors.Add(($"{GetDisplayName()} : Default -> {dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
+                }
+            }
+            if (Switches != null)
+            {
+                foreach (var swt in Switches)
+                {
+                    armConnectors.Add(($"{GetDisplayName()} : {swt.Key} -> {swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
                 }
             }
             return armConnectors;
@@ -244,7 +244,14 @@ namespace Dev2.Activities
                 return true;
             }
 
-            return base.Equals(other) && string.Equals(Switch, other.Switch) && string.Equals(Result, other.Result);
+            var eq = base.Equals(other);
+            eq &= string.Equals(Switch, other.Switch);
+            eq &= string.Equals(Result, other.Result);
+            eq &= string.Equals(OnErrorVariable, other.OnErrorVariable);
+            eq &= string.Equals(OnErrorWorkflow, other.OnErrorWorkflow);
+            eq &= IsEndedOnError == other.IsEndedOnError;
+
+            return eq;
         }
 
         public override bool Equals(object obj)

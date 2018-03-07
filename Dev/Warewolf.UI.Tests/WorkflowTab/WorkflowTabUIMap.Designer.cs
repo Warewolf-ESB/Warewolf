@@ -1049,6 +1049,23 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mKeepNewNameFlowChartName;
             }
         }
+        
+        public WpfCustom UIItem1b66d61971804317Custom
+        {
+            get
+            {
+                if ((this.mUIItem1b66d61971804317Custom == null))
+                {
+                    this.mUIItem1b66d61971804317Custom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIItem1b66d61971804317Custom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mUIItem1b66d61971804317Custom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "1b66d619-7180-4317-805d-4bf5074d91da,300,187.5 300,237.5";
+                    this.mUIItem1b66d61971804317Custom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIItem1b66d61971804317Custom;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1085,6 +1102,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private WpfCustom mHelloWordFlowChartName;
         
         private KeepNewNameFlowChartName mKeepNewNameFlowChartName;
+        
+        private WpfCustom mUIItem1b66d61971804317Custom;
         #endregion
     }
     
@@ -8236,10 +8255,38 @@ An invalid parameter or option was specified for procedure 'some_procedure'.";
                 return this.mUIDebugOutputCustom;
             }
         }
+        
+        public UIUI_ToolboxControl_AuCustom UIUI_ToolboxControl_AuCustom
+        {
+            get
+            {
+                if ((this.mUIUI_ToolboxControl_AuCustom == null))
+                {
+                    this.mUIUI_ToolboxControl_AuCustom = new UIUI_ToolboxControl_AuCustom(this);
+                }
+                return this.mUIUI_ToolboxControl_AuCustom;
+            }
+        }
+        
+        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
+        {
+            get
+            {
+                if ((this.mUIWorkflowItemPresenteCustom == null))
+                {
+                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
+                }
+                return this.mUIWorkflowItemPresenteCustom;
+            }
+        }
         #endregion
         
         #region Fields
         private UIDebugOutputCustom mUIDebugOutputCustom;
+        
+        private UIUI_ToolboxControl_AuCustom mUIUI_ToolboxControl_AuCustom;
+        
+        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
         #endregion
     }
     
@@ -8309,6 +8356,145 @@ An invalid parameter or option was specified for procedure 'some_procedure'.";
         
         #region Fields
         private WpfTreeItem mUISQLServerDatabaseTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_ToolboxControl_AuCustom : WpfCustom
+    {
+        
+        public UIUI_ToolboxControl_AuCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ToolboxView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_ToolboxControl_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIToolListBoxList UIToolListBoxList
+        {
+            get
+            {
+                if ((this.mUIToolListBoxList == null))
+                {
+                    this.mUIToolListBoxList = new UIToolListBoxList(this);
+                }
+                return this.mUIToolListBoxList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIToolListBoxList mUIToolListBoxList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIToolListBoxList : WpfList
+    {
+        
+        public UIToolListBoxList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "ToolListBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDataGroup UIDataGroup
+        {
+            get
+            {
+                if ((this.mUIDataGroup == null))
+                {
+                    this.mUIDataGroup = new UIDataGroup(this);
+                }
+                return this.mUIDataGroup;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDataGroup mUIDataGroup;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIDataGroup : WpfGroup
+    {
+        
+        public UIDataGroup(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfGroup.PropertyNames.Name] = "Data";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem UIWarewolfStudioViewMoListItem
+        {
+            get
+            {
+                if ((this.mUIWarewolfStudioViewMoListItem == null))
+                {
+                    this.mUIWarewolfStudioViewMoListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUIWarewolfStudioViewMoListItem.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Assign";
+                    this.mUIWarewolfStudioViewMoListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIWarewolfStudioViewMoListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mUIWarewolfStudioViewMoListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWorkflowItemPresenteCustom : WpfCustom
+    {
+        
+        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIFlowchartCustom
+        {
+            get
+            {
+                if ((this.mUIFlowchartCustom == null))
+                {
+                    this.mUIFlowchartCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
+                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 1(FlowchartDesigner)";
+                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIFlowchartCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIFlowchartCustom;
         #endregion
     }
 }

@@ -45,24 +45,10 @@ namespace Warewolf.MergeParser
             _definationCleaner = definationCleaner;
         }
 
-        public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference) => GetConflictTrees(current, difference, true);
         public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer)
         {
             var currentTree = BuildTree(current, true);
             var diffTree = BuildTree(difference, loadworkflowFromServer);
-            var completeList = currentTree.Concat(diffTree);
-            var groupedItems = completeList.GroupBy(a => a.UniqueId);
-            foreach (var item in groupedItems)
-            {
-                var itemList = item.ToList();
-                var hasConflict = false;
-                if (itemList.Count > 1)
-                {
-                    var item1 = itemList[0];
-                    var item2 = itemList[1];
-                    hasConflict = !item1.Equals(item2);
-                }
-            }
             return (currentTree, diffTree);
         }
 
@@ -101,11 +87,11 @@ namespace Warewolf.MergeParser
             {
                 return new List<ConflictTreeNode>();
             }
-            var nodes = BuildNoteItems(wd, modelService, flowchartDiff);
+            var nodes = BuildNodeItems(wd, modelService, flowchartDiff);
             return nodes;
         }
 
-        List<ConflictTreeNode> BuildNoteItems(WorkflowDesigner wd, ModelService modelService, Flowchart flowchartDiff)
+        List<ConflictTreeNode> BuildNodeItems(WorkflowDesigner wd, ModelService modelService, Flowchart flowchartDiff)
         {
             var idsLocations = GetIdLocations(wd, modelService);
             var nodes = new List<ConflictTreeNode>();
@@ -116,7 +102,7 @@ namespace Warewolf.MergeParser
                 var shapeLocation = GetShapeLocation(wd, startNode);
                 var startConflictNode = new ConflictTreeNode(start, shapeLocation);
                 nodes.Add(startConflictNode);
-                BuildItems(idsLocations, nodes, start, startConflictNode);
+                BuildItems(idsLocations, nodes, start, startConflictNode, flowchartDiff);
             }
 
             return nodes;
@@ -135,7 +121,7 @@ namespace Warewolf.MergeParser
             return idsLocations;
         }
 
-        static void BuildItems(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, IDev2Activity start, ConflictTreeNode startConflictNode)
+        static void BuildItems(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, IDev2Activity start, ConflictTreeNode startConflictNode, Flowchart flowchartDiff)
         {
             var nextNodes = start.GetNextNodes();
             var children = start.GetChildrenNodes();
@@ -159,6 +145,74 @@ namespace Warewolf.MergeParser
                     }
                 }
                 nextNodes = newNextNodes;
+            }
+            if (nodes.Count() != flowchartDiff?.Nodes?.Count)
+            {
+                AddMissingConflictNodes(idsLocations, nodes, flowchartDiff);
+            }
+        }
+
+        static void AddMissingConflictNodes(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, Flowchart flowchartDiff)
+        {
+            var missingConflictNodes = new List<ConflictTreeNode>();
+            foreach (var node in flowchartDiff.Nodes)
+            {
+                if (node is FlowStep nextNode && nextNode?.Action is IDev2Activity action)
+                {
+                    AddMissingNode(idsLocations, nodes, missingConflictNodes, action);
+                    continue;
+                }
+                if (node is FlowDecision nextDecNode)
+                {
+                    AddMissingFlowDecisionTrueAndFalse(idsLocations, nodes, missingConflictNodes, nextDecNode);
+                    continue;
+                }
+                if (node is FlowSwitch<string> nextSwitchNode)
+                {
+                    AddMissingFlowSwitchCases(idsLocations, nodes, missingConflictNodes, nextSwitchNode);
+                    continue;
+                }
+            }
+
+            foreach (var missingNode in missingConflictNodes)
+            {
+                nodes.Add(missingNode);
+            }
+        }
+
+        private static void AddMissingFlowDecisionTrueAndFalse(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, List<ConflictTreeNode> missingConflictNodes, FlowDecision nextDecNode)
+        {
+            if (nextDecNode?.True is IDev2Activity decTrue)
+            {
+                AddMissingNode(idsLocations, nodes, missingConflictNodes, decTrue);
+            }
+            if (nextDecNode?.False is IDev2Activity decFalse)
+            {
+                AddMissingNode(idsLocations, nodes, missingConflictNodes, decFalse);
+            }
+        }
+
+        private static void AddMissingFlowSwitchCases(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, List<ConflictTreeNode> missingConflictNodes, FlowSwitch<string> nextSwitchNode)
+        {
+            if (nextSwitchNode?.Default is IDev2Activity switchDefault)
+            {
+                AddMissingNode(idsLocations, nodes, missingConflictNodes, switchDefault);
+            }
+            foreach (var switchCase in nextSwitchNode.Cases)
+            {
+                if (switchCase.Value is IDev2Activity switchValue)
+                {
+                    AddMissingNode(idsLocations, nodes, missingConflictNodes, switchValue);
+                }
+            }
+        }
+
+        static void AddMissingNode(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, List<ConflictTreeNode> missingConflictNodes, IDev2Activity action)
+        {
+            if (nodes.FirstOrDefault(t => t.UniqueId == action.UniqueID) == null)
+            {
+                var nextConflictNode = new ConflictTreeNode(action, idsLocations.FirstOrDefault(t => t.uniqueId == action.UniqueID).location);
+                missingConflictNodes.Add(nextConflictNode);
             }
         }
 

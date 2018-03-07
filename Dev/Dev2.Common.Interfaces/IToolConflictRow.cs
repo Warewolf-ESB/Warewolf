@@ -8,22 +8,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-
 namespace Dev2.Common.Interfaces
 {
-    public interface IToolConflict : IConflict
+    public interface IToolConflictRow : IConflictRow
     {
-        IMergeToolModel CurrentViewModel { get; set; }
-        IMergeToolModel DiffViewModel { get; set; }
-        LinkedList<IToolConflict> Children { get; set; }
-        IToolConflict Parent { get; set; }
+        IToolConflictItem CurrentViewModel { get; set; }
+        IToolConflictItem DiffViewModel { get; set; }
         bool IsMergeExpanded { get; set; }
         bool IsContainerTool { get; set; }
-        bool IsStartNode { get; set; }
-        IToolConflict GetNextConflict();
-        LinkedListNode<IToolConflict> Find(IToolConflict itemToFind);
-        bool All(Func<IToolConflict, bool> check);
     }
 }

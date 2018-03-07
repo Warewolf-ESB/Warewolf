@@ -14,7 +14,6 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism.Mvvm;
-using System.Collections.ObjectModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Factory;
 using Dev2.Activities;
@@ -33,21 +32,25 @@ namespace Dev2.ViewModels.Merge
         bool _isWorkflowNameChecked;
         bool _isVariablesChecked;
 
-        public IMergeToolModel Model { get; set; }
-        public delegate void ModelItemChanged(ModelItem modelItem, MergeToolModel mergeToolModel);
+        public delegate void ModelItemChanged(ModelItem modelItem, IToolConflictItem mergeToolModel);
         public event ModelItemChanged OnModelItemChanged;
 
-        public ConflictModelFactory(IContextualResourceModel resourceModel, IConflictTreeNode conflict, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        public ConflictModelFactory(IContextualResourceModel resourceModel)
         {
-            Children = new ObservableCollection<IMergeToolModel>();
             _resourceModel = resourceModel;
-            var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
-            Model = GetModel(modelItem, conflict, null, workflowDesignerViewModel);
+            WorkflowName = _resourceModel.ResourceName;
+            ServerName = _resourceModel.Environment.Name;
+            GetDataList(_resourceModel);
+        }
+
+        public ConflictModelFactory(IToolConflictItem toolConflictItem, IContextualResourceModel resourceModel, IConflictTreeNode conflict)
+        {
+            _resourceModel = resourceModel;
+            CreateModelItem(toolConflictItem,conflict);
         }
 
         public ConflictModelFactory()
         {
-            Children = new ObservableCollection<IMergeToolModel>();
         }
 
         public void GetDataList(IContextualResourceModel resourceModel)
@@ -132,11 +135,16 @@ namespace Dev2.ViewModels.Merge
             }
         }
         public IDataListViewModel DataListViewModel { get; set; }
-        public ObservableCollection<IMergeToolModel> Children { get; set; }
 
-        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, IWorkflowDesignerViewModel workflowDesignerViewModel) => GetModel(modelItem, node, parentItem, workflowDesignerViewModel, "");
+        public IToolConflictItem CreateModelItem(IToolConflictItem toolConflictItem, IConflictTreeNode node)
+        {
+            var modelItem = ModelItemUtils.CreateModelItem(node.Activity);
+            var viewModel = GetViewModel(toolConflictItem, modelItem, node);
 
-        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, IWorkflowDesignerViewModel workflowDesignerViewModel, string parentLabelDescription)
+            return ConfigureToolConflictItem(toolConflictItem, modelItem, node, viewModel);
+        }
+
+        public ActivityDesignerViewModel GetViewModel(IToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node)
         {
             if (modelItem == null || node == null || node.Activity == null)
             {
@@ -145,63 +153,66 @@ namespace Dev2.ViewModels.Merge
 
             var activityType = node.Activity.GetType();
 
-            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var actual);
-            if (actual == null)
+            DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out Type actualType);
+            if (actualType == null)
             {
                 return null;
             }
             ActivityDesignerViewModel instance;
-            if (actual == typeof(SwitchDesignerViewModel))
+            if (actualType == typeof(SwitchDesignerViewModel))
             {
-                var dsfSwitch = node as DsfSwitch;
-                instance = Activator.CreateInstance(actual, modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
+                var dsfSwitch = node.Activity as DsfSwitch;
+                var switchInstance = Activator.CreateInstance(actualType, modelItem, dsfSwitch.DisplayName) as SwitchDesignerViewModel;
+                switchInstance.SwitchVariable = dsfSwitch.Switch;
+                toolConflictItem.MergeDescription = switchInstance.DisplayText;
+                instance = switchInstance;
             }
-            else if (actual == typeof(ServiceDesignerViewModel))
+            else if (actualType == typeof(ServiceDesignerViewModel))
             {
                 var resourceId = ModelItemUtils.TryGetResourceID(modelItem);
                 var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
-                instance = Activator.CreateInstance(actual, modelItem, childResourceModel) as ActivityDesignerViewModel;
+                instance = Activator.CreateInstance(actualType, modelItem, childResourceModel) as ActivityDesignerViewModel;
             }
             else if (node.Activity is IAdapterActivity a)
             {
                 var inode = ModelItemUtils.CreateModelItem(a.GetInnerNode());
-                instance = Activator.CreateInstance(actual, inode) as ActivityDesignerViewModel;
+                instance = Activator.CreateInstance(actualType, inode) as ActivityDesignerViewModel;
             }
             else
             {
-                instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
+                instance = Activator.CreateInstance(actualType, modelItem) as ActivityDesignerViewModel;
             }
             instance.IsMerge = true;
 
-            var mergeToolModel = CreateNewMergeToolModel(modelItem, node, parentItem, parentLabelDescription, instance, workflowDesignerViewModel);
-            return mergeToolModel;
+            return instance;
         }
 
-        MergeToolModel CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, string parentLabelDescription, ActivityDesignerViewModel instance, IWorkflowDesignerViewModel workflowDesignerViewModel)
+        IToolConflictItem ConfigureToolConflictItem(IToolConflictItem toolConflictItem, ModelItem modelItem, IConflictTreeNode node, ActivityDesignerViewModel instance)
         {
-            var mergeToolModel = new MergeToolModel
+            toolConflictItem.Activity = node.Activity;
+            toolConflictItem.UniqueId = node.Activity.UniqueID.ToGuid();
+            if (string.IsNullOrWhiteSpace(toolConflictItem.MergeDescription))
             {
-                ActivityDesignerViewModel = instance,
-                WorkflowDesignerViewModel = workflowDesignerViewModel,
-                MergeIcon = modelItem.GetImageSourceForTool(),
-                MergeDescription = node.Activity.GetDisplayName(),
-                UniqueId = node.Activity.UniqueID.ToGuid(),
-                FlowNode = node.Activity.GetFlowNode(),
-                IsMergeVisible = node.IsInConflict,
-                ModelItem = modelItem,
-                NodeLocation = node.Location,
-                Parent = parentItem,
-                HasParent = parentItem != null,
-                ParentDescription = parentLabelDescription,
-                IsTrueArm = parentLabelDescription?.ToLowerInvariant() == "true",
-                NodeArmDescription = node.Activity.GetDisplayName() + " -> " + " Assign",
-            };
+                toolConflictItem.MergeDescription = node.Activity.GetDisplayName();
+            }
+            toolConflictItem.FlowNode = node.Activity.GetFlowNode();
+            toolConflictItem.ModelItem = modelItem;
+            toolConflictItem.NodeLocation = node.Location;
+
+            toolConflictItem.MergeIcon = modelItem.GetImageSourceForTool();
+            if (toolConflictItem is ToolConflictItem toolConflictItemObject)
+            {
+                toolConflictItemObject.ActivityDesignerViewModel = instance;
+            }
 
             modelItem.PropertyChanged += (sender, e) =>
             {
-                OnModelItemChanged?.Invoke(modelItem, mergeToolModel);
+                if (e.PropertyName == nameof(ModelItem))
+                {
+                    OnModelItemChanged?.Invoke(modelItem, toolConflictItem);
+                }
             };
-            return mergeToolModel;
+            return toolConflictItem;
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;

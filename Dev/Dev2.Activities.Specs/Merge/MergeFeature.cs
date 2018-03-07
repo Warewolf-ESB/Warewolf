@@ -1,4 +1,5 @@
-﻿using Dev2.Activities.Specs.BaseTypes;
+﻿using Dev2.Activities.PathOperations;
+using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
@@ -12,6 +13,7 @@ using Moq;
 using System;
 using System.Linq;
 using TechTalk.SpecFlow;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.MergeParser;
 using Warewolf.Studio.ViewModels;
 
@@ -124,16 +126,28 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenISelectCurrentTool()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflict && a.HasConflict && !a.IsChecked).Cast<ToolConflict>().Select(p => p.CurrentViewModel).FirstOrDefault() as IMergeToolModel;
+            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflictRow && !a.HasConflict && a.IsCurrentChecked)
+                                                  .Cast<ToolConflictRow>()
+                                                  .Select(p => p.CurrentViewModel)
+                                                  .FirstOrDefault() as IToolConflictItem;
             Assert.IsNotNull(mergeToolModel);
-            mergeToolModel.IsMergeChecked = true;
+            mergeToolModel.IsChecked = true;
         }
 
         [Then(@"I select Current Arm")]
         public void ThenISelectCurrentArm()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict && a.HasConflict && !a.IsChecked).Cast<ArmConnectorConflict>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IMergeArmConnectorConflict;
+            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IConnectorConflictItem;
+            Assert.IsNotNull(mergeArmConnector);
+            mergeArmConnector.IsChecked = true;
+        }
+
+        [Then(@"I select Different Arm")]
+        public void ThenISelectDifferentArm()
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow && a.HasConflict && !a.Different.IsChecked).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).FirstOrDefault() as IConnectorConflictItem;
             Assert.IsNotNull(mergeArmConnector);
             mergeArmConnector.IsChecked = true;
         }
@@ -149,8 +163,8 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenCurrentWorkflowContainsTools(int currentToolCount)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var count = mergeVm.Conflicts.Where(a => a is ToolConflict).Cast<ToolConflict>().Select(p => p.CurrentViewModel).Count();
-            var count1 = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict).Cast<ArmConnectorConflict>().Select(p => p.CurrentArmConnector).Count();
+            var count = mergeVm.Conflicts.Where(a => a is ToolConflictRow).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).Count();
+            var count1 = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow).Cast<ConnectorConflictRow>().Select(p => p.CurrentArmConnector).Count();
             Assert.AreEqual(currentToolCount, count + count1);
         }
 
@@ -158,8 +172,8 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenDifferentWorkflowContainsTools(int toolCount)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var count = mergeVm.Conflicts.Where(a => a is ToolConflict).Cast<ToolConflict>().Select(p => p.DiffViewModel).Count();
-            var count1 = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict).Cast<ArmConnectorConflict>().Select(p => p.DifferentArmConnector).Count();
+            var count = mergeVm.Conflicts.Where(a => a is ToolConflictRow).Cast<ToolConflictRow>().Select(p => p.DiffViewModel).Count();
+            var count1 = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).Count();
             Assert.AreEqual(toolCount, count + count1);
         }
 
@@ -167,7 +181,7 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenMergeConflictsCountIs(int conflictsCount)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var count = mergeVm.Conflicts.Count;
+            var count = mergeVm.Conflicts.Count();
             Assert.AreEqual(conflictsCount, count);
         }
 
@@ -177,6 +191,64 @@ namespace Dev2.Activities.Specs.Merge
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
             var a = mergeVm.HasVariablesConflict;
             Assert.IsFalse(a);
+        }
+
+        IToolConflictRow GetToolConflictFromRow(int conflictRow)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var conflict = mergeVm.Conflicts.ToList()[conflictRow];
+            var toolConflict = conflict as IToolConflictRow;
+            return toolConflict;
+        }
+        
+        [Then(@"conflict ""(.*)"" Current matches tool ""(.*)""")]
+        public void ThenConflictCurrentMatchesTool(int conflictRow, string mergeToolDescription)
+        {
+            var toolConflict = GetToolConflictFromRow(conflictRow);
+            Assert.AreEqual(mergeToolDescription, toolConflict.CurrentViewModel.MergeDescription);
+        }
+
+        [Then(@"conflict ""(.*)"" Different matches tool ""(.*)""")]
+        public void ThenConflictDifferentMatchesTool(int conflictRow, string mergeToolDescription)
+        {
+            var toolConflict = GetToolConflictFromRow(conflictRow);
+            Assert.AreEqual(mergeToolDescription, toolConflict.DiffViewModel.MergeDescription);
+        }
+
+        IConnectorConflictRow GetArmConnectorFromRow(int conflictRow)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var conflict = mergeVm.Conflicts.ToList()[conflictRow];
+            var toolConflict = conflict as IConnectorConflictRow;
+            return toolConflict;
+        }
+
+        [Then(@"conflict ""(.*)"" Current Connector matches tool ""(.*)""")]
+        public void ThenConflictCurrentConnectorMatchesTool(int conflictRow, string connectorDescription)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.AreEqual(connectorDescription, connector.CurrentArmConnector.ArmDescription);
+        }
+
+        [Then(@"conflict ""(.*)"" Current Connector matches tool is null")]
+        public void ThenConflictCurrentConnectorMatchesToolIsNull(int conflictRow)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.IsNull(connector.CurrentArmConnector.ArmDescription);
+        }
+
+        [Then(@"conflict ""(.*)"" Different Connector matches tool ""(.*)""")]
+        public void ThenConflictDifferentConnectorMatchesTool(int conflictRow, string connectorDescription)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.AreEqual(connectorDescription, connector.DifferentArmConnector.ArmDescription);
+        }
+
+        [Then(@"conflict ""(.*)"" Different Connector matches tool is null")]
+        public void ThenConflictDifferentConnectorMatchesToolIsNull(int conflictRow)
+        {
+            var connector = GetArmConnectorFromRow(conflictRow);
+            Assert.IsNull(connector.DifferentArmConnector.ArmDescription);
         }
 
         [Then(@"Merge variable conflicts is true")]
@@ -201,6 +273,36 @@ namespace Dev2.Activities.Specs.Merge
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
             var a = mergeVm.Conflicts.AsEnumerable().Count(p => p.HasConflict);
             Assert.AreEqual(expectedConflicts, a);
+        }
+
+        [Given(@"I Load All tools and expect all tools to be mapped")]
+        public void GivenILoadAllToolsAndExpectAllToolsToBeMapped()
+        {
+            var dev2ActivityIOMapping = typeof(IDev2ActivityIOMapping);
+            Type[] excludedTypes = { typeof(DsfBaseActivity),
+                                     typeof(DsfActivityAbstract<>),
+                                     typeof(DsfMethodBasedActivity),
+                                     typeof(DsfWebActivityBase),
+                                     typeof(DsfFlowNodeActivity<>),
+                                     typeof(DsfNativeActivity<>),
+                                     typeof(DsfAbstractFileActivity),
+                                     typeof(DsfFlowDecisionActivity),
+                                     typeof(DsfFlowSwitchActivity),
+                                     typeof(DsfDotNetDllActivity),
+                                     typeof(DsfDatabaseActivity),
+                                     typeof(IDev2ActivityIOMapping),
+                                     typeof(DsfWorkflowActivity),
+                                     typeof(TestMockStep),
+                                     typeof(TestMockDecisionStep),
+                                     typeof(TestMockSwitchStep),
+                                     typeof(DsfAbstractMultipleFilesActivity)};
+            var allActivityTypes = dev2ActivityIOMapping.Assembly.GetTypes().Where(t => dev2ActivityIOMapping.IsAssignableFrom(t) && (!excludedTypes.Contains(t)));
+
+            var countOfAllTools = allActivityTypes.Count();
+            var currentDesignerTools = DesignerAttributeMap.DesignerAttributes.Count;
+            Assert.AreEqual(countOfAllTools, currentDesignerTools, "Count mismatch between the assembly activities and the mapped activities in DesignerAttributeMap class");
+            var allActivitiesAreMapped = allActivityTypes.All(t => DesignerAttributeMap.DesignerAttributes.ContainsKey(t));
+            Assert.IsTrue(allActivitiesAreMapped, "Not all activities are mapped in the DesignerAttributeMap class");
         }
 
         [AfterScenario]
