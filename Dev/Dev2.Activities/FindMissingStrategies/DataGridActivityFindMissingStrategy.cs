@@ -205,7 +205,10 @@ namespace Dev2.FindMissingStrategies
 
                 if (maAct.MethodsToRun != null)
                 {
-                    results.AddRange(AddMethodsToRun(results, maAct));
+                    foreach (var pluginAction in maAct.MethodsToRun)
+                    {
+                        AddMethodsToRun(results, pluginAction);
+                    }
                 }
                 if (maAct.IsObject)
                 {
@@ -230,20 +233,16 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        List<string> AddMethodsToRun(List<string> results, DsfEnhancedDotNetDllActivity maAct)
+        private void AddMethodsToRun(List<string> results, Common.Interfaces.IPluginAction pluginAction)
         {
-            foreach (var pluginAction in maAct.MethodsToRun)
+            if (pluginAction?.Inputs != null)
             {
-                if (pluginAction?.Inputs != null)
-                {
-                    results.AddRange(InternalFindMissing(pluginAction.Inputs));
-                }
-                if (!string.IsNullOrEmpty(pluginAction?.OutputVariable))
-                {
-                    results.Add(pluginAction.OutputVariable);
-                }
+                results.AddRange(InternalFindMissing(pluginAction.Inputs));
             }
-            return results;
+            if (!string.IsNullOrEmpty(pluginAction?.OutputVariable))
+            {
+                results.Add(pluginAction.OutputVariable);
+            }
         }
 
         List<string> GetDsfDotNetDllActivityFields(object activity)
