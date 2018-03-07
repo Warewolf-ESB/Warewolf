@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Text;
 using Microsoft.Practices.Prism.Mvvm;
 
 
@@ -26,6 +27,7 @@ namespace Dev2.Studio.Interfaces
         event Action OnDataListChanged;
         IView GetView(Func<IView> view);
 
-        void ClearErrors();        
+        void ClearErrors();
+        StringBuilder GetWorkflowXaml();
     }
 }

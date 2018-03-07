@@ -439,40 +439,107 @@ this.ScenarioSetup(scenarioInfo);
 #line 134
   testRunner.And("Different workflow contains \"6\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 135
-  testRunner.And("Merge conflicts count is \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Current workflow header is \"MergePositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 136
-  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Different workflow header is \"MergePositionChange v.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 137
-  testRunner.And("conflict \"0\" Current matches tool \"Start\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Merge conflicts count is \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 138
-  testRunner.And("conflict \"0\" Different matches tool \"Start\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 139
-  testRunner.And("conflict \"1\" Current Connector matches tool \"Start -> Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"0\" Current matches tool \"Start\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 140
-  testRunner.And("conflict \"1\" Different Connector matches tool \"Start -> Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"0\" Different matches tool \"Start\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 141
-  testRunner.And("conflict \"2\" Current matches tool \"Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"1\" Current Connector matches tool \"Start -> Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 142
-  testRunner.And("conflict \"2\" Different matches tool \"Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"1\" Different Connector matches tool \"Start -> Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 143
-  testRunner.And("conflict \"3\" Current Connector matches tool \"Data Merge (0) -> Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"2\" Current matches tool \"Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 144
-  testRunner.And("conflict \"3\" Different Connector matches tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"2\" Different matches tool \"Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 145
-  testRunner.And("conflict \"4\" Current matches tool \"Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"3\" Current Connector matches tool \"Data Merge (0) -> Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 146
-  testRunner.And("conflict \"4\" Different matches tool \"Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"3\" Different Connector matches tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 147
-  testRunner.And("conflict \"5\" Current Connector matches tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"4\" Current matches tool \"Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 148
-  testRunner.And("conflict \"5\" Different Connector matches tool \"Assign (0) -> Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"4\" Different matches tool \"Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 149
-  testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"5\" Current Connector matches tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 150
-  testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("conflict \"5\" Different Connector matches tool \"Assign (0) -> Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 151
-  testRunner.And("I select Different Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 152
+  testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 153
+  testRunner.And("I select Different Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 154
+  testRunner.Then("Save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge Workflow Version Containing Position Change tools")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MergeExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowMerging")]
+        public virtual void MergeWorkflowVersionContainingPositionChangeTools()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Version Containing Position Change tools", ((string[])(null)));
+#line 156
+this.ScenarioSetup(scenarioInfo);
+#line 157
+  testRunner.Given("I Load workflow \"MergePositionChange\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 158
+  testRunner.And("I Load workflow version \"1\" of \"MergePositionChange\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 159
+  testRunner.When("Merge Window is opened with local version \"MergePositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 160
+  testRunner.Then("Current workflow contains \"6\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 161
+  testRunner.And("Different workflow contains \"6\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
+  testRunner.And("Current workflow header is \"MergePositionChange v.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 163
+  testRunner.And("Different workflow header is \"MergePositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 164
+  testRunner.And("Merge conflicts count is \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 165
+  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 166
+  testRunner.And("conflict \"0\" Current matches tool \"Start\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 167
+  testRunner.And("conflict \"0\" Different matches tool \"Start\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 168
+  testRunner.And("conflict \"1\" Current Connector matches tool \"Start -> Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 169
+  testRunner.And("conflict \"1\" Different Connector matches tool \"Start -> Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 170
+  testRunner.And("conflict \"2\" Current matches tool \"Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 171
+  testRunner.And("conflict \"2\" Different matches tool \"Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 172
+  testRunner.And("conflict \"3\" Current Connector matches tool \"Assign (0) -> Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 173
+  testRunner.And("conflict \"3\" Different Connector matches tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 174
+  testRunner.And("conflict \"4\" Current matches tool \"Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 175
+  testRunner.And("conflict \"4\" Different matches tool \"Data Merge (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 176
+  testRunner.And("conflict \"5\" Current Connector matches tool is null", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 177
+  testRunner.And("conflict \"5\" Different Connector matches tool \"Data Merge (0) -> Assign (0)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 178
+  testRunner.And("I select Different Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 179
+  testRunner.And("I select Different Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 180
+  testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 181
   testRunner.Then("Save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -485,9 +552,9 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MergeValidateAllToolsAreMapped()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Validate All tools are mapped", ((string[])(null)));
-#line 155
+#line 184
 this.ScenarioSetup(scenarioInfo);
-#line 156
+#line 185
   testRunner.Given("I Load All tools and expect all tools to be mapped", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();

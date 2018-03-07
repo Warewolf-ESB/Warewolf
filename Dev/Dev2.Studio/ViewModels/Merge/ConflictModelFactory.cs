@@ -114,6 +114,7 @@ namespace Dev2.ViewModels.Merge
 
         public string WorkflowName { get; set; }
         public string ServerName { get; set; }
+        public string Header { get; set; }
         public bool IsVariablesChecked
         {
             get => _isVariablesChecked;

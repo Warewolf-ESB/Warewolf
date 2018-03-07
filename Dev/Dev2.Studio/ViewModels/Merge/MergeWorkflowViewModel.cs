@@ -38,14 +38,21 @@ namespace Dev2.ViewModels.Merge
             UpdateHelpDescriptor(Warewolf.Studio.Resources.Languages.HelpText.MergeWorkflowStartupHelp);
 
             MergePreviewWorkflowDesignerViewModel = new MergePreviewWorkflowDesignerViewModel(currentResourceModel);
-            MergePreviewWorkflowDesignerViewModel.CreateBlankWorkflow();
 
             _resourceModel = currentResourceModel;
             var (currentTree, diffTree) = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, loadworkflowFromServer);
 
-            ModelFactoryCurrent = new ConflictModelFactory(currentResourceModel);
+            MergePreviewWorkflowDesignerViewModel.CreateBlankWorkflow();
+
+            ModelFactoryCurrent = new ConflictModelFactory(currentResourceModel)
+            {
+                Header = SetHeaderName(currentResourceModel)
+            };
             ModelFactoryCurrent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
-            ModelFactoryDifferent = new ConflictModelFactory(differenceResourceModel);
+            ModelFactoryDifferent = new ConflictModelFactory(differenceResourceModel)
+            {
+                Header = SetHeaderName(differenceResourceModel)
+            };
             ModelFactoryDifferent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
 
             var conflictList = new ConflictRowList(ModelFactoryCurrent, ModelFactoryDifferent, currentTree, diffTree);
@@ -58,6 +65,17 @@ namespace Dev2.ViewModels.Merge
 
             var mergePreviewWorkflowStateApplier = new MergePreviewWorkflowStateApplier(conflictList, MergePreviewWorkflowDesignerViewModel);
             mergePreviewWorkflowStateApplier.Apply();
+        }
+
+        private static string SetHeaderName(IContextualResourceModel resourceModel)
+        {
+            var resourceName = resourceModel.ResourceName;
+            if (resourceModel.IsVersionResource)
+            {
+                resourceName += " v." + resourceModel.VersionInfo.VersionNumber;
+            }
+
+            return resourceName;
         }
 
         void SetupNamesAndVariables(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)

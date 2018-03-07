@@ -91,7 +91,7 @@
                                 <TextBlock x:Name="CurrentHeaderText" 
                                            Margin="5"
                                            HorizontalAlignment="Right"
-                                           Text="[ Current ]" 
+                                           Text="{Binding Header}" 
                                            Style="{StaticResource SourceHeader}" 
                                            AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
                             </StackPanel>
@@ -130,7 +130,7 @@
                                 <TextBlock x:Name="DifferenceHeaderText" 
                                            Margin="5"
                                            HorizontalAlignment="Right"
-                                           Text="[ Difference ]" 
+                                           Text="{Binding Header}" 
                                            Style="{StaticResource SourceHeader}" 
                                            AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
                             </StackPanel>
@@ -602,7 +602,7 @@
                                                                     ToolTip="Connects to" 
                                                                     FontSize="18" 
                                                                     Foreground="Gray" 
-                                                                    Visibility="{Binding AllowSelection, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                                                                    Visibility="{Binding IsArmConnectorVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                                     <TextBlock x:Name="DifferenceNodeRightArmText" 
                                                                Margin="5,0,0,0" 
