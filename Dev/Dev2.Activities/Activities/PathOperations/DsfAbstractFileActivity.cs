@@ -109,20 +109,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (output.OutputStrings.Count > 0)
                     {
-                        foreach (string value in output.OutputStrings)
-                        {
-                            if (output.OutPutDescription == GlobalConstants.ErrorPayload)
-                            {
-                                errors.AddError(value);
-                            }
-                            else
-                            {
-                                foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
-                                {
-                                    dataObject.Environment.Assign(region, value, update);
-                                }
-                            }
-                        }
+                        ParseOutputs(dataObject, update, errors, output);
                     }
                 }
                 allErrors.MergeErrors(errors);
@@ -143,6 +130,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             return errors;
+        }
+
+        private static void ParseOutputs(IDSFDataObject dataObject, int update, ErrorResultTO errors, OutputTO output)
+        {
+            foreach (string value in output.OutputStrings)
+            {
+                if (output.OutPutDescription == GlobalConstants.ErrorPayload)
+                {
+                    errors.AddError(value);
+                }
+                else
+                {
+                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
+                    {
+                        dataObject.Environment.Assign(region, value, update);
+                    }
+                }
+            }
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
