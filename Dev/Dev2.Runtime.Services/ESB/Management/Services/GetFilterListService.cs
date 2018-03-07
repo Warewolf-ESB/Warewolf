@@ -59,6 +59,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                         searchResults.AddRange(tests);
                     }
+                    if (searchValue.SearchOptions.IsScalarNameSelected)
+                    {
+                        var resources = ResourceCatalog.Instance.WorkspaceResources;
+                    }
                 }
 
                 return serializer.SerializeToBuilder(searchResults);

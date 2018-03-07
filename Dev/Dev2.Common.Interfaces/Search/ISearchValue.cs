@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.ComponentModel;
 
 namespace Dev2.Common.Interfaces.Search
 {
@@ -44,7 +45,7 @@ namespace Dev2.Common.Interfaces.Search
         ISearchOptions SearchOptions { get; set; }
     }
 
-    public interface ISearchOptions
+    public interface ISearchOptions : INotifyPropertyChanged
     {
         bool IsAllSelected { get; set; }
         bool IsWorkflowNameSelected { get; set; }

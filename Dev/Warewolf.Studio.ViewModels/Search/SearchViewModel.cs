@@ -23,6 +23,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Utils;
 using Dev2.Common.Search;
+using Microsoft.Practices.Prism;
 
 namespace Dev2.ViewModels.Search
 {
@@ -98,7 +99,8 @@ namespace Dev2.ViewModels.Search
                 }
                 if (SearchValue.SearchOptions.IsTestNameSelected)
                 {
-                    FilterTestNames();
+                    var results = _shellViewModel.ActiveServer.ResourceRepository.Filter(SearchValue);
+                    SearchResults.AddRange(results);
                 }
                 if (IsAnyVariableOptionSelected)
                 {
@@ -106,7 +108,8 @@ namespace Dev2.ViewModels.Search
                 }
                 if (SearchValue.SearchOptions.IsToolTitleSelected)
                 {
-                    _shellViewModel.ActiveServer.ResourceRepository.Filter(SearchValue);
+                    var results = _shellViewModel.ActiveServer.ResourceRepository.Filter(SearchValue);
+                    SearchResults.AddRange(results);
                 }
             }
             IsSearching = false;
@@ -127,24 +130,6 @@ namespace Dev2.ViewModels.Search
 
                 var search = new SearchResult(child.ResourceId, child.ResourceName, child.ResourcePath, type, child.ResourceName);
                 SearchResults.Add(search);
-            }
-        }
-
-        private void FilterTestNames()
-        {
-            var loadTests = SelectedEnvironment.Server?.ResourceRepository.LoadAllTests();
-            if (loadTests != null)
-            {
-                var tests = loadTests.Where(model => FilterText(model.TestName));
-                foreach (var test in tests)
-                {
-                    var resource = SelectedEnvironment.Children.Flatten(model => model.Children).FirstOrDefault(model => model.ResourceId == test.ResourceId);
-                    if (resource != null)
-                    {
-                        var search = new SearchResult(resource.ResourceId, test.TestName, resource.ResourcePath, SearchItemType.TestName, test.TestName);
-                        SearchResults.Add(search);
-                    }
-                }
             }
         }
 

@@ -1,10 +1,17 @@
 ﻿using Dev2.Common.Interfaces.Search;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Dev2.Common.Search
 {
     public class SearchValue : ISearchValue
     {
+        public SearchValue()
+        {
+            SearchInput = string.Empty;
+            SearchOptions = new SearchOptions();
+        }
         public string SearchInput { get; set; }
         public ISearchOptions SearchOptions { get; set; }
     }
@@ -50,72 +57,173 @@ namespace Dev2.Common.Search
             IsAllSelected = true;
         }
 
+        private bool IsManualUpdate
+        {
+            get
+            {
+                bool isChecked = IsAllChecked();
+                bool isUnChecked = IsAllUnChecked();
+                return isChecked || isUnChecked;
+            }
+        }
+
+        private bool IsAllChecked()
+        {
+            var isChecked = IsWorkflowNameSelected;
+            isChecked &= IsToolTitleSelected;
+            isChecked &= IsScalarNameSelected;
+            isChecked &= IsObjectNameSelected;
+            isChecked &= IsRecSetNameSelected;
+            isChecked &= IsInputVariableSelected;
+            isChecked &= IsOutputVariableSelected;
+            isChecked &= IsTestNameSelected;
+            return isChecked;
+        }
+
+        private bool IsAllUnChecked()
+        {
+            var isUnChecked = !IsWorkflowNameSelected;
+            isUnChecked &= !IsToolTitleSelected;
+            isUnChecked &= !IsScalarNameSelected;
+            isUnChecked &= !IsObjectNameSelected;
+            isUnChecked &= !IsRecSetNameSelected;
+            isUnChecked &= !IsInputVariableSelected;
+            isUnChecked &= !IsOutputVariableSelected;
+            isUnChecked &= !IsTestNameSelected;
+            return isUnChecked;
+        }
+
         public bool IsAllSelected
         {
             get => _isAllSelected;
             set
             {
                 _isAllSelected = value;
-
-                IsWorkflowNameSelected = value;
-                IsToolTitleSelected = value;
-                IsScalarNameSelected = value;
-                IsObjectNameSelected = value;
-                IsRecSetNameSelected = value;
-                IsInputVariableSelected = value;
-                IsOutputVariableSelected = value;
-                IsTestNameSelected = value;
+                if (IsManualUpdate)
+                {
+                    UpdateAllStates(value);
+                }
+                OnPropertyChanged();
             }
         }
+
+        private void UpdateAllStates(bool value)
+        {
+            IsWorkflowNameSelected = value;
+            IsToolTitleSelected = value;
+            IsScalarNameSelected = value;
+            IsObjectNameSelected = value;
+            IsRecSetNameSelected = value;
+            IsInputVariableSelected = value;
+            IsOutputVariableSelected = value;
+            IsTestNameSelected = value;
+        }
+
         public bool IsWorkflowNameSelected
         {
             get => _isWorkflowNameSelected;
-            set => _isWorkflowNameSelected = value;
+            set
+            {
+                _isWorkflowNameSelected = value;
+                IsAllSelected = value;
+                OnPropertyChanged();
+            }
         }
         public bool IsTestNameSelected
         {
             get => _isTestNameSelected;
-            set => _isTestNameSelected = value;
+            set
+            {
+                _isTestNameSelected = value;
+                IsAllSelected = value;
+                OnPropertyChanged();
+            }
         }
         public bool IsScalarNameSelected
         {
             get => _isScalarNameSelected;
-            set => _isScalarNameSelected = value;
+            set
+            {
+                _isScalarNameSelected = value;
+                IsAllSelected = value;
+                OnPropertyChanged();
+            }
         }
         public bool IsObjectNameSelected
         {
             get => _isObjectNameSelected;
-            set => _isObjectNameSelected = value;
+            set
+            {
+                _isObjectNameSelected = value;
+                IsAllSelected = value;
+                OnPropertyChanged();
+            }
         }
         public bool IsRecSetNameSelected
         {
             get => _isRecSetNameSelected;
-            set => _isRecSetNameSelected = value;
+            set
+            {
+                _isRecSetNameSelected = value;
+                IsAllSelected = value;
+                OnPropertyChanged();
+            }
         }
         public bool IsToolTitleSelected
         {
             get => _isToolTitleSelected;
-            set => _isToolTitleSelected = value;
+            set
+            {
+                _isToolTitleSelected = value;
+                IsAllSelected = value;
+                OnPropertyChanged();
+            }
         }
         public bool IsInputVariableSelected
         {
             get => _isInputVariableSelected;
-            set => _isInputVariableSelected = value;
+            set
+            {
+                _isInputVariableSelected = value;
+                IsAllSelected = value;
+                OnPropertyChanged();
+            }
         }
         public bool IsOutputVariableSelected
         {
             get => _isOutputVariableSelected;
-            set => _isOutputVariableSelected = value;
+            set
+            {
+                _isOutputVariableSelected = value;
+                IsAllSelected = value;
+                OnPropertyChanged();
+            }
         }
         public bool IsMatchCaseSelected
         {
             get => _isMatchCaseSelected;
-            set => _isMatchCaseSelected = value;
+            set
+            {
+                _isMatchCaseSelected = value;
+                OnPropertyChanged();
+            }
         }
         public bool IsMatchWholeWordSelected
         {
             get => _isMatchWholeWordSelected;
-            set => _isMatchWholeWordSelected = value;
+            set
+            {
+                _isMatchWholeWordSelected = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }
