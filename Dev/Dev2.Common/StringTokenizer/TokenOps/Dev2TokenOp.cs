@@ -10,6 +10,8 @@
 
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+using System;
+using System.IO;
 using System.Text;
 
 namespace Dev2.Common
@@ -75,23 +77,89 @@ namespace Dev2.Common
             if (pos > -1)
             {
 
-                for (int i = pos+_seperator.Length; i <= startIdx; i++)
-                {
-                    result.Append(sourceString[i]);
+                    // fetch next value while
+                    while (parts.MoveNext() &&
+                           ((tmp = parts.Current) != _tokenParts[0] || SkipDueToEscapeChar(result.ToString())))
+                    {
+                        result.Append(tmp);
+                    }
                 }
-                if (_include && result.Length < sourceString.Length)
+
+                // did they want the token included?
+                if (_include && startIdx + result.Length < len)
+                {
+                    result.Append(_tokenParts);
+                }
+            }
+            else
+            {
+                throw new Exception(ErrorResource.CharEnumeratorNotSupported);
+            }
+
+            return result.ToString();
+        }
+
+        public string ExecuteOperation(StreamReader reader, int startIdx, int len, bool isReversed)
+        {
+            var result = new StringBuilder();
+
+            if (!isReversed && _tokenParts.Length == 1)
+            {
+                if (_tokenParts.Length == 1)
+                {
+                    var maxRead = len - startIdx;
+                    var currentChars = new char[maxRead];
+                    if (reader.Read(currentChars, startIdx, maxRead-1) >= 0)
+                    {
+                        var pos = 0;
+                        while (pos<maxRead)
+                        {
+                            char tmp = currentChars[pos];
+                            if (tmp != _tokenParts[0] || SkipDueToEscapeChar(result.ToString()))
+                            {
+                                result.Append(tmp);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                            pos++;
+                        }
+                    }
+                }
+
+                // did they want the token included?
+                if (_include && startIdx + result.Length < len)
                 {
                     result.Insert(0, _tokenParts);
                 }
             }
             else
             {
-                for (int i = 0; i <= startIdx; i++)
+                throw new Exception(ErrorResource.CharEnumeratorNotSupported);
+            }
+
+            return result.ToString();
+        }
+
+
+        public string ExecuteOperation(string sourceString, int startIdx, int len, bool isReversed)
+        {
+            var result = new StringBuilder();
+            int pos = sourceString.IndexOf(_seperator, startIdx, StringComparison.InvariantCulture);
+            if (pos > -1)
+            {
+                result.Append(sourceString.Substring(startIdx, pos-startIdx));
+                if (_include && startIdx + result.Length < len)
                 {
-                    result.Append(sourceString[i]);
+                    result.Append(_tokenParts);
                 }
-            }            
-            return result;
+            }
+            else
+            {
+                result.Append(sourceString.Substring(startIdx));
+            }
+            return result.ToString();
         }
 
         public int OpLength()

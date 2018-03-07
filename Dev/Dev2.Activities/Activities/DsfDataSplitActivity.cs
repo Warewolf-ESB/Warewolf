@@ -35,7 +35,6 @@ using WarewolfParserInterop;
 using Dev2.Comparer;
 using System.IO;
 using System.Text;
-using Dev2.Common.Common;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -144,9 +143,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var debugDictionary = new List<string>();
                 while (res.HasMoreData())
                 {
-                    var item = new StringBuilder(res.GetNextValue());
-                    if (item.Length>0)
+                    const int OpCnt = 0;
+                    var item = res.GetNextValue(); // item is the thing we split on
+                    if (!string.IsNullOrEmpty(item))
                     {
+                        var blankRows = new List<int>();
+                        using (var reader = new StringReader(item))
+                        {
+                            string line;
+                            var counter = 0;
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                if (!SkipBlankRows && String.IsNullOrEmpty(line))
+                                {
+                                    blankRows.Add(counter);
+                                    counter++;
+                                }
+                            }
+                        }
+
                         var tokenizer = CreateSplitPattern(ref item, ResultsCollection, env, out ErrorResultTO errors, update);
                         allErrors.MergeErrors(errors);
 
@@ -185,17 +200,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 var outputVar = resultsEnumerator.Current.OutputVariable;
                                 if (IsNullEmptyOrNewLine(tmp))
                                 {
-                                    if (!SkipBlankRows)
-                                    {
-                                        tmp = tmp.Replace(Environment.NewLine, "");
-                                    }
+                                    tmp = tmp.Replace(Environment.NewLine, "");                                   
+                                }
+                                var outputVar = resultsEnumerator.Current.OutputVariable;
+                                if (SkipBlankRows && (IsNullEmptyOrNewLine(tmp)))
+                                {
+                                    //This should do nothing as we are skipping blank rows
                                 }
                                 else
                                 {
                                     if (!String.IsNullOrEmpty(outputVar))
                                     {
                                         var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
-                                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+                                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);                                        
                                         positions[outputVar] = positions[outputVar] + 1;
                                     }
                                     if (dataObject.IsDebugMode())
@@ -361,7 +378,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 stringToSplit = AddTokenOp(stringToSplit, compiler, errors, update, dtb, t);
                 _indexCounter++;
             }
-            return stringToSplit.Length <= 0 || errors.HasErrors() ? null : dtb.Generate();
+            return string.IsNullOrEmpty(stringToSplit) || errors.HasErrors() ? null : dtb.Generate();
         }
 
         StringBuilder AddTokenOp(StringBuilder stringToSplit, IExecutionEnvironment compiler, ErrorResultTO errors, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t)
