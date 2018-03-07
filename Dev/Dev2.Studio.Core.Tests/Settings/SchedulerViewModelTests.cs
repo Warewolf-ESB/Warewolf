@@ -166,6 +166,23 @@ namespace Dev2.Core.Tests.Settings
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("SchedulerViewModel_HasDebugOutput")]
+        public void SchedulerViewModel_HasDebugOutput_ExpectedTrue()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var schedulerViewModel = new SchedulerViewModel(a => new Mock<IServer>().Object);
+            var scheduledResourceForTest = new ScheduledResourceForTest();
+            schedulerViewModel.SelectedTask = scheduledResourceForTest;
+            schedulerViewModel.SelectedTask.Errors = new ErrorResultTO();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(schedulerViewModel);
+            Assert.IsTrue(schedulerViewModel.HasDebugOutput);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("SchedulerViewModel_Constructor")]
         public void SchedulerViewModel_Constructor_SetDisplayName_OnlyForCoverage()
         {

@@ -51,14 +51,14 @@
                 <Rectangle Fill="Gray" Opacity="0.2"
                            Visibility="{Binding SelectedTask.IsDirty,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
             </StackPanel>
-
         </Grid>
 
         <Border Grid.Row="1" BorderBrush="{StaticResource ListBoxItemSelectedBorderBrush}" BorderThickness="0,1,0,0" Margin="{StaticResource ElementBorderTop}">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="70*"/>
+                    <ColumnDefinition Width="30*" MinWidth="210"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="70*" MinWidth="350"/>
                 </Grid.ColumnDefinitions>
 
                 <ListBox Grid.Column="0" 
@@ -74,9 +74,9 @@
                                 <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Visibility="{Binding IsNewItem,Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                       x:Name="ListBoxItemGrid">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="15*"/>
-                                        <ColumnDefinition Width="70*"/>
-                                        <ColumnDefinition Width="15*"/>
+                                        <ColumnDefinition Width="25" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="30" />
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -92,9 +92,26 @@
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
                                         </i:Interaction.Behaviors>
                                     </CheckBox>
-                                    <TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding NameForDisplay}" TextTrimming="CharacterEllipsis" MaxWidth="200" FontSize="12" Margin="0,0,0,-4" FontWeight="Bold" ></TextBlock>
-                                    <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding NextRunDate}" FontSize="11" Margin="0,-4,0,0" ></TextBlock>
-                                    <Button Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Stretch" HorizontalAlignment="Right" 
+                                    <TextBlock Grid.Column="1" 
+                                               Grid.Row="0" 
+                                               HorizontalAlignment="Left" 
+                                               Text="{Binding NameForDisplay}" 
+                                               TextTrimming="CharacterEllipsis" 
+                                               MaxWidth="200" 
+                                               FontSize="12" 
+                                               Margin="0,0,0,-4" 
+                                               FontWeight="Bold" />
+                                    <TextBlock Grid.Column="1" 
+                                               Grid.Row="1" 
+                                               HorizontalAlignment="Left" 
+                                               Text="{Binding NextRunDate}" 
+                                               FontSize="11" 
+                                               Margin="0,-4,0,0" />
+                                    <Button Grid.Column="2" 
+                                            Grid.Row="0" 
+                                            Grid.RowSpan="2" 
+                                            VerticalAlignment="Stretch" 
+                                            HorizontalAlignment="Right" 
                                             Command="{Binding ElementName=Schedules, Path=DataContext.DeleteCommand }" CommandParameter="{Binding .}" 
                                             IsEnabled="{Binding StatusAlt, Converter={StaticResource InverseScheduleStatusConverter}}"
                                             Style="{StaticResource ButtonSchedulerDeleteTransparentStyle}" >
@@ -128,14 +145,13 @@
                                             </Grid>
                                         </Button.Content>
                                     </Button>
-
                                 </Grid>
                             </Grid>
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-
-                <ContentControl Grid.Column="1" Visibility="{Binding SelectedTask, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
+                <GridSplitter Grid.Column="1" Background="#C1C3C5" HorizontalAlignment="Center" VerticalAlignment="Stretch" Width="5" />
+                <ContentControl Grid.Column="2" Visibility="{Binding SelectedTask, Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
