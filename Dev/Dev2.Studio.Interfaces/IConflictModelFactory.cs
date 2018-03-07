@@ -19,7 +19,6 @@ namespace Dev2.Studio.Interfaces
         string WorkflowName { get; set; }
         string ServerName { get; set; }
         string Header { get; set; }
-        string HeaderVersion { get; set; }
         bool IsVariablesChecked { get; set; }
         bool IsWorkflowNameChecked { get; set; }
         IDataListViewModel DataListViewModel { get; set; }
