@@ -279,7 +279,7 @@ namespace Dev2.Activities.Specs.Scheduler
                 var i = 0;
                 var x = new TaskService();
                 x.GetFolder("Warewolf");
-                var task = x.FindTask(_scenarioContext["ScheduleName"].ToString());
+                var task = x.FindTask(scheduleName);
                 Assert.IsNotNull(task, "Task " + scheduleName + " not found in Warewolf folder");
                 do
                 {
