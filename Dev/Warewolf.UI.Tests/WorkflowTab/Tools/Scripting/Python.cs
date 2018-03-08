@@ -82,7 +82,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting
             Keyboard.SendKeys("{Enter}");
             Keyboard.SendKeys("{Enter}");
 
-            Mouse.Click(new Point(594, 43));
+            Mouse.Click(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTabNext);
 
             Assert.IsFalse(ScriptingToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.HasFocus, "Tab change did not occur as expected when entering data into python tool");
         }
