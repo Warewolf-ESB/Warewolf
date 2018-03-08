@@ -129,14 +129,15 @@ namespace Dev2.Activities.Specs.Scheduler
                 if (scheduler.HasErrors)
                 {
                     _scenarioContext["Error"] = scheduler.Error;
-                    Console.WriteLine("Error creating schedule: " + scheduler.Error);
                 }
             }
             catch (Exception e)
             {
+
                 _scenarioContext["Error"] = e.Message;
-                Console.WriteLine("Error creating schedule: " + e.Message);
             }
+
+
         }
 
         void UpdateTrigger(IScheduledResource task, Table table)
@@ -238,7 +239,7 @@ namespace Dev2.Activities.Specs.Scheduler
             var resources = _scenarioContext["History"] as IList<IResourceHistory>;
 
             var debug = resources.First().DebugOutput;
-            
+
             var debugTocompare = debug.Last();
             _commonSteps.ThenTheDebugOutputAs(table, debugTocompare.Outputs.SelectMany(s => s.ResultsList).ToList(), true);
         }
@@ -276,14 +277,16 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             try
             {
+
                 var i = 0;
                 var x = new TaskService();
                 x.GetFolder("Warewolf");
-                var task = x.FindTask(_scenarioContext["ScheduleName"].ToString());
-                Assert.IsNotNull(task, "Task " + scheduleName + " not found in Warewolf folder");
+                var task = x.FindTask(scheduleName);
                 do
                 {
                     task.Run();
+
+
                     const int TimeOut = 10;
                     var time = 0;
                     while (task.State == TaskState.Running && time < TimeOut)
@@ -293,12 +296,15 @@ namespace Dev2.Activities.Specs.Scheduler
                     }
                     i++;
 
+
                 } while (i < times);
             }
             catch (Exception e)
             {
+
                 _scenarioContext["Error"] = e;
             }
+
         }
 
         public static bool AccountExists(string name)
@@ -309,9 +315,9 @@ namespace Dev2.Activities.Specs.Scheduler
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
             }
-            
+
             catch (Exception)
-            
+
             {
                 /* Invalid user account */
             }
@@ -361,11 +367,8 @@ namespace Dev2.Activities.Specs.Scheduler
         [AfterScenario("@Scheduler")]
         public static void CleanupAfterTestScheduler()
         {
-            if (_scenarioContext.ContainsKey("Scheduler"))
-            {
-                var vm = _scenarioContext["Scheduler"] as SchedulerViewModel;
-                vm?.DeleteCommand.Execute(vm.SelectedTask);
-            }
+            var vm = _scenarioContext["Scheduler"] as SchedulerViewModel;
+            vm?.DeleteCommand.Execute(vm.SelectedTask);
         }
     }
 }
