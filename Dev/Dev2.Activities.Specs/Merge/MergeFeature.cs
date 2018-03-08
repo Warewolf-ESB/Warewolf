@@ -3,7 +3,9 @@ using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Core.Tests.Merge.Utils;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.Util;
@@ -106,6 +108,96 @@ namespace Dev2.Activities.Specs.Merge
             }
         }
 
+        [Given(@"I Load workflow version conflict MergePositionChange")]
+        public void GivenILoadWorkflowVersionConflictMergePositionChange()
+        {
+            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("MergePositionChange", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
+
+            var localResourceVersion = CreateNewVersionResourceModel(localResource);
+            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.MergePositionChange.Different);
+            localResourceVersion.VersionInfo = WorkflowTestResources.MergePositionChange.VersionInfo;
+
+            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+        }
+
+        [Given(@"I Load workflow version of MergeSwitchTool")]
+        public void GivenILoadWorkflowVersionOfMergeSwitchTool()
+        {
+            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("MergeSwitchTool", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
+
+            var localResourceVersion = CreateNewVersionResourceModel(localResource);
+            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.MergeSwitchTool.Different);
+            localResourceVersion.VersionInfo = WorkflowTestResources.MergeSwitchTool.VersionInfo;
+
+            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+        }
+
+        [Given(@"I Load workflow version of MergeRemovedTool")]
+        public void GivenILoadWorkflowVersionOfMergeRemovedTool()
+        {
+            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("MergeRemovedTool", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
+
+            var localResourceVersion = CreateNewVersionResourceModel(localResource);
+            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.MergeRemovedTool.Different);
+            localResourceVersion.VersionInfo = WorkflowTestResources.MergeRemovedTool.VersionInfo;
+
+            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+        }
+
+        [Given(@"I Load workflow version of WorkFlowWithOneObject")]
+        public void GivenILoadWorkflowVersionOfWorkFlowWithOneObject()
+        {
+            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("WorkFlowWithOneObject", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
+
+            var localResourceVersion = CreateNewVersionResourceModel(localResource);
+            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.WorkFlowWithOneObject.Different);
+            localResourceVersion.VersionInfo = WorkflowTestResources.WorkFlowWithOneObject.VersionInfo;
+
+            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+        }
+
+        [Given(@"I Load workflow version of WorkFlowWithOneRecordSet")]
+        public void GivenILoadWorkflowVersionOfWorkFlowWithOneRecordSet()
+        {
+            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("WorkFlowWithOneRecordSet", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
+
+            var localResourceVersion = CreateNewVersionResourceModel(localResource);
+            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.WorkFlowWithOneRecordSet.Different);
+            localResourceVersion.VersionInfo = WorkflowTestResources.WorkFlowWithOneRecordSet.VersionInfo;
+
+            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+        }
+
+        [Given(@"I Load workflow version of WorkFlowWithOneScalar")]
+        public void GivenILoadWorkflowVersionOfWorkFlowWithOneScalar()
+        {
+            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("WorkFlowWithOneScalar", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
+
+            var localResourceVersion = CreateNewVersionResourceModel(localResource);
+            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.WorkFlowWithOneScalar.Different);
+            localResourceVersion.VersionInfo = WorkflowTestResources.WorkFlowWithOneScalar.VersionInfo;
+
+            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+        }
+
+        private static ResourceModel CreateNewVersionResourceModel(ResourceModel localResource)
+        {
+            return new ResourceModel(localResource.Environment)
+            {
+                Category = localResource.Category,
+                DataList = localResource.DataList,
+                ID = localResource.ID,
+                ServerID = localResource.ServerID,
+                IsDatabaseService = localResource.IsDatabaseService,
+                IsPluginService = localResource.IsPluginService,
+                IsResourceService = localResource.IsResourceService,
+                UserPermissions = localResource.UserPermissions,
+                ResourceName = localResource.ResourceName,
+                ResourceType = localResource.ResourceType,
+                IsVersionResource = true
+            };
+        }
+
         [When(@"Merge Window is opened with remote ""(.*)""")]
         public void WhenMergeWindowIsOpenedWithRemote(string p0)
         {
@@ -183,21 +275,35 @@ namespace Dev2.Activities.Specs.Merge
         }
 
         [Then(@"Current workflow contains ""(.*)"" tools")]
-        public void ThenCurrentWorkflowContainsTools(int currentToolCount)
+        public void ThenCurrentWorkflowContainsTools(int expectedToolCount)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var count = mergeVm.Conflicts.Where(a => a is ToolConflictRow).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).Count();
-            var count1 = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow).Cast<ConnectorConflictRow>().Select(p => p.CurrentArmConnector).Count();
-            Assert.AreEqual(currentToolCount, count + count1);
+            var toolCount = mergeVm.Conflicts.Where(a => a is ToolConflictRow).Cast<ToolConflictRow>().Select(p => p.CurrentViewModel).Count();
+            Assert.AreEqual(expectedToolCount, toolCount);
+        }
+
+        [Then(@"Current workflow contains ""(.*)"" connectors")]
+        public void ThenCurrentWorkflowContainsConnectors(int expectedConnectorCount)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var connectorCount = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow).Cast<ConnectorConflictRow>().Select(p => p.CurrentArmConnector).Count();
+            Assert.AreEqual(expectedConnectorCount, connectorCount);
         }
 
         [Then(@"Different workflow contains ""(.*)"" tools")]
-        public void ThenDifferentWorkflowContainsTools(int toolCount)
+        public void ThenDifferentWorkflowContainsTools(int expectedToolCount)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var count = mergeVm.Conflicts.Where(a => a is ToolConflictRow).Cast<ToolConflictRow>().Select(p => p.DiffViewModel).Count();
-            var count1 = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).Count();
-            Assert.AreEqual(toolCount, count + count1);
+            var toolCount = mergeVm.Conflicts.Where(a => a is ToolConflictRow).Cast<ToolConflictRow>().Select(p => p.DiffViewModel).Count();
+            Assert.AreEqual(expectedToolCount, toolCount);
+        }
+
+        [Then(@"Different workflow contains ""(.*)"" connectors")]
+        public void ThenDifferentWorkflowContainsConnectors(int expectedConnectorCount)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var connectorCount = mergeVm.Conflicts.Where(a => a is ConnectorConflictRow).Cast<ConnectorConflictRow>().Select(p => p.DifferentArmConnector).Count();
+            Assert.AreEqual(expectedConnectorCount, connectorCount);
         }
 
         [Then(@"Current workflow header is ""(.*)""")]
