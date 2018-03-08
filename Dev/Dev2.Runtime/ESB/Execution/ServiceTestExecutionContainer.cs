@@ -141,6 +141,7 @@ namespace Dev2.Runtime.ESB.Execution
                 if (serviceTestModelTo.AuthenticationType == AuthenticationType.Public)
                 {
                     Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
+                    DataObject.ExecutingUser = GlobalConstants.GenericPrincipal;
                 }
             }
             var userPrinciple = Thread.CurrentPrincipal;
@@ -510,8 +511,8 @@ namespace Dev2.Runtime.ESB.Execution
                 if (ServerAuthorizationService.Instance != null)
                 {
                     var authorizationService = ServerAuthorizationService.Instance;
-                    var hasView = authorizationService.IsAuthorized(Thread.CurrentPrincipal, AuthorizationContext.View, DataObject.ResourceID.ToString());
-                    var hasExecute = authorizationService.IsAuthorized(Thread.CurrentPrincipal, AuthorizationContext.Execute, DataObject.ResourceID.ToString());
+                    var hasView = authorizationService.IsAuthorized(DataObject.ExecutingUser, AuthorizationContext.View, DataObject.ResourceID.ToString());
+                    var hasExecute = authorizationService.IsAuthorized(DataObject.ExecutingUser, AuthorizationContext.Execute, DataObject.ResourceID.ToString());
                     canExecute = hasExecute && hasView;
                 }
                 if (!canExecute)
