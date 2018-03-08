@@ -35,6 +35,7 @@ using WarewolfParserInterop;
 using Dev2.Comparer;
 using System.IO;
 using System.Text;
+using Dev2.Common.Common;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -143,8 +144,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var debugDictionary = new List<string>();
                 while (res.HasMoreData())
                 {
-                    var item = res.GetNextValue();
-                    if (!string.IsNullOrEmpty(item))
+                    var item = new StringBuilder(res.GetNextValue());
+                    if (item.Length>0)
                     {
                         var tokenizer = CreateSplitPattern(ref item, ResultsCollection, env, out ErrorResultTO errors, update);
                         allErrors.MergeErrors(errors);
@@ -193,7 +194,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 {
                                     if (!String.IsNullOrEmpty(outputVar))
                                     {
-                                        var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);                                       
+                                        var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
+                                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
                                         positions[outputVar] = positions[outputVar] + 1;
                                     }
                                     if (dataObject.IsDebugMode())
@@ -347,7 +349,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.Empty;
         }
 
-        IDev2Tokenizer CreateSplitPattern(ref string stringToSplit, IEnumerable<DataSplitDTO> args, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
+        IDev2Tokenizer CreateSplitPattern(ref StringBuilder stringToSplit, IEnumerable<DataSplitDTO> args, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
         {
 
             
@@ -359,10 +361,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 stringToSplit = AddTokenOp(stringToSplit, compiler, errors, update, dtb, t);
                 _indexCounter++;
             }
-            return string.IsNullOrEmpty(stringToSplit) || errors.HasErrors() ? null : dtb.Generate();
+            return stringToSplit.Length <= 0 || errors.HasErrors() ? null : dtb.Generate();
         }
 
-        string AddTokenOp(string stringToSplit, IExecutionEnvironment compiler, ErrorResultTO errors, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t)
+        StringBuilder AddTokenOp(StringBuilder stringToSplit, IExecutionEnvironment compiler, ErrorResultTO errors, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t)
         {
             var parsedAt = t.At ?? string.Empty;
             var entry = "";
@@ -395,7 +397,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return stringToSplit;
         }
 
-        void AddCharacterTokenOp(ref string stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t, string parsedAt, ref string entry)
+        void AddCharacterTokenOp(ref StringBuilder stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t, string parsedAt, ref string entry)
         {
             if (!string.IsNullOrEmpty(parsedAt))
             {
@@ -405,7 +407,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        static void AddLineBreakTokenOp(string stringToSplit, Dev2TokenizerBuilder dtb, DataSplitDTO t)
+        static void AddLineBreakTokenOp(StringBuilder stringToSplit, Dev2TokenizerBuilder dtb, DataSplitDTO t)
         {
             if (stringToSplit.Contains("\r\n"))
             {
@@ -424,15 +426,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        string EvalLineBreakCharacter(ref string stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, string parsedAt)
+        string EvalLineBreakCharacter(ref StringBuilder stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, string parsedAt)
         {
             var entry = compiler.EvalAsListOfStrings(parsedAt, update).FirstOrDefault();
             if (entry != null && (entry.Contains(@"\r\n") || entry.Contains(@"\n")))
             {
-                var match = Regex.Match(stringToSplit, @"[\r\n]+");
+                var match = Regex.Match(stringToSplit.ToString(), @"[\r\n]+");
                 if (match.Success && !SkipBlankRows)
                 {
-                    stringToSplit = Regex.Escape(stringToSplit);
+                    stringToSplit = new StringBuilder(Regex.Escape(stringToSplit.ToString()));
                     dtb.ToTokenize = stringToSplit;
                 }
             }

@@ -204,7 +204,7 @@ namespace Dev2.Common.Common
         public static bool Contains(this StringBuilder sb, string value) => IndexOf(sb, value, 0, false) >= 0;
 
         public static string Substring(this StringBuilder sb, int startIdx, int length)
-        {
+        {            
             return sb.ToString(startIdx, length);
         }
         
@@ -218,8 +218,22 @@ namespace Dev2.Common.Common
             }
             return result;
         }
-        
-        public static int IndexOf(this StringBuilder sb, string value, int startIndex, bool ignoreCase)
+
+        public static int LastIndexOf(this StringBuilder sb, string value,int startIdx, bool ignoreCase)
+        {
+            var result = -1;            
+            var startIndex = IndexOf(sb, value, 0, ignoreCase);
+            while (startIdx - startIndex >= 0 && startIndex != -1)
+            {
+                result = startIndex;
+                startIndex = IndexOf(sb, value, startIndex+1, ignoreCase);
+            }
+            return result;
+        }
+
+        public static int IndexOf(this StringBuilder sb, string value, int startIndex, bool ignoreCase) => IndexOf(sb, value, null, startIndex, ignoreCase);
+
+        public static int IndexOf(this StringBuilder sb, string value,string escapeChar, int startIndex, bool ignoreCase)
         {
             if (value == null)
             {
@@ -256,8 +270,8 @@ namespace Dev2.Common.Common
             {
                 if (sb[i] == value[0])
                 {
-                    index = 1;
-                    while (index < length && sb[i + index] == value[index])
+                    index = 1;                    
+                    while (index < length && sb[i + index] == value[index] || SkipDueToEscapeChar(sb,startIndex,i + index-1, escapeChar,value))
                     {
                         ++index;
                     }
@@ -270,6 +284,18 @@ namespace Dev2.Common.Common
             }
 
             return -1;
+        }
+       
+        static bool SkipDueToEscapeChar(StringBuilder word,int startIdx,int candidatePos,string escapeChar,string searchValue)
+        {            
+            if (!String.IsNullOrEmpty(escapeChar))
+            {
+                var charToRemove = escapeChar.Length == 1 ? 2 : 1;
+                var checkValue = escapeChar + searchValue;
+                var check = word.Substring(startIdx, word.Length-candidatePos+checkValue.Length- charToRemove);
+                return check.Contains(checkValue) && check.EndsWith(checkValue);
+            }
+            return false;
         }
 
         /// <summary>

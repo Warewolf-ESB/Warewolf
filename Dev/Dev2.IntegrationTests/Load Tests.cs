@@ -8,6 +8,7 @@ using Dev2.Studio.Core.Factories;
 using System.Globalization;
 using Dev2.Common;
 using Dev2.Data;
+using Dev2.Common.Common;
 
 namespace Dev2.Integration.Tests
 {
@@ -41,7 +42,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Single_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
 
 
             dtb.AddTokenOp("-", false);
@@ -68,7 +69,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Three_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
 
 
             dtb.AddTokenOp("AB-", false);

@@ -16,6 +16,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Xml;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
@@ -357,7 +358,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         IDev2Tokenizer CreateSplitPattern(string stringToSplit, string splitType, string at)
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit.ToStringBuilder() };
 
             switch (splitType)
             {

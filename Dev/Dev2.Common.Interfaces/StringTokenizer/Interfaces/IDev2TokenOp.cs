@@ -10,6 +10,7 @@
 
 using System;
 using System.IO;
+using System.Text;
 
 namespace Dev2.Common.Interfaces.StringTokenizer.Interfaces
 {
@@ -24,6 +25,8 @@ namespace Dev2.Common.Interfaces.StringTokenizer.Interfaces
         string ExecuteOperation(StreamReader reader, int startIdx, int len, bool isReversed);
 
         string ExecuteOperation(string sourceString, int startIdx, int len, bool isReversed);
+
+        string ExecuteOperation(ref StringBuilder sourceString, int startIdx, int len, bool isReversed);
 
         int OpLength();
 
