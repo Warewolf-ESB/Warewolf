@@ -108,76 +108,52 @@ namespace Dev2.Activities.Specs.Merge
             }
         }
 
+
+        void AddWorkflowToScenario(string nameString, WorkflowData wfData)
+        {
+            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals(nameString, StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
+
+            var localResourceVersion = CreateNewVersionResourceModel(localResource);
+            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(wfData.Different);
+            localResourceVersion.VersionInfo = wfData.VersionInfo;
+
+            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+        }
+
         [Given(@"I Load workflow version conflict MergePositionChange")]
         public void GivenILoadWorkflowVersionConflictMergePositionChange()
         {
-            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("MergePositionChange", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
-
-            var localResourceVersion = CreateNewVersionResourceModel(localResource);
-            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.MergePositionChange.Different);
-            localResourceVersion.VersionInfo = WorkflowTestResources.MergePositionChange.VersionInfo;
-
-            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+            AddWorkflowToScenario("MergePositionChange", WorkflowTestResources.MergePositionChange);
         }
 
         [Given(@"I Load workflow version of MergeSwitchTool")]
         public void GivenILoadWorkflowVersionOfMergeSwitchTool()
         {
-            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("MergeSwitchTool", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
-
-            var localResourceVersion = CreateNewVersionResourceModel(localResource);
-            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.MergeSwitchTool.Different);
-            localResourceVersion.VersionInfo = WorkflowTestResources.MergeSwitchTool.VersionInfo;
-
-            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+            AddWorkflowToScenario("MergeSwitchTool", WorkflowTestResources.MergeSwitchTool);
         }
 
         [Given(@"I Load workflow version of MergeRemovedTool")]
         public void GivenILoadWorkflowVersionOfMergeRemovedTool()
         {
-            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("MergeRemovedTool", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
-
-            var localResourceVersion = CreateNewVersionResourceModel(localResource);
-            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.MergeRemovedTool.Different);
-            localResourceVersion.VersionInfo = WorkflowTestResources.MergeRemovedTool.VersionInfo;
-
-            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+            AddWorkflowToScenario("MergeRemovedTool", WorkflowTestResources.MergeRemovedTool);
         }
 
         [Given(@"I Load workflow version of WorkFlowWithOneObject")]
         public void GivenILoadWorkflowVersionOfWorkFlowWithOneObject()
         {
-            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("WorkFlowWithOneObject", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
-
-            var localResourceVersion = CreateNewVersionResourceModel(localResource);
-            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.WorkFlowWithOneObject.Different);
-            localResourceVersion.VersionInfo = WorkflowTestResources.WorkFlowWithOneObject.VersionInfo;
-
-            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+            AddWorkflowToScenario("WorkFlowWithOneObject", WorkflowTestResources.WorkFlowWithOneObject);
         }
 
         [Given(@"I Load workflow version of WorkFlowWithOneRecordSet")]
         public void GivenILoadWorkflowVersionOfWorkFlowWithOneRecordSet()
         {
-            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("WorkFlowWithOneRecordSet", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
-
-            var localResourceVersion = CreateNewVersionResourceModel(localResource);
-            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.WorkFlowWithOneRecordSet.Different);
-            localResourceVersion.VersionInfo = WorkflowTestResources.WorkFlowWithOneRecordSet.VersionInfo;
-
-            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+            AddWorkflowToScenario("WorkFlowWithOneRecordSet", WorkflowTestResources.WorkFlowWithOneRecordSet);
         }
 
         [Given(@"I Load workflow version of WorkFlowWithOneScalar")]
         public void GivenILoadWorkflowVersionOfWorkFlowWithOneScalar()
         {
-            var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals("WorkFlowWithOneScalar", StringComparison.InvariantCultureIgnoreCase)) as ResourceModel;
-
-            var localResourceVersion = CreateNewVersionResourceModel(localResource);
-            localResourceVersion.WorkflowXaml = new System.Text.StringBuilder(WorkflowTestResources.WorkFlowWithOneScalar.Different);
-            localResourceVersion.VersionInfo = WorkflowTestResources.WorkFlowWithOneScalar.VersionInfo;
-
-            _scenarioContext.Add(localResourceVersionString, localResourceVersion);
+            AddWorkflowToScenario("WorkFlowWithOneScalar", WorkflowTestResources.WorkFlowWithOneScalar);
         }
 
         private static ResourceModel CreateNewVersionResourceModel(ResourceModel localResource)
