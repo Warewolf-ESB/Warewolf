@@ -11,10 +11,7 @@
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Text;
-
 
 namespace Dev2.Common
 {
@@ -41,8 +38,6 @@ namespace Dev2.Common
             _startIdx = !_isReversed ? 0 : sourceString.Length - 1;
         }
 
-        #region Private Method
-      
         void MoveOpPointer()
         {
             _opPointer++;
@@ -74,8 +69,6 @@ namespace Dev2.Common
             return result;
         }
 
-        #endregion Private Method
-
         public bool HasMoreOps() => _hasMoreOps;
 
         public string NextToken()
@@ -83,7 +76,6 @@ namespace Dev2.Common
             var result =_ops[_opPointer].ExecuteOperation(ref _sourceString, _startIdx, _masterLen, _isReversed);
             MoveStartIndex(result.Length + _ops[_opPointer].OpLength());
             MoveOpPointer();
-            // check to see if there is data to fetch still?
             _hasMoreOps = !_ops[_opPointer].IsFinalOp() && HasMoreData();
             
             return result;
