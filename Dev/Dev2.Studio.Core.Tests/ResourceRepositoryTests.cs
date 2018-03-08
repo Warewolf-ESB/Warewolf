@@ -1776,6 +1776,20 @@ namespace BusinessDesignStudio.Unit.Tests
             var payload = JsonConvert.SerializeObject(msg);
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
 
+            var srcRepo = new Mock<IResourceRepository>();
+            var targetRepo = new Mock<IResourceRepository>();
+
+            var srcModel = new Mock<IServer>();
+            var targetModel = new Mock<IServer>();
+            // config the repos
+            srcModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(_resourceModel.Object);
+            srcRepo.Setup(repo => repo.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(msg);
+
+            _environmentModel.Setup(e => e.ResourceRepository).Returns(srcRepo.Object);
+
+            var theModel = new ResourceModel(srcModel.Object) { ID = newGuid };
+            _repo.Add(theModel);
             //------------Execute Test---------------------------
             var result = _repo.FindSingle(model => model.ID == newGuid, true);
 
