@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Xml;
 using Dev2.Activities.Preview;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
@@ -361,7 +362,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
                 return null;
             }
 
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit.ToStringBuilder() };
 
             switch (splitType)
             {

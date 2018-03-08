@@ -10,6 +10,7 @@
 
 using System;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -33,7 +34,7 @@ namespace Dev2.Tests {
         #region Fwd Test
         [TestMethod]
         public void Single_Token_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
 
 
             dtb.AddTokenOp("-", false);
@@ -51,7 +52,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Two_Token_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search2 };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search2.ToStringBuilder() };
 
 
             dtb.AddTokenOp("AB", false);
@@ -69,7 +70,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Three_Token_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search2 };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search2.ToStringBuilder() };
 
 
             dtb.AddTokenOp("AB-", false);
@@ -87,7 +88,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Token_Op_With_Token_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
 
 
             dtb.AddTokenOp("-", true);
@@ -105,7 +106,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Index_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
 
 
             dtb.AddIndexOp(2);
@@ -123,7 +124,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Eof_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
 
 
             dtb.AddEoFOp();
@@ -146,7 +147,7 @@ namespace Dev2.Tests {
         [TestMethod]
         public void More_Then_One_Op_Fwd()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
 
 
             dtb.AddIndexOp(2);
@@ -170,7 +171,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Token_And_Index_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
 
 
             dtb.AddTokenOp("-", false);
@@ -196,8 +197,8 @@ namespace Dev2.Tests {
             var dtb = new Dev2TokenizerBuilder
                                        {
                                            ReverseOrder = true,
-                                           ToTokenize = Search
-                                       };
+                                           ToTokenize = Search.ToStringBuilder()
+            };
 
 
             dtb.AddTokenOp("-", false);
@@ -217,7 +218,7 @@ namespace Dev2.Tests {
         public void Two_Token_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search2,
+                                           ToTokenize = Search2.ToStringBuilder(),
                                            ReverseOrder = true
                                        };
 
@@ -239,7 +240,7 @@ namespace Dev2.Tests {
         public void Three_Token_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search2,
+                                           ToTokenize = Search2.ToStringBuilder(),
                                            ReverseOrder = true
                                        };
 
@@ -261,7 +262,7 @@ namespace Dev2.Tests {
         public void Token_Op_With_Token_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search,
+                                           ToTokenize = Search.ToStringBuilder(),
                                            ReverseOrder = true
                                        };
 
@@ -283,7 +284,7 @@ namespace Dev2.Tests {
         public void Index_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search,
+                                           ToTokenize = Search.ToStringBuilder(),
                                            ReverseOrder = true
                                        };
 
@@ -305,7 +306,7 @@ namespace Dev2.Tests {
         public void Eof_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search,
+                                           ToTokenize = Search.ToStringBuilder(),
                                            ReverseOrder = true
                                        };
 
@@ -330,7 +331,7 @@ namespace Dev2.Tests {
         public void Token_And_Index_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search,
+                                           ToTokenize = Search.ToStringBuilder(),
                                            ReverseOrder = true
                                        };
 
@@ -354,7 +355,7 @@ namespace Dev2.Tests {
         #region Negative Test
         [TestMethod]
         public void Empty_String_Error() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = string.Empty };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = string.Empty.ToStringBuilder() };
 
 
             dtb.AddEoFOp();

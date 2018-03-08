@@ -20,27 +20,22 @@ namespace Dev2.Common
 {
     class Dev2Tokenizer : IDev2Tokenizer, IDisposable
     {
-        readonly CharEnumerator _charEnumerator;
         readonly bool _isReversed;
         readonly int _masterLen;
-        private readonly string _sourceString;
-        private readonly MemoryStream _memoryStream;
+        private StringBuilder _sourceString;
         readonly IList<IDev2SplitOp> _ops;
 
         bool _disposing;
         bool _hasMoreOps;
         int _opPointer;
         int _startIdx;
-        private readonly StreamReader _streamReader;
 
-        internal Dev2Tokenizer(string sourceString, IList<IDev2SplitOp> ops, bool reversed)
+        internal Dev2Tokenizer(StringBuilder sourceString, IList<IDev2SplitOp> ops, bool reversed)
         {
             _ops = ops;
             _isReversed = reversed;
             _masterLen = sourceString.Length;
             _sourceString = sourceString;
-            _memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(sourceString));
-            _streamReader = new StreamReader(_memoryStream);            
             _opPointer = 0;
             _hasMoreOps = true;
             _startIdx = !_isReversed ? 0 : sourceString.Length - 1;
@@ -85,9 +80,7 @@ namespace Dev2.Common
 
         public string NextToken()
         {
-            _memoryStream.Position = 0;
-            _streamReader.DiscardBufferedData();
-            var result =_ops[_opPointer].ExecuteOperation(_sourceString, _startIdx, _masterLen, _isReversed);
+            var result =_ops[_opPointer].ExecuteOperation(ref _sourceString, _startIdx, _masterLen, _isReversed);
             MoveStartIndex(result.Length + _ops[_opPointer].OpLength());
             MoveOpPointer();
             // check to see if there is data to fetch still?
@@ -107,9 +100,7 @@ namespace Dev2.Common
             {
                 if (disposing)
                 {
-                    _streamReader.BaseStream.Dispose();
-                    _streamReader.Dispose();
-                    _charEnumerator.Dispose();
+                    _sourceString = null;
                 }
                 _disposing = true;
             }

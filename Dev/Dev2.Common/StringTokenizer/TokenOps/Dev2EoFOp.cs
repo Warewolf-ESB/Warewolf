@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System;
 using System.IO;
@@ -57,6 +58,15 @@ namespace Dev2.Common
         public string ExecuteOperation(string sourceString, int startIdx, int len, bool isReversed)
         {
             return sourceString.Substring(startIdx);
+        }
+
+        public string ExecuteOperation(ref StringBuilder sourceString, int startIdx, int len, bool isReversed)
+        {
+            if (isReversed)
+            {
+                return sourceString.Substring(0, len);
+            }
+            return sourceString.Substring(startIdx,len-startIdx);
         }
     }
 }

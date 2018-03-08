@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System;
 using System.IO;
@@ -71,6 +72,40 @@ namespace Dev2.Common
                 return sourceString.Substring(startIdx);
             }
         }
+
+
+        public string ExecuteOperation(ref StringBuilder sourceString, int startIdx, int len, bool isReversed)
+        {
+            var result = new StringBuilder();
+
+            var start = startIdx;
+            var end = startIdx + ToIndex;
+
+            // Avoid boundry over-run
+            if (end > sourceString.Length)
+            {
+                end = sourceString.Length;
+            }
+
+            if (isReversed)
+            {
+                start = startIdx - ToIndex + 1;
+                if (start < 0)
+                {
+                    start = 0;
+                }
+
+                end = startIdx + 1;
+            }
+
+            for (int i = start; i < end; i++)
+            {
+                result.Append(sourceString[i]);
+            }
+
+            return result.ToString();
+        }
+
 
         public string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed) => throw new NotImplementedException();
 
