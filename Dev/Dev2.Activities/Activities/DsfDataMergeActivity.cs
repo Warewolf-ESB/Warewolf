@@ -234,35 +234,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var val = warewolfListIterator.FetchNextValue(iterator.Value[0]);
                         var at = warewolfListIterator.FetchNextValue(iterator.Value[1]);
                         var pad = warewolfListIterator.FetchNextValue(iterator.Value[2]);
-
-                        if (val != null && at != null && pad != null)
-                        {
-                            if (MergeCollection[pos].MergeType == "Index")
-                            {
-                                if (string.IsNullOrEmpty(at))
-                                {
-                                    allErrors.AddError(ErrorResource.BlankUSINGValue);
-                                }
-
-                                if (!Int32.TryParse(at, out int atValue) || atValue < 0)
-                                {
-                                    allErrors.AddError(ErrorResource.USINGMustBeARealNumber);
-                                }
-                                if (pad.Length > 1)
-                                {
-                                    allErrors.AddError(ErrorResource.PADDINGMustBeSingleCharecter);
-                                }
-                            }
-                            else
-                            {
-                                if (MergeCollection[pos].MergeType == "Chars" && string.IsNullOrEmpty(at))
-                                {
-                                    allErrors.AddError(ErrorResource.BlankUSINGValue);
-                                }
-                            }
-                            mergeOperations.Merge(val, MergeCollection[pos].MergeType, at, pad, MergeCollection[pos].Alignment);
-                            pos++;
-                        }
+                        pos = AddErrorAndMerge(mergeOperations, allErrors, pos, val, at, pad);
                     }
                 }
                 if (!allErrors.HasErrors())
@@ -273,18 +245,57 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString(), update);
-                        allErrors.MergeErrors(errorResultTo);
-
-                        if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                        {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                        }
+                        AddToErrorsToDebugOutput(dataObject, update, mergeOperations, allErrors, errorResultTo);
                     }
                 }
             }
 
             #endregion Iterate and Merge Data
+        }
+
+        private void AddToErrorsToDebugOutput(IDSFDataObject dataObject, int update, IDev2MergeOperations mergeOperations, ErrorResultTO allErrors, ErrorResultTO errorResultTo)
+        {
+            dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString(), update);
+            allErrors.MergeErrors(errorResultTo);
+
+            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+            {
+                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+            }
+        }
+
+        private int AddErrorAndMerge(IDev2MergeOperations mergeOperations, ErrorResultTO allErrors, int pos, string val, string at, string pad)
+        {
+            if (val != null && at != null && pad != null)
+            {
+                if (MergeCollection[pos].MergeType == "Index")
+                {
+                    if (string.IsNullOrEmpty(at))
+                    {
+                        allErrors.AddError(ErrorResource.BlankUSINGValue);
+                    }
+
+                    if (!Int32.TryParse(at, out int atValue) || atValue < 0)
+                    {
+                        allErrors.AddError(ErrorResource.USINGMustBeARealNumber);
+                    }
+                    if (pad.Length > 1)
+                    {
+                        allErrors.AddError(ErrorResource.PADDINGMustBeSingleCharecter);
+                    }
+                }
+                else
+                {
+                    if (MergeCollection[pos].MergeType == "Chars" && string.IsNullOrEmpty(at))
+                    {
+                        allErrors.AddError(ErrorResource.BlankUSINGValue);
+                    }
+                }
+                mergeOperations.Merge(val, MergeCollection[pos].MergeType, at, pad, MergeCollection[pos].Alignment);
+                pos++;
+            }
+
+            return pos;
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
@@ -312,29 +323,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["MergeCollection"];
-            if (modelProperty != null)
+            if (modelProperty == null)
             {
-                var mic = modelProperty.Collection;
+                return;
+            }
+            var mic = modelProperty.Collection;
 
-                if (mic != null)
+            if (mic == null)
+            {
+                return;
+            }
+            var listOfValidRows = MergeCollection.Where(c => !c.CanRemove()).ToList();
+            if (listOfValidRows.Count > 0)
+            {
+                var dataMergeDto = MergeCollection.Last(c => !c.CanRemove());
+                var startIndex = MergeCollection.IndexOf(dataMergeDto) + 1;
+                foreach (string s in listToAdd)
                 {
-                    var listOfValidRows = MergeCollection.Where(c => !c.CanRemove()).ToList();
-                    if (listOfValidRows.Count > 0)
-                    {
-                        var dataMergeDto = MergeCollection.Last(c => !c.CanRemove());
-                        var startIndex = MergeCollection.IndexOf(dataMergeDto) + 1;
-                        foreach (string s in listToAdd)
-                        {
-                            mic.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
-                            startIndex++;
-                        }
-                        CleanUpCollection(mic, modelItem, startIndex);
-                    }
-                    else
-                    {
-                        AddToCollection(listToAdd, modelItem);
-                    }
+                    mic.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
+                    startIndex++;
                 }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+            else
+            {
+                AddToCollection(listToAdd, modelItem);
             }
         }
 
