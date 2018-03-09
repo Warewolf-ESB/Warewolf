@@ -118,118 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
-                var sourceString = SourceString ?? "";
-                if (dataObject.IsDebugMode())
-                {
-                    AddDebugInputItem(new DebugEvalResult(sourceString, "String to Split", env, update));
-                    AddDebugInputItem(new DebugItemStaticDataParams(ReverseOrder ? "Backward" : "Forward", "Process Direction"));
-                    AddDebugInputItem(new DebugItemStaticDataParams(SkipBlankRows ? "Yes" : "No", "Skip blank rows"));
-                    AddDebug(ResultsCollection, dataObject.Environment, update);
-                }
-                var res = new WarewolfIterator(env.Eval(sourceString, update));
-                iter.AddVariableToIterateOn(res);
-                IDictionary<string, int> positions = new Dictionary<string, int>();
-                CleanArguments(ResultsCollection);
-                ResultsCollection.ToList().ForEach(a =>
-                {
-                    if (!positions.ContainsKey(a.OutputVariable))
-                    {
-                        positions.Add(a.OutputVariable, update == 0 ? 1 : update);
-                    }
-                    IsSingleValueRule.ApplyIsSingleValueRule(a.OutputVariable, allErrors);
-                });
-                var singleInnerIteration = ArePureScalarTargets(ResultsCollection);
-                var resultsEnumerator = ResultsCollection.GetEnumerator();
-                var debugDictionary = new List<string>();
-                while (res.HasMoreData())
-                {
-                    var item = res.GetNextValue();
-                    if (!string.IsNullOrEmpty(item))
-                    {
-                        var tokenizer = CreateSplitPattern(ref item, ResultsCollection, env, out ErrorResultTO errors, update);
-                        allErrors.MergeErrors(errors);
-
-                        if (!allErrors.HasErrors() && tokenizer != null)
-                        {
-                            while (tokenizer.HasMoreOps())
-                            {
-                                var currentval = resultsEnumerator.MoveNext();
-                                if (!currentval)
-                                {
-                                    if (singleInnerIteration)
-                                    {
-                                        break;
-                                    }
-                                    resultsEnumerator.Reset();
-                                    resultsEnumerator.MoveNext();
-                                }
-                                var tmp = tokenizer.NextToken();
-
-                                if (tmp.StartsWith(Environment.NewLine) && !SkipBlankRows)
-                                {
-                                    resultsEnumerator.Reset();
-                                    while (resultsEnumerator.MoveNext())
-                                    {
-                                        var tovar = resultsEnumerator.Current.OutputVariable;
-                                        if (!String.IsNullOrEmpty(tovar))
-                                        {
-                                            var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
-                                            env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
-                                            positions[tovar] = positions[tovar] + 1;
-                                        }
-                                    }
-                                    resultsEnumerator.Reset();
-                                    resultsEnumerator.MoveNext();
-                                }                                
-                                var outputVar = resultsEnumerator.Current.OutputVariable;
-                                if (IsNullEmptyOrNewLine(tmp))
-                                {
-                                    if (!SkipBlankRows)
-                                    {
-                                        tmp = tmp.Replace(Environment.NewLine, "");
-                                    }
-                                }
-                                else
-                                {
-                                    if (!String.IsNullOrEmpty(outputVar))
-                                    {
-                                        var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);                                       
-                                        positions[outputVar] = positions[outputVar] + 1;
-                                    }
-                                    if (dataObject.IsDebugMode())
-                                    {
-                                        var debugItem = new DebugItem();
-                                        var outputVarTo = resultsEnumerator.Current.OutputVariable;
-                                        AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
-                                        if (!debugDictionary.Contains(outputVarTo))
-                                        {
-                                            debugDictionary.Add(outputVarTo);
-                                        }
-                                    }
-                                }                                
-                            }
-                        }
-                    }
-                    env.CommitAssign();
-                    if (singleInnerIteration)
-                    {
-                        break;
-                    }
-                }
-
-                if (dataObject.IsDebugMode())
-                {
-                    var outputIndex = 1;
-                    foreach (var varDebug in debugDictionary)
-                    {
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        var dataSplitUsesStarForOutput = varDebug.Replace("().", "(*).");
-                        AddDebugItem(new DebugEvalResult(dataSplitUsesStarForOutput, "", env, update), debugItem);
-                        _debugOutputs.Add(debugItem);
-                        outputIndex++;
-                    }
-                }
+                TryExecuteTool(dataObject, update, allErrors, env, iter);
             }
             catch (Exception e)
             {
@@ -239,6 +128,123 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 HandleErrors(dataObject, update, allErrors);
+            }
+        }
+
+        private void TryExecuteTool(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, IExecutionEnvironment env, WarewolfListIterator iter)
+        {
+            var sourceString = SourceString ?? "";
+            if (dataObject.IsDebugMode())
+            {
+                AddDebugInputItem(new DebugEvalResult(sourceString, "String to Split", env, update));
+                AddDebugInputItem(new DebugItemStaticDataParams(ReverseOrder ? "Backward" : "Forward", "Process Direction"));
+                AddDebugInputItem(new DebugItemStaticDataParams(SkipBlankRows ? "Yes" : "No", "Skip blank rows"));
+                AddDebug(ResultsCollection, dataObject.Environment, update);
+            }
+            var res = new WarewolfIterator(env.Eval(sourceString, update));
+            iter.AddVariableToIterateOn(res);
+            IDictionary<string, int> positions = new Dictionary<string, int>();
+            CleanArguments(ResultsCollection);
+            ResultsCollection.ToList().ForEach(a =>
+            {
+                if (!positions.ContainsKey(a.OutputVariable))
+                {
+                    positions.Add(a.OutputVariable, update == 0 ? 1 : update);
+                }
+                IsSingleValueRule.ApplyIsSingleValueRule(a.OutputVariable, allErrors);
+            });
+            var singleInnerIteration = ArePureScalarTargets(ResultsCollection);
+            var resultsEnumerator = ResultsCollection.GetEnumerator();
+            var debugDictionary = new List<string>();
+            while (res.HasMoreData())
+            {
+                var item = new StringBuilder(res.GetNextValue());
+                if (item.Length > 0)
+                {
+                    var tokenizer = CreateSplitPattern(ref item, ResultsCollection, env, out ErrorResultTO errors, update);
+                    allErrors.MergeErrors(errors);
+
+                    if (!allErrors.HasErrors() && tokenizer != null)
+                    {
+                        while (tokenizer.HasMoreOps())
+                        {
+                            var currentval = resultsEnumerator.MoveNext();
+                            if (!currentval)
+                            {
+                                if (singleInnerIteration)
+                                {
+                                    break;
+                                }
+                                resultsEnumerator.Reset();
+                                resultsEnumerator.MoveNext();
+                            }
+                            var tmp = tokenizer.NextToken();
+
+                            if (tmp.StartsWith(Environment.NewLine) && !SkipBlankRows)
+                            {
+                                resultsEnumerator.Reset();
+                                while (resultsEnumerator.MoveNext())
+                                {
+                                    var tovar = resultsEnumerator.Current.OutputVariable;
+                                    if (!String.IsNullOrEmpty(tovar))
+                                    {
+                                        var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
+                                        env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
+                                        positions[tovar] = positions[tovar] + 1;
+                                    }
+                                }
+                                resultsEnumerator.Reset();
+                                resultsEnumerator.MoveNext();
+                            }
+                            var outputVar = resultsEnumerator.Current.OutputVariable;
+                            if (IsNullEmptyOrNewLine(tmp))
+                            {
+                                if (!SkipBlankRows)
+                                {
+                                    tmp = tmp.Replace(Environment.NewLine, "");
+                                }
+                            }
+                            else
+                            {
+                                if (!String.IsNullOrEmpty(outputVar))
+                                {
+                                    var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
+                                    env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+                                    positions[outputVar] = positions[outputVar] + 1;
+                                }
+                                if (dataObject.IsDebugMode())
+                                {
+                                    var debugItem = new DebugItem();
+                                    var outputVarTo = resultsEnumerator.Current.OutputVariable;
+                                    AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
+                                    if (!debugDictionary.Contains(outputVarTo))
+                                    {
+                                        debugDictionary.Add(outputVarTo);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                env.CommitAssign();
+                if (singleInnerIteration)
+                {
+                    break;
+                }
+            }
+
+            if (dataObject.IsDebugMode())
+            {
+                var outputIndex = 1;
+                foreach (var varDebug in debugDictionary)
+                {
+                    var debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                    var dataSplitUsesStarForOutput = varDebug.Replace("().", "(*).");
+                    AddDebugItem(new DebugEvalResult(dataSplitUsesStarForOutput, "", env, update), debugItem);
+                    _debugOutputs.Add(debugItem);
+                    outputIndex++;
+                }
             }
         }
 
