@@ -11,19 +11,23 @@
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
+
 
 namespace Dev2.Common
 {
     class Dev2Tokenizer : IDev2Tokenizer, IDisposable
     {
+        readonly CharEnumerator _charEnumerator;
         readonly bool _isReversed;
         readonly int _masterLen;
         private readonly string _sourceString;
         private readonly MemoryStream _memoryStream;
         readonly IList<IDev2SplitOp> _ops;
+        readonly char[] _tokenParts;
+
+        readonly bool _useEnumerator;
 
         bool _disposing;
         bool _hasMoreOps;
@@ -41,7 +45,16 @@ namespace Dev2.Common
             _streamReader = new StreamReader(_memoryStream);            
             _opPointer = 0;
             _hasMoreOps = true;
-            _startIdx = !_isReversed ? 0 : sourceString.Length - 1;
+
+            _startIdx = !_isReversed ? 0 : _tokenParts.Length - 1;
+        }
+
+        #region Private Method
+
+        bool CanUseEnumerator()
+        {
+            var result = _ops != null && _ops?.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count;
+            return result;
         }
 
         #region Private Method
@@ -77,6 +90,8 @@ namespace Dev2.Common
             return result;
         }
 
+        #endregion Private Method
+
         public bool HasMoreOps() => _hasMoreOps;
 
         public string NextToken()
@@ -86,8 +101,8 @@ namespace Dev2.Common
             var result =_ops[_opPointer].ExecuteOperation(_sourceString, _startIdx, _masterLen, _isReversed);
             MoveStartIndex(result.Length + _ops[_opPointer].OpLength());
             MoveOpPointer();
+            // check to see if there is data to fetch still?
             _hasMoreOps = !_ops[_opPointer].IsFinalOp() && HasMoreData();
-            
             return result;
         }
 
