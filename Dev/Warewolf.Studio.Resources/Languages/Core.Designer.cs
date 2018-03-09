@@ -721,7 +721,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Below is a list of the selected workflow versions to merge with. Select from the radio button and press Enter or click Merge to continue with the merge process. If you are nor sure which version to merge with, press Escape or click Cancel, then find the Workflow in the Explorer, right-click and select &apos;Show Version History&apos; to view the previous versions..
+        ///   Looks up a localized string similar to Below is a list of the selected workflow versions to merge with. Select from the radio button and press Enter or click Merge to continue with the merge process. If you are not sure which version to merge with, press Escape or click Cancel, then find the Workflow in the Explorer, right-click and select &apos;Show Version History&apos; to view the previous versions..
         /// </summary>
         public static string MergeSelectionViewInformationLabel {
             get {

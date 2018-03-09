@@ -373,11 +373,19 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanMerge
         {
-            get => _canMerge && GetVersionHistory() != null;
+            get
+            {
+                if (ResourceModel.IsVersionResource || (GetVersionHistory() != null && _canMerge))
+                {
+                    return true;
+                }
+
+                return false;
+            }
             set
             {
                 _canMerge = value;
-                MergeTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canDeploy ? Warewolf.Studio.Resources.Languages.Tooltips.ViewMergeTooltip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
+                MergeTooltip = Warewolf.Studio.Resources.Languages.Tooltips.ViewMergeTooltip;
                 OnPropertyChanged("CanMerge");
             }
         }
@@ -565,7 +573,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
                 _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
-
             }
         }
 
@@ -882,25 +889,34 @@ namespace Dev2.Studio.ViewModels.Workflow
                                                            }
                                                        }));
 
-        public ICommand MergeCommand => _mergeCommand ?? (_mergeCommand = new DelegateCommand(param =>
-                                                      {
-                                                          // OPEN WINDOW TO SELECT RESOURCE TO MERGE WITH
+        public ICommand MergeCommand => _mergeCommand ?? (_mergeCommand = new DelegateCommand(param => 
+        {
+            if (Application.Current?.Dispatcher == null || !Application.Current.Dispatcher.CheckAccess() || Application.Current?.MainWindow == null)
+            {
+                return;
+            }
+            MergeWorkflow();
+        }));
 
-                                                          if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                                                          {
-                                                              var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                                                              if (mvm?.ActiveItem != null)
-                                                              {
-                                                                  var environmentViewModel = mvm.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
-                                                                  var explorerItem = environmentViewModel?.Children?.Flatten(model => model.Children).Where(model => !model.IsVersion).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+        private static void MergeWorkflow()
+        {
+            var shellViewModel = Application.Current.MainWindow.DataContext as ShellViewModel;
+            if (shellViewModel?.ActiveItem == null)
+            {
+                return;
+            }
+            var environmentViewModel = shellViewModel.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == shellViewModel.ActiveServer.EnvironmentID);
 
-                                                                  if (explorerItem != null)
-                                                                  {
-                                                                      mvm.OpenMergeDialogView(explorerItem);
-                                                                  }
-                                                              }
-                                                          }
-                                                      }));
+            var contextualResourceModel = shellViewModel.ActiveItem.ContextualResourceModel;
+            var resourceId = contextualResourceModel.IsVersionResource ? contextualResourceModel.OriginalId : contextualResourceModel.ID;
+
+            var explorerItem = environmentViewModel?.UnfilteredChildren?.Flatten(model => model.UnfilteredChildren).FirstOrDefault(c => c.ResourceId == resourceId);
+            if (explorerItem == null)
+            {
+                return;
+            }
+            shellViewModel.OpenMergeDialogView(explorerItem);
+        }
 
         static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
         {
