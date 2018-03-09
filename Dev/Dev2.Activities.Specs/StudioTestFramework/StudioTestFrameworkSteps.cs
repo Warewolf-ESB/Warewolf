@@ -442,6 +442,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var resourceId = ConfigurationManager.AppSettings[workflowName].ToGuid();
             var sourceResourceRepository = ServerRepository.Instance.Source.ResourceRepository;
             var loadContextualResourceModel = sourceResourceRepository.LoadContextualResourceModel(resourceId);
+            Assert.IsNotNull(loadContextualResourceModel, "Cannot find " + workflowName);
             var msg = sourceResourceRepository.FetchResourceDefinition(loadContextualResourceModel.Environment, GlobalConstants.ServerWorkspaceID, resourceId, false);
             loadContextualResourceModel.WorkflowXaml = msg.Message;
             var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
