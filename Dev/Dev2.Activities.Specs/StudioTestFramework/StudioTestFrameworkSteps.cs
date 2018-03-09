@@ -383,16 +383,14 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTestModel = serviceTest.Tests.Single(model => model.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
             Assert.IsTrue(serviceTestModel.TestPending);
         }
+
         [Then(@"debug window is visible")]
         public void ThenDebugWindowIsVisible()
         {
             var serviceTest = GetTestFrameworkFromContext();
             var count = serviceTest.SelectedServiceTest.DebugForTest.Any(state => state.DisplayName == "Hello World");
-            //var count = serviceTest.SelectedServiceTest.DebugForTest.All(state => state.DisplayName == "WorkflowWithTests");
             Assert.IsTrue(count);
         }
-
-
 
         [Given(@"""(.*)"" has outputs as")]
         public void GivenHasOutputsAs(string workflowName, Table outputVariables)
