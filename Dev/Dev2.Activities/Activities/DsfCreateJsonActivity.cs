@@ -132,8 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     results.ForEach(x =>
                     {
                         ParseResultsJSON(x, json);
-                    }
-                  );
+                    });
 
 
                     dataObject.Environment.Assign(JsonString, json.ToString(Formatting.None), update);
