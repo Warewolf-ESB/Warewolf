@@ -24,6 +24,7 @@ using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.ResourceManagement;
+using Dev2.Runtime.Search;
 
 namespace Dev2.ViewModels.Search
 {

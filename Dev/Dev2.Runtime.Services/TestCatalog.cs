@@ -15,6 +15,7 @@ using Dev2.Communication;
 using Dev2.Data;
 using Dev2.Data.Util;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Search;
 using Warewolf.ResourceManagement;
 using Warewolf.Security.Encryption;
 
