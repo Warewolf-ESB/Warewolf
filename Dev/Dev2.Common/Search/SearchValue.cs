@@ -125,7 +125,6 @@ namespace Dev2.Common.Search
             set
             {
                 _isWorkflowNameSelected = value;
-                IsAllSelected = value;
                 OnPropertyChanged();
             }
         }
@@ -135,7 +134,6 @@ namespace Dev2.Common.Search
             set
             {
                 _isTestNameSelected = value;
-                IsAllSelected = value;
                 OnPropertyChanged();
             }
         }
@@ -145,7 +143,6 @@ namespace Dev2.Common.Search
             set
             {
                 _isScalarNameSelected = value;
-                IsAllSelected = value;
                 OnPropertyChanged();
             }
         }
@@ -155,7 +152,6 @@ namespace Dev2.Common.Search
             set
             {
                 _isObjectNameSelected = value;
-                IsAllSelected = value;
                 OnPropertyChanged();
             }
         }
@@ -165,7 +161,6 @@ namespace Dev2.Common.Search
             set
             {
                 _isRecSetNameSelected = value;
-                IsAllSelected = value;
                 OnPropertyChanged();
             }
         }
@@ -175,7 +170,6 @@ namespace Dev2.Common.Search
             set
             {
                 _isToolTitleSelected = value;
-                IsAllSelected = value;
                 OnPropertyChanged();
             }
         }
@@ -185,7 +179,6 @@ namespace Dev2.Common.Search
             set
             {
                 _isInputVariableSelected = value;
-                IsAllSelected = value;
                 OnPropertyChanged();
             }
         }
@@ -195,7 +188,6 @@ namespace Dev2.Common.Search
             set
             {
                 _isOutputVariableSelected = value;
-                IsAllSelected = value;
                 OnPropertyChanged();
             }
         }
