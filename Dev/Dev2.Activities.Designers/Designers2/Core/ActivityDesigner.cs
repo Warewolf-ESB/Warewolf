@@ -108,7 +108,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                if (UpdateContentEnabled())
+                if (IsServiceTestContentEnabled())
                 {
                     return false;
                 }
@@ -117,35 +117,47 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        bool UpdateContentEnabled()
+        bool IsServiceTestContentEnabled()
         {
             var parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
             var dataContext = parentContentPane?.DataContext;
             if (dataContext != null)
             {
-                if (dataContext.GetType().Name == "ServiceTestViewModel")
-                {
-                    if (ContentDesignerTemplate != null)
-                    {
-                        if (ContentDesignerTemplate.Parent.GetType().Name != "ForeachDesigner" &&
-                            ContentDesignerTemplate.Parent.GetType().Name != "SequenceDesigner" &&
-                            ContentDesignerTemplate.Parent.GetType().Name != "SelectAndApplyDesigner")
-                        {
-                            ContentDesignerTemplate.IsEnabled = false;
-                        }
-                        ContentDesignerTemplate.RightButtons.Clear();
-                        ContentDesignerTemplate.LeftButtons.Clear();
-                    }
-                }
+                UpdateServiceTest(dataContext);
+
+                return true;
+            }
+            return false;
+        }
+
+        void UpdateContentEnabled()
+        {
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var dataContext = parentContentPane?.DataContext;
+            if (dataContext != null)
+            {
+                UpdateServiceTest(dataContext);
 
                 if (dataContext.GetType().Name == "MergeWorkflowViewModel")
                 {
                     ViewModel.IsMerge = true;
                 }
-
-                return true;
             }
-            return false;
+        }
+
+        private void UpdateServiceTest(object dataContext)
+        {
+            if (dataContext.GetType().Name == "ServiceTestViewModel" && ContentDesignerTemplate != null)
+            {
+                if (ContentDesignerTemplate.Parent.GetType().Name != "ForeachDesigner" &&
+                    ContentDesignerTemplate.Parent.GetType().Name != "SequenceDesigner" &&
+                    ContentDesignerTemplate.Parent.GetType().Name != "SelectAndApplyDesigner")
+                {
+                    ContentDesignerTemplate.IsEnabled = false;
+                }
+                ContentDesignerTemplate.RightButtons.Clear();
+                ContentDesignerTemplate.LeftButtons.Clear();
+            }
         }
 
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
