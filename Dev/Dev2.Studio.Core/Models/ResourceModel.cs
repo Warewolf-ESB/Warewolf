@@ -463,6 +463,7 @@ namespace Dev2.Studio.Core.Models
                 DataTags = resourceModel.DataTags;
                 DisplayName = resourceModel.DisplayName;
                 VersionInfo = resourceModel.VersionInfo;
+                IsVersionResource = resourceModel.IsVersionResource;
                 HelpLink = resourceModel.HelpLink;
                 IsDebugMode = resourceModel.IsDebugMode;
                 ResourceName = resourceModel.ResourceName;

@@ -473,11 +473,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 151
 this.ScenarioSetup(scenarioInfo);
 #line 152
-  testRunner.Given("I Load workflow \"MergePositionChange\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("I Load workflow \"MergeToolPositionChange\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 153
-  testRunner.And("I Load workflow version conflict MergePositionChange", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow version conflict MergeToolPositionChange", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 154
-  testRunner.When("Merge Window is opened with local \"MergePositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("Merge Window is opened with local \"MergeToolPositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 155
   testRunner.Then("Current workflow contains \"3\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 156
@@ -487,9 +487,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 158
   testRunner.And("Different workflow contains \"3\" connectors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 159
-  testRunner.And("Current workflow header is \"MergePositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Current workflow header is \"MergeToolPositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 160
-  testRunner.And("Different workflow header is \"MergePositionChange v.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Different workflow header is \"MergeToolPositionChange v.2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 161
   testRunner.And("Merge conflicts count is \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 162
@@ -540,11 +540,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 180
 this.ScenarioSetup(scenarioInfo);
 #line 181
-  testRunner.Given("I Load workflow \"MergePositionChange\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.Given("I Load workflow \"MergeToolPositionChange\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 182
-  testRunner.And("I Load workflow version conflict MergePositionChange", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I Load workflow version conflict MergeToolPositionChange", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 183
-  testRunner.When("Merge Window is opened with local version \"MergePositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.When("Merge Window is opened with local version \"MergeToolPositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 184
   testRunner.Then("Current workflow contains \"3\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 185
@@ -554,9 +554,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 187
   testRunner.And("Different workflow contains \"3\" connectors", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 188
-  testRunner.And("Current workflow header is \"MergePositionChange v.1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Current workflow header is \"MergeToolPositionChange v.2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 189
-  testRunner.And("Different workflow header is \"MergePositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Different workflow header is \"MergeToolPositionChange\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 190
   testRunner.And("Merge conflicts count is \"6\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 191

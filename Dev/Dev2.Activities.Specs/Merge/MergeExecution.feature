@@ -149,15 +149,15 @@ Scenario: Merge Workflow Containing Switch tool
 	 Then Save is enabled
 
 Scenario: Merge Workflow Containing Position Change tools
-	 Given I Load workflow "MergePositionChange" from "localhost"
-	 And I Load workflow version conflict MergePositionChange
-	 When Merge Window is opened with local "MergePositionChange"
+	 Given I Load workflow "MergeToolPositionChange" from "localhost"
+	 And I Load workflow version conflict MergeToolPositionChange
+	 When Merge Window is opened with local "MergeToolPositionChange"
 	 Then Current workflow contains "3" tools
 	 Then Current workflow contains "3" connectors
 	 And Different workflow contains "3" tools
 	 And Different workflow contains "3" connectors
-	 And Current workflow header is "MergePositionChange"
-	 And Different workflow header is "MergePositionChange v.1"
+	 And Current workflow header is "MergeToolPositionChange"
+	 And Different workflow header is "MergeToolPositionChange v.2"
 	 And Merge conflicts count is "6"
 	 And Merge variable conflicts is false
 	 And conflict "0" Current matches tool "Start"
@@ -178,15 +178,15 @@ Scenario: Merge Workflow Containing Position Change tools
 	 Then Save is enabled
 
 Scenario: Merge Workflow Version Containing Position Change tools
-	 Given I Load workflow "MergePositionChange" from "localhost"
-	 And I Load workflow version conflict MergePositionChange
-	 When Merge Window is opened with local version "MergePositionChange"
+	 Given I Load workflow "MergeToolPositionChange" from "localhost"
+	 And I Load workflow version conflict MergeToolPositionChange
+	 When Merge Window is opened with local version "MergeToolPositionChange"
 	 Then Current workflow contains "3" tools
 	 Then Current workflow contains "3" connectors
 	 And Different workflow contains "3" tools
 	 And Different workflow contains "3" connectors
-	 And Current workflow header is "MergePositionChange v.1"
-	 And Different workflow header is "MergePositionChange"
+	 And Current workflow header is "MergeToolPositionChange v.2"
+	 And Different workflow header is "MergeToolPositionChange"
 	 And Merge conflicts count is "6"
 	 And Merge variable conflicts is false
 	 And conflict "0" Current matches tool "Start"

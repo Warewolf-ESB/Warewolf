@@ -120,10 +120,10 @@ namespace Dev2.Activities.Specs.Merge
             _scenarioContext.Add(localResourceVersionString, localResourceVersion);
         }
 
-        [Given(@"I Load workflow version conflict MergePositionChange")]
-        public void GivenILoadWorkflowVersionConflictMergePositionChange()
+        [Given(@"I Load workflow version conflict MergeToolPositionChange")]
+        public void GivenILoadWorkflowVersionConflictMergeToolPositionChange()
         {
-            AddWorkflowToScenario("MergePositionChange", WorkflowTestResources.MergePositionChange);
+            AddWorkflowToScenario("MergeToolPositionChange", WorkflowTestResources.MergeToolPositionChange);
         }
 
         [Given(@"I Load workflow version of MergeSwitchTool")]
