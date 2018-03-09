@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Single_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
 
 
             dtb.AddTokenOp("-", false);
@@ -69,7 +69,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Three_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
 
 
             dtb.AddTokenOp("AB-", false);
