@@ -131,31 +131,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             )).ToList();
                     results.ForEach(x =>
                     {
-                        if (!x.IsCompound)
-                        {
-                            json.Add(new JProperty(
-                                x.DestinationName,
-                                x.EvaluatedResultIndexed(0))
-                                );
-                        }
-                        else
-                        {
-                            if (!x.EvalResult.IsWarewolfRecordSetResult)
-                            {
-                                json.Add(new JProperty(
-                                            x.DestinationName,
-                                            x.ComplexEvaluatedResultIndexed(0))
-                                            );
-                            }
-                            else
-                            {
-                                if (x.EvalResult.IsWarewolfRecordSetResult)
-                                {
-                                    json.Add(
-                                   x.ComplexEvaluatedResultIndexed(0));
-                                }
-                            }
-                        }
+                        ParseResultsJSON(x, json);
                     }
                   );
 
@@ -195,6 +171,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        private static void ParseResultsJSON(JsonMappingCompoundTo x, JObject json)
+        {
+            if (!x.IsCompound)
+            {
+                json.Add(new JProperty(
+                    x.DestinationName,
+                    x.EvaluatedResultIndexed(0))
+                    );
+            }
+            else
+            {
+                if (!x.EvalResult.IsWarewolfRecordSetResult)
+                {
+                    json.Add(new JProperty(
+                                x.DestinationName,
+                                x.ComplexEvaluatedResultIndexed(0))
+                                );
+                }
+                else
+                {
+                    if (x.EvalResult.IsWarewolfRecordSetResult)
+                    {
+                        json.Add(
+                       x.ComplexEvaluatedResultIndexed(0));
+                    }
                 }
             }
         }
