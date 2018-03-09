@@ -16,7 +16,7 @@ namespace Warewolf.ResourceManagement
         public ResourceActivityCache(IActivityParser activityParser, ConcurrentDictionary<Guid, IDev2Activity> cache)
         {
             _activityParser = activityParser ?? throw new ArgumentNullException(nameof(activityParser));
-            _cache = cache;
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
         public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid) => Parse(activity, resourceIdGuid, false);

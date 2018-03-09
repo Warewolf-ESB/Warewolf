@@ -264,6 +264,10 @@
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
+      <Project>{9623c7dd-85ee-41ab-89b1-1a9784a97da7}</Project>
+      <Name>Dev2.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
       <Project>{1FD73E36-FC73-4BDF-BCBA-278A44F06550}</Project>
       <Name>Dev2.Studio.Core.Tests</Name>

@@ -33,8 +33,6 @@ using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Common.Interfaces.Search;
-using Dev2.Common.Utils;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -459,43 +457,6 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);
 
-        public ResourceCatalogDuplicateResult DuplicateFolder(string sourcePath, string destinationPath, string newName, bool fixRefences) => _catalogPluginContainer.DuplicateProvider.DuplicateFolder(sourcePath, destinationPath, newName, fixRefences);
-
-        public List<ISearchResult> FilterActivities(ISearchValue searchValue)
-        {
-            var foundItems = new List<ISearchResult>();
-            foreach (var item in _parsers)
-            {
-                var node = item.Value as IDev2Activity;
-                while (node != null)
-                {
-                    var foundMatch = SearchUtils.FilterText(node.GetDisplayName(), searchValue);
-
-                    if (foundMatch)
-                    {
-                        var resource = GetResource(GlobalConstants.ServerWorkspaceID, item.Key);
-                        var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.WorkflowName, node.GetDisplayName());
-                        foundItems.Add(searchResult);
-                        node = null;
-                    }
-                    else
-                    {
-                        var nextNodes = node.GetNextNodes();
-                        while (nextNodes.Any())
-                        {
-                            foreach (var nextNode in nextNodes)
-                            {
-                                var resource = GetResource(GlobalConstants.ServerWorkspaceID, item.Key);
-                                var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.WorkflowName, nextNode.GetDisplayName());
-                                foundItems.Add(searchResult);
-                                node = null;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return foundItems;
-        }
+        public ResourceCatalogDuplicateResult DuplicateFolder(string sourcePath, string destinationPath, string newName, bool fixRefences) => _catalogPluginContainer.DuplicateProvider.DuplicateFolder(sourcePath, destinationPath, newName, fixRefences);        
     }
 }

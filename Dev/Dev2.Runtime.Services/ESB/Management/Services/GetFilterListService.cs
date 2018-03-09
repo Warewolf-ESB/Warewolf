@@ -8,9 +8,9 @@ using Dev2.Common.Interfaces.Search;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Search;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
-using Warewolf.ResourceManagement;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var searchers = new List<ISearcher>
                     {
-                        new ActivitySearcher(ResourceCatalog.Instance.GetResourceActivityCache(GlobalConstants.ServerWorkspaceID))
+                        new ActivitySearcher(ResourceCatalog.Instance)
                     };
                     searchResults = searchValue.GetSearchResults(searchers);                    
                 }
