@@ -68,5 +68,6 @@ namespace Dev2.Studio.Interfaces
         void Rollback();
 
         string GetSavePath();
+        Guid OriginalId { get; set; }
     }
 }

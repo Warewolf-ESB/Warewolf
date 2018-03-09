@@ -680,7 +680,8 @@ namespace Dev2.Studio.ViewModels
                     UserPermissions = Permissions.View,
                     DataList = dataListString,
                     IsVersionResource = true,
-                    ID = Guid.NewGuid()
+                    ID = Guid.NewGuid(),
+                    OriginalId = resourceId
                 };
 
                 DisplayResourceWizard(resourceVersion);

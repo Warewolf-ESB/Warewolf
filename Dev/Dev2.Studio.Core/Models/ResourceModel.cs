@@ -92,6 +92,8 @@ namespace Dev2.Studio.Core.Models
 
         public string Outputs { get; set; }
 
+        public Guid OriginalId { get; set; }
+
         public bool IsValid
         {
             get => _isValid;
