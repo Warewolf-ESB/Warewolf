@@ -34,7 +34,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Interfaces.Search;
-using Dev2.Common.Search;
 using Dev2.Common.Utils;
 
 namespace Dev2.Runtime.Hosting
@@ -183,6 +182,18 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
+        public IResourceActivityCache GetResourceActivityCache(Guid workspaceID)
+        {
+            if (_parsers.ContainsKey(workspaceID))
+            {
+                IResourceActivityCache resourceCache;
+                if (_parsers.TryGetValue(workspaceID,out resourceCache))
+                {
+                    return resourceCache;
+                }
+            }
+            return null;
+        }
         void BuildResourceActivityCache(IEnumerable<IResource> userServices)
         {
             if (_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))
