@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Utils;
 using Dev2.Runtime.Interfaces;
@@ -9,6 +10,37 @@ using System.Runtime.CompilerServices;
 
 namespace Dev2.Runtime.Search
 {
+
+    public class TestSearcher : ISearcher
+    {
+        private readonly IResourceCatalog _resourceCatalog;
+        private readonly ITestCatalog _testCatalog;
+
+        public TestSearcher(IResourceCatalog resourceCatalog, ITestCatalog testCatalog)
+        {
+            _resourceCatalog = resourceCatalog;
+            _testCatalog = testCatalog;
+        }
+
+        public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
+        {
+            var foundItems = new List<ISearchResult>();
+
+            var tests = _testCatalog.FetchAllTests();
+            foreach (var test in tests)
+            {
+                var found = SearchUtils.FilterText(test.TestName, searchParameters);
+                if (found)
+                {
+                    var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, test.ResourceId);
+                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.WorkflowName, test.TestName);
+                    foundItems.Add(searchResult);
+                }
+            }
+            return foundItems;
+        }
+    }
+
     public class ActivitySearcher : ISearcher
     {
         private readonly IResourceCatalog _resourceCatalog;

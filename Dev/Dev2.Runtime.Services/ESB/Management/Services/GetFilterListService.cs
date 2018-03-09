@@ -48,7 +48,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var searchers = new List<ISearcher>
                     {
-                        new ActivitySearcher(ResourceCatalog.Instance)
+                        new ActivitySearcher(ResourceCatalog.Instance),
+                        new TestSearcher(ResourceCatalog.Instance,TestCatalog.Instance)
                     };
                     searchResults = searchValue.GetSearchResults(searchers);                    
                 }

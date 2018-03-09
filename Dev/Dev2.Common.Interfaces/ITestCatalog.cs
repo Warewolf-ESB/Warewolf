@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Search;
 
 namespace Dev2.Common.Interfaces
 {
@@ -19,6 +18,5 @@ namespace Dev2.Common.Interfaces
         void UpdateTestsBasedOnIOChange(Guid resourceID, IList<IDev2Definition> inputDefs, IList<IDev2Definition> outputDefs);
 
         void ReloadAllTests();
-        List<ISearchResult> FilterTests(ISearchValue searchValue);
     }
 }
