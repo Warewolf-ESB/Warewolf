@@ -362,7 +362,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
                 return null;
             }
 
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
 
             switch (splitType)
             {
