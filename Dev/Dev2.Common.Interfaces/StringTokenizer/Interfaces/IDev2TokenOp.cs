@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.IO;
 
 namespace Dev2.Common.Interfaces.StringTokenizer.Interfaces
 {
@@ -21,10 +20,8 @@ namespace Dev2.Common.Interfaces.StringTokenizer.Interfaces
 
         string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed);
 
-        string ExecuteOperation(StreamReader reader, int startIdx, int len, bool isReversed);
-
-        string ExecuteOperation(string sourceString, int startIdx, int len, bool isReversed);
-
         int OpLength();
+
+        bool CanUseEnumerator(bool isReversed);
     }
 }
