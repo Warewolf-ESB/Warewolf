@@ -323,7 +323,9 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
                "$env:LOCALAPPDATA\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml",
                "$env:PROGRAMDATA\Warewolf\Workspaces",
                "$env:PROGRAMDATA\Warewolf\Server Settings",
-               "$env:PROGRAMDATA\Warewolf\VersionControl"
+               "$env:PROGRAMDATA\Warewolf\VersionControl",
+               "$env:PROGRAMDATA\Warewolf\Resources",
+               "$env:PROGRAMDATA\Warewolf\Tests"
 
     [int]$ExitCode = 0
     foreach ($FileOrFolder in $ToClean) {
