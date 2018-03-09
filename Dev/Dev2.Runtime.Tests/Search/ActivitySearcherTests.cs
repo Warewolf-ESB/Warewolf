@@ -20,7 +20,7 @@ namespace Dev2.Tests.Runtime.Search
             var searcher = new ActivitySearcher(null);
         }
 
-        [TestMethod]        
+        [TestMethod]
         public void GetSearchResults_WhenToolTitleHasValue_ShouldReturnResult()
         {
             var mockResourceCatalog = new Mock<IResourceCatalog>();
@@ -36,7 +36,7 @@ namespace Dev2.Tests.Runtime.Search
                 SearchOptions = new SearchOptions
                 {
                     IsAllSelected = false,
-                    IsToolTitleSelected = true                    
+                    IsToolTitleSelected = true
                 }
             };
             var mockResourceActivityCache = new Mock<IResourceActivityCache>();
@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.Search
             cache.TryAdd(Guid.Empty, startAct);
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
             mockResourceCatalog.Setup(res => res.GetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
-            var searchResults  = searcher.GetSearchResults(searchValue);
+            var searchResults = searcher.GetSearchResults(searchValue);
             Assert.AreEqual(1, searchResults.Count);
             var searchResult = searchResults[0];
             Assert.AreEqual(Guid.Empty, searchResult.ResourceId);
@@ -97,7 +97,7 @@ namespace Dev2.Tests.Runtime.Search
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
             mockResourceCatalog.Setup(res => res.GetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
             var searchResults = searcher.GetSearchResults(searchValue);
-            Assert.AreEqual(0, searchResults.Count);            
+            Assert.AreEqual(0, searchResults.Count);
         }
 
 
@@ -197,7 +197,7 @@ namespace Dev2.Tests.Runtime.Search
                 SearchOptions = new SearchOptions
                 {
                     IsAllSelected = false,
-                    IsToolTitleSelected = true,                    
+                    IsToolTitleSelected = true,
                 }
             };
             var mockResourceActivityCache = new Mock<IResourceActivityCache>();
@@ -238,7 +238,7 @@ namespace Dev2.Tests.Runtime.Search
                      DisplayName = "What's bobs name"
                  }
             };
-            cache.TryAdd(Guid.Empty, firstFlow);           
+            cache.TryAdd(Guid.Empty, firstFlow);
             cache.TryAdd(otherResourceId, secondFlow);
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
             mockResourceCatalog.Setup(res => res.GetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
