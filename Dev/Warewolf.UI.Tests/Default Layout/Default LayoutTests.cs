@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UI.Tests.Workflow
@@ -33,8 +32,7 @@ namespace Warewolf.UI.Tests.Workflow
                 File.Delete(layOutFile);
             }
             ExecuteCommand(fileName);
-            DialogsUIMap.MessageBoxWindow.WaitForControlExist();
-            Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+            UIMap.WaitForControlVisible(UIMap.MainStudioWindow.DockManager);
             var dockWidthAfter = UIMap.MainStudioWindow.DockManager.Width;
             Assert.IsTrue(dockWidthBefore > dockWidthAfter, "Then Menu Bar did not Open/Close");
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.LockunlockthemenuButton.UnlockMenuText.Exists, "Side Menu Bar is Open.");
@@ -77,20 +75,20 @@ namespace Warewolf.UI.Tests.Workflow
 
         private UIMap _UIMap;
 
-        DialogsUIMap DialogsUIMap
+        WorkflowTabUIMap WorkflowTabUIMap
         {
             get
             {
-                if (_DialogsUIMap == null)
+                if (_WorkflowTabUIMap == null)
                 {
-                    _DialogsUIMap = new DialogsUIMap();
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
                 }
 
-                return _DialogsUIMap;
+                return _WorkflowTabUIMap;
             }
         }
 
-        private DialogsUIMap _DialogsUIMap;
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         #endregion
     }
