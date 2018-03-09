@@ -254,6 +254,7 @@
     <Compile Include="Plugins\ServiceConstructorListTests.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
+    <Compile Include="Search\ActivitySearcherTests.cs" />
     <Compile Include="ServiceModel\ComPluginServicesTest.cs" />
     <Compile Include="ServiceModel\Data\ComPluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DropBoxSourceTests.cs" />

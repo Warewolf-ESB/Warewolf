@@ -15,7 +15,7 @@ namespace Dev2.Runtime.Search
 
         public ActivitySearcher(IResourceCatalog resourceCatalog)
         {
-            _resourceCatalog = resourceCatalog;
+            _resourceCatalog = resourceCatalog ?? throw new ArgumentNullException(nameof(resourceCatalog));
         }
         public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
         {
@@ -44,7 +44,7 @@ namespace Dev2.Runtime.Search
                 if (foundMatch)
                 {
                     var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceActivity.Key);
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.WorkflowName, activity.GetDisplayName());
+                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.ToolTitle, activity.GetDisplayName());
                     searchResults.Add(searchResult);
                 }
             }
