@@ -92,10 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Overridden NativeActivity Methods
 
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
+        protected override void CacheMetadata(NativeActivityMetadata metadata) => base.CacheMetadata(metadata);
 
 
         protected override void OnExecute(NativeActivityContext context)
@@ -121,145 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     return;
                 }
-                IWarewolfListIterator warewolfListIterator = new WarewolfListIterator();
-                allErrors.MergeErrors(errorResultTo);
-                var listOfIterators = new Dictionary<int, List<IWarewolfIterator>>();
-
-                #region Create a iterator for each row in the data grid in the designer so that the right iteration happen on the data
-
-                var dictionaryKey = 0;
-                foreach (DataMergeDTO row in MergeCollection)
-                {
-                    allErrors.MergeErrors(errorResultTo);
-
-                    if (dataObject.IsDebugMode())
-                    {
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", (MergeCollection.IndexOf(row) + 1).ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.InputVariable, "", dataObject.Environment, update, true), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.At, "Using", dataObject.Environment, update), debugItem);
-                        AddDebugItem(new DebugEvalResult(row.Padding, "Pad", dataObject.Environment, update), debugItem);
-
-                        //Old workflows don't have this set. 
-                        if (row.Alignment == null)
-                        {
-                            row.Alignment = string.Empty;
-                        }
-
-                        AddDebugItem(DataListUtil.IsEvaluated(row.Alignment) ? new DebugItemStaticDataParams("", row.Alignment, "Align") : new DebugItemStaticDataParams(row.Alignment, "Align"), debugItem);
-
-                        _debugInputs.Add(debugItem);
-                    }
-                    var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(row.InputVariable, update);
-                    var innerIterator = new WarewolfListIterator();
-                    var innerListOfIters = new List<WarewolfIterator>();
-
-                    foreach (var listOfIterator in listOfEvalResultsForInput)
-                    {
-                        var inIterator = new WarewolfIterator(listOfIterator);
-                        innerIterator.AddVariableToIterateOn(inIterator);
-                        innerListOfIters.Add(inIterator);
-                    }
-                    var atomList = new List<DataStorage.WarewolfAtom>();
-                    while (innerIterator.HasMoreData())
-                    {
-                        var stringToUse = "";
-                        foreach (var warewolfIterator in innerListOfIters)
-                        {
-                            stringToUse += warewolfIterator.GetNextValue();
-                        }
-                        atomList.Add(DataStorage.WarewolfAtom.NewDataString(stringToUse));
-                    }
-                    var finalString = string.Join("", atomList);
-                    var inputListResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing, atomList));
-                    if (DataListUtil.IsFullyEvaluated(finalString))
-                    {
-                        inputListResult = dataObject.Environment.Eval(finalString, update);
-                    }
-
-                    var inputIterator = new WarewolfIterator(inputListResult);
-                    var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At, update));
-                    var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding, update));
-                    warewolfListIterator.AddVariableToIterateOn(inputIterator);
-                    warewolfListIterator.AddVariableToIterateOn(atIterator);
-                    warewolfListIterator.AddVariableToIterateOn(paddingIterator);
-
-                    listOfIterators.Add(dictionaryKey, new List<IWarewolfIterator> { inputIterator, atIterator, paddingIterator });
-                    dictionaryKey++;
-                }
-
-                #endregion
-
-                #region Iterate and Merge Data
-
-                if (!allErrors.HasErrors())
-                {
-                    while (warewolfListIterator.HasMoreData())
-                    {
-                        var pos = 0;
-                        foreach (var iterator in listOfIterators)
-                        {
-                            var val = warewolfListIterator.FetchNextValue(iterator.Value[0]);
-                            var at = warewolfListIterator.FetchNextValue(iterator.Value[1]);
-                            var pad = warewolfListIterator.FetchNextValue(iterator.Value[2]);
-
-                            if (val != null)
-                            {
-                                if (at != null)
-                                {
-                                    if (pad != null)
-                                    {
-                                        if (MergeCollection[pos].MergeType == "Index")
-                                        {
-                                            if (string.IsNullOrEmpty(at))
-                                            {
-                                                allErrors.AddError(ErrorResource.BlankUSINGValue);
-                                            }
-
-                                            if (!Int32.TryParse(at, out int atValue) || atValue < 0)
-                                            {
-                                                allErrors.AddError(ErrorResource.USINGMustBeARealNumber);
-                                            }
-                                            if (pad.Length > 1)
-                                            {
-                                                allErrors.AddError(ErrorResource.PADDINGMustBeSingleCharecter);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if (MergeCollection[pos].MergeType == "Chars" && string.IsNullOrEmpty(at))
-                                            {
-                                                allErrors.AddError(ErrorResource.BlankUSINGValue);
-                                            }
-                                        }
-                                        mergeOperations.Merge(val, MergeCollection[pos].MergeType, at, pad, MergeCollection[pos].Alignment);
-                                        pos++;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (!allErrors.HasErrors())
-                    {
-                        if (string.IsNullOrEmpty(Result))
-                        {
-                            AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
-                        }
-                        else
-                        {
-                            dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString(), update);
-                            allErrors.MergeErrors(errorResultTo);
-
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                            {
-                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                            }
-                        }
-                    }
-                }
-
-                #endregion Iterate and Merge Data
+                TryExecuteTool(dataObject, update, mergeOperations, allErrors, errorResultTo);
             }
             catch (Exception e)
             {
@@ -289,6 +148,143 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion
             }
+        }
+
+        private void TryExecuteTool(IDSFDataObject dataObject, int update, IDev2MergeOperations mergeOperations, ErrorResultTO allErrors, ErrorResultTO errorResultTo)
+        {
+            IWarewolfListIterator warewolfListIterator = new WarewolfListIterator();
+            allErrors.MergeErrors(errorResultTo);
+            var listOfIterators = new Dictionary<int, List<IWarewolfIterator>>();
+
+            #region Create a iterator for each row in the data grid in the designer so that the right iteration happen on the data
+
+            var dictionaryKey = 0;
+            foreach (DataMergeDTO row in MergeCollection)
+            {
+                allErrors.MergeErrors(errorResultTo);
+
+                if (dataObject.IsDebugMode())
+                {
+                    var debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", (MergeCollection.IndexOf(row) + 1).ToString(CultureInfo.InvariantCulture)), debugItem);
+                    AddDebugItem(new DebugEvalResult(row.InputVariable, "", dataObject.Environment, update, true), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(row.MergeType, "With"), debugItem);
+                    AddDebugItem(new DebugEvalResult(row.At, "Using", dataObject.Environment, update), debugItem);
+                    AddDebugItem(new DebugEvalResult(row.Padding, "Pad", dataObject.Environment, update), debugItem);
+
+                    //Old workflows don't have this set. 
+                    if (row.Alignment == null)
+                    {
+                        row.Alignment = string.Empty;
+                    }
+
+                    AddDebugItem(DataListUtil.IsEvaluated(row.Alignment) ? new DebugItemStaticDataParams("", row.Alignment, "Align") : new DebugItemStaticDataParams(row.Alignment, "Align"), debugItem);
+
+                    _debugInputs.Add(debugItem);
+                }
+                var listOfEvalResultsForInput = dataObject.Environment.EvalForDataMerge(row.InputVariable, update);
+                var innerIterator = new WarewolfListIterator();
+                var innerListOfIters = new List<WarewolfIterator>();
+
+                foreach (var listOfIterator in listOfEvalResultsForInput)
+                {
+                    var inIterator = new WarewolfIterator(listOfIterator);
+                    innerIterator.AddVariableToIterateOn(inIterator);
+                    innerListOfIters.Add(inIterator);
+                }
+                var atomList = new List<DataStorage.WarewolfAtom>();
+                while (innerIterator.HasMoreData())
+                {
+                    var stringToUse = "";
+                    foreach (var warewolfIterator in innerListOfIters)
+                    {
+                        stringToUse += warewolfIterator.GetNextValue();
+                    }
+                    atomList.Add(DataStorage.WarewolfAtom.NewDataString(stringToUse));
+                }
+                var finalString = string.Join("", atomList);
+                var inputListResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.Nothing, atomList));
+                if (DataListUtil.IsFullyEvaluated(finalString))
+                {
+                    inputListResult = dataObject.Environment.Eval(finalString, update);
+                }
+
+                var inputIterator = new WarewolfIterator(inputListResult);
+                var atIterator = new WarewolfIterator(dataObject.Environment.Eval(row.At, update));
+                var paddingIterator = new WarewolfIterator(dataObject.Environment.Eval(row.Padding, update));
+                warewolfListIterator.AddVariableToIterateOn(inputIterator);
+                warewolfListIterator.AddVariableToIterateOn(atIterator);
+                warewolfListIterator.AddVariableToIterateOn(paddingIterator);
+
+                listOfIterators.Add(dictionaryKey, new List<IWarewolfIterator> { inputIterator, atIterator, paddingIterator });
+                dictionaryKey++;
+            }
+
+            #endregion
+
+            #region Iterate and Merge Data
+
+            if (!allErrors.HasErrors())
+            {
+                while (warewolfListIterator.HasMoreData())
+                {
+                    var pos = 0;
+                    foreach (var iterator in listOfIterators)
+                    {
+                        var val = warewolfListIterator.FetchNextValue(iterator.Value[0]);
+                        var at = warewolfListIterator.FetchNextValue(iterator.Value[1]);
+                        var pad = warewolfListIterator.FetchNextValue(iterator.Value[2]);
+
+                        if (val != null && at != null && pad != null)
+                        {
+                            if (MergeCollection[pos].MergeType == "Index")
+                            {
+                                if (string.IsNullOrEmpty(at))
+                                {
+                                    allErrors.AddError(ErrorResource.BlankUSINGValue);
+                                }
+
+                                if (!Int32.TryParse(at, out int atValue) || atValue < 0)
+                                {
+                                    allErrors.AddError(ErrorResource.USINGMustBeARealNumber);
+                                }
+                                if (pad.Length > 1)
+                                {
+                                    allErrors.AddError(ErrorResource.PADDINGMustBeSingleCharecter);
+                                }
+                            }
+                            else
+                            {
+                                if (MergeCollection[pos].MergeType == "Chars" && string.IsNullOrEmpty(at))
+                                {
+                                    allErrors.AddError(ErrorResource.BlankUSINGValue);
+                                }
+                            }
+                            mergeOperations.Merge(val, MergeCollection[pos].MergeType, at, pad, MergeCollection[pos].Alignment);
+                            pos++;
+                        }
+                    }
+                }
+                if (!allErrors.HasErrors())
+                {
+                    if (string.IsNullOrEmpty(Result))
+                    {
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
+                    }
+                    else
+                    {
+                        dataObject.Environment.Assign(Result, mergeOperations.MergeData.ToString(), update);
+                        allErrors.MergeErrors(errorResultTo);
+
+                        if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                        {
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                        }
+                    }
+                }
+            }
+
+            #endregion Iterate and Merge Data
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
