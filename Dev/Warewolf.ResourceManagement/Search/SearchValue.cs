@@ -1,10 +1,39 @@
 ﻿using Dev2.Common.Interfaces.Search;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Warewolf.ResourceManagement;
 
-namespace Dev2.Common.Search
+namespace Warewolf.ResourceManagement
 {
+    public class ActivitySearcher : ISearcher
+    {
+        private readonly IResourceActivityCache _activityCache;
+
+        public ActivitySearcher(IResourceActivityCache activityCache)
+        {
+            _activityCache = activityCache;
+        }
+        public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
+        {
+            var searchResults = new List<ISearchResult>();
+            if (searchParameters.SearchOptions.IsToolTitleSelected)
+            {
+                foreach(var resourceActivity in _activityCache.Cache)
+                {
+                    var activity = resourceActivity.Value;
+                    if (activity != null && activity.GetDisplayName() == searchParameters.SearchInput)
+                    {
+                        searchResults.Add(new SearchResult(resourceActivity.Key, "", "", SearchItemType.ToolTitle, activity.GetDisplayName()));
+                    }
+
+                }
+            }
+            return searchResults;
+        }
+    }
+
     public class SearchValue : ISearchValue
     {
         public SearchValue()
@@ -14,6 +43,16 @@ namespace Dev2.Common.Search
         }
         public string SearchInput { get; set; }
         public ISearchOptions SearchOptions { get; set; }
+
+        public List<ISearchResult> GetSearchResults(List<ISearcher> searchers)
+        {
+            var searchResults = new List<ISearchResult>();  
+            foreach(var searcher in searchers)
+            {
+                searchResults.AddRange(searcher.GetSearchResults(this));
+            }
+            return searchResults;
+        }
     }
 
     public class SearchResult : ISearchResult

@@ -11,9 +11,11 @@ namespace Warewolf.ResourceManagement
         readonly IActivityParser _activityParser;
         readonly ConcurrentDictionary<Guid,IDev2Activity> _cache;
 
+        public ConcurrentDictionary<Guid, IDev2Activity> Cache => _cache;
+
         public ResourceActivityCache(IActivityParser activityParser, ConcurrentDictionary<Guid, IDev2Activity> cache)
         {
-            _activityParser = activityParser;
+            _activityParser = activityParser ?? throw new ArgumentNullException(nameof(activityParser));
             _cache = cache;
         }
 
@@ -35,13 +37,13 @@ namespace Warewolf.ResourceManagement
                 try
                 {
                     var act = _activityParser.Parse(dynamicActivity);
-                    if (_cache.TryAdd(resourceIdGuid, act))
+                    if (Cache.TryAdd(resourceIdGuid, act))
                     {
                         return act;
                     }
-                    _cache.AddOrUpdate(resourceIdGuid, act, (guid, dev2Activity) =>
+                    Cache.AddOrUpdate(resourceIdGuid, act, (guid, dev2Activity) =>
                     {
-                        _cache[resourceIdGuid] = act;
+                        Cache[resourceIdGuid] = act;
                         return act;
                     });
                     return act;
@@ -58,13 +60,13 @@ namespace Warewolf.ResourceManagement
             return null;
         }
 
-        public IDev2Activity GetActivity(Guid resourceIdGuid) => _cache[resourceIdGuid];
+        public IDev2Activity GetActivity(Guid resourceIdGuid) => Cache[resourceIdGuid];
 
-        public bool HasActivityInCache(Guid resourceIdGuid) => _cache.ContainsKey(resourceIdGuid);
+        public bool HasActivityInCache(Guid resourceIdGuid) => Cache.ContainsKey(resourceIdGuid);
 
         public void RemoveFromCache(Guid resourceID)
         {
-            _cache.TryRemove(resourceID, out IDev2Activity act);
+            Cache.TryRemove(resourceID, out IDev2Activity act);
         }
     }
 }

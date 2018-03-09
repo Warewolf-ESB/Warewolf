@@ -5,12 +5,12 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Search;
-using Dev2.Common.Search;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+using Warewolf.ResourceManagement;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -47,22 +47,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var searchValue = serializer.Deserialize<ISearchValue>(serializedSource);
                 if (searchValue != null)
                 {
-                    if (searchValue.SearchOptions.IsToolTitleSelected)
+                    var searchers = new List<ISearcher>
                     {
-                        var activities = ResourceCatalog.Instance.FilterActivities(searchValue);
-
-                        searchResults.AddRange(activities);
-                    }
-                    if (searchValue.SearchOptions.IsTestNameSelected)
-                    {
-                        var tests = TestCatalog.Instance.FilterTests(searchValue);
-
-                        searchResults.AddRange(tests);
-                    }
-                    if (searchValue.SearchOptions.IsScalarNameSelected)
-                    {
-                        var resources = ResourceCatalog.Instance.WorkspaceResources;
-                    }
+                        new ActivitySearcher(ResourceCatalog.Instance.GetResourceActivityCache(GlobalConstants.ServerWorkspaceID))
+                    };
+                    searchResults = searchValue.GetSearchResults(searchers);                    
                 }
 
                 return serializer.SerializeToBuilder(searchResults);

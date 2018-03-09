@@ -22,8 +22,8 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Utils;
-using Dev2.Common.Search;
 using Microsoft.Practices.Prism;
+using Warewolf.ResourceManagement;
 
 namespace Dev2.ViewModels.Search
 {

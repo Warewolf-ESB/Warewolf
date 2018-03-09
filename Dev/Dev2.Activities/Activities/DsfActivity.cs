@@ -36,7 +36,6 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Common.Interfaces.Search;
-using Dev2.Common.Search;
 using Dev2.Common.Utils;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -544,18 +543,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
         }
-
-        protected override ISearchResult FilterTool(ISearchValue searchValue)
-        {
-            var foundMatch = SearchUtils.FilterText(GetDisplayName(), searchValue);
-            if (foundMatch)
-            {
-                var resource = ResourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, Id);
-                return new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.WorkflowName, GetDisplayName());
-            }
-            return new SearchResult();
-        }
-
+       
         protected virtual void ChildDebugStateDispatch(IDSFDataObject dataObject)
         {
         }

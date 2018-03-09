@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Dev2.Common.Interfaces.Search
@@ -30,6 +31,11 @@ namespace Dev2.Common.Interfaces.Search
         TestName
     }
 
+    public interface ISearcher
+    {
+        List<ISearchResult> GetSearchResults(ISearchValue searchParameters);
+    }
+
     public interface ISearchResult
     {
         Guid ResourceId { get; set; }
@@ -43,6 +49,7 @@ namespace Dev2.Common.Interfaces.Search
     {
         string SearchInput { get; set; }
         ISearchOptions SearchOptions { get; set; }
+        List<ISearchResult> GetSearchResults(List<ISearcher> searchers);
     }
 
     public interface ISearchOptions : INotifyPropertyChanged
