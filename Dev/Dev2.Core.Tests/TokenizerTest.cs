@@ -34,7 +34,7 @@ namespace Dev2.Tests {
         #region Fwd Test
         [TestMethod]
         public void Single_Token_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
 
             dtb.AddTokenOp("-", false);
@@ -52,7 +52,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Two_Token_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search2.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search2 };
 
 
             dtb.AddTokenOp("AB", false);
@@ -70,7 +70,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Three_Token_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search2.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search2 };
 
 
             dtb.AddTokenOp("AB-", false);
@@ -88,7 +88,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Token_Op_With_Token_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
 
             dtb.AddTokenOp("-", true);
@@ -106,7 +106,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Index_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
 
             dtb.AddIndexOp(2);
@@ -124,7 +124,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Eof_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
 
             dtb.AddEoFOp();
@@ -147,7 +147,7 @@ namespace Dev2.Tests {
         [TestMethod]
         public void More_Then_One_Op_Fwd()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
 
             dtb.AddIndexOp(2);
@@ -171,7 +171,7 @@ namespace Dev2.Tests {
 
         [TestMethod]
         public void Token_And_Index_Op_Fwd() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Search };
 
 
             dtb.AddTokenOp("-", false);
@@ -197,7 +197,7 @@ namespace Dev2.Tests {
             var dtb = new Dev2TokenizerBuilder
                                        {
                                            ReverseOrder = true,
-                                           ToTokenize = Search.ToStringBuilder()
+                                           ToTokenize = Search
             };
 
 
@@ -218,7 +218,7 @@ namespace Dev2.Tests {
         public void Two_Token_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search2.ToStringBuilder(),
+                                           ToTokenize = Search2,
                                            ReverseOrder = true
                                        };
 
@@ -240,7 +240,7 @@ namespace Dev2.Tests {
         public void Three_Token_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search2.ToStringBuilder(),
+                                           ToTokenize = Search2,
                                            ReverseOrder = true
                                        };
 
@@ -262,7 +262,7 @@ namespace Dev2.Tests {
         public void Token_Op_With_Token_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search.ToStringBuilder(),
+                                           ToTokenize = Search,
                                            ReverseOrder = true
                                        };
 
@@ -284,7 +284,7 @@ namespace Dev2.Tests {
         public void Index_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search.ToStringBuilder(),
+                                           ToTokenize = Search,
                                            ReverseOrder = true
                                        };
 
@@ -306,7 +306,7 @@ namespace Dev2.Tests {
         public void Eof_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search.ToStringBuilder(),
+                                           ToTokenize = Search,
                                            ReverseOrder = true
                                        };
 
@@ -331,7 +331,7 @@ namespace Dev2.Tests {
         public void Token_And_Index_Op_Bwd() {
             var dtb = new Dev2TokenizerBuilder
                                        {
-                                           ToTokenize = Search.ToStringBuilder(),
+                                           ToTokenize = Search,
                                            ReverseOrder = true
                                        };
 
@@ -355,7 +355,7 @@ namespace Dev2.Tests {
         #region Negative Test
         [TestMethod]
         public void Empty_String_Error() {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = string.Empty.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = string.Empty };
 
 
             dtb.AddEoFOp();
