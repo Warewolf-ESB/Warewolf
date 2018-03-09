@@ -10,7 +10,6 @@
 
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System.Collections.Generic;
-using System.Text;
 using Warewolf.Resource.Errors;
 
 
@@ -20,7 +19,7 @@ namespace Dev2.Common
     public class Dev2TokenizerBuilder
     {
         readonly IList<IDev2SplitOp> _ops = new List<IDev2SplitOp>();
-        public StringBuilder ToTokenize { get; set; }
+        public string ToTokenize { get; set; }
 
         public bool ReverseOrder { get; set; }
 
@@ -41,7 +40,7 @@ namespace Dev2.Common
 
         public IDev2Tokenizer Generate()
         {
-            if (ToTokenize.Length==0)
+            if (string.IsNullOrEmpty(ToTokenize))
             {
                 throw new TokenizeError(ErrorResource.NullTokenzeString);
             }
