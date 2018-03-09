@@ -10,7 +10,14 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using System.Linq;
-using Warewolf.Launcher;
+using System.IO;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
+using System.Net.Http;
+using System.Text;
+using System.Diagnostics;
+using System.Management;
+using Dev2.Activities.Specs.Composition;
 
 namespace Dev2.Activities.Specs.Deploy
 {
