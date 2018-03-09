@@ -354,10 +354,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         IDev2Tokenizer CreateSplitPattern(ref StringBuilder stringToSplit, IEnumerable<DataSplitDTO> args, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
-        {
-
-            
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit, ReverseOrder = ReverseOrder };
+        {            
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit.ToString(), ReverseOrder = ReverseOrder };
             errors = new ErrorResultTO();
 
             foreach (DataSplitDTO t in args)
@@ -439,7 +437,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (match.Success && !SkipBlankRows)
                 {
                     stringToSplit = new StringBuilder(Regex.Escape(stringToSplit.ToString()));
-                    dtb.ToTokenize = stringToSplit;
+                    dtb.ToTokenize = stringToSplit.ToString();
                 }
             }
 
