@@ -48,6 +48,8 @@ namespace Warewolf.Studio.ViewModels
                 var resourceVersion = new ResourceModel(server, EventPublishers.Aggregator)
                 {
                     ResourceType = resourceModel.ResourceType,
+                    VersionInfo = resourceModel.VersionInfo,
+                    Version = resourceModel.Version,
                     ResourceName = resourceName,
                     WorkflowXaml = new StringBuilder(xamlString),
                     UserPermissions = Permissions.Contribute,
