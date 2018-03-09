@@ -358,7 +358,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         IDev2Tokenizer CreateSplitPattern(string stringToSplit, string splitType, string at)
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit.ToStringBuilder() };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
 
             switch (splitType)
             {
