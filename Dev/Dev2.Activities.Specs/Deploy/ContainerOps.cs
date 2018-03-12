@@ -34,8 +34,8 @@ namespace Dev2.Activities.Specs.Deploy
         {
             if (_remoteContainerID != null)
             {
-                RecoverServerLogFile();
                 StopContainer();
+                RecoverServerLogFile();
                 DeleteContainer();
             }
             if (_remoteImageID != null)
