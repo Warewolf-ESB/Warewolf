@@ -18,8 +18,8 @@ namespace Dev2.Runtime.Search
 
         public TestSearcher(IResourceCatalog resourceCatalog, ITestCatalog testCatalog)
         {
-            _resourceCatalog = resourceCatalog;
-            _testCatalog = testCatalog;
+            _resourceCatalog = resourceCatalog ?? throw new ArgumentNullException(nameof(resourceCatalog));
+            _testCatalog = testCatalog ?? throw new ArgumentNullException(nameof(testCatalog));
         }
 
         public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
@@ -33,7 +33,7 @@ namespace Dev2.Runtime.Search
                 if (found)
                 {
                     var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, test.ResourceId);
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.WorkflowName, test.TestName);
+                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.TestName, test.TestName);
                     foundItems.Add(searchResult);
                 }
             }
