@@ -910,6 +910,15 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
         }
 
+        [Given(@"I Open Explorer First Sub Item Version History From Explorer Context Menu")]
+        [When(@"I Open Explorer First Sub Item Version History From Explorer Context Menu")]
+        [Then(@"I Open Explorer First Sub Item Version History From Explorer Context Menu")]
+        public void Open_ExplorerFirstSubItemVersionHistory_From_ExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem, MouseButtons.Right, ModifierKeys.None, new Point(69, 10));
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowVersionHistory, new Point(66, 15));
+        }
+
         [Given(@"I Open Explorer First Item Version History From Explorer Context Menu")]
         [When(@"I Open Explorer First Item Version History From Explorer Context Menu")]
         [Then(@"I Open Explorer First Item Version History From Explorer Context Menu")]
