@@ -23,9 +23,10 @@ namespace Warewolf.UI.Tests.Merge
         public void Open_Merge_WitH_Resource_History_Open_In_Exporer()
         {
             ExplorerUIMap.Filter_Explorer(Merge_FileNames);
-            ExplorerUIMap.Open_ExplorerFirstItemVersionHistory_From_ExplorerContextMenu();
+            ExplorerUIMap.Open_ExplorerFirstSubItemVersionHistory_From_ExplorerContextMenu();
             ExplorerUIMap.Click_Explorer_Localhost_First_Item_First_History_Item();
-            ExplorerUIMap.RightClick_Explorer_Localhost_First_Item_First_SubItem();            
+            ExplorerUIMap.RightClick_Explorer_Localhost_First_Item_First_SubItem();
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
             Assert.IsFalse(UIMap.ControlExistsNow(MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.UICurrentText), "Can not Merge Current with current.");
         }
 
