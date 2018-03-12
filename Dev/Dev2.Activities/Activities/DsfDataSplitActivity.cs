@@ -166,64 +166,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (!allErrors.HasErrors() && tokenizer != null)
                     {
-                        while (tokenizer.HasMoreOps())
-                        {
-                            var currentval = resultsEnumerator.MoveNext();
-                            if (!currentval)
-                            {
-                                if (singleInnerIteration)
-                                {
-                                    break;
-                                }
-                                resultsEnumerator.Reset();
-                                resultsEnumerator.MoveNext();
-                            }
-                            var tmp = tokenizer.NextToken();
-
-                            if (tmp.StartsWith(Environment.NewLine) && !SkipBlankRows)
-                            {
-                                resultsEnumerator.Reset();
-                                while (resultsEnumerator.MoveNext())
-                                {
-                                    var tovar = resultsEnumerator.Current.OutputVariable;
-                                    if (!String.IsNullOrEmpty(tovar))
-                                    {
-                                        var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
-                                        env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
-                                        positions[tovar] = positions[tovar] + 1;
-                                    }
-                                }
-                                resultsEnumerator.Reset();
-                                resultsEnumerator.MoveNext();
-                            }
-                            var outputVar = resultsEnumerator.Current.OutputVariable;
-                            if (IsNullEmptyOrNewLine(tmp))
-                            {
-                                if (!SkipBlankRows)
-                                {
-                                    tmp = tmp.Replace(Environment.NewLine, "");
-                                }
-                            }
-                            else
-                            {
-                                if (!String.IsNullOrEmpty(outputVar))
-                                {
-                                    var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
-                                    env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
-                                    positions[outputVar] = positions[outputVar] + 1;
-                                }
-                                if (dataObject.IsDebugMode())
-                                {
-                                    var debugItem = new DebugItem();
-                                    var outputVarTo = resultsEnumerator.Current.OutputVariable;
-                                    AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
-                                    if (!debugDictionary.Contains(outputVarTo))
-                                    {
-                                        debugDictionary.Add(outputVarTo);
-                                    }
-                                }
-                            }
-                        }
+                        Tokenize(dataObject, update, env, positions, singleInnerIteration, resultsEnumerator, debugDictionary, tokenizer);
                     }
                 }
                 env.CommitAssign();
@@ -244,6 +187,61 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugItem(new DebugEvalResult(dataSplitUsesStarForOutput, "", env, update), debugItem);
                     _debugOutputs.Add(debugItem);
                     outputIndex++;
+                }
+            }
+        }
+
+        void Tokenize(IDSFDataObject dataObject, int update, IExecutionEnvironment env, IDictionary<string, int> positions, bool singleInnerIteration, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary, IDev2Tokenizer tokenizer)
+        {
+            while (tokenizer.HasMoreOps())
+            {
+                var currentval = resultsEnumerator.MoveNext();
+                if (!currentval)
+                {
+                    if (singleInnerIteration)
+                    {
+                        break;
+                    }
+                    resultsEnumerator.Reset();
+                    resultsEnumerator.MoveNext();
+                }
+                var tmp = tokenizer.NextToken();
+
+                if (tmp.StartsWith(Environment.NewLine) && !SkipBlankRows)
+                {
+                    resultsEnumerator.Reset();
+                    while (resultsEnumerator.MoveNext())
+                    {
+                        var tovar = resultsEnumerator.Current.OutputVariable;
+                        if (!String.IsNullOrEmpty(tovar))
+                        {
+                            var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
+                            env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
+                            positions[tovar] = positions[tovar] + 1;
+                        }
+                    }
+                    resultsEnumerator.Reset();
+                    resultsEnumerator.MoveNext();
+                }
+                var outputVar = resultsEnumerator.Current.OutputVariable;
+                if (!IsNullEmptyOrNewLine(tmp))
+                {
+                    if (!String.IsNullOrEmpty(outputVar))
+                    {
+                        var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
+                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+                        positions[outputVar] = positions[outputVar] + 1;
+                    }
+                    if (dataObject.IsDebugMode())
+                    {
+                        var debugItem = new DebugItem();
+                        var outputVarTo = resultsEnumerator.Current.OutputVariable;
+                        AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
+                        if (!debugDictionary.Contains(outputVarTo))
+                        {
+                            debugDictionary.Add(outputVarTo);
+                        }
+                    }
                 }
             }
         }
