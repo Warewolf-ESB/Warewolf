@@ -205,11 +205,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     resultsEnumerator.Reset();
                     resultsEnumerator.MoveNext();
                 }
-                UpdateEnvironment(dataObject, update, env, positions, resultsEnumerator, debugDictionary, tokenizer);
+                UpdateEnvironmentAndDebugOutput(dataObject, update, env, positions, resultsEnumerator, debugDictionary, tokenizer);
             }
         }
 
-        private void UpdateEnvironment(IDSFDataObject dataObject, int update, IExecutionEnvironment env, IDictionary<string, int> positions, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary, IDev2Tokenizer tokenizer)
+        void UpdateEnvironmentAndDebugOutput(IDSFDataObject dataObject, int update, IExecutionEnvironment env, IDictionary<string, int> positions, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary, IDev2Tokenizer tokenizer)
         {
             var tmp = tokenizer.NextToken();
 
