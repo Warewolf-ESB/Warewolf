@@ -289,11 +289,25 @@ namespace Dev2.Activities.Specs.Merge
             Assert.AreEqual(header, mergeVm.ModelFactoryCurrent.Header);
         }
 
+        [Then(@"Current workflow header version is ""(.*)""")]
+        public void ThenCurrentWorkflowHeaderVersionIs(string headerVersion)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            Assert.AreEqual(headerVersion, mergeVm.ModelFactoryCurrent.HeaderVersion);
+        }
+
         [Then(@"Different workflow header is ""(.*)""")]
         public void ThenDifferentWorkflowHeaderIs(string header)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
             Assert.AreEqual(header, mergeVm.ModelFactoryDifferent.Header);
+        }
+
+        [Then(@"Different workflow header version is ""(.*)""")]
+        public void ThenDifferentWorkflowHeaderVersionIs(string headerVersion)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            Assert.AreEqual(headerVersion, mergeVm.ModelFactoryDifferent.HeaderVersion);
         }
 
         [Then(@"Merge conflicts count is ""(.*)""")]
