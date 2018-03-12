@@ -46,12 +46,14 @@ namespace Dev2.ViewModels.Merge
 
             ModelFactoryCurrent = new ConflictModelFactory(currentResourceModel)
             {
-                Header = SetHeaderName(currentResourceModel)
+                Header = currentResourceModel.ResourceName,
+                HeaderVersion = SetHeaderVersion(currentResourceModel)
             };
             ModelFactoryCurrent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
             ModelFactoryDifferent = new ConflictModelFactory(differenceResourceModel)
             {
-                Header = SetHeaderName(differenceResourceModel)
+                Header = differenceResourceModel.ResourceName,
+                HeaderVersion = SetHeaderVersion(differenceResourceModel)
             };
             ModelFactoryDifferent.SomethingConflictModelChanged += SourceOnConflictModelChanged;
 
@@ -67,16 +69,7 @@ namespace Dev2.ViewModels.Merge
             mergePreviewWorkflowStateApplier.Apply();
         }
 
-        private static string SetHeaderName(IContextualResourceModel resourceModel)
-        {
-            var resourceName = resourceModel.ResourceName;
-            if (resourceModel.IsVersionResource)
-            {
-                resourceName += " v." + resourceModel.VersionInfo.VersionNumber;
-            }
-
-            return resourceName;
-        }
+        private static string SetHeaderVersion(IContextualResourceModel resourceModel) => resourceModel.IsVersionResource ? "[v." + resourceModel.VersionInfo.VersionNumber + "]" : "[Current]";
 
         void SetupNamesAndVariables(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel)
         {
