@@ -99,7 +99,7 @@
                                            Grid.Row="0"
                                            Grid.Column="1"
                                            HorizontalAlignment="Right"
-                                           Text="{Binding Header}" 
+                                           Text="{Binding HeaderVersion}" 
                                            Style="{StaticResource SourceHeader}" 
                                            AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderVersionText_AutoID"/>
                                 
@@ -167,7 +167,6 @@
                                            Grid.Column="1"
                                            HorizontalAlignment="Right"
                                            Text="{Binding HeaderVersion}" 
-                                           Text="{Binding Header}" 
                                            Style="{StaticResource SourceHeader}" 
                                            AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderVersionText_AutoID"/>
 
