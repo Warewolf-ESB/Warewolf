@@ -20,7 +20,18 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [TestCategory("Merge All Tools Conflicts")]
-        public void Open_Merge_For_WitH_Updated_Name_Should_Show_Conflict_On_Names()
+        public void Open_Merge_WitH_Resource_History_Open_In_Exporer()
+        {
+            ExplorerUIMap.Filter_Explorer(Merge_FileNames);
+            ExplorerUIMap.Open_ExplorerFirstItemVersionHistory_From_ExplorerContextMenu();
+            ExplorerUIMap.Click_Explorer_Localhost_First_Item_First_History_Item();
+            ExplorerUIMap.RightClick_Explorer_Localhost_First_Item_First_SubItem();            
+            Assert.IsFalse(UIMap.ControlExistsNow(MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.UICurrentText), "Can not Merge Current with current.");
+        }
+
+        [TestMethod]
+        [TestCategory("Merge All Tools Conflicts")]
+        public void Open_Merge_WitH_Updated_Name_Should_Show_Conflict_On_Names()
         {
             ExplorerUIMap.Open_Context_Menu_For_Service(Merge_FileNames);
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;

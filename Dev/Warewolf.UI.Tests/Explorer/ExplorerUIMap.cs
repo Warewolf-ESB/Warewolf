@@ -318,6 +318,14 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(77, 9));
         }
 
+        [Given(@"I Click Explorer Localhost First Item History")]
+        [When(@"I Click Explorer Localhost First Item History")]
+        [Then(@"I Click Explorer Localhost First Item Histor")]
+        public void Click_Explorer_Localhost_First_Item_First_History_Item()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem.FirstSubItem, MouseButtons.Left, ModifierKeys.None, new Point(77, 9));
+        }
+
         [Given(@"I RightClick Explorer Localhost Second Item")]
         [When(@"I RightClick Explorer Localhost Second Item")]
         [Then(@"I RightClick Explorer Localhost Second Item")]
