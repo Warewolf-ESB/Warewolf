@@ -622,7 +622,14 @@ namespace Dev2.Studio.ViewModels
             if (otherResourceModel != null && resourceModel != null)
             {
                 resourceModel.ResourceName = otherResourceModel.ResourceName;
-                resourceModel.VersionInfo = version.VersionInfo;
+                if (resourceModel.IsVersionResource)
+                {
+                    resourceModel.VersionInfo = version.VersionInfo;
+                }
+                if (otherResourceModel.IsVersionResource)
+                {
+                    otherResourceModel.VersionInfo = version.VersionInfo;
+                }
 
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
                 workSurfaceKey.EnvironmentID = otherResourceModel.Environment.EnvironmentID;
