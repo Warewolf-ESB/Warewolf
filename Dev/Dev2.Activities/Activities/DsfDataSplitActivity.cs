@@ -205,42 +205,47 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     resultsEnumerator.Reset();
                     resultsEnumerator.MoveNext();
                 }
-                var tmp = tokenizer.NextToken();
+                UpdateEnvironment(dataObject, update, env, positions, resultsEnumerator, debugDictionary, tokenizer);
+            }
+        }
 
-                if (tmp.StartsWith(Environment.NewLine) && !SkipBlankRows)
+        private void UpdateEnvironment(IDSFDataObject dataObject, int update, IExecutionEnvironment env, IDictionary<string, int> positions, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary, IDev2Tokenizer tokenizer)
+        {
+            var tmp = tokenizer.NextToken();
+
+            if (tmp.StartsWith(Environment.NewLine) && !SkipBlankRows)
+            {
+                resultsEnumerator.Reset();
+                while (resultsEnumerator.MoveNext())
                 {
-                    resultsEnumerator.Reset();
-                    while (resultsEnumerator.MoveNext())
+                    var tovar = resultsEnumerator.Current.OutputVariable;
+                    if (!String.IsNullOrEmpty(tovar))
                     {
-                        var tovar = resultsEnumerator.Current.OutputVariable;
-                        if (!String.IsNullOrEmpty(tovar))
-                        {
-                            var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
-                            env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
-                            positions[tovar] = positions[tovar] + 1;
-                        }
+                        var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
+                        env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
+                        positions[tovar] = positions[tovar] + 1;
                     }
-                    resultsEnumerator.Reset();
-                    resultsEnumerator.MoveNext();
                 }
-                var outputVar = resultsEnumerator.Current.OutputVariable;
-                if (!IsNullEmptyOrNewLine(tmp))
+                resultsEnumerator.Reset();
+                resultsEnumerator.MoveNext();
+            }
+            var outputVar = resultsEnumerator.Current.OutputVariable;
+            if (!IsNullEmptyOrNewLine(tmp))
+            {
+                if (!String.IsNullOrEmpty(outputVar))
                 {
-                    if (!String.IsNullOrEmpty(outputVar))
+                    var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
+                    env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
+                    positions[outputVar] = positions[outputVar] + 1;
+                }
+                if (dataObject.IsDebugMode())
+                {
+                    var debugItem = new DebugItem();
+                    var outputVarTo = resultsEnumerator.Current.OutputVariable;
+                    AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
+                    if (!debugDictionary.Contains(outputVarTo))
                     {
-                        var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
-                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
-                        positions[outputVar] = positions[outputVar] + 1;
-                    }
-                    if (dataObject.IsDebugMode())
-                    {
-                        var debugItem = new DebugItem();
-                        var outputVarTo = resultsEnumerator.Current.OutputVariable;
-                        AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
-                        if (!debugDictionary.Contains(outputVarTo))
-                        {
-                            debugDictionary.Add(outputVarTo);
-                        }
+                        debugDictionary.Add(outputVarTo);
                     }
                 }
             }
