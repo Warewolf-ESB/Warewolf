@@ -88,6 +88,7 @@ using Dev2.Studio.ViewModels;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Helpers;
 using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
+using Dev2.Common;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -352,6 +353,7 @@ namespace Dev2.Activities.Specs.Composition
 
             if (!server.IsConnected)
             {
+                Thread.Sleep(GlobalConstants.NetworkTimeOut);
                 timeout--;
                 EnsureEnvironmentConnected(server, timeout);
             }
