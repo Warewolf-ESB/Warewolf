@@ -104,7 +104,7 @@ namespace Dev2.Activities.Specs.Composition
             AppUsageStats.LocalHost = "http://localhost:3142";
         }
 
-        const int EnvironmentConnectionTimeout = 5;
+        const int EnvironmentConnectionTimeout = 15;
 
         SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         SpecExternalProcessExecutor _externalProcessExecutor;
@@ -248,7 +248,7 @@ namespace Dev2.Activities.Specs.Composition
             LocalEnvModel.ForceLoadResources();
         }
 
-        static IServer LocalEnvModel { get; set; }
+        public static IServer LocalEnvModel { get; set; }
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
@@ -341,7 +341,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             if (timeout <= 0)
             {
-                _scenarioContext.Add("ConnectTimeoutCountdown", 5);
+                _scenarioContext.Add("ConnectTimeoutCountdown", EnvironmentConnectionTimeout);
                 throw new TimeoutException("Connection to Warewolf server \"" + server.Name + "\" timed out.");
             }
 
