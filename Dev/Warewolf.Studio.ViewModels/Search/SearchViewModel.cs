@@ -23,9 +23,8 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Utils;
 using Microsoft.Practices.Prism;
-using Warewolf.ResourceManagement;
-using Dev2.Runtime.Search;
 using Dev2.Common.Search;
+using System;
 
 namespace Dev2.ViewModels.Search
 {
@@ -49,10 +48,27 @@ namespace Dev2.ViewModels.Search
             {
                 SearchWarewolfAsync();
             });
+            OpenResourceCommand = new DelegateCommand((searchObject) =>
+            {
+                var searchResult = searchObject as ISearchResult;
+                OpenResource(searchResult);
+            });
             SearchResults = new ObservableCollection<ISearchResult>();
             SearchValue = new SearchValue();
             SelectedEnvironment?.Server?.ResourceRepository?.Load();
             IsSearching = false;
+        }
+
+        private void OpenResource(ISearchResult searchResult)
+        {
+            if (searchResult.Type == SearchItemType.TestName)
+            {
+                _shellViewModel.OpenSelectedTest(searchResult.ResourceId, searchResult.Match);
+            }
+            else
+            {
+                _shellViewModel.OpenResource(searchResult.ResourceId, _shellViewModel.ActiveServer.EnvironmentID, _shellViewModel.ActiveServer);
+            }
         }
 
         void ServerDisconnected(object sender, IServer server)
@@ -230,6 +246,7 @@ namespace Dev2.ViewModels.Search
                 OnPropertyChanged(() => SearchInputCommand);
             }
         }
+        public ICommand OpenResourceCommand { get; set; }
         public ObservableCollection<ISearchResult> SearchResults
         {
             get => _searchResults;
