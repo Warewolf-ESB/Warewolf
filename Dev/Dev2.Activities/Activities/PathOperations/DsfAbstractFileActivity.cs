@@ -99,7 +99,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             ErrorResultTO errors;
             //Execute the concrete action for the specified activity
-            var outputs = ExecuteConcreteAction(dataObject, out errors, update);
+            var outputs = TryExecuteConcreteAction(dataObject, out errors, update);
 
             allErrors.MergeErrors(errors);
 
@@ -153,7 +153,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
 		
-		protected abstract IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
+		protected abstract IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
 
 		#region Properties
 
