@@ -17,8 +17,7 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge Assign Conflicts")]
         public void Click_Same_Radio_Button_Manytimes_Studio_Freezing()
         {
-            MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
-            Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
+            Keyboard.SendKeys("{Enter}");
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem5.Exists);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem5.MergeItemExpander.MergeButton.DifferenceCheckBox.Exists);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem5.MergeItemExpander.MergeButton.CurrentCheckBox.Exists);
@@ -33,8 +32,7 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge Assign Conflicts")]
         public void Open_AssignMerge_Has_Conflicts()
         {
-            MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
-            Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
+            Keyboard.SendKeys("{Enter}");
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem5.Exists);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem5.MergeItemExpander.MergeButton.DifferenceCheckBox.Exists);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem5.MergeItemExpander.MergeButton.CurrentCheckBox.Exists);
@@ -44,8 +42,7 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge Assign Conflicts")]
         public void Click_Keyboard_Delete_On_AssignTool_On_Design_Surface_Is_Disabled()
         {
-            MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
-            Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
+            Keyboard.SendKeys("{Enter}");
             MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.LeftVariablesRadio.Selected = true;
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.FirstAssign_Diff_On_Surface.Exists, "Assign tool was not Added on the Design Surface after selecting variable radio button.");
             MergeConflictsUIMap.ExpandDesignerSurface();
@@ -58,8 +55,7 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge Assign Conflicts")]
         public void Open_MergeAssign_Then_Select_Current_Variables_Auto_Adds_Non_Conflicting_Tools()
         {
-            MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
-            Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
+            Keyboard.SendKeys("{Enter}");
             MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.LeftVariablesRadio.Selected = true;
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.FirstAssign_Diff_On_Surface.Exists, "Assign tool was not Added on the Design Surface after selecting variable radio button.");
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.Enabled, "Radio button not enabled");

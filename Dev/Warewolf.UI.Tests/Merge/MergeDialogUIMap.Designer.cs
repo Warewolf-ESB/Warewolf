@@ -579,10 +579,24 @@ namespace Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses
                 return this.mWarewolfStudioViewMoListItem;
             }
         }
+        
+        public ViewListItem ViewListItem
+        {
+            get
+            {
+                if ((this.mViewListItem == null))
+                {
+                    this.mViewListItem = new ViewListItem(this);
+                }
+                return this.mViewListItem;
+            }
+        }
         #endregion
         
         #region Fields
         private WarewolfStudioViewMoListItem mWarewolfStudioViewMoListItem;
+        
+        private ViewListItem mViewListItem;
         #endregion
     }
     
@@ -594,7 +608,7 @@ namespace Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.VersionViewModel";
             this.WindowTitles.Add("MergeDialogView");
             #endregion
         }
@@ -1272,6 +1286,157 @@ namespace Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses
         
         #region Fields
         private WpfText mUIV110162017103850SaveText1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ViewListItem : WpfListItem
+    {
+        
+        public ViewListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public ItemRadioButton1 ItemRadioButton
+        {
+            get
+            {
+                if ((this.mItemRadioButton == null))
+                {
+                    this.mItemRadioButton = new ItemRadioButton1(this);
+                }
+                return this.mItemRadioButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ItemRadioButton1 mItemRadioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ItemRadioButton1 : WpfRadioButton
+    {
+        
+        public ItemRadioButton1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public UICurrentText2 UICurrentText
+        {
+            get
+            {
+                if ((this.mUICurrentText == null))
+                {
+                    this.mUICurrentText = new UICurrentText2(this);
+                }
+                return this.mUICurrentText;
+            }
+        }
+        
+        public UIV103122018153239SaveText2 UIV103122018153239SaveText
+        {
+            get
+            {
+                if ((this.mUIV103122018153239SaveText == null))
+                {
+                    this.mUIV103122018153239SaveText = new UIV103122018153239SaveText2(this);
+                }
+                return this.mUIV103122018153239SaveText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UICurrentText2 mUICurrentText;
+        
+        private UIV103122018153239SaveText2 mUIV103122018153239SaveText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UICurrentText2 : WpfText
+    {
+        
+        public UICurrentText2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "Current";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UICurrentText1
+        {
+            get
+            {
+                if ((this.mUICurrentText1 == null))
+                {
+                    this.mUICurrentText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUICurrentText1.SearchProperties[WpfText.PropertyNames.Name] = "Current";
+                    this.mUICurrentText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUICurrentText1.WindowTitles.Add("MergeDialogView");
+                    #endregion
+                }
+                return this.mUICurrentText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUICurrentText1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIV103122018153239SaveText2 : WpfText
+    {
+        
+        public UIV103122018153239SaveText2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.Name] = "v.1 03122018 153239 Save";
+            this.WindowTitles.Add("MergeDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText UIV103122018153239SaveText1
+        {
+            get
+            {
+                if ((this.mUIV103122018153239SaveText1 == null))
+                {
+                    this.mUIV103122018153239SaveText1 = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIV103122018153239SaveText1.SearchProperties[WpfText.PropertyNames.Name] = "v.1 03122018 153239 Save";
+                    this.mUIV103122018153239SaveText1.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+                    this.mUIV103122018153239SaveText1.WindowTitles.Add("MergeDialogView");
+                    #endregion
+                }
+                return this.mUIV103122018153239SaveText1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mUIV103122018153239SaveText1;
         #endregion
     }
 }
