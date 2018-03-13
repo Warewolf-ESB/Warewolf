@@ -18,6 +18,8 @@ using System.Text;
 using System.Diagnostics;
 using System.Management;
 using Dev2.Activities.Specs.Composition;
+using System.Threading;
+using Dev2.Common;
 
 namespace Dev2.Activities.Specs.Deploy
 {
@@ -70,7 +72,14 @@ namespace Dev2.Activities.Specs.Deploy
             while (!isConnected && retryCount++ <= 15)
             {
                 remoteServer.Connect();
-                isConnected = remoteServer.IsConnected;
+                if (remoteServer.IsConnected)
+                {
+                    isConnected = true;
+                }
+                else
+                {
+                    Thread.Sleep(GlobalConstants.NetworkTimeOut);
+                }
             }
             Assert.IsTrue(isConnected, "Remote server not connected after 15 retrys.");
         }
