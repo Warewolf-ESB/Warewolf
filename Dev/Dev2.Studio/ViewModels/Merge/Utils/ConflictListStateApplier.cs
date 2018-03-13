@@ -8,9 +8,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.ViewModels.Merge.Utils
 {
@@ -21,8 +21,10 @@ namespace Dev2.ViewModels.Merge.Utils
     public class ConflictListStateApplier
     {
         readonly ConflictRowList _conflictRowList;
-        public ConflictListStateApplier(ConflictRowList conflicts)
+        readonly IConflictModelFactory _conflictModelFactory;
+        public ConflictListStateApplier(IConflictModelFactory conflictModelFactory, ConflictRowList conflicts)
         {
+            this._conflictModelFactory = conflictModelFactory;
             this._conflictRowList = conflicts;
             SetInitialStates();
             RegisterToolEventListeners();
@@ -123,6 +125,9 @@ namespace Dev2.ViewModels.Merge.Utils
 
         public void SetConnectorSelectionsToCurrentState()
         {
+            this._conflictModelFactory.IsWorkflowNameChecked = true;
+            this._conflictModelFactory.IsVariablesChecked = true;
+
             foreach (var row in _conflictRowList)
             {
                 if (row.Current is IToolConflictItem toolConflictItem && !(row.Current is ToolConflictItem.Empty))

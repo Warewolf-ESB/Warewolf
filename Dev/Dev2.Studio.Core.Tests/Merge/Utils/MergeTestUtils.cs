@@ -237,7 +237,7 @@ namespace Dev2.Core.Tests.Merge.Utils
 
         protected ConflictListStateApplier CreateConflictListStateApplier()
         {
-            return new ConflictListStateApplier(CreateConflictRowList());
+            return new ConflictListStateApplier(new ConflictModelFactory(), CreateConflictRowList());
         }
     }
 }
