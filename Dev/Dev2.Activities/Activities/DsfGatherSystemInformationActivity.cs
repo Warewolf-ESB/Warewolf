@@ -107,11 +107,10 @@ namespace Dev2.Activities
             {
                 _currentIdentity = dataObject.ExecutingUser.Identity;
             }
-            var indexCounter = 0;
             InitializeDebug(dataObject);
             try
             {
-                indexCounter = TryExecute(dataObject, update, allErrors, indexCounter);
+                TryExecute(dataObject, update, allErrors);
             }
             catch (Exception e)
             {
@@ -155,8 +154,9 @@ namespace Dev2.Activities
             }
         }
 
-        int TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int indexCounter)
+        int TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
+            var indexCounter = 0;
             CleanArgs();
 
             foreach (GatherSystemInformationTO item in SystemInformationCollection)
