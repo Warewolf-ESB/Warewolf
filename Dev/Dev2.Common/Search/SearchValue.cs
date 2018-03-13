@@ -110,11 +110,11 @@ namespace Dev2.Common.Search
             set
             {
                 _isAllSelected = value;
+                OnPropertyChanged();
                 if (IsManualUpdate)
                 {
                     UpdateAllStates(value);
                 }
-                OnPropertyChanged();
             }
         }
 
@@ -137,6 +137,10 @@ namespace Dev2.Common.Search
             {
                 _isWorkflowNameSelected = value;
                 OnPropertyChanged();
+                if (!IsManualUpdate)
+                {
+                    IsAllSelected = IsManualUpdate;
+                }
             }
         }
         public bool IsTestNameSelected
@@ -146,6 +150,10 @@ namespace Dev2.Common.Search
             {
                 _isTestNameSelected = value;
                 OnPropertyChanged();
+                if (!IsManualUpdate)
+                {
+                    IsAllSelected = IsManualUpdate;
+                }
             }
         }
         public bool IsScalarNameSelected
@@ -155,6 +163,10 @@ namespace Dev2.Common.Search
             {
                 _isScalarNameSelected = value;
                 OnPropertyChanged();
+                if (!IsManualUpdate)
+                {
+                    IsAllSelected = IsManualUpdate;
+                }
             }
         }
         public bool IsObjectNameSelected
@@ -164,6 +176,10 @@ namespace Dev2.Common.Search
             {
                 _isObjectNameSelected = value;
                 OnPropertyChanged();
+                if (!IsManualUpdate)
+                {
+                    IsAllSelected = IsManualUpdate;
+                }
             }
         }
         public bool IsRecSetNameSelected
@@ -173,6 +189,10 @@ namespace Dev2.Common.Search
             {
                 _isRecSetNameSelected = value;
                 OnPropertyChanged();
+                if (!IsManualUpdate)
+                {
+                    IsAllSelected = IsManualUpdate;
+                }
             }
         }
         public bool IsToolTitleSelected
@@ -182,6 +202,10 @@ namespace Dev2.Common.Search
             {
                 _isToolTitleSelected = value;
                 OnPropertyChanged();
+                if (!IsManualUpdate)
+                {
+                    IsAllSelected = IsManualUpdate;
+                }
             }
         }
         public bool IsInputVariableSelected
@@ -191,6 +215,10 @@ namespace Dev2.Common.Search
             {
                 _isInputVariableSelected = value;
                 OnPropertyChanged();
+                if (!IsManualUpdate)
+                {
+                    IsAllSelected = IsManualUpdate;
+                }
             }
         }
         public bool IsOutputVariableSelected
@@ -200,6 +228,10 @@ namespace Dev2.Common.Search
             {
                 _isOutputVariableSelected = value;
                 OnPropertyChanged();
+                if (!IsManualUpdate)
+                {
+                    IsAllSelected = IsManualUpdate;
+                }
             }
         }
         public bool IsMatchCaseSelected

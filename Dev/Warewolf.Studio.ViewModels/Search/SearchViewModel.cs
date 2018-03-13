@@ -125,7 +125,7 @@ namespace Dev2.ViewModels.Search
             foreach (var child in children)
             {
                 var type = SearchItemType.WorkflowName;
-                if (child.IsSource)
+                if (child.IsSource || child.IsServer)
                 {
                     type = SearchItemType.SourceName;
                 }
