@@ -139,7 +139,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="{Binding Path=Name}" HorizontalAlignment="Left">
-                                    <Hyperlink Command="{Binding Path=OpenResourceCommand}" Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding}">
+                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OpenResourceCommand}" Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
                                         <Run Text="{Binding Path=Name,Mode=OneWay}" />
                                     </Hyperlink>
                                 </TextBlock>
@@ -154,7 +154,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="{Binding Path=Path}" HorizontalAlignment="Left">
-                                    <Hyperlink Command="{Binding Path=OpenResourceCommand}" Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding}">
+                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OpenResourceCommand}" Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
                                         <Run Text="{Binding Path=Path,Mode=OneWay}" />
                                     </Hyperlink>
                                 </TextBlock>
