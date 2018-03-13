@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Dev2.Runtime.Search
+namespace Dev2.Common.Search
 {
-
     public class SearchValue : ISearchValue
     {
         public SearchValue()
