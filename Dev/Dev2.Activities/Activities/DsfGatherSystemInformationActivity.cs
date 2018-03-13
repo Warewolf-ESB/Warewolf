@@ -154,7 +154,7 @@ namespace Dev2.Activities
             }
         }
 
-        int TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
             var indexCounter = 0;
             CleanArgs();
@@ -163,12 +163,10 @@ namespace Dev2.Activities
             {
                 try
                 {
-                    indexCounter++;
-
                     if (dataObject.IsDebugMode())
                     {
                         var inputToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams("", (++indexCounter).ToString(CultureInfo.InvariantCulture)), inputToAdd);
                         AddDebugItem(new DebugItemStaticDataParams("", dataObject.Environment.EvalToExpression(item.Result, update), "", "="), inputToAdd);
                         AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
                         _debugInputs.Add(inputToAdd);
@@ -199,8 +197,6 @@ namespace Dev2.Activities
                     innerCount++;
                 }
             }
-
-            return indexCounter;
         }
 
         void ExecuteForTO(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, GatherSystemInformationTO item)
