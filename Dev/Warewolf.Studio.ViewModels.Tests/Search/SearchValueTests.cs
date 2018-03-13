@@ -1,5 +1,6 @@
 ﻿using Dev2;
 using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Search;
 using Dev2.Runtime.Search;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

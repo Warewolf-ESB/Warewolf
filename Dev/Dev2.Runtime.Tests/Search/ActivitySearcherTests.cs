@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Search;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Search;
 using Dev2.Tests.Activities.ActivityTests;
