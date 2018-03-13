@@ -73,6 +73,8 @@ namespace Warewolf.Studio.Core
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Flask, _brush);
                     case "MergeConflicts":
                         return _dict[CustomMenuIcons.MergeConflicts] as DrawingImage;
+                    case "Search":
+                        return ImageAwesome.CreateImageSource(FontAwesomeIcon.Search, _brush);
                     case "Settings":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Cogs, _brush);
                     case "DependencyViewer":

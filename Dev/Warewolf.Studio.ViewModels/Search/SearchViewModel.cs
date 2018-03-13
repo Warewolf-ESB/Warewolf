@@ -24,7 +24,6 @@ using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Utils;
 using Microsoft.Practices.Prism;
 using Dev2.Common.Search;
-using System;
 
 namespace Dev2.ViewModels.Search
 {
@@ -34,6 +33,7 @@ namespace Dev2.ViewModels.Search
         ObservableCollection<ISearchResult> _searchResults;
         bool _isSearching;
         readonly IShellViewModel _shellViewModel;
+        string _displayName;
 
         public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator, false)
@@ -57,6 +57,7 @@ namespace Dev2.ViewModels.Search
             SearchValue = new SearchValue();
             SelectedEnvironment?.Server?.ResourceRepository?.Load();
             IsSearching = false;
+            DisplayName = "Search";
         }
 
         private void OpenResource(ISearchResult searchResult)
@@ -93,6 +94,16 @@ namespace Dev2.ViewModels.Search
         }
 
         public event ServerSate ServerStateChanged;
+
+        public string DisplayName
+        {
+            get => _displayName;
+            set
+            {
+                _displayName = value;
+                OnPropertyChanged(() => DisplayName);
+            }
+        }
 
         public bool IsSearching
         {
@@ -258,5 +269,11 @@ namespace Dev2.ViewModels.Search
         }
 
         public ISearchValue SearchValue { get; set; }
+
+        public new void UpdateHelpDescriptor(string helpText)
+        {
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
+        }
     }
 }

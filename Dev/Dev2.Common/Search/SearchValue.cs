@@ -68,7 +68,7 @@ namespace Dev2.Common.Search
             IsAllSelected = true;
         }
 
-        private bool IsManualUpdate
+        private bool UpdateAll
         {
             get
             {
@@ -111,7 +111,7 @@ namespace Dev2.Common.Search
             {
                 _isAllSelected = value;
                 OnPropertyChanged();
-                if (IsManualUpdate)
+                if (UpdateAll)
                 {
                     UpdateAllStates(value);
                 }
@@ -137,9 +137,9 @@ namespace Dev2.Common.Search
             {
                 _isWorkflowNameSelected = value;
                 OnPropertyChanged();
-                if (!IsManualUpdate)
+                if (!UpdateAll)
                 {
-                    IsAllSelected = IsManualUpdate;
+                    IsAllSelected = UpdateAll;
                 }
             }
         }
@@ -150,9 +150,9 @@ namespace Dev2.Common.Search
             {
                 _isTestNameSelected = value;
                 OnPropertyChanged();
-                if (!IsManualUpdate)
+                if (!UpdateAll)
                 {
-                    IsAllSelected = IsManualUpdate;
+                    IsAllSelected = UpdateAll;
                 }
             }
         }
@@ -163,9 +163,9 @@ namespace Dev2.Common.Search
             {
                 _isScalarNameSelected = value;
                 OnPropertyChanged();
-                if (!IsManualUpdate)
+                if (!UpdateAll)
                 {
-                    IsAllSelected = IsManualUpdate;
+                    IsAllSelected = UpdateAll;
                 }
             }
         }
@@ -176,9 +176,9 @@ namespace Dev2.Common.Search
             {
                 _isObjectNameSelected = value;
                 OnPropertyChanged();
-                if (!IsManualUpdate)
+                if (!UpdateAll)
                 {
-                    IsAllSelected = IsManualUpdate;
+                    IsAllSelected = UpdateAll;
                 }
             }
         }
@@ -189,9 +189,9 @@ namespace Dev2.Common.Search
             {
                 _isRecSetNameSelected = value;
                 OnPropertyChanged();
-                if (!IsManualUpdate)
+                if (!UpdateAll)
                 {
-                    IsAllSelected = IsManualUpdate;
+                    IsAllSelected = UpdateAll;
                 }
             }
         }
@@ -202,9 +202,9 @@ namespace Dev2.Common.Search
             {
                 _isToolTitleSelected = value;
                 OnPropertyChanged();
-                if (!IsManualUpdate)
+                if (!UpdateAll)
                 {
-                    IsAllSelected = IsManualUpdate;
+                    IsAllSelected = UpdateAll;
                 }
             }
         }
@@ -215,9 +215,9 @@ namespace Dev2.Common.Search
             {
                 _isInputVariableSelected = value;
                 OnPropertyChanged();
-                if (!IsManualUpdate)
+                if (!UpdateAll)
                 {
-                    IsAllSelected = IsManualUpdate;
+                    IsAllSelected = UpdateAll;
                 }
             }
         }
@@ -228,9 +228,9 @@ namespace Dev2.Common.Search
             {
                 _isOutputVariableSelected = value;
                 OnPropertyChanged();
-                if (!IsManualUpdate)
+                if (!UpdateAll)
                 {
-                    IsAllSelected = IsManualUpdate;
+                    IsAllSelected = UpdateAll;
                 }
             }
         }
