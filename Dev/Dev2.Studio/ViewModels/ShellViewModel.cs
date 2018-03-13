@@ -1354,10 +1354,13 @@ namespace Dev2.Studio.ViewModels
 
         public void ShowSearchWindow()
         {
-            var searchWindow = new SearchView();
-            var viewModel = new SearchViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
-            searchWindow.DataContext = viewModel;
-            searchWindow.Show();
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SearchViewer);
+            workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+            workSurfaceKey.ResourceID = Guid.Empty;
+            workSurfaceKey.ServerID = ActiveServer.ServerID;
+            _worksurfaceContextManager.SearchView(workSurfaceKey);
+
+            
         }
 
         public void ShowCommunityPage()

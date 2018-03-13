@@ -1,4 +1,5 @@
 ﻿using Dev2.ViewModels.Search;
+using Microsoft.Practices.Prism.Mvvm;
 using System.Windows.Input;
 
 namespace Dev2.Views.Search
@@ -6,7 +7,7 @@ namespace Dev2.Views.Search
     /// <summary>
     /// Interaction logic for SearchView.xaml
     /// </summary>
-    public partial class SearchView
+    public partial class SearchView : IView
     {
         public SearchView()
         {
@@ -16,10 +17,7 @@ namespace Dev2.Views.Search
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (Mouse.LeftButton == MouseButtonState.Pressed)
-            {
-                DragMove();
-            }
+            
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

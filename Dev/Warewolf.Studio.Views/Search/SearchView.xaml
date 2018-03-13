@@ -1,24 +1,21 @@
-﻿<Window x:Class="Dev2.Views.Search.SearchView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:search="clr-namespace:Dev2.ViewModels.Search;assembly=Warewolf.Studio.ViewModels"
-        xmlns:views="clr-namespace:Warewolf.Studio.Views"
-        xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
-        xmlns:fa="http://schemas.fontawesome.io/icons/"
-        xmlns:converters1="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
-        mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen"
-        MouseDown="Window_MouseDown"
-        KeyDown="Window_KeyDown"
-        Title="SearchView" 
-        Height="500" 
-        Width="660"
-        MinWidth="660"
-        d:DataContext="{d:DesignInstance search:SearchViewModel}">
+﻿<UserControl x:Class="Dev2.Views.Search.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:search="clr-namespace:Dev2.ViewModels.Search;assembly=Warewolf.Studio.ViewModels"
+             xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:converters1="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
+             mc:Ignorable="d"
+             MouseDown="Window_MouseDown"
+             KeyDown="Window_KeyDown"
+             d:DataContext="{d:DesignInstance search:SearchViewModel}"
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="SearchViewUserControl" >
 
-    <Window.Resources>
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
@@ -26,7 +23,7 @@
             <converters1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible"/>
             <converters1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         </ResourceDictionary>
-    </Window.Resources>
+    </UserControl.Resources>
 
     <Grid x:Name="GridMain" Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
@@ -66,7 +63,7 @@
         </StackPanel>
         
         <!-- SEARCH OPTIONS -->
-        <Expander Grid.Row="3" Style="{StaticResource ServiceTestTestStepExpander}" Header="Search Options" Margin="0,3,0,0">
+        <Expander Grid.Row="3" Style="{StaticResource ServiceTestTestStepExpander}" Header="Search Options" >
             <Grid HorizontalAlignment="Stretch" DataContext="{Binding SearchValue.SearchOptions}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -139,7 +136,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="{Binding Path=Name}" HorizontalAlignment="Left">
-                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OpenResourceCommand}" Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
+                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.OpenResourceCommand}" Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
                                         <Run Text="{Binding Path=Name,Mode=OneWay}" />
                                     </Hyperlink>
                                 </TextBlock>
@@ -154,7 +151,7 @@
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="{Binding Path=Path}" HorizontalAlignment="Left">
-                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.OpenResourceCommand}" Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
+                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.OpenResourceCommand}" Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
                                         <Run Text="{Binding Path=Path,Mode=OneWay}" />
                                     </Hyperlink>
                                 </TextBlock>
@@ -187,4 +184,4 @@
             </controls:Dev2DataGrid>
         </Grid>
     </Grid>
-</Window>
+</UserControl>
