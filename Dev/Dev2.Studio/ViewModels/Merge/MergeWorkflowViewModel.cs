@@ -62,6 +62,8 @@ namespace Dev2.ViewModels.Merge
             Conflicts = conflictList;
             SetupNamesAndVariables(currentResourceModel, differenceResourceModel);
 
+            ModelFactoryCurrent.IsVariablesChecked = true;
+
             var stateApplier = new ConflictListStateApplier(conflictList);
             stateApplier.SetConnectorSelectionsToCurrentState();
 
