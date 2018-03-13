@@ -12,6 +12,25 @@ using System.Collections.Generic;
 namespace Dev2.Tests.Runtime.Search
 {
     [TestClass]
+    public class VariableListSearcherTests
+    {
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Constructor_NullResourceCatalog_ExpectException()
+        {
+            var variableListSearcher = new VariableListSearcher(null);
+            Assert.IsNull(variableListSearcher);
+        }
+
+        [TestMethod]                                            
+        public void Constructor_ResourceCatalogTestCatalog_ExpectNoException()
+        {
+            var variableListSearcher = new VariableListSearcher(new Mock<IResourceCatalog>().Object);
+            Assert.IsNotNull(variableListSearcher);
+        }
+    }
+
+    [TestClass]
     public class TestSearcherTests
     {
         [TestMethod]
