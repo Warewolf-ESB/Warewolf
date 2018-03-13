@@ -47,10 +47,11 @@ namespace Dev2.Activities.Specs.Deploy
         public void ConnectServers()
         {
             AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
-            ConnectToRemoteServerContainer();
             var localhost = ServerRepository.Instance.Source;
             _scenarioContext.Add("sourceServer", localhost);
             localhost.Connect();
+
+            ConnectToRemoteServerContainer();
         }
 
         void ConnectToRemoteServerContainer()
@@ -63,7 +64,15 @@ namespace Dev2.Activities.Specs.Deploy
                 Name = destinationServerHostname
             };
             _scenarioContext.Add("destinationServer", remoteServer);
-            remoteServer.Connect();
+
+            var isConnected = false;
+            var retryCount = 0;
+            while (!isConnected && retryCount++ <= 15)
+            {
+                remoteServer.Connect();
+                isConnected = remoteServer.IsConnected;
+            }
+            Assert.IsTrue(isConnected, "Remote server not connected after 15 retrys.");
         }
 
         [Then(@"And the destination resource is ""(.*)""")]
