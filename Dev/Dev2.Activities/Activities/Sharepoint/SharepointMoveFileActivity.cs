@@ -82,7 +82,7 @@ namespace Dev2.Activities.Sharepoint
 
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
+        protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             _debugInputs = new List<DebugItem>();
             error = new ErrorResultTO();
