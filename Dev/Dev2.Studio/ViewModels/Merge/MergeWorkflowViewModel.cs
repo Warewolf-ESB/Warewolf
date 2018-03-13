@@ -62,10 +62,7 @@ namespace Dev2.ViewModels.Merge
             Conflicts = conflictList;
             SetupNamesAndVariables(currentResourceModel, differenceResourceModel);
 
-            ModelFactoryCurrent.IsWorkflowNameChecked = true;
-            ModelFactoryCurrent.IsVariablesChecked = true;
-
-            var stateApplier = new ConflictListStateApplier(conflictList);
+            var stateApplier = new ConflictListStateApplier(ModelFactoryCurrent, conflictList);
             stateApplier.SetConnectorSelectionsToCurrentState();
 
             var mergePreviewWorkflowStateApplier = new MergePreviewWorkflowStateApplier(conflictList, MergePreviewWorkflowDesignerViewModel);
