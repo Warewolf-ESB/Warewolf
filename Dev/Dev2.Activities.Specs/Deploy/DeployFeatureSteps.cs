@@ -48,11 +48,6 @@ namespace Dev2.Activities.Specs.Deploy
         [Given(@"localhost and destination server are connected")]
         public void ConnectServers()
         {
-            AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
-            var localhost = ServerRepository.Instance.Source;
-            _scenarioContext.Add("sourceServer", localhost);
-            localhost.Connect();
-
             ConnectToRemoteServerContainer();
         }
 
@@ -69,7 +64,7 @@ namespace Dev2.Activities.Specs.Deploy
 
             var isConnected = false;
             var retryCount = 0;
-            while (!isConnected && retryCount++ <= 15)
+            while (!isConnected && retryCount++ <= 30)
             {
                 remoteServer.Connect();
                 if (remoteServer.IsConnected)
@@ -95,8 +90,8 @@ namespace Dev2.Activities.Specs.Deploy
         [Given(@"And the localhost resource is ""(.*)""")]
         public void GivenAndTheLocalhostResourceIs(string p0)
         {
-            var loaclHost = _scenarioContext.Get<IServer>("sourceServer");
-            var loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel(_resourceId);
+            var localHost = WorkflowExecutionSteps.LocalEnvModel;
+            var loadContextualResourceModel = localHost.ResourceRepository.LoadContextualResourceModel(_resourceId);
             Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Expected Resource to be " + p0 + " on load for localhost");
             Assert.AreEqual(p0, loadContextualResourceModel.ResourceName, "Expected Resource to be " + p0 + " on load for localhost");
         }
@@ -116,7 +111,7 @@ namespace Dev2.Activities.Specs.Deploy
         [Then(@"I reload the source resources")]
         public void WhenIReloadTheSourceResources()
         {
-            var localhost = _scenarioContext.Get<IServer>("sourceServer");
+            var localhost = WorkflowExecutionSteps.LocalEnvModel;
             localhost.ResourceRepository.ForceLoad();
         }
 
@@ -161,7 +156,7 @@ namespace Dev2.Activities.Specs.Deploy
         {
             _scenarioContext.TryGetValue("resourceId", out Guid resourceId);
             Console.WriteLine("Deploying " + resourceId.ToString());
-            var localhost = _scenarioContext.Get<IServer>("sourceServer");
+            var localhost = WorkflowExecutionSteps.LocalEnvModel;
             var remoteServer = _scenarioContext.Get<IServer>("destinationServer");
             var destConnection = new Connection
             {
@@ -189,7 +184,7 @@ namespace Dev2.Activities.Specs.Deploy
             _scenarioContext.TryGetValue("resourceId", out Guid resourceId);
             Console.WriteLine("Renaming " + resourceId.ToString());
             _scenarioContext.Add("newName", newName);
-            var localhost = _scenarioContext.Get<IServer>("sourceServer");
+            var localhost = WorkflowExecutionSteps.LocalEnvModel;
             localhost.ExplorerRepository.UpdateManagerProxy.Rename(resourceId, newName);
         }
     }
