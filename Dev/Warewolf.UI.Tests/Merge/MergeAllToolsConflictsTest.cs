@@ -27,7 +27,7 @@ namespace Warewolf.UI.Tests.Merge
             ExplorerUIMap.Click_Explorer_Localhost_First_Item_First_History_Item();
             ExplorerUIMap.RightClick_Explorer_Localhost_First_Item_First_SubItem();
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
-            Assert.IsFalse(UIMap.ControlExistsNow(MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.UICurrentText), "Can not Merge Current with current.");
+            Assert.IsFalse(UIMap.ControlExistsNow(MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.ViewListItem.ItemRadioButton.UICurrentText), "Can not Merge Current with current.");
         }
 
         [TestMethod]
