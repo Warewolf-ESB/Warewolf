@@ -5,7 +5,6 @@ using ICSharpCode.SharpZipLib.Tar;
 using System.Net.Http;
 using System.Text;
 using System.Management;
-using System.Threading;
 
 namespace Dev2.Activities.Specs.Deploy
 {
