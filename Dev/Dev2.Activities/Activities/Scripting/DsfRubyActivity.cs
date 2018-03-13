@@ -83,40 +83,28 @@ namespace Dev2.Activities.Scripting
             InitializeDebug(dataObject);
             try
             {
-                if (!errors.HasErrors())
+                if (dataObject.IsDebugMode())
                 {
-                    if (dataObject.IsDebugMode())
+                    var language = ScriptType.GetDescription();
+                    AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
+                    AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
+                }
+
+                var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
+                while (scriptItr.HasMoreData())
+                {
+                    var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
+                    var value = engine.Execute(scriptItr.GetNextValue());
+
+                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                     {
-                        var language = ScriptType.GetDescription();
-                        AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
-                        AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
-                    }
 
-                    allErrors.MergeErrors(errors);
-
-                    if (allErrors.HasErrors())
-                    {
-                        return;
-                    }
-
-                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
-                    while (scriptItr.HasMoreData())
-                    {
-                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
-                        var value = engine.Execute(scriptItr.GetNextValue());
-
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        env.Assign(region, value, update);
+                        if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(region))
                         {
-
-                            env.Assign(region, value, update);
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                            {
-                                if (!string.IsNullOrEmpty(region))
-                                {
-                                    AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
-                                }
-                            }
+                            AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
                         }
+
                     }
                 }
             }
