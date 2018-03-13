@@ -1,8 +1,4 @@
-﻿using Dev2.Common;
-using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Search;
-using Dev2.Common.Utils;
-using Dev2.Runtime.Interfaces;
+﻿using Dev2.Common.Interfaces.Search;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,78 +6,6 @@ using System.Runtime.CompilerServices;
 
 namespace Dev2.Runtime.Search
 {
-
-    public class TestSearcher : ISearcher
-    {
-        private readonly IResourceCatalog _resourceCatalog;
-        private readonly ITestCatalog _testCatalog;
-
-        public TestSearcher(IResourceCatalog resourceCatalog, ITestCatalog testCatalog)
-        {
-            _resourceCatalog = resourceCatalog ?? throw new ArgumentNullException(nameof(resourceCatalog));
-            _testCatalog = testCatalog ?? throw new ArgumentNullException(nameof(testCatalog));
-        }
-
-        public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
-        {
-            var foundItems = new List<ISearchResult>();
-
-            var tests = _testCatalog.FetchAllTests();
-            foreach (var test in tests)
-            {
-                var found = SearchUtils.FilterText(test.TestName, searchParameters);
-                if (found)
-                {
-                    var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, test.ResourceId);
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.TestName, test.TestName);
-                    foundItems.Add(searchResult);
-                }
-            }
-            return foundItems;
-        }
-    }
-
-    public class ActivitySearcher : ISearcher
-    {
-        private readonly IResourceCatalog _resourceCatalog;
-
-        public ActivitySearcher(IResourceCatalog resourceCatalog)
-        {
-            _resourceCatalog = resourceCatalog ?? throw new ArgumentNullException(nameof(resourceCatalog));
-        }
-        public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
-        {
-            var searchResults = new List<ISearchResult>();
-            if (searchParameters.SearchOptions.IsToolTitleSelected)
-            {
-                foreach (var resourceActivity in _resourceCatalog.GetResourceActivityCache(GlobalConstants.ServerWorkspaceID).Cache)
-                {
-                    var activity = resourceActivity.Value;
-                    var nextNodes = new List<IDev2Activity> { activity };
-                    var allNodes = nextNodes.Flatten(act => act.GetNextNodes()).Flatten(act => act.GetChildrenNodes());
-                    foreach (var next in allNodes)
-                    {
-                        PerformSearchOnActivity(searchParameters, searchResults, resourceActivity, next);
-                    }
-                }
-            }
-            return searchResults;
-        }
-
-        private void PerformSearchOnActivity(ISearchValue searchParameters, List<ISearchResult> searchResults, KeyValuePair<Guid, IDev2Activity> resourceActivity, IDev2Activity activity)
-        {
-            if (activity != null)
-            {
-                var foundMatch = SearchUtils.FilterText(activity.GetDisplayName(), searchParameters);
-                if (foundMatch)
-                {
-                    var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceActivity.Key);
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.ToolTitle, activity.GetDisplayName());
-                    searchResults.Add(searchResult);
-                }
-            }
-        }
-    }
 
     public class SearchValue : ISearchValue
     {
