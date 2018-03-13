@@ -85,7 +85,6 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                     else
                     {
-                        Thread.Sleep(300000);
                         Console.Write("Started Remote Warewolf Server. " + reader.ReadToEnd());
                     }
                 }
