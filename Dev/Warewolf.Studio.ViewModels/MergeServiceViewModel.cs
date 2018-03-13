@@ -84,6 +84,10 @@ namespace Warewolf.Studio.ViewModels
 
                 if (versionInfos.Count <= 0)
                 {
+                    if (MergeResourceVersions.Count == 1)
+                    {
+                        SelectedMergeItem = MergeResourceVersions[0];
+                    }
                     return;
                 }
             }
