@@ -9,6 +9,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Runtime.Search
 {
+
     public class TestSearcher : ISearcher
     {
         private readonly IResourceCatalog _resourceCatalog;
