@@ -127,7 +127,7 @@ namespace Warewolf.UI.Tests.ServerSource
                     File.Delete(ServerSourceDefinitionXml);
                     ExplorerUIMap.Click_Explorer_Refresh_Button();
                 }
-                else if (File.Exists(ServerSourceDefinitionBite))
+                if (File.Exists(ServerSourceDefinitionBite))
                 {
                     File.Delete(ServerSourceDefinitionBite);
                     ExplorerUIMap.Click_Explorer_Refresh_Button();
