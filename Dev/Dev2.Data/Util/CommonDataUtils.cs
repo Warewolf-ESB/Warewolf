@@ -328,7 +328,9 @@ namespace Dev2.Data.Util
             }
         }
 
-        public IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+        public IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection, false);
+
+        public IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection,bool includeNoneDirection)
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
@@ -346,7 +348,7 @@ namespace Dev2.Data.Util
 
                     var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
 
-                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection,includeNoneDirection) )
                     {
                         var jsonAttribute = false;
                         var xmlAttribute = tmpNode.Attributes?["IsJson"];
@@ -369,7 +371,7 @@ namespace Dev2.Data.Util
                                 }
 
                                 var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
-                                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
+                                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, includeNoneDirection))
                                 {
                                     result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
                                                                                 false, "", false));
@@ -438,7 +440,7 @@ namespace Dev2.Data.Util
                     var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
                     var isObject = IsObject(tmpNode);
                     var isArray = IsArray(tmpNode);
-                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes && !isObject)
+                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection,false) && tmpNode.HasChildNodes && !isObject)
                     {
                         result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
                                                                             false, "", false));
@@ -451,7 +453,7 @@ namespace Dev2.Data.Util
                         {
                             var xmlNode = childNl[q];
                             var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
-                            if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
+                            if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, false))
                             {
                                 result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
                                                                             false, "", false));
@@ -460,7 +462,7 @@ namespace Dev2.Data.Util
                     }
                     else
                     {
-                        if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                        if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection, false))
                         {
                             var dev2Definition = isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray) : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
                             result.Add(dev2Definition);

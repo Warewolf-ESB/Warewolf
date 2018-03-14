@@ -28,8 +28,8 @@ namespace Dev2.Runtime.Search
             var allResources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
             foreach (var resource in allResources)
             {
-                var variableList = resource.ToString();
-                var variableDefinitions = DataListUtil.GenerateDefsFromDataList(variableList, ioType);
+                var variableList = resource.DataList.ToString();
+                var variableDefinitions = DataListUtil.GenerateDefsFromDataList(variableList, ioType,true);
                 GetScalarResults(searchParameters, searchResults, resource, variableDefinitions);
                 GetRecordsetResults(searchParameters, searchResults, resource, variableDefinitions);
                 GetObjectResults(searchParameters, searchResults, resource, variableDefinitions);
@@ -45,7 +45,7 @@ namespace Dev2.Runtime.Search
                 var matchingObjects = variableDefinitions.Where(v => v.IsObject && SearchUtils.FilterText(v.Name, searchParameters));
                 foreach (var matchingObject in matchingObjects)
                 {
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.Scalar, matchingObject.Name);
+                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.Object, matchingObject.Name);
                     searchResults.Add(searchResult);
                 }
             }
@@ -58,7 +58,7 @@ namespace Dev2.Runtime.Search
                 var matchingRecordsets = variableDefinitions.Where(v => v.IsRecordSet && SearchUtils.FilterText(v.RecordSetName, searchParameters));
                 foreach (var recordSet in matchingRecordsets)
                 {
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.Scalar, recordSet.RecordSetName);
+                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.RecordSet, recordSet.RecordSetName);
                     searchResults.Add(searchResult);
                 }
             }
