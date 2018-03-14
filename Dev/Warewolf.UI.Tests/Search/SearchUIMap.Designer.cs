@@ -8,7 +8,7 @@
 //  </auto-generated>
 // ------------------------------------------------------------------------------
 
-namespace Warewolf.UI.Tests.Search
+namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
 {
     using System;
     using System.CodeDom.Compiler;
@@ -167,17 +167,13 @@ namespace Warewolf.UI.Tests.Search
             }
         }
         
-        public WpfTable SearchResultsTable
+        public SearchResultsTable SearchResultsTable
         {
             get
             {
                 if ((this.mSearchResultsTable == null))
                 {
-                    this.mSearchResultsTable = new WpfTable(this);
-                    #region Search Criteria
-                    this.mSearchResultsTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SearchResults";
-                    this.mSearchResultsTable.WindowTitles.Add("SearchView");
-                    #endregion
+                    this.mSearchResultsTable = new SearchResultsTable(this);
                 }
                 return this.mSearchResultsTable;
             }
@@ -199,7 +195,7 @@ namespace Warewolf.UI.Tests.Search
         
         private WpfCheckBox mMatchwholewordCheckBox;
         
-        private WpfTable mSearchResultsTable;
+        private SearchResultsTable mSearchResultsTable;
         #endregion
     }
     
@@ -518,6 +514,184 @@ namespace Warewolf.UI.Tests.Search
         
         #region Fields
         private WpfText mUISearchOptionsText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class SearchResultsTable : WpfTable
+    {
+        
+        public SearchResultsTable(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SearchResults";
+            this.WindowTitles.Add("SearchView");
+            #endregion
+        }
+        
+        #region Properties
+        public ResultRow1 ResultRow1
+        {
+            get
+            {
+                if ((this.mResultRow1 == null))
+                {
+                    this.mResultRow1 = new ResultRow1(this);
+                }
+                return this.mResultRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ResultRow1 mResultRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ResultRow1 : WpfRow
+    {
+        
+        public ResultRow1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("SearchView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCell Name
+        {
+            get
+            {
+                if ((this.mName == null))
+                {
+                    this.mName = new WpfCell(this);
+                    #region Search Criteria
+                    this.mName.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Name";
+                    this.mName.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+                    this.mName.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
+                    this.mName.WindowTitles.Add("SearchView");
+                    #endregion
+                }
+                return this.mName;
+            }
+        }
+        
+        public WpfCell Path
+        {
+            get
+            {
+                if ((this.mPath == null))
+                {
+                    this.mPath = new WpfCell(this);
+                    #region Search Criteria
+                    this.mPath.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Path";
+                    this.mPath.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
+                    this.mPath.WindowTitles.Add("SearchView");
+                    #endregion
+                }
+                return this.mPath;
+            }
+        }
+        
+        public TypeCell TypeCell
+        {
+            get
+            {
+                if ((this.mTypeCell == null))
+                {
+                    this.mTypeCell = new TypeCell(this);
+                }
+                return this.mTypeCell;
+            }
+        }
+        
+        public WpfCell MatchCell
+        {
+            get
+            {
+                if ((this.mMatchCell == null))
+                {
+                    this.mMatchCell = new WpfCell(this);
+                    #region Search Criteria
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match";
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn4";
+                    this.mMatchCell.WindowTitles.Add("SearchView");
+                    #endregion
+                }
+                return this.mMatchCell;
+            }
+        }
+        
+        public WpfCell NameCell
+        {
+            get
+            {
+                if ((this.mNameCell == null))
+                {
+                    this.mNameCell = new WpfCell(this);
+                    #region Search Criteria
+                    this.mNameCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Name";
+                    this.mNameCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
+                    this.mNameCell.WindowTitles.Add("SearchView");
+                    #endregion
+                }
+                return this.mNameCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCell mName;
+        
+        private WpfCell mPath;
+        
+        private TypeCell mTypeCell;
+        
+        private WpfCell mMatchCell;
+        
+        private WpfCell mNameCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class TypeCell : WpfCell
+    {
+        
+        public TypeCell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Type";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
+            this.WindowTitles.Add("SearchView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Type
+        {
+            get
+            {
+                if ((this.mType == null))
+                {
+                    this.mType = new WpfText(this);
+                    #region Search Criteria
+                    this.mType.SearchProperties[WpfText.PropertyNames.Name] = "WorkflowName";
+                    this.mType.WindowTitles.Add("SearchView");
+                    #endregion
+                }
+                return this.mType;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mType;
         #endregion
     }
 }
