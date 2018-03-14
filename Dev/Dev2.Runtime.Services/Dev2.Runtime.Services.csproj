@@ -381,6 +381,7 @@
     <Compile Include="ResourceUpgrades\BaseResourceUpgrader.cs" />
     <Compile Include="ResourceUpgrades\EncryptionResourceUpgrader.cs" />
     <Compile Include="Search\ActivitySearcher.cs" />
+    <Compile Include="Search\ResourceSearcher.cs" />
     <Compile Include="Search\TestSearcher.cs" />
     <Compile Include="Search\VariableListSearcher.cs" />
     <Compile Include="Security\ServerAuthorizationService.cs" />
