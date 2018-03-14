@@ -1,0 +1,39 @@
+﻿using Dev2.Common;
+using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Search;
+using Dev2.Common.Utils;
+using Dev2.Runtime.Interfaces;
+using System;
+using System.Collections.Generic;
+
+namespace Dev2.Runtime.Search
+{
+    public class ResourceSearcher : ISearcher
+    {
+        private readonly IResourceCatalog _resourceCatalog;
+
+        public ResourceSearcher(IResourceCatalog resourceCatalog)
+        {
+            _resourceCatalog = resourceCatalog ?? throw new ArgumentNullException(nameof(resourceCatalog));
+        }
+
+        public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
+        {
+            var searchResults = new List<ISearchResult>();
+
+            if (searchParameters.SearchOptions.IsWorkflowNameSelected)
+            {
+                var allResources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
+                foreach (var resource in allResources)
+                {
+                    if(SearchUtils.FilterText(resource.ResourceName, searchParameters))
+                    {
+                        var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.WorkflowName, resource.ResourceName);
+                        searchResults.Add(searchResult);
+                    }
+                }
+            }
+            return searchResults;
+        }
+    }
+}
