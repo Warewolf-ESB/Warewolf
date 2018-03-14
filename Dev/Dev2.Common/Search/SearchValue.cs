@@ -66,42 +66,7 @@ namespace Dev2.Common.Search
         public SearchOptions()
         {
             IsAllSelected = true;
-        }
-
-        private bool UpdateAll
-        {
-            get
-            {
-                bool isChecked = IsAllChecked();
-                bool isUnChecked = IsAllUnChecked();
-                return isChecked || isUnChecked;
-            }
-        }
-
-        private bool IsAllChecked()
-        {
-            var isChecked = IsWorkflowNameSelected;
-            isChecked &= IsToolTitleSelected;
-            isChecked &= IsScalarNameSelected;
-            isChecked &= IsObjectNameSelected;
-            isChecked &= IsRecSetNameSelected;
-            isChecked &= IsInputVariableSelected;
-            isChecked &= IsOutputVariableSelected;
-            isChecked &= IsTestNameSelected;
-            return isChecked;
-        }
-
-        private bool IsAllUnChecked()
-        {
-            var isUnChecked = !IsWorkflowNameSelected;
-            isUnChecked &= !IsToolTitleSelected;
-            isUnChecked &= !IsScalarNameSelected;
-            isUnChecked &= !IsObjectNameSelected;
-            isUnChecked &= !IsRecSetNameSelected;
-            isUnChecked &= !IsInputVariableSelected;
-            isUnChecked &= !IsOutputVariableSelected;
-            isUnChecked &= !IsTestNameSelected;
-            return isUnChecked;
+            UpdateAllStates(true);
         }
 
         public bool IsAllSelected
@@ -111,14 +76,82 @@ namespace Dev2.Common.Search
             {
                 _isAllSelected = value;
                 OnPropertyChanged();
-                if (UpdateAll)
-                {
-                    UpdateAllStates(value);
-                }
+            }
+        }
+        public bool IsWorkflowNameSelected
+        {
+            get => _isWorkflowNameSelected;
+            set
+            {
+                _isWorkflowNameSelected = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsTestNameSelected
+        {
+            get => _isTestNameSelected;
+            set
+            {
+                _isTestNameSelected = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsScalarNameSelected
+        {
+            get => _isScalarNameSelected;
+            set
+            {
+                _isScalarNameSelected = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsObjectNameSelected
+        {
+            get => _isObjectNameSelected;
+            set
+            {
+                _isObjectNameSelected = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsRecSetNameSelected
+        {
+            get => _isRecSetNameSelected;
+            set
+            {
+                _isRecSetNameSelected = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsToolTitleSelected
+        {
+            get => _isToolTitleSelected;
+            set
+            {
+                _isToolTitleSelected = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsInputVariableSelected
+        {
+            get => _isInputVariableSelected;
+            set
+            {
+                _isInputVariableSelected = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool IsOutputVariableSelected
+        {
+            get => _isOutputVariableSelected;
+            set
+            {
+                _isOutputVariableSelected = value;
+                OnPropertyChanged();
             }
         }
 
-        private void UpdateAllStates(bool value)
+        public void UpdateAllStates(bool value)
         {
             IsWorkflowNameSelected = value;
             IsToolTitleSelected = value;
@@ -130,110 +163,6 @@ namespace Dev2.Common.Search
             IsTestNameSelected = value;
         }
 
-        public bool IsWorkflowNameSelected
-        {
-            get => _isWorkflowNameSelected;
-            set
-            {
-                _isWorkflowNameSelected = value;
-                OnPropertyChanged();
-                if (!UpdateAll)
-                {
-                    IsAllSelected = UpdateAll;
-                }
-            }
-        }
-        public bool IsTestNameSelected
-        {
-            get => _isTestNameSelected;
-            set
-            {
-                _isTestNameSelected = value;
-                OnPropertyChanged();
-                if (!UpdateAll)
-                {
-                    IsAllSelected = UpdateAll;
-                }
-            }
-        }
-        public bool IsScalarNameSelected
-        {
-            get => _isScalarNameSelected;
-            set
-            {
-                _isScalarNameSelected = value;
-                OnPropertyChanged();
-                if (!UpdateAll)
-                {
-                    IsAllSelected = UpdateAll;
-                }
-            }
-        }
-        public bool IsObjectNameSelected
-        {
-            get => _isObjectNameSelected;
-            set
-            {
-                _isObjectNameSelected = value;
-                OnPropertyChanged();
-                if (!UpdateAll)
-                {
-                    IsAllSelected = UpdateAll;
-                }
-            }
-        }
-        public bool IsRecSetNameSelected
-        {
-            get => _isRecSetNameSelected;
-            set
-            {
-                _isRecSetNameSelected = value;
-                OnPropertyChanged();
-                if (!UpdateAll)
-                {
-                    IsAllSelected = UpdateAll;
-                }
-            }
-        }
-        public bool IsToolTitleSelected
-        {
-            get => _isToolTitleSelected;
-            set
-            {
-                _isToolTitleSelected = value;
-                OnPropertyChanged();
-                if (!UpdateAll)
-                {
-                    IsAllSelected = UpdateAll;
-                }
-            }
-        }
-        public bool IsInputVariableSelected
-        {
-            get => _isInputVariableSelected;
-            set
-            {
-                _isInputVariableSelected = value;
-                OnPropertyChanged();
-                if (!UpdateAll)
-                {
-                    IsAllSelected = UpdateAll;
-                }
-            }
-        }
-        public bool IsOutputVariableSelected
-        {
-            get => _isOutputVariableSelected;
-            set
-            {
-                _isOutputVariableSelected = value;
-                OnPropertyChanged();
-                if (!UpdateAll)
-                {
-                    IsAllSelected = UpdateAll;
-                }
-            }
-        }
         public bool IsMatchCaseSelected
         {
             get => _isMatchCaseSelected;

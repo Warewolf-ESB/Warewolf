@@ -65,5 +65,6 @@ namespace Dev2.Common.Interfaces.Search
         bool IsTestNameSelected { get; set; }
         bool IsMatchCaseSelected { get; set; }
         bool IsMatchWholeWordSelected { get; set; }
+        void UpdateAllStates(bool value);
     }
 }
