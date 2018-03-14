@@ -30,34 +30,201 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
     {
         
         #region Properties
-        public UISearchViewWindow UISearchViewWindow
+        public MainStudioWindow MainStudioWindow
         {
             get
             {
-                if ((this.mUISearchViewWindow == null))
+                if ((this.mMainStudioWindow == null))
                 {
-                    this.mUISearchViewWindow = new UISearchViewWindow();
+                    this.mMainStudioWindow = new MainStudioWindow();
                 }
-                return this.mUISearchViewWindow;
+                return this.mMainStudioWindow;
             }
         }
         #endregion
         
         #region Fields
-        private UISearchViewWindow mUISearchViewWindow;
+        private MainStudioWindow mMainStudioWindow;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UISearchViewWindow : WpfWindow
+    public class MainStudioWindow : WpfWindow
     {
         
-        public UISearchViewWindow()
+        public MainStudioWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "SearchView";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.Name, "Warewolf", PropertyExpressionOperator.Contains));
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("SearchView");
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public DockManager DockManager
+        {
+            get
+            {
+                if ((this.mDockManager == null))
+                {
+                    this.mDockManager = new DockManager(this);
+                }
+                return this.mDockManager;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private DockManager mDockManager;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class DockManager : WpfCustom
+    {
+        
+        public DockManager(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DockManager";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public SplitPaneMiddle SplitPaneMiddle
+        {
+            get
+            {
+                if ((this.mSplitPaneMiddle == null))
+                {
+                    this.mSplitPaneMiddle = new SplitPaneMiddle(this);
+                }
+                return this.mSplitPaneMiddle;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SplitPaneMiddle mSplitPaneMiddle;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class SplitPaneMiddle : WpfCustom
+    {
+        
+        public SplitPaneMiddle(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.NextSibling);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public TabManSplitPane TabManSplitPane
+        {
+            get
+            {
+                if ((this.mTabManSplitPane == null))
+                {
+                    this.mTabManSplitPane = new TabManSplitPane(this);
+                }
+                return this.mTabManSplitPane;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TabManSplitPane mTabManSplitPane;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class TabManSplitPane : WpfCustom
+    {
+        
+        public TabManSplitPane(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public TabMan TabMan
+        {
+            get
+            {
+                if ((this.mTabMan == null))
+                {
+                    this.mTabMan = new TabMan(this);
+                }
+                return this.mTabMan;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TabMan mTabMan;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class TabMan : WpfTabList
+    {
+        
+        public TabMan(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf");
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public SearchTab SearchTab
+        {
+            get
+            {
+                if ((this.mSearchTab == null))
+                {
+                    this.mSearchTab = new SearchTab(this);
+                }
+                return this.mSearchTab;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SearchTab mSearchTab;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class SearchTab : WpfTabPage
+    {
+        
+        public SearchTab(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.ViewModels.SearchModel";
+            this.WindowTitles.Add("Warewolf");
             #endregion
         }
         

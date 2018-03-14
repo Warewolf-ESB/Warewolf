@@ -4,7 +4,6 @@ using Dev2;
 using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Warewolf.ResourceManagement.Tests
 {

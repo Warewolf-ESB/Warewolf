@@ -46,409 +46,490 @@
   <Maps>
     <UIMap Id="SearchUIMap">
       <TopLevelWindows>
-        <TopLevelWindow ControlType="Window" Id="UISearchViewWindow" FriendlyName="SearchView" SpecialControlType="None" SessionId="7014288">
+        <TopLevelWindow ControlType="Window" Id="MainStudioWindow" FriendlyName="Warewolf" SpecialControlType="None" SessionId="2230694">
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles>
-            <WindowTitle>SearchView</WindowTitle>
+            <WindowTitle>Warewolf</WindowTitle>
           </WindowTitles>
+          <SearchConfigurations>
+            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+          </SearchConfigurations>
           <AndCondition>
             <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">SearchView</PropertyCondition>
+            <PropertyCondition Name="Name" Operator="Contains">Warewolf</PropertyCondition>
             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
             <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="Custom" Id="SearchConnectControlCustom" FriendlyName="SearchConnectControl" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="DockManager" FriendlyName="DockManager" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
-                <WindowTitle>SearchView</WindowTitle>
+                <WindowTitle>Warewolf</WindowTitle>
               </WindowTitles>
               <AndCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ConnectControl</PropertyCondition>
-                <PropertyCondition Name="AutomationId">SearchConnectControl</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.XamDockManager</PropertyCondition>
+                <PropertyCondition Name="AutomationId">DockManager</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Custom" Id="ServerComboBox" FriendlyName="TheServerComboBox" SpecialControlType="None">
+                <UIObject ControlType="Custom" Id="SplitPaneMiddle" FriendlyName="" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                    <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">TheServerComboBox</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Button" Id="ServersToggleButton" FriendlyName="ToggleButton" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>SearchView</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">ToggleButton</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-                <UIObject ControlType="Button" Id="NewServerButton" FriendlyName="New" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">NewServerButton</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="Custom" Id="LocalhostConnected" FriendlyName="localhost (Connected)" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>SearchView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
-                <PropertyCondition Name="Name">localhost (Connected)</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="Edit" Id="SearchInputEdit" FriendlyName="txtSearchInput" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>SearchView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Edit</PropertyCondition>
-                <PropertyCondition Name="AutomationId">txtSearchInput</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="Button" Id="SearchButton" FriendlyName="" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>SearchView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                <PropertyCondition Name="AutomationId">btnSearchInput</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="Expander" Id="SearchOptionsExpander" FriendlyName="Search Options" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>SearchView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Expander</PropertyCondition>
-                <PropertyCondition Name="Name">Search Options</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Button" Id="SearchOptionsExpanderButton" FriendlyName="Search Options" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="Text" Id="UISearchOptionsText" FriendlyName="Search Options" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>SearchView</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                        <PropertyCondition Name="Name">Search Options</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
-                </UIObject>
-                <UIObject ControlType="CheckBox" Id="AllCheckBox" FriendlyName="All" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">cbSearchAll</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="CheckBox" Id="ServiceCheckBox" FriendlyName="Service" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">cbSearchWorkflowName</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="CheckBox" Id="ObjectCheckBox" FriendlyName="Object" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">cbSearchObjectName</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="CheckBox" Id="ToolTitleCheckBox" FriendlyName="Tool Title" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">cbSearchToolTitle</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="CheckBox" Id="RecordsetCheckBox" FriendlyName="Recordset" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">cbSearchRecSetName</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="CheckBox" Id="InputVariableCheckBox" FriendlyName="Input Variable" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">cbSearchInputVariable</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="CheckBox" Id="OutputVariableCheckBox" FriendlyName="Output Variable" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">cbSearchOutputVariable</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="CheckBox" Id="ScalarCheckBox" FriendlyName="Scalar" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">cbSearchScalarName</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-                <UIObject ControlType="CheckBox" Id="TestNameCheckBox" FriendlyName="Test Name" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
-                  </WindowTitles>
-                  <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">cbSearchTestName</PropertyCondition>
-                  </AndCondition>
-                  <SupportLevel>0</SupportLevel>
-                  <Descendants />
-                </UIObject>
-              </Descendants>
-            </UIObject>
-            <UIObject ControlType="CheckBox" Id="MatchcaseCheckBox" FriendlyName="Match case" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>SearchView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                <PropertyCondition Name="AutomationId">cbSearchMatchCase</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="CheckBox" Id="MatchwholewordCheckBox" FriendlyName="Match whole word" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>SearchView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
-                <PropertyCondition Name="AutomationId">cbSearchMatchWholeWord</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-            <UIObject ControlType="Table" Id="SearchResultsTable" FriendlyName="SearchResults" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>SearchView</WindowTitle>
-              </WindowTitles>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                <PropertyCondition Name="AutomationId">SearchResults</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants>
-                <UIObject ControlType="Row" Id="ResultRow1" FriendlyName="" SpecialControlType="None">
-                  <TechnologyName>UIA</TechnologyName>
-                  <WindowTitles>
-                    <WindowTitle>SearchView</WindowTitle>
+                    <WindowTitle>Warewolf</WindowTitle>
                   </WindowTitles>
                   <SearchConfigurations>
-                    <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                    <SearchConfiguration>NextTo</SearchConfiguration>
+                    <SearchConfiguration>Distinct</SearchConfiguration>
                   </SearchConfigurations>
                   <AndCondition>
-                    <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                    <PropertyCondition Name="Instance">2</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants>
-                    <UIObject ControlType="Cell" Id="Name" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                    <UIObject ControlType="Custom" Id="TabManSplitPane" FriendlyName="SplitPaneMiddle" SpecialControlType="None">
                       <TechnologyName>UIA</TechnologyName>
                       <WindowTitles>
-                        <WindowTitle>SearchView</WindowTitle>
+                        <WindowTitle>Warewolf</WindowTitle>
                       </WindowTitles>
                       <AndCondition>
-                        <PropertyCondition Name="ColumnHeader">Name</PropertyCondition>
-                        <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Cell" Id="Path" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>SearchView</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="ColumnHeader">Path</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Cell" Id="TypeCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>SearchView</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="ColumnHeader">Type</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
                       </AndCondition>
                       <SupportLevel>0</SupportLevel>
                       <Descendants>
-                        <UIObject ControlType="Text" Id="Type" FriendlyName="WorkflowName" SpecialControlType="None">
+                        <UIObject ControlType="TabList" Id="TabMan" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
                           <TechnologyName>UIA</TechnologyName>
                           <WindowTitles>
-                            <WindowTitle>SearchView</WindowTitle>
+                            <WindowTitle>Warewolf</WindowTitle>
+                            <WindowTitle>Warewolf</WindowTitle>
                           </WindowTitles>
                           <AndCondition>
                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                            <PropertyCondition Name="Name">WorkflowName</PropertyCondition>
+                            <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                            <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
                           </AndCondition>
                           <SupportLevel>0</SupportLevel>
-                          <Descendants />
+                          <Descendants>
+                            <UIObject ControlType="TabPage" Id="SearchTab" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="Name">Dev2.ViewModels.SearchModel</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="Custom" Id="SearchConnectControlCustom" FriendlyName="SearchConnectControl" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>SearchView</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.ConnectControl</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">SearchConnectControl</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Custom" Id="ServerComboBox" FriendlyName="TheServerComboBox" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="ClassName">Uia.XamComboEditor</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">TheServerComboBox</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Button" Id="ServersToggleButton" FriendlyName="ToggleButton" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>SearchView</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">ToggleButton</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="Button" Id="NewServerButton" FriendlyName="New" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">NewServerButton</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                                <UIObject ControlType="Custom" Id="LocalhostConnected" FriendlyName="localhost (Connected)" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>SearchView</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.ComboEditorItemControl</PropertyCondition>
+                                    <PropertyCondition Name="Name">localhost (Connected)</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="Edit" Id="SearchInputEdit" FriendlyName="txtSearchInput" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>SearchView</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">txtSearchInput</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="Button" Id="SearchButton" FriendlyName="" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>SearchView</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">btnSearchInput</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="Expander" Id="SearchOptionsExpander" FriendlyName="Search Options" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>SearchView</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                                    <PropertyCondition Name="Name">Search Options</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Button" Id="SearchOptionsExpanderButton" FriendlyName="Search Options" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">HeaderSite</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Text" Id="UISearchOptionsText" FriendlyName="Search Options" SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>SearchView</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                            <PropertyCondition Name="Name">Search Options</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                    <UIObject ControlType="CheckBox" Id="AllCheckBox" FriendlyName="All" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">cbSearchAll</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="CheckBox" Id="ServiceCheckBox" FriendlyName="Service" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">cbSearchWorkflowName</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="CheckBox" Id="ObjectCheckBox" FriendlyName="Object" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">cbSearchObjectName</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="CheckBox" Id="ToolTitleCheckBox" FriendlyName="Tool Title" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">cbSearchToolTitle</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="CheckBox" Id="RecordsetCheckBox" FriendlyName="Recordset" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">cbSearchRecSetName</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="CheckBox" Id="InputVariableCheckBox" FriendlyName="Input Variable" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">cbSearchInputVariable</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="CheckBox" Id="OutputVariableCheckBox" FriendlyName="Output Variable" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">cbSearchOutputVariable</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="CheckBox" Id="ScalarCheckBox" FriendlyName="Scalar" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">cbSearchScalarName</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                    <UIObject ControlType="CheckBox" Id="TestNameCheckBox" FriendlyName="Test Name" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <AndCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">cbSearchTestName</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants />
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                                <UIObject ControlType="CheckBox" Id="MatchcaseCheckBox" FriendlyName="Match case" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>SearchView</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">cbSearchMatchCase</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="CheckBox" Id="MatchwholewordCheckBox" FriendlyName="Match whole word" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>SearchView</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">cbSearchMatchWholeWord</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="Table" Id="SearchResultsTable" FriendlyName="SearchResults" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>SearchView</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">SearchResults</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants>
+                                    <UIObject ControlType="Row" Id="ResultRow1" FriendlyName="" SpecialControlType="None">
+                                      <TechnologyName>UIA</TechnologyName>
+                                      <WindowTitles>
+                                        <WindowTitle>SearchView</WindowTitle>
+                                      </WindowTitles>
+                                      <SearchConfigurations>
+                                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                      </SearchConfigurations>
+                                      <AndCondition>
+                                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                      </AndCondition>
+                                      <SupportLevel>0</SupportLevel>
+                                      <Descendants>
+                                        <UIObject ControlType="Cell" Id="Name" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>SearchView</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ColumnHeader">Name</PropertyCondition>
+                                            <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Cell" Id="Path" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>SearchView</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ColumnHeader">Path</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Cell" Id="TypeCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>SearchView</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ColumnHeader">Type</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants>
+                                            <UIObject ControlType="Text" Id="Type" FriendlyName="WorkflowName" SpecialControlType="None">
+                                              <TechnologyName>UIA</TechnologyName>
+                                              <WindowTitles>
+                                                <WindowTitle>SearchView</WindowTitle>
+                                              </WindowTitles>
+                                              <AndCondition>
+                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                <PropertyCondition Name="Name">WorkflowName</PropertyCondition>
+                                              </AndCondition>
+                                              <SupportLevel>0</SupportLevel>
+                                              <Descendants />
+                                            </UIObject>
+                                          </Descendants>
+                                        </UIObject>
+                                        <UIObject ControlType="Cell" Id="MatchCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>SearchView</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ColumnHeader">Match</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_CellColumn4</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                        <UIObject ControlType="Cell" Id="NameCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                          <TechnologyName>UIA</TechnologyName>
+                                          <WindowTitles>
+                                            <WindowTitle>SearchView</WindowTitle>
+                                          </WindowTitles>
+                                          <AndCondition>
+                                            <PropertyCondition Name="ColumnHeader">Name</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                          </AndCondition>
+                                          <SupportLevel>0</SupportLevel>
+                                          <Descendants />
+                                        </UIObject>
+                                      </Descendants>
+                                    </UIObject>
+                                  </Descendants>
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                          </Descendants>
                         </UIObject>
                       </Descendants>
-                    </UIObject>
-                    <UIObject ControlType="Cell" Id="MatchCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>SearchView</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="ColumnHeader">Match</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_CellColumn4</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                    <UIObject ControlType="Cell" Id="NameCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>SearchView</WindowTitle>
-                      </WindowTitles>
-                      <AndCondition>
-                        <PropertyCondition Name="ColumnHeader">Name</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
-                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
                     </UIObject>
                   </Descendants>
                 </UIObject>
