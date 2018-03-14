@@ -13,6 +13,7 @@ Scenario: Studio Large Deploy UI Load Test
 	And I Select LocalServerSource From Deploy Tab Destination Server Combobox
 	And I Select localhost checkbox from the source tab
 	Given I start the timer
+	Given I start the timer
 	When I Click Deploy Tab Deploy Button with no version conflict dialog
 	Then the timer duration is between "160" and "320" seconds
 	
@@ -97,9 +98,9 @@ Scenario: Studio Shutdown And Startup UI Load Test
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I close the Studio
-	Then the timer duration is between "10" and "60" seconds
+	Then the timer duration is between "9" and "60" seconds
 	And I wait for Studio to release its Mutex
 	Given I start the timer
 	When I start the Studio
 	Then The Warewolf Studio is running
-	And the timer duration is between "10" and "60" seconds
+	And the timer duration is between "9" and "60" seconds
