@@ -18,7 +18,7 @@ namespace Warewolf.UI.Tests.Search
         {
             ExplorerUIMap.Click_Explorer_Refresh_Button();
             Keyboard.SendKeys("^+F");
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.Exists, "Search View Window did not Open after using shortcut Cntr+Shift+F.");
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after using shortcut Cntr+Shift+F.");
         }
 
         [TestMethod]
@@ -26,24 +26,24 @@ namespace Warewolf.UI.Tests.Search
         public void Clicking_Search_Menu_Item_Opens_Search_View()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
         }
         [TestMethod]
         [TestCategory("Search View")]
         public void Open_Search_Window_Has_All_Options_Selected()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.SearchOptionsExpanderButton);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ScalarCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.TestNameCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.RecordsetCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ToolTitleCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ObjectCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.InputVariableCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.OutputVariableCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.SearchOptionsExpanderButton);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ScalarCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.TestNameCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.RecordsetCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ToolTitleCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ObjectCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.InputVariableCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.OutputVariableCheckBox.Checked);
         }
 
         [TestMethod]
@@ -51,24 +51,24 @@ namespace Warewolf.UI.Tests.Search
         public void Click_Search_Button_With_Nothing_Filtered()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.SearchOptionsExpanderButton);
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchButton);
-            Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.UISearchViewWindow.SearchResultsTable.ResultRow1));
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.SearchOptionsExpanderButton);
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchButton);
+            Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchResultsTable.ResultRow1));
         }
         [TestMethod]
         [TestCategory("Search View")]
         public void Search_hello_And_Only_Service_Name_Is_Selected_And_Match_WholeWord_Is_Selected()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.SearchOptionsExpanderButton);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked = false;
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked = true;
-            SearchUIMap.UISearchViewWindow.SearchInputEdit.Text = "hello";
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchButton);
-            Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.UISearchViewWindow.SearchResultsTable.ResultRow1.Name), "Hello search did not return a row as had expected.");
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.SearchOptionsExpanderButton);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked = false;
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked = true;
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchInputEdit.Text = "hello";
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchButton);
+            Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchResultsTable.ResultRow1.Name), "Hello search did not return a row as had expected.");
         }
 
 
@@ -77,15 +77,15 @@ namespace Warewolf.UI.Tests.Search
         public void Search_hello_And_Only_Service_Name_Is_Selected_And_Match_Case_Is_Selected()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.SearchOptionsExpanderButton);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked = false;
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked = true;
-            SearchUIMap.UISearchViewWindow.SearchInputEdit.Text = "hello";
-            SearchUIMap.UISearchViewWindow.MatchcaseCheckBox.Checked = false;
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchButton);
-            Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.UISearchViewWindow.SearchResultsTable.ResultRow1.Name), "Hello search did not return a row as had expected.");
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.SearchOptionsExpanderButton);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked = false;
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked = true;
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchInputEdit.Text = "hello";
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.MatchcaseCheckBox.Checked = false;
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchButton);
+            Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchResultsTable.ResultRow1.Name), "Hello search did not return a row as had expected.");
         }
 
         [TestMethod]
@@ -93,14 +93,14 @@ namespace Warewolf.UI.Tests.Search
         public void Search_Hello_And_Only_Service_Name_Is_Selected()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.SearchOptionsExpanderButton);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked = false;
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked = true;
-            SearchUIMap.UISearchViewWindow.SearchInputEdit.Text = "Hello";
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchButton);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchResultsTable.ResultRow1.Name.Exists, "Hello search did not return a row as had expected,");
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.SearchOptionsExpanderButton);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked = false;
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked = true;
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchInputEdit.Text = "Hello";
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchButton);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchResultsTable.ResultRow1.Name.Exists, "Hello search did not return a row as had expected,");
         }
 
         [TestMethod]
@@ -108,15 +108,15 @@ namespace Warewolf.UI.Tests.Search
         public void UnChecking_Service_CheckBox_Then_AllCheckBox_Checkes_AllCheckBox()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.SearchOptionsExpanderButton);            
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked = false;
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked = true;
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.SearchOptionsExpanderButton);            
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked = false;
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked = true;
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
         }
 
         [TestMethod]
@@ -124,22 +124,22 @@ namespace Warewolf.UI.Tests.Search
         public void UnChecking_Service_CheckBox_Then_AllCheckBox_CheckesAll_Check_Boxes()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.SearchOptionsExpanderButton);            
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked = false;
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ScalarCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.TestNameCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.RecordsetCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ToolTitleCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ObjectCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.InputVariableCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.OutputVariableCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked = true;
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.SearchOptionsExpanderButton);            
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked = false;
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ScalarCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.TestNameCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.RecordsetCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ToolTitleCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ObjectCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.InputVariableCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.OutputVariableCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked = true;
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
         }
 
 
@@ -148,27 +148,27 @@ namespace Warewolf.UI.Tests.Search
         public void Checking_AllCheckBox_CheckesAll_Check_Boxes()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.SearchOptionsExpanderButton);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked = false;
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ScalarCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.TestNameCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.RecordsetCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ToolTitleCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ObjectCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.InputVariableCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.OutputVariableCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked = true;
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ScalarCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.TestNameCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.RecordsetCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ToolTitleCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ObjectCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.InputVariableCheckBox.Checked);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.OutputVariableCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.SearchOptionsExpanderButton);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked = false;
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ScalarCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.TestNameCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.RecordsetCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ToolTitleCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ObjectCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.InputVariableCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.OutputVariableCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked = true;
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ScalarCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.TestNameCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.RecordsetCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ToolTitleCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ObjectCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.InputVariableCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.OutputVariableCheckBox.Checked);
         }
 
         [TestMethod]
@@ -176,18 +176,18 @@ namespace Warewolf.UI.Tests.Search
         public void UnChecking_AllCheckBox_UnCheckesAll_Check_Boxes()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
-            Mouse.Click(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.SearchOptionsExpanderButton);
-            Assert.IsTrue(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked);
-            SearchUIMap.UISearchViewWindow.SearchOptionsExpander.AllCheckBox.Checked = false;
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ServiceCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ScalarCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.TestNameCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.RecordsetCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ToolTitleCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.ObjectCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.InputVariableCheckBox.Checked);
-            Assert.IsFalse(SearchUIMap.UISearchViewWindow.SearchOptionsExpander.OutputVariableCheckBox.Checked);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.Exists, "Search View Window did not Open after clicking Seacrch Menu Item.");
+            Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.SearchOptionsExpanderButton);
+            Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked);
+            SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.AllCheckBox.Checked = false;
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ServiceCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ScalarCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.TestNameCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.RecordsetCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ToolTitleCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.ObjectCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.InputVariableCheckBox.Checked);
+            Assert.IsFalse(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchOptionsExpander.OutputVariableCheckBox.Checked);
         }
 
         [TestInitialize]
