@@ -63,7 +63,7 @@
         </StackPanel>
         
         <!-- SEARCH OPTIONS -->
-        <Expander Grid.Row="3" Style="{StaticResource ServiceTestTestStepExpander}" Header="Search Options" >
+        <Expander Grid.Row="3" Style="{StaticResource ServiceTestTestStepExpander}" IsExpanded="True" Header="Search Options" >
             <Grid HorizontalAlignment="Stretch" DataContext="{Binding SearchValue.SearchOptions}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
@@ -79,7 +79,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <CheckBox x:Name="cbSearchAll" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" IsChecked="{Binding IsAllSelected}" Margin="-5,0,0,0">All</CheckBox>
+                <CheckBox x:Name="cbSearchAll" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Unchecked="CbSearchAll_Checked" Checked="CbSearchAll_Checked" IsChecked="{Binding IsAllSelected}" Margin="-5,0,0,0">All</CheckBox>
 
                 <CheckBox x:Name="cbSearchWorkflowName" Grid.Column="1" Grid.Row="0" IsChecked="{Binding IsWorkflowNameSelected}">Service</CheckBox>
                 <CheckBox x:Name="cbSearchTestName" Grid.Column="2" Grid.Row="0" IsChecked="{Binding IsTestNameSelected}">Test Name</CheckBox>
@@ -90,7 +90,6 @@
                 <CheckBox x:Name="cbSearchRecSetName" Grid.Column="2" Grid.Row="1" IsChecked="{Binding IsRecSetNameSelected}">Recordset</CheckBox>
                 <CheckBox x:Name="cbSearchObjectName" Grid.Column="3" Grid.Row="1" IsChecked="{Binding IsObjectNameSelected}">Object</CheckBox>
                 <CheckBox x:Name="cbSearchOutputVariable" Grid.Column="4" Grid.Row="1" IsChecked="{Binding IsOutputVariableSelected}">Output Variable</CheckBox>
-
             </Grid>
         </Expander>
 
