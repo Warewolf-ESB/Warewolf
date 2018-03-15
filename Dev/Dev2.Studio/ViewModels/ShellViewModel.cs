@@ -1359,8 +1359,6 @@ namespace Dev2.Studio.ViewModels
             workSurfaceKey.ResourceID = Guid.Empty;
             workSurfaceKey.ServerID = ActiveServer.ServerID;
             _worksurfaceContextManager.SearchView(workSurfaceKey);
-
-            
         }
 
         public void ShowCommunityPage()

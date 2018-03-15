@@ -51,7 +51,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _mainViewModelMock.SetupGet(it => it.NewServiceCommand).Returns(_newCommand);
             _mainViewModelMock.SetupGet(it => it.DeployCommand).Returns(_deployCommandMock.Object);
             _mainViewModelMock.SetupGet(it => it.SaveCommand).Returns(_saveCommand);
-            _mainViewModelMock.SetupGet(it => it.SchedulerCommand).Returns(_openSearchCommand);
+            _mainViewModelMock.SetupGet(it => it.SearchCommand).Returns(_openSearchCommand);
             _mainViewModelMock.SetupGet(it => it.SchedulerCommand).Returns(_openSchedulerCommand);
             _mainViewModelMock.SetupGet(it => it.SettingsCommand).Returns(_openSettingsCommand);
             _mainViewModelMock.SetupGet(it => it.DebugCommand).Returns(_executeServiceCommand);

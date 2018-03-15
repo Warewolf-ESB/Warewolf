@@ -542,7 +542,7 @@ ioDirection == enDev2ColumnArgumentDirection.Both &&
             var ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
 
             enDev2ColumnArgumentDirection ioDirection;
-            ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) : enDev2ColumnArgumentDirection.Both;
+            ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)(Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) ?? enDev2ColumnArgumentDirection.Both) : enDev2ColumnArgumentDirection.Both;
             return ioDirection;
         }
 
