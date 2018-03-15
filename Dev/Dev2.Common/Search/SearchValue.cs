@@ -99,7 +99,8 @@ namespace Dev2.Common.Search
 
         public SearchOptions()
         {
-            
+            IsAllSelected = false;
+            UpdateAllStates(false);
         }
 
         public bool IsAllSelected
