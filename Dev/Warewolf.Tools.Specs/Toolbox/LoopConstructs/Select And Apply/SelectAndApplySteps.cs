@@ -293,5 +293,18 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
         {
             return new List<DsfForEachItem>();
         }
+
+        public bool Equals(SelectAndApplyTestTool other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is SelectAndApplyTestTool instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }

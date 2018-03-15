@@ -1116,10 +1116,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public IDebugState GetDebugState() => _debugState;
 
-        public Guid GetWorkSurfaceMappingId()
-        {
-            return WorkSurfaceMappingId;
-        }
+        public Guid GetWorkSurfaceMappingId() => WorkSurfaceMappingId;
 
 
         public virtual IList<IActionableErrorInfo> PerformValidation() => new List<IActionableErrorInfo>();
@@ -1136,23 +1133,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return string.Equals(UniqueID, other.UniqueID);
         }
-        
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((DsfNativeActivity<T>)obj);
-        }
+
+        public abstract override bool Equals(object obj);
 
         public override int GetHashCode() => UniqueID?.GetHashCode() ?? 0;
 

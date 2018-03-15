@@ -94,5 +94,19 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         }
 
         #endregion
+
+
+        public bool Equals(TestDsfNativeActivity other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is TestDsfNativeActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }

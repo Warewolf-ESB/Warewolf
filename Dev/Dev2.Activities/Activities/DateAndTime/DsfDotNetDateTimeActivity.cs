@@ -339,5 +339,27 @@ namespace Dev2.Activities.DateAndTime
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(DateTime, InputFormat, TimeModifierAmountDisplay, OutputFormat);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
+
+        public bool Equals(DsfDotNetDateTimeActivity other)
+        {
+            var eq = this.DisplayName.Equals(other.DisplayName);
+            eq &= this.DateTime.Equals(other.DateTime);
+            eq &= this.InputFormat.Equals(other.InputFormat);
+            eq &= this.OutputFormat.Equals(other.OutputFormat);
+            eq &= this.TimeModifierType.Equals(other.TimeModifierType);
+            eq &= this.TimeModifierAmountDisplay.Equals(other.TimeModifierAmountDisplay);
+            eq &= this.TimeModifierAmount.Equals(other.TimeModifierAmount);
+
+            return eq;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DsfDotNetDateTimeActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }

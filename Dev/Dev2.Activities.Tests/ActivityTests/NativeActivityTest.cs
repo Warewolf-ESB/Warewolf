@@ -586,6 +586,19 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
         }
 
+        public bool Equals(TestNativeActivity other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is TestNativeActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
+
         #endregion
     }
 

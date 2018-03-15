@@ -299,5 +299,24 @@ namespace Dev2.Activities.DateAndTime
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Input1, Input2, InputFormat);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
+        
+        public bool Equals(DsfDotNetDateTimeDifferenceActivity other)
+        {
+            var eq = this.DisplayName.Equals(other.DisplayName);
+            eq &= this.Input1.Equals(other.Input1);
+            eq &= this.Input2.Equals(other.Input2);
+            eq &= this.InputFormat.Equals(other.InputFormat);
+            eq &= this.OutputType.Equals(other.OutputType);
+            eq &= this.Result.Equals(other.Result);
+            return eq;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is DsfDotNetDateTimeDifferenceActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }
