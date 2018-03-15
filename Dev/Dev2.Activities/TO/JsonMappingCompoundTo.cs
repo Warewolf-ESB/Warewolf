@@ -69,25 +69,27 @@ namespace Dev2.TO
                     {
                         _evalResultAsObject = new object[] { null };
                     }
-                    if (e.IsWarewolfAtomResult)
+                    if (e.IsWarewolfAtomResult && e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
                     {
-                        if (e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
-                        {
-                            if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
-                            {
-                                _evalResultAsObject = true;
-                            }
-                            else
-                            {
-                                if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "false")
-                                {
-                                    _evalResultAsObject = false;
-                                }
-                            }
-                        }
+                        SetEvalResult(x);
                     }
                 }
                 return _evalResultAsObject;
+            }
+        }
+
+        private void SetEvalResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x)
+        {
+            if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
+            {
+                _evalResultAsObject = true;
+            }
+            else
+            {
+                if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "false")
+                {
+                    _evalResultAsObject = false;
+                }
             }
         }
 
@@ -240,32 +242,44 @@ namespace Dev2.TO
             }
             if (evalResult.IsWarewolfRecordSetResult)
             {
-                var recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
-
-                var data = recset.Data.ToArray();
-                var jObjects = new List<JObject>();
-                for (int j = 0; j < recset.Count; j++)
-                {
-                    var a = new JObject();
-                    foreach (KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair in data)
-                    {
-                        if (pair.Key != FsInteropFunctions.PositionColumn)
-                        {
-                            try
-                            {
-                                a.Add(new JProperty(pair.Key, CommonFunctions.atomToJsonCompatibleObject(pair.Value[j])));
-                            }
-                            catch (Exception)
-                            {
-                                a.Add(new JProperty(pair.Key, null));
-                            }
-                        }
-                    }
-                    jObjects.Add(a);
-                }
-                return jObjects;
+                return ResolveJOBjects();
             }
             throw new Exception(ErrorResource.InvalidResultTypeFromWarewolfStorage);
+        }
+
+        private List<JObject> ResolveJOBjects()
+        {
+            var recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
+
+            var data = recset.Data.ToArray();
+            var jObjects = new List<JObject>();
+            for (int j = 0; j < recset.Count; j++)
+            {
+                var a = new JObject();
+                foreach (KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair in data)
+                {
+                    if (pair.Key != FsInteropFunctions.PositionColumn)
+                    {
+                        a.Add(TryAddJProperty(j, a, pair));
+                    }
+                }
+                jObjects.Add(a);
+            }
+
+            return jObjects;
+        }
+
+        static JObject TryAddJProperty(int j, JObject a, KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair)
+        {
+            try
+            {
+                a.Add(new JProperty(pair.Key, CommonFunctions.atomToJsonCompatibleObject(pair.Value[j])));
+            }
+            catch (Exception)
+            {
+                a.Add(new JProperty(pair.Key, null));
+            }
+            return a;
         }
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
