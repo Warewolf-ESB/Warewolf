@@ -410,5 +410,28 @@ namespace Dev2.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+
+        public bool Equals(DsfDotNetGatherSystemInformationActivity other)
+        {
+            var eq = this.DisplayName.Equals(other.DisplayName);
+            if (!(this._getSystemInformation is null))
+            {
+                eq &= this._getSystemInformation.Equals(other._getSystemInformation);
+            }
+            if (!(this._currentIdentity is null)) {
+                eq &= this._currentIdentity.Equals(other._currentIdentity);
+            }
+
+            return eq;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DsfDotNetGatherSystemInformationActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }

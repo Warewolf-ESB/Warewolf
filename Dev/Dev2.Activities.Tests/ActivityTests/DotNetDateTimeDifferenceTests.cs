@@ -116,6 +116,81 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("[[dtd]]", outputs[0]);
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeDifferenceActivity_GetOutputs")]
+        public void DsfDateTimeDifferenceActivity_Expect_Equal()
+        {
+            SetupArguments(
+                           ActivityStrings.DateTimeDifferenceDataListWithData
+                         , ActivityStrings.DateTimeDifferenceDataListShape
+                         , "[[recset1(*).f1]]"
+                         , "[[recset2(*).f2]]"
+                         , "dd/MM/yyyy"
+                         , "Days"
+                         , "[[resCol(*).res]]"
+                         );
+
+            var result = ExecuteProcess();
+            GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out IList<string> results, out string error);
+            // remove test datalist ;)
+
+            Assert.AreEqual("8847", results[0]);
+            Assert.AreEqual("9477", results[1]);
+            Assert.AreEqual("9090", results[2]);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeDifferenceActivity_GetOutputs")]
+        public void DsfDateTimeDifferenceActivity_Expect_NotEqual()
+        {
+            var activity1 = new DsfDotNetDateTimeDifferenceActivity {
+                Input1 = "[[recset1(*).f1]]",
+                Input2 = "[[recset2(*).f2]]",
+                InputFormat = "dd/MM/yyyy",
+                OutputType = "Days",
+                Result = "[[resCol(*).res]]"
+            };
+            var activity2 = new DsfDotNetDateTimeDifferenceActivity
+            {
+                Input1 = "[[recset1(*).f1]]",
+                Input2 = "[[recset2(*).f2]]",
+                InputFormat = "dd/MM/yyyy",
+                OutputType = "Days",
+                Result = "[[resCol(*).res]]"
+            };
+            var activity1_otherref = activity1;
+            Assert.IsTrue(activity1.Equals(activity1_otherref));
+            Assert.IsTrue(activity1.Equals(activity2));
+            string tmp_holder;
+
+            tmp_holder = activity2.Input1;
+            activity2.Input1 = "[[notsame(*).f1]]";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.Input1 = tmp_holder;
+
+            tmp_holder = activity2.Input2;
+            activity2.Input2 = "[[notsame(*).f2]]";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.Input2 = tmp_holder;
+
+            tmp_holder = activity2.InputFormat;
+            activity2.InputFormat = "MM/dd/yyyy";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.InputFormat = tmp_holder;
+
+            tmp_holder = activity2.OutputType;
+            activity2.OutputType = "Minutes";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.OutputType = tmp_holder;
+
+            tmp_holder = activity2.Result;
+            activity2.Result = "[[res(*).res]]";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.Result = tmp_holder;
+        }
+
         #region Private Test Methods
 
         void SetupArguments(string currentDL, string testData, string input1, string input2, string inputFormat, string outputType, string result)

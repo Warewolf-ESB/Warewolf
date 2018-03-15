@@ -179,6 +179,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Expression);
 
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
+
+        public bool Equals(DsfDotNetCalculateActivity other)
+        {
+            var eq = this.DisplayName.Equals(other.DisplayName);
+            eq &= this.Expression.Equals(other.Expression);
+            eq &= this.Result.Equals(other.Result);
+
+            return eq;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DsfDotNetCalculateActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }
 

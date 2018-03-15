@@ -444,5 +444,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs() => (from item in FieldsCollection
                                                                       where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
                                                                       select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
+
+        public bool Equals(DsfDotNetMultiAssignObjectActivity other)
+        {
+            if (FieldsCollection.Count != other.FieldsCollection.Count)
+            {
+                return false;
+            }
+
+            var eq = base.Equals(other);
+            for (int i = 0; i < FieldsCollection.Count; i++)
+            {
+                eq &= FieldsCollection[i].Equals(other.FieldsCollection[i]);
+            }
+            eq &= UpdateAllOccurrences.Equals(other.UpdateAllOccurrences);
+            eq &= CreateBookmark.Equals(other.CreateBookmark);
+            eq &= ServiceHost.Equals(other.ServiceHost);
+
+            return eq;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DsfDotNetMultiAssignObjectActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }

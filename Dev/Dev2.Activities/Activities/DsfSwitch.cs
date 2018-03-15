@@ -370,6 +370,20 @@ namespace Dev2.Activities
             NextNodes = new List<IDev2Activity> { activity };
         }
 
+
+        public bool Equals(TestMockSwitchStep other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is TestMockSwitchStep instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
+
         #endregion
     }
 }

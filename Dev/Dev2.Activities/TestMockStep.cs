@@ -149,6 +149,19 @@ namespace Dev2
             }
         }
 
+        public bool Equals(TestMockStep other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is TestMockStep instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
+
         #endregion
     }
 }

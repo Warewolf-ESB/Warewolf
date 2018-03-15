@@ -442,9 +442,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         public override bool Equals(object obj)
         {
-            var activity = obj as DsfDotNetMultiAssignActivity;
-            return activity != null &&
-                   base.Equals(obj) && Equals(activity);
+            if (obj is DsfDotNetMultiAssignActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
         }
 
         public override int GetHashCode()

@@ -537,5 +537,19 @@ namespace Dev2.Activities
         }
 
         public override List<string> GetOutputs() => new List<string>();
+
+
+        public bool Equals(TestMockDecisionStep other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is TestMockDecisionStep instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }
