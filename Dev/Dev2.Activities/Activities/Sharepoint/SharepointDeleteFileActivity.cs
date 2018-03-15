@@ -33,9 +33,7 @@ namespace Dev2.Activities.Sharepoint
             ServerInputPath = string.Empty;
         }
         protected override bool AssignEmptyOutputsToRecordSet => true;
-        /// <summary>
-        /// Gets or sets the input path.
-        /// </summary>
+        
         [Inputs("Server Input Path")]
         [FindMissing]
         public string ServerInputPath
@@ -47,11 +45,7 @@ namespace Dev2.Activities.Sharepoint
         public SharepointSource SharepointSource { get; set; }
 
         public Guid SharepointServerResourceId { get; set; }
-
-        /// <summary>
-        /// When overridden runs the activity's execution logic 
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();

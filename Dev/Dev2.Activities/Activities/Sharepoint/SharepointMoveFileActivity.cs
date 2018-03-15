@@ -153,15 +153,7 @@ namespace Dev2.Activities.Sharepoint
                 }
                 else
                 {
-                    if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
-                    {
-                        var newPath = MoveFile(sharepointSource, serverPath, localPath);
-
-                        foreach (var folder in newPath)
-                        {
-                            outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
-                        }
-                    }
+                    AddBlankIndexDebugOutputs(outputs, sharepointSource, serverPath, localPath);
                 }
             }
             else
@@ -171,6 +163,19 @@ namespace Dev2.Activities.Sharepoint
                 var xmlList = string.Join(",", newPath.Select(c => c));
                 outputs.Add(DataListFactory.CreateOutputTO(Result));
                 outputs.Last().OutputStrings.Add(xmlList);
+            }
+        }
+
+        private void AddBlankIndexDebugOutputs(IList<OutputTO> outputs, SharepointSource sharepointSource, string serverPath, string localPath)
+        {
+            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+            {
+                var newPath = MoveFile(sharepointSource, serverPath, localPath);
+
+                foreach (var folder in newPath)
+                {
+                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                }
             }
         }
 
