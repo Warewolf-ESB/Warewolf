@@ -47,7 +47,6 @@ namespace Dev2.Activities
                     IOutputFormatter formater = null;
                     if (OutputDescription != null)
                     {
-
                         var i = 0;
                         foreach (var serviceOutputMapping in Outputs)
                         {
