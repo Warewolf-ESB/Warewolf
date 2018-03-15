@@ -57,28 +57,26 @@ namespace Dev2.TO
         public CommonFunctions.WarewolfEvalResult EvalResult => _evalResult ?? (_evalResult = _env.EvalForJson(
             Simple.SourceName));
 
-        public object EvalResultAsObject
+        public object GetEvalResultAsObject()
         {
-            get
+            if (_evalResultAsObject == null)
             {
-                if (_evalResultAsObject == null)
+                var e = EvalResult;
+                _evalResultAsObject = CommonFunctions.evalResultToJsonCompatibleObject(e);
+                if (EvalResult.IsWarewolfAtomListresult && _evalResultAsObject == null)
                 {
-                    var e = EvalResult;
-                    _evalResultAsObject = CommonFunctions.evalResultToJsonCompatibleObject(e);
-                    if (EvalResult.IsWarewolfAtomListresult && _evalResultAsObject == null)
-                    {
-                        _evalResultAsObject = new object[] { null };
-                    }
-                    if (e.IsWarewolfAtomResult && e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
-                    {
-                        SetEvalResult(x);
-                    }
+                    _evalResultAsObject = new object[] { null };
                 }
-                return _evalResultAsObject;
+                if (e.IsWarewolfAtomResult && e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
+                {
+                    SetEvalResultAsObject(x);
+                }
+
             }
+            return _evalResultAsObject;
         }
 
-        private void SetEvalResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x)
+        void SetEvalResultAsObject(CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x)
         {
             if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
             {
@@ -165,7 +163,7 @@ namespace Dev2.TO
         public string DestinationName => Compound.DestinationName;
 
         public object EvaluatedResultIndexed(int i) => i < MaxCount ?
-                Evaluations.First().EvalResultAsObject :
+                Evaluations.First().GetEvalResultAsObject() :
                 Evaluations.First().EvalResult.IsWarewolfAtomListresult ? new object[] { null } : null;
 
         public object ComplexEvaluatedResultIndexed(int i)
@@ -242,44 +240,32 @@ namespace Dev2.TO
             }
             if (evalResult.IsWarewolfRecordSetResult)
             {
-                return ResolveJOBjects();
+                var recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
+
+                var data = recset.Data.ToArray();
+                var jObjects = new List<JObject>();
+                for (int j = 0; j < recset.Count; j++)
+                {
+                    var a = new JObject();
+                    foreach (KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair in data)
+                    {
+                        if (pair.Key != FsInteropFunctions.PositionColumn)
+                        {
+                            try
+                            {
+                                a.Add(new JProperty(pair.Key, CommonFunctions.atomToJsonCompatibleObject(pair.Value[j])));
+                            }
+                            catch (Exception)
+                            {
+                                a.Add(new JProperty(pair.Key, null));
+                            }
+                        }
+                    }
+                    jObjects.Add(a);
+                }
+                return jObjects;
             }
             throw new Exception(ErrorResource.InvalidResultTypeFromWarewolfStorage);
-        }
-
-        private List<JObject> ResolveJOBjects()
-        {
-            var recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
-
-            var data = recset.Data.ToArray();
-            var jObjects = new List<JObject>();
-            for (int j = 0; j < recset.Count; j++)
-            {
-                var a = new JObject();
-                foreach (KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair in data)
-                {
-                    if (pair.Key != FsInteropFunctions.PositionColumn)
-                    {
-                        a.Add(TryAddJProperty(j, a, pair));
-                    }
-                }
-                jObjects.Add(a);
-            }
-
-            return jObjects;
-        }
-
-        static JObject TryAddJProperty(int j, JObject a, KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair)
-        {
-            try
-            {
-                a.Add(new JProperty(pair.Key, CommonFunctions.atomToJsonCompatibleObject(pair.Value[j])));
-            }
-            catch (Exception)
-            {
-                a.Add(new JProperty(pair.Key, null));
-            }
-            return a;
         }
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
