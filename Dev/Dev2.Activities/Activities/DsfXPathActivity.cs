@@ -117,7 +117,7 @@ namespace Dev2.Activities
                     }
                     if (!allErrors.HasErrors())
                     {
-                        i = Process(dataObject, update, i, parser, allErrors, errors);
+                        i = Process(dataObject, update, i, parser, errors, ref allErrors);
                     }
                     DoDebug(dataObject, update, allErrors);
                 }
@@ -189,44 +189,56 @@ namespace Dev2.Activities
             }
         }
 
-        int Process(IDSFDataObject dataObject, int update, int i, XPathParser parser, ErrorResultTO allErrors, ErrorResultTO errors)
+        int Process(IDSFDataObject dataObject, int update, int i, XPathParser parser, ErrorResultTO errors, ref ErrorResultTO allErrors)
         {
             if (!string.IsNullOrEmpty(SourceString))
             {
-
                 var itr = new WarewolfListIterator();
                 var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString, update));
                 itr.AddVariableToIterateOn(sourceIterator);
                 while (itr.HasMoreData())
                 {
                     var c = itr.FetchNextValue(sourceIterator);
-                    for (i = 0; i < ResultsCollection.Count; i++)
-                    {
-                        if (!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
-                        {
-                            var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
-                            var xpathIterator = new WarewolfIterator(xpathEntry);
-                            while (xpathIterator.HasMoreData())
-                            {
-                                var xpathCol = xpathIterator.GetNextValue();
-                                try
-                                {
-                                    var eval = parser.ExecuteXPath(c, xpathCol).ToList();
-                                    var variable = ResultsCollection[i].OutputVariable;
-                                    AssignResult(variable, dataObject, eval, update);
-                                }
-                                catch (Exception e)
-                                {
-                                    allErrors.AddError(e.Message);
-                                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
-                                }
-                            }
-                        }
-                    }
-                    allErrors.MergeErrors(errors);
+                    i = IterateXPath(dataObject, update, parser, errors, c, ref allErrors);
                 }
             }
             return i;
+        }
+
+        private int IterateXPath(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO errors, string c, ref ErrorResultTO allErrors)
+        {
+            int i;
+            for (i = 0; i < ResultsCollection.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
+                {
+                    var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
+                    var xpathIterator = new WarewolfIterator(xpathEntry);
+                    while (xpathIterator.HasMoreData())
+                    {
+                        allErrors.MergeErrors(TryAssignResult(dataObject, update, parser, c, i, xpathIterator, allErrors));
+                    }
+                }
+            }
+            allErrors.MergeErrors(errors);
+            return i;
+        }
+
+        ErrorResultTO TryAssignResult(IDSFDataObject dataObject, int update, XPathParser parser, string c, int i, WarewolfIterator xpathIterator, ErrorResultTO allErrors)
+        {
+            var xpathCol = xpathIterator.GetNextValue();
+            try
+            {
+                var eval = parser.ExecuteXPath(c, xpathCol).ToList();
+                var variable = ResultsCollection[i].OutputVariable;
+                AssignResult(variable, dataObject, eval, update);
+            }
+            catch (Exception e)
+            {
+                allErrors.AddError(e.Message);
+                dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
+            }
+            return allErrors;
         }
 
         void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval, int update)
