@@ -20,21 +20,12 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.FindMissingStrategies
 {
-    /// <summary>
-    /// Responsible for the find missing logic that apply to all the activities that have a collection property and some static properties on them
-    /// </summary>
- //This is loaded based on SpookyAction implementing IFindMissingStrategy
     class MixedActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>
 
         public Enum HandlesType() => enFindMissingType.MixedActivity;
-
-        /// <summary>
-        /// Gets all the fields for a specific activity
-        /// </summary>
-        /// <param name="activity">The activity that the fields will be retrieved from</param>
-        /// <returns>Returns all the fields in a list of strings</returns>
+        
         public List<string> GetActivityFields(object activity)
         {
             var results = new List<string>();
@@ -50,17 +41,15 @@ namespace Dev2.FindMissingStrategies
             }
 
 
-            if (activityType == typeof(DsfCreateJsonActivity))
+            if (activityType == typeof(DsfCreateJsonActivity) && activity is DsfCreateJsonActivity createJsonActivity)
             {
-                if (activity is DsfCreateJsonActivity createJsonActivity)
+                results.AddRange(InternalFindMissing(createJsonActivity.JsonMappings));
+                if (!string.IsNullOrEmpty(createJsonActivity.JsonString))
                 {
-                    results.AddRange(InternalFindMissing(createJsonActivity.JsonMappings));
-                    if (!string.IsNullOrEmpty(createJsonActivity.JsonString))
-                    {
-                        results.Add(createJsonActivity.JsonString);
-                    }
+                    results.Add(createJsonActivity.JsonString);
                 }
             }
+
             if (activityType == typeof(SharepointReadListActivity) && activity is SharepointReadListActivity sharepointReadListActivity)
             {
                 results.AddRange(InternalFindMissing(sharepointReadListActivity.ReadListItems));
