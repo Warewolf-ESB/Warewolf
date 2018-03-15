@@ -1674,8 +1674,9 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var env = ServerRepository.Instance.Source;
             env.ForceLoadResources();
-            var sourceResourceRepository = env.ResourceRepository;            
-            if (MyContext.TryGetValue(workflowName, out ResourceModel res))
+            var sourceResourceRepository = env.ResourceRepository;
+            var res = sourceResourceRepository.FindSingle(model => model.ResourceName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase), true);
+            if (res != null)
             {
                 var contextualResource = sourceResourceRepository.LoadContextualResourceModel(res.ID);
                 var msg = sourceResourceRepository.FetchResourceDefinition(contextualResource.Environment,
@@ -1691,7 +1692,7 @@ namespace Dev2.Activities.Specs.TestFramework
             }
             else
             {
-                Assert.Fail("Resource " + workflowName + " not found in test context.");
+                Assert.Fail("Resource " + workflowName + " not found in local Warewolf %programdata% resources.");
             }
         }
 
