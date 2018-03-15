@@ -30,7 +30,7 @@ namespace Dev2.Common.Common
             var messages = exception.FromHierarchy(ex => ex.InnerException).Select(ex => ex.Message);
             return String.Join(Environment.NewLine, messages);
         }
-        
+
         public static IEnumerable<TSource> FromHierarchy<TSource>(this TSource source, Func<TSource, TSource> nextItem,
             Func<TSource, bool> canContinue)
         {
@@ -61,7 +61,7 @@ namespace Dev2.Common.Common
 
             return sb;
         }
-        
+
         public static void WriteToFile(this StringBuilder sb, string fileName, Encoding encoding, IFileManager fileManager)
         {
             var length = sb.Length;
@@ -91,7 +91,7 @@ namespace Dev2.Common.Common
                 }
             }
         }
-        
+
         public static XElement ToXElement(this StringBuilder sb)
         {
             try
@@ -172,7 +172,7 @@ namespace Dev2.Common.Common
 
             return escapedString;
         }
-        
+
         public static StringBuilder Unescape(this StringBuilder sb)
         {
             StringBuilder unescapedString = null;
@@ -186,7 +186,7 @@ namespace Dev2.Common.Common
             }
             return unescapedString;
         }
-        
+
         public static string UnescapeString(this string sb)
         {
             string unescapedString = null;
@@ -203,11 +203,8 @@ namespace Dev2.Common.Common
 
         public static bool Contains(this StringBuilder sb, string value) => IndexOf(sb, value, 0, false) >= 0;
 
-        public static string Substring(this StringBuilder sb, int startIdx, int length)
-        {            
-            return sb.ToString(startIdx, length);
-        }
-        
+        public static string Substring(this StringBuilder sb, int startIdx, int length) => sb.ToString(startIdx, length);
+
         public static int LastIndexOf(this StringBuilder sb, string value, bool ignoreCase)
         {
             var result = -1;
@@ -219,34 +216,37 @@ namespace Dev2.Common.Common
             return result;
         }
 
-        public static int LastIndexOf(this StringBuilder sb, string value,int startIdx, bool ignoreCase)
-        {
-            var result = -1;            
-            var startIndex = IndexOf(sb, value, 0, ignoreCase);
-            while (startIdx - startIndex >= 0 && startIndex != -1)
-            {
-                result = startIndex;
-                startIndex = IndexOf(sb, value, startIndex+1, ignoreCase);
-            }
-            return result;
-        }
-
-        public static int IndexOf(this StringBuilder sb, string value, int startIndex, bool ignoreCase) => IndexOf(sb, value, null, startIndex, ignoreCase);
-
-        public static int IndexOf(this StringBuilder sb, string value,string escapeChar, int startIndex, bool ignoreCase)
+        public static int IndexOf(this StringBuilder sb, string value, int startIndex, bool ignoreCase)
         {
             if (value == null)
             {
                 return -1;
             }
 
-            int index = 0;
+            int index;
             var length = value.Length;
             var maxSearchLength = sb.Length - length + 1;
 
             if (ignoreCase)
             {
-                return CaseInsensitiveIndexOf(sb, value, startIndex, ref index, length, maxSearchLength);
+                for (int i = startIndex; i < maxSearchLength; ++i)
+                {
+                    if (Char.ToLower(sb[i]) == Char.ToLower(value[0]))
+                    {
+                        index = 1;
+                        while (index < length && Char.ToLower(sb[i + index]) == Char.ToLower(value[index]))
+                        {
+                            ++index;
+                        }
+
+                        if (index == length)
+                        {
+                            return i;
+                        }
+                    }
+                }
+
+                return -1;
             }
 
             for (int i = startIndex; i < maxSearchLength; ++i)
@@ -268,46 +268,7 @@ namespace Dev2.Common.Common
 
             return -1;
         }
-
-        private static int CaseInsensitiveIndexOf(StringBuilder sb, string value, int startIndex, ref int index, int length, int maxSearchLength)
-        {
-            for (int i = startIndex; i < maxSearchLength; ++i)
-            {
-                if (Char.ToLower(sb[i]) == Char.ToLower(value[0]))
-                {
-                    index = 1;                    
-                    while (index < length && sb[i + index] == value[index] || SkipDueToEscapeChar(sb,startIndex,i + index-1, escapeChar,value))
-                    {
-                        ++index;
-                    }
-
-                    if (index == length)
-                    {
-                        return i;
-                    }
-                }
-            }
-
-            return -1;
-        }
-       
-        static bool SkipDueToEscapeChar(StringBuilder word,int startIdx,int candidatePos,string escapeChar,string searchValue)
-        {            
-            if (!String.IsNullOrEmpty(escapeChar))
-            {
-                var charToRemove = escapeChar.Length == 1 ? 2 : 1;
-                var checkValue = escapeChar + searchValue;
-                var check = word.Substring(startIdx, word.Length-candidatePos+checkValue.Length- charToRemove);
-                return check.Contains(checkValue) && check.EndsWith(checkValue);
-            }
-            return false;
-        }
-
-        /// <summary>
-        ///     Turns xml into string builder
-        /// </summary>
-        /// <param name="elm">The elm.</param>
-        /// <returns></returns>
+        
         public static StringBuilder ToStringBuilder(this XElement elm)
         {
             var result = new StringBuilder();
@@ -351,7 +312,7 @@ namespace Dev2.Common.Common
         #endregion StringBuilder Methods
 
         public static string ExtractXmlAttributeFromUnsafeXml(this StringBuilder sb, string searchTagStart) => sb.ExtractXmlAttributeFromUnsafeXml(searchTagStart, "\"");
-        
+
         public static string ExtractXmlAttributeFromUnsafeXml(this StringBuilder sb, string searchTagStart,
             string searchTagEnd)
         {
@@ -419,7 +380,7 @@ namespace Dev2.Common.Common
 
             try
             {
-                
+
                 XDocument.Parse(content);
                 return true;
             }
