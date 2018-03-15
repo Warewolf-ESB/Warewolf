@@ -40,46 +40,46 @@ namespace Dev2.FindMissingStrategies
             var results = new List<string>();
             var activityType = activity.GetType();
 
-            if (activityType == typeof(DsfDataSplitActivity) && activity is DsfDataSplitActivity dsAct)
+            if (activityType == typeof(DsfDataSplitActivity) && activity is DsfDataSplitActivity dataSplitActivity)
             {
-                results.AddRange(InternalFindMissing(dsAct.ResultsCollection));
-                if (!string.IsNullOrEmpty(dsAct.SourceString))
+                results.AddRange(InternalFindMissing(dataSplitActivity.ResultsCollection));
+                if (!string.IsNullOrEmpty(dataSplitActivity.SourceString))
                 {
-                    results.Add(dsAct.SourceString);
+                    results.Add(dataSplitActivity.SourceString);
                 }
             }
 
 
             if (activityType == typeof(DsfCreateJsonActivity))
             {
-                if (activity is DsfCreateJsonActivity dsAct)
+                if (activity is DsfCreateJsonActivity createJsonActivity)
                 {
-                    results.AddRange(InternalFindMissing(dsAct.JsonMappings));
-                    if (!string.IsNullOrEmpty(dsAct.JsonString))
+                    results.AddRange(InternalFindMissing(createJsonActivity.JsonMappings));
+                    if (!string.IsNullOrEmpty(createJsonActivity.JsonString))
                     {
-                        results.Add(dsAct.JsonString);
+                        results.Add(createJsonActivity.JsonString);
                     }
                 }
             }
-            if (activityType == typeof(SharepointReadListActivity) && activity is SharepointReadListActivity dsAct)
+            if (activityType == typeof(SharepointReadListActivity) && activity is SharepointReadListActivity sharepointReadListActivity)
             {
-                results.AddRange(InternalFindMissing(dsAct.ReadListItems));
-                if (dsAct.FilterCriteria != null)
+                results.AddRange(InternalFindMissing(sharepointReadListActivity.ReadListItems));
+                if (sharepointReadListActivity.FilterCriteria != null)
                 {
-                    results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
+                    results.AddRange(InternalFindMissing(sharepointReadListActivity.FilterCriteria));
                 }
             }
 
-            if (activityType == typeof(SharepointCreateListItemActivity) && activity is SharepointCreateListItemActivity dsAct)
+            if (activityType == typeof(SharepointCreateListItemActivity) && activity is SharepointCreateListItemActivity sharepointCreateListItemActivity)
             {
-                results.AddRange(InternalFindMissing(dsAct.ReadListItems));
-                results.Add(dsAct.Result);
+                results.AddRange(InternalFindMissing(sharepointCreateListItemActivity.ReadListItems));
+                results.Add(sharepointCreateListItemActivity.Result);
             }
 
-            if (activityType == typeof(SharepointDeleteListItemActivity) && activity is SharepointDeleteListItemActivity dsAct)
+            if (activityType == typeof(SharepointDeleteListItemActivity) && activity is SharepointDeleteListItemActivity sharepointDeleteListItemActivity)
             {
-                results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
-                results.Add(dsAct.DeleteCount);
+                results.AddRange(InternalFindMissing(sharepointDeleteListItemActivity.FilterCriteria));
+                results.Add(sharepointDeleteListItemActivity.DeleteCount);
             }
 
             if (activityType == typeof(SharepointUpdateListItemActivity))
