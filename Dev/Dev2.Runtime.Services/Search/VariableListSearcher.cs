@@ -24,55 +24,93 @@ namespace Dev2.Runtime.Search
         public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
         {
             var searchResults = new List<ISearchResult>();
-            var ioType = GetIoType(searchParameters);
-            var allResources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
-            foreach (var resource in allResources)
+            if (searchParameters.SearchOptions.IsVariableSelected)
             {
-                var variableList = resource.DataList.ToString();
-                var variableDefinitions = DataListUtil.GenerateDefsFromDataList(variableList, ioType,true);
-                GetScalarResults(searchParameters, searchResults, resource, variableDefinitions);
-                GetRecordsetResults(searchParameters, searchResults, resource, variableDefinitions);
-                GetObjectResults(searchParameters, searchResults, resource, variableDefinitions);
-
+                var ioType = GetIoType(searchParameters);
+                var allResources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
+                foreach (var resource in allResources)
+                {
+                    if (resource.DataList != null && resource.DataList.Length > 0)
+                    {
+                        var variableList = resource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "\'").ToString();
+                        var variableDefinitions = DataListUtil.GenerateDefsFromDataList(variableList, ioType, true);
+                        GetScalarResults(searchParameters, searchResults, resource, variableDefinitions);
+                        GetRecordsetResults(searchParameters, searchResults, resource, variableDefinitions);
+                        GetObjectResults(searchParameters, searchResults, resource, variableDefinitions);
+                    }
+                }
             }
             return searchResults;
         }
 
         private static void GetObjectResults(ISearchValue searchParameters, List<ISearchResult> searchResults, IResource resource, IList<IDev2Definition> variableDefinitions)
         {
-            if (searchParameters.SearchOptions.IsObjectNameSelected)
+            if (searchParameters.SearchOptions.IsObjectNameSelected || searchParameters.SearchOptions.IsInputVariableSelected || searchParameters.SearchOptions.IsOutputVariableSelected)
             {
                 var matchingObjects = variableDefinitions.Where(v => v.IsObject && SearchUtils.FilterText(v.Name, searchParameters));
                 foreach (var matchingObject in matchingObjects)
                 {
                     var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.Object, matchingObject.Name);
                     searchResults.Add(searchResult);
+
+                    if (searchParameters.SearchOptions.IsInputVariableSelected)
+                    {
+                        var searchInputResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.ObjectInput, matchingObject.Name);
+                        searchResults.Add(searchInputResult);
+                    }
+                    if (searchParameters.SearchOptions.IsOutputVariableSelected)
+                    {
+                        var searchOutputResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.ObjectOutput, matchingObject.Name);
+                        searchResults.Add(searchOutputResult);
+                    }
                 }
             }
         }
 
         private static void GetRecordsetResults(ISearchValue searchParameters, List<ISearchResult> searchResults, IResource resource, IList<IDev2Definition> variableDefinitions)
         {
-            if (searchParameters.SearchOptions.IsRecSetNameSelected)
+            if (searchParameters.SearchOptions.IsRecSetNameSelected || searchParameters.SearchOptions.IsInputVariableSelected || searchParameters.SearchOptions.IsOutputVariableSelected)
             {
                 var matchingRecordsets = variableDefinitions.Where(v => v.IsRecordSet && SearchUtils.FilterText(v.RecordSetName, searchParameters));
                 foreach (var recordSet in matchingRecordsets)
                 {
                     var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.RecordSet, recordSet.RecordSetName);
                     searchResults.Add(searchResult);
+
+                    if (searchParameters.SearchOptions.IsInputVariableSelected)
+                    {
+                        var searchInputResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.RecordSetInput, recordSet.RecordSetName);
+                        searchResults.Add(searchInputResult);
+                    }
+                    if (searchParameters.SearchOptions.IsOutputVariableSelected)
+                    {
+                        var searchOutputResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.RecordSetOutput, recordSet.RecordSetName);
+                        searchResults.Add(searchOutputResult);
+                    }
                 }
             }
         }
 
         private static void GetScalarResults(ISearchValue searchParameters, List<ISearchResult> searchResults, IResource resource, IList<IDev2Definition> variableDefinitions)
         {
-            if (searchParameters.SearchOptions.IsScalarNameSelected)
+            if (searchParameters.SearchOptions.IsScalarNameSelected || searchParameters.SearchOptions.IsInputVariableSelected || searchParameters.SearchOptions.IsOutputVariableSelected)
             {
                 var matchingScalars = variableDefinitions.Where(v => !v.IsObject && !v.IsRecordSet && SearchUtils.FilterText(v.Name, searchParameters));
                 foreach (var scalar in matchingScalars)
                 {
                     var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.Scalar, scalar.Name);
                     searchResults.Add(searchResult);
+
+                    if (searchParameters.SearchOptions.IsInputVariableSelected)
+                    {
+                        var searchInputResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.ScalarInput, scalar.Name);
+                        searchResults.Add(searchInputResult);
+                    }
+                    if (searchParameters.SearchOptions.IsOutputVariableSelected)
+                    {
+                        var searchOutputResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.ScalarOutput, scalar.Name);
+                        searchResults.Add(searchOutputResult);
+                    }
                 }
             }
         }

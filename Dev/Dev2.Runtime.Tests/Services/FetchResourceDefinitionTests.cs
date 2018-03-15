@@ -15,6 +15,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Enums;
 using System.Linq;
 using Dev2.Runtime.Hosting;
+using System.Activities;
 // ReSharper disable InconsistentNaming
 
 namespace Dev2.Tests.Runtime.Services
@@ -185,6 +186,10 @@ namespace Dev2.Tests.Runtime.Services
         [TestCategory("FetchResourceDefinition_Execute")]
         public void FetchResourceDefinition_Execute_WhenForDeployment_ShouldDecryptPassword()
         {
+            var parser = new Mock<IActivityParser>();
+            parser.Setup(a => a.Parse(It.IsAny<DynamicActivity>())).Returns(new Mock<IDev2Activity>().Object);
+            CustomContainer.Register(parser.Object);
+
             //------------Setup for test--------------------------
             var mockWorkspace = new Mock<IWorkspace>();
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);

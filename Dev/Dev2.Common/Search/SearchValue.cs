@@ -27,7 +27,7 @@ namespace Dev2.Common.Search
         }
     }
 
-    public class SearchResult : ISearchResult
+    public class SearchResult : ISearchResult, IEquatable<ISearchResult>
     {
         public SearchResult()
         {
@@ -47,6 +47,40 @@ namespace Dev2.Common.Search
         public string Path { get; set; }
         public SearchItemType Type { get; set; }
         public string Match { get; set; }
+
+        public bool Equals(ISearchResult other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            var equals = other.Match == Match;
+            equals &= other.ResourceId == ResourceId;
+            equals &= other.Name == Name;
+            equals &= other.Path == Path;
+            equals &= other.Type == Type;
+            return equals;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ISearchResult searchResult)
+            {
+                return Equals(searchResult);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            var hashCode = 271001031;
+            hashCode = hashCode * -1521134295 + EqualityComparer<Guid>.Default.GetHashCode(ResourceId);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Name);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Path);
+            hashCode = hashCode * -1521134295 + Type.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Match);
+            return hashCode;
+        }
     }
 
     public class SearchOptions : ISearchOptions
@@ -65,8 +99,7 @@ namespace Dev2.Common.Search
 
         public SearchOptions()
         {
-            IsAllSelected = true;
-            UpdateAllStates(true);
+            
         }
 
         public bool IsAllSelected
@@ -149,6 +182,18 @@ namespace Dev2.Common.Search
                 _isOutputVariableSelected = value;
                 OnPropertyChanged();
             }
+        }
+
+        public bool IsVariableSelected => GetAnyVariableSelected();
+
+        private bool GetAnyVariableSelected()
+        {
+            var isSelected = IsScalarNameSelected;
+            isSelected |= IsRecSetNameSelected;
+            isSelected |= IsObjectNameSelected;
+            isSelected |= IsInputVariableSelected;
+            isSelected |= IsOutputVariableSelected;
+            return isSelected;
         }
 
         public void UpdateAllStates(bool value)

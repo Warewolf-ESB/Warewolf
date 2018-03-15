@@ -25,15 +25,18 @@ namespace Dev2.Runtime.Search
         {
             var foundItems = new List<ISearchResult>();
 
-            var tests = _testCatalog.FetchAllTests();
-            foreach (var test in tests)
+            if (searchParameters.SearchOptions.IsTestNameSelected)
             {
-                var found = SearchUtils.FilterText(test.TestName, searchParameters);
-                if (found)
+                var tests = _testCatalog.FetchAllTests();
+                foreach (var test in tests)
                 {
-                    var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, test.ResourceId);
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.TestName, test.TestName);
-                    foundItems.Add(searchResult);
+                    var found = SearchUtils.FilterText(test.TestName, searchParameters);
+                    if (found)
+                    {
+                        var resource = _resourceCatalog.GetResource(GlobalConstants.ServerWorkspaceID, test.ResourceId);
+                        var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.TestName, test.TestName);
+                        foundItems.Add(searchResult);
+                    }
                 }
             }
             return foundItems;

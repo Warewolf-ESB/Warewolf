@@ -62,6 +62,7 @@ namespace Dev2.Common.Interfaces.Search
         bool IsRecSetNameSelected { get; set; }
         bool IsInputVariableSelected { get; set; }
         bool IsOutputVariableSelected { get; set; }
+        bool IsVariableSelected { get; }
         bool IsTestNameSelected { get; set; }
         bool IsMatchCaseSelected { get; set; }
         bool IsMatchWholeWordSelected { get; set; }

@@ -25,11 +25,30 @@ namespace Dev2.Runtime.Search
                 foreach (var resourceActivity in _resourceCatalog.GetResourceActivityCache(GlobalConstants.ServerWorkspaceID).Cache)
                 {
                     var activity = resourceActivity.Value;
-                    var nextNodes = new List<IDev2Activity> { activity };
-                    var allNodes = nextNodes.Flatten(act => act.GetNextNodes()).Flatten(act => act.GetChildrenNodes());
-                    foreach (var next in allNodes)
+                    var allNodes = new List<IDev2Activity> { activity };
+                    var seenNodes = new List<string>();
+                    while (allNodes != null)
                     {
-                        PerformSearchOnActivity(searchParameters, searchResults, resourceActivity, next);
+                        var nextNodes = new List<IDev2Activity>();
+                        foreach (var next in allNodes)
+                        {
+                            if (seenNodes.Contains(next.UniqueID))
+                            {
+                                continue;
+                            }
+                            PerformSearchOnActivity(searchParameters, searchResults, resourceActivity, next);
+                            seenNodes.Add(next.UniqueID);
+                            nextNodes.AddRange(next.GetNextNodes().DistinctBy(t => t.UniqueID));
+                            nextNodes.AddRange(next.GetChildrenNodes().DistinctBy(t => t.UniqueID));
+                        }
+                        if (nextNodes.Count != 0)
+                        {
+                            allNodes = nextNodes;
+                        }
+                        else
+                        {
+                            allNodes = null;
+                        }
                     }
                 }
             }
