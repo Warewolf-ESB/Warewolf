@@ -255,6 +255,7 @@
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
     <Compile Include="Search\ActivitySearcherTests.cs" />
+    <Compile Include="Search\ResourceSearcherTests.cs" />
     <Compile Include="Search\TestSearcherTests.cs" />
     <Compile Include="Search\VariableListSearcherTests.cs" />
     <Compile Include="ServiceModel\ComPluginServicesTest.cs" />

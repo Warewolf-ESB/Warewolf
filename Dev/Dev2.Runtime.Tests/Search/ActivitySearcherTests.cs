@@ -11,6 +11,8 @@ using Warewolf.ResourceManagement;
 
 namespace Dev2.Tests.Runtime.Search
 {
+
+
     [TestClass]
     public class ActivitySearcherTests
     {
