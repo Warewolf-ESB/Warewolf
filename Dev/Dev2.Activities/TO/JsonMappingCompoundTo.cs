@@ -249,23 +249,28 @@ namespace Dev2.TO
                     var a = new JObject();
                     foreach (KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair in data)
                     {
-                        if (pair.Key != FsInteropFunctions.PositionColumn)
-                        {
-                            try
-                            {
-                                a.Add(new JProperty(pair.Key, CommonFunctions.atomToJsonCompatibleObject(pair.Value[j])));
-                            }
-                            catch (Exception)
-                            {
-                                a.Add(new JProperty(pair.Key, null));
-                            }
-                        }
+                        TryAddPairKey(j, a, pair);
                     }
                     jObjects.Add(a);
                 }
                 return jObjects;
             }
             throw new Exception(ErrorResource.InvalidResultTypeFromWarewolfStorage);
+        }
+
+        private static void TryAddPairKey(int j, JObject a, KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair)
+        {
+            if (pair.Key != FsInteropFunctions.PositionColumn)
+            {
+                try
+                {
+                    a.Add(new JProperty(pair.Key, CommonFunctions.atomToJsonCompatibleObject(pair.Value[j])));
+                }
+                catch (Exception)
+                {
+                    a.Add(new JProperty(pair.Key, null));
+                }
+            }
         }
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
