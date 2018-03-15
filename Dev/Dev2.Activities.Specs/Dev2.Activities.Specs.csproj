@@ -75,6 +75,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Composition\CompositionLoadTests.feature.cs">
+      <DependentUpon>CompositionLoadTests.feature</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Deploy\ContainerOps.cs" />
     <Compile Include="MergeExecutionSteps.cs" />
     <Compile Include="Composition\SubworkflowExecution.feature.cs">
@@ -373,6 +378,10 @@
     <None Include="Composition\AssignWorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>AssignWorkflowExecution.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Composition\CompositionLoadTests.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>CompositionLoadTests.feature.cs</LastGenOutput>
     </None>
     <None Include="Merge\MergeExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
