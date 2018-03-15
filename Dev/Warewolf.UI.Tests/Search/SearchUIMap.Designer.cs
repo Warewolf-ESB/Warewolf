@@ -29,7 +29,32 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
     public partial class SearchUIMap
     {
         
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfCustom remoteConnectionInteCustom = this.MainStudioWindow.RemoteConnectionInteCustom;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'Remote Connection Integration' custom control equals 'Custom'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.RemoteConnectionInteCustomControlType, remoteConnectionInteCustom.ControlType.ToString());
+        }
+        
         #region Properties
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -41,10 +66,41 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
                 return this.mMainStudioWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Remote Connection Integration' custom control equals 'Custom'
+        /// </summary>
+        public string RemoteConnectionInteCustomControlType = "Custom";
         #endregion
     }
     
@@ -74,10 +130,29 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
                 return this.mDockManager;
             }
         }
+        
+        public WpfCustom RemoteConnectionInteCustom
+        {
+            get
+            {
+                if ((this.mRemoteConnectionInteCustom == null))
+                {
+                    this.mRemoteConnectionInteCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mRemoteConnectionInteCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+                    this.mRemoteConnectionInteCustom.SearchProperties[WpfControl.PropertyNames.Name] = "Remote Connection Integration";
+                    this.mRemoteConnectionInteCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mRemoteConnectionInteCustom;
+            }
+        }
         #endregion
         
         #region Fields
         private DockManager mDockManager;
+        
+        private WpfCustom mRemoteConnectionInteCustom;
         #endregion
     }
     
@@ -859,6 +934,108 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
         
         #region Fields
         private WpfText mType;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISearchConnectControlCustom UISearchConnectControlCustom
+        {
+            get
+            {
+                if ((this.mUISearchConnectControlCustom == null))
+                {
+                    this.mUISearchConnectControlCustom = new UISearchConnectControlCustom(this);
+                }
+                return this.mUISearchConnectControlCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISearchConnectControlCustom mUISearchConnectControlCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UISearchConnectControlCustom : WpfCustom
+    {
+        
+        public UISearchConnectControlCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SearchConnectControl";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UITheServerComboBoxCustom UITheServerComboBoxCustom
+        {
+            get
+            {
+                if ((this.mUITheServerComboBoxCustom == null))
+                {
+                    this.mUITheServerComboBoxCustom = new UITheServerComboBoxCustom(this);
+                }
+                return this.mUITheServerComboBoxCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UITheServerComboBoxCustom mUITheServerComboBoxCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UITheServerComboBoxCustom : WpfCustom
+    {
+        
+        public UITheServerComboBoxCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton ToggleButtonButton
+        {
+            get
+            {
+                if ((this.mToggleButtonButton == null))
+                {
+                    this.mToggleButtonButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mToggleButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
+                    this.mToggleButtonButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mToggleButtonButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mToggleButtonButton;
         #endregion
     }
 }
