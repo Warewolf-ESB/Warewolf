@@ -11,8 +11,6 @@ using Warewolf.ResourceManagement;
 
 namespace Dev2.Tests.Runtime.Search
 {
-
-
     [TestClass]
     public class ActivitySearcherTests
     {
@@ -168,9 +166,9 @@ namespace Dev2.Tests.Runtime.Search
             var searchResults = searcher.GetSearchResults(searchValue);
             Assert.AreEqual(2, searchResults.Count);
             Assert.AreEqual(Guid.Empty, searchResults[0].ResourceId);
-            Assert.AreEqual("Get Bob Name", searchResults[0].Match);
+            Assert.AreEqual("Set Bob Name", searchResults[0].Match);
             Assert.AreEqual(Guid.Empty, searchResults[1].ResourceId);
-            Assert.AreEqual("Set Bob Name", searchResults[1].Match);
+            Assert.AreEqual("Get Bob Name", searchResults[1].Match);
         }
 
 
@@ -248,9 +246,9 @@ namespace Dev2.Tests.Runtime.Search
             var searchResults = searcher.GetSearchResults(searchValue);
             Assert.AreEqual(3, searchResults.Count);
             Assert.AreEqual(Guid.Empty, searchResults[0].ResourceId);
-            Assert.AreEqual("Get Bob Name", searchResults[0].Match);
+            Assert.AreEqual("Set Bob Name", searchResults[0].Match);
             Assert.AreEqual(Guid.Empty, searchResults[1].ResourceId);
-            Assert.AreEqual("Set Bob Name", searchResults[1].Match);
+            Assert.AreEqual("Get Bob Name", searchResults[1].Match);
             Assert.AreEqual(otherResourceId, searchResults[2].ResourceId);
             Assert.AreEqual("What's bobs name", searchResults[2].Match);
         }

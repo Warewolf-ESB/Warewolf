@@ -11,7 +11,6 @@ using System.Collections.Generic;
 
 namespace Dev2.Tests.Runtime.Search
 {
-
     [TestClass]
     public class TestSearcherTests
     {
@@ -54,7 +53,7 @@ namespace Dev2.Tests.Runtime.Search
                 SearchOptions = new SearchOptions
                 {
                     IsAllSelected = false,
-                    IsToolTitleSelected = true
+                    IsTestNameSelected = true
                 }
             };
 
