@@ -190,6 +190,8 @@
     <Compile Include="Scheduler\SchedulerUIMap.Designer.cs">
       <DependentUpon>SchedulerUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="Search\TestNameSearchTests.cs" />
+    <Compile Include="Search\InputSearchTests.cs" />
     <Compile Include="Search\SearchUIMap.cs">
       <DependentUpon>SearchUIMap.uitest</DependentUpon>
     </Compile>
@@ -197,6 +199,12 @@
       <DependentUpon>SearchUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="Search\SearchViewTests.cs" />
+    <Compile Include="Search\ServiceSearchTests.cs" />
+    <Compile Include="Search\ObjectSearchTests.cs" />
+    <Compile Include="Search\ScalarSearchTests.cs" />
+    <Compile Include="Search\TitleSearchTests.cs" />
+    <Compile Include="Search\OutputSearchTests.cs" />
+    <Compile Include="Search\RecordsetSearchTests.cs" />
     <Compile Include="ServerSource\ServerSourceTests.cs" />
     <Compile Include="ServerSource\ServerSourceUIMap.cs">
       <DependentUpon>ServerSourceUIMap.uitest</DependentUpon>
