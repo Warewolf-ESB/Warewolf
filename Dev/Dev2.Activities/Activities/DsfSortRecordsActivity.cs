@@ -130,13 +130,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    if (data.IsWarewolfAtomResult)
+                    if (data.IsWarewolfAtomResult && data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
                     {
-                        if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
-                        {
-                            AddDebugOutputItem(new DebugItemStaticDataParams("", SortField, "", "="));
-                        }
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", SortField, "", "="));
                     }
+
                 }
             }
         }
