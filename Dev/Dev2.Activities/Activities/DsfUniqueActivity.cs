@@ -162,28 +162,31 @@ namespace Dev2.Activities
                 var i = 1;
                 foreach (var field in toresultfields)
                 {
-                    
                     if(!string.IsNullOrEmpty(field))
                     {
-                        try
-                        {
-                            var res = new DebugEvalResult(dataObject.Environment.ToStar(field), "", dataObject.Environment, update);
-
-                            if (!hasErrors)
-                            {
-                                AddDebugOutputItem(new DebugItemStaticDataParams("","",i.ToString(CultureInfo.InvariantCulture)));
-                            }
-
-                            AddDebugOutputItem(res);
-                        }
-                        catch(Exception)
-                        {
-                            AddDebugOutputItem(new DebugItemStaticDataParams("", field, ""));
-                            throw;
-                        }
+                        TryAddDebugOutputItem(dataObject, hasErrors, update, i++, field);
                     }
-                    i++;
                 }
+            }
+        }
+
+        void TryAddDebugOutputItem(IDSFDataObject dataObject, bool hasErrors, int update, int i, string field)
+        {
+            try
+            {
+                var res = new DebugEvalResult(dataObject.Environment.ToStar(field), "", dataObject.Environment, update);
+
+                if (!hasErrors)
+                {
+                    AddDebugOutputItem(new DebugItemStaticDataParams("", "", i.ToString(CultureInfo.InvariantCulture)));
+                }
+
+                AddDebugOutputItem(res);
+            }
+            catch (Exception)
+            {
+                AddDebugOutputItem(new DebugItemStaticDataParams("", field, ""));
+                throw;
             }
         }
 
@@ -192,24 +195,29 @@ namespace Dev2.Activities
             if(dataObject.IsDebugMode())
             {
                 AddDebugInputItem(new DebugItemStaticDataParams("", "In Field(s)"));
-                foreach(var field in fromFields)
-                {
-                    // TODO : if EvaluateforDebug
-                    if(!string.IsNullOrEmpty(field))
-                    {
-                        try
-                        {
-                            AddDebugInputItem(new DebugEvalResult( field, "", dataObject.Environment, update));
-                        }
-                        catch(Exception)
-                        {
-                            AddDebugInputItem(new DebugItemStaticDataParams("", field, ""));
-                        }
-                    }
-                }
-                AddDebugInputItem(new DebugItemStaticDataParams("",ResultFields, "Return Fields"));
+                AddEachDebugInputFromField(dataObject, fromFields, update);
+                AddDebugInputItem(new DebugItemStaticDataParams("", ResultFields, "Return Fields"));
             }
 
+        }
+
+        private void AddEachDebugInputFromField(IDSFDataObject dataObject, IEnumerable<string> fromFields, int update)
+        {
+            foreach (var field in fromFields)
+            {
+                // TODO : if EvaluateforDebug
+                if (!string.IsNullOrEmpty(field))
+                {
+                    try
+                    {
+                        AddDebugInputItem(new DebugEvalResult(field, "", dataObject.Environment, update));
+                    }
+                    catch (Exception)
+                    {
+                        AddDebugInputItem(new DebugItemStaticDataParams("", field, ""));
+                    }
+                }
+            }
         }
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
