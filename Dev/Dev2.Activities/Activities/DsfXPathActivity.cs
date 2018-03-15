@@ -206,34 +206,39 @@ namespace Dev2.Activities
             return i;
         }
 
-        private int ProcessResultsCollection(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO allErrors, string c)
+        int ProcessResultsCollection(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO allErrors, string c)
         {
             int i;
             for (i = 0; i < ResultsCollection.Count; i++)
             {
                 if (!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
                 {
-                    var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
-                    var xpathIterator = new WarewolfIterator(xpathEntry);
-                    while (xpathIterator.HasMoreData())
-                    {
-                        var xpathCol = xpathIterator.GetNextValue();
-                        try
-                        {
-                            var eval = parser.ExecuteXPath(c, xpathCol).ToList();
-                            var variable = ResultsCollection[i].OutputVariable;
-                            AssignResult(variable, dataObject, eval, update);
-                        }
-                        catch (Exception e)
-                        {
-                            allErrors.AddError(e.Message);
-                            dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
-                        }
-                    }
+                    IterateOverXPath(dataObject, update, parser, allErrors, c, i);
                 }
             }
 
             return i;
+        }
+
+        void IterateOverXPath(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO allErrors, string c, int i)
+        {
+            var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
+            var xpathIterator = new WarewolfIterator(xpathEntry);
+            while (xpathIterator.HasMoreData())
+            {
+                var xpathCol = xpathIterator.GetNextValue();
+                try
+                {
+                    var eval = parser.ExecuteXPath(c, xpathCol).ToList();
+                    var variable = ResultsCollection[i].OutputVariable;
+                    AssignResult(variable, dataObject, eval, update);
+                }
+                catch (Exception e)
+                {
+                    allErrors.AddError(e.Message);
+                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
+                }
+            }
         }
 
         void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval, int update)
