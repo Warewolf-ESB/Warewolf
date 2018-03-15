@@ -40,19 +40,17 @@ namespace Dev2.FindMissingStrategies
             var results = new List<string>();
             var activityType = activity.GetType();
 
-            if (activityType == typeof(DsfDataSplitActivity))
+            if (activityType == typeof(DsfDataSplitActivity) && activity is DsfDataSplitActivity dsAct)
             {
-                if (activity is DsfDataSplitActivity dsAct)
+                results.AddRange(InternalFindMissing(dsAct.ResultsCollection));
+                if (!string.IsNullOrEmpty(dsAct.SourceString))
                 {
-                    results.AddRange(InternalFindMissing(dsAct.ResultsCollection));
-                    if (!string.IsNullOrEmpty(dsAct.SourceString))
-                    {
-                        results.Add(dsAct.SourceString);
-                    }
+                    results.Add(dsAct.SourceString);
                 }
-            }            
-            
-            if(activityType == typeof(DsfCreateJsonActivity))
+            }
+
+
+            if (activityType == typeof(DsfCreateJsonActivity))
             {
                 if (activity is DsfCreateJsonActivity dsAct)
                 {
@@ -63,34 +61,27 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
-            if (activityType == typeof(SharepointReadListActivity))
+            if (activityType == typeof(SharepointReadListActivity) && activity is SharepointReadListActivity dsAct)
             {
-                if (activity is SharepointReadListActivity dsAct)
-                {
-                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));
-                    if (dsAct.FilterCriteria != null)
-                    {
-                        results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
-                    }
-                }
-            }
-            if (activityType == typeof(SharepointCreateListItemActivity))
-            {
-                if (activity is SharepointCreateListItemActivity dsAct)
-                {
-                    results.AddRange(InternalFindMissing(dsAct.ReadListItems));
-                    results.Add(dsAct.Result);
-                }
-            }
-            if (activityType == typeof(SharepointDeleteListItemActivity))
-            {
-                if (activity is SharepointDeleteListItemActivity dsAct)
+                results.AddRange(InternalFindMissing(dsAct.ReadListItems));
+                if (dsAct.FilterCriteria != null)
                 {
                     results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
-                    results.Add(dsAct.DeleteCount);
                 }
-
             }
+
+            if (activityType == typeof(SharepointCreateListItemActivity) && activity is SharepointCreateListItemActivity dsAct)
+            {
+                results.AddRange(InternalFindMissing(dsAct.ReadListItems));
+                results.Add(dsAct.Result);
+            }
+
+            if (activityType == typeof(SharepointDeleteListItemActivity) && activity is SharepointDeleteListItemActivity dsAct)
+            {
+                results.AddRange(InternalFindMissing(dsAct.FilterCriteria));
+                results.Add(dsAct.DeleteCount);
+            }
+
             if (activityType == typeof(SharepointUpdateListItemActivity))
             {
                 if (activity is SharepointUpdateListItemActivity dsAct)
@@ -135,21 +126,19 @@ namespace Dev2.FindMissingStrategies
             }
             else
             {
-                if (activityType == typeof(DsfFindRecordsMultipleCriteriaActivity))
+                if (activityType == typeof(DsfFindRecordsMultipleCriteriaActivity) && activity is DsfFindRecordsMultipleCriteriaActivity frmAct)
                 {
-                    if (activity is DsfFindRecordsMultipleCriteriaActivity frmAct)
+                    results.AddRange(InternalFindMissing(frmAct.ResultsCollection));
+                    if (!string.IsNullOrEmpty(frmAct.FieldsToSearch))
                     {
-                        results.AddRange(InternalFindMissing(frmAct.ResultsCollection));
-                        if (!string.IsNullOrEmpty(frmAct.FieldsToSearch))
-                        {
-                            results.Add(frmAct.FieldsToSearch);
-                        }
-                        if (!string.IsNullOrEmpty(frmAct.Result))
-                        {
-                            results.Add(frmAct.Result);
-                        }
+                        results.Add(frmAct.FieldsToSearch);
+                    }
+                    if (!string.IsNullOrEmpty(frmAct.Result))
+                    {
+                        results.Add(frmAct.Result);
                     }
                 }
+
             }
 
             if (activity is DsfNativeActivity<string> act)
