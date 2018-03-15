@@ -134,7 +134,6 @@ namespace Dev2.Activities.Sharepoint
                     var index = 1;
                     foreach (var listItem in listItems)
                     {
-
                         foreach (var sharepointReadListTo in sharepointReadListTos)
                         {
                             var variableName = sharepointReadListTo.VariableName;
