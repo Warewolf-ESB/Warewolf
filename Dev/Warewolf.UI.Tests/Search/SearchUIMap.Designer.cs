@@ -66,26 +66,12 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
                 return this.mMainStudioWindow;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
         private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -483,12 +469,30 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
                 return this.mNewServerButton;
             }
         }
+        
+        public WpfButton EditServerSource
+        {
+            get
+            {
+                if ((this.mEditServerSource == null))
+                {
+                    this.mEditServerSource = new WpfButton(this);
+                    #region Search Criteria
+                    this.mEditServerSource.SearchProperties[WpfButton.PropertyNames.AutomationId] = "UI_SearchServerEditbtn_AutoID";
+                    this.mEditServerSource.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEditServerSource;
+            }
+        }
         #endregion
         
         #region Fields
         private ServerComboBox mServerComboBox;
         
         private WpfButton mNewServerButton;
+        
+        private WpfButton mEditServerSource;
         #endregion
     }
     
@@ -934,108 +938,6 @@ namespace Warewolf.UI.Tests.Search.SearchUIMapClasses
         
         #region Fields
         private WpfText mType;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISearchConnectControlCustom UISearchConnectControlCustom
-        {
-            get
-            {
-                if ((this.mUISearchConnectControlCustom == null))
-                {
-                    this.mUISearchConnectControlCustom = new UISearchConnectControlCustom(this);
-                }
-                return this.mUISearchConnectControlCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISearchConnectControlCustom mUISearchConnectControlCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UISearchConnectControlCustom : WpfCustom
-    {
-        
-        public UISearchConnectControlCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectControl";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SearchConnectControl";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UITheServerComboBoxCustom UITheServerComboBoxCustom
-        {
-            get
-            {
-                if ((this.mUITheServerComboBoxCustom == null))
-                {
-                    this.mUITheServerComboBoxCustom = new UITheServerComboBoxCustom(this);
-                }
-                return this.mUITheServerComboBoxCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UITheServerComboBoxCustom mUITheServerComboBoxCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UITheServerComboBoxCustom : WpfCustom
-    {
-        
-        public UITheServerComboBoxCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamComboEditor";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "TheServerComboBox";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfButton ToggleButtonButton
-        {
-            get
-            {
-                if ((this.mToggleButtonButton == null))
-                {
-                    this.mToggleButtonButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mToggleButtonButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "ToggleButton";
-                    this.mToggleButtonButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mToggleButtonButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfButton mToggleButtonButton;
         #endregion
     }
 }
