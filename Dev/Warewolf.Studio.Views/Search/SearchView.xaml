@@ -57,8 +57,8 @@
         </Grid>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="-6,0,0,0">
-            <CheckBox x:Name="cbSearchMatchCase" Grid.Column="6" Grid.Row="0" IsChecked="{Binding IsMatchCaseSelected}">Match case</CheckBox>
-            <CheckBox x:Name="cbSearchMatchWholeWord" Grid.Column="6" Grid.Row="1" IsChecked="{Binding IsMatchWholeWordSelected}">Match whole word</CheckBox>
+            <CheckBox x:Name="cbSearchMatchCase" Grid.Column="6" Grid.Row="0" IsChecked="{Binding SearchValue.SearchOptions.IsMatchCaseSelected}">Match case</CheckBox>
+            <CheckBox x:Name="cbSearchMatchWholeWord" Grid.Column="6" Grid.Row="1" IsChecked="{Binding SearchValue.SearchOptions.IsMatchWholeWordSelected}">Match whole word</CheckBox>
         </StackPanel>
         
         <!-- SEARCH OPTIONS -->
