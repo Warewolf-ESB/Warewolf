@@ -117,7 +117,7 @@ namespace Dev2.Activities
                     }
                     if (!allErrors.HasErrors())
                     {
-                        i = Process(dataObject, update, i, parser, errors, ref allErrors);
+                        i = Process(dataObject, update, i, parser, allErrors, errors);
                     }
                     DoDebug(dataObject, update, allErrors);
                 }
@@ -189,7 +189,7 @@ namespace Dev2.Activities
             }
         }
 
-        int Process(IDSFDataObject dataObject, int update, int i, XPathParser parser, ErrorResultTO errors, ref ErrorResultTO allErrors)
+        int Process(IDSFDataObject dataObject, int update, int i, XPathParser parser, ErrorResultTO allErrors, ErrorResultTO errors)
         {
             if (!string.IsNullOrEmpty(SourceString))
             {
@@ -199,13 +199,14 @@ namespace Dev2.Activities
                 while (itr.HasMoreData())
                 {
                     var c = itr.FetchNextValue(sourceIterator);
-                    i = IterateXPath(dataObject, update, parser, errors, c, ref allErrors);
+                    i = ProcessResultsCollection(dataObject, update, parser, allErrors, c);
+                    allErrors.MergeErrors(errors);
                 }
             }
             return i;
         }
 
-        private int IterateXPath(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO errors, string c, ref ErrorResultTO allErrors)
+        private int ProcessResultsCollection(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO allErrors, string c)
         {
             int i;
             for (i = 0; i < ResultsCollection.Count; i++)
@@ -216,29 +217,23 @@ namespace Dev2.Activities
                     var xpathIterator = new WarewolfIterator(xpathEntry);
                     while (xpathIterator.HasMoreData())
                     {
-                        allErrors.MergeErrors(TryAssignResult(dataObject, update, parser, c, i, xpathIterator, allErrors));
+                        var xpathCol = xpathIterator.GetNextValue();
+                        try
+                        {
+                            var eval = parser.ExecuteXPath(c, xpathCol).ToList();
+                            var variable = ResultsCollection[i].OutputVariable;
+                            AssignResult(variable, dataObject, eval, update);
+                        }
+                        catch (Exception e)
+                        {
+                            allErrors.AddError(e.Message);
+                            dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
+                        }
                     }
                 }
             }
-            allErrors.MergeErrors(errors);
-            return i;
-        }
 
-        ErrorResultTO TryAssignResult(IDSFDataObject dataObject, int update, XPathParser parser, string c, int i, WarewolfIterator xpathIterator, ErrorResultTO allErrors)
-        {
-            var xpathCol = xpathIterator.GetNextValue();
-            try
-            {
-                var eval = parser.ExecuteXPath(c, xpathCol).ToList();
-                var variable = ResultsCollection[i].OutputVariable;
-                AssignResult(variable, dataObject, eval, update);
-            }
-            catch (Exception e)
-            {
-                allErrors.AddError(e.Message);
-                dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
-            }
-            return allErrors;
+            return i;
         }
 
         void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval, int update)
