@@ -1771,74 +1771,70 @@ namespace Dev2.Studio.ViewModels
                 }
                 else
                 {
-                    if (vm.GetType().Name == "SourceViewModel`1")
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IServerSource> serverSourceModel && (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged))
                     {
-                        if (vm is SourceViewModel<IServerSource> serverSourceModel && (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<IPluginSource> pluginSourceModel && (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IPluginSource> pluginSourceModel && (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel && (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel && (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel && (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel && (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<ISharepointServerSource> sharepointServerSourceModel && (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<ISharepointServerSource> sharepointServerSourceModel && (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<IOAuthSource> oAuthSourceModel && (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IOAuthSource> oAuthSourceModel && (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<IExchangeSource> exchangeSourceModel && (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IExchangeSource> exchangeSourceModel && (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<IComPluginSource> comPluginSourceModel && (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IComPluginSource> comPluginSourceModel && (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<IWebServiceSource> webServiceSourceModel && (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IWebServiceSource> webServiceSourceModel && (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<IEmailServiceSource> emailServiceSourceModel && (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IEmailServiceSource> emailServiceSourceModel && (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
 
-                        if (vm is SourceViewModel<IDbSource> dbSourceModel && (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged))
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
-
+                    if (vm.GetType().Name == "SourceViewModel`1" && vm is SourceViewModel<IDbSource> dbSourceModel && (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
                 }
             }
