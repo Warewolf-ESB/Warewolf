@@ -20,6 +20,7 @@ using System.Management;
 using Dev2.Activities.Specs.Composition;
 using System.Threading;
 using Dev2.Common;
+using Warewolf.Launcher;
 
 namespace Dev2.Activities.Specs.Deploy
 {

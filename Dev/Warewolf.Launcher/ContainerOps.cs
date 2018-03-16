@@ -6,9 +6,9 @@ using System.Net.Http;
 using System.Text;
 using System.Management;
 
-namespace Dev2.Activities.Specs.Deploy
+namespace Warewolf.Launcher
 {
-    class ContainerOps
+    public class ContainerOps
     {
         readonly string _remoteDockerApi;
         string _remoteContainerID = null;
@@ -236,7 +236,7 @@ namespace Dev2.Activities.Specs.Deploy
                     if (!response.IsSuccessStatusCode)
                     {
                         Console.Write("Starting remote server container: " + reader.ReadToEnd());
-                    }                    
+                    }
                 }
             }
         }
