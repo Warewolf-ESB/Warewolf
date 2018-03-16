@@ -41,7 +41,7 @@
   </Configuration>
   <InitializeActions />
   <ExecuteActions>
-    <AssertAction UIObjectName="SearchUIMap.MainStudioWindow.RemoteConnectionInteCustom">
+    <AssertAction UIObjectName="SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager">
       <ParameterName />
       <PropertyName>ControlType</PropertyName>
       <ExpectedValue>Custom</ExpectedValue>
@@ -441,116 +441,244 @@
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants />
                                 </UIObject>
-                                <UIObject ControlType="Table" Id="SearchResultsTable" FriendlyName="SearchResults" SpecialControlType="None">
+                                <UIObject ControlType="Custom" Id="WorkSurfaceContent" FriendlyName="Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceCont..." SpecialControlType="None">
                                   <TechnologyName>UIA</TechnologyName>
                                   <WindowTitles>
-                                    <WindowTitle>SearchView</WindowTitle>
+                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                   </WindowTitles>
                                   <AndCondition>
                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                    <PropertyCondition Name="ControlType">Table</PropertyCondition>
-                                    <PropertyCondition Name="AutomationId">SearchResults</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel</PropertyCondition>
                                   </AndCondition>
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants>
-                                    <UIObject ControlType="Row" Id="ResultRow1" FriendlyName="" SpecialControlType="None">
+                                    <UIObject ControlType="Custom" Id="ContentDockManager" FriendlyName="ContentDockManager" SpecialControlType="None">
                                       <TechnologyName>UIA</TechnologyName>
                                       <WindowTitles>
-                                        <WindowTitle>SearchView</WindowTitle>
+                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                       </WindowTitles>
-                                      <SearchConfigurations>
-                                        <SearchConfiguration>AlwaysSearch</SearchConfiguration>
-                                      </SearchConfigurations>
                                       <AndCondition>
-                                        <PropertyCondition Name="ControlType">Row</PropertyCondition>
                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                        <PropertyCondition Name="ClassName">Uia.XamDockManager</PropertyCondition>
+                                        <PropertyCondition Name="AutomationId">ContentDockManager</PropertyCondition>
                                       </AndCondition>
                                       <SupportLevel>0</SupportLevel>
                                       <Descendants>
-                                        <UIObject ControlType="Cell" Id="Name" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                        <UIObject ControlType="Custom" Id="SearchViewUserControl" FriendlyName="SearchViewUserControl" SpecialControlType="None">
                                           <TechnologyName>UIA</TechnologyName>
                                           <WindowTitles>
-                                            <WindowTitle>SearchView</WindowTitle>
+                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                           </WindowTitles>
                                           <AndCondition>
-                                            <PropertyCondition Name="ColumnHeader">Name</PropertyCondition>
-                                            <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Cell" Id="Path" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>SearchView</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ColumnHeader">Path</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Cell" Id="TypeCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>SearchView</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ColumnHeader">Type</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                            <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                            <PropertyCondition Name="ClassName">Uia.SearchView</PropertyCondition>
+                                            <PropertyCondition Name="AutomationId">SearchViewUserControl</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants>
-                                            <UIObject ControlType="Text" Id="Type" FriendlyName="WorkflowName" SpecialControlType="None">
+                                            <UIObject ControlType="Table" Id="SearchResultsTable" FriendlyName="SearchResults" SpecialControlType="None">
                                               <TechnologyName>UIA</TechnologyName>
                                               <WindowTitles>
                                                 <WindowTitle>SearchView</WindowTitle>
                                               </WindowTitles>
                                               <AndCondition>
                                                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                <PropertyCondition Name="Name">WorkflowName</PropertyCondition>
+                                                <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                <PropertyCondition Name="AutomationId">SearchResults</PropertyCondition>
                                               </AndCondition>
                                               <SupportLevel>0</SupportLevel>
-                                              <Descendants />
+                                              <Descendants>
+                                                <UIObject ControlType="Row" Id="ResultRow1" FriendlyName="" SpecialControlType="None">
+                                                  <TechnologyName>UIA</TechnologyName>
+                                                  <WindowTitles>
+                                                    <WindowTitle>SearchView</WindowTitle>
+                                                  </WindowTitles>
+                                                  <SearchConfigurations>
+                                                    <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                  </SearchConfigurations>
+                                                  <AndCondition>
+                                                    <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="Name">Dev2.Common.Search.SearchResult</PropertyCondition>
+                                                    <PropertyCondition Name="ClassName" Operator="Contains">DataGridRow</PropertyCondition>
+                                                  </AndCondition>
+                                                  <SupportLevel>0</SupportLevel>
+                                                  <Descendants>
+                                                    <UIObject ControlType="Cell" Id="Name" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>SearchView</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Text" Id="WorkflowContainingIputVariable" FriendlyName="WorkFlowContainingInputVariable" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                            <PropertyCondition Name="Name">WorkFlowContainingInputVariable</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Hyperlink" Id="WorkFlowContainingInputVariable" FriendlyName="WorkFlowContainingInputVariable" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Hyperlink</PropertyCondition>
+                                                                <PropertyCondition Name="Name">WorkFlowContainingInputVariable</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                    <UIObject ControlType="Cell" Id="Path" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>SearchView</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="ColumnHeader">Path</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_CellColumn2</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Text" Id="WorkFlowContainingInputVariable" FriendlyName="WorkFlowContainingInputVariable" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                            <PropertyCondition Name="Name">WorkFlowContainingInputVariable</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Hyperlink" Id="UIWorkFlowContainingInHyperlink" FriendlyName="WorkFlowContainingInputVariable" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Hyperlink</PropertyCondition>
+                                                                <PropertyCondition Name="Name">WorkFlowContainingInputVariable</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                    <UIObject ControlType="Cell" Id="TypeCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>SearchView</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="ColumnHeader">Type</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Text" Id="Type" FriendlyName="WorkflowName" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>SearchView</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                            <PropertyCondition Name="Name">WorkflowName</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                        <UIObject ControlType="Text" Id="TestNameText" FriendlyName="TestName" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                            <PropertyCondition Name="Name">TestName</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                    <UIObject ControlType="Cell" Id="MatchCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>SearchView</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="ColumnHeader">Match</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_CellColumn4</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants>
+                                                        <UIObject ControlType="Text" Id="OutputIsGreaterThan5" FriendlyName="OutputIsGreaterThan5" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                            <PropertyCondition Name="Name">OutputIsGreaterThan5</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                      </Descendants>
+                                                    </UIObject>
+                                                    <UIObject ControlType="Cell" Id="NameCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>SearchView</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="ColumnHeader">Name</PropertyCondition>
+                                                        <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants />
+                                                    </UIObject>
+                                                  </Descendants>
+                                                </UIObject>
+                                              </Descendants>
                                             </UIObject>
                                           </Descendants>
-                                        </UIObject>
-                                        <UIObject ControlType="Cell" Id="MatchCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>SearchView</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ColumnHeader">Match</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">UI_CellColumn4</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
-                                        </UIObject>
-                                        <UIObject ControlType="Cell" Id="NameCell" FriendlyName="Item: Dev2.Common.Search.SearchResult, Column Disp..." SpecialControlType="None">
-                                          <TechnologyName>UIA</TechnologyName>
-                                          <WindowTitles>
-                                            <WindowTitle>SearchView</WindowTitle>
-                                          </WindowTitles>
-                                          <AndCondition>
-                                            <PropertyCondition Name="ColumnHeader">Name</PropertyCondition>
-                                            <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
-                                            <PropertyCondition Name="ControlType">Cell</PropertyCondition>
-                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                          </AndCondition>
-                                          <SupportLevel>0</SupportLevel>
-                                          <Descendants />
                                         </UIObject>
                                       </Descendants>
                                     </UIObject>
@@ -579,6 +707,63 @@
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants />
+            </UIObject>
+          </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="133216">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles>
+            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+          </WindowTitles>
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\SANELE.MTHEMBU)</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants>
+            <UIObject ControlType="Custom" Id="UISearchViewUserControCustom" FriendlyName="SearchViewUserControl" SpecialControlType="None">
+              <TechnologyName>UIA</TechnologyName>
+              <WindowTitles>
+                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+              </WindowTitles>
+              <AndCondition>
+                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.SearchView</PropertyCondition>
+                <PropertyCondition Name="AutomationId">SearchViewUserControl</PropertyCondition>
+              </AndCondition>
+              <SupportLevel>0</SupportLevel>
+              <Descendants>
+                <UIObject ControlType="Expander" Id="UISearchOptionsExpander" FriendlyName="Search Options" SpecialControlType="None">
+                  <TechnologyName>UIA</TechnologyName>
+                  <WindowTitles>
+                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                  </WindowTitles>
+                  <AndCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="ControlType">Expander</PropertyCondition>
+                    <PropertyCondition Name="Name">Search Options</PropertyCondition>
+                  </AndCondition>
+                  <SupportLevel>0</SupportLevel>
+                  <Descendants>
+                    <UIObject ControlType="CheckBox" Id="UIAllCheckBox" FriendlyName="All" SpecialControlType="None">
+                      <TechnologyName>UIA</TechnologyName>
+                      <WindowTitles>
+                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                      </WindowTitles>
+                      <AndCondition>
+                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                        <PropertyCondition Name="ControlType">CheckBox</PropertyCondition>
+                        <PropertyCondition Name="AutomationId">cbSearchAll</PropertyCondition>
+                      </AndCondition>
+                      <SupportLevel>0</SupportLevel>
+                      <Descendants />
+                    </UIObject>
+                  </Descendants>
+                </UIObject>
+              </Descendants>
             </UIObject>
           </Descendants>
         </TopLevelWindow>
