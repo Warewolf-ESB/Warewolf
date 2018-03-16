@@ -186,66 +186,71 @@ namespace Dev2.UI
 
             if (appendText != null)
             {
-                var currentText = Text;
-                var foundLength = 0;
-                if (isInsert)
-                {
-                    if (currentProvider.HandlesResultInsertion)
-                    {
-                        var context = new IntellisenseProviderContext { CaretPosition = index, InputText = currentText };
-
-                        try
-                        {
-                            Text = currentProvider.PerformResultInsertion(appendText, context);
-                        }
-                        catch
-                        {
-                            //This try catch is to prevent the intellisense box from ever being crashed from a provider.
-                            //This catch is intentionally blanks since if a provider throws an exception the intellisense
-                            //box should simply ignore that provider.
-                        }
-
-                        TextBox?.Select(context.CaretPosition, 0);
-                        IsDropDownOpen = false;
-                        appendText = null;
-                    }
-                    else
-                    {
-                        var foundMinimum = -1;
-                        for (int i = index - 1; i >= 0; i--)
-                        {
-                            if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
-                            {
-                                foundMinimum = i;
-                                foundLength = index - i;
-                            }
-                            else
-                            {
-                                if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
-                                {
-#pragma warning disable S127 // "for" loop stop conditions should be invariant
-                                    i = -1;
-#pragma warning restore S127 // "for" loop stop conditions should be invariant
-                                }
-                            }
-                        }
-
-                        if (foundMinimum != -1)
-                        {
-                            index = foundMinimum;
-                            Text = currentText = currentText.Remove(foundMinimum, foundLength);
-                        }
-                    }
-                }
-
-                if (appendText != null)
-                {
-                    AppendText(currentText, index, appendText);
-                }
+                AppendText(ref appendText, isInsert, ref index, currentProvider);
             }
 
             UpdateErrorState();
             EnsureErrorStatus();
+        }
+
+        void AppendText(ref string appendText, bool isInsert, ref int index, IIntellisenseProvider currentProvider)
+        {
+            var currentText = Text;
+            var foundLength = 0;
+            if (isInsert)
+            {
+                if (currentProvider.HandlesResultInsertion)
+                {
+                    var context = new IntellisenseProviderContext { CaretPosition = index, InputText = currentText };
+
+                    try
+                    {
+                        Text = currentProvider.PerformResultInsertion(appendText, context);
+                    }
+                    catch
+                    {
+                        //This try catch is to prevent the intellisense box from ever being crashed from a provider.
+                        //This catch is intentionally blanks since if a provider throws an exception the intellisense
+                        //box should simply ignore that provider.
+                    }
+
+                    TextBox?.Select(context.CaretPosition, 0);
+                    IsDropDownOpen = false;
+                    appendText = null;
+                }
+                else
+                {
+                    var foundMinimum = -1;
+                    for (int i = index - 1; i >= 0; i--)
+                    {
+                        if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
+                        {
+                            foundMinimum = i;
+                            foundLength = index - i;
+                        }
+                        else
+                        {
+                            if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
+                            {
+#pragma warning disable S127 // "for" loop stop conditions should be invariant
+                                i = -1;
+#pragma warning restore S127 // "for" loop stop conditions should be invariant
+                            }
+                        }
+                    }
+
+                    if (foundMinimum != -1)
+                    {
+                        index = foundMinimum;
+                        Text = currentText = currentText.Remove(foundMinimum, foundLength);
+                    }
+                }
+            }
+
+            if (appendText != null)
+            {
+                AppendText(currentText, index, appendText);
+            }
         }
 
         IIntellisenseProvider PerformInsertFromDropDown(object item, IIntellisenseProvider currentProvider, ref string appendText, ref bool isInsert)
