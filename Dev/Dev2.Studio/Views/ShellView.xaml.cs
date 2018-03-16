@@ -795,13 +795,11 @@ namespace Dev2.Studio.Views
             {
                 var tabGroupPane = e.Panes[0].Parent as TabGroupPane;
                 var splitPane = tabGroupPane?.Parent as SplitPane;
-                if (splitPane?.Parent is PaneToolWindow paneToolWindow)
+                if (splitPane?.Parent is PaneToolWindow paneToolWindow && string.IsNullOrWhiteSpace(paneToolWindow.Title))
                 {
-                    if (string.IsNullOrWhiteSpace(paneToolWindow.Title))
-                    {
-                        paneToolWindow.Title = Title;
-                    }
+                    paneToolWindow.Title = Title;
                 }
+
             }
         }
 

@@ -1161,13 +1161,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         static ModelItem RecursiveForEachCheck(dynamic activity)
         {
             var innerAct = activity.DataFunc.Handler as ModelItem;
-            if (innerAct != null)
+            if (innerAct != null && innerAct.ItemType == typeof(DsfForEachActivity))
             {
-                if (innerAct.ItemType == typeof(DsfForEachActivity))
-                {
-                    innerAct = RecursiveForEachCheck(innerAct);
-                }
+                innerAct = RecursiveForEachCheck(innerAct);
             }
+
             return innerAct;
         }
 
@@ -1598,21 +1596,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (e.OriginalSource != null)
             {
                 var origSource = e.OriginalSource.GetType();
-                if (origSource.BaseType == typeof(ActivityDesigner))
+                if (origSource.BaseType == typeof(ActivityDesigner) && e.Key == Key.Return)
                 {
-                    if (e.Key == Key.Return)
-                    {
-                        e.Handled = true;
-                    }
+                    e.Handled = true;
                 }
+
                 var type = grid?.DataContext.GetType();
-                if (type == typeof(ServiceTestViewModel))
+                if (type == typeof(ServiceTestViewModel) && e.Key == Key.Delete)
                 {
-                    if (e.Key == Key.Delete)
-                    {
-                        e.Handled = true;
-                    }
+                    e.Handled = true;
                 }
+
                 if (type == typeof(MergeWorkflowViewModel))
                 {
                     if (origSource == typeof(TextBox))
@@ -1658,15 +1652,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
 
             // If we are opening from server skip this check, it cannot have "real" changes!
-            if (!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
+            // an additional case we need to account for - Designer has resized and is only visible once focus is lost?! ;)
+            if (!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey) && (OpeningWorkflowsHelper.IsWaitingForFistFocusLoss(workSurfaceKey) || WatermarkSential.IsWatermarkBeingApplied))
             {
-                // an additional case we need to account for - Designer has resized and is only visible once focus is lost?! ;)
-                if (OpeningWorkflowsHelper.IsWaitingForFistFocusLoss(workSurfaceKey) || WatermarkSential.IsWatermarkBeingApplied)
-                {
-                    ResourceModel.WorkflowXaml = ServiceDefinition;
-                    OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
-                }
+                ResourceModel.WorkflowXaml = ServiceDefinition;
+                OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
             }
+
         }
 
         protected void ModelServiceSubscribe(ModelService instance)
@@ -2203,17 +2195,15 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 // Handle Case Edits
                 if (itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchCaseLink", StringComparison.Ordinal) &&
-                    !itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink", StringComparison.Ordinal))
+!itemFn.StartsWith("System.Activities.Core.Presentation.FlowSwitchDefaultLink", StringComparison.Ordinal) && dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
                 {
-                    if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
+                    FlowController.EditSwitchCaseExpression(new EditCaseExpressionMessage
                     {
-                        FlowController.EditSwitchCaseExpression(new EditCaseExpressionMessage
-                        {
-                            ModelItem = item,
-                            Server = _resourceModel.Environment
-                        });
-                    }
+                        ModelItem = item,
+                        Server = _resourceModel.Environment
+                    });
                 }
+
 
                 // Handle Switch Edits
                 if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp) &&
@@ -2434,13 +2424,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return;
                 }
 
-                if (e.ModelChangeInfo.PropertyName == "Handler")
+                if (e.ModelChangeInfo.PropertyName == "Handler" && DataObject != null)
                 {
-                    if (DataObject != null)
-                    {
-                        ModelItemPropertyChanged(e);
-                    }
+                    ModelItemPropertyChanged(e);
                 }
+
             }
 
             if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.CollectionItemAdded)

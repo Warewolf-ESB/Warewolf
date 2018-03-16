@@ -363,13 +363,11 @@ namespace Dev2.ViewModels.QuickVariableInput
             switch (splitType)
             {
                 case "Index":
-                    if (!string.IsNullOrEmpty(at))
+                    if (!string.IsNullOrEmpty(at) && int.TryParse(at, out int indexNum) && indexNum > 0)
                     {
-                        if (int.TryParse(at, out int indexNum) && indexNum > 0)
-                        {
-                            dtb.AddIndexOp(indexNum);
-                        }
+                        dtb.AddIndexOp(indexNum);
                     }
+
                     break;
 
                 case "Space":
@@ -438,14 +436,12 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
             else
             {
-                if (SplitType == "Chars")
+                if (SplitType == "Chars" && string.IsNullOrEmpty(SplitToken))
                 {
-                    if (string.IsNullOrEmpty(SplitToken))
-                    {
-                        _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a value for a Character split"));
-                        return false;
-                    }
+                    _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a value for a Character split"));
+                    return false;
                 }
+
             }
 
             if (string.IsNullOrWhiteSpace(VariableListString))

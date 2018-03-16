@@ -77,13 +77,11 @@ namespace Dev2.Settings.Scheduler
         protected virtual IScheduleTrigger ShowEditTriggerDialog()
         {
             var tmpTrigger = _schedulerViewModel.SelectedTask.Trigger.Trigger.Instance;
-            if (TriggerEditDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (TriggerEditDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK && !TriggerEquals(TriggerEditDialog.Trigger, tmpTrigger))
             {
-                if (!TriggerEquals(TriggerEditDialog.Trigger, tmpTrigger))
-                {
-                    return SchedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
-                }
+                return SchedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
             }
+
             return null;
         }
 
@@ -300,17 +298,15 @@ namespace Dev2.Settings.Scheduler
         {
             if (_schedulerViewModel.SelectedTask != null && _schedulerViewModel.CurrentEnvironment != null)
             {
-                if (CurrentResourcePickerDialog == null)
+                if (CurrentResourcePickerDialog == null && GetResourcePickerDialog?.Status == TaskStatus.Running)
                 {
-                    if (GetResourcePickerDialog?.Status == TaskStatus.Running)
+                    GetResourcePickerDialog.Wait();
+                    if (!GetResourcePickerDialog.IsFaulted)
                     {
-                        GetResourcePickerDialog.Wait();
-                        if (!GetResourcePickerDialog.IsFaulted)
-                        {
-                            CurrentResourcePickerDialog = GetResourcePickerDialog.Result;
-                        }
+                        CurrentResourcePickerDialog = GetResourcePickerDialog.Result;
                     }
                 }
+
 
                 if (!string.IsNullOrEmpty(_schedulerViewModel.WorkflowName) && _schedulerViewModel.CurrentEnvironment.ResourceRepository != null)
                 {

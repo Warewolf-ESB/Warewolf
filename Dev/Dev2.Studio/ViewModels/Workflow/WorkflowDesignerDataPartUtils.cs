@@ -140,16 +140,14 @@ namespace Dev2.ViewModels.Workflow
             else
             {
                 var indexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
-                if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0) && (indexOfAtSign + 1 >= dataPartFieldData.Length))
+                if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0) && (indexOfAtSign + 1 >= dataPartFieldData.Length) && !intellisenseResult.Message.Contains("invalid char"))
                 {
-                    if (!intellisenseResult.Message.Contains("invalid char"))
+                    if (char.IsLetter(dataPartFieldData[1]))
                     {
-                        if (char.IsLetter(dataPartFieldData[1]))
-                        {
-                            isValid = true;
-                        }
+                        isValid = true;
                     }
                 }
+
 
                 if (dataPartFieldData.Contains('.'))
                 {

@@ -137,13 +137,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var canAddNewTest = RootItems != null && RootItems.Count > 0;
 
-            if (canAddNewTest && !IsTestView)
+            if (canAddNewTest && !IsTestView && _contextualResourceModel != null)
             {
-                if (_contextualResourceModel != null)
-                {
-                    canAddNewTest = !_contextualResourceModel.IsNewWorkflow && _contextualResourceModel.IsWorkflowSaved;
-                }
+                canAddNewTest = !_contextualResourceModel.IsNewWorkflow && _contextualResourceModel.IsWorkflowSaved;
             }
+
             AddNewTestTooltip = canAddNewTest ? Warewolf.Studio.Resources.Languages.Tooltips.DebugOutputViewAddNewTestToolTip : Warewolf.Studio.Resources.Languages.Tooltips.DebugOutputViewAddNewTestUnsavedToolTip;
 
             return canAddNewTest;
@@ -609,22 +607,13 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                         {
                             content.Server = remoteEnvironmentModel.Name;
                         }
-
                         if (!remoteEnvironmentModel.IsConnected)
                         {
                             remoteEnvironmentModel.Connect();
                         }
-                        var parentID = content.ParentID.GetValueOrDefault();
-                        if (parentID != Guid.Empty)
+                        if (content.ParentID.GetValueOrDefault() != Guid.Empty && remoteEnvironmentModel.AuthorizationService != null && !remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID).HasFlag(Permissions.View))
                         {
-                            if (remoteEnvironmentModel.AuthorizationService != null)
-                            {
-                                var remoteResourcePermissions = remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID);
-                                if (!remoteResourcePermissions.HasFlag(Permissions.View))
-                                {
-                                    return;
-                                }
-                            }
+                            return;
                         }
                     }
                 }
