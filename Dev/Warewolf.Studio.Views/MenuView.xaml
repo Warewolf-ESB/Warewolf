@@ -219,9 +219,6 @@
                                Style="{StaticResource MenuTextBlockStyle}"
                                Text="{Binding Path=SearchLabel}" />
                 </DockPanel>
-                <i:Interaction.Behaviors>
-                    <core:HelpSetter DataContext="{Binding .}" Text="{x:Static languages:HelpText.MenuSearchHelp}" />
-                </i:Interaction.Behaviors>
             </Button>
             
             <!--  TASK  -->

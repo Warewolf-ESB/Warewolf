@@ -2246,4 +2246,40 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="MergeSelectionViewLabelTooltip" xml:space="preserve">
     <value>Select the version you want to merge with</value>
   </data>
+  <data name="SearchInputTooltip" xml:space="preserve">
+    <value>Input text to search</value>
+  </data>
+  <data name="SearchMatchCaseTooltip" xml:space="preserve">
+    <value>Match case</value>
+  </data>
+  <data name="SearchMatchWholeWordTooltip" xml:space="preserve">
+    <value>Match whole word</value>
+  </data>
+  <data name="SearchAllTooltip" xml:space="preserve">
+    <value>Search All</value>
+  </data>
+  <data name="SearchWorkflowNameTooltip" xml:space="preserve">
+    <value>Search Workflow Name</value>
+  </data>
+  <data name="SearchTestNameTooltip" xml:space="preserve">
+    <value>Search Test Name</value>
+  </data>
+  <data name="SearchToolTitleTooltip" xml:space="preserve">
+    <value>Search Tool Title</value>
+  </data>
+  <data name="SearchInputVariableTooltip" xml:space="preserve">
+    <value>Search Input Variable</value>
+  </data>
+  <data name="SearchScalarNameTooltip" xml:space="preserve">
+    <value>Search Scalar</value>
+  </data>
+  <data name="SearchRecSetNameTooltip" xml:space="preserve">
+    <value>Search Recordset</value>
+  </data>
+  <data name="SearchObjectNameTooltip" xml:space="preserve">
+    <value>Search Object</value>
+  </data>
+  <data name="SearchOutputVariableTooltip" xml:space="preserve">
+    <value>Search Output Variable</value>
+  </data>
 </root>

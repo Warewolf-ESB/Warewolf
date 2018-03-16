@@ -1070,17 +1070,15 @@
     <value>Saves the active tab in the studio</value>
   </data>
   <data name="MenuSearchHelp" xml:space="preserve">
-    <value>Search in Warewolf for 
-- Workflow Name
-- Tool title
-- Tool name
-- Input field
-- Scalar Name
-- object name
-- record set name
-- Input Variable
-- Output Variable
-- Test name</value>
+    <value>Search in Warewolf for &lt;br/&gt;
+- Resource Name &lt;br/&gt;
+- Tool Title &lt;br/&gt;
+- Scalar &lt;br/&gt;
+- Object &lt;br/&gt;
+- Recordset &lt;br/&gt;
+- Input Variable &lt;br/&gt;
+- Output Variable &lt;br/&gt;
+- Test Name</value>
   </data>
   <data name="MenuSchedulerHelp" xml:space="preserve">
     <value>Schedule workflow executions</value>
@@ -2137,5 +2135,41 @@ A list of conflicts will be shown starting with the Workflow name, then the Vari
 If there are no conflicts, a green tick will be displayed. As each selection is made, the selected Tool will appear on the design surface to the right. Once a Tool connection conflict is selected, it will connect the relevant tools to each other. 
 
 The conflicts on the left will show your current workflow changes and the conflicts on the right will show the difference you want to merge with. Once all the selections are made, the changes can be saved which will close the Merge view and open the new workflow with the changes.</value>
+  </data>
+  <data name="SearchInputHelpText" xml:space="preserve">
+    <value>Input text to search for any matching search options</value>
+  </data>
+  <data name="SearchMatchCaseHelpText" xml:space="preserve">
+    <value>The "Match case" option will find only those instances that are written the same way</value>
+  </data>
+  <data name="SearchMatchWholeWordHelpText" xml:space="preserve">
+    <value>The "Match whole word" option will find only the words that are written the same way</value>
+  </data>
+  <data name="SearchMatchAllHelpText" xml:space="preserve">
+    <value>The "Search All" option will check or uncheck all search options</value>
+  </data>
+  <data name="SearchMatchWorkflowNameHelpText" xml:space="preserve">
+    <value>The "Search Resource Name" option will find only "Resources" that match the input field</value>
+  </data>
+  <data name="SearchMatchTestNameHelpText" xml:space="preserve">
+    <value>The "Search Test Name" option will find only "Tests" that match the input field</value>
+  </data>
+  <data name="SearchMatchToolTitleHelpText" xml:space="preserve">
+    <value>The "Search Tool Title" option will find only "Tools" that match the input field</value>
+  </data>
+  <data name="SearchMatchInputVariableHelpText" xml:space="preserve">
+    <value>The "Search Input Variable" option will find only variables marked as "Input" that match the input field</value>
+  </data>
+  <data name="SearchMatchOutputVariableHelpText" xml:space="preserve">
+    <value>The "Search Output Variable" option will find only variables marked as "Output" that match the input field</value>
+  </data>
+  <data name="SearchMatchScalarNameHelpText" xml:space="preserve">
+    <value>The "Search Scalar" option will find only variables created as "Scalar" that match the input field</value>
+  </data>
+  <data name="SearchMatchRecSetNameHelpText" xml:space="preserve">
+    <value>The "Search Recordset" option will find only variables created as "Recordset" that match the input field</value>
+  </data>
+  <data name="SearchMatchObjectNameHelpText" xml:space="preserve">
+    <value>The "Search Object" option will find only variables created as "Objects" that match the input field</value>
   </data>
 </root>
