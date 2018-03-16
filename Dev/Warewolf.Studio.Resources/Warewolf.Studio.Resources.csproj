@@ -139,8 +139,8 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Languages\HelpText.Designer.cs">
-      <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
       <DependentUpon>HelpText.resx</DependentUpon>
     </Compile>
     <Compile Include="Languages\ToolboxSearchTags.Designer.cs">

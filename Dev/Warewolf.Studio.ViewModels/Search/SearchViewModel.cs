@@ -51,6 +51,7 @@ namespace Dev2.ViewModels.Search
             SelectedEnvironment?.Server?.ResourceRepository?.Load();
             IsSearching = false;
             DisplayName = "Search";
+            UpdateHelpDescriptor(Warewolf.Studio.Resources.Languages.HelpText.MenuSearchHelp);
         }
 
         private void OpenResource(ISearchResult searchResult)
