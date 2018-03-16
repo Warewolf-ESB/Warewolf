@@ -526,14 +526,15 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
 
             var batchSize = BatchSize;
-            if (!IsVariable(batchSize) && (!int.TryParse(batchSize, out int value) || value < 0))
+            var value = 0;
+            if (!IsVariable(batchSize) && (!int.TryParse(batchSize, out value) || value < 0))
             {
                 yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.BatchsizeMustBeNumberMsg };
             }
 
 
             var timeout = Timeout;
-            if (!IsVariable(timeout) && (!int.TryParse(timeout, out int value) || value < 0))
+            if (!IsVariable(timeout) && (!int.TryParse(timeout, out value) || value < 0))
             {
                 yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.TimeoutMustBeNumberMsg };
             }

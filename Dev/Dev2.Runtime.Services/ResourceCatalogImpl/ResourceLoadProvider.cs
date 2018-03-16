@@ -141,13 +141,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 throw;
             }
         }
-
-        /// <summary>
-        /// Gets the contents of the resources with the given source type.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID to be queried.</param>
-        /// <param name="sourceType">The type of the source to be queried.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
+        
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType)
         {
             var workspaceResources = GetResources(workspaceID);
