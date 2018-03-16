@@ -292,14 +292,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
         void ViewJsonObjects(IComplexObjectItemModel item)
         {
-            if (item != null)
+            if (item != null && JsonObjectsView != null)
             {
-                if (JsonObjectsView != null)
-                {
-                    var json = item.GetJson();
-                    JsonObjectsView.ShowJsonString(JSONUtils.Format(json));
-                }
+                var json = item.GetJson();
+                JsonObjectsView.ShowJsonString(JSONUtils.Format(json));
             }
+
         }
 
         bool CanViewComplexObjects(Object itemx)

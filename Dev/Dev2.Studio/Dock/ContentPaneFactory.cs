@@ -136,25 +136,23 @@ namespace Dev2.Studio.Dock
 
         void ViewModelDeactivated(object sender, DeactivationEventArgs e)
         {
-            if (e.WasClosed && _target is TabGroupPane container)
+            if (e.WasClosed && _target is TabGroupPane container && sender is WorkSurfaceContextViewModel model)
             {
-                if (sender is WorkSurfaceContextViewModel model)
-                {
-                    var toRemove = container.Items.Cast<ContentPane>().ToList()
-                        .FirstOrDefault(p => p.Content != null && p.Content == model.WorkSurfaceViewModel);
+                var toRemove = container.Items.Cast<ContentPane>().ToList()
+                    .FirstOrDefault(p => p.Content != null && p.Content == model.WorkSurfaceViewModel);
 
-                    if (toRemove != null)
-                    {
-                        RemovePane(toRemove);
-                    }
-                    if (toRemove != null &&
-                        Application.Current != null &&
-                        !Application.Current.Dispatcher.HasShutdownStarted)
-                    {
-                        container.Items.Remove(toRemove);
-                    }
+                if (toRemove != null)
+                {
+                    RemovePane(toRemove);
+                }
+                if (toRemove != null &&
+                    Application.Current != null &&
+                    !Application.Current.Dispatcher.HasShutdownStarted)
+                {
+                    container.Items.Remove(toRemove);
                 }
             }
+
 
         }
 

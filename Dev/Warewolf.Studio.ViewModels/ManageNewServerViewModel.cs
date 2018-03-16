@@ -365,18 +365,16 @@ namespace Warewolf.Studio.ViewModels
 
         void CancelTest()
         {
-            if (_token != null)
+            if (_token != null && !_token.IsCancellationRequested && _token.Token.CanBeCanceled)
             {
-                if (!_token.IsCancellationRequested && _token.Token.CanBeCanceled)
+                _token.Cancel();
+                Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    _token.Cancel();
-                    Dispatcher.CurrentDispatcher.Invoke(() =>
-                    {
-                        FailedTesting();
-                        TestMessage = "Test Cancelled";
-                    });
-                }
+                    FailedTesting();
+                    TestMessage = "Test Cancelled";
+                });
             }
+
         }
 
         void TestConnection()

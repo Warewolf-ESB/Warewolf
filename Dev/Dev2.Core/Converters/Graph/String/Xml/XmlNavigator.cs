@@ -401,50 +401,48 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
                     if (previousPathSegment != null && previousPathSegment.IsEnumarable)
                     {
-                        if (currentElement != null)
+                        if (currentElement != null && pathSegment != null)
                         {
-                            if (pathSegment != null)
+                            var childElements =
+                                currentElement.Elements(pathSegment.ActualSegment).ToList();
+
+                            if (childElements.Count > 0)
                             {
-                                var childElements =
-                                    currentElement.Elements(pathSegment.ActualSegment).ToList();
-
-                                if (childElements.Count > 0)
+                                if (lastSegment)
                                 {
-                                    if (lastSegment)
+                                    foreach (XElement childElement in childElements)
                                     {
-                                        foreach (XElement childElement in childElements)
+                                        if (pathSegment.IsAttribute)
                                         {
-                                            if (pathSegment.IsAttribute)
-                                            {
-                                                var attribute = childElement.Attribute(pathSegment.ActualSegment);
+                                            var attribute = childElement.Attribute(pathSegment.ActualSegment);
 
-                                                if (attribute != null)
-                                                {
-                                                    returnData.Add(attribute.Value);
-                                                }
-                                                else
-                                                {
-                                                    throw new Exception(string.Format("Attribute {0} not found.",
-                                                        pathSegment.ActualSegment));
-                                                }
+                                            if (attribute != null)
+                                            {
+                                                returnData.Add(attribute.Value);
                                             }
                                             else
                                             {
-                                                returnData.Add(childElement.Value);
+                                                throw new Exception(string.Format("Attribute {0} not found.",
+                                                    pathSegment.ActualSegment));
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        foreach (XElement childElement in childElements)
+                                        else
                                         {
-                                            returnData.AddRange(SelectEnumberable(pathSegments.Skip(i + 1).ToList(),
-                                                pathSegment, childElement));
+                                            returnData.Add(childElement.Value);
                                         }
+                                    }
+                                }
+                                else
+                                {
+                                    foreach (XElement childElement in childElements)
+                                    {
+                                        returnData.AddRange(SelectEnumberable(pathSegments.Skip(i + 1).ToList(),
+                                            pathSegment, childElement));
                                     }
                                 }
                             }
                         }
+
 
                         return returnData;
                     }
@@ -464,13 +462,11 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     }
                     else
                     {
-                        if (currentElement != null)
+                        if (currentElement != null && pathSegment != null)
                         {
-                            if (pathSegment != null)
-                            {
-                                currentElement = currentElement.Element(pathSegment.ActualSegment);
-                            }
+                            currentElement = currentElement.Element(pathSegment.ActualSegment);
                         }
+
 
                         if (currentElement != null && lastSegment)
                         {

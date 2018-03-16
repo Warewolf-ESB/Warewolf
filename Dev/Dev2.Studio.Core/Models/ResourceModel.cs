@@ -639,15 +639,13 @@ namespace Dev2.Studio.Core.Models
                     RemoveError("NoResourceName");
                 }
 
-                if (columnName == "HelpLink")
+                if (columnName == "HelpLink" && !Uri.TryCreate(HelpLink, UriKind.Absolute, out Uri testUri))
                 {
-                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out Uri testUri))
-                    {
-                        errMsg = "The help link is not in a valid format";
-                        AddError(columnName, errMsg);
-                        return errMsg;
-                    }
+                    errMsg = "The help link is not in a valid format";
+                    AddError(columnName, errMsg);
+                    return errMsg;
                 }
+
 
                 return null;
             }

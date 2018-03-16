@@ -271,17 +271,15 @@ namespace Dev2.Activities
             var i = 1;
             foreach(var xPathDto in resultsCollection)
             {
-                if(!String.IsNullOrEmpty(xPathDto.OutputVariable))
+                if (!String.IsNullOrEmpty(xPathDto.OutputVariable) && _isDebugMode)
                 {
-                    if(_isDebugMode)
-                    {
-                        var itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", i.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugItemWarewolfAtomResult(xPathDto.XPath,xPathDto.OutputVariable, ""), itemToAdd);
-                        _debugInputs.Add(itemToAdd);
-                        i++;
-                    }
+                    var itemToAdd = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", i.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                    AddDebugItem(new DebugItemWarewolfAtomResult(xPathDto.XPath, xPathDto.OutputVariable, ""), itemToAdd);
+                    _debugInputs.Add(itemToAdd);
+                    i++;
                 }
+
             }
         }
 

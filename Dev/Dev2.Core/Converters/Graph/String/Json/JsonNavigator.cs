@@ -239,13 +239,11 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                             while (enumerator.MoveNext())
                             {
                                 var currentToken = enumerator.Current as JToken;
-                                if (currentData != null)
+                                if (currentData != null && currentToken != null)
                                 {
-                                    if (currentToken != null)
-                                    {
-                                        returnData.Add(currentToken.ToString());
-                                    }
+                                    returnData.Add(currentToken.ToString());
                                 }
+
                             }
                         }
                         else

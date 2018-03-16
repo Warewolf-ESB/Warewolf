@@ -1023,13 +1023,11 @@ namespace System.Windows.Controls
                 }
                 
                 var parent = VisualTreeHelper.GetParent(focused);
-                if (parent == null)
+                if (parent == null && focused is FrameworkElement element)
                 {
-                    if (focused is FrameworkElement element)
-                    {
-                        parent = element.Parent;
-                    }
+                    parent = element.Parent;
                 }
+
                 focused = parent;
             }
             return false;
@@ -1553,16 +1551,14 @@ namespace System.Windows.Controls
                     _items[e.NewStartingIndex] = t;
                 }
             }
-            if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
+            if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace && e.OldItems != null)
             {
-                if (e.OldItems != null)
+                foreach (object t in e.OldItems)
                 {
-                    foreach (object t in e.OldItems)
-                    {
-                        _view.Remove(t);
-                    }
+                    _view.Remove(t);
                 }
             }
+
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 ClearView();

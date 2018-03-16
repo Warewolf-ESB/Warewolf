@@ -112,13 +112,11 @@ namespace Warewolf.Studio.Views
                 RefreshCommands(e);
             }
 
-            if (textBox == null)
+            if (textBox == null && sender is TextBox box)
             {
-                if (sender is TextBox box)
-                {
-                    RefreshCommands(e);
-                }
+                RefreshCommands(e);
             }
+
         }
 
         void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

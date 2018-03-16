@@ -170,20 +170,18 @@ namespace Dev2.Studio.ViewModels.DataList
                 try
                 {
                     var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(expression);
-                    if (language.IsJsonIdentifierExpression)
+                    if (language.IsJsonIdentifierExpression && DataListSingleton.ActiveDataList != null)
                     {
-                        if (DataListSingleton.ActiveDataList != null)
+                        var objToProcess = JsonConvert.DeserializeObject(JsonString) as JObject;
+                        var firstOrDefault = objToProcess?.Properties().FirstOrDefault();
+                        if (firstOrDefault != null)
                         {
-                            var objToProcess = JsonConvert.DeserializeObject(JsonString) as JObject;
-                            var firstOrDefault = objToProcess?.Properties().FirstOrDefault();
-                            if (firstOrDefault != null)
-                            {
-                                var processString = firstOrDefault.Value.ToString();
-                                DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
-                                    DataListUtil.RemoveLanguageBrackets(expression), processString);
-                            }
+                            var processString = firstOrDefault.Value.ToString();
+                            DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
+                                DataListUtil.RemoveLanguageBrackets(expression), processString);
                         }
                     }
+
                 }
                 catch (Exception)
                 {

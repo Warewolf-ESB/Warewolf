@@ -233,13 +233,11 @@ namespace Dev2.Activities
                 while (!_process.HasExited && !executionToken.IsUserCanceled)
                 {
                     reader.Append(_process.StandardOutput.ReadToEnd());
-                    if (!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
+                    if (!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest) && !_process.HasExited)
                     {
-                        if (!_process.HasExited)
-                        {
-                            _process.Kill();
-                        }
+                        _process.Kill();
                     }
+
                     if (ModalChecker.IsWaitingForUserInput(_process))
                     {
                         _process.Kill();

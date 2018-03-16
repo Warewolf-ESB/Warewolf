@@ -189,13 +189,11 @@ namespace Dev2.Data.Util
         {
             var result = false;
 
-            if (!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value) && value.Contains(DataListUtil.RecordsetIndexOpeningBracket) && value.Contains(DataListUtil.RecordsetIndexClosingBracket))
             {
-                if (value.Contains(DataListUtil.RecordsetIndexOpeningBracket) && value.Contains(DataListUtil.RecordsetIndexClosingBracket))
-                {
-                    result = true;
-                }
+                result = true;
             }
+
 
             return result;
         }

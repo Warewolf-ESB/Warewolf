@@ -371,24 +371,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void ResetExecution(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, string parentServiceName, string serviceName, Guid oldResourceId)
         {
-            if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
+            // Handle Errors
+            if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped && allErrors.HasErrors())
             {
-                // Handle Errors
-                if (allErrors.HasErrors())
+                DisplayAndWriteError("DsfActivity", allErrors);
+                foreach (var allError in allErrors.FetchErrors())
                 {
-                    DisplayAndWriteError("DsfActivity", allErrors);
-                    foreach (var allError in allErrors.FetchErrors())
-                    {
-                        dataObject.Environment.Errors.Add(allError);
-                    }
-                    // add to datalist in variable specified
-                    if (!String.IsNullOrEmpty(OnErrorVariable))
-                    {
-                        var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                        dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
-                    }
+                    dataObject.Environment.Errors.Add(allError);
+                }
+                // add to datalist in variable specified
+                if (!String.IsNullOrEmpty(OnErrorVariable))
+                {
+                    var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
+                    dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
                 }
             }
+
 
             if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
             {

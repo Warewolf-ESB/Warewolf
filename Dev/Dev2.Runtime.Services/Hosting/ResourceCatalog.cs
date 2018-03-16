@@ -376,13 +376,11 @@ namespace Dev2.Runtime.Hosting
 
         public void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
         {
-            if (_parsers != null && _parsers.TryGetValue(workspaceID, out IResourceActivityCache parser))
+            if (_parsers != null && _parsers.TryGetValue(workspaceID, out IResourceActivityCache parser) && resource != null)
             {
-                if (resource != null)
-                {
-                    parser.RemoveFromCache(resource.ResourceID);
-                }
+                parser.RemoveFromCache(resource.ResourceID);
             }
+
         }
 
         public void Dispose()

@@ -263,14 +263,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Version.TryParse(_selectedConnection.GetServerVersion(), out Version sourceVersionNumber);
                     Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out Version destVersionNumber);
-                    if (sourceVersionNumber != null && destVersionNumber != null)
+                    if (sourceVersionNumber != null && destVersionNumber != null && sourceVersionNumber < destVersionNumber)
                     {
-                        if (sourceVersionNumber < destVersionNumber)
-                        {
-                            PopupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(),
-                                destVersionNumber.ToString());
-                        }
+                        PopupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(),
+                            destVersionNumber.ToString());
                     }
+
                 }
             }
             catch

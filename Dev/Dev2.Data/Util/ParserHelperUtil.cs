@@ -81,13 +81,11 @@ namespace Dev2.Data.Util
             if (cur == charToCheck && prev != charToCheck)
             {
                 var checkIndex = i + 1;
-                if (checkIndex < payload.Length)
+                if (checkIndex < payload.Length && payload[checkIndex] == charToCheck)
                 {
-                    if (payload[checkIndex] == charToCheck)
-                    {
-                        shouldAddToRegion = false;
-                    }
+                    shouldAddToRegion = false;
                 }
+
             }
             return shouldAddToRegion;
         }

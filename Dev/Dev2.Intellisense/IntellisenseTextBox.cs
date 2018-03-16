@@ -131,26 +131,22 @@ namespace Dev2.UI
         string HandleMultiLine(KeyEventArgs e, bool isOpen, ref bool expand)
         {
             string appendText = null;
-            if (AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+            if (AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None && LineCount < TextBox.MaxLines)
             {
-                if (LineCount < TextBox.MaxLines)
-                {
-                    appendText = Environment.NewLine;
-                    expand = true;
-                }
+                appendText = Environment.NewLine;
+                expand = true;
             }
+
             return appendText;
         }
 
         void HandleSpecialKeys(KeyEventArgs e)
         {
-            if (e.Key != Key.Tab)
+            if (e.Key != Key.Tab && !((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn))
             {
-                if (!((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn))
-                {
-                    e.Handled = true;
-                }
+                e.Handled = true;
             }
+
         }
 
         object SetAppendTextBasedOnSelection()
@@ -492,13 +488,11 @@ namespace Dev2.UI
                     var provider = IntellisenseProvider;
                     var context = new IntellisenseProviderContext { FilterType = FilterType, DesiredResultSet = desiredResultSet, InputText = text, CaretPosition = CaretIndex };
                     context.IsInCalculateMode = calculateMode;
-                    if ((context.IsInCalculateMode) && AllowUserCalculateMode)
+                    if ((context.IsInCalculateMode) && AllowUserCalculateMode && CaretIndex > 0)
                     {
-                        if (CaretIndex > 0)
-                        {
-                            context.CaretPosition = CaretIndex - 1;
-                        }
+                        context.CaretPosition = CaretIndex - 1;
                     }
+
 
                     IList<IntellisenseProviderResult> results = null;
 
@@ -570,14 +564,12 @@ namespace Dev2.UI
                     }
                     else
                     {
-                        if (FilterType == enIntellisensePartType.ScalarsOnly)
+                        if (FilterType == enIntellisensePartType.ScalarsOnly && text.Contains("(") && text.Contains(")"))
                         {
-                            if (text.Contains("(") && text.Contains(")"))
-                            {
-                                HasError = true;
-                                ttErrorBuilder.AppendLine("Recordset is not allowed");
-                            }
+                            HasError = true;
+                            ttErrorBuilder.AppendLine("Recordset is not allowed");
                         }
+
                     }
                 }
 

@@ -153,16 +153,14 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 else
                 {
-                    if (isLocal)
+                    if (isLocal && GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
                     {
-                        if (GetResource(workspaceId, dataObject.ResourceID) == null && GetResource(workspaceId, dataObject.ServiceName) == null)
-                        {
-                            errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
-                            dataObject.StartTime = oldStartTime;
-                            return null;
-                        }
+                        errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
+                        dataObject.StartTime = oldStartTime;
+                        return null;
                     }
-                    
+
+
                     var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                     dataObject.IsServiceTestExecution = wasTestExecution;
                     if (executionContainer != null)
@@ -240,17 +238,15 @@ namespace Dev2.Runtime.ESB.Control
             var executionContainer = invoker.GenerateInvokeContainer(clonedDataObject, clonedDataObject.ServiceName, isLocal, oldID);
             if (executionContainer != null)
             {
-                if (!isLocal)
+                if (!isLocal && executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
                 {
-                    if (executionContainer is RemoteWorkflowExecutionContainer remoteContainer)
+                    if (!remoteContainer.ServerIsUp())
                     {
-                        if (!remoteContainer.ServerIsUp())
-                        {
-                            invokeErrors.AddError("Asynchronous execution failed: Remote server unreachable");
-                        }
-                        SetRemoteExecutionDataList(dataObject, executionContainer, invokeErrors);
+                        invokeErrors.AddError("Asynchronous execution failed: Remote server unreachable");
                     }
+                    SetRemoteExecutionDataList(dataObject, executionContainer, invokeErrors);
                 }
+
                 if (!invokeErrors.HasErrors())
                 {
                     var shapeDefinitionsToEnvironment = DataListUtil.InputsToEnvironment(dataObject.Environment, inputDefs, update);

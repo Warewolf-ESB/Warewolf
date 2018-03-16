@@ -46,22 +46,20 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         {
             var paths = new List<IPath>();
 
-            if (propertyStack.Count == 0 && data.GetType().IsEnumerable())
+            if (propertyStack.Count == 0 && data.GetType().IsEnumerable() && data is IEnumerable enumerableData)
             {
-                if (data is IEnumerable enumerableData)
+                var enumerator = enumerableData.GetEnumerator();
+                enumerator.Reset();
+                if (enumerator.MoveNext())
                 {
-                    var enumerator = enumerableData.GetEnumerator();
-                    enumerator.Reset();
-                    if (enumerator.MoveNext())
-                    {
-                        propertyStack.Push(new Tuple<string, bool, bool, object>("UnnamedArray", true, true, enumerableData));
-                        MapData(enumerator.Current, propertyStack, root, paths);
-                        propertyStack.Pop();
+                    propertyStack.Push(new Tuple<string, bool, bool, object>("UnnamedArray", true, true, enumerableData));
+                    MapData(enumerator.Current, propertyStack, root, paths);
+                    propertyStack.Pop();
 
 
-                    }
                 }
             }
+
 
             if (propertyStack.Count == 0 && data.GetType().IsPrimitive())
             {

@@ -82,14 +82,12 @@ namespace Dev2.Data
 
         void SetupListResult(CommonFunctions.WarewolfEvalResult warewolfEvalResult)
         {
-            if (warewolfEvalResult.IsWarewolfAtomListresult)
+            if (warewolfEvalResult.IsWarewolfAtomListresult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
             {
-                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
-                {
-                    warewolfAtomListresult.Item.ResetCurrentEnumerator();
-                    _listResult = warewolfAtomListresult;
-                }
+                warewolfAtomListresult.Item.ResetCurrentEnumerator();
+                _listResult = warewolfAtomListresult;
             }
+
         }
 
         #region Implementation of IWarewolfIterator

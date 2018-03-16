@@ -103,13 +103,11 @@ namespace Dev2.Studio.Core
                                     }
                                 }
                             }
-                            if (deleteFileMetaData.IsDeleted)
+                            if (deleteFileMetaData.IsDeleted && !string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
                             {
-                                if (!string.IsNullOrWhiteSpace(explorerItemViewModel.ResourcePath))
-                                {
-                                    _repository.UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
-                                }
+                                _repository.UpdateManagerProxy.DeleteFolder(explorerItemViewModel.ResourcePath);
                             }
+
                             return deleteFileMetaData;
                         }
                     }

@@ -90,15 +90,13 @@ namespace Dev2.Activities.Designers2.Core
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
         {
-            if (oldItem?.GetCurrentValue() is TDev2TOFn dto && dto.CanRemove())
+            // old row is blank so remove
+            if (oldItem?.GetCurrentValue() is TDev2TOFn dto && dto.CanRemove() && ModelItemCollection != null)
             {
-                // old row is blank so remove
-                if (ModelItemCollection != null)
-                {
-                    var index = ModelItemCollection.IndexOf(oldItem) + 1;
-                    RemoveDto(dto, index);
-                }
+                var index = ModelItemCollection.IndexOf(oldItem) + 1;
+                RemoveDto(dto, index);
             }
+
             if (newItem != null)
             {
                 CurrentModelItem = newItem;

@@ -217,17 +217,15 @@ namespace Dev2.Controller
 
         static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
         {
-            if (payload == null || payload.Length == 0)
+            if (payload == null || payload.Length == 0 && connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected && Application.Current != null)
             {
-                if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected && Application.Current != null)
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
-                        , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
-                    });
-                }
+                    popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                    , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                });
             }
+
         }
 
         static void IsConnectionValid(IEnvironmentConnection connection, IPopupController popupController)
@@ -268,16 +266,14 @@ namespace Dev2.Controller
 
             if (connection == null || !connection.IsConnected)
             {
-                if (connection != null)
+                if (connection != null && !connection.IsConnecting)
                 {
-                    if (!connection.IsConnecting)
-                    {
-                        var popupController = CustomContainer.Get<IPopupController>();
-                        popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
-                                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
-                                              MessageBoxImage.Information, "", false, false, true, false, false, false);
-                    }
+                    var popupController = CustomContainer.Get<IPopupController>();
+                    popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
+                                          ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
+                                          MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
+
             }
             else
             {
@@ -338,16 +334,14 @@ namespace Dev2.Controller
 
             if (connection == null || !connection.IsConnected)
             {
-                if (connection != null)
+                if (connection != null && !connection.IsConnecting)
                 {
-                    if (!connection.IsConnecting)
-                    {
-                        var popupController = CustomContainer.Get<IPopupController>();
-                        popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
-                                              ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
-                                              MessageBoxImage.Information, "", false, false, true, false, false, false);
-                    }
+                    var popupController = CustomContainer.Get<IPopupController>();
+                    popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
+                                          ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
+                                          MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
+
             }
             else
             {

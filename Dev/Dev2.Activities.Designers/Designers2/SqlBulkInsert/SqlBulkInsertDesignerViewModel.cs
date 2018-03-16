@@ -526,22 +526,18 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             }
 
             var batchSize = BatchSize;
-            if (!IsVariable(batchSize))
+            if (!IsVariable(batchSize) && (!int.TryParse(batchSize, out int value) || value < 0))
             {
-                if (!int.TryParse(batchSize, out int value) || value < 0)
-                {
-                    yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.BatchsizeMustBeNumberMsg };
-                }
+                yield return new ActionableErrorInfo(() => IsBatchSizeFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.BatchsizeMustBeNumberMsg };
             }
 
+
             var timeout = Timeout;
-            if (!IsVariable(timeout))
+            if (!IsVariable(timeout) && (!int.TryParse(timeout, out int value) || value < 0))
             {
-                if (!int.TryParse(timeout, out int value) || value < 0)
-                {
-                    yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.TimeoutMustBeNumberMsg };
-                }
+                yield return new ActionableErrorInfo(() => IsTimeoutFocused = true) { ErrorType = ErrorType.Critical, Message = ActivityResources.TimeoutMustBeNumberMsg };
             }
+
 
             var nonEmptyCount = ModelItemCollection.Count(mi => !string.IsNullOrEmpty(((DataColumnMapping)mi.GetCurrentValue()).InputColumn));
             if (nonEmptyCount == 0)

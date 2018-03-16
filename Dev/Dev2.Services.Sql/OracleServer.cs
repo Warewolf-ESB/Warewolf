@@ -266,13 +266,11 @@ namespace Dev2.Services.Sql
         }
         public bool Connect(string connectionString, CommandType commandType, string commandText)
         {
-            if (connectionString != null)
+            if (connectionString != null && connectionString.Contains("Database"))
             {
-                if (connectionString.Contains("Database"))
-                {
-                    connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database", StringComparison.Ordinal)), "");
-                }
+                connectionString = connectionString.Replace(connectionString.Substring(connectionString.IndexOf("Database", StringComparison.Ordinal)), "");
             }
+
 
             CreateConnect(connectionString, commandType, commandText);
 

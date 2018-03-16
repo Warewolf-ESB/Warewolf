@@ -54,13 +54,11 @@ namespace Dev2.Runtime.ESB.Execution
                 foreach(var input in dataListTo.Inputs)
                 {
                     var warewolfEvalResult = dataObj.Environment.Eval(DataListUtil.AddBracketsToValueIfNotExist(input),0);
-                    if(warewolfEvalResult.IsWarewolfAtomResult)
+                    if (warewolfEvalResult.IsWarewolfAtomResult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
                     {
-                        if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && !scalarResult.Item.IsNothing)
-                        {
-                            request.Args.Add(input, new StringBuilder(scalarResult.Item.ToString()));
-                        }
+                        request.Args.Add(input, new StringBuilder(scalarResult.Item.ToString()));
                     }
+
                 }
             }
 
