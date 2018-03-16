@@ -149,13 +149,11 @@ namespace Dev2.Studio.InterfaceImplementors
                 var text = (string)value;
                 var allowUserCalculateMode = (string)parameter == "True";
 
-                if (allowUserCalculateMode && text.Length > 0 && text.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
+                if (allowUserCalculateMode && text.Length > 0 && text.StartsWith(GlobalConstants.CalculateTextConvertPrefix) && text.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
                 {
-                    if (text.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
-                    {
-                        text = "=" + text.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, text.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
-                    }
+                    text = "=" + text.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, text.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
                 }
+
 
 
                 return text;

@@ -32,18 +32,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            if (requestArgs != null && requestArgs.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted))
-            {
 
-                if (itemBeingDeleted != null)
+            if (requestArgs != null && requestArgs.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted) && itemBeingDeleted != null)
+            {
+                var itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
+                if (itemToDelete != null)
                 {
-                    var itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
-                    if (itemToDelete != null)
-                    {
-                        return itemToDelete.ResourceId;
-                    }
+                    return itemToDelete.ResourceId;
                 }
             }
+
 
             return Guid.Empty;
         }

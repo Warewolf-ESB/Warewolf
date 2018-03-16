@@ -32,41 +32,39 @@ namespace Dev2
 
                 if (typeOfCommand == typeof(Microsoft.Practices.Prism.Commands.DelegateCommand) && commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommand command)
                 {
-                    if (Application.Current != null)
+                    if (Application.Current != null && Application.Current.Dispatcher != null)
                     {
-                        if (Application.Current.Dispatcher != null)
-                        {
-                            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                           {
-                               command.RaiseCanExecuteChanged();
-                           }));
-                        }
+                        Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                       {
+                           command.RaiseCanExecuteChanged();
+                       }));
                     }
 
+
                     return;
                 }
 
-                if (typeOfCommand.BaseType == typeof(Microsoft.Practices.Prism.Commands.DelegateCommandBase) && commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommandBase command)
+                if (typeOfCommand.BaseType == typeof(Microsoft.Practices.Prism.Commands.DelegateCommandBase) && commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommandBase commandBase)
                 {
-                    command.RaiseCanExecuteChanged();
+                    commandBase.RaiseCanExecuteChanged();
                     return;
                 }
 
-                if (typeOfCommand == typeof(RelayCommand) && commandForCanExecuteChange is RelayCommand command)
+                if (typeOfCommand == typeof(RelayCommand) && commandForCanExecuteChange is RelayCommand relayCommand)
                 {
-                    command.RaiseCanExecuteChanged();
+                    relayCommand.RaiseCanExecuteChanged();
                     return;
                 }
 
                 if (typeOfCommand == typeof(DelegateCommand))
                 {
-                    var command = commandForCanExecuteChange as DelegateCommand;
-                    command?.RaiseCanExecuteChanged();
+                    var delegateCommand = commandForCanExecuteChange as DelegateCommand;
+                    delegateCommand?.RaiseCanExecuteChanged();
                 }
                 if (typeOfCommand == typeof(AuthorizeCommand))
                 {
-                    var command = commandForCanExecuteChange as AuthorizeCommand;
-                    command?.RaiseCanExecuteChanged();
+                    var authorizeCommand = commandForCanExecuteChange as AuthorizeCommand;
+                    authorizeCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
