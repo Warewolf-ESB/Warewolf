@@ -266,34 +266,39 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public string ObjectName
         {
-            get { return _selectedMethod?.OutputVariable; }
+            get => _selectedMethod?.OutputVariable;
             set
             {
                 if (IsObject && !string.IsNullOrEmpty(ObjectResult))
                 {
                     try
                     {
-                        if (value != null)
-                        {
-                            _selectedMethod.OutputVariable = value;
-                            OnPropertyChanged();
-                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
-                            if (language.IsJsonIdentifierExpression)
-                            {
-                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
-                            }
-                        }
-                        else
-                        {
-                            _selectedMethod.OutputVariable = string.Empty;
-                            OnPropertyChanged();
-                        }
+                        TryGetObject(value);
                     }
                     catch (Exception)
                     {
                         //Is not an object identifier
                     }
                 }
+            }
+        }
+
+        private void TryGetObject(string value)
+        {
+            if (value != null)
+            {
+                _selectedMethod.OutputVariable = value;
+                OnPropertyChanged();
+                var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
+                if (language.IsJsonIdentifierExpression)
+                {
+                    _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
+                }
+            }
+            else
+            {
+                _selectedMethod.OutputVariable = string.Empty;
+                OnPropertyChanged();
             }
         }
 
