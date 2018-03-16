@@ -43,14 +43,12 @@ namespace Warewolf.Studio.Views
         {
             var imageSource = e.OriginalSource as FontAwesome.WPF.ImageAwesome;
             var rectSource = e.OriginalSource as Rectangle;
-            if (imageSource == null && rectSource == null && sender is TextBox tb)
+            if (imageSource == null && rectSource == null && sender is TextBox tb && !tb.IsKeyboardFocusWithin)
             {
-                if (!tb.IsKeyboardFocusWithin)
-                {
-                    e.Handled = true;
-                    tb.Focus();
-                }
+                e.Handled = true;
+                tb.Focus();
             }
+
 
         }
 
