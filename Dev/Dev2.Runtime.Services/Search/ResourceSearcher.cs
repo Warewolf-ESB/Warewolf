@@ -5,6 +5,7 @@ using Dev2.Common.Utils;
 using Dev2.Runtime.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Dev2.Runtime.Search
 {
@@ -23,7 +24,7 @@ namespace Dev2.Runtime.Search
 
             if (searchParameters.SearchOptions.IsWorkflowNameSelected)
             {
-                var allResources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
+                var allResources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID).Where(res => res.ResourceType != "ReservedService");
                 foreach (var resource in allResources)
                 {
                     if(SearchUtils.FilterText(resource.ResourceName, searchParameters))
