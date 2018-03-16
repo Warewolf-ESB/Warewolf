@@ -273,7 +273,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     try
                     {
-                        TryGetObject(value);
+                        TrySetObject(value);
                     }
                     catch (Exception)
                     {
@@ -283,7 +283,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void TryGetObject(string value)
+        private void TrySetObject(string value)
         {
             if (value != null)
             {
