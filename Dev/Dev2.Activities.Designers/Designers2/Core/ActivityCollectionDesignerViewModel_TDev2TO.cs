@@ -356,23 +356,28 @@ namespace Dev2.Activities.Designers2.Core
 
                 if (canAdd)
                 {
-                    var dto = (TDev2TOFn)sender;
-                    if (dto.CanAdd())
+                    AddBlank(sender);
+                }
+            }
+        }
+
+        private void AddBlank(object sender)
+        {
+            var dto = (TDev2TOFn)sender;
+            if (dto.CanAdd())
+            {
+                if (ModelItemCollection.Count == 2)
+                {
+                    var firstDto = GetDto(1);
+                    if (!firstDto.CanRemove())
                     {
-                        if (ModelItemCollection.Count == 2)
-                        {
-                            var firstDto = GetDto(1);
-                            if (!firstDto.CanRemove())
-                            {
-                                // first row is not blank
-                                AddBlankRow();
-                            }
-                        }
-                        else
-                        {
-                            AddBlankRow();
-                        }
+                        // first row is not blank
+                        AddBlankRow();
                     }
+                }
+                else
+                {
+                    AddBlankRow();
                 }
             }
         }
