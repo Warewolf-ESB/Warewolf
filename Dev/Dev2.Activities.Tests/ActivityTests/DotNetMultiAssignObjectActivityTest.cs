@@ -499,6 +499,53 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[@Pet.Name]]", inputs[0].Value);
             Assert.AreEqual("[[result]]", inputs[0].Name);
         }
+
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity_Equality")]
+        public void DsfDotNetMultiAssignObjectActivity_WhenDifferentFieldCollectionData_SHouldBeNotEqual()
+        {
+            var fieldCollection = new List<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[a]]", "12", fieldCollection.Count));
+            var activity1 = new DsfDotNetMultiAssignObjectActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+
+            var fieldCollection2 = new List<AssignObjectDTO>();
+            fieldCollection2.Add(new AssignObjectDTO("[[a]]", "111", fieldCollection2.Count));
+            var activity2 = new DsfDotNetMultiAssignObjectActivity
+            {
+                UniqueID = activity1.UniqueID, // simulate this assign being from a copied/cloned workflow
+                OutputMapping = null,
+                FieldsCollection = fieldCollection2
+            };
+
+            Assert.IsFalse(activity1.Equals(activity2));
+        }
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity_Equality")]
+        public void DsfDotNetMultiAssignObjectActivity_WhenSameFieldCollectionData_ShouldBeEqual()
+        {
+            var fieldCollection = new List<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[a]]", "12", fieldCollection.Count));
+            var activity1 = new DsfDotNetMultiAssignObjectActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+
+            var fieldCollection2 = new List<AssignObjectDTO>();
+            fieldCollection2.Add(new AssignObjectDTO("[[a]]", "12", fieldCollection2.Count));
+            var activity2 = new DsfDotNetMultiAssignObjectActivity
+            {
+                UniqueID = activity1.UniqueID, // simulate this assign being from a copied/cloned workflow
+                OutputMapping = null,
+                FieldsCollection = fieldCollection2
+            };
+
+            Assert.IsTrue(activity1.Equals(activity2));
+            activity2.CreateBookmark = true;
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.CreateBookmark = false;
+            activity2.UpdateAllOccurrences = true;
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.UpdateAllOccurrences = false;
+            Assert.IsTrue(activity1.Equals(activity2));
+        }
     }
 
 }

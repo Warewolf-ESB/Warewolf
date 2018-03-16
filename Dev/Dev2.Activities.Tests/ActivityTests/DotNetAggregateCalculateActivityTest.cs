@@ -410,5 +410,37 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual("Test", act.Result);
         }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDotNetAggregateCalculateActivity_Equality")]
+        public void DsfDotNetAggregateCalculateActivity_Equal()
+        {
+            //------------Setup for test--------------------------
+            const string expression = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string result = "[[res]]";
+            var act1 = new DsfDotNetAggregateCalculateActivity { Expression = expression, Result = result };
+            var act2 = new DsfDotNetAggregateCalculateActivity { Expression = expression, Result = result };
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsTrue(act1.Equals(act2));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDotNetAggregateCalculateActivity_Equality")]
+        public void DsfDotNetAggregateCalculateActivity_NotEqual()
+        {
+            //------------Setup for test--------------------------
+            const string expression1 = "sum([[Numeric(1).num]],[[Numeric(2).num]])";
+            const string expression2 = "[[Numeric(1).num]]";
+            const string result = "[[res]]";
+            var act1 = new DsfDotNetAggregateCalculateActivity { Expression = expression1, Result = result };
+            var act2 = new DsfDotNetAggregateCalculateActivity { Expression = expression2, Result = result };
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsFalse(act1.Equals(act2));
+        }
     }
 }

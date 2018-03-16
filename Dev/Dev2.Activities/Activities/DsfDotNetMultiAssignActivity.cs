@@ -437,6 +437,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 eq &= FieldsCollection[i].Equals(other.FieldsCollection[i]);
             }
+            eq &= UpdateAllOccurrences.Equals(other.UpdateAllOccurrences);
+            eq &= CreateBookmark.Equals(other.CreateBookmark);
+            if (!(ServiceHost is null))
+            {
+                eq &= ServiceHost.Equals(other.ServiceHost);
+            }
 
             return eq;
         }

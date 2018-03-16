@@ -118,32 +118,31 @@ namespace ActivityUnitTests.ActivityTests
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("DsfDateTimeDifferenceActivity_GetOutputs")]
-        public void DsfDateTimeDifferenceActivity_Expect_Equal()
+        [TestCategory("DsfDateTimeDifferenceActivity_Equality")]
+        public void DsfDateTimeDifferenceActivity_Expect_NotEqual()
         {
-            SetupArguments(
-                           ActivityStrings.DateTimeDifferenceDataListWithData
-                         , ActivityStrings.DateTimeDifferenceDataListShape
-                         , "[[recset1(*).f1]]"
-                         , "[[recset2(*).f2]]"
-                         , "dd/MM/yyyy"
-                         , "Days"
-                         , "[[resCol(*).res]]"
-                         );
-
-            var result = ExecuteProcess();
-            GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out IList<string> results, out string error);
-            // remove test datalist ;)
-
-            Assert.AreEqual("8847", results[0]);
-            Assert.AreEqual("9477", results[1]);
-            Assert.AreEqual("9090", results[2]);
+            var activity1 = new DsfDotNetDateTimeDifferenceActivity
+            {
+                Input1 = "[[recset1(*).f1]]",
+                Input2 = "[[recset2(*).f2]]",
+                InputFormat = "dd/MM/yyyy",
+                OutputType = "Days",
+                Result = "[[resCol(*).res]]"
+            };
+            var activity2 = new DsfDotNetDateTimeDifferenceActivity
+            {
+                Input1 = "[[recset2(*).f1]]",
+                Input2 = "[[recset1(*).f2]]",
+                InputFormat = "MM/dd/yyyy",
+                OutputType = "Months",
+                Result = "[[resCol1(*).res]]"
+            };
         }
 
         [TestMethod]
         [Owner("Rory McGuire")]
-        [TestCategory("DsfDateTimeDifferenceActivity_GetOutputs")]
-        public void DsfDateTimeDifferenceActivity_Expect_NotEqual()
+        [TestCategory("DsfDateTimeDifferenceActivity_Equality")]
+        public void DsfDateTimeDifferenceActivity_Expect_Equal()
         {
             var activity1 = new DsfDotNetDateTimeDifferenceActivity {
                 Input1 = "[[recset1(*).f1]]",
@@ -189,6 +188,8 @@ namespace ActivityUnitTests.ActivityTests
             activity2.Result = "[[res(*).res]]";
             Assert.IsFalse(activity1.Equals(activity2));
             activity2.Result = tmp_holder;
+
+            Assert.IsTrue(activity1.Equals(activity2));
         }
 
         #region Private Test Methods

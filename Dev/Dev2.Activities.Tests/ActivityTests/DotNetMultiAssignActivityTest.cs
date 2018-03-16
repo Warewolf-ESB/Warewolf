@@ -831,7 +831,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfDotNetMultiAssignActivity_WhenDifferentFieldCollectionData_SHouldBeNotEqual()
         {
-
             var fieldCollection = new ObservableCollection<ActivityDTO>();
             fieldCollection.Add(new ActivityDTO("[[a]]", "12", fieldCollection.Count));
             var activity1 = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection };
@@ -849,7 +848,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfDotNetMultiAssignActivity_WhenSameFieldCollectionData_SHouldBeEqual()
         {
-
             var fieldCollection = new ObservableCollection<ActivityDTO>();
             fieldCollection.Add(new ActivityDTO("[[a]]", "12", fieldCollection.Count));
             var activity1 = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection };
@@ -861,6 +859,15 @@ namespace Dev2.Tests.Activities.ActivityTests
                 OutputMapping = null,
                 FieldsCollection = fieldCollection2 };
 
+            Assert.IsTrue(activity1.Equals(activity2));
+
+            Assert.IsTrue(activity1.Equals(activity2));
+            activity2.CreateBookmark = true;
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.CreateBookmark = false;
+            activity2.UpdateAllOccurrences = true;
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.UpdateAllOccurrences = false;
             Assert.IsTrue(activity1.Equals(activity2));
         }
 
