@@ -60,17 +60,14 @@ namespace Dev2.Activities.Designers2.Core
             // Do this before, because AddDTO() also attaches events
             AttachEvents(0);
 
-            switch (modelItemCollection.Count)
+            if (modelItemCollection.Count == 1)
             {
-                case 0:
-                    AddDto(1);
-                    AddDto(2);
-                    break;
-                case 1:
-                    AddDto(2);
-                    break;
-                default:
-                    break;
+                AddDto(2);
+            }
+            if (modelItemCollection.Count == 0)
+            {
+                AddDto(1);
+                AddDto(2);
             }
 
             AddBlankRow();
@@ -85,7 +82,6 @@ namespace Dev2.Activities.Designers2.Core
 
         void ModelItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-            //
         }
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
@@ -385,10 +381,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void DoCustomAction(string propertyName)
         {
         }
-
-        /// <summary>
-        /// Attaches events to the ModelItemCollection starting at the specified zero-based index.
-        /// </summary>
+        
         void AttachEvents(int startIndex)
         {
             ProcessModelItemCollection(startIndex, mi =>
@@ -404,11 +397,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             dto.PropertyChanged += OnDtoPropertyChanged;
         }
-
-
-        /// <summary>
-        /// Process the ModelItemCollection starting at the specified zero-based index.
-        /// </summary>
+        
         void ProcessModelItemCollection(int startIndex, Action<ModelItem> processModelItem)
         {
             if (ModelItemCollection != null && !IsMerge)
