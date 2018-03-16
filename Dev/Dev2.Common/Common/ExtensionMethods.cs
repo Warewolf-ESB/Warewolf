@@ -218,18 +218,18 @@ namespace Dev2.Common.Common
 
         public static int IndexOf(this StringBuilder sb, string value, int startIndex, bool ignoreCase)
         {
-            int index = -1;
             if (value == null)
             {
-                return index;
+                return -1;
             }
 
+            int index;
             var length = value.Length;
             var maxSearchLength = sb.Length - length + 1;
 
             if (ignoreCase)
             {
-                return CaseInsensitiveIndexOf(sb, value, startIndex, ref index, length, maxSearchLength);
+                return CaseInsensitiveIndexOf(sb, value, startIndex, length, maxSearchLength);
             }
 
             for (int i = startIndex; i < maxSearchLength; ++i)
@@ -249,16 +249,16 @@ namespace Dev2.Common.Common
                 }
             }
 
-            return index;
+            return -1;
         }
 
-        private static int CaseInsensitiveIndexOf(StringBuilder sb, string value, int startIndex, ref int index, int length, int maxSearchLength)
+        static int CaseInsensitiveIndexOf(StringBuilder sb, string value, int startIndex, int length, int maxSearchLength)
         {
             for (int i = startIndex; i < maxSearchLength; ++i)
             {
                 if (Char.ToLower(sb[i]) == Char.ToLower(value[0]))
                 {
-                    index = 1;
+                    var index = 1;
                     while (index < length && Char.ToLower(sb[i + index]) == Char.ToLower(value[index]))
                     {
                         ++index;
