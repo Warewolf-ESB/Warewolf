@@ -207,37 +207,40 @@ namespace Dev2.Activities.Designers2.Core
             // Restore
             _initialDto = new TDev2TOFn();
         }
-
-        /// <summary>
-        /// Gets the insert index for <see cref="AddToCollection"/>.
-        /// Returns the index of the last blank row.
-        /// </summary>
+        
         int GetIndexForAdd(bool overwrite)
         {
-            var indexNumber = 1;
+            int indexNumber = 1;
             if (overwrite)
             {
                 ModelItemCollection?.Clear();
             }
             else
             {
-                var lastDto = GetLastDto();
-                if (ModelItemCollection != null)
-                {
-                    indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
+                indexNumber = GetIndexWithoutOverwrite();
+            }
+            return indexNumber;
+        }
 
-                    if (ModelItemCollection.Count == 2)
+        int GetIndexWithoutOverwrite()
+        {
+            int indexNumber = 1;
+            var lastDto = GetLastDto();
+            if (ModelItemCollection != null)
+            {
+                indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
+                if (ModelItemCollection.Count == 2)
+                {
+                    // Check whether we have 2 blank rows
+                    var firstDto = GetDto(1);
+                    if (firstDto.CanRemove() && lastDto.CanRemove())
                     {
-                        // Check whether we have 2 blank rows
-                        var firstDto = GetDto(1);
-                        if (firstDto.CanRemove() && lastDto.CanRemove())
-                        {
-                            RemoveAt(indexNumber, lastDto);
-                            indexNumber = indexNumber - 1;
-                        }
+                        RemoveAt(indexNumber, lastDto);
+                        indexNumber = indexNumber - 1;
                     }
                 }
             }
+
             return indexNumber;
         }
 
