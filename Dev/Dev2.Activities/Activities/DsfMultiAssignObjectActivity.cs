@@ -215,10 +215,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 environment.AssignJson(doCalculation, update);
             }
 
-            if (warewolfEvalResult.IsWarewolfAtomListresult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult result)
+            if (warewolfEvalResult.IsWarewolfAtomListresult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult atomListResult)
             {
                 var counter = 1;
-                foreach (var item in result.Item)
+                foreach (var item in atomListResult.Item)
                 {
                     var eval = PerformCalcForAtom(item, functionEvaluator);
                     var doCalculation = new AssignValue(fieldName, eval);
