@@ -399,21 +399,17 @@ namespace Warewolf.Storage
         public string ToStar(string expression)
         {
             var exp = EvaluationFunctions.parseLanguageExpression(expression, 0);
-            if (exp.IsRecordSetExpression)
+            if (exp.IsRecordSetExpression && exp is LanguageAST.LanguageExpression.RecordSetExpression rec)
             {
-                if (exp is LanguageAST.LanguageExpression.RecordSetExpression rec)
-                {
-                    return $"[[{rec.Item.Name}(*).{rec.Item.Column}]]";
-                }
+                return $"[[{rec.Item.Name}(*).{rec.Item.Column}]]";
             }
 
-            if (exp.IsRecordSetNameExpression)
+
+            if (exp.IsRecordSetNameExpression && exp is LanguageAST.LanguageExpression.RecordSetNameExpression recName)
             {
-                if (exp is LanguageAST.LanguageExpression.RecordSetNameExpression rec)
-                {
-                    return $"[[{rec.Item.Name}(*)]]";
-                }
+                return $"[[{recName.Item.Name}(*)]]";
             }
+
 
             if (exp.IsJsonIdentifierExpression)
             {

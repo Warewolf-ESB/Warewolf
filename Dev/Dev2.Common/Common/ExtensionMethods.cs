@@ -218,35 +218,18 @@ namespace Dev2.Common.Common
 
         public static int IndexOf(this StringBuilder sb, string value, int startIndex, bool ignoreCase)
         {
+            int index = -1;
             if (value == null)
             {
-                return -1;
+                return index;
             }
 
-            int index;
             var length = value.Length;
             var maxSearchLength = sb.Length - length + 1;
 
             if (ignoreCase)
             {
-                for (int i = startIndex; i < maxSearchLength; ++i)
-                {
-                    if (Char.ToLower(sb[i]) == Char.ToLower(value[0]))
-                    {
-                        index = 1;
-                        while (index < length && Char.ToLower(sb[i + index]) == Char.ToLower(value[index]))
-                        {
-                            ++index;
-                        }
-
-                        if (index == length)
-                        {
-                            return i;
-                        }
-                    }
-                }
-
-                return -1;
+                return CaseInsensitiveIndexOf(sb, value, startIndex, ref index, length, maxSearchLength);
             }
 
             for (int i = startIndex; i < maxSearchLength; ++i)
@@ -266,9 +249,31 @@ namespace Dev2.Common.Common
                 }
             }
 
+            return index;
+        }
+
+        private static int CaseInsensitiveIndexOf(StringBuilder sb, string value, int startIndex, ref int index, int length, int maxSearchLength)
+        {
+            for (int i = startIndex; i < maxSearchLength; ++i)
+            {
+                if (Char.ToLower(sb[i]) == Char.ToLower(value[0]))
+                {
+                    index = 1;
+                    while (index < length && Char.ToLower(sb[i + index]) == Char.ToLower(value[index]))
+                    {
+                        ++index;
+                    }
+
+                    if (index == length)
+                    {
+                        return i;
+                    }
+                }
+            }
+
             return -1;
         }
-        
+
         public static StringBuilder ToStringBuilder(this XElement elm)
         {
             var result = new StringBuilder();
