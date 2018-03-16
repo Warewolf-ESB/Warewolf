@@ -39,41 +39,50 @@ namespace Dev2
                 var props = deserializeObject.Properties().ToList();
                 foreach (var prop in props)
                 {
-                    if (prop.Value != null && prop.Value.Type == JTokenType.Object)
-                    {
-                        var val = prop.Value as JObject;
-                        var jProperty = val?.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
-                        if (jProperty != null)
-                        {
-                            var propValue = jProperty.Value;
-                            if (Enum.TryParse(propValue.ToString(), true, out enDev2ColumnArgumentDirection ioDirection) && (ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection))
-                            {
-                                var objName = prop.Name;
-                                var isJson = val.Properties().FirstOrDefault(property => property.Name == "@IsJson");
-                                if (isJson != null && isJson.Value.ToString() == "True")
-                                {
-                                    AddObjectsToOutput(environment, objName, outputObj);
-                                }
-                                else
-                                {
-                                    if (prop.Value.Count() > 3)
-                                    {
-                                        AddRecordsetsToOutput(environment, objName, val, outputObj, requestIODirection, update);
-                                    }
-                                    else
-                                    {
-                                        AddScalarsToOutput(prop, environment, objName, outputObj, requestIODirection);
-                                    }
-                                }
-                            }
-
-                        }
-                    }
+                    TryAddPropToOutput(requestIODirection, update, environment, outputObj, prop);
                 }
                 var dataListString = outputObj.ToString(Newtonsoft.Json.Formatting.Indented);
                 return dataListString;
             }
             return "{}";
+        }
+
+        private static void TryAddPropToOutput(enDev2ColumnArgumentDirection requestIODirection, int update, IExecutionEnvironment environment, JObject outputObj, JProperty prop)
+        {
+            if (prop.Value != null && prop.Value.Type == JTokenType.Object)
+            {
+                var val = prop.Value as JObject;
+                var jProperty = val?.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
+                if (jProperty != null)
+                {
+                    var propValue = jProperty.Value;
+                    if (Enum.TryParse(propValue.ToString(), true, out enDev2ColumnArgumentDirection ioDirection) && (ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection))
+                    {
+                        AddPropToOutput(requestIODirection, update, environment, outputObj, prop, val);
+                    }
+                }
+            }
+        }
+
+        private static void AddPropToOutput(enDev2ColumnArgumentDirection requestIODirection, int update, IExecutionEnvironment environment, JObject outputObj, JProperty prop, JObject val)
+        {
+            var objName = prop.Name;
+            var isJson = val.Properties().FirstOrDefault(property => property.Name == "@IsJson");
+            if (isJson != null && isJson.Value.ToString() == "True")
+            {
+                AddObjectsToOutput(environment, objName, outputObj);
+            }
+            else
+            {
+                if (prop.Value.Count() > 3)
+                {
+                    AddRecordsetsToOutput(environment, objName, val, outputObj, requestIODirection, update);
+                }
+                else
+                {
+                    AddScalarsToOutput(prop, environment, objName, outputObj, requestIODirection);
+                }
+            }
         }
 
         static void AddObjectsToOutput(IExecutionEnvironment environment, string objName, JObject outputObj)
