@@ -327,5 +327,99 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #endregion Private Test Methods
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeActivity_Equality")]
+        public void DsfDotNetDateTimeActivity_Equal()
+        {
+            //------------Setup for test--------------------------
+            var act1 = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            var act2 = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsTrue(act1.Equals(act2));
+            string tmp_holder;
+
+            tmp_holder = act2.DateTime;
+            act2.DateTime = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.DateTime = tmp_holder;
+
+            tmp_holder = act2.InputFormat;
+            act2.InputFormat = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.InputFormat = tmp_holder;
+
+            tmp_holder = act2.OutputFormat;
+            act2.OutputFormat = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.OutputFormat = tmp_holder;
+
+            tmp_holder = act2.TimeModifierType;
+            act2.TimeModifierType = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.TimeModifierType = tmp_holder;
+
+            var num_tmp_holder = act2.TimeModifierAmount;
+            act2.TimeModifierAmount = 2;
+            Assert.IsFalse(act1.Equals(act2));
+            act2.TimeModifierAmount = num_tmp_holder;
+
+            tmp_holder = act2.TimeModifierAmountDisplay;
+            act2.TimeModifierAmountDisplay = "today";
+            Assert.IsFalse(act1.Equals(act2));
+            act2.TimeModifierAmountDisplay = tmp_holder;
+
+            Assert.IsTrue(act1.Equals(act2));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeActivity_Equality")]
+        public void DsfDotNetDateTimeActivity_NotEqual()
+        {
+            //------------Setup for test--------------------------
+            var act1 = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            var act2 = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "dd/MM/yyyy",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.IsFalse(act1.Equals(act2));
+        }
     }
 }
