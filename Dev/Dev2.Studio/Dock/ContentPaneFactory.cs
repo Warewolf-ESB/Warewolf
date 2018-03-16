@@ -126,52 +126,36 @@ namespace Dev2.Studio.Dock
             {
                 var tabGroupPane = contentPane.Parent as TabGroupPane;
                 var splitPane = tabGroupPane?.Parent as SplitPane;
-                if (splitPane?.Parent is PaneToolWindow paneToolWindow)
+                if (splitPane?.Parent is PaneToolWindow paneToolWindow && string.IsNullOrWhiteSpace(paneToolWindow.Title) && Application.Current != null && Application.Current.MainWindow != null && Application.Current.MainWindow.DataContext != null && Application.Current.MainWindow.DataContext is ShellViewModel mainViewModel)
                 {
-                    if (string.IsNullOrWhiteSpace(paneToolWindow.Title))
-                    {
-                        if (Application.Current != null)
-                        {
-                            if (Application.Current.MainWindow != null)
-                            {
-                                if (Application.Current.MainWindow.DataContext != null)
-                                {
-                                    if (Application.Current.MainWindow.DataContext is ShellViewModel mainViewModel)
-                                    {
-                                        paneToolWindow.Title = mainViewModel.DisplayName;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    paneToolWindow.Title = mainViewModel.DisplayName;
                 }
+
             }
         }
 
         void ViewModelDeactivated(object sender, DeactivationEventArgs e)
         {
-            if (e.WasClosed)
+            if (e.WasClosed && _target is TabGroupPane container)
             {
-                if (_target is TabGroupPane container)
+                if (sender is WorkSurfaceContextViewModel model)
                 {
-                    if (sender is WorkSurfaceContextViewModel model)
-                    {
-                        var toRemove = container.Items.Cast<ContentPane>().ToList()
-                            .FirstOrDefault(p => p.Content != null && p.Content == model.WorkSurfaceViewModel);
+                    var toRemove = container.Items.Cast<ContentPane>().ToList()
+                        .FirstOrDefault(p => p.Content != null && p.Content == model.WorkSurfaceViewModel);
 
-                        if (toRemove != null)
-                        {
-                            RemovePane(toRemove);
-                        }
-                        if (toRemove != null &&
-                            Application.Current != null &&
-                            !Application.Current.Dispatcher.HasShutdownStarted)
-                        {
-                            container.Items.Remove(toRemove);
-                        }
+                    if (toRemove != null)
+                    {
+                        RemovePane(toRemove);
+                    }
+                    if (toRemove != null &&
+                        Application.Current != null &&
+                        !Application.Current.Dispatcher.HasShutdownStarted)
+                    {
+                        container.Items.Remove(toRemove);
                     }
                 }
             }
+
         }
 
         void SetTabName(ContentPane pane, object item)
@@ -425,20 +409,25 @@ namespace Dev2.Studio.Dock
 
                 if (pane.DataContext is WorkSurfaceContextViewModel model)
                 {
-                    var workflowVm = model.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
-                    var resource = workflowVm?.ResourceModel;
+                    CloseCurrentWorkSurfaceWorkflowDesignerViewModel(e, model);
+                }
+            }
+        }
 
-                    if (resource != null && !resource.IsWorkflowSaved)
-                    {
-                        CloseCurrent(e, model);
-                    }
-                    else
-                    {
-                        if (model.WorkSurfaceViewModel is IStudioTab sourceView)
-                        {
-                            CloseCurrent(e, model);
-                        }
-                    }
+        static void CloseCurrentWorkSurfaceWorkflowDesignerViewModel(PaneClosingEventArgs e, WorkSurfaceContextViewModel model)
+        {
+            var workflowVm = model.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
+            var resource = workflowVm?.ResourceModel;
+
+            if (resource != null && !resource.IsWorkflowSaved)
+            {
+                CloseCurrent(e, model);
+            }
+            else
+            {
+                if (model.WorkSurfaceViewModel is IStudioTab sourceView)
+                {
+                    CloseCurrent(e, model);
                 }
             }
         }
@@ -447,13 +436,11 @@ namespace Dev2.Studio.Dock
         {
             var vm = model;
             vm.TryClose();
-            if (vm.Parent is ShellViewModel mainVm)
+            if (vm.Parent is ShellViewModel mainVm && !mainVm.CloseCurrent)
             {
-                if (!mainVm.CloseCurrent)
-                {
-                    e.Cancel = true;
-                }
+                e.Cancel = true;
             }
+
         }
 
 

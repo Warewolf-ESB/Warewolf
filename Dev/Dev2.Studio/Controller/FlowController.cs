@@ -162,13 +162,11 @@ namespace Dev2.Studio.Controller
             }
             var parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
-            if (dataContext1 != null)
+            if (dataContext1 != null && dataContext1.GetType().Name == "ServiceTestViewModel")
             {
-                if (dataContext1.GetType().Name == "ServiceTestViewModel")
-                {
-                    window.SetEnableDoneButtonState(false);
-                }
+                window.SetEnableDoneButtonState(false);
             }
+
 
             var showDialog = window.ShowDialog();
             window.SetEnableDoneButtonState(true);
@@ -258,13 +256,11 @@ namespace Dev2.Studio.Controller
                     if (ds != null)
                     {
                         var validExpression = true;
-                        if (switchVal?.ComputedValue is System.Activities.Statements.FlowSwitch<string> flowSwitch)
+                        if (switchVal?.ComputedValue is System.Activities.Statements.FlowSwitch<string> flowSwitch && flowSwitch.Cases.Any(flowNode => flowNode.Key == ds.SwitchExpression))
                         {
-                            if (flowSwitch.Cases.Any(flowNode => flowNode.Key == ds.SwitchExpression))
-                            {
-                                validExpression = false;
-                            }
+                            validExpression = false;
                         }
+
 
                         if (!validExpression)
                         {
@@ -349,13 +345,11 @@ namespace Dev2.Studio.Controller
             window.SetEnableDoneButtonState(true);
             var parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
-            if (dataContext1 != null)
+            if (dataContext1 != null && dataContext1.GetType().Name == "ServiceTestViewModel")
             {
-                if (dataContext1.GetType().Name == "ServiceTestViewModel")
-                {
-                    window.SetEnableDoneButtonState(false);
-                }
+                window.SetEnableDoneButtonState(false);
             }
+
 
             var showDialog = window.ShowDialog();
             window.SetEnableDoneButtonState(true);
