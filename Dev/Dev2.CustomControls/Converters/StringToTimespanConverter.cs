@@ -32,13 +32,11 @@ namespace Dev2.CustomControls.Converters
         {
             var result = string.Empty;
 
-            if (value is TimeSpan)
+            if (value is TimeSpan && TimeSpan.TryParse(value.ToString(), out TimeSpan time))
             {
-                if (TimeSpan.TryParse(value.ToString(), out TimeSpan time))
-                {
-                    result = time.Minutes.ToString(CultureInfo.InvariantCulture);
-                }
+                result = time.Minutes.ToString(CultureInfo.InvariantCulture);
             }
+
 
             return result;
         }

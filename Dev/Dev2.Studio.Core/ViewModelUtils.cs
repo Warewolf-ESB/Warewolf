@@ -29,41 +29,35 @@ namespace Dev2
             if(commandForCanExecuteChange != null)
             {
                 var typeOfCommand = commandForCanExecuteChange.GetType();
-            
-                if (typeOfCommand == typeof(Microsoft.Practices.Prism.Commands.DelegateCommand))
-                {
-                    if (commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommand command)
-                    {
-                        if (Application.Current != null)
-                        {
-                            if (Application.Current.Dispatcher != null)
-                            {
-                                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
-                               {
-                                   command.RaiseCanExecuteChanged();
-                               }));
-                            }
-                        }
 
-                        return;
-                    }
-                }
-                if (typeOfCommand.BaseType == typeof(Microsoft.Practices.Prism.Commands.DelegateCommandBase))
+                if (typeOfCommand == typeof(Microsoft.Practices.Prism.Commands.DelegateCommand) && commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommand command)
                 {
-                    if (commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommandBase command)
+                    if (Application.Current != null)
                     {
-                        command.RaiseCanExecuteChanged();
-                        return;
+                        if (Application.Current.Dispatcher != null)
+                        {
+                            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                           {
+                               command.RaiseCanExecuteChanged();
+                           }));
+                        }
                     }
+
+                    return;
                 }
-                if (typeOfCommand == typeof(RelayCommand))
+
+                if (typeOfCommand.BaseType == typeof(Microsoft.Practices.Prism.Commands.DelegateCommandBase) && commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommandBase command)
                 {
-                    if (commandForCanExecuteChange is RelayCommand command)
-                    {
-                        command.RaiseCanExecuteChanged();
-                        return;
-                    }
+                    command.RaiseCanExecuteChanged();
+                    return;
                 }
+
+                if (typeOfCommand == typeof(RelayCommand) && commandForCanExecuteChange is RelayCommand command)
+                {
+                    command.RaiseCanExecuteChanged();
+                    return;
+                }
+
                 if (typeOfCommand == typeof(DelegateCommand))
                 {
                     var command = commandForCanExecuteChange as DelegateCommand;

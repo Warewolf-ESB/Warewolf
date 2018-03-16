@@ -145,13 +145,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     UpdateResourceDependencies(resource, contents);
                     SavedResourceCompileMessage(workspaceID, resource, result.Message);
                 }
-                if (ResourceSaved != null)
+                if (ResourceSaved != null && workspaceID == GlobalConstants.ServerWorkspaceID)
                 {
-                    if (workspaceID == GlobalConstants.ServerWorkspaceID)
-                    {
-                        ResourceSaved(resource);
-                    }
+                    ResourceSaved(resource);
                 }
+
             }
 
             return result;
@@ -334,29 +332,27 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         return;
                     }
                     var res = resources.FirstOrDefault(p => p.ResourceID == resource.ResourceID);
-                    if (res != null)//Found Existing resource
+                    if (res != null && res.ResourceName != resource.ResourceName)//Found Existing resource
                     {
-                        if (res.ResourceName != resource.ResourceName) // Renamed while open
+                        var resourceXml = contents.ToXElement();
+                        if (!reason?.Equals(GlobalConstants.SaveReasonForDeploy) ?? true)
                         {
-                            var resourceXml = contents.ToXElement();
-                            if (!reason?.Equals(GlobalConstants.SaveReasonForDeploy) ?? true)
+                            resourceXml.SetAttributeValue("Name", res.ResourceName);
+                            resourceXml.SetElementValue("DisplayName", res.ResourceName);
+                            var actionElement = resourceXml.Element("Action");
+                            var xamlElement = actionElement?.Element("XamlDefinition");
+                            if (xamlElement != null)
                             {
-                                resourceXml.SetAttributeValue("Name", res.ResourceName);
-                                resourceXml.SetElementValue("DisplayName", res.ResourceName);
-                                var actionElement = resourceXml.Element("Action");
-                                var xamlElement = actionElement?.Element("XamlDefinition");
-                                if (xamlElement != null)
-                                {
-                                    var xamlContent = xamlElement.Value;
-                                    xamlElement.Value = xamlContent.
-                                        Replace("x:Class=\"" + resource.ResourceName + "\"", "x:Class=\"" + res.ResourceName + "\"")
-                                        .Replace("Flowchart DisplayName=\"" + resource.ResourceName + "\"", "Flowchart DisplayName=\"" + res.ResourceName + "\"");
-                                }
-                                resource.ResourceName = res.ResourceName;
-                                contents = resourceXml.ToStringBuilder();
+                                var xamlContent = xamlElement.Value;
+                                xamlElement.Value = xamlContent.
+                                    Replace("x:Class=\"" + resource.ResourceName + "\"", "x:Class=\"" + res.ResourceName + "\"")
+                                    .Replace("Flowchart DisplayName=\"" + resource.ResourceName + "\"", "Flowchart DisplayName=\"" + res.ResourceName + "\"");
                             }
+                            resource.ResourceName = res.ResourceName;
+                            contents = resourceXml.ToStringBuilder();
                         }
                     }
+
                     var directoryName = SetResourceFilePath(workspaceID, resource, ref savedPath);
 
                     

@@ -41,13 +41,11 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             Children = children;
             Parent = parent;
-            if (parent == null)
+            if (parent == null && !Name.StartsWith("@", StringComparison.CurrentCulture))
             {
-                if (!Name.StartsWith("@", StringComparison.CurrentCulture))
-                {
-                    Name = "@" + DisplayName;
-                }
+                Name = "@" + DisplayName;
             }
+
         }
 
         public override bool Input
@@ -79,13 +77,11 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                if (!string.IsNullOrEmpty(_searchText))
+                if (!string.IsNullOrEmpty(_searchText) && _children != null)
                 {
-                    if (_children != null)
-                    {
-                        return _children.Where(model => model.IsVisible).ToObservableCollection();
-                    }
+                    return _children.Where(model => model.IsVisible).ToObservableCollection();
                 }
+
                 return _children ?? (_children = new ObservableCollection<IComplexObjectItemModel>());
             }
             set

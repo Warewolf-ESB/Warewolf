@@ -234,32 +234,30 @@ namespace Dev2.Services.Security
                             if (windowsPrincipal != null)
                             {
                                 isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
-                                if (windowsIdentity != null && !isInRole)
+                                if (windowsIdentity != null && !isInRole && windowsIdentity.Groups != null)
                                 {
-                                    if (windowsIdentity.Groups != null)
+                                    isInRole = windowsIdentity.Groups.Any(reference =>
                                     {
-                                        isInRole = windowsIdentity.Groups.Any(reference =>
+                                        if (reference.Value == sid.Value)
                                         {
-                                            if (reference.Value == sid.Value)
+                                            return true;
+                                        }
+                                        try
+                                        {
+                                            var identityReference = reference.Translate(typeof(NTAccount));
+                                            if (identityReference != null)
                                             {
-                                                return true;
+                                                return identityReference.Value == windowsGroup;
                                             }
-                                            try
-                                            {
-                                                var identityReference = reference.Translate(typeof(NTAccount));
-                                                if (identityReference != null)
-                                                {
-                                                    return identityReference.Value == windowsGroup;
-                                                }
-                                            }
-                                            catch (Exception)
-                                            {
-                                                return false;
-                                            }
+                                        }
+                                        catch (Exception)
+                                        {
                                             return false;
-                                        });
-                                    }
+                                        }
+                                        return false;
+                                    });
                                 }
+
                             }
                             else
                             {

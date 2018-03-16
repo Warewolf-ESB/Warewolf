@@ -227,24 +227,20 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                if (!IsLocalHost)
+                if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
                 {
-                    if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
-                    {
-                        HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
-                    }
+                    HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
                 }
+
 
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    if (!HubConnection.Start().Wait(GlobalConstants.NetworkTimeOut))
+                    if (!HubConnection.Start().Wait(GlobalConstants.NetworkTimeOut) && !IsLocalHost)
                     {
-                        if (!IsLocalHost)
-                        {
-                            ConnectionRetry();
-                        }
+                        ConnectionRetry();
                     }
+
                 }
             }
             catch (AggregateException aex)
@@ -272,37 +268,31 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                if (!IsLocalHost)
+                if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
                 {
-                    if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
-                    {
-                        HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
-                    }
+                    HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
                 }
+
 
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
                     await HubConnection.Start().ConfigureAwait(true);
-                    if (HubConnection.State == ConnectionStateWrapped.Disconnected)
+                    if (HubConnection.State == ConnectionStateWrapped.Disconnected && !IsLocalHost)
                     {
-                        if (!IsLocalHost)
-                        {
-                            ConnectionRetry();
-                        }
+                        ConnectionRetry();
                     }
+
                 }
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connecting)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
                     await HubConnection.Start().ConfigureAwait(true);
-                    if (HubConnection.State == ConnectionStateWrapped.Disconnected)
+                    if (HubConnection.State == ConnectionStateWrapped.Disconnected && !IsLocalHost)
                     {
-                        if (!IsLocalHost)
-                        {
-                            ConnectionRetry();
-                        }
+                        ConnectionRetry();
                     }
+
                     var popup = CustomContainer.Get<IPopupController>();
                     popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
                         , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
@@ -376,17 +366,15 @@ namespace Dev2.Network
 
         protected void StartReconnectTimer()
         {
-            if (IsLocalHost)
+            if (IsLocalHost && _reconnectHeartbeat == null)
             {
-                if (_reconnectHeartbeat == null)
-                {
-                    _reconnectHeartbeat = new System.Timers.Timer();
-                    _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
-                    _reconnectHeartbeat.Interval = 1000;
-                    _reconnectHeartbeat.AutoReset = true;
-                    _reconnectHeartbeat.Start();
-                }
+                _reconnectHeartbeat = new System.Timers.Timer();
+                _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
+                _reconnectHeartbeat.Interval = 1000;
+                _reconnectHeartbeat.AutoReset = true;
+                _reconnectHeartbeat.Start();
             }
+
         }
 
         protected void StopReconnectHeartbeat()

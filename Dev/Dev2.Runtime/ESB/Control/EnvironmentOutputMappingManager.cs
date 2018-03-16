@@ -137,27 +137,21 @@ namespace Dev2.Runtime.ESB.Control
                             if (outPutRecSet.IsRecordSet)
                             {
                                 var enRecordsetIndexType = DataListUtil.GetRecordsetIndexType(outputColumnDefinitions.RawValue);
-                                if (enRecordsetIndexType == enRecordsetIndexType.Star)
+                                if (enRecordsetIndexType == enRecordsetIndexType.Star && recsetResult != null)
                                 {
-                                    if (recsetResult != null)
-                                    {
-                                        environment.EvalAssignFromNestedStar(outputColumnDefinitions.RawValue, recsetResult, update);
-                                    }
+                                    environment.EvalAssignFromNestedStar(outputColumnDefinitions.RawValue, recsetResult, update);
                                 }
-                                if (enRecordsetIndexType == enRecordsetIndexType.Blank)
+
+                                if (enRecordsetIndexType == enRecordsetIndexType.Blank && recsetResult != null)
                                 {
-                                    if (recsetResult != null)
-                                    {
-                                        environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, 0);
-                                    }
+                                    environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, 0);
                                 }
-                                if (enRecordsetIndexType == enRecordsetIndexType.Numeric)
+
+                                if (enRecordsetIndexType == enRecordsetIndexType.Numeric && recsetResult != null)
                                 {
-                                    if (recsetResult != null)
-                                    {
-                                        environment.EvalAssignFromNestedNumeric(outputColumnDefinitions.RawValue, recsetResult, 0);
-                                    }
+                                    environment.EvalAssignFromNestedNumeric(outputColumnDefinitions.RawValue, recsetResult, 0);
                                 }
+
                             }
                         }
                     }

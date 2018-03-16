@@ -123,14 +123,12 @@ namespace Dev2.Activities.Designers2.Service
             CheckIsDeleted(memo);
 
             _serviceDesignerViewModel.ValidationMemoManager.UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == _serviceDesignerViewModel.UniqueID && info.ErrorType != ErrorType.None));
-            if (_serviceDesignerViewModel.SourceId == Guid.Empty)
+            if (_serviceDesignerViewModel.SourceId == Guid.Empty && checkSource && _serviceDesignerViewModel.CheckSourceMissing())
             {
-                if (checkSource && _serviceDesignerViewModel.CheckSourceMissing())
-                {
-                    InitializeMappings();
-                    UpdateMappings();
-                }
+                InitializeMappings();
+                UpdateMappings();
             }
+
         }
 
         void CheckRequiredMappingChangedErrors(DesignValidationMemo memo)

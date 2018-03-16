@@ -888,25 +888,21 @@ namespace Dev2.Runtime.ESB.Execution
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfForEachActivity).Name)
                 {
-                    if (resource is DsfForEachActivity forEach)
+                    if (resource is DsfForEachActivity forEach && foundTestStep.Children != null)
                     {
-                        if (foundTestStep.Children != null)
-                        {
-                            var replacement = NextActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                            forEach.DataFunc.Handler = replacement;
-                        }
+                        var replacement = NextActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                        forEach.DataFunc.Handler = replacement;
                     }
+
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSelectAndApplyActivity).Name)
                 {
-                    if (resource is DsfSelectAndApplyActivity forEach)
+                    if (resource is DsfSelectAndApplyActivity forEach && foundTestStep.Children != null)
                     {
-                        if (foundTestStep.Children != null)
-                        {
-                            var replacement = NextActivity(forEach.ApplyActivityFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                            forEach.ApplyActivityFunc.Handler = replacement;
-                        }
+                        var replacement = NextActivity(forEach.ApplyActivityFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                        forEach.ApplyActivityFunc.Handler = replacement;
                     }
+
                 }
                 else
                 {

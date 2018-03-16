@@ -58,22 +58,18 @@ namespace Dev2.Activities.Designers2.Core
 
         static void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
-            if (keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control)
+            if (keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control && keyEventArgs.OriginalSource.GetType() != typeof(TextBox))
             {
-                if (keyEventArgs.OriginalSource.GetType() != typeof(TextBox))
-                {
-                    keyEventArgs.Handled = true;
-                }
+                keyEventArgs.Handled = true;
             }
 
+
             if (keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) ||
-                keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem))
+keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem) && ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete))
             {
-                if ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete)
-                {
-                    keyEventArgs.Handled = true;
-                }
+                keyEventArgs.Handled = true;
             }
+
         }
 
         #region Overrides of WorkflowViewElement
@@ -238,15 +234,13 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnMouseEnter(MouseEventArgs e)
         {
-            if (!_isSetFocusActionSet)
+            if (!_isSetFocusActionSet && DataContext is ActivityDesignerViewModel vm)
             {
-                if (DataContext is ActivityDesignerViewModel vm)
-                {
-                    vm.SetIntialFocusAction(SetInitialiFocus);
-                    _isSetFocusActionSet = true;
-                    return;
-                }
+                vm.SetIntialFocusAction(SetInitialiFocus);
+                _isSetFocusActionSet = true;
+                return;
             }
+
             base.OnMouseEnter(e);
         }
 

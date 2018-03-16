@@ -385,20 +385,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if (itr != null)
+                if (itr != null && ForEachType != enForEachType.NumOfExecution)
                 {
-                    if (ForEachType != enForEachType.NumOfExecution)
-                    {
-                        RestoreHandlerFn();
-                    }
+                    RestoreHandlerFn();
                 }
-                if (dataObject.IsServiceTestExecution)
+
+                if (dataObject.IsServiceTestExecution && _originalUniqueID == Guid.Empty)
                 {
-                    if (_originalUniqueID == Guid.Empty)
-                    {
-                        _originalUniqueID = Guid.Parse(UniqueID);
-                    }
+                    _originalUniqueID = Guid.Parse(UniqueID);
                 }
+
                 var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
                 if (dataObject.IsServiceTestExecution)
                 {

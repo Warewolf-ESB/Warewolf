@@ -278,22 +278,20 @@ namespace Dev2.Activities.Designers2.Decision
 
         void UpdateDecisionDisplayName(DecisionTO dec)
         {
-            if (DisplayText.StartsWith("If ") || DisplayText == "Decision")
+            if (DisplayText.StartsWith("If ") || DisplayText == "Decision" && dec != null && !_isInitializing && dec.IndexNumber == 1)
             {
-                if (dec != null && !_isInitializing && dec.IndexNumber == 1)
-                {
-                    DisplayName = string.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType,
-                        dec.IsBetweenCriteriaVisible
-                            ? $"{dec.From} and {dec.To}"
-                            : dec.SearchCriteria,
-                        dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
-                    DisplayText = string.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType,
-                        dec.IsBetweenCriteriaVisible
-                            ? $"{dec.From} and {dec.To}"
-                            : dec.SearchCriteria,
-                        dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
-                }
+                DisplayName = string.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType,
+                    dec.IsBetweenCriteriaVisible
+                        ? $"{dec.From} and {dec.To}"
+                        : dec.SearchCriteria,
+                    dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
+                DisplayText = string.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType,
+                    dec.IsBetweenCriteriaVisible
+                        ? $"{dec.From} and {dec.To}"
+                        : dec.SearchCriteria,
+                    dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
             }
+
         }
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()

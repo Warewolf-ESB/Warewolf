@@ -154,14 +154,12 @@ namespace Dev2.Services.Security.MoqInstallerActions
             if (warewolfGroupPrincipal != null)
             {
                 var adminGroupPrincipal = GroupPrincipal.FindByIdentity(systemContext, "Administrators");
-                if (adminGroupPrincipal != null)
+                if (adminGroupPrincipal != null && !warewolfGroupPrincipal.Members.Contains(systemContext, IdentityType.SamAccountName, adminGroupPrincipal.SamAccountName))
                 {
-                    if (!warewolfGroupPrincipal.Members.Contains(systemContext, IdentityType.SamAccountName, adminGroupPrincipal.SamAccountName))
-                    {
-                        warewolfGroupPrincipal.Members.Add(adminGroupPrincipal);
-                        warewolfGroupPrincipal.Save();
-                    }
+                    warewolfGroupPrincipal.Members.Add(adminGroupPrincipal);
+                    warewolfGroupPrincipal.Save();
                 }
+
             }
         }
 

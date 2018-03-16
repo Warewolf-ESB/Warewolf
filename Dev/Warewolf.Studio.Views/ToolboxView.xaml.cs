@@ -43,17 +43,15 @@ namespace Warewolf.Studio.Views
         {
             var imageSource = e.OriginalSource as FontAwesome.WPF.ImageAwesome;
             var rectSource = e.OriginalSource as Rectangle;
-            if (imageSource == null && rectSource == null)
+            if (imageSource == null && rectSource == null && sender is TextBox tb)
             {
-                if (sender is TextBox tb)
+                if (!tb.IsKeyboardFocusWithin)
                 {
-                    if (!tb.IsKeyboardFocusWithin)
-                    {
-                        e.Handled = true;
-                        tb.Focus();
-                    }
+                    e.Handled = true;
+                    tb.Focus();
                 }
             }
+
         }
 
         void ToolGrid_OnMouseEnter(object sender, MouseEventArgs e)

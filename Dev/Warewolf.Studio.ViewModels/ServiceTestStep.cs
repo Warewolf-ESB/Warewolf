@@ -108,17 +108,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 var lastOrDefault = _stepOutputs.LastOrDefault(
                         output => !string.IsNullOrWhiteSpace(output.Variable) && !string.IsNullOrWhiteSpace(output.Value));
-                if (lastOrDefault != null)
+                if (lastOrDefault != null && DataListUtil.IsValueRecordset(lastOrDefault?.Variable))
                 {
-                    if (DataListUtil.IsValueRecordset(lastOrDefault?.Variable))
+                    var serviceTestOutput = new ServiceTestOutput("", "", "", "")
                     {
-                        var serviceTestOutput = new ServiceTestOutput("", "", "", "")
-                        {
-                            AddNewAction = () => AddNewOutput(_stepOutputs.LastOrDefault().Variable)
-                        };
-                        _stepOutputs.Add(serviceTestOutput);
-                    }
+                        AddNewAction = () => AddNewOutput(_stepOutputs.LastOrDefault().Variable)
+                    };
+                    _stepOutputs.Add(serviceTestOutput);
                 }
+
             }
         }
 
@@ -365,17 +363,15 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 var lastRow = StepOutputs.LastOrDefault();
-                if (lastRow != null)
+                if (lastRow != null && !string.IsNullOrEmpty(lastRow.Variable.Trim()))
                 {
-                    if (!string.IsNullOrEmpty(lastRow.Variable.Trim()))
+                    var serviceTestOutput = new ServiceTestOutput("", "", "", "")
                     {
-                        var serviceTestOutput = new ServiceTestOutput("", "", "", "")
-                        {
-                            AddNewAction = () => AddNewOutput("")
-                        };
-                        StepOutputs?.Add(serviceTestOutput);
-                    }
+                        AddNewAction = () => AddNewOutput("")
+                    };
+                    StepOutputs?.Add(serviceTestOutput);
                 }
+
             }
         }
 

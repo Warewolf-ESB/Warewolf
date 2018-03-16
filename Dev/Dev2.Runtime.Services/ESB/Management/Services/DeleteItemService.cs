@@ -32,21 +32,19 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            if (requestArgs != null)
+            if (requestArgs != null && requestArgs.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted))
             {
-                if (requestArgs.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted))
-                {
 
-                    if (itemBeingDeleted != null)
+                if (itemBeingDeleted != null)
+                {
+                    var itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
+                    if (itemToDelete != null)
                     {
-                        var itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
-                        if (itemToDelete != null)
-                        {
-                            return itemToDelete.ResourceId;
-                        }
+                        return itemToDelete.ResourceId;
                     }
                 }
             }
+
             return Guid.Empty;
         }
 
@@ -63,13 +61,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentNullException(nameof(values));
                 }
                 StringBuilder pathBeingDeleted = null;
-                if (!values.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted))
+                if (!values.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted) && !values.TryGetValue("folderToDelete", out pathBeingDeleted))
                 {
-                    if (!values.TryGetValue("folderToDelete", out pathBeingDeleted))
-                    {
-                        throw new ArgumentException(string.Format(ErrorResource.IsBlank, "itemToDelete"));
-                    }
+                    throw new ArgumentException(string.Format(ErrorResource.IsBlank, "itemToDelete"));
                 }
+
 
                 IExplorerItem itemToDelete;
                 if (itemBeingDeleted != null)

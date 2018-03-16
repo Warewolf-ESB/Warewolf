@@ -169,13 +169,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public bool CanAdd()
         {
             var result = true;
-            if (MergeType == MergeTypeIndex || MergeType == MergeTypeChars)
+            if (MergeType == MergeTypeIndex || MergeType == MergeTypeChars && string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
             {
-                if (string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
-                {
-                    result = false;
-                }
+                result = false;
             }
+
             return result;
         }
 

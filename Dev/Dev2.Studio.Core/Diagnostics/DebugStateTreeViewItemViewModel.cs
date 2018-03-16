@@ -50,14 +50,12 @@ namespace Dev2.Studio.Core
                 if (Content.HasError)
                 {
                     var currentError = new StringBuilder(Content.ErrorMessage);
-                    if (!string.IsNullOrEmpty(errorMessage))
+                    if (!string.IsNullOrEmpty(errorMessage) && !currentError.Contains(errorMessage))
                     {
-                        if (!currentError.Contains(errorMessage))
-                        {
-                            currentError.Append(errorMessage);
-                            Content.ErrorMessage = currentError.ToString();
-                        }
+                        currentError.Append(errorMessage);
+                        Content.ErrorMessage = currentError.ToString();
                     }
+
                 }
                 else
                 {
