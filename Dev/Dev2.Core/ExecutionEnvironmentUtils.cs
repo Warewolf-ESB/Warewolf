@@ -46,29 +46,27 @@ namespace Dev2
                         if (jProperty != null)
                         {
                             var propValue = jProperty.Value;
-                            if (Enum.TryParse(propValue.ToString(), true, out enDev2ColumnArgumentDirection ioDirection))
+                            if (Enum.TryParse(propValue.ToString(), true, out enDev2ColumnArgumentDirection ioDirection) && (ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection))
                             {
-                                if (ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection)
+                                var objName = prop.Name;
+                                var isJson = val.Properties().FirstOrDefault(property => property.Name == "@IsJson");
+                                if (isJson != null && isJson.Value.ToString() == "True")
                                 {
-                                    var objName = prop.Name;
-                                    var isJson = val.Properties().FirstOrDefault(property => property.Name == "@IsJson");
-                                    if (isJson != null && isJson.Value.ToString() == "True")
+                                    AddObjectsToOutput(environment, objName, outputObj);
+                                }
+                                else
+                                {
+                                    if (prop.Value.Count() > 3)
                                     {
-                                        AddObjectsToOutput(environment, objName, outputObj);
+                                        AddRecordsetsToOutput(environment, objName, val, outputObj, requestIODirection, update);
                                     }
                                     else
                                     {
-                                        if (prop.Value.Count() > 3)
-                                        {
-                                            AddRecordsetsToOutput(environment, objName, val, outputObj, requestIODirection, update);
-                                        }
-                                        else
-                                        {
-                                            AddScalarsToOutput(prop, environment, objName, outputObj, requestIODirection);
-                                        }
+                                        AddScalarsToOutput(prop, environment, objName, outputObj, requestIODirection);
                                     }
                                 }
                             }
+
                         }
                     }
                 }
@@ -94,13 +92,10 @@ namespace Dev2
             if (ioDire != null)
             {
                 var x = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), ioDire.Value.ToString());
-                if (x == enDev2ColumnArgumentDirection.Both || x == requestIODirection)
+                if ((x == enDev2ColumnArgumentDirection.Both || x == requestIODirection) && (environment.Eval("[[" + objName + "]]", 0) is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfEvalResult))
                 {
-                    if (environment.Eval("[[" + objName + "]]", 0) is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfEvalResult)
-                    {
                         var eval = PublicFunctions.AtomtoString(warewolfEvalResult.Item);
                         outputObj.Add(objName, eval);
-                    }
                 }
             }
         }
@@ -116,37 +111,49 @@ namespace Dev2
                     var data = res.Item.Data;
                     foreach (var dataItem in data)
                     {
-                        var jObjForArray = new JObject();
-                        var recCol = val.Properties().FirstOrDefault(property => property.Name == dataItem.Key);
-                        var io = recCol?.Children().FirstOrDefault() as JObject;
-                        var p = io?.Properties().FirstOrDefault(token => token.Name == "@ColumnIODirection");
-                        if (p != null)
-                        {
-                            var direction = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
-                            if (direction == enDev2ColumnArgumentDirection.Both || direction == requestedIODirection)
-                            {
-                                var i = 0;
-                                foreach (var warewolfAtom in dataItem.Value)
-                                {
-                                    jObjForArray.Add(dataItem.Key, warewolfAtom.ToString());
-                                    if (newArray.Count < i + 1 || newArray.Count == 0)
-                                    {
-                                        newArray.Add(jObjForArray);
-                                    }
-                                    else
-                                    {
-                                        var jToken = newArray[i] as JObject;
-                                        jToken?.Add(new JProperty(dataItem.Key, warewolfAtom.ToString()));
-                                    }
-                                    jObjForArray = new JObject();
-                                    i++;
-                                }
-                            }
-                        }
+                        AddDataItemToOutputs(val, requestedIODirection, newArray, dataItem);
                     }
                 }
                 outputObj.Add(objName, newArray);
             }
+        }
+
+        static void AddDataItemToOutputs(JObject val, enDev2ColumnArgumentDirection requestedIODirection, JArray newArray, KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> dataItem)
+        {
+            var jObjForArray = new JObject();
+            var recCol = val.Properties().FirstOrDefault(property => property.Name == dataItem.Key);
+            var io = recCol?.Children().FirstOrDefault() as JObject;
+            var p = io?.Properties().FirstOrDefault(token => token.Name == "@ColumnIODirection");
+            if (p != null)
+            {
+                var direction = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
+                if (direction == enDev2ColumnArgumentDirection.Both || direction == requestedIODirection)
+                {
+                    var i = 0;
+                    foreach (var warewolfAtom in dataItem.Value)
+                    {
+                        jObjForArray.Add(dataItem.Key, warewolfAtom.ToString());
+                        dataItem = CreateDataItem(newArray, dataItem, jObjForArray, i, warewolfAtom);
+                        jObjForArray = new JObject();
+                        i++;
+                    }
+                }
+            }
+        }
+
+        private static KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> CreateDataItem(JArray newArray, KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> dataItem, JObject jObjForArray, int i, DataStorage.WarewolfAtom warewolfAtom)
+        {
+            if (newArray.Count < i + 1 || newArray.Count == 0)
+            {
+                newArray.Add(jObjForArray);
+            }
+            else
+            {
+                var jToken = newArray[i] as JObject;
+                jToken?.Add(new JProperty(dataItem.Key, warewolfAtom.ToString()));
+            }
+
+            return dataItem;
         }
 
         public static string GetJsonOutputFromEnvironment(IDSFDataObject dataObject, string dataList, int update) => GetJsonForEnvironmentWithColumnIoDirection(dataObject, dataList, enDev2ColumnArgumentDirection.Output, update);
@@ -340,16 +347,14 @@ namespace Dev2
                 {
                     foreach (var definition in recSetDefs)
                     {
-                        if (DataListUtil.IsValueRecordset(definition))
+                        if (DataListUtil.IsValueRecordset(definition) && DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
                         {
-                            if (DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
-                            {
-                                var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
-                                var a = subc.InnerXml;
-                                a = RemoveXMLPrefix(a);
-                                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a), update);
-                            }
+                            var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
+                            var a = subc.InnerXml;
+                            a = RemoveXMLPrefix(a);
+                            dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a), update);
                         }
+
                     }
                 }
             }
