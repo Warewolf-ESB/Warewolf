@@ -1522,7 +1522,7 @@ namespace Dev2.Studio.ViewModels
             return true;
         }
 
-        bool ConfirmDelete(ICollection<IContextualResourceModel> models, string folderName)
+        bool TryConfirmDelete(ICollection<IContextualResourceModel> models, string folderName)
         {
             var confirmDeleteAfterDependencies = ConfirmDeleteAfterDependencies(models);
             if (confirmDeleteAfterDependencies)
@@ -1541,23 +1541,27 @@ namespace Dev2.Studio.ViewModels
                     var contextualResourceModel = models.FirstOrDefault();
                     if (contextualResourceModel != null)
                     {
-                        var deletionName = folderName;
-                        var description = "";
-                        if (string.IsNullOrEmpty(deletionName))
-                        {
-                            deletionName = contextualResourceModel.ResourceName;
-                            description = contextualResourceModel.ResourceType.GetDescription();
-                        }
-
-                        var shouldDelete = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmDelete, deletionName, description),
-                                                              StringResources.DialogTitle_ConfirmDelete,
-                                                              MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false) == MessageBoxResult.Yes;
-
-                        return shouldDelete;
+                        return ConfirmDelete(folderName, contextualResourceModel);
                     }
                 }
             }
             return false;
+        }
+
+        private bool ConfirmDelete(string folderName, IContextualResourceModel contextualResourceModel)
+        {
+            var deletionName = folderName;
+            var description = "";
+            if (string.IsNullOrEmpty(deletionName))
+            {
+                deletionName = contextualResourceModel.ResourceName;
+                description = contextualResourceModel.ResourceType.GetDescription();
+            }
+
+            var shouldDelete = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmDelete, deletionName, description),
+                                                  StringResources.DialogTitle_ConfirmDelete,
+                                                  MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false) == MessageBoxResult.Yes;
+            return shouldDelete;
         }
 
         public bool ShowDeleteDialogForFolder(string folderBeingDeleted)
@@ -1583,7 +1587,7 @@ namespace Dev2.Studio.ViewModels
 
         public void DeleteResources(ICollection<IContextualResourceModel> models, string folderName, bool showConfirm, System.Action actionToDoOnDelete)
         {
-            if (models == null || showConfirm && !ConfirmDelete(models, folderName))
+            if (models == null || showConfirm && !TryConfirmDelete(models, folderName))
             {
                 return;
             }
@@ -1849,10 +1853,7 @@ namespace Dev2.Studio.ViewModels
         public IWorksurfaceContextManager WorksurfaceContextManager
         {
             get => _worksurfaceContextManager;
-            set
-            {
-                _worksurfaceContextManager = value;
-            }
+            set => _worksurfaceContextManager = value;
         }
 
         public IWorkflowDesignerViewModel GetWorkflowDesigner()
@@ -1863,16 +1864,8 @@ namespace Dev2.Studio.ViewModels
 
         public static bool IsDownloading() => false;
 
-        public async Task<bool> CheckForNewVersionAsync()
-        {
-            var hasNewVersion = await Version.GetNewerVersionAsync();
-            return hasNewVersion;
-        }
-
-        public void DisplayDialogForNewVersion()
-        {
-            BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
-        }
+        public async Task<bool> CheckForNewVersionAsync() => await Version.GetNewerVersionAsync();
+        public void DisplayDialogForNewVersion() => BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
 
         public bool MenuExpanded
         {
@@ -1892,19 +1885,13 @@ namespace Dev2.Studio.ViewModels
         public WorkSurfaceContextViewModel PreviousActive
         {
             get => _previousActive;
-            set
-            {
-                _previousActive = value;
-            }
+            set => _previousActive = value;
         }
         public IAsyncWorker AsyncWorker => _asyncWorker;
         public bool CanDebug
         {
             get => _canDebug;
-            set
-            {
-                _canDebug = value;
-            }
+            set => _canDebug = value;
         }
         public Func<IWorkspaceItemRepository> GETWorkspaceItemRepository => _getWorkspaceItemRepository;
 
