@@ -538,8 +538,11 @@ where pn.nspname = 'public';
         public static readonly string DropBoxFailure = "Failed";
         public static readonly string GlobalCounterName = "All";
         public static readonly string Warewolf = "Warewolf";
+        public static readonly string WarewolfStudio = "Warewolf Studio";
         public static readonly string WarewolfServices = "Warewolf Services";
         public static readonly string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
+
+        public static readonly string DotNetFrameworkError = @"System.DllNotFoundException: C:\Windows\Microsoft.NET\Framework64\v4.0.30319\WPF\wpfgfx_v0400.dll";
 
         public static void HandleEmptyParameters(object paramaTer, string name)
         {
