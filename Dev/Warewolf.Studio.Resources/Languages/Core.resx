@@ -576,4 +576,11 @@ Please note that tabs are fully supported at runtime, in variables and when read
   <data name="MergeSelectionViewInformationLabel" xml:space="preserve">
     <value>Below is a list of the selected workflow versions to merge with. Select from the radio button and press Enter or click Merge to continue with the merge process. If you are not sure which version to merge with, press Escape or click Cancel, then find the Workflow in the Explorer, right-click and select 'Show Version History' to view the previous versions.</value>
   </data>
+  <data name="DotNetFrameworkInstallError" xml:space="preserve">
+    <value>There was an error while installing Warewolf which has caused Warewolf Server to not start. 
+This error is related to .Net Framework being corrupt. Please reinstall .Net Framework.
+
+Error:
+{0}</value>
+  </data>
 </root>

@@ -159,6 +159,21 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowInstallationErrorOccurred(string error)
+        {
+            var message = string.Format(string.Format(Warewolf.Studio.Resources.Languages.Core.DotNetFrameworkInstallError, GlobalConstants.DotNetFrameworkError));
+
+            AssignCommonValues("Server Startup Error", message, MessageBoxButton.OK);
+            ImageType = MessageBoxImage.Error;
+            IsDependenciesButtonVisible = false;
+            IsInfo = false;
+            IsError = true;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+
         public MessageBoxResult ShowCanNotMoveResource()
         {
             AssignCommonValues("Source data contains encrypted connections strings.", "If the Source was created on this Server, Click Continue Warewolf will attempt to Open it. \nIf the Source was created on the Remote server, click Cancel and then deploy it to this machine from the resources originating server.", MessageBoxButton.OKCancel);

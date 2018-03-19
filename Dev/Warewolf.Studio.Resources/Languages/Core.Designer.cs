@@ -349,6 +349,19 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an error while installing Warewolf which has caused Warewolf Server to not start. 
+        ///This error is related to .Net Framework being corrupt. Please reinstall .Net Framework.
+        ///
+        ///Error:
+        ///{0}.
+        /// </summary>
+        public static string DotNetFrameworkInstallError {
+            get {
+                return ResourceManager.GetString("DotNetFrameworkInstallError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Dropbox Source.
         /// </summary>
         public static string DropboxSourceNewHeaderLabel {

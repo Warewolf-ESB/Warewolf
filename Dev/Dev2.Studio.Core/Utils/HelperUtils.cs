@@ -72,6 +72,16 @@ namespace Dev2.Utils
                 .Replace("\\\\", "\\");
         }
 
-
+        public static string GetServerLogSettingsConfigFile()
+        {
+            var localAppDataFolder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            var serverLogFolder = Path.Combine(localAppDataFolder, "Warewolf", "Server Log");
+            if (!Directory.Exists(serverLogFolder))
+            {
+                Directory.CreateDirectory(serverLogFolder);
+            }
+            var serverLogFile = Path.Combine(serverLogFolder, "warewolf-Server.log");
+            return serverLogFile;
+        }
     }
 }

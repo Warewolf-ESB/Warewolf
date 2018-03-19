@@ -63,15 +63,16 @@ using Dev2.Activities;
 using Microsoft.VisualBasic.ApplicationServices;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core;
-using Dev2.Factory;            
+using Dev2.Factory;
+using System.Text;
 
 namespace Dev2.Studio
 {
-    public partial class App : System.Windows.Application, IApp, IDisposable
+    public partial class App : Application, IApp, IDisposable
     {
         ShellViewModel _shellViewModel;
-        
-        private Mutex _processGuard = null;
+
+        private Mutex _processGuard;
 
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
@@ -79,7 +80,7 @@ namespace Dev2.Studio
         {
             this.mergeFactory = mergeFactory;
         }
-        public App() : this(new MergeFactory())        
+        public App() : this(new MergeFactory())
         {
             // PrincipalPolicy must be set to WindowsPrincipal to check roles.
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
@@ -93,7 +94,7 @@ namespace Dev2.Studio
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e.Message, e, "Warewolf Error");
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 AppUsageStats.LocalHost = "http://localhost:3142";
             }
         }
@@ -106,12 +107,12 @@ namespace Dev2.Studio
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
             Task.Factory.StartNew(() =>
             {
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "Feedback");
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GlobalConstants.Warewolf, "Feedback");
                 DirectoryHelper.CleanUp(path);
-                DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug"));
+                DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, GlobalConstants.Warewolf, "Debug"));
             });
 
-            var localprocessGuard = new Mutex(true, "Warewolf Studio", out bool createdNew);
+            var localprocessGuard = new Mutex(true, GlobalConstants.WarewolfStudio, out bool createdNew);
 
             if (createdNew)
             {
@@ -119,12 +120,8 @@ namespace Dev2.Studio
             }
             else
             {
-
                 Environment.Exit(Environment.ExitCode);
             }
-
-
-
 
             InitializeShell(e);
 #if ! (DEBUG)
@@ -141,6 +138,7 @@ namespace Dev2.Studio
 
         ManualResetEvent _resetSplashCreated;
         Thread _splashThread;
+        private bool _hasDotNetFramweworkError;
         private readonly IMergeFactory mergeFactory;
         protected void InitializeShell(System.Windows.StartupEventArgs e)
         {
@@ -151,15 +149,23 @@ namespace Dev2.Studio
             _splashThread.IsBackground = true;
             _splashThread.Name = "Splash Screen";
             _splashThread.Start();
+
             _resetSplashCreated.WaitOne();
             new Bootstrapper().Start();
-
+            if (_hasDotNetFramweworkError)
+            {
+                SplashView.CloseSplash(false);
+                var popupController = CustomContainer.Get<IPopupController>();                
+                popupController.ShowInstallationErrorOccurred(GlobalConstants.DotNetFrameworkError);
+                Shutdown();
+            }
             base.OnStartup(e);
             _shellViewModel = MainWindow.DataContext as ShellViewModel;
             if (_shellViewModel != null)
             {
                 CreateDummyWorkflowDesignerForCaching();
                 SplashView.CloseSplash(false);
+               
                 if (e.Args.Length > 0)
                 {
                     OpenBasedOnArguments(new WarwolfStartupEventArgs(e));
@@ -174,7 +180,7 @@ namespace Dev2.Studio
                 {
                     File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
                 }
-                Dev2Logger.AddEventLogging(settingsConfigFile, "Warewolf Studio");
+                Dev2Logger.AddEventLogging(settingsConfigFile, GlobalConstants.WarewolfStudio);
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 _appExceptionHandler = new AppExceptionHandler(this, _shellViewModel);
 
@@ -282,6 +288,8 @@ namespace Dev2.Studio
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
 
+            _hasDotNetFramweworkError = ValidateDotNetFramework();
+
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
@@ -292,6 +300,37 @@ namespace Dev2.Studio
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
             Dispatcher.Run();
+        }
+
+        private static bool ValidateDotNetFramework()
+        {
+            var serverLogFile = HelperUtils.GetServerLogSettingsConfigFile();
+            if (!File.Exists(serverLogFile))
+            {
+                File.WriteAllText(serverLogFile, GlobalConstants.DefaultServerLogFileConfig);
+            }
+            try
+            {
+                var lines = File.ReadAllLines(serverLogFile).Reverse();
+
+                foreach (string line in lines)
+                {
+                    if (line.Contains(@"System.DllNotFoundException: C:\Windows\Microsoft.NET\Framework"))
+                    {
+                        return true;
+                    }
+                    if (line.Contains(@"[Header]"))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error loading server log", ex, GlobalConstants.WarewolfError);
+                return false;
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -333,15 +372,15 @@ namespace Dev2.Studio
             {
                 SplashView.CloseSplash(true);
                 base.Shutdown();
-            }            
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
             }
             ForceShutdown();
         }
 
-      
+
         public bool ShouldRestart { get; set; }
 
         public bool HasShutdownStarted
