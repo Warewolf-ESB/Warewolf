@@ -633,10 +633,14 @@ and getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
             let posValue =  rset.Data.[columnName].[rset.Data.[columnName].Count-1]
             match posValue with
                 |   Nothing ->
-                        let mutable lastIndex = rset.Frame
-                        while lastIndex > 0 && rset.Data.[columnName].[lastIndex - 1] = Nothing do
-                            lastIndex <- lastIndex - 1
-                        lastIndex + 1
+                        match rset.Frame with
+                        | 0 ->
+                            rset.Frame
+                        | _ ->
+                            let mutable lastIndex = rset.Frame
+                            while lastIndex > 0 && rset.Data.[columnName].[lastIndex - 1] = Nothing do
+                                lastIndex <- lastIndex - 1
+                            lastIndex + 1
                 | _-> rset.LastIndex  + 1    
     else
         match rset.Frame with
