@@ -66,6 +66,55 @@ namespace Warewolf.Storage.Tests
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        public void GivenRecSet_ExecutionEnvironmentEvalAssignFromNestedLast_TwoColumn_Should()
+        {
+            Assert.IsNotNull(_environment);
+            var evalMultiAssign = EvalMultiAssignTwoColumn();
+            var items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
+            var warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            _environment.EvalAssignFromNestedLast("[[rec().a]]", warewolfAtomListresult, 0);
+            items = PublicFunctions.EvalEnvExpression("[[rec(*).b]]", 0, false, evalMultiAssign);
+            warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            _environment.EvalAssignFromNestedLast("[[rec().b]]", warewolfAtomListresult, 0);
+            items = PublicFunctions.EvalEnvExpression("[[rec(*).c]]", 0, false, evalMultiAssign);
+            warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            _environment.EvalAssignFromNestedLast("[[rec().c]]", warewolfAtomListresult, 0);
+            evalMultiAssign = EvalMultiAssignTwoColumn();
+            items = PublicFunctions.EvalEnvExpression("[[rec(*).a]]", 0, false, evalMultiAssign);
+            warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            _environment.EvalAssignFromNestedLast("[[rec().a]]", warewolfAtomListresult, 0);
+            items = PublicFunctions.EvalEnvExpression("[[rec(*).b]]", 0, false, evalMultiAssign);
+            warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            _environment.EvalAssignFromNestedLast("[[rec().b]]", warewolfAtomListresult, 0);
+            items = PublicFunctions.EvalEnvExpression("[[rec(*).c]]", 0, false, evalMultiAssign);
+            warewolfAtomListresult = items as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            _environment.EvalAssignFromNestedLast("[[rec().c]]", warewolfAtomListresult, 0);
+
+            var list_a = _environment.EvalAsListOfStrings("[[rec(*).a]]", 0);
+            var list_b = _environment.EvalAsListOfStrings("[[rec(*).b]]", 0);
+            var list_c = _environment.EvalAsListOfStrings("[[rec(*).c]]", 0);
+            Assert.AreEqual(list_a.Count, 4);
+            Assert.AreEqual(list_b.Count, 4);
+            Assert.AreEqual(list_c.Count, 4);
+
+            Assert.IsTrue(list_a[0].Equals("a11"));
+            Assert.IsTrue(list_a[1].Equals("ayy"));
+            Assert.IsTrue(list_a[2].Equals("a11"));
+            Assert.IsTrue(list_a[3].Equals("ayy"));
+
+            Assert.IsTrue(list_b[0].Equals("bxx"));
+            Assert.IsTrue(list_b[1].Equals("b33"));
+            Assert.IsTrue(list_b[2].Equals("bxx"));
+            Assert.IsTrue(list_b[3].Equals("b33"));
+
+            Assert.IsTrue(list_c[0].Equals("c22"));
+            Assert.IsTrue(list_c[1].Equals("czz"));
+            Assert.IsTrue(list_c[2].Equals("c22"));
+            Assert.IsTrue(list_c[3].Equals("czz"));
+        }
+
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         public void GivenNonExistingRec_ExecutionEnvironmentEvalAssignFromNestedLast_ShouldAddStar()
         {
@@ -107,6 +156,21 @@ namespace Warewolf.Storage.Tests
                 new AssignValue("[[rec(1).a]]", "27"),
                 new AssignValue("[[rec(3).a]]", "33"),
                 new AssignValue("[[rec(2).a]]", "25")
+            };
+            var envEmpty = WarewolfTestData.CreateTestEnvEmpty("");
+            var evalMultiAssign = PublicFunctions.EvalMultiAssign(assigns, 0, envEmpty);
+            return evalMultiAssign;
+        }
+        static DataStorage.WarewolfEnvironment EvalMultiAssignTwoColumn()
+        {
+            var assigns = new List<IAssignValue>
+            {
+                new AssignValue("[[rec().a]]", "a11"),
+                new AssignValue("[[rec().b]]", "bxx"),
+                new AssignValue("[[rec().c]]", "c22"),
+                new AssignValue("[[rec().a]]", "ayy"),
+                new AssignValue("[[rec().b]]", "b33"),
+                new AssignValue("[[rec().c]]", "czz")
             };
             var envEmpty = WarewolfTestData.CreateTestEnvEmpty("");
             var evalMultiAssign = PublicFunctions.EvalMultiAssign(assigns, 0, envEmpty);
