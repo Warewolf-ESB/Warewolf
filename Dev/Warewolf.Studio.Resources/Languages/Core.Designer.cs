@@ -349,11 +349,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There was an error while installing Warewolf which has caused Warewolf Server to not start. 
-        ///This error is related to .Net Framework being corrupt. Please reinstall .Net Framework.
-        ///
-        ///Error:
-        ///{0}.
+        ///   Looks up a localized string similar to Your .Net installation appears to be corrupt. Uninstall Warewolf, reinstall the .Net framework and then reinstall Warewolf..
         /// </summary>
         public static string DotNetFrameworkInstallError {
             get {

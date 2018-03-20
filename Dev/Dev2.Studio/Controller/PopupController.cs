@@ -159,11 +159,9 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
-        public MessageBoxResult ShowInstallationErrorOccurred(string error)
+        public MessageBoxResult ShowInstallationErrorOccurred()
         {
-            var message = string.Format(string.Format(Warewolf.Studio.Resources.Languages.Core.DotNetFrameworkInstallError, GlobalConstants.DotNetFrameworkError));
-
-            AssignCommonValues("Server Startup Error", message, MessageBoxButton.OK);
+            AssignCommonValues("Server Startup Error", Warewolf.Studio.Resources.Languages.Core.DotNetFrameworkInstallError, MessageBoxButton.OK);
             ImageType = MessageBoxImage.Error;
             IsDependenciesButtonVisible = false;
             IsInfo = false;

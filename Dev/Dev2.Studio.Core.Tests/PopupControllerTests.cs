@@ -681,15 +681,13 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            popupController.ShowInstallationErrorOccurred(GlobalConstants.DotNetFrameworkError);
-
-            var message = string.Format(string.Format(Warewolf.Studio.Resources.Languages.Core.DotNetFrameworkInstallError, GlobalConstants.DotNetFrameworkError));
+            popupController.ShowInstallationErrorOccurred();
 
             //------------Assert Results-------------------------
             Assert.IsTrue(popupWasCalled);
             Assert.AreEqual(MessageBoxButton.OK, buttons);
             Assert.AreEqual("Server Startup Error", header);
-            Assert.AreEqual(message, description);
+            Assert.AreEqual(Warewolf.Studio.Resources.Languages.Core.DotNetFrameworkInstallError, description);
             Assert.IsFalse(popupController.IsInfo);
             Assert.IsFalse(popupController.IsDependenciesButtonVisible);
             Assert.IsTrue(popupController.IsError);
