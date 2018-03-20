@@ -31,6 +31,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Diagnostics;
 using System.Transactions;
+using System.Xml;
 
 namespace Dev2.Services.Execution
 {
@@ -42,7 +43,7 @@ namespace Dev2.Services.Execution
         }
 
         public string ProcedureName { private get; set; }
-        
+
         MySqlServer SetupMySqlServer(ErrorResultTO errors)
         {
             var server = new MySqlServer();
@@ -166,7 +167,7 @@ namespace Dev2.Services.Execution
             foreach (var serviceOutputMapping in Outputs)
             {
                 if (!string.IsNullOrEmpty(serviceOutputMapping?.MappedTo))
-                {                    
+                {
                     ProcessOutputMapping(executeService, environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
                 }
             }
@@ -199,11 +200,12 @@ namespace Dev2.Services.Execution
                 }
             }
             GetRowIndex(ref started, ref rowIdx, rsType, rowIndex);
-            if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
+            if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom) && !executeService.Columns.Contains("ReadForXml"))
             {
                 return;
+
             }
-            var value = row[serviceOutputMapping.MappedFrom];
+            var value = GetColumnValue(executeService, row, serviceOutputMapping);
             if (update != 0)
             {
                 rowIdx = update;
@@ -215,6 +217,8 @@ namespace Dev2.Services.Execution
             }
             environment.Assign(displayExpression, value.ToString(), update);
         }
+
+        static object GetColumnValue(DataTable executeService, DataRow row, IServiceOutputMapping serviceOutputMapping) => executeService.Columns.Contains("ReadForXml") ? row["ReadForXml"] : row[serviceOutputMapping.MappedFrom];
 
         static void GetRowIndex(ref bool started, ref int rowIdx, enRecordsetIndexType rsType, string rowIndex)
         {
@@ -255,15 +259,18 @@ namespace Dev2.Services.Execution
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = ProcedureName;
                     connection.Open();
-                    using (var reader = cmd.ExecuteReader())
+                    if (!ReadForXml(update, startTime, cmd, scope))
                     {
-                        var table = new DataTable();
-                        table.Load(reader);
-                        scope.Complete();
-                        Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                        var startTime1 = Stopwatch.StartNew();
-                        TranslateDataTableToEnvironment(table, DataObj.Environment, update);
-                        Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            var table = new DataTable();
+                            table.Load(reader);
+                            scope.Complete();
+                            Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                            var startTime1 = Stopwatch.StartNew();
+                            TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                            Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                        }
                     }
                 }
             }
@@ -278,6 +285,25 @@ namespace Dev2.Services.Execution
                 cmd.Dispose();
                 connection.Dispose();
             }
+        }
+
+        bool ReadForXml(int update, Stopwatch startTime, SqlCommand cmd, TransactionScope scope)
+        {
+            var reader1 = cmd.ExecuteXmlReader();
+            while (reader1.Read())
+            {
+                var outerXml = reader1.ReadOuterXml();
+                var table = new DataTable("x");
+                table.Columns.Add("ReadForXml");
+                table.LoadDataRow(new object[] { outerXml }, true);
+                scope.Complete();
+                Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                var startTime1 = Stopwatch.StartNew();
+                TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                return true;
+            }
+            return false;
         }
 
         bool MySqlExecution(ErrorResultTO errors, int update)
