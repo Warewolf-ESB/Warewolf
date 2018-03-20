@@ -289,21 +289,33 @@ namespace Dev2.Services.Execution
 
         bool ReadForXml(int update, Stopwatch startTime, SqlCommand cmd, TransactionScope scope)
         {
-            var reader1 = cmd.ExecuteXmlReader();
-            while (reader1.Read())
+            var xmlResults = false;
+            try
             {
-                var outerXml = reader1.ReadOuterXml();
-                var table = new DataTable("x");
-                table.Columns.Add("ReadForXml");
-                table.LoadDataRow(new object[] { outerXml }, true);
-                scope.Complete();
-                Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                var startTime1 = Stopwatch.StartNew();
-                TranslateDataTableToEnvironment(table, DataObj.Environment, update);
-                Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                return true;
+                var reader1 = cmd.ExecuteXmlReader();
+                while (reader1.Read())
+                {
+                    var outerXml = reader1.ReadOuterXml();
+                    var table = new DataTable("x");
+                    table.Columns.Add("ReadForXml");
+                    table.LoadDataRow(new object[] { outerXml }, true);
+                    scope.Complete();
+                    Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                    var startTime1 = Stopwatch.StartNew();
+                    TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                    Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                    xmlResults = true;
+                }
             }
-            return false;
+            catch (Exception e)
+            {
+                if (!e.Message.Equals("Invalid command sent to ExecuteXmlReader.  The command must return an Xml result."))
+                {
+                    throw;
+                }
+                return xmlResults;
+            }
+            return xmlResults;
         }
 
         bool MySqlExecution(ErrorResultTO errors, int update)
