@@ -73,6 +73,6 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowHasDuplicateServerPermissions();
         MessageBoxResult ShowSaveSettingsNotReachableErrorMsg();
         MessageBoxResult ShowSaveSettingsPermissionsErrorMsg();
-        MessageBoxResult ShowInstallationErrorOccurred(string error);
+        MessageBoxResult ShowInstallationErrorOccurred();
     }
 }

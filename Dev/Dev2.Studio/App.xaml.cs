@@ -156,7 +156,7 @@ namespace Dev2.Studio
             {
                 SplashView.CloseSplash(false);
                 var popupController = CustomContainer.Get<IPopupController>();                
-                popupController.ShowInstallationErrorOccurred(GlobalConstants.DotNetFrameworkError);
+                popupController.ShowInstallationErrorOccurred();
                 Shutdown();
             }
             base.OnStartup(e);
