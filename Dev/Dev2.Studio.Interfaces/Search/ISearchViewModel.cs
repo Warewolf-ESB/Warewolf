@@ -20,7 +20,7 @@ namespace Dev2.Studio.Interfaces.Search
     {
         string DisplayName { get; set; }
         event ServerSate ServerStateChanged;
-        ISearchValue SearchValue { get; set; }
+        ISearch Search { get; set; }
         ICommand SearchInputCommand { get; set; }
         ICommand OpenResourceCommand { get; set; }
         ObservableCollection<ISearchResult> SearchResults { get; set; }

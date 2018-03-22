@@ -6,9 +6,9 @@ using System.Runtime.CompilerServices;
 
 namespace Dev2.Common.Search
 {
-    public class SearchValue : ISearchValue
+    public class Search : ISearch
     {
-        public SearchValue()
+        public Search()
         {
             SearchInput = string.Empty;
             SearchOptions = new SearchOptions();

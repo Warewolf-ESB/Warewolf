@@ -21,7 +21,7 @@ namespace Dev2.Runtime.Search
             _testCatalog = testCatalog ?? throw new ArgumentNullException(nameof(testCatalog));
         }
 
-        public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
+        public List<ISearchResult> GetSearchResults(ISearch searchParameters)
         {
             var foundItems = new List<ISearchResult>();
 

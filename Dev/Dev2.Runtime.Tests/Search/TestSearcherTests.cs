@@ -47,7 +47,7 @@ namespace Dev2.Tests.Runtime.Search
             mockResource.Setup(r => r.GetResourcePath(It.IsAny<Guid>())).Returns("Folder");
             mockResourceCatalog.Setup(res => res.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockResource.Object);
             
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "Set",
                 SearchOptions = new SearchOptions

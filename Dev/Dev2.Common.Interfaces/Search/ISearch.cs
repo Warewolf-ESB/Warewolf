@@ -33,7 +33,7 @@ namespace Dev2.Common.Interfaces.Search
 
     public interface ISearcher
     {
-        List<ISearchResult> GetSearchResults(ISearchValue searchParameters);
+        List<ISearchResult> GetSearchResults(ISearch searchParameters);
     }
 
     public interface ISearchResult
@@ -45,7 +45,7 @@ namespace Dev2.Common.Interfaces.Search
         string Match { get; set; }
     }
 
-    public interface ISearchValue
+    public interface ISearch
     {
         string SearchInput { get; set; }
         ISearchOptions SearchOptions { get; set; }

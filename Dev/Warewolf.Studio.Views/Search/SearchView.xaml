@@ -50,7 +50,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txtSearchInput" ToolTip="{x:Static languages:Tooltips.SearchInputTooltip}" Text="{Binding SearchValue.SearchInput}" >
+            <TextBox x:Name="txtSearchInput" ToolTip="{x:Static languages:Tooltips.SearchInputTooltip}" Text="{Binding Search.SearchInput}" >
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static languages:HelpText.SearchInputHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
                 </i:Interaction.Behaviors>
@@ -68,7 +68,7 @@
                       Grid.Column="6" 
                       Grid.Row="0" 
                       ToolTip="{x:Static languages:Tooltips.SearchMatchCaseTooltip}"
-                      IsChecked="{Binding SearchValue.SearchOptions.IsMatchCaseSelected}">Match case
+                      IsChecked="{Binding Search.SearchOptions.IsMatchCaseSelected}">Match case
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchCaseHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
                 </i:Interaction.Behaviors>
@@ -77,7 +77,7 @@
                       Grid.Column="6" 
                       Grid.Row="1" 
                       ToolTip="{x:Static languages:Tooltips.SearchMatchWholeWordTooltip}"
-                      IsChecked="{Binding SearchValue.SearchOptions.IsMatchWholeWordSelected}">Match whole word
+                      IsChecked="{Binding Search.SearchOptions.IsMatchWholeWordSelected}">Match whole word
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchWholeWordHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
                 </i:Interaction.Behaviors>
@@ -86,7 +86,7 @@
         
         <!-- SEARCH OPTIONS -->
         <Expander Grid.Row="3" Style="{StaticResource ServiceTestTestStepExpander}" IsExpanded="True" Header="Search Options" >
-            <Grid HorizontalAlignment="Stretch" DataContext="{Binding SearchValue.SearchOptions}">
+            <Grid HorizontalAlignment="Stretch" DataContext="{Binding Search.SearchOptions}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>

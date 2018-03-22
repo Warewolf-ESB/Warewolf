@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.Search
             var searchOptions = new SearchOptions();
             searchOptions.UpdateAllStates(false);
             searchOptions.IsScalarNameSelected = true;
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "1",
                 SearchOptions = searchOptions
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.Search
             {
                 mockResource.Object
             });
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "bob",
                 SearchOptions = new SearchOptions
@@ -125,7 +125,7 @@ namespace Dev2.Tests.Runtime.Search
             var searchOptions = new SearchOptions();
             searchOptions.UpdateAllStates(false);
             searchOptions.IsRecSetNameSelected = true;
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "set",
                 SearchOptions = searchOptions
@@ -175,7 +175,7 @@ namespace Dev2.Tests.Runtime.Search
             var searchOptions = new SearchOptions();
             searchOptions.UpdateAllStates(false);
             searchOptions.IsObjectNameSelected = true;
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "per",
                 SearchOptions = searchOptions
@@ -220,7 +220,7 @@ namespace Dev2.Tests.Runtime.Search
             searchOptions.IsObjectNameSelected = true;
             searchOptions.IsScalarNameSelected = true;
             searchOptions.IsRecSetNameSelected = true;
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "s",
                 SearchOptions = searchOptions

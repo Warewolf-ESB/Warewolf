@@ -179,7 +179,7 @@
     <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
-    <Compile Include="Search\SearchValue.cs" />
+    <Compile Include="Search\Search.cs" />
     <Compile Include="TimeZoneBuilder\NewDateTimeFormatPart.cs" />
     <Compile Include="Utils\SearchUtils.cs" />
     <Compile Include="WebServiceHeaderBuilder.cs" />
