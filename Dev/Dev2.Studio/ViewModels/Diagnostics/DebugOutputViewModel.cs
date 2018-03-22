@@ -742,20 +742,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 foreach (var listItem in childState.AssertResultList)
                 {
-                    var lineItem = listItem as DebugLine;
-                    if (lineItem?.LineItems != null)
-                    {
-                        foreach (var lineItemLineItem in lineItem.LineItems)
-                        {
-                            if (lineItemLineItem is DebugLineItem line && line.TestStepHasError)
-                            {
-                                theParent.AppendError(line.Value);
-                            }
-                        }
-                    }
+                    AddErrorToAssertResultListParent(theParent, listItem);
                 }
             }
             return false;
+        }
+
+        static void AddErrorToAssertResultListParent(DebugStateTreeViewItemViewModel theParent, object listItem)
+        {
+            var lineItem = listItem as DebugLine;
+            if (lineItem?.LineItems != null)
+            {
+                foreach (var lineItemLineItem in lineItem.LineItems)
+                {
+                    if (lineItemLineItem is DebugLineItem line && line.TestStepHasError)
+                    {
+                        theParent.AppendError(line.Value);
+                    }
+                }
+            }
         }
 
         IDebugTreeViewItemViewModel CreateParentTreeViewItem(IDebugState content, IDebugTreeViewItemViewModel child)
