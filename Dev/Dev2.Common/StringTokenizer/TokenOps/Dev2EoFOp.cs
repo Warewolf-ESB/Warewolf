@@ -10,6 +10,7 @@
 
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System;
+using System.IO;
 using System.Text;
 
 namespace Dev2.Common
@@ -46,6 +47,16 @@ namespace Dev2.Common
         public string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed)
         {
             throw new NotImplementedException();
+        }
+
+        public string ExecuteOperation(StreamReader reader, int startIdx, int len, bool isReversed)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string ExecuteOperation(string sourceString, int startIdx, int len, bool isReversed)
+        {
+            return sourceString.Substring(startIdx);
         }
     }
 }

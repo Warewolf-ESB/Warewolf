@@ -45,16 +45,11 @@ namespace Dev2.Activities.Specs.BaseTypes
     [Binding]
     public class CommonSteps : BaseActivityUnitTest
     {
-        readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext _scenarioContext;
 
         public CommonSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null)
-            {
-                throw new ArgumentNullException("scenarioContext");
-            }
-
-            this.scenarioContext = scenarioContext;
+            _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
         }
 
         public const string DestinationHolder = "destination";
@@ -77,7 +72,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void ThenTheExecutionHasError(string anError)
         {
             var expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
-            var result = scenarioContext.Get<IDSFDataObject>("result");
+            var result = _scenarioContext.Get<IDSFDataObject>("result");
 
             var fetchErrors = result.Environment.FetchErrors();
             var actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
@@ -107,13 +102,13 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
-            var containsInnerActivity = scenarioContext.ContainsKey("innerActivity");
-            var containsKey = scenarioContext.ContainsKey("activity");
+            var containsInnerActivity = _scenarioContext.ContainsKey("innerActivity");
+            var containsKey = _scenarioContext.ContainsKey("activity");
 
             if (containsInnerActivity)
             {
-                scenarioContext.TryGetValue("innerActivity", out DsfNativeActivity<string> selectAndAppltTool);
-                var result = scenarioContext.Get<IDSFDataObject>("result");
+                _scenarioContext.TryGetValue("innerActivity", out DsfNativeActivity<string> selectAndAppltTool);
+                var result = _scenarioContext.Get<IDSFDataObject>("result");
                 if (!result.Environment.HasErrors())
                 {
                     var inputDebugItems = GetInputDebugItems(selectAndAppltTool, result.Environment);
@@ -122,14 +117,14 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             else if (containsKey)
             {
-                scenarioContext.TryGetValue("activity", out object baseAct);
+                _scenarioContext.TryGetValue("activity", out object baseAct);
                 var stringAct = baseAct as DsfFlowNodeActivity<string>;
                 var boolAct = baseAct as DsfFlowNodeActivity<bool>;
                 var multipleFilesActivity = baseAct as DsfAbstractMultipleFilesActivity;
                 if (stringAct != null)
                 {
-                    var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
-                    var result = scenarioContext.Get<IDSFDataObject>("result");
+                    var dsfActivityAbstract = containsKey ? _scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
+                    var result = _scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
                         var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
@@ -138,8 +133,8 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else if (boolAct != null)
                 {
-                    var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
-                    var result = scenarioContext.Get<IDSFDataObject>("result");
+                    var dsfActivityAbstract = containsKey ? _scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
+                    var result = _scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
                         var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
@@ -148,8 +143,8 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else if (multipleFilesActivity != null)
                 {
-                    var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
-                    var result = scenarioContext.Get<IDSFDataObject>("result");
+                    var dsfActivityAbstract = containsKey ? _scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
+                    var result = _scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
                         var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
@@ -169,7 +164,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [When(@"the debug output as")]
         public void ThenTheDebugOutputAs(Table table)
         {
-            var result = scenarioContext.Get<IDSFDataObject>("result");
+            var result = _scenarioContext.Get<IDSFDataObject>("result");
             if (!result.Environment.HasErrors())
             {
                 var outputDebugItems = GetOutputDebugItems(null, result.Environment);
@@ -194,18 +189,18 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"I have a source path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveASourcePathWithValue(string pathVariable, string location)
         {
-            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
+            _scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                scenarioContext.Add("variableList", variableList);
+                _scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(pathVariable, location));
 
-            scenarioContext.Add(SourceHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
-            scenarioContext.Add(ActualSourceHolder, location);
+            _scenarioContext.Add(SourceHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
+            _scenarioContext.Add(ActualSourceHolder, location);
         }
 
         public static string GetGuid()
@@ -234,39 +229,39 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"use private public key for source is ""(.*)""")]
         public void GivenUsePrivatePublicKeyForSourceIs(string sourceKey)
         {
-            scenarioContext.Add(SourcePrivatePublicKeyFile, sourceKey);
+            _scenarioContext.Add(SourcePrivatePublicKeyFile, sourceKey);
         }
 
         [Given(@"assign error to variable ""(.*)""")]
         public void GivenAssignErrorToVariable(string errorVariable)
         {
-            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
+            _scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                scenarioContext.Add("variableList", variableList);
+                _scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(errorVariable, ""));
-            scenarioContext.Add("errorVariable", errorVariable);
+            _scenarioContext.Add("errorVariable", errorVariable);
         }
 
         [Given(@"call the web service ""(.*)""")]
         public void GivenCallTheWebService(string onErrorWebserviceToCall)
         {
-            scenarioContext.Add("webserviceToCall", onErrorWebserviceToCall);
+            _scenarioContext.Add("webserviceToCall", onErrorWebserviceToCall);
         }
 
         void CreateSourceFileWithSomeDummyData(int numberOfGuids = 1)
         {
             try
             {
-                Dev2Logger.Debug(string.Format("Source File: {0}", scenarioContext.Get<string>(ActualSourceHolder)), "Warewolf Debug");
+                Dev2Logger.Debug(string.Format("Source File: {0}", _scenarioContext.Get<string>(ActualSourceHolder)), "Warewolf Debug");
                 var broker = ActivityIOFactory.CreateOperationsBroker();
-                var source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(ActualSourceHolder),
-                    scenarioContext.Get<string>(SourceUsernameHolder),
-                    scenarioContext.Get<string>(SourcePasswordHolder),
+                var source = ActivityIOFactory.CreatePathFromString(_scenarioContext.Get<string>(ActualSourceHolder),
+                    _scenarioContext.Get<string>(SourceUsernameHolder),
+                    _scenarioContext.Get<string>(SourcePasswordHolder),
                     true, "");
                 var sb = new StringBuilder();
                 Enumerable.Range(1, numberOfGuids).ToList().ForEach(x => sb.Append(Guid.NewGuid().ToString()));
@@ -298,60 +293,60 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"source credentials as ""(.*)"" and ""(.*)""")]
         public void GivenSourceCredentialsAs(string userName, string password)
         {
-            scenarioContext.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
-            scenarioContext.Add(SourcePasswordHolder, password.Replace('"', ' ').Trim());
+            _scenarioContext.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
+            _scenarioContext.Add(SourcePasswordHolder, password.Replace('"', ' ').Trim());
             CreateSourceFileWithSomeDummyData();
         }
 
         [Given(@"source credentials as ""(.*)"" and ""(.*)"" for zip tests")]
         public void GivenSourceCredentialsAsAndForZipTests(string userName, string password)
         {
-            scenarioContext.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
-            scenarioContext.Add(SourcePasswordHolder, password.Replace('"', ' ').Trim());
+            _scenarioContext.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
+            _scenarioContext.Add(SourcePasswordHolder, password.Replace('"', ' ').Trim());
             CreateSourceFileWithSomeDummyData(1000);
         }
 
         [Given(@"I have a destination path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveADestinationPathWithValue(string pathVariable, string location)
         {
-            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
+            _scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                scenarioContext.Add("variableList", variableList);
+                _scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(pathVariable, location));
 
-            scenarioContext.Add(DestinationHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
-            scenarioContext.Add(ActualDestinationHolder, location);
+            _scenarioContext.Add(DestinationHolder, string.IsNullOrEmpty(pathVariable) ? location : pathVariable);
+            _scenarioContext.Add(ActualDestinationHolder, location);
         }
 
         [Given(@"overwrite is ""(.*)""")]
         public void GivenOverwriteIs(string overwrite)
         {
             bool.TryParse(overwrite, out bool isOverwrite);
-            scenarioContext.Add(OverwriteHolder, isOverwrite);
+            _scenarioContext.Add(OverwriteHolder, isOverwrite);
         }
 
         [Given(@"destination credentials as ""(.*)"" and ""(.*)""")]
         public void GivenDestinationCredentialsAs(string userName, string password)
         {
-            scenarioContext.Add(DestinationUsernameHolder, userName.Replace('"', ' ').Trim());
-            scenarioContext.Add(DestinationPasswordHolder, password.Replace('"', ' ').Trim());
+            _scenarioContext.Add(DestinationUsernameHolder, userName.Replace('"', ' ').Trim());
+            _scenarioContext.Add(DestinationPasswordHolder, password.Replace('"', ' ').Trim());
         }
 
         [Given(@"use private public key for destination is ""(.*)""")]
         public void GivenUsePrivatePublicKeyForDestinationIs(string destinationKey)
         {
-            scenarioContext.Add(DestinationPrivateKeyFile, destinationKey);
+            _scenarioContext.Add(DestinationPrivateKeyFile, destinationKey);
         }
 
         [Then(@"validation is ""(.*)""")]
         public void ThenValidationIs(string expectedValidationResult)
         {
-            scenarioContext.TryGetValue(ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
+            _scenarioContext.TryGetValue(ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
             if (expectedValidationResult.Equals("True", StringComparison.OrdinalIgnoreCase))
             {
                 if (validationErrors != null)
@@ -371,7 +366,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string validationMessage)
         {
-            scenarioContext.TryGetValue(ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
+            _scenarioContext.TryGetValue(ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
             if (string.IsNullOrEmpty(validationMessage.Trim()) || string.IsNullOrWhiteSpace(validationMessage.Trim()) || validationMessage == "\"\"")
             {
                 if (validationErrors != null && validationErrors.Count > 0)
@@ -400,23 +395,23 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"result as ""(.*)""")]
         public void GivenResultAs(string resultVar)
         {
-            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
+            _scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                scenarioContext.Add("variableList", variableList);
+                _scenarioContext.Add("variableList", variableList);
             }
 
             variableList.Add(new Tuple<string, string>(resultVar, ""));
 
-            scenarioContext.Add(ResultVariableHolder, resultVar);
+            _scenarioContext.Add(ResultVariableHolder, resultVar);
         }
 
         [Then(@"the result from the web service ""(.*)"" will have the same data as variable ""(.*)""")]
         public void ThenTheResultFromTheWebServiceWillHaveTheSameDataAsVariable(string webservice, string errorVariable)
         {
-            var result = scenarioContext.Get<IDSFDataObject>("result");
+            var result = _scenarioContext.Get<IDSFDataObject>("result");
 
             //Get the error value
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(errorVariable),
@@ -454,7 +449,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void ThenTheResultVariableWillBe(string variable, string expectedValue)
         {
             string error;
-            var result = scenarioContext.Get<IDSFDataObject>("result");
+            var result = _scenarioContext.Get<IDSFDataObject>("result");
 
             if (DataListUtil.IsValueRecordset(variable))
             {
@@ -533,11 +528,11 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the output is approximately ""(.*)"" the size of the original input")]
         public void ThenTheOutputIsApproximatelyTheSizeOfTheOriginalInput(string compressionTimes)
         {
-            var source = scenarioContext.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(scenarioContext.Get<string>(SourceHolder)),
+            var source = _scenarioContext.Get<IDSFDataObject>("result");
+            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(_scenarioContext.Get<string>(SourceHolder)),
                                        out string inputFilePath, out string error);
 
-            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(scenarioContext.Get<string>(DestinationHolder)),
+            GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(_scenarioContext.Get<string>(DestinationHolder)),
                                            out string outputFilePath, out error);
 
             var inputFile = new FileInfo(inputFilePath);
@@ -550,22 +545,22 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public void AddVariableToVariableList(string resultVariable)
         {
-            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
+            _scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
-                scenarioContext.Add("variableList", variableList);
+                _scenarioContext.Add("variableList", variableList);
             }
             variableList.Add(new Tuple<string, string>(resultVariable, ""));
         }
 
         public void AddActivityToActivityList(string parentName, string activityName, Activity activity)
         {
-            if (!scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList))
+            if (!_scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList))
             {
                 activityList = new Dictionary<string, Activity>();
-                scenarioContext.Add("activityList", activityList);
+                _scenarioContext.Add("activityList", activityList);
             }
 
             if (activityList.TryGetValue(parentName, out Activity parentActivity))
@@ -630,7 +625,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public Dictionary<string, Activity> GetActivityList()
         {
-            scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            _scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             return activityList;
         }
 
@@ -655,7 +650,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public List<IDebugItemResult> GetInputDebugItems(Activity act, IExecutionEnvironment env)
         {
-            var result = scenarioContext.Get<IDSFDataObject>("result");
+            var result = _scenarioContext.Get<IDSFDataObject>("result");
 
             try
             {
@@ -674,12 +669,12 @@ namespace Dev2.Activities.Specs.BaseTypes
                     return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }
 
-                var activity = scenarioContext.Get<DsfActivityAbstract<string>>("activity");
+                var activity = _scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return DebugItemResults(activity, env);
             }
             catch (Exception ex)
             {
-                var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
+                var activity = _scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugInputs(result.Environment, 0)
                     .SelectMany(r => r.ResultsList)
                     .ToList();
@@ -700,7 +695,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             try
             {
-                var activity = act as DsfActivityAbstract<string> ?? scenarioContext.Get<DsfActivityAbstract<string>>("activity");
+                var activity = act as DsfActivityAbstract<string> ?? _scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return activity.GetDebugOutputs(dl, 0)
                     .SelectMany(r => r.ResultsList)
                     .ToList();
@@ -708,7 +703,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             catch (Exception ex)
             {
 
-                var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
+                var activity = _scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugOutputs(dl, 0)
                      .SelectMany(r => r.ResultsList)
                      .ToList();
@@ -830,7 +825,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                    if (!scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList))
+                    if (!_scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList))
                     {
                         return;
                     }
@@ -989,7 +984,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string headerText)
         {
-            var viewModel = scenarioContext.Get<IDockAware>("viewModel");
+            var viewModel = _scenarioContext.Get<IDockAware>("viewModel");
             Assert.AreEqual(headerText, viewModel.Header);
         }
 
@@ -1002,9 +997,9 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public List<IActionableErrorInfo> ValidateFromModelView()
         {
-            if (scenarioContext.ContainsKey("viewModel"))
+            if (_scenarioContext.ContainsKey("viewModel"))
             {
-                var viewModel = scenarioContext.Get<FileActivityDesignerViewModel>("viewModel");
+                var viewModel = _scenarioContext.Get<FileActivityDesignerViewModel>("viewModel");
                 var currentViewModel = viewModel;
                 currentViewModel.Validate();
                 return currentViewModel.Errors;
