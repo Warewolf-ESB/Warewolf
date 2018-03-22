@@ -184,8 +184,7 @@ namespace Dev2.Runtime.Hosting
         {
             if (_parsers.ContainsKey(workspaceID))
             {
-                IResourceActivityCache resourceCache;
-                if (_parsers.TryGetValue(workspaceID,out resourceCache))
+                if (_parsers.TryGetValue(workspaceID, out IResourceActivityCache resourceCache))
                 {
                     return resourceCache;
                 }
