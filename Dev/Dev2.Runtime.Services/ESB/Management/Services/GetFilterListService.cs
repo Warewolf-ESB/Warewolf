@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException(ErrorResource.NoParameter);
                 }
                 string serializedSource = null;
-                values.TryGetValue("SearchValue", out StringBuilder searchValueSB);
+                values.TryGetValue("Search", out StringBuilder searchValueSB);
                 values.TryGetValue("SearchInput", out StringBuilder searchInputSB);
                 if (searchValueSB != null)
                 {
@@ -36,14 +36,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     var message = new ExecuteMessage();
                     message.HasError = true;
-                    message.SetMessage("No SearchValue found");
-                    Dev2Logger.Debug("No SearchValue found", GlobalConstants.WarewolfDebug);
+                    message.SetMessage("No Search found");
+                    Dev2Logger.Debug("No Search found", GlobalConstants.WarewolfDebug);
                     return serializer.SerializeToBuilder(message);
                 }
 
                 var searchResults = new List<ISearchResult>();
 
-                var searchValue = serializer.Deserialize<ISearchValue>(serializedSource);
+                var searchValue = serializer.Deserialize<ISearch>(serializedSource);
                 if (searchValue != null)
                 {
                     var searchers = new List<ISearcher>

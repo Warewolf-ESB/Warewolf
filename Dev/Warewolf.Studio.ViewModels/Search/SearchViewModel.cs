@@ -47,7 +47,7 @@ namespace Dev2.ViewModels.Search
                 OpenResource(searchResult);
             });
             SearchResults = new ObservableCollection<ISearchResult>();
-            SearchValue = new SearchValue();
+            Search = new Common.Search.Search();
             SelectedEnvironment?.Server?.ResourceRepository?.Load();
             IsSearching = false;
             DisplayName = "Search";
@@ -114,9 +114,9 @@ namespace Dev2.ViewModels.Search
             IsSearching = true;
 
             SearchResults.Clear();
-            if (!string.IsNullOrWhiteSpace(SearchValue.SearchInput))
+            if (!string.IsNullOrWhiteSpace(Search.SearchInput))
             {
-                var results = _shellViewModel.ActiveServer.ResourceRepository.Filter(SearchValue);
+                var results = _shellViewModel.ActiveServer.ResourceRepository.Filter(Search);
                 if (results != null)
                 {
                     SearchResults.AddRange(results);
@@ -145,7 +145,7 @@ namespace Dev2.ViewModels.Search
             }
         }
 
-        public ISearchValue SearchValue { get; set; }
+        public ISearch Search { get; set; }
 
         public new void UpdateHelpDescriptor(string helpText)
         {

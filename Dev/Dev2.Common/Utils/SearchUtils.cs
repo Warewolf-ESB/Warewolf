@@ -14,7 +14,7 @@ namespace Dev2.Common.Utils
 {
     public static class SearchUtils
     {
-        public static bool FilterText(string valueToFilter, ISearchValue searchValue)
+        public static bool FilterText(string valueToFilter, ISearch searchValue)
         {
             var searchInput = searchValue.SearchInput;
             var filterValue = valueToFilter;

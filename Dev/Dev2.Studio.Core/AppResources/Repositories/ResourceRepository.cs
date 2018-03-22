@@ -1046,10 +1046,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        public List<ISearchResult> Filter(ISearchValue searchValue)
+        public List<ISearchResult> Filter(ISearch searchValue)
         {
             var comController = new CommunicationController { ServiceName = "GetFilterListService" };
-            comController.AddPayloadArgument("SearchValue", _serializer.Serialize(searchValue));
+            comController.AddPayloadArgument("Search", _serializer.Serialize(searchValue));
             var lists = comController.ExecuteCommand<List<ISearchResult>>(_server.Connection, GlobalConstants.ServerWorkspaceID);
             return lists;
         }

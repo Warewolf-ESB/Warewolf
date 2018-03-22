@@ -72,6 +72,6 @@ namespace Dev2.Studio.Interfaces
         IServiceTestModelTO ExecuteTest(IContextualResourceModel resourceModel, string testName);
 
         Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel);
-        List<ISearchResult> Filter(ISearchValue searchValue);
+        List<ISearchResult> Filter(ISearch searchValue);
     }
 }

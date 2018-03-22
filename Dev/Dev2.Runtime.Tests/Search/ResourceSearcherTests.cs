@@ -42,7 +42,7 @@ namespace Dev2.Tests.Runtime.Search
             var searchOptions = new SearchOptions();
             searchOptions.UpdateAllStates(false);
             searchOptions.IsWorkflowNameSelected = true;
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "Tes",
                 SearchOptions = searchOptions

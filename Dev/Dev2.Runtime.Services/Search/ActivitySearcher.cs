@@ -17,7 +17,7 @@ namespace Dev2.Runtime.Search
         {
             _resourceCatalog = resourceCatalog ?? throw new ArgumentNullException(nameof(resourceCatalog));
         }
-        public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
+        public List<ISearchResult> GetSearchResults(ISearch searchParameters)
         {
             var searchResults = new List<ISearchResult>();
             if (searchParameters.SearchOptions.IsToolTitleSelected)
@@ -55,7 +55,7 @@ namespace Dev2.Runtime.Search
             return searchResults;
         }
 
-        private void PerformSearchOnActivity(ISearchValue searchParameters, List<ISearchResult> searchResults, KeyValuePair<Guid, IDev2Activity> resourceActivity, IDev2Activity activity)
+        private void PerformSearchOnActivity(ISearch searchParameters, List<ISearchResult> searchResults, KeyValuePair<Guid, IDev2Activity> resourceActivity, IDev2Activity activity)
         {
             if (activity != null)
             {

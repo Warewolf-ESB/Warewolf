@@ -21,7 +21,7 @@ namespace Dev2.Views.Search
         {
             if (e.Key == Key.Enter)
             {
-                ViewModel.SearchValue.SearchInput = txtSearchInput.Text;
+                ViewModel.Search.SearchInput = txtSearchInput.Text;
                 ViewModel.SearchInputCommand.Execute(null);
             }
         }
@@ -30,7 +30,7 @@ namespace Dev2.Views.Search
         {
             if (UpdateIsAllSelected() || !UpdateIsAllSelected())
             {
-                ViewModel.SearchValue.SearchOptions.UpdateAllStates(true);
+                ViewModel.Search.SearchOptions.UpdateAllStates(true);
             }
         }
 
@@ -38,25 +38,25 @@ namespace Dev2.Views.Search
         {
             if (UpdateIsAllSelected())
             {
-                ViewModel.SearchValue.SearchOptions.UpdateAllStates(false);
+                ViewModel.Search.SearchOptions.UpdateAllStates(false);
             }
         }
 
         private void CbSearch_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
-            ViewModel.SearchValue.SearchOptions.IsAllSelected = UpdateIsAllSelected();
+            ViewModel.Search.SearchOptions.IsAllSelected = UpdateIsAllSelected();
         }
 
         private bool UpdateIsAllSelected()
         {
-            var areAllChecked = ViewModel.SearchValue.SearchOptions.IsWorkflowNameSelected;
-            areAllChecked &= ViewModel.SearchValue.SearchOptions.IsToolTitleSelected;
-            areAllChecked &= ViewModel.SearchValue.SearchOptions.IsScalarNameSelected;
-            areAllChecked &= ViewModel.SearchValue.SearchOptions.IsObjectNameSelected;
-            areAllChecked &= ViewModel.SearchValue.SearchOptions.IsRecSetNameSelected;
-            areAllChecked &= ViewModel.SearchValue.SearchOptions.IsInputVariableSelected;
-            areAllChecked &= ViewModel.SearchValue.SearchOptions.IsOutputVariableSelected;
-            areAllChecked &= ViewModel.SearchValue.SearchOptions.IsTestNameSelected;
+            var areAllChecked = ViewModel.Search.SearchOptions.IsWorkflowNameSelected;
+            areAllChecked &= ViewModel.Search.SearchOptions.IsToolTitleSelected;
+            areAllChecked &= ViewModel.Search.SearchOptions.IsScalarNameSelected;
+            areAllChecked &= ViewModel.Search.SearchOptions.IsObjectNameSelected;
+            areAllChecked &= ViewModel.Search.SearchOptions.IsRecSetNameSelected;
+            areAllChecked &= ViewModel.Search.SearchOptions.IsInputVariableSelected;
+            areAllChecked &= ViewModel.Search.SearchOptions.IsOutputVariableSelected;
+            areAllChecked &= ViewModel.Search.SearchOptions.IsTestNameSelected;
 
             return areAllChecked;
         }

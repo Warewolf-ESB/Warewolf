@@ -6,7 +6,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.Search
@@ -18,7 +17,7 @@ namespace Dev2.Activities.Specs.Search
         readonly CommonSteps _commonSteps;
         IServer localHost;
         readonly IServerRepository environmentModel = ServerRepository.Instance;
-        SearchValue searchValue;
+        Common.Search.Search searchValue;
 
         public Search(ScenarioContext scenarioContext)
         {
@@ -32,7 +31,7 @@ namespace Dev2.Activities.Specs.Search
             var search = new Search(_scenarioContext);
             localHost = environmentModel.Source;
             localHost.Connect();
-            searchValue = new SearchValue();
+            searchValue = new Common.Search.Search();
         }
 
         [Given(@"I have the Search View open")]

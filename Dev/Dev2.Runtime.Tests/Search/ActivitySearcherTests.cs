@@ -31,7 +31,7 @@ namespace Dev2.Tests.Runtime.Search
             mockResource.Setup(r => r.GetResourcePath(It.IsAny<Guid>())).Returns("Folder");
             mockResourceCatalog.Setup(res => res.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockResource.Object);
             var searcher = new ActivitySearcher(mockResourceCatalog.Object);
-            var searchValue = new SearchValue
+            var search = new Common.Search.Search
             {
                 SearchInput = "Set",
                 SearchOptions = new SearchOptions
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.Search
             cache.TryAdd(Guid.Empty, startAct);
             mockResourceActivityCache.Setup(c => c.Cache).Returns(cache);
             mockResourceCatalog.Setup(res => res.GetResourceActivityCache(It.IsAny<Guid>())).Returns(mockResourceActivityCache.Object);
-            var searchResults = searcher.GetSearchResults(searchValue);
+            var searchResults = searcher.GetSearchResults(search);
             Assert.AreEqual(1, searchResults.Count);
             var searchResult = searchResults[0];
             Assert.AreEqual(Guid.Empty, searchResult.ResourceId);
@@ -74,7 +74,7 @@ namespace Dev2.Tests.Runtime.Search
             mockResource.Setup(r => r.GetResourcePath(It.IsAny<Guid>())).Returns("Folder");
             mockResourceCatalog.Setup(res => res.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockResource.Object);
             var searcher = new ActivitySearcher(mockResourceCatalog.Object);
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "Bob",
                 SearchOptions = new SearchOptions
@@ -112,7 +112,7 @@ namespace Dev2.Tests.Runtime.Search
             mockResource.Setup(r => r.GetResourcePath(It.IsAny<Guid>())).Returns("Folder");
             mockResourceCatalog.Setup(res => res.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(mockResource.Object);
             var searcher = new ActivitySearcher(mockResourceCatalog.Object);
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "Bob",
                 SearchOptions = new SearchOptions
@@ -192,7 +192,7 @@ namespace Dev2.Tests.Runtime.Search
             mockResourceCatalog.Setup(res => res.GetResource(It.IsAny<Guid>(), otherResourceId)).Returns(mockResource2.Object);
 
             var searcher = new ActivitySearcher(mockResourceCatalog.Object);
-            var searchValue = new SearchValue
+            var searchValue = new Common.Search.Search
             {
                 SearchInput = "Bob",
                 SearchOptions = new SearchOptions

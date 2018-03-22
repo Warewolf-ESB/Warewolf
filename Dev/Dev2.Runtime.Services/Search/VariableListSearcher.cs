@@ -21,7 +21,7 @@ namespace Dev2.Runtime.Search
             _resourceCatalog = resourceCatalog ?? throw new ArgumentNullException(nameof(resourceCatalog));
         }
 
-        public List<ISearchResult> GetSearchResults(ISearchValue searchParameters)
+        public List<ISearchResult> GetSearchResults(ISearch searchParameters)
         {
             var searchResults = new List<ISearchResult>();
             if (searchParameters.SearchOptions.IsVariableSelected)
@@ -43,7 +43,7 @@ namespace Dev2.Runtime.Search
             return searchResults;
         }
 
-        private static void GetObjectResults(ISearchValue searchParameters, List<ISearchResult> searchResults, IResource resource, IList<IDev2Definition> variableDefinitions)
+        private static void GetObjectResults(ISearch searchParameters, List<ISearchResult> searchResults, IResource resource, IList<IDev2Definition> variableDefinitions)
         {
             if (searchParameters.SearchOptions.IsObjectNameSelected || searchParameters.SearchOptions.IsInputVariableSelected || searchParameters.SearchOptions.IsOutputVariableSelected)
             {
@@ -67,7 +67,7 @@ namespace Dev2.Runtime.Search
             }
         }
 
-        private static void GetRecordsetResults(ISearchValue searchParameters, List<ISearchResult> searchResults, IResource resource, IList<IDev2Definition> variableDefinitions)
+        private static void GetRecordsetResults(ISearch searchParameters, List<ISearchResult> searchResults, IResource resource, IList<IDev2Definition> variableDefinitions)
         {
             if (searchParameters.SearchOptions.IsRecSetNameSelected || searchParameters.SearchOptions.IsInputVariableSelected || searchParameters.SearchOptions.IsOutputVariableSelected)
             {
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.Search
             }
         }
 
-        private static void GetScalarResults(ISearchValue searchParameters, List<ISearchResult> searchResults, IResource resource, IList<IDev2Definition> variableDefinitions)
+        private static void GetScalarResults(ISearch searchParameters, List<ISearchResult> searchResults, IResource resource, IList<IDev2Definition> variableDefinitions)
         {
             if (searchParameters.SearchOptions.IsScalarNameSelected || searchParameters.SearchOptions.IsInputVariableSelected || searchParameters.SearchOptions.IsOutputVariableSelected)
             {
@@ -115,7 +115,7 @@ namespace Dev2.Runtime.Search
             }
         }
 
-        private static enDev2ColumnArgumentDirection GetIoType(ISearchValue searchParameters)
+        private static enDev2ColumnArgumentDirection GetIoType(ISearch searchParameters)
         {
             enDev2ColumnArgumentDirection ioType;
             if (searchParameters.SearchOptions.IsInputVariableSelected && searchParameters.SearchOptions.IsOutputVariableSelected)
