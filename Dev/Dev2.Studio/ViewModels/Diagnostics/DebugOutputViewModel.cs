@@ -603,18 +603,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     var remoteEnvironmentModel = _serverRepository.FindSingle(model => model.EnvironmentID == environmentId);
                     if (remoteEnvironmentModel != null)
                     {
-                        if (content.Server == "localhost")
-                        {
-                            content.Server = remoteEnvironmentModel.Name;
-                        }
-                        if (!remoteEnvironmentModel.IsConnected)
-                        {
-                            remoteEnvironmentModel.Connect();
-                        }
-                        if (content.ParentID.GetValueOrDefault() != Guid.Empty && remoteEnvironmentModel.AuthorizationService != null && !remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID).HasFlag(Permissions.View))
-                        {
-                            return;
-                        }
+                        ConnectRemoteServer(content, remoteEnvironmentModel);
+                    }
+                    if (remoteEnvironmentModel != null && content.ParentID.GetValueOrDefault() != Guid.Empty && remoteEnvironmentModel.AuthorizationService != null && !remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID).HasFlag(Permissions.View))
+                    {
+                        return;
                     }
                 }
                 var debugState = _contentItems.FirstOrDefault(state => state.DisconnectedID == content.DisconnectedID);
@@ -648,6 +641,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     AddItemToTreeImpl(content);
                 }
+            }
+        }
+
+        private static void ConnectRemoteServer(IDebugState content, IServer remoteEnvironmentModel)
+        {
+            if (content.Server == "localhost")
+            {
+                content.Server = remoteEnvironmentModel.Name;
+            }
+            if (!remoteEnvironmentModel.IsConnected)
+            {
+                remoteEnvironmentModel.Connect();
             }
         }
 
