@@ -166,16 +166,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
-        public bool CanAdd()
-        {
-            var result = true;
-            if (MergeType == MergeTypeIndex || MergeType == MergeTypeChars && string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
-            {
-                result = false;
-            }
-
-            return result;
-        }
+        public bool CanAdd() => !((MergeType == MergeTypeIndex || MergeType == MergeTypeChars) && string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At));
 
         public void ClearRow()
         {
