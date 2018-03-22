@@ -86,27 +86,7 @@ namespace Dev2
                     var constructorInfos = assemblyType.GetConstructors();
                     foreach(var constructorInfo in constructorInfos)
                     {
-                        var constructorMatch = false;
-                        var parameterInfos = constructorInfo.GetParameters();
-                        var numberOfParameters = parameterInfos.Length;
-                        if(numberOfParameters == constructorParameters.Length)
-                        {
-                            for(int i = 0; i < numberOfParameters; i++)
-                            {
-                                var constructorParameterType = parameterInfos[i].ParameterType;
-                                var givenParameterType = constructorParameters[i].GetType();
-                                if ((givenParameterType == constructorParameterType) || constructorParameterType.IsAssignableFrom(givenParameterType))
-                                {
-                                    constructorMatch = true;
-                                }
-                                else
-                                {
-                                    constructorMatch = false;
-                                    break;
-                                }
-                            }
-                        }
-                        if(constructorMatch)
+                        if (ConstructorMatch(constructorParameters, constructorInfo))
                         {
                             return (T)constructorInfo.Invoke(constructorParameters);
                         }
@@ -114,6 +94,32 @@ namespace Dev2
                 }
             }
             return default(T);
+        }
+
+        private static bool ConstructorMatch(object[] constructorParameters, System.Reflection.ConstructorInfo constructorInfo)
+        {
+            var constructorMatch = false;
+            var parameterInfos = constructorInfo.GetParameters();
+            var numberOfParameters = parameterInfos.Length;
+            if (numberOfParameters == constructorParameters.Length)
+            {
+                for (int i = 0; i < numberOfParameters; i++)
+                {
+                    var constructorParameterType = parameterInfos[i].ParameterType;
+                    var givenParameterType = constructorParameters[i].GetType();
+                    if ((givenParameterType == constructorParameterType) || constructorParameterType.IsAssignableFrom(givenParameterType))
+                    {
+                        constructorMatch = true;
+                    }
+                    else
+                    {
+                        constructorMatch = false;
+                        break;
+                    }
+                }
+            }
+
+            return constructorMatch;
         }
 
         public static void RegisterInstancePerRequestType<T>(Func<object> constructorFunc)
