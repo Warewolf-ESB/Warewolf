@@ -208,41 +208,45 @@ namespace Dev2.Runtime.ServiceModel
             {
                 foreach (var recordset in recSet)
                 {
-                    foreach (var field in recordset.Fields)
-                    {
-                        if (string.IsNullOrEmpty(field.Name))
-                        {
-                            continue;
-                        }
-                        var path = field.Path;
-                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
-
-                        var value = string.Empty;
-                        if (!string.IsNullOrEmpty(field.Alias))
-                        {
-                            value = string.IsNullOrEmpty(rsAlias)
-                                        ? $"[[{field.Alias}]]"
-                                : $"[[{rsAlias}().{field.Alias}]]";
-                        }
-
-                        if (path != null)
-                        {
-                            path.OutputExpression = value;
-                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
-                            if (foundPath == null)
-                            {
-                                dataSourceShape.Paths.Add(path);
-                            }
-                            else
-                            {
-                                foundPath.OutputExpression = path.OutputExpression;
-                            }
-
-                        }
-                    }
+                    FetchRecordsetFields(dataSourceShape, recordset);
                 }
             }
             return recSet;
+        }
+
+        static void FetchRecordsetFields(Common.Interfaces.Core.Graph.IDataSourceShape dataSourceShape, Recordset recordset)
+        {
+            foreach (var field in recordset.Fields)
+            {
+                if (string.IsNullOrEmpty(field.Name))
+                {
+                    continue;
+                }
+                var path = field.Path;
+                var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
+
+                var value = string.Empty;
+                if (!string.IsNullOrEmpty(field.Alias))
+                {
+                    value = string.IsNullOrEmpty(rsAlias)
+                                ? $"[[{field.Alias}]]"
+                        : $"[[{rsAlias}().{field.Alias}]]";
+                }
+
+                if (path != null)
+                {
+                    path.OutputExpression = value;
+                    var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
+                    if (foundPath == null)
+                    {
+                        dataSourceShape.Paths.Add(path);
+                    }
+                    else
+                    {
+                        foundPath.OutputExpression = path.OutputExpression;
+                    }
+                }
+            }
         }
 
         protected virtual RecordsetList FetchRecordset(ComPluginService pluginService, bool addFields)
@@ -259,38 +263,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 foreach (var recordset in recSet)
                 {
-                    foreach (var field in recordset.Fields)
-                    {
-                        if (string.IsNullOrEmpty(field.Name))
-                        {
-                            continue;
-                        }
-                        var path = field.Path;
-                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
-
-                        var value = string.Empty;
-                        if (!string.IsNullOrEmpty(field.Alias))
-                        {
-                            value = string.IsNullOrEmpty(rsAlias)
-                                        ? $"[[{field.Alias}]]"
-                                : $"[[{rsAlias}().{field.Alias}]]";
-                        }
-
-                        if (path != null)
-                        {
-                            path.OutputExpression = value;
-                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
-                            if (foundPath == null)
-                            {
-                                dataSourceShape.Paths.Add(path);
-                            }
-                            else
-                            {
-                                foundPath.OutputExpression = path.OutputExpression;
-                            }
-
-                        }
-                    }
+                    FetchRecordsetFields(dataSourceShape, recordset);
                 }
             }
             return recSet;
@@ -321,29 +294,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 foreach (var recordset in recSet)
                 {
-                    foreach (var field in recordset.Fields)
-                    {
-                        if (string.IsNullOrEmpty(field.Name))
-                        {
-                            continue;
-                        }
-                        var path = field.Path;
-                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
-
-                        var value = string.Empty;
-                        if (!string.IsNullOrEmpty(field.Alias))
-                        {
-                            value = string.IsNullOrEmpty(rsAlias)
-                                        ? $"[[{field.Alias}]]"
-                                : $"[[{rsAlias}().{field.Alias}]]";
-                        }
-
-                        if (path != null)
-                        {
-                            path.OutputExpression = value;
-                            dataSourceShape.Paths.Add(path);
-                        }
-                    }
+                    FetchRecordsetFields(dataSourceShape, recordset);
                 }
             }
             return recSet;
