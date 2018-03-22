@@ -70,6 +70,8 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
+using Warewolf.Storage;
+using Dev2.Data.Util;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -1479,7 +1481,11 @@ namespace Dev2.Studio.ViewModels
 
         public void UpdateCurrentDataListWithObjectFromJson(string parentObjectName, string json)
         {
-            ActiveItem?.DataListViewModel?.GenerateComplexObjectFromJson(parentObjectName, json);
+            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(parentObjectName);
+            if (language.IsJsonIdentifierExpression)
+            {
+                ActiveItem?.DataListViewModel?.GenerateComplexObjectFromJson(DataListUtil.RemoveLanguageBrackets(parentObjectName), json);
+            }
         }
 
         public override void ActivateItem(WorkSurfaceContextViewModel item)

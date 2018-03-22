@@ -273,32 +273,23 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     try
                     {
-                        TrySetObject(value);
+                        if (value != null)
+                        {
+                            _selectedMethod.OutputVariable = value;
+                            OnPropertyChanged();
+                            _shellViewModel.UpdateCurrentDataListWithObjectFromJson(value, ObjectResult);
+                        }
+                        else
+                        {
+                            _selectedMethod.OutputVariable = string.Empty;
+                            OnPropertyChanged();
+                        }
                     }
                     catch (Exception)
                     {
                         //Is not an object identifier
                     }
                 }
-            }
-        }
-
-        private void TrySetObject(string value)
-        {
-            if (value != null)
-            {
-                _selectedMethod.OutputVariable = value;
-                OnPropertyChanged();
-                var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
-                if (language.IsJsonIdentifierExpression)
-                {
-                    _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
-                }
-            }
-            else
-            {
-                _selectedMethod.OutputVariable = string.Empty;
-                OnPropertyChanged();
             }
         }
 
