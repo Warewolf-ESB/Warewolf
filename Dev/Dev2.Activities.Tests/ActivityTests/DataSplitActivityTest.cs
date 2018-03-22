@@ -11,9 +11,11 @@
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -375,6 +377,28 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
 
+        }
+
+
+        [TestMethod]
+        public void LargeRows_SplitOnNewLine_ShouldSplitCorrectly()
+        {
+            _resultsCollection.Clear();
+            _resultsCollection.Add(new DataSplitDTO("[[rec().data]]", "New Line", "", 1));
+            var sourceString = File.ReadAllText("LargeRowsDataSplit.txt");
+            var act = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = _resultsCollection };            
+            var dataObject = new DsfDataObject("", ExecutionId)
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = false,
+            };
+            act.Execute(dataObject, 0);
+
+            var totalCount = dataObject.Environment.GetCount("rec");
+            Assert.AreEqual(8388608, totalCount,CurrentDl);
         }
 
         //2012.09.28: massimo.guerrera - Add tab functionality

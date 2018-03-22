@@ -71,3 +71,4 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/.axoCover/reports
 /Dev/.axoCover/runs
 /Dev/Dev2.IntegrationTests/TestEditorFlakeyTests.cs
+/Dev/Dev2.Activities.Tests/LargeRowsDataSplit.txt

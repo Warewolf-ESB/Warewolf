@@ -11,6 +11,7 @@
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -22,46 +23,31 @@ namespace Dev2.Common
         readonly CharEnumerator _charEnumerator;
         readonly bool _isReversed;
         readonly int _masterLen;
+        private readonly string _sourceString;
+        private readonly MemoryStream _memoryStream;
         readonly IList<IDev2SplitOp> _ops;
-        readonly char[] _tokenParts;
-
-        readonly bool _useEnumerator;
 
         bool _disposing;
         bool _hasMoreOps;
         int _opPointer;
         int _startIdx;
+        private readonly StreamReader _streamReader;
 
-        internal Dev2Tokenizer(string candiateString, IList<IDev2SplitOp> ops, bool reversed)
+        internal Dev2Tokenizer(string sourceString, IList<IDev2SplitOp> ops, bool reversed)
         {
             _ops = ops;
             _isReversed = reversed;
-            _useEnumerator = CanUseEnumerator();
-            _masterLen = candiateString.Length;
-            
-            if (!_useEnumerator)
-            {
-                _tokenParts = candiateString.ToCharArray();
-            }
-            else
-            {
-                _charEnumerator = candiateString.GetEnumerator();
-            }
-
+            _masterLen = sourceString.Length;
+            _sourceString = sourceString;
+            _memoryStream = new MemoryStream(Encoding.ASCII.GetBytes(sourceString));
+            _streamReader = new StreamReader(_memoryStream);            
             _opPointer = 0;
             _hasMoreOps = true;
-
-            _startIdx = !_isReversed ? 0 : _tokenParts.Length - 1;
+            _startIdx = !_isReversed ? 0 : sourceString.Length - 1;
         }
 
         #region Private Method
-
-        bool CanUseEnumerator()
-        {
-            var result = _ops != null && _ops?.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count;
-            return result;
-        }
-
+      
         void MoveOpPointer()
         {
             _opPointer++;
@@ -98,13 +84,15 @@ namespace Dev2.Common
         public bool HasMoreOps() => _hasMoreOps;
 
         public string NextToken()
-        {    
-            // we can be smart about the operations ;)
-            string result = _useEnumerator ? _ops[_opPointer].ExecuteOperation(_charEnumerator, _startIdx, _masterLen, _isReversed) : _ops[_opPointer].ExecuteOperation(_tokenParts, _startIdx, _isReversed);
+        {
+            _memoryStream.Position = 0;
+            _streamReader.DiscardBufferedData();
+            var result =_ops[_opPointer].ExecuteOperation(_sourceString, _startIdx, _masterLen, _isReversed);
             MoveStartIndex(result.Length + _ops[_opPointer].OpLength());
             MoveOpPointer();
             // check to see if there is data to fetch still?
             _hasMoreOps = !_ops[_opPointer].IsFinalOp() && HasMoreData();
+            
             return result;
         }
 
@@ -119,6 +107,8 @@ namespace Dev2.Common
             {
                 if (disposing)
                 {
+                    _streamReader.BaseStream.Dispose();
+                    _streamReader.Dispose();
                     _charEnumerator.Dispose();
                 }
                 _disposing = true;

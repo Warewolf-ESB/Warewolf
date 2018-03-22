@@ -33,6 +33,8 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 using Dev2.Comparer;
+using System.IO;
+using System.Text;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -142,40 +144,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 while (res.HasMoreData())
                 {
                     const int OpCnt = 0;
-
                     var item = res.GetNextValue(); // item is the thing we split on
                     if (!string.IsNullOrEmpty(item))
                     {
-                        var val = item;
-
                         var blankRows = new List<int>();
-                        if (SkipBlankRows)
+                        using (var reader = new StringReader(item))
                         {
-                            var strings = val.Split(new[] { Environment.NewLine, "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
-                            var newSourceString = string.Join(Environment.NewLine, strings);
-                            val = newSourceString;
-                        }
-                        else
-                        {
-                            var strings = val.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                            for (int blankRow = 0; blankRow < strings.Length; blankRow++)
+                            string line;
+                            var counter = 0;
+                            while ((line = reader.ReadLine()) != null)
                             {
-                                if (String.IsNullOrEmpty(strings[blankRow]))
+                                if (!SkipBlankRows && String.IsNullOrEmpty(line))
                                 {
-                                    blankRows.Add(blankRow);
+                                    blankRows.Add(counter);
+                                    counter++;
                                 }
                             }
                         }
 
-                        var tokenizer = CreateSplitPattern(ref val, ResultsCollection, env, out ErrorResultTO errors, update);
+                        var tokenizer = CreateSplitPattern(ref item, ResultsCollection, env, out ErrorResultTO errors, update);
                         allErrors.MergeErrors(errors);
 
                         if (!allErrors.HasErrors() && tokenizer != null)
                         {
-                            var pos = 0;
-                            var end = ResultsCollection.Count - 1;
-
-                            // track used tokens so we can adjust flushing ;)
                             while (tokenizer.HasMoreOps())
                             {
                                 var currentval = resultsEnumerator.MoveNext();
@@ -208,45 +199,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                                 if (blankRows.Contains(OpCnt) && blankRows.Count != 0)
                                 {
-                                    tmp = tmp.Replace(Environment.NewLine, "");
-                                    while (pos != end + 1)
-                                    {
-                                        pos++;
-                                    }
+                                    tmp = tmp.Replace(Environment.NewLine, "");                                   
                                 }
                                 var outputVar = resultsEnumerator.Current.OutputVariable;
-
-                                if (!String.IsNullOrEmpty(outputVar))
+                                if (SkipBlankRows && (IsNullEmptyOrNewLine(tmp)))
                                 {
-                                    var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
-                                    if (ExecutionEnvironment.IsRecordsetIdentifier(assignVar))
-                                    {
-                                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
-                                    }
-                                    else if (ExecutionEnvironment.IsScalar(assignVar) && positions[outputVar] == 1)
-                                    {
-                                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
-                                    }
-                                    else
-                                    {
-                                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);
-                                    }
-                                    positions[outputVar] = positions[outputVar] + 1;
+                                    //This should do nothing as we are skipping blank rows
                                 }
-                                if (dataObject.IsDebugMode())
+                                else
                                 {
-                                    var debugItem = new DebugItem();
-                                    var outputVarTo = resultsEnumerator.Current.OutputVariable;
-                                    AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
-                                    if (!debugDictionary.Contains(outputVarTo))
+                                    if (!String.IsNullOrEmpty(outputVar))
                                     {
-                                        debugDictionary.Add(outputVarTo);
+                                        var assignVar = ExecutionEnvironment.ConvertToIndex(outputVar, positions[outputVar]);
+                                        env.AssignWithFrame(new AssignValue(assignVar, tmp), update);                                        
+                                        positions[outputVar] = positions[outputVar] + 1;
                                     }
-                                }
-                                if (pos != end)
-                                {
-                                    pos++;
-                                }
+                                    if (dataObject.IsDebugMode())
+                                    {
+                                        var debugItem = new DebugItem();
+                                        var outputVarTo = resultsEnumerator.Current.OutputVariable;
+                                        AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
+                                        if (!debugDictionary.Contains(outputVarTo))
+                                        {
+                                            debugDictionary.Add(outputVarTo);
+                                        }
+                                    }
+                                }                                
                             }
                         }
                     }
@@ -281,6 +259,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 HandleErrors(dataObject, update, allErrors);
             }
         }
+
+        private static bool IsNullEmptyOrNewLine(string tmp) => String.IsNullOrEmpty(tmp) || tmp == "\r" || tmp == "\n" || tmp == Environment.NewLine;
 
         void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
@@ -387,6 +367,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         IDev2Tokenizer CreateSplitPattern(ref string stringToSplit, IEnumerable<DataSplitDTO> args, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
         {
+
+            
             var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit, ReverseOrder = ReverseOrder };
             errors = new ErrorResultTO();
 
@@ -395,7 +377,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 stringToSplit = AddTokenOp(stringToSplit, compiler, errors, update, dtb, t);
                 _indexCounter++;
             }
-            return string.IsNullOrEmpty(dtb.ToTokenize) || errors.HasErrors() ? null : dtb.Generate();
+            return string.IsNullOrEmpty(stringToSplit) || errors.HasErrors() ? null : dtb.Generate();
         }
 
         string AddTokenOp(string stringToSplit, IExecutionEnvironment compiler, ErrorResultTO errors, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t)
