@@ -153,12 +153,12 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (!IsPanelOpen && ButtonWidth >= ButtonWidthLarge)
+                if (!IsPanelOpen && ButtonWidth > ButtonWidthSmall)
                 {
                     ButtonWidth = ButtonWidthSmall;
                 }
 
-                if (IsPanelOpen && ButtonWidth <= ButtonWidthSmall)
+                if (IsPanelOpen && ButtonWidth < ButtonWidthLarge)
                 {
                     ButtonWidth = ButtonWidthLarge;
                 }
