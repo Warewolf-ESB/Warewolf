@@ -253,15 +253,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return equal;
         }
 
-        private bool IsFieldMatch(ActivityDTO other) => string.Equals(FieldName, other.FieldName) && string.Equals(FieldValue, other.FieldValue);
+        private bool IsFieldMatch(ActivityDTO other) =>
+            string.Equals(FieldName, other.FieldName) &&
+            string.Equals(FieldValue, other.FieldValue);
 
-        private bool IsFocusedMatch(ActivityDTO other) => IsFieldNameFocused == other.IsFieldNameFocused && IsFieldValueFocused == other.IsFieldValueFocused;
+        private bool IsFocusedMatch(ActivityDTO other) =>
+            IsFieldNameFocused == other.IsFieldNameFocused &&
+            IsFieldValueFocused == other.IsFieldValueFocused;
 
-        private bool IsIndexAndInsertedMatch(ActivityDTO other) => IndexNumber == other.IndexNumber && Inserted == other.Inserted;
+        private bool IsIndexAndInsertedMatch(ActivityDTO other) =>
+            IndexNumber == other.IndexNumber &&
+            Inserted == other.Inserted;
 
-        private bool IsWatermarkMatch(ActivityDTO other) => string.Equals(WatermarkTextVariable, other.WatermarkTextVariable) && string.Equals(WatermarkTextValue, other.WatermarkTextValue);
+        private bool IsWatermarkMatch(ActivityDTO other) =>
+            string.Equals(WatermarkTextVariable, other.WatermarkTextVariable) &&
+            string.Equals(WatermarkTextValue, other.WatermarkTextValue);
 
-        private bool IsStringTypeMatch(ActivityDTO other) => string.Equals(ErrorMessage, other.ErrorMessage) && OutList.SequenceEqual(other.OutList, StringComparer.Ordinal);
+        private bool IsStringTypeMatch(ActivityDTO other) =>
+            string.Equals(ErrorMessage, other.ErrorMessage) &&
+            OutList.SequenceEqual(other.OutList, StringComparer.Ordinal);
 
         public override bool Equals(object obj)
         {
