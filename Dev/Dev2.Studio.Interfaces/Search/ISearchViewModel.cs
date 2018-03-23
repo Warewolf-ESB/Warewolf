@@ -15,11 +15,11 @@ using System.Windows.Input;
 
 namespace Dev2.Studio.Interfaces.Search
 {
-    public delegate void ServerSate(object sender, IServer server);
+    public delegate void ServerState(object sender, IServer server);
     public interface ISearchViewModel : IExplorerViewModel, IUpdatesHelp
     {
         string DisplayName { get; set; }
-        event ServerSate ServerStateChanged;
+        event ServerState ServerStateChanged;
         ISearch Search { get; set; }
         ICommand SearchInputCommand { get; set; }
         ICommand OpenResourceCommand { get; set; }

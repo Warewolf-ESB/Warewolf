@@ -1,7 +1,5 @@
-﻿using Dev2;
-using Dev2.Common.Interfaces.Search;
+﻿using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Search;
-using Dev2.Runtime.Search;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -22,10 +20,8 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             var _path = "resourcePath";
             var _match = "Input";
             var searchValue = CreateSearchValue(_resId, _name, _path, _match);
-            searchValue.Type = SearchItemType.WorkflowName;
 
-            var shellViewModelMock = new Mock<IShellViewModel>();
-            CustomContainer.Register(shellViewModelMock.Object);
+            Assert.AreEqual(SearchItemType.WorkflowName, searchValue.Type);
         }
 
         [TestMethod]
@@ -40,8 +36,7 @@ namespace Warewolf.Studio.ViewModels.Tests.Search
             var searchValue = CreateSearchValue(_resId, _name, _path, _match);
             searchValue.Type = SearchItemType.TestName;
 
-            var shellViewModelMock = new Mock<IShellViewModel>();
-            CustomContainer.Register(shellViewModelMock.Object);
+            Assert.AreEqual(SearchItemType.TestName, searchValue.Type);
         }
 
         private static SearchResult CreateSearchValue(Guid _resId, string _name = null, string _path = null, string _match = null)
