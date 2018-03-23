@@ -22,7 +22,6 @@ namespace Warewolf.Studio.ViewModels
 {
     public class MenuViewModel : BindableBase, IMenuViewModel, IMenuView,IUpdatesHelp
     {
-
         bool _hasNewVersion;
         bool _panelLockedOpen;
         readonly IShellViewModel _viewModel;
@@ -31,6 +30,8 @@ namespace Warewolf.Studio.ViewModels
         ICommand _executeServiceCommand;
         FontAwesomeIcon _debugIcon;
         bool _isProcessing;
+        const int ButtonWidthSmall = 35;
+        const int ButtonWidthLarge = 125;
 
         public MenuViewModel(IShellViewModel mainViewModel)
         {
@@ -71,7 +72,7 @@ namespace Warewolf.Studio.ViewModels
             });
             IsOverLockCommand = new DelegateCommand(() => _isOverLock = true);
             IsNotOverLockCommand = new DelegateCommand(() => _isOverLock = false);
-            ButtonWidth = 125;
+            ButtonWidth = ButtonWidthLarge;
             IsPanelLockedOpen = true;
             IsPanelOpen = true;
             DebugIcon = FontAwesomeIcon.Play;
@@ -152,14 +153,14 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (!IsPanelOpen && ButtonWidth >= 125)
+                if (!IsPanelOpen && ButtonWidth >= ButtonWidthLarge)
                 {
-                    ButtonWidth = 35;
+                    ButtonWidth = ButtonWidthSmall;
                 }
 
-                if (IsPanelOpen && ButtonWidth <= 35)
+                if (IsPanelOpen && ButtonWidth <= ButtonWidthSmall)
                 {
-                    ButtonWidth = 125;
+                    ButtonWidth = ButtonWidthLarge;
                 }
 
                 IsPanelLockedOpen = false;
@@ -174,7 +175,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsPanelOpen = true;
                 mainViewModel.MenuExpanded = IsPanelOpen;
-                ButtonWidth = 125;
+                ButtonWidth = ButtonWidthLarge;
                 UpdateProperties();
             }
         }
@@ -184,7 +185,7 @@ namespace Warewolf.Studio.ViewModels
             if (IsPanelLockedOpen && !IsPanelOpen)
             {
                 mainViewModel.MenuExpanded = !IsPanelOpen;
-                ButtonWidth = 35;
+                ButtonWidth = ButtonWidthSmall;
                 IsPanelOpen = !IsPanelOpen;
             }
             else
@@ -192,7 +193,7 @@ namespace Warewolf.Studio.ViewModels
                 if (IsPanelLockedOpen && IsPanelOpen)
                 {
                     mainViewModel.MenuExpanded = !IsPanelOpen;
-                    ButtonWidth = 125;
+                    ButtonWidth = ButtonWidthLarge;
                     IsPanelOpen = !IsPanelOpen;
                 }
             }
@@ -238,7 +239,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth >= 125)
+                if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return Resources.Languages.Core.MenuDialogNewLabel;
                 }
@@ -250,7 +251,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth >= 125)
+                if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return Resources.Languages.Core.MenuDialogSaveLabel;
                 }
@@ -262,7 +263,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth >= 125)
+                if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return Resources.Languages.Core.MenuDialogDeployLabel;
                 }
@@ -274,7 +275,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth >= 125)
+                if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return Resources.Languages.Core.MenuDialogSearchLabel;
                 }
@@ -285,7 +286,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth >= 125)
+                if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return Resources.Languages.Core.MenuDialogTaskLabel;
                 }
@@ -307,7 +308,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth >= 125)
+                if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return IsProcessing ? Resources.Languages.Core.MenuDialogStopDebugLabel : Resources.Languages.Core.MenuDialogDebugLabel;
                 }
@@ -319,7 +320,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth >= 125)
+                if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return Resources.Languages.Core.MenuDialogSettingsLabel;
                 }
@@ -331,7 +332,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth >= 125)
+                if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return Resources.Languages.Core.MenuDialogSupportLabel;
                 }
@@ -343,7 +344,7 @@ namespace Warewolf.Studio.ViewModels
         {
             get
             {
-                if (ButtonWidth >= 125)
+                if (ButtonWidth >= ButtonWidthLarge)
                 {
                     return Resources.Languages.Core.MenuDialogNewVersionLabel;
                 }
