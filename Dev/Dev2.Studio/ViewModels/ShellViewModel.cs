@@ -1725,13 +1725,16 @@ namespace Dev2.Studio.ViewModels
             {
                 closeStudio = false;
             }
-            else if (result == MessageBoxResult.Yes)
+            else
             {
-                closeStudio = true;
-                SaveAllCommand.Execute(null);
-                if (!_continueShutDown)
+                if (result == MessageBoxResult.Yes)
                 {
-                    closeStudio = false;
+                    closeStudio = true;
+                    SaveAllCommand.Execute(null);
+                    if (!_continueShutDown)
+                    {
+                        closeStudio = false;
+                    }
                 }
             }
 
@@ -1777,94 +1780,97 @@ namespace Dev2.Studio.ViewModels
                         break;
                     }
                 }
-                else if (vm.GetType().Name == "SourceViewModel`1")
+                else
                 {
-                    if (vm is SourceViewModel<IServerSource> serverSourceModel)
+                    if (vm.GetType().Name == "SourceViewModel`1")
                     {
-                        if (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IServerSource> serverSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<IPluginSource> pluginSourceModel)
-                    {
-                        if (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IPluginSource> pluginSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel)
-                    {
-                        if (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel)
-                    {
-                        if (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<ISharepointServerSource> sharepointServerSourceModel)
-                    {
-                        if (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<ISharepointServerSource> sharepointServerSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<IOAuthSource> oAuthSourceModel)
-                    {
-                        if (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IOAuthSource> oAuthSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<IExchangeSource> exchangeSourceModel)
-                    {
-                        if (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IExchangeSource> exchangeSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<IComPluginSource> comPluginSourceModel)
-                    {
-                        if (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IComPluginSource> comPluginSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<IWebServiceSource> webServiceSourceModel)
-                    {
-                        if (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IWebServiceSource> webServiceSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<IEmailServiceSource> emailServiceSourceModel)
-                    {
-                        if (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IEmailServiceSource> emailServiceSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
-                    }
-                    if (vm is SourceViewModel<IDbSource> dbSourceModel)
-                    {
-                        if (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged)
+                        if (vm is SourceViewModel<IDbSource> dbSourceModel)
                         {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
+                            if (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged)
+                            {
+                                closeStudio = CallSaveDialog(closeStudio);
+                                break;
+                            }
                         }
                     }
                 }
