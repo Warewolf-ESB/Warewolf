@@ -90,7 +90,6 @@ namespace Dev2.Controller
                 return "";
             }
             containsAuthorization = authorizationErrors.Any(err => err.ToUpper().Contains(authorizationError.ToUpper()));
-
             return authorizationError;
         }
 
@@ -178,16 +177,13 @@ namespace Dev2.Controller
 
         static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
         {
-            if (payload == null || payload.Length == 0)
+            if ((payload == null || payload.Length == 0) && connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected && Application.Current != null)
             {
-                if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected && Application.Current != null)
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    Application.Current.Dispatcher.Invoke(() =>
-                    {
-                        popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
-                        , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
-                    });
-                }
+                    popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                    , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                });
             }
         }
 
@@ -211,11 +207,8 @@ namespace Dev2.Controller
             }
         }
 
-        public void FetchResourceAffectedMessages(IEnvironmentConnection connection, Guid resourceId)
-        {
-            connection.FetchResourcesAffectedMemo(resourceId);
-        }
-        
+        public void FetchResourceAffectedMessages(IEnvironmentConnection connection, Guid resourceId) => connection.FetchResourcesAffectedMemo(resourceId);
+
         public async Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
         {
             // build the service request payload ;)
@@ -278,7 +271,6 @@ namespace Dev2.Controller
                         ShowAuthorizationErrorPopup(ex.Message);
                         return default(T);
                     }
-
                 }
             }
             return default(T);
