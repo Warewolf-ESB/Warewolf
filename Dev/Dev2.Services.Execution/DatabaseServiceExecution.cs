@@ -309,7 +309,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception e)
             {
-                if (!e.Message.Equals("Invalid command sent to ExecuteXmlReader.  The command must return an Xml result."))
+                if (!e.Message.Equals(ErrorResource.NotXmlResults))
                 {
                     throw;
                 }
