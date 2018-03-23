@@ -19,7 +19,6 @@ using Dev2.Studio.Interfaces.Search;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Common.Interfaces.Search;
 using Microsoft.Practices.Prism;
-using Dev2.Common.Search;
 
 namespace Dev2.ViewModels.Search
 {
@@ -40,7 +39,7 @@ namespace Dev2.ViewModels.Search
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new DelegateCommand((o) => RefreshEnvironment(SelectedEnvironment.ResourceId));
-            SearchInputCommand = new DelegateCommand((o) => SearchWarewolfAsync());
+            SearchInputCommand = new DelegateCommand((o) => SearchWarewolf());
             OpenResourceCommand = new DelegateCommand((searchObject) =>
             {
                 var searchResult = searchObject as ISearchResult;
@@ -87,7 +86,7 @@ namespace Dev2.ViewModels.Search
             return environmentViewModel;
         }
 
-        public event ServerSate ServerStateChanged;
+        public event ServerState ServerStateChanged;
 
         public string DisplayName
         {
@@ -109,7 +108,7 @@ namespace Dev2.ViewModels.Search
             }
         }
 
-        void SearchWarewolfAsync()
+        void SearchWarewolf()
         {
             IsSearching = true;
 
