@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Tests.Runtime.Util;
-using System.Diagnostics;                
+using System.Diagnostics;
 using System.Threading;
 using Dev2.Core.Tests;
 using Dev2.Studio.Core.Factories;
@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Single_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
 
 
             dtb.AddTokenOp("-", false);
@@ -69,7 +69,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Three_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase.ToStringBuilder() };
 
 
             dtb.AddTokenOp("AB-", false);

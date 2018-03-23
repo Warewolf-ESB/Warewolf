@@ -8,8 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
-using System;
 using System.Text;
 
 namespace Dev2.Common
@@ -20,32 +20,13 @@ namespace Dev2.Common
 
         public int OpLength() => 0;
 
-        public bool CanUseEnumerator(bool isReversed) => false;
-
-        public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
+        public string ExecuteOperation(ref StringBuilder sourceString, int startIdx, int len, bool isReversed)
         {
-            var result = new StringBuilder();
-
-            var start = startIdx;
-            var end = candidate.Length;
-
             if (isReversed)
             {
-                start = 0;
-                end = startIdx + 1;
+                return sourceString.Substring(0, len);
             }
-
-            for (int i = start; i < end; i++)
-            {
-                result.Append(candidate[i]);
-            }
-
-            return result.ToString();
-        }
-
-        public string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed)
-        {
-            throw new NotImplementedException();
+            return sourceString.Substring(startIdx, len - startIdx);
         }
     }
 }

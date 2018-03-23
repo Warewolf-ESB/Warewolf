@@ -9,19 +9,15 @@
 */
 
 using System;
+using System.IO;
+using System.Text;
 
 namespace Dev2.Common.Interfaces.StringTokenizer.Interfaces
 {
     public interface IDev2SplitOp
     {
         bool IsFinalOp();
-
-        string ExecuteOperation(char[] candidate, int startIdx, bool isReversed);
-
-        string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed);
-
+        string ExecuteOperation(ref StringBuilder sourceString, int startIdx, int len, bool isReversed);
         int OpLength();
-
-        bool CanUseEnumerator(bool isReversed);
     }
 }

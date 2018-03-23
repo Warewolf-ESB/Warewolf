@@ -9,7 +9,6 @@
 */
 
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
-using System;
 using System.Text;
 
 namespace Dev2.Common
@@ -25,19 +24,15 @@ namespace Dev2.Common
 
         public bool IsFinalOp() => false;
 
-        public bool CanUseEnumerator(bool isReversed) => false;
-
-        public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
+        public string ExecuteOperation(ref StringBuilder sourceString, int startIdx, int len, bool isReversed)
         {
             var result = new StringBuilder();
 
             var start = startIdx;
             var end = startIdx + ToIndex;
-
-            // Avoid boundry over-run
-            if (end > candidate.Length)
+            if (end > sourceString.Length)
             {
-                end = candidate.Length;
+                end = sourceString.Length;
             }
 
             if (isReversed)
@@ -53,13 +48,11 @@ namespace Dev2.Common
 
             for (int i = start; i < end; i++)
             {
-                result.Append(candidate[i]);
+                result.Append(sourceString[i]);
             }
 
             return result.ToString();
         }
-
-        public string ExecuteOperation(CharEnumerator parts, int startIdx, int len, bool isReversed) => throw new NotImplementedException();
 
         public int OpLength() => 0;
     }
