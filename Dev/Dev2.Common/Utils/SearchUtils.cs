@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common.Interfaces.Search;
+using System.Linq;
 
 namespace Dev2.Common.Utils
 {
@@ -23,7 +24,27 @@ namespace Dev2.Common.Utils
                 searchInput = searchValue.SearchInput.ToLower();
                 filterValue = valueToFilter.ToLower();
             }
-            var isMatch = searchValue.SearchOptions.IsMatchWholeWordSelected ? filterValue.Equals(searchInput) : filterValue.Contains(searchInput);
+
+            var words = filterValue.Split(' ');
+            var isMatch = false;
+            if (searchValue.SearchOptions.IsMatchWholeWordSelected)
+            {
+                if (words.Count() == 1)
+                {
+                    isMatch = words.Equals(searchInput);
+                }
+                else
+                {
+                    if (words.Count() > 1)
+                    {
+                        isMatch = filterValue.Contains(searchInput);
+                    }
+                }
+            }
+            else
+            {
+                isMatch = filterValue.Contains(searchInput);
+            }
             return isMatch;
         }
     }
