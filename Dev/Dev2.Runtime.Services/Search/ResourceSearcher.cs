@@ -29,7 +29,8 @@ namespace Dev2.Runtime.Search
                 {
                     if(SearchUtils.FilterText(resource.ResourceName, searchParameters))
                     {
-                        var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.WorkflowName, resource.ResourceName);
+                        var searchItemType = resource.IsSource ? SearchItemType.SourceName : SearchItemType.WorkflowName;
+                        var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), searchItemType, resource.ResourceName);
                         searchResults.Add(searchResult);
                     }
                 }

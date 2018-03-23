@@ -60,6 +60,15 @@
                     Margin="{StaticResource ControlBorderLeft}" 
                     Command="{Binding SearchInputCommand}">
                 <fa:FontAwesome HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" FontWeight="Light" Icon="Search" />
+                <Button.Style>
+                    <Style BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=txtSearchInput, Path=Text}" Value="">
+                                <Setter Property="Button.IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
             </Button>
         </Grid>
 

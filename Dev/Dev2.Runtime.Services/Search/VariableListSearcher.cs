@@ -50,9 +50,11 @@ namespace Dev2.Runtime.Search
                 var matchingObjects = variableDefinitions.Where(v => v.IsObject && SearchUtils.FilterText(v.Name, searchParameters));
                 foreach (var matchingObject in matchingObjects)
                 {
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.Object, matchingObject.Name);
-                    searchResults.Add(searchResult);
-
+                    if (searchParameters.SearchOptions.IsObjectNameSelected)
+                    {
+                        var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.Object, matchingObject.Name);
+                        searchResults.Add(searchResult);
+                    }
                     if (searchParameters.SearchOptions.IsInputVariableSelected)
                     {
                         var searchInputResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.ObjectInput, matchingObject.Name);
@@ -74,9 +76,11 @@ namespace Dev2.Runtime.Search
                 var matchingRecordsets = variableDefinitions.Where(v => v.IsRecordSet && SearchUtils.FilterText(v.RecordSetName, searchParameters));
                 foreach (var recordSet in matchingRecordsets)
                 {
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.RecordSet, recordSet.RecordSetName);
-                    searchResults.Add(searchResult);
-
+                    if (searchParameters.SearchOptions.IsRecSetNameSelected)
+                    {
+                        var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.RecordSet, recordSet.RecordSetName);
+                        searchResults.Add(searchResult);
+                    }
                     if (searchParameters.SearchOptions.IsInputVariableSelected)
                     {
                         var searchInputResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.RecordSetInput, recordSet.RecordSetName);
@@ -98,9 +102,11 @@ namespace Dev2.Runtime.Search
                 var matchingScalars = variableDefinitions.Where(v => !v.IsObject && !v.IsRecordSet && SearchUtils.FilterText(v.Name, searchParameters));
                 foreach (var scalar in matchingScalars)
                 {
-                    var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.Scalar, scalar.Name);
-                    searchResults.Add(searchResult);
-
+                    if (searchParameters.SearchOptions.IsScalarNameSelected)
+                    {
+                        var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.Scalar, scalar.Name);
+                        searchResults.Add(searchResult);
+                    }
                     if (searchParameters.SearchOptions.IsInputVariableSelected)
                     {
                         var searchInputResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), SearchItemType.ScalarInput, scalar.Name);
