@@ -58,6 +58,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             OutList = new List<string>();
         }
 
+        public string WatermarkTextVariable { get; set; }
+
+        public string WatermarkTextValue { get; set; }
+
         void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
@@ -240,7 +244,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return true;
             }
 
-            return IsFieldMatch(other) && IsFocusedMatch(other) && IsIndexAndInsertedMatch(other) && IsStringTypeMatch(other);
+            var equal = IsFieldMatch(other);
+            equal &= IsFocusedMatch(other);
+            equal &= IsIndexAndInsertedMatch(other);
+            equal &= IsStringTypeMatch(other);
+            equal &= IsWatermarkMatch(other);
+
+            return equal;
         }
 
         private bool IsFieldMatch(ActivityDTO other) => string.Equals(FieldName, other.FieldName) && string.Equals(FieldValue, other.FieldValue);
@@ -248,6 +258,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         private bool IsFocusedMatch(ActivityDTO other) => IsFieldNameFocused == other.IsFieldNameFocused && IsFieldValueFocused == other.IsFieldValueFocused;
 
         private bool IsIndexAndInsertedMatch(ActivityDTO other) => IndexNumber == other.IndexNumber && Inserted == other.Inserted;
+
+        private bool IsWatermarkMatch(ActivityDTO other) => string.Equals(WatermarkTextVariable, other.WatermarkTextVariable) && string.Equals(WatermarkTextValue, other.WatermarkTextValue);
 
         private bool IsStringTypeMatch(ActivityDTO other) => string.Equals(ErrorMessage, other.ErrorMessage) && OutList.SequenceEqual(other.OutList, StringComparer.Ordinal);
 
