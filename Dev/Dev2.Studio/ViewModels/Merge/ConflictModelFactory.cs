@@ -46,7 +46,7 @@ namespace Dev2.ViewModels.Merge
         public ConflictModelFactory(IToolConflictItem toolConflictItem, IContextualResourceModel resourceModel, IConflictTreeNode conflict)
         {
             _resourceModel = resourceModel;
-            CreateModelItem(toolConflictItem,conflict);
+            CreateModelItem(toolConflictItem, conflict);
         }
 
         public ConflictModelFactory()
@@ -115,6 +115,7 @@ namespace Dev2.ViewModels.Merge
         public string WorkflowName { get; set; }
         public string ServerName { get; set; }
         public string Header { get; set; }
+        public string HeaderVersion { get; set; }
         public bool IsVariablesChecked
         {
             get => _isVariablesChecked;

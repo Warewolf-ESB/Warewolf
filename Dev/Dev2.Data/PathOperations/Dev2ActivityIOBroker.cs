@@ -80,11 +80,24 @@ namespace Dev2.PathOperations
                 FileLock.EnterWriteLock();
                 if (dst.RequiresLocalTmpStorage())
                 {
-                    result = PutRawUsingLocalTmpStorage(dst, args, result);
+                    var tmp = CreateTmpFile();
+                    WriteToLocalTempStorage(dst, args, tmp);
+                    result = MoveTmpFileToDestination(dst, tmp, result);
                 }
                 else
                 {
-                    result = PutRawWithoutLocalTmpStorage(dst, args, result);
+                    if (dst.PathExist(dst.IOPath))
+                    {
+                        var tmp = CreateTmpFile();
+                        result = WriteToRemoteTempStorage(dst, args, result, tmp);
+                        RemoveTmpFile(tmp);
+                    }
+                    else
+                    {
+                        var newArgs = new Dev2CRUDOperationTO(true);
+                        CreateEndPoint(dst, newArgs, true);
+                        WriteDataToFile(args, dst);
+                    }
                 }
             }
             finally
@@ -96,86 +109,6 @@ namespace Dev2.PathOperations
                     RemoveTmpFile(name);
                 }
             }
-            return result;
-        }
-
-        private string PutRawWithoutLocalTmpStorage(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args, string result)
-        {
-            if (_fileWrapper.Exists(dst.IOPath.Path))
-            {
-                var tmp = CreateTmpFile();
-                switch (args.WriteType)
-                {
-                    case WriteType.AppendBottom:
-                        {
-                            _fileWrapper.AppendAllText(dst.IOPath.Path, args.FileContents);
-                            result = ResultOk;
-                            break;
-                        }
-                    case WriteType.AppendTop:
-                        {
-                            using (var s = dst.Get(dst.IOPath, _filesToDelete))
-                            {
-                                _fileWrapper.WriteAllText(tmp, args.FileContents);
-                                _common.AppendToTemp(s, tmp);
-                                result = MoveTmpFileToDestination(dst, tmp, result);
-                            }
-                            break;
-                        }
-                    case WriteType.Overwrite:
-                        {
-                            break;
-                        }
-                    default:
-                        {
-                            WriteDataToFile(args, tmp);
-                            result = MoveTmpFileToDestination(dst, tmp, result);
-                            break;
-                        }
-                }
-                RemoveTmpFile(tmp);
-            }
-            else
-            {
-                var newArgs = new Dev2CRUDOperationTO(true);
-                CreateEndPoint(dst, newArgs, true);
-                var path = dst.IOPath.Path;
-                WriteDataToFile(args, path);
-            }
-
-            return result;
-        }
-
-        private string PutRawUsingLocalTmpStorage(IActivityIOOperationsEndPoint dst, IDev2PutRawOperationTO args, string result)
-        {
-            var tmp = CreateTmpFile();
-            switch (args.WriteType)
-            {
-                case WriteType.AppendBottom:
-                    {
-                        using (var s = dst.Get(dst.IOPath, _filesToDelete))
-                        {
-                            _fileWrapper.WriteAllBytes(tmp, s.ToByteArray());
-                            _fileWrapper.AppendAllText(tmp, args.FileContents);
-                        }
-                        break;
-                    }
-                case WriteType.AppendTop:
-                    {
-                        using (var s = dst.Get(dst.IOPath, _filesToDelete))
-                        {
-                            _fileWrapper.WriteAllText(tmp, args.FileContents);
-                            _common.AppendToTemp(s, tmp);
-                        }
-                        break;
-                    }
-                default:
-                    {
-                        WriteDataToFile(args, tmp);
-                        break;
-                    }
-            }
-            result = MoveTmpFileToDestination(dst, tmp, result);
             return result;
         }
 
