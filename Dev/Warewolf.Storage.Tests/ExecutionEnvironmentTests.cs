@@ -103,9 +103,9 @@ namespace Warewolf.Storage.Tests
             Assert.IsTrue(list_a[2].Equals("a11"));
             Assert.IsTrue(list_a[3].Equals("ayy"));
 
-            Assert.IsTrue(list_b[0].Equals("bxx"));
+            Assert.IsTrue(list_b[0].Equals(""));
             Assert.IsTrue(list_b[1].Equals("b33"));
-            Assert.IsTrue(list_b[2].Equals("bxx"));
+            Assert.IsTrue(list_b[2].Equals(""));
             Assert.IsTrue(list_b[3].Equals("b33"));
 
             Assert.IsTrue(list_c[0].Equals("c22"));
@@ -166,7 +166,7 @@ namespace Warewolf.Storage.Tests
             var assigns = new List<IAssignValue>
             {
                 new AssignValue("[[rec().a]]", "a11"),
-                new AssignValue("[[rec().b]]", "bxx"),
+                new AssignValue("[[rec().b]]", ""),
                 new AssignValue("[[rec().c]]", "c22"),
                 new AssignValue("[[rec().a]]", "ayy"),
                 new AssignValue("[[rec().b]]", "b33"),
