@@ -4,8 +4,6 @@
                                xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                                xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               xmlns:system="clr-namespace:System;assembly=mscorlib"
-                               xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:activities="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
@@ -56,30 +54,8 @@
                                CanUserResizeRows="True"
                                RowStyle="{StaticResource ActivityGridRowStyle}"
                                LoadingRow="DataGrid_LoadingRow">
-
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-
-            <i:Interaction.Behaviors>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <system:String>[[Variable1]]</system:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                        <system:Int32>0</system:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextValue">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <system:String>Value</system:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                        <system:Int32>0</system:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>
-            </i:Interaction.Behaviors>
-
             <DataGrid.Columns>
-
                 <DataGridTemplateColumn Width="27" IsReadOnly="True" Header="#">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -92,7 +68,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox VerticalAlignment="Center"
-                                                    DefaultText="{Binding WatermarkTextVariable}"
+                                                    DefaultText="[[Variable]]"
                                                     WrapInBrackets="True"
                                                     Margin="0,0,0,1"
                                                     AllowUserInsertLine="False"
@@ -131,7 +107,7 @@
                 <DataGridTemplateColumn Width="*" Header="New Value" d:DataContext="{d:DesignInstance Type=activities:AssignObjectDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
+                            <ui:IntellisenseTextBox DefaultText="Value"
                                                     AllowMultilinePaste="True"
                                                     AllowUserCalculateMode="True"
                                                     AllowUserInsertLine="True"
