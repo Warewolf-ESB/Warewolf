@@ -32,35 +32,13 @@ namespace Dev2.Controller
     {
         string ServiceName { get; set; }
         EsbExecuteRequest ServicePayload { get; }
-
-        /// <summary>
-        /// Adds the payload argument.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
+        
         void AddPayloadArgument(string key, string value);
-
-        /// <summary>
-        /// Adds the payload argument.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
+        
         void AddPayloadArgument(string key, StringBuilder value);
-
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <returns></returns>
+        
         T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class;
-
-        /// <summary>
-        /// Executes the command async.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <returns></returns>
+        
         Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class;
 
         Task<T> ExecuteCompressedCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class;
@@ -78,22 +56,12 @@ namespace Dev2.Controller
         public string ServiceName { get; set; }
 
         public EsbExecuteRequest ServicePayload { get; private set; }
-
-        /// <summary>
-        /// Adds the payload argument.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
+        
         public void AddPayloadArgument(string key, string value)
         {
             AddPayloadArgument(key, new StringBuilder(value));
         }
-
-        /// <summary>
-        /// Adds the payload argument.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="value">The value.</param>
+        
         public void AddPayloadArgument(string key, StringBuilder value)
         {
             if (ServicePayload == null)
@@ -132,14 +100,7 @@ namespace Dev2.Controller
             popupController?.Show(ex, ErrorResource.ServiceNotAuthorizedExceptionHeader, MessageBoxButton.OK,
                 MessageBoxImage.Error, "", false, false, true, false, false, false);
         }
-
-
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <returns></returns>
+        
         public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
         {
             var serializer = new Dev2JsonSerializer();
@@ -217,15 +178,17 @@ namespace Dev2.Controller
 
         static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
         {
-            if (payload == null || payload.Length == 0 && connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected && Application.Current != null)
+            if (payload == null || payload.Length == 0)
             {
-                Application.Current.Dispatcher.Invoke(() =>
+                if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected && Application.Current != null)
                 {
-                    popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
-                    , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
-                });
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                        , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                    });
+                }
             }
-
         }
 
         static void IsConnectionValid(IEnvironmentConnection connection, IPopupController popupController)
@@ -252,13 +215,7 @@ namespace Dev2.Controller
         {
             connection.FetchResourcesAffectedMemo(resourceId);
         }
-
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        /// <param name="connection">The connection.</param>
-        /// <param name="workspaceId">The workspace unique identifier.</param>
-        /// <returns></returns>
+        
         public async Task<T> ExecuteCommandAsync<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
         {
             // build the service request payload ;)
