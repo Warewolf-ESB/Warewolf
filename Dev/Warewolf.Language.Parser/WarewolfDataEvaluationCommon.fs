@@ -624,8 +624,12 @@ and addAtomToRecordSet (rset:WarewolfRecordset) (columnName:string) (value: Ware
                       addedAtEnd.[PositionColumn].[len-1] <- Int position
                       { rsAdded with Data=addedAtEnd ; LastIndex = rsAdded.LastIndex; Optimisations = WarewolfAttribute.Fragmented }
 
-
 and getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
+    let isNothing (value) =
+        match value with
+        | Nothing -> true
+        | _ -> false
+
     if rset.Data.ContainsKey( columnName) then
         if rset.Data.[columnName].Count = 0 then
             1
@@ -638,7 +642,7 @@ and getPositionFromRecset (rset:WarewolfRecordset) (columnName:string) =
                             rset.Frame
                         | _ ->
                             let mutable lastIndex = rset.Frame
-                            while lastIndex > 0 && rset.Data.[columnName].[lastIndex - 1] = Nothing do
+                            while lastIndex > 0 && (isNothing rset.Data.[columnName].[lastIndex - 1]) do
                                 lastIndex <- lastIndex - 1
                             lastIndex + 1
                 | _-> rset.LastIndex  + 1    
