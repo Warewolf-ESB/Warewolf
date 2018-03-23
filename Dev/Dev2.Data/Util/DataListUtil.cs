@@ -291,7 +291,7 @@ namespace Dev2.Data.Util
                 }
                 if (!value.Contains(ClosingSquareBrackets))
                 {
-                    result = string.Concat(value, ClosingSquareBrackets);
+                    result = string.Concat(result, ClosingSquareBrackets);
                 }
                 
                 return result;
