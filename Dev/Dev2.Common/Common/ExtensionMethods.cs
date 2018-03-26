@@ -240,7 +240,7 @@ namespace Dev2.Common.Common
                 return -1;
             }
 
-            int index;
+            int index = 1;
             var length = value.Length;
             var maxSearchLength = sb.Length - length + 1;
 
@@ -248,18 +248,11 @@ namespace Dev2.Common.Common
             {
                 for (int i = startIndex; i < maxSearchLength; ++i)
                 {
-                    if (Char.ToLower(sb[i]) == Char.ToLower(value[0]))
-                    {
-                        index = 1;
-                        while (index < length && Char.ToLower(sb[i + index]) == Char.ToLower(value[index]))
-                        {
-                            ++index;
-                        }
+                    index = sb.IndexOf(value, index, length, i);
 
-                        if (index == length)
-                        {
-                            return i;
-                        }
+                    if (Char.ToLower(sb[i]) == Char.ToLower(value[0]) && index == length)
+                    {
+                        return i;
                     }
                 }
 
@@ -284,6 +277,20 @@ namespace Dev2.Common.Common
             }
 
             return -1;
+        }
+
+        static int IndexOf(this StringBuilder sb, string value, int index, int length, int startingAt)
+        {
+            if (Char.ToLower(sb[startingAt]) == Char.ToLower(value[0]))
+            {
+                index = 1;
+                while (index < length && Char.ToLower(sb[startingAt + index]) == Char.ToLower(value[index]))
+                {
+                    ++index;
+                }
+            }
+
+            return index;
         }
 
         static bool SkipDueToEscapeChar(StringBuilder word, int startIdx, int candidatePos, string escapeChar, string searchValue)
