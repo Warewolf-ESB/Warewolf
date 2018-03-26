@@ -187,7 +187,6 @@ using System.Runtime.CompilerServices;
 ")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Designers.Tests")]
-[assembly: InternalsVisibleTo("Dev2.CustomControls.Tests")]
 [assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Specs")]
 [assembly: InternalsVisibleTo("Dev2.Runtime.Tests")]
@@ -196,10 +195,10 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("Dev2.Integration.Tests")]
 [assembly: InternalsVisibleTo("Dev2.TaskScheduler.Wrappers")]
 [assembly: InternalsVisibleTo("Dev2.Infrastructure.Tests")]
+[assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.Studio.ViewModels.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Data.Tests")]
 [assembly: InternalsVisibleTo("Warewolf.Tools.Specs")]
-[assembly: InternalsVisibleTo("Warewolf.UIBindingTests.ComDll")]
 [assembly: InternalsVisibleTo("Warewolf.UIBindingTests.PluginSource")]
 "@
     Write-Host $CSharpVersionFileContents
@@ -255,7 +254,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         $SolutionFileName = $GetSolutionFileInfo.Name
         $SolutionFileExtension = $GetSolutionFileInfo.Extension
         $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension).TrimEnd("2")
-        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
+        if (len((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent) -gt 1) {
+            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
+        } else {
+            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent
+        }
+        if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
             if ($SolutionWideOutputs.IsPresent) {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             } else {
