@@ -254,7 +254,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         $SolutionFileName = $GetSolutionFileInfo.Name
         $SolutionFileExtension = $GetSolutionFileInfo.Extension
         $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension).TrimEnd("2")
-        if (len((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent) -gt 1) {
+        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
             $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
         } else {
             $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent
