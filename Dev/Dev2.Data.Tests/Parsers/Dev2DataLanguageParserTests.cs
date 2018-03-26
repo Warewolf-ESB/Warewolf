@@ -521,13 +521,12 @@ namespace Dev2.Data.Tests.Parsers
             };
             var intellisenseParts = new List<IDev2DataLanguageIntellisensePart>();
             var privateObject = new PrivateObject(parser);
-            //ExtractActualIntellisenseOptions(ParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts)
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             try
             {
-                privateObject.Invoke("ExtractActualIntellisenseOptions", parseTO, intellisenseParts, true);
-                privateObject.Invoke("ExtractActualIntellisenseOptions", parseTORecSet, intellisenseParts, false);
+                privateObject.Invoke("TryExtractActualIntellisenseOptions", parseTO, intellisenseParts, true);
+                privateObject.Invoke("TryExtractActualIntellisenseOptions", parseTORecSet, intellisenseParts, false);
             }
             catch (Exception e)
             {
