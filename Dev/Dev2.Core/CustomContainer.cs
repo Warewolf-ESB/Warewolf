@@ -79,24 +79,37 @@ namespace Dev2
         {
             var typeToCreate = typeof(T);
             var assemblyTypes = LoadedTypes;
-            foreach(var assemblyType in assemblyTypes)
+            object createdObject = null;
+            foreach (var assemblyType in assemblyTypes)
             {
                 if(assemblyType.IsPublic && !assemblyType.IsAbstract && assemblyType.IsClass && !assemblyType.IsGenericType && typeToCreate.IsAssignableFrom(assemblyType))
                 {
-                    var constructorInfos = assemblyType.GetConstructors();
-                    foreach(var constructorInfo in constructorInfos)
-                    {
-                        if (ConstructorMatch(constructorParameters, constructorInfo))
-                        {
-                            return (T)constructorInfo.Invoke(constructorParameters);
-                        }
-                    }
+                    createdObject = TryInvokeConstructor(assemblyType, constructorParameters);
                 }
+            }
+            if (createdObject != null)
+            {
+                return (T)createdObject;
             }
             return default(T);
         }
 
-        private static bool ConstructorMatch(object[] constructorParameters, System.Reflection.ConstructorInfo constructorInfo)
+        static object TryInvokeConstructor(Type assemblyType, object[] constructorParameters)
+        {
+            object createdObject = null;
+            var constructorInfos = assemblyType.GetConstructors();
+            foreach (var constructorInfo in constructorInfos)
+            {
+                if (ConstructorMatch(constructorParameters, constructorInfo) && createdObject == null)
+                {
+                    createdObject = constructorInfo.Invoke(constructorParameters);
+                }
+            }
+
+            return createdObject;
+        }
+
+        static bool ConstructorMatch(object[] constructorParameters, System.Reflection.ConstructorInfo constructorInfo)
         {
             var constructorMatch = false;
             var parameterInfos = constructorInfo.GetParameters();
