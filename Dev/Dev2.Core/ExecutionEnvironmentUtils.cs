@@ -190,10 +190,10 @@ namespace Dev2
             dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
             var dataListTO = new DataListTO(dataList);
             var inputs = dataListTO.Inputs;
-            UpdateEnviromentWithMappings(dataObject, rawPayload, inputs);
+            TryUpdateEnviromentWithMappings(dataObject, rawPayload, inputs);
         }
 
-        static void UpdateEnviromentWithMappings(IDSFDataObject dataObject, StringBuilder rawPayload, List<string> mappings)
+        static void TryUpdateEnviromentWithMappings(IDSFDataObject dataObject, StringBuilder rawPayload, List<string> mappings)
         {
             JObject inputObject;
             var toLoad = rawPayload.ToString();
@@ -213,48 +213,58 @@ namespace Dev2
             }
             if (inputObject != null)
             {
-                var recSets = mappings.Where(DataListUtil.IsValueRecordset).ToList();
-                var processedRecsets = new List<string>();
-                foreach (var input in mappings)
+                UpdateEnviromentWithMappings(dataObject, mappings, inputObject);
+            }
+        }
+
+        static void UpdateEnviromentWithMappings(IDSFDataObject dataObject, List<string> mappings, JObject inputObject)
+        {
+            var recSets = mappings.Where(DataListUtil.IsValueRecordset).ToList();
+            var processedRecsets = new List<string>();
+            foreach (var input in mappings)
+            {
+                var inputName = input;
+                var isValueRecordset = DataListUtil.IsValueRecordset(input);
+                if (isValueRecordset)
                 {
-                    var inputName = input;
-                    var isValueRecordset = DataListUtil.IsValueRecordset(input);
-                    if (isValueRecordset)
+                    inputName = DataListUtil.ExtractRecordsetNameFromValue(input);
+                    if (processedRecsets.Contains(inputName))
                     {
-                        inputName = DataListUtil.ExtractRecordsetNameFromValue(input);
-                        if (processedRecsets.Contains(inputName))
-                        {
-                            continue;
-                        }
-                    }
-                    var propsMatching = inputObject.Properties().Where(property => property.Name == inputName).ToList();
-                    foreach (var prop in propsMatching)
-                    {
-                        var value = prop.Value;
-                        var tokenType = value.Type;
-                        if (tokenType == JTokenType.Object)
-                        {
-                            if (isValueRecordset)
-                            {
-                                var arr = new JArray(value);
-                                PerformRecordsetUpdate(dataObject, arr, true, input, recSets, inputName, processedRecsets);
-                            }
-                            else
-                            {
-                                var jContainer = value as JContainer;
-                                dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@" + input), jContainer);
-                            }
-                        }
-                        else if (tokenType == JTokenType.Array)
-                        {
-                            PerformRecordsetUpdate(dataObject, value, isValueRecordset, input, recSets, inputName, processedRecsets);
-                        }
-                        else
-                        {
-                            dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(input), value.ToString(), 0);
-                        }
+                        continue;
                     }
                 }
+                var propsMatching = inputObject.Properties().Where(property => property.Name == inputName).ToList();
+                foreach (var prop in propsMatching)
+                {
+                    var value = prop.Value;
+                    var tokenType = value.Type;
+                    if (tokenType == JTokenType.Object)
+                    {
+                        PerformRecordsetUpdate(dataObject, value, processedRecsets, input, recSets, inputName, isValueRecordset);
+                    }
+                    else if (tokenType == JTokenType.Array)
+                    {
+                        PerformRecordsetUpdate(dataObject, value, isValueRecordset, input, recSets, inputName, processedRecsets);
+                    }
+                    else
+                    {
+                        dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(input), value.ToString(), 0);
+                    }
+                }
+            }
+        }
+
+        private static void PerformRecordsetUpdate(IDSFDataObject dataObject, JToken value, List<string> processedRecsets, string input, List<string> recSets, string inputName, bool isValueRecordset)
+        {
+            if (isValueRecordset)
+            {
+                var arr = new JArray(value);
+                PerformRecordsetUpdate(dataObject, arr, true, input, recSets, inputName, processedRecsets);
+            }
+            else
+            {
+                var jContainer = value as JContainer;
+                dataObject.Environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist("@" + input), jContainer);
             }
         }
 
@@ -271,65 +281,77 @@ namespace Dev2
                 {
                     for (int i = 0; i < arrayValue.Count; i++)
                     {
-                        var val = arrayValue[i];
-                        if (val is JObject valObj)
-                        {
-                            var recs = recSets.Where(s => DataListUtil.ExtractRecordsetNameFromValue(s) == inputName);
-                            foreach (var rec in recs)
-                            {
-                                var field = DataListUtil.ExtractFieldNameOnlyFromValue(rec);
-                                var fieldProp = valObj.Properties().FirstOrDefault(property => property.Name == field);
-                                if (fieldProp != null)
-                                {
-                                    dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(rec), fieldProp.Value.ToString(), i + 1);
-                                }
-                            }
-                        }
+                        UpdateEnvironmentFromJObject(dataObject, recSets, inputName, i, arrayValue[i]);
                     }
                     processedRecsets.Add(inputName);
                 }
             }
         }
 
+        static void UpdateEnvironmentFromJObject(IDSFDataObject dataObject, List<string> recSets, string inputName, int i, JToken val)
+        {
+            if (val is JObject valObj)
+            {
+                var recs = recSets.Where(s => DataListUtil.ExtractRecordsetNameFromValue(s) == inputName);
+                foreach (var rec in recs)
+                {
+                    var field = DataListUtil.ExtractFieldNameOnlyFromValue(rec);
+                    var fieldProp = valObj.Properties().FirstOrDefault(property => property.Name == field);
+                    if (fieldProp != null)
+                    {
+                        dataObject.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(rec), fieldProp.Value.ToString(), i + 1);
+                    }
+                }
+            }
+        }
+
         public static void UpdateEnvironmentFromOutputPayload(IDSFDataObject dataObject, StringBuilder rawPayload, string dataList)
         {
-
             dataList = dataList.Replace("ADL>", "DataList>").Replace("root>", "DataList>");
             var dataListTO = new DataListTO(dataList);
             var outputs = dataListTO.Outputs;
-            UpdateEnviromentWithMappings(dataObject, rawPayload, outputs);
+            TryUpdateEnviromentWithMappings(dataObject, rawPayload, outputs);
         }
 
         static void TryConvert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level = 0)
         {
             try
             {
-                // spin through each element in the XML
-                foreach (XmlNode c in children)
-                {
-                    if (c.Name != GlobalConstants.NaughtyTextNode)
-                    {
-                        if (level > 0)
-                        {
-                            var c1 = c;
-                            var scalars = inputDefs.Where(definition => definition == c1.Name);
-                            var recSets = inputDefs.Where(definition => DataListUtil.ExtractRecordsetNameFromValue(definition) == c1.Name);
-                            UpdateForRecordset(dataObject, update, recSets, c);
-                            UpdateForScalars(dataObject, update, scalars, c);
-                        }
-                        else
-                        {
-                            if (level == 0)
-                            {
-                                TryConvert(dataObject, c.ChildNodes, inputDefs, update, ++level);
-                            }
-                        }
-                    }
-                }
+                Convert(dataObject, children, inputDefs, update, level);
             }
             finally
             {
                 dataObject.Environment.CommitAssign();
+            }
+        }
+
+        static void Convert(IDSFDataObject dataObject, XmlNodeList children, List<string> inputDefs, int update, int level)
+        {
+            foreach (XmlNode c in children)
+            {
+                if (c.Name != GlobalConstants.NaughtyTextNode)
+                {
+                    if (level > 0)
+                    {
+                        var c1 = c;
+                        var scalars = inputDefs.Where(definition => definition == c1.Name);
+                        var recSets = inputDefs.Where(definition => DataListUtil.ExtractRecordsetNameFromValue(definition) == c1.Name);
+                        UpdateForRecordset(dataObject, update, recSets, c);
+                        UpdateForScalars(dataObject, update, scalars, c);
+                    }
+                    else
+                    {
+                       ContinueConverting(dataObject, inputDefs, update, level, c);
+                    }
+                }
+            }
+        }
+
+        static void ContinueConverting(IDSFDataObject dataObject, List<string> inputDefs, int update, int level, XmlNode c)
+        {
+            if (level == 0)
+            {
+                TryConvert(dataObject, c.ChildNodes, inputDefs, update, ++level);
             }
         }
 
@@ -356,26 +378,29 @@ namespace Dev2
                 {
                     foreach (var definition in recSetDefs)
                     {
-                        if (DataListUtil.IsValueRecordset(definition) && DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
-                        {
-                            var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
-                            var a = subc.InnerXml;
-                            a = RemoveXMLPrefix(a);
-                            dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a), update);
-                        }
-
+                        UpdateForChildNodes(dataObject, update, subc, definition);
                     }
                 }
             }
         }
 
+        private static void UpdateForChildNodes(IDSFDataObject dataObject, int update, XmlNode subc, string definition)
+        {
+            if (DataListUtil.IsValueRecordset(definition) && DataListUtil.ExtractFieldNameFromValue(definition) == subc.Name)
+            {
+                var recSetAppend = DataListUtil.ReplaceRecordsetIndexWithBlank(definition);
+                var a = subc.InnerXml;
+                a = RemoveXMLPrefix(a);
+                dataObject.Environment.AssignWithFrame(new AssignValue(recSetAppend, a), update);
+            }
+        }
 
         static string RemoveXMLPrefix(string a)
         {
             if (a.StartsWith(GlobalConstants.XMLPrefix))
             {
                 a = a.Replace(GlobalConstants.XMLPrefix, "");
-                a = Encoding.UTF8.GetString(Convert.FromBase64String(a));
+                a = Encoding.UTF8.GetString(System.Convert.FromBase64String(a));
             }
             return a;
         }
