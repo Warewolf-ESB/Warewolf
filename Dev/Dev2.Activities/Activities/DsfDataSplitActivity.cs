@@ -212,13 +212,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     resultsEnumerator.Reset();
                     while (resultsEnumerator.MoveNext())
                     {
-                        var tovar = resultsEnumerator.Current.OutputVariable;
-                        if (!String.IsNullOrEmpty(tovar))
-                        {
-                            var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
-                            env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
-                            positions[tovar] = positions[tovar] + 1;
-                        }
+                        AssignOutputVariable(update, env, resultsEnumerator, positions);
                     }
                     resultsEnumerator.Reset();
                     resultsEnumerator.MoveNext();
@@ -234,15 +228,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     if (dataObject.IsDebugMode())
                     {
-                        var debugItem = new DebugItem();
-                        var outputVarTo = resultsEnumerator.Current.OutputVariable;
-                        AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
-                        if (!debugDictionary.Contains(outputVarTo))
-                        {
-                            debugDictionary.Add(outputVarTo);
-                        }
+                        AddOutputToDebugOutput(update, env, resultsEnumerator, debugDictionary);
                     }
                 }
+            }
+        }
+
+        void AddOutputToDebugOutput(int update, IExecutionEnvironment env, IEnumerator<DataSplitDTO> resultsEnumerator, List<string> debugDictionary)
+        {
+            var debugItem = new DebugItem();
+            var outputVarTo = resultsEnumerator.Current.OutputVariable;
+            AddDebugItem(new DebugEvalResult(outputVarTo, "", env, update), debugItem);
+            if (!debugDictionary.Contains(outputVarTo))
+            {
+                debugDictionary.Add(outputVarTo);
+            }
+        }
+
+        static void AssignOutputVariable(int update, IExecutionEnvironment env, IEnumerator<DataSplitDTO> resultsEnumerator, IDictionary<string, int> positions)
+        {
+            var tovar = resultsEnumerator.Current.OutputVariable;
+            if (!String.IsNullOrEmpty(tovar))
+            {
+                var assignToVar = ExecutionEnvironment.ConvertToIndex(tovar, positions[tovar]);
+                env.AssignWithFrame(new AssignValue(assignToVar, ""), update);
+                positions[tovar] = positions[tovar] + 1;
             }
         }
 
