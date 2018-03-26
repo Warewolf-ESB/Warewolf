@@ -510,8 +510,7 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new Dev2DataLanguageParser();
             var parseTO = new ParseTO()
             {
-                Parent = new ParseTO() { Payload = "Name" },
-
+                Parent = new ParseTO() { Payload = "Name" }
             };
 
             var parseTORecSet = new ParseTO()

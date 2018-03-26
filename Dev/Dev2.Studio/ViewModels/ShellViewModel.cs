@@ -641,29 +641,20 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server)
         {
-            if (currentResource is ExplorerItemViewModel normalExplorer)
+            if (currentResource is ExplorerItemViewModel normalExplorer && normalExplorer.Server != null)
             {
-                switch (normalExplorer)
+                var currentResourceModel = b.Server.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
+                var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+                if (currentResourceModel != null && differenceResourceModel != null)
                 {
-                    case ExplorerItemViewModel b:
-                        if (b.Server != null)
-                        {
-                            var currentResourceModel = b.Server.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
-                            var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
-                            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
-                            if (currentResourceModel != null && differenceResourceModel != null)
-                            {
-                                workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
-                                workSurfaceKey.ResourceID = currentResourceModel.ID;
-                                workSurfaceKey.ServerID = currentResourceModel.ServerID;
-                                _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, true, workSurfaceKey);
-                            }
-                        }
-                        break;
-                    default:
-                        break;
+                    workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
+                    workSurfaceKey.ResourceID = currentResourceModel.ID;
+                    workSurfaceKey.ServerID = currentResourceModel.ServerID;
+                    _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, true, workSurfaceKey);
                 }
             }
+
         }
 
         public void OpenMergeConflictsView(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer)
