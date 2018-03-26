@@ -92,41 +92,50 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
             foreach (JProperty property in dataProperties.Where(p => !p.IsPrimitive() && !p.IsEnumerableOfPrimitives()))
             {
-                JContainer propertyData;
+                TryAddPropertyAsJContainer(propertyStack, root, paths, property);
+            }
+        }
 
-                try
+        private void TryAddPropertyAsJContainer(Stack<Tuple<JProperty, bool>> propertyStack, JToken root, List<IPath> paths, JProperty property)
+        {
+            JContainer propertyData;
+            try
+            {
+                propertyData = property.Value as JContainer;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                propertyData = null;
+                //TODO When an exception is encountered stop discovery for this path and write to log
+            }
+
+            if (propertyData != null)
+            {
+                if (property.IsEnumerable())
                 {
-                    propertyData = property.Value as JContainer;
+                    AddPropertyStack(propertyStack, root, paths, property, propertyData);
                 }
-                catch (Exception ex)
+                else
                 {
-                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                    propertyData = null;
-                    //TODO When an exception is encountered stop discovery for this path and write to log
+                    propertyStack.Push(new Tuple<JProperty, bool>(property, true));
+                    paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                    propertyStack.Pop();
                 }
+            }
+        }
 
-                if (propertyData != null)
+        void AddPropertyStack(Stack<Tuple<JProperty, bool>> propertyStack, JToken root, List<IPath> paths, JProperty property, JContainer propertyData)
+        {
+            if (propertyData is IEnumerable enumerableData)
+            {
+                var enumerator = enumerableData.GetEnumerator();
+                enumerator.Reset();
+                if (enumerator.MoveNext())
                 {
-                    if (property.IsEnumerable())
-                    {
-                        if (propertyData is IEnumerable enumerableData)
-                        {
-                            var enumerator = enumerableData.GetEnumerator();
-                            enumerator.Reset();
-                            if (enumerator.MoveNext())
-                            {
-                                propertyData = enumerator.Current as JContainer;
+                    propertyData = enumerator.Current as JContainer;
 
-                                if (propertyData != null)
-                                {
-                                    propertyStack.Push(new Tuple<JProperty, bool>(property, true));
-                                    paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                                    propertyStack.Pop();
-                                }
-                            }
-                        }
-                    }
-                    else
+                    if (propertyData != null)
                     {
                         propertyStack.Push(new Tuple<JProperty, bool>(property, true));
                         paths.AddRange(BuildPaths(propertyData, propertyStack, root));
