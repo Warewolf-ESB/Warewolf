@@ -307,7 +307,7 @@ namespace Dev2.Studio
             var serverLogFile = HelperUtils.GetServerLogSettingsConfigFile();
             if (!File.Exists(serverLogFile))
             {
-                File.WriteAllText(serverLogFile, GlobalConstants.DefaultServerLogFileConfig);
+                return false;
             }
             try
             {
@@ -321,7 +321,7 @@ namespace Dev2.Studio
                     }
                     if (line.Contains(@"[Header]"))
                     {
-                        return true;
+                        break;
                     }
                 }
                 return false;
