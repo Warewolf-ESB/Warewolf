@@ -643,7 +643,7 @@ namespace Dev2.Studio.ViewModels
         {
             if (currentResource is ExplorerItemViewModel normalExplorer && normalExplorer.Server != null)
             {
-                var currentResourceModel = b.Server.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
+                var currentResourceModel = normalExplorer.Server.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
                 var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
                 if (currentResourceModel != null && differenceResourceModel != null)
