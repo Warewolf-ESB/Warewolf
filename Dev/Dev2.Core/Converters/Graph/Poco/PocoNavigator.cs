@@ -80,31 +80,31 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
                 while (currentData != null && segmentIndex < pathSegments.Count)
                 {
-                    if (pathSegments[segmentIndex].IsEnumarable)
-                    {
-                        var enumerableData = GetEnumerableValueForPathSegment(pathSegments[segmentIndex],
-                            currentData);
-
-                        if (enumerableData == null)
-                        {
-                            currentData = null;
-                        }
-                        else
-                        {
-                            var enumerator = enumerableData.GetEnumerator();
-                            enumerator.Reset();
-                            while (enumerator.MoveNext())
-                            {
-                                currentData = enumerator.Current;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        currentData = GetScalarValueForPathSegement(pathSegments[segmentIndex], currentData);
-                    }
+                    currentData = pathSegments[segmentIndex].IsEnumarable ? GetScalarValueForEnumarablePathSegment(pathSegments, currentData, segmentIndex) : GetScalarValueForPathSegement(pathSegments[segmentIndex], currentData);
 
                     segmentIndex++;
+                }
+            }
+
+            return currentData;
+        }
+
+        private object GetScalarValueForEnumarablePathSegment(List<IPathSegment> pathSegments, object currentData, int segmentIndex)
+        {
+            var enumerableData = GetEnumerableValueForPathSegment(pathSegments[segmentIndex],
+                                        currentData);
+
+            if (enumerableData == null)
+            {
+                currentData = null;
+            }
+            else
+            {
+                var enumerator = enumerableData.GetEnumerator();
+                enumerator.Reset();
+                while (enumerator.MoveNext())
+                {
+                    currentData = enumerator.Current;
                 }
             }
 
@@ -149,7 +149,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             }
             else
             {
-                returnData = SelectEnumberable(pocoPath.GetSegements().ToList(), Data).ToList();
+                returnData = SelectEnumarable(pocoPath.GetSegements().ToList(), Data).ToList();
             }
 
             return returnData;
@@ -218,7 +218,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         #region Private Methods
 
-        IEnumerable<object> SelectEnumberable(IList<IPathSegment> pathSegments, object data)
+        IEnumerable<object> SelectEnumarable(IList<IPathSegment> pathSegments, object data)
         {
             var returnData = new List<object>();
             var currentData = data;
@@ -230,20 +230,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
                 if (pathSegment.IsEnumarable)
                 {
-                    var enumerableData = GetEnumerableValueForPathSegment(pathSegment, currentData);
-
-                    if (enumerableData != null)
-                    {
-                        var enumerator = enumerableData.GetEnumerator();
-                        enumerator.Reset();
-
-                        while (enumerator.MoveNext())
-                        {
-                            returnData.AddRange(SelectEnumberable(pathSegments.Skip(i + 1).ToList(), enumerator.Current));
-                        }
-                    }
-
-                    return returnData;
+                    return SelectEnumarable(pathSegments, currentData, returnData, i, pathSegment);
                 }
 
                 currentData = GetScalarValueForPathSegement(pathSegment, currentData);
@@ -254,6 +241,23 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 }
             }
 
+            return returnData;
+        }
+
+        List<object> SelectEnumarable(IList<IPathSegment> pathSegments, object data, List<object> returnData, int i, IPathSegment pathSegment)
+        {
+            var enumerableData = GetEnumerableValueForPathSegment(pathSegment, data);
+
+            if (enumerableData != null)
+            {
+                var enumerator = enumerableData.GetEnumerator();
+                enumerator.Reset();
+
+                while (enumerator.MoveNext())
+                {
+                    returnData.AddRange(SelectEnumarable(pathSegments.Skip(i + 1).ToList(), enumerator.Current));
+                }
+            }
             return returnData;
         }
 

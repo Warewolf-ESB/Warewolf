@@ -117,23 +117,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 {
                     if (propertyInfo.PropertyType.IsEnumerable())
                     {
-                        if (propertyData is IEnumerable enumerableData)
-                        {
-                            propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
-                            paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                            propertyStack.Pop();
-
-                            var enumerator = enumerableData.GetEnumerator();
-                            enumerator.Reset();
-                            if (enumerator.MoveNext())
-                            {
-                                propertyData = enumerator.Current;
-
-                                propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
-                                paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                                propertyStack.Pop();
-                            }
-                        }
+                        propertyData = MapEnumarableData(data, propertyStack, root, paths, propertyInfo, propertyData);
                     }
                     else
                     {
@@ -143,6 +127,29 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     }
                 }
             }
+        }
+
+        private object MapEnumarableData(object data, Stack<Tuple<string, bool, bool, object>> propertyStack, object root, List<IPath> paths, PropertyInfo propertyInfo, object propertyData)
+        {
+            if (propertyData is IEnumerable enumerableData)
+            {
+                propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
+                paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                propertyStack.Pop();
+
+                var enumerator = enumerableData.GetEnumerator();
+                enumerator.Reset();
+                if (enumerator.MoveNext())
+                {
+                    propertyData = enumerator.Current;
+
+                    propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
+                    paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                    propertyStack.Pop();
+                }
+            }
+
+            return propertyData;
         }
 
         IPath BuildPath(Stack<Tuple<string, bool, bool, object>> propertyStack, string name, bool isEnumerable)
