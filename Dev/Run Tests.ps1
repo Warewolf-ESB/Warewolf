@@ -708,6 +708,7 @@ function Install-Server {
     if ($ResourcesDirectory -ne "" -and $ResourcesDirectory -ne (Get-Item $ServerPath).Directory.FullName + "\" + (Get-Item $ResourcesDirectory).Name ) {
         Copy-Item -Path "$ResourcesDirectory" -Destination (Get-Item $ServerPath).Directory.FullName -Recurse -Force
     }
+    $ResourcesType
 }
 
 function Start-Server {
@@ -1031,7 +1032,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
         }
 
         if ($StartServerAsConsole.IsPresent -or $StartServerAsService.IsPresent -or $StartServer.IsPresent -or $StartStudio.IsPresent) {
-            Install-Server
+            $ResourcesType = Install-Server
         }
     }
 
@@ -1645,7 +1646,7 @@ if ($ServerContainer.IsPresent) {
 if (!$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobNames -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "" -and !$ServerContainer.IsPresent) {
     Start-my.warewolf.io
     if (!${Startmy.warewolf.io}.IsPresent) {
-        Install-Server
+        $ResourcesType = Install-Server
         Start-Server
         if (!$StartServerAsConsole.IsPresent -and !$StartServerAsService.IsPresent -and !$StartServer.IsPresent -and !${Startmy.warewolf.io}.IsPresent) {
             Start-Studio
