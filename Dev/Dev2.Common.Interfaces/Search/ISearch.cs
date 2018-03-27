@@ -16,18 +16,31 @@ namespace Dev2.Common.Interfaces.Search
 {
     public enum SearchItemType
     {
+        [Description("Resource")]
         WorkflowName,
+        [Description("Resource")]
         SourceName,
+        [Description("Tool Title")]
         ToolTitle,
+        [Description("Scalar")]
         Scalar,
+        [Description("Scalar Input")]
         ScalarInput,
+        [Description("Scalar Output")]
         ScalarOutput,
+        [Description("Recordset")]
         RecordSet,
+        [Description("Recordset Input")]
         RecordSetInput,
+        [Description("Recordset Output")]
         RecordSetOutput,
+        [Description("Object")]
         Object,
+        [Description("Object Input")]
         ObjectInput,
+        [Description("Object Output")]
         ObjectOutput,
+        [Description("Test Name")]
         TestName
     }
 

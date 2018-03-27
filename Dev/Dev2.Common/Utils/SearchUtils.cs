@@ -37,7 +37,7 @@ namespace Dev2.Common.Utils
                 {
                     if (words.Count() > 1)
                     {
-                        isMatch = filterValue.Contains(searchInput);
+                        isMatch = filterValue.Equals(searchInput);
                     }
                 }
             }

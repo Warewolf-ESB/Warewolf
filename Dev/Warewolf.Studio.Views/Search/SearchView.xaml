@@ -24,6 +24,7 @@
             </ResourceDictionary.MergedDictionaries>
             <converters1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible"/>
             <converters1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <help:ResourceIdToIconConverter x:Key="ResourceIdToIconConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -50,7 +51,10 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txtSearchInput" ToolTip="{x:Static languages:Tooltips.SearchInputTooltip}" Text="{Binding Search.SearchInput}" >
+            <TextBox x:Name="txtSearchInput" 
+                     ToolTip="{x:Static languages:Tooltips.SearchInputTooltip}" 
+                     Text="{Binding Search.SearchInput}" 
+                     IsEnabled="{Binding CanShowResults}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static languages:HelpText.SearchInputHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
                 </i:Interaction.Behaviors>
@@ -92,7 +96,7 @@
                 </i:Interaction.Behaviors>
             </CheckBox>
         </StackPanel>
-        
+
         <!-- SEARCH OPTIONS -->
         <Expander Grid.Row="3" Style="{StaticResource ServiceTestTestStepExpander}" IsExpanded="True" Header="Search Options" >
             <Grid HorizontalAlignment="Stretch" DataContext="{Binding Search.SearchOptions}">
@@ -197,6 +201,12 @@
         </Grid>
 
         <Grid Grid.Row="4" Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Orientation="Horizontal">
+                <TextBlock Text="{Binding VersionConflictError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                           Margin="{StaticResource ElementBorder}"
+                           FontSize="16"
+                           Visibility="{Binding CanShowResults, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+            </StackPanel>
             <!-- SEARCH RESULTS -->
             <controls:Dev2DataGrid x:Name="SearchResults"
                                    ItemsSource="{Binding SearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -204,6 +214,7 @@
                                    Height="Auto"
                                    IsEnabled="{Binding IsSearchResultsEnabled}"
                                    ColumnWidth="*"
+                                   Visibility="{Binding CanShowResults, Converter={StaticResource BoolToVisibilityConverter}}"
                                    Margin="{StaticResource ControlBorderTop}">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
@@ -226,12 +237,15 @@
                                             d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="{Binding Path=Name}" HorizontalAlignment="Left">
-                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.OpenResourceCommand}" 
-                                               Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
-                                        <Run Text="{Binding Path=Name,Mode=OneWay}" />
-                                    </Hyperlink>
-                                </TextBlock>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Margin="{StaticResource ControlBorderLeft}" Width="14" Height="14" Source="{Binding Path=ResourceId, Converter={StaticResource ResourceIdToIconConverter}}" />
+                                    <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="{Binding Path=Name}" HorizontalAlignment="Left">
+                                        <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.OpenResourceCommand}" 
+                                                   Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
+                                            <Run Text="{Binding Path=Name,Mode=OneWay}" />
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
@@ -258,7 +272,10 @@
                                             d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Margin="5,0,0,0" ToolTip="{Binding Path=Type}" Text="{Binding Path=Type}" HorizontalAlignment="Left"/>
+                                <TextBlock Margin="5,0,0,0" 
+                                           ToolTip="{Binding Path=Type, Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                           Text="{Binding Path=Type, Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                           HorizontalAlignment="Left"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
