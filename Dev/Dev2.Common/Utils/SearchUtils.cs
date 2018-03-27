@@ -25,27 +25,15 @@ namespace Dev2.Common.Utils
                 filterValue = valueToFilter.ToLower();
             }
 
-            var words = filterValue.Split(' ');
-            var isMatch = false;
-            if (searchValue.SearchOptions.IsMatchWholeWordSelected)
+            if (!searchValue.SearchOptions.IsMatchWholeWordSelected)
             {
-                if (words.Count() == 1)
-                {
-                    isMatch = words.Equals(searchInput);
-                }
-                else
-                {
-                    if (words.Count() > 1)
-                    {
-                        isMatch = filterValue.Equals(searchInput);
-                    }
-                }
+                return filterValue.Contains(searchInput);
             }
             else
             {
-                isMatch = filterValue.Contains(searchInput);
+                var words = filterValue.Split(' ');
+                return words.Contains(searchInput);
             }
-            return isMatch;
         }
     }
 }
