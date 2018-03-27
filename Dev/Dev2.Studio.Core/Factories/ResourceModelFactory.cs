@@ -33,6 +33,7 @@ namespace Dev2.Studio.Core.Factories
         {
             var contextualResource = CreateResourceModel(environment);
             contextualResource.ID = resource.ResourceID;
+            contextualResource.IsNewWorkflow = true;
             contextualResource.UserPermissions = Permissions.Contribute;
             contextualResource.Category = Path.Combine(EnvironmentVariables.ResourcePath, resource.ResourceName);
             if (resource.ResourceType == "WorkflowService" || resource.ResourceType == "Workflow")

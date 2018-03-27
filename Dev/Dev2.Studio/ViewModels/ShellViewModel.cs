@@ -167,34 +167,32 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        internal async Task<bool> LoadWorkflowAsync(string e)
+        internal async Task<bool> LoadWorkflowAsync(string clickedResource)
         {
             _contextualResourceModel = null;
-            if (!File.Exists(e))
+            if (!File.Exists(clickedResource))
             {
                 return false;
             }
             ActiveServer.ResourceRepository.Load(true);
             var fileName = string.Empty;
-            fileName = Path.GetFileNameWithoutExtension(e);
+            fileName = Path.GetFileNameWithoutExtension(clickedResource);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
-            var serverRepo = CustomContainer.Get<IServerRepository>();
-            if (singleResource == null)
+            if (singleResource != null && clickedResource.Contains(EnvironmentVariables.ResourcePath))
             {
-                _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, PopupProvider, this, _file, _filePath, serverRepo);
-                if (_contextualResourceModel != null)
-                {
-                    var ctResourceModel = _contextualResourceModel;
-                    OpenResource(_contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
-                    if (ctResourceModel.ResourceType == ResourceType.WorkflowService || ctResourceModel.ResourceType == ResourceType.Service)
-                    {
-                        SaveDialogHelper.ShowNewWorkflowSaveDialog(ctResourceModel, false, e);
-                    }
-                }
+                OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
             }
             else
             {
-                OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
+                if (singleResource == null)
+                {
+                    var serverRepo = CustomContainer.Get<IServerRepository>();
+                    _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(clickedResource, PopupProvider, this, _file, _filePath, serverRepo);
+                    if (_contextualResourceModel != null && (_contextualResourceModel.ResourceType == ResourceType.WorkflowService || _contextualResourceModel.ResourceType == ResourceType.Service))
+                    {
+                        SaveDialogHelper.ShowNewWorkflowSaveDialog(_contextualResourceModel, false, clickedResource);
+                    }
+                }
             }
             return true;
         }
@@ -362,7 +360,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public IVersionChecker Version { get; }
-        
+
         public ShellViewModel()
             : this(EventPublishers.Aggregator, new AsyncWorker(), CustomContainer.Get<IServerRepository>(), new VersionChecker(), new ViewFactory())
         {
@@ -1542,7 +1540,7 @@ namespace Dev2.Studio.ViewModels
             }
             SetActiveServer(item.Environment);
         }
-        
+
         internal Action<WorkSurfaceContextViewModel> ActiveItemChanged;
 
         bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
