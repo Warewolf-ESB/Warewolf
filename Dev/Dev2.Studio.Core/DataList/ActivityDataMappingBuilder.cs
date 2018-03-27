@@ -476,10 +476,8 @@ namespace Dev2.DataList
         FuzzyMatchVo GenerateMatchFragmentsFromDataList()
         {
             FuzzyMatchVo result = null;
-
             if (!string.IsNullOrEmpty(DataList))
             {
-
                 var dataListModel = new DataListModel();
                 dataListModel.Create(DataList, DataList);
                 IDictionary<Tuple<string, string>, string> tmp = new Dictionary<Tuple<string, string>, string>();
