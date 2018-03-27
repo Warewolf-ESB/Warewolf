@@ -117,7 +117,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 {
                     if (propertyInfo.PropertyType.IsEnumerable())
                     {
-                        propertyData = MapEnumarableData(data, propertyStack, root, paths, propertyInfo, propertyData);
+                        MapEnumarableData(data, propertyStack, root, paths, propertyInfo, propertyData);
                     }
                     else
                     {
@@ -129,7 +129,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             }
         }
 
-        private object MapEnumarableData(object data, Stack<Tuple<string, bool, bool, object>> propertyStack, object root, List<IPath> paths, PropertyInfo propertyInfo, object propertyData)
+        void MapEnumarableData(object data, Stack<Tuple<string, bool, bool, object>> propertyStack, object root, List<IPath> paths, PropertyInfo propertyInfo, object propertyData)
         {
             if (propertyData is IEnumerable enumerableData)
             {
@@ -148,8 +148,6 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     propertyStack.Pop();
                 }
             }
-
-            return propertyData;
         }
 
         IPath BuildPath(Stack<Tuple<string, bool, bool, object>> propertyStack, string name, bool isEnumerable)
