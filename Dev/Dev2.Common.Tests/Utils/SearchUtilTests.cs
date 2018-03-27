@@ -25,6 +25,24 @@ namespace Dev2.Common.Tests.Utils
             var result = SearchUtils.FilterText("Set", searchValue);
             Assert.IsTrue(result);
         }
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("SearchUtils_FilterText")]
+        public void SearchUtils_FilterText_MatchingWholeWordOneWord_ShouldReturnTrue()
+        {
+            var searchValue = new Search.Search
+            {
+                SearchInput = "Set",
+                SearchOptions = new SearchOptions
+                {
+                    IsAllSelected = false,
+                    IsToolTitleSelected = true,
+                    IsMatchWholeWordSelected = true
+                }
+            };
+            var result = SearchUtils.FilterText("Set", searchValue);
+            Assert.IsTrue(result);
+        }
 
         [TestMethod]
         [Owner("Rory McGuire")]
