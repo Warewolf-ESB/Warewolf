@@ -1047,6 +1047,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The server selected is not up to date with the latest server version..
+        /// </summary>
+        public static string SearchVersionConflictError {
+            get {
+                return ResourceManager.GetString("SearchVersionConflictError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Select And Apply tool cannot be dropped onto this tool..
         /// </summary>
         public static string SelectAndApplyDropNotAllowedMessage {

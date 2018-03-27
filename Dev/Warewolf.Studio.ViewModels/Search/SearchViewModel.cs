@@ -20,6 +20,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Common.Interfaces.Search;
 using Microsoft.Practices.Prism;
 using System;
+using Dev2.Common;
 
 namespace Dev2.ViewModels.Search
 {
@@ -109,9 +110,9 @@ namespace Dev2.ViewModels.Search
             if (serverVersion < ServerVersion)
             {
                 CanShowResults = false;
-                VersionConflictError = "The server selected is not up to date with the latest server version." +
-                                        Environment.NewLine + "Server Version: " + ServerVersion +
-                                        Environment.NewLine + "Minimum supported version: " + minServerVersion;
+                VersionConflictError = Warewolf.Studio.Resources.Languages.Core.SearchVersionConflictError +
+                                        Environment.NewLine + GlobalConstants.ServerVersion + ServerVersion +
+                                        Environment.NewLine + GlobalConstants.MinimumSupportedVersion + minServerVersion;
             }
         }
 
