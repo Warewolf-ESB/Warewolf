@@ -112,28 +112,36 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 }
                 else
                 {
-                    var actualSegment = pathSegments[segmentIndex].ActualSegment;
-                    var newCurrentElement = currentElement.Elements(actualSegment).LastOrDefault();
-                    if (newCurrentElement != null)
-                    {
-                        returnData = newCurrentElement.Value;
-                        currentElement = newCurrentElement;
-                    }
-                    else
-                    {
-                        newCurrentElement = currentElement.Elements().LastOrDefault(element => element.Name.LocalName.Equals(actualSegment, StringComparison.InvariantCultureIgnoreCase));
-                        if (newCurrentElement != null)
-                        {
-                            returnData = newCurrentElement.Value;
-                            currentElement = newCurrentElement;
-                        }
-                        else
-                        {
-                            returnData = string.Empty;
-                        }
-                    }
+                    returnData = ActualSegment(ref currentElement, pathSegments, segmentIndex);
                 }
             }
+            return returnData;
+        }
+
+        static string ActualSegment(ref XElement currentElement, List<XmlPathSegment> pathSegments, int segmentIndex)
+        {
+            string returnData;
+            var actualSegment = pathSegments[segmentIndex].ActualSegment;
+            var newCurrentElement = currentElement.Elements(actualSegment).LastOrDefault();
+            if (newCurrentElement != null)
+            {
+                returnData = newCurrentElement.Value;
+                currentElement = newCurrentElement;
+            }
+            else
+            {
+                newCurrentElement = currentElement.Elements().LastOrDefault(element => element.Name.LocalName.Equals(actualSegment, StringComparison.InvariantCultureIgnoreCase));
+                if (newCurrentElement != null)
+                {
+                    returnData = newCurrentElement.Value;
+                    currentElement = newCurrentElement;
+                }
+                else
+                {
+                    returnData = string.Empty;
+                }
+            }
+
             return returnData;
         }
 
@@ -318,75 +326,85 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 }
                 else
                 {
-                    var parentCurentElement = parentNode.CurrentValue as XElement;
-
-                    if (parentPathSegment != null && parentPathSegment.IsEnumarable)
-                    {
-                        if (parentCurentElement != null)
-                        {
-                            var childElements =
-                                parentCurentElement.Elements(pathSegment.ActualSegment).ToList();
-                            newIndexedValueTreeNode.EnumerableValue = childElements;
-
-                            if (childElements.Count == 0)
-                            {
-                                newIndexedValueTreeNode.CurrentValue = string.Empty;
-                                newIndexedValueTreeNode.EnumerationComplete = true;
-                            }
-                            else
-                            {
-                                newIndexedValueTreeNode.Enumerator =
-                                    newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
-
-                                newIndexedValueTreeNode.Enumerator.Reset();
-
-                                if (!newIndexedValueTreeNode.Enumerator.MoveNext())
-                                {
-                                    newIndexedValueTreeNode.CurrentValue = string.Empty;
-                                    newIndexedValueTreeNode.EnumerationComplete = true;
-                                }
-                                else
-                                {
-                                    newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (pathSegment.IsAttribute)
-                        {
-                            if (parentCurentElement != null)
-                            {
-                                newIndexedValueTreeNode.CurrentValue =
-                                    parentCurentElement.Attribute(pathSegment.ActualSegment);
-                            }
-
-                            if (newIndexedValueTreeNode.CurrentValue == null)
-                            {
-                                newIndexedValueTreeNode.CurrentValue = string.Empty;
-                                newIndexedValueTreeNode.EnumerationComplete = true;
-                            }
-                        }
-                        else
-                        {
-                            if (parentCurentElement != null)
-                            {
-                                newIndexedValueTreeNode.CurrentValue =
-                                    parentCurentElement.Element(pathSegment.ActualSegment);
-                            }
-
-                            if (newIndexedValueTreeNode.CurrentValue == null)
-                            {
-                                newIndexedValueTreeNode.CurrentValue = string.Empty;
-                                newIndexedValueTreeNode.EnumerationComplete = true;
-                            }
-                        }
-                    }
+                    XElementSegment(pathSegment, parentPathSegment, parentNode, newIndexedValueTreeNode);
                 }
             }
 
             return newIndexedValueTreeNode;
+        }
+
+        static void XElementSegment(XmlPathSegment pathSegment, IPathSegment parentPathSegment, IndexedPathSegmentTreeNode<string> parentNode, IndexedPathSegmentTreeNode<string> newIndexedValueTreeNode)
+        {
+            var parentCurentElement = parentNode.CurrentValue as XElement;
+
+            if (parentPathSegment != null && parentPathSegment.IsEnumarable)
+            {
+                if (parentCurentElement != null)
+                {
+                    ActualXElementSegment(pathSegment, newIndexedValueTreeNode, parentCurentElement);
+                }
+            }
+            else
+            {
+                if (pathSegment.IsAttribute)
+                {
+                    if (parentCurentElement != null)
+                    {
+                        newIndexedValueTreeNode.CurrentValue =
+                            parentCurentElement.Attribute(pathSegment.ActualSegment);
+                    }
+
+                    if (newIndexedValueTreeNode.CurrentValue == null)
+                    {
+                        newIndexedValueTreeNode.CurrentValue = string.Empty;
+                        newIndexedValueTreeNode.EnumerationComplete = true;
+                    }
+                }
+                else
+                {
+                    if (parentCurentElement != null)
+                    {
+                        newIndexedValueTreeNode.CurrentValue =
+                            parentCurentElement.Element(pathSegment.ActualSegment);
+                    }
+
+                    if (newIndexedValueTreeNode.CurrentValue == null)
+                    {
+                        newIndexedValueTreeNode.CurrentValue = string.Empty;
+                        newIndexedValueTreeNode.EnumerationComplete = true;
+                    }
+                }
+            }
+        }
+
+        private static void ActualXElementSegment(XmlPathSegment pathSegment, IndexedPathSegmentTreeNode<string> newIndexedValueTreeNode, XElement parentCurentElement)
+        {
+            var childElements =
+                                    parentCurentElement.Elements(pathSegment.ActualSegment).ToList();
+            newIndexedValueTreeNode.EnumerableValue = childElements;
+
+            if (childElements.Count == 0)
+            {
+                newIndexedValueTreeNode.CurrentValue = string.Empty;
+                newIndexedValueTreeNode.EnumerationComplete = true;
+            }
+            else
+            {
+                newIndexedValueTreeNode.Enumerator =
+                    newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
+
+                newIndexedValueTreeNode.Enumerator.Reset();
+
+                if (!newIndexedValueTreeNode.Enumerator.MoveNext())
+                {
+                    newIndexedValueTreeNode.CurrentValue = string.Empty;
+                    newIndexedValueTreeNode.EnumerationComplete = true;
+                }
+                else
+                {
+                    newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
+                }
+            }
         }
 
         IEnumerable<string> SelectEnumberable(IList<IPathSegment> pathSegments, IPathSegment parentPathSegment,
