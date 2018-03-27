@@ -85,48 +85,55 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     }
                     else
                     {
-                        if (segmentIndex > 0)
-                        {
-                            if (pathSegments[segmentIndex].IsAttribute)
-                            {
-                                var attribute = currentElement.Attribute(pathSegments[segmentIndex].ActualSegment);
-
-                                if (attribute != null)
-                                {
-                                    currentElement = null;
-                                    returnData = attribute.Value;
-                                }
-                            }
-                            else
-                            {
-                                var actualSegment = pathSegments[segmentIndex].ActualSegment;
-                                var newCurrentElement = currentElement.Elements(actualSegment).LastOrDefault();
-                                if (newCurrentElement != null)
-                                {
-                                    returnData = newCurrentElement.Value;
-                                    currentElement = newCurrentElement;
-                                }
-                                else
-                                {
-                                    newCurrentElement = currentElement.Elements().LastOrDefault(element => element.Name.LocalName.Equals(actualSegment, StringComparison.InvariantCultureIgnoreCase));
-                                    if (newCurrentElement != null)
-                                    {
-                                        returnData = newCurrentElement.Value;
-                                        currentElement = newCurrentElement;
-                                    }
-                                    else
-                                    {
-                                        returnData = string.Empty;
-                                    }
-                                }
-                            }
-                        }
+                        returnData = ScalarSegment(ref currentElement, pathSegments, segmentIndex);
                     }
 
                     segmentIndex++;
                 }
             }
 
+            return returnData;
+        }
+
+        static string ScalarSegment(ref XElement currentElement, List<XmlPathSegment> pathSegments, int segmentIndex)
+        {
+            var returnData = string.Empty;
+            if (segmentIndex > 0)
+            {
+                if (pathSegments[segmentIndex].IsAttribute)
+                {
+                    var attribute = currentElement.Attribute(pathSegments[segmentIndex].ActualSegment);
+
+                    if (attribute != null)
+                    {
+                        currentElement = null;
+                        returnData = attribute.Value;
+                    }
+                }
+                else
+                {
+                    var actualSegment = pathSegments[segmentIndex].ActualSegment;
+                    var newCurrentElement = currentElement.Elements(actualSegment).LastOrDefault();
+                    if (newCurrentElement != null)
+                    {
+                        returnData = newCurrentElement.Value;
+                        currentElement = newCurrentElement;
+                    }
+                    else
+                    {
+                        newCurrentElement = currentElement.Elements().LastOrDefault(element => element.Name.LocalName.Equals(actualSegment, StringComparison.InvariantCultureIgnoreCase));
+                        if (newCurrentElement != null)
+                        {
+                            returnData = newCurrentElement.Value;
+                            currentElement = newCurrentElement;
+                        }
+                        else
+                        {
+                            returnData = string.Empty;
+                        }
+                    }
+                }
+            }
             return returnData;
         }
 
