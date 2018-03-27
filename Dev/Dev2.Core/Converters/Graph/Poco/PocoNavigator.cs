@@ -275,30 +275,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             {
                 if (pathSegment.IsEnumarable)
                 {
-                    newIndexedValueTreeNode.EnumerableValue = GetEnumerableValueForPathSegment(pathSegment,
-                        parentNode.CurrentValue);
-
-                    if (newIndexedValueTreeNode.EnumerableValue == null)
-                    {
-                        newIndexedValueTreeNode.CurrentValue = string.Empty;
-                        newIndexedValueTreeNode.EnumerationComplete = true;
-                    }
-                    else
-                    {
-                        newIndexedValueTreeNode.Enumerator = newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
-
-                        newIndexedValueTreeNode.Enumerator.Reset();
-
-                        if (!newIndexedValueTreeNode.Enumerator.MoveNext())
-                        {
-                            newIndexedValueTreeNode.CurrentValue = string.Empty;
-                            newIndexedValueTreeNode.EnumerationComplete = true;
-                        }
-                        else
-                        {
-                            newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
-                        }
-                    }
+                    newIndexedValueTreeNode = IndexedEnumarablePathSegmentTreeNode(newIndexedValueTreeNode, pathSegment, parentNode);
                 }
                 else
                 {
@@ -313,6 +290,35 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 }
             }
 
+            return newIndexedValueTreeNode;
+        }
+
+        IndexedPathSegmentTreeNode<string> IndexedEnumarablePathSegmentTreeNode(IndexedPathSegmentTreeNode<string> newIndexedValueTreeNode, IPathSegment pathSegment, IndexedPathSegmentTreeNode<string> parentNode)
+        {
+            newIndexedValueTreeNode.EnumerableValue = GetEnumerableValueForPathSegment(pathSegment,
+                                    parentNode.CurrentValue);
+
+            if (newIndexedValueTreeNode.EnumerableValue == null)
+            {
+                newIndexedValueTreeNode.CurrentValue = string.Empty;
+                newIndexedValueTreeNode.EnumerationComplete = true;
+            }
+            else
+            {
+                newIndexedValueTreeNode.Enumerator = newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
+
+                newIndexedValueTreeNode.Enumerator.Reset();
+
+                if (!newIndexedValueTreeNode.Enumerator.MoveNext())
+                {
+                    newIndexedValueTreeNode.CurrentValue = string.Empty;
+                    newIndexedValueTreeNode.EnumerationComplete = true;
+                }
+                else
+                {
+                    newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
+                }
+            }
             return newIndexedValueTreeNode;
         }
 
