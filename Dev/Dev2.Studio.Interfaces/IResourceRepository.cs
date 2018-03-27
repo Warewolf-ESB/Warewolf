@@ -58,7 +58,7 @@ namespace Dev2.Studio.Interfaces
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition, bool prepairForDeployment);
         ExecuteMessage Save(IResourceModel instanceObj);
-        void Load();
+        void Load(bool force);
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
         IResourceModel LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
         IContextualResourceModel LoadContextualResourceModel(Guid resourceId);

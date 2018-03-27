@@ -99,7 +99,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void WhenIReloadTheSourceResources()
         {
             var localhost = _scenarioContext.Get<IServer>("sourceServer");
-            localhost.ResourceRepository.ForceLoad();
+            localhost.ResourceRepository.Load(true);
         }
 
         [Then(@"the destination resource is ""(.*)""")]

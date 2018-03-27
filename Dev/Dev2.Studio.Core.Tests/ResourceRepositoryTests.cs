@@ -224,7 +224,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.SetupGet(p => p.Category).Returns("Root");
             resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
-            _repo.Load();
+            _repo.Load(false);
             var resources = _repo.All().Count;
             //Assert
             Assert.IsTrue(resources.Equals(1));
@@ -270,7 +270,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.SetupGet(p => p.Category).Returns("Root");
             resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
-            _repo.ForceLoad();
+            _repo.Load(true);
 
             Assert.IsTrue(_repo.IsLoaded);
         }
@@ -302,7 +302,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.SetupGet(p => p.Category).Returns("Root");
             resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
-            _repo.ForceLoad();
+            _repo.Load(true);
 
             //Assert
             Assert.IsFalse(_repo.IsLoaded);
@@ -351,7 +351,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.SetupGet(p => p.Category).Returns("Root");
             resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
-            _repo.ForceLoad();
+            _repo.Load(true);
             var resources = _repo.All().Count;
             //Assert
             Assert.IsTrue(resources.Equals(2));
@@ -421,7 +421,7 @@ namespace BusinessDesignStudio.Unit.Tests
             model.Setup(p => p.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.Save(model.Object);
-            _repo.Load();
+            _repo.Load(false);
             //Assert
             Assert.AreEqual(1, _repo.All().Count);
         }
@@ -441,7 +441,7 @@ namespace BusinessDesignStudio.Unit.Tests
             envModel.Setup(e => e.Connection).Returns(envConnection.Object);
 
             var resourceRepo = new TestResourceRepository(envModel.Object);
-            resourceRepo.Load();
+            resourceRepo.Load(false);
 
             Assert.AreEqual(1, resourceRepo.LoadResourcesHitCount, "ResourceRepository Load did more than one server call.");
         }
@@ -466,7 +466,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             model.Setup(p => p.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(model.Object);
-            _repo.Load();
+            _repo.Load(false);
             model.Setup(c => c.ResourceName).Returns("NewName");
             model.Setup(c => c.Category).Returns("NewCar");
             _repo.Save(model.Object);
@@ -1028,7 +1028,7 @@ namespace BusinessDesignStudio.Unit.Tests
             try
             {
                 _repo.Save(_resourceModel.Object);
-                _repo.Load();
+                _repo.Load(false);
             }
             //Assert
             catch (Exception iex)
@@ -1054,7 +1054,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             _repo.Save(_resourceModel.Object);
-            _repo.Load();
+            _repo.Load(false);
             var resources = _repo.All().Count(res => res.ResourceName == "Resource");
             //Assert
             Assert.IsTrue(resources == 1);
@@ -1080,7 +1080,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(exePayload));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             _repo.Save(_resourceModel.Object);
-            _repo.Load();
+            _repo.Load(false);
             var resources = _repo.All().Count(res => res.ResourceName == "Resource");
             //Assert
             Assert.IsTrue(resources == 1);
@@ -1730,7 +1730,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(BuildResourceObjectFromGuids(new[] { newGuid }));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            _repo.ForceLoad();
+            _repo.Load(true);
             //------------Execute Test---------------------------
             var resourceModels = _repo.Find(model => model.ID == newGuid);
             //------------Assert Results-------------------------
@@ -1749,7 +1749,7 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(new StringBuilder($"<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{_resourceGuid}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{guid2}\"></Service></Payload>"));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            _repo.ForceLoad();
+            _repo.Load(true);
             //------------Execute Test---------------------------
             var resourceModels = _repo.Find(null);
             //------------Assert Results-------------------------
@@ -1769,7 +1769,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(BuildResourceObjectFromGuids(new[] { newGuid }));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
-            _repo.ForceLoad();
+            _repo.Load(true);
 
             const string modelDefinition = "model definition";
             var msg = MakeMsg(modelDefinition);
@@ -1855,7 +1855,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.SetupGet(p => p.Category).Returns("Root");
             resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
-            _repo.ForceLoad();
+            _repo.Load(true);
             var resources = _repo.All().Cast<IContextualResourceModel>();
             var servers = resources.Where(r => r.ServerResourceType == "Server");
 
@@ -1923,7 +1923,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.SetupGet(p => p.Category).Returns("Root");
             resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
-            _repo.ForceLoad();
+            _repo.Load(true);
             var resources = _repo.All();
 
             //------------Assert Results-------------------------
@@ -1958,7 +1958,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, guid2 });
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(resourceObj);
-            _repo.ForceLoad();
+            _repo.Load(true);
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             var guid = Guid.NewGuid();
@@ -1966,7 +1966,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, guid });
 
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(resourceObj);
-            _repo.ForceLoad();
+            _repo.Load(true);
             //--------------------------------------------Execute--------------------------------------------------------------
             var isInCache = _repo.IsInCache(guid);
             //--------------------------------------------Assert Results----------------------------------------------------
@@ -1982,13 +1982,13 @@ namespace BusinessDesignStudio.Unit.Tests
             var guid2 = Guid.NewGuid().ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(new StringBuilder($"<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"OriginalDefinition\" ID=\"{_resourceGuid}\"></Service><Service Name=\"TestWorkflowService2\" XamlDefinition=\"OriginalDefinition\" ID=\"{guid2}\"></Service></Payload>"));
-            _repo.ForceLoad();
+            _repo.Load(true);
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             var guid = Guid.NewGuid();
             guid2 = guid.ToString();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
              .Returns(new StringBuilder($"<Payload><Service Name=\"TestWorkflowService1\" XamlDefinition=\"ChangedDefinition\" ID=\"{_resourceGuid}\"></Service><Service Name=\"TestWorkflowService2\" ID=\"{guid2}\" XamlDefinition=\"ChangedDefinition\" ></Service></Payload>"));
-            _repo.ForceLoad();
+            _repo.Load(true);
             //--------------------------------------------Execute--------------------------------------------------------------
             var isInCache = _repo.IsInCache(Guid.NewGuid());
             //--------------------------------------------Assert Results----------------------------------------------------

@@ -50,7 +50,7 @@ namespace Dev2.Activities.Specs.Merge
             localHost = environmentModel.Source;
             localHost.Connect();
 #pragma warning disable S125 // Sections of code should not be "commented out"
-            //localHost.ResourceRepository.ForceLoad();
+            //localHost.ResourceRepository.Load(true);
 #pragma warning restore S125 // Sections of code should not be "commented out"
         }
 
@@ -63,7 +63,7 @@ namespace Dev2.Activities.Specs.Merge
             {
                 var remoteServer = environmentModel.FindSingle(a => a.Name.Equals(serverName, StringComparison.InvariantCultureIgnoreCase));
                 remoteServer.Connect();
-                remoteServer.ResourceRepository.ForceLoad();
+                remoteServer.ResourceRepository.Load(true);
                 var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
                 Assert.IsNotNull(remoteResource, "Resource \"" + resourceName + "\" not found on remote server \"" + serverName + "\".");
                 _scenarioContext.Add(remoteResourceString, remoteResource);
@@ -83,7 +83,7 @@ namespace Dev2.Activities.Specs.Merge
             {
                 var remoteServer = environmentModel.FindSingle(a => a.Name.Equals(serverName, StringComparison.InvariantCultureIgnoreCase));
                 remoteServer.Connect();
-                remoteServer.ResourceRepository.ForceLoad();
+                remoteServer.ResourceRepository.Load(true);
                 var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
                 Assert.IsNotNull(remoteResource, "Resource \"" + resourceName + "\" not found on remote server \"" + serverName + "\".");
                 var versions = remoteServer.ExplorerRepository.GetVersions(remoteResource.ID);

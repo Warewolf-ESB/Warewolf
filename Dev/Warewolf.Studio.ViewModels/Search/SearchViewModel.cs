@@ -47,7 +47,7 @@ namespace Dev2.ViewModels.Search
             });
             SearchResults = new ObservableCollection<ISearchResult>();
             Search = new Common.Search.Search();
-            SelectedEnvironment?.Server?.ResourceRepository?.Load();
+            SelectedEnvironment?.Server?.ResourceRepository?.Load(false);
             IsSearching = false;
             DisplayName = "Search";
             UpdateHelpDescriptor(Warewolf.Studio.Resources.Languages.HelpText.MenuSearchHelp);
