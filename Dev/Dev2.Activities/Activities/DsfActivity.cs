@@ -364,47 +364,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                ResetExecution(dataObject, update, allErrors, parentServiceName, serviceName, oldResourceId);
-            }
 
-        }
 
-        private void ResetExecution(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, string parentServiceName, string serviceName, Guid oldResourceId)
-        {
-            // Handle Errors
-            if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped && allErrors.HasErrors())
-            {
-                DisplayAndWriteError("DsfActivity", allErrors);
-                foreach (var allError in allErrors.FetchErrors())
+                if (!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
                 {
-                    dataObject.Environment.Errors.Add(allError);
+                    // Handle Errors
+                    if (allErrors.HasErrors())
+                    {
+                        DisplayAndWriteError("DsfActivity", allErrors);
+                        foreach (var allError in allErrors.FetchErrors())
+                        {
+                            dataObject.Environment.Errors.Add(allError);
+                        }
+                        // add to datalist in variable specified
+                        if (!String.IsNullOrEmpty(OnErrorVariable))
+                        {
+                            var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
+                            dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
+                        }
+                    }
                 }
-                // add to datalist in variable specified
-                if (!String.IsNullOrEmpty(OnErrorVariable))
+
+                if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
                 {
-                    var upsertVariable = DataListUtil.AddBracketsToValueIfNotExist(OnErrorVariable);
-                    dataObject.Environment.Assign(upsertVariable, allErrors.MakeDataListReady(), update);
+                    var dt = DateTime.Now;
+                    DispatchDebugState(dataObject, StateType.After, update, dt);
+                    ChildDebugStateDispatch(dataObject);
+                    _debugOutputs = new List<DebugItem>();
+                    DispatchDebugState(dataObject, StateType.Duration, update, dt);
                 }
+
+                dataObject.ParentInstanceID = _previousInstanceId;
+                dataObject.ParentServiceName = parentServiceName;
+                dataObject.ServiceName = serviceName;
+                dataObject.RemoteInvokeResultShape = new StringBuilder(); // reset targnet shape ;)
+                dataObject.RunWorkflowAsync = false;
+                dataObject.RemoteInvokerID = Guid.Empty.ToString();
+                dataObject.EnvironmentID = Guid.Empty;
+                dataObject.ResourceID = oldResourceId;
             }
 
-
-            if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
-            {
-                var dt = DateTime.Now;
-                DispatchDebugState(dataObject, StateType.After, update, dt);
-                ChildDebugStateDispatch(dataObject);
-                _debugOutputs = new List<DebugItem>();
-                DispatchDebugState(dataObject, StateType.Duration, update, dt);
-            }
-
-            dataObject.ParentInstanceID = _previousInstanceId;
-            dataObject.ParentServiceName = parentServiceName;
-            dataObject.ServiceName = serviceName;
-            dataObject.RemoteInvokeResultShape = new StringBuilder(); // reset targnet shape ;)
-            dataObject.RunWorkflowAsync = false;
-            dataObject.RemoteInvokerID = Guid.Empty.ToString();
-            dataObject.EnvironmentID = Guid.Empty;
-            dataObject.ResourceID = oldResourceId;
         }
 
         protected virtual void ChildDebugStateDispatch(IDSFDataObject dataObject)
