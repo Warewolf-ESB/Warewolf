@@ -2003,7 +2003,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             return true;
         }
 
-        bool CheckServiceDefinition() => ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
+        bool CheckServiceDefinition()
+        {
+            var _serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
+            var serviceNodes = _serviceDifferenceParser.BuildWorkflow(ServiceDefinition);
+            var resourceNodes = _serviceDifferenceParser.BuildWorkflow(ResourceModel.WorkflowXaml);
+
+            var allServiceNodes = serviceNodes.Flatten(e => e.Children?.Select(c => c.node as ConflictTreeNode) ?? new List<ConflictTreeNode>());
+            var allResourceNodes = resourceNodes.Flatten(e => e.Children?.Select(c => c.node as ConflictTreeNode) ?? new List<ConflictTreeNode>());
+            bool hasConflict = allServiceNodes.Any(c => c.IsInConflict) || allResourceNodes.Any(c => c.IsInConflict);
+            return !hasConflict;
+        }
 
         /// <summary>
         /// Processes the data list configuration load.
