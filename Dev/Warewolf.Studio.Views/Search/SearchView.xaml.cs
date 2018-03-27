@@ -19,7 +19,7 @@ namespace Dev2.Views.Search
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Enter && !string.IsNullOrWhiteSpace(txtSearchInput.Text))
             {
                 ViewModel.Search.SearchInput = txtSearchInput.Text;
                 ViewModel.SearchInputCommand.Execute(null);

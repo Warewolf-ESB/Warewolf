@@ -19,6 +19,7 @@ using Dev2.Studio.Interfaces.Search;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Common.Interfaces.Search;
 using Microsoft.Practices.Prism;
+using System;
 
 namespace Dev2.ViewModels.Search
 {
@@ -29,6 +30,8 @@ namespace Dev2.ViewModels.Search
         bool _isSearching;
         readonly IShellViewModel _shellViewModel;
         string _displayName;
+        bool _canShowResults;
+        string _versionConflictError;
 
         public SearchViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator, false)
@@ -37,6 +40,7 @@ namespace Dev2.ViewModels.Search
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
             ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server).ConfigureAwait(false); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
+            ConnectControlViewModel.SelectedEnvironmentChanged += UpdateServerCompareChanged;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new DelegateCommand((o) => RefreshEnvironment(SelectedEnvironment.ResourceId));
             SearchInputCommand = new DelegateCommand((o) => SearchWarewolf());
@@ -45,6 +49,7 @@ namespace Dev2.ViewModels.Search
                 var searchResult = searchObject as ISearchResult;
                 OpenResource(searchResult);
             });
+            CanShowResults = true;
             SearchResults = new ObservableCollection<ISearchResult>();
             Search = new Common.Search.Search();
             SelectedEnvironment?.Server?.ResourceRepository?.Load(false);
@@ -82,9 +87,37 @@ namespace Dev2.ViewModels.Search
             if (environmentViewModel != null)
             {
                 AfterLoad(environmentViewModel.ResourceId);
+                UpdateServerSearchAllowed();
             }
             return environmentViewModel;
         }
+
+        void UpdateServerCompareChanged(object sender, Guid environmentid)
+        {
+            UpdateServerSearchAllowed();
+        }
+
+        private void UpdateServerSearchAllowed()
+        {
+            CanShowResults = true;
+            Search.SearchInput = string.Empty;
+            SearchResults.Clear();
+
+            var serverVersion = Version.Parse(SelectedEnvironment?.Server?.GetServerVersion());
+            var minServerVersion = Version.Parse(SelectedEnvironment?.Server?.GetMinSupportedVersion());
+
+            if (serverVersion < ServerVersion)
+            {
+                CanShowResults = false;
+                VersionConflictError = "The server selected is not up to date with the latest server version." +
+                                        Environment.NewLine + "Server Version: " + ServerVersion +
+                                        Environment.NewLine + "Minimum supported version: " + minServerVersion;
+            }
+        }
+
+        public Version MinSupportedVersion => Version.Parse(_shellViewModel.LocalhostServer.GetServerVersion());
+
+        public Version ServerVersion => Version.Parse(_shellViewModel.LocalhostServer.GetMinSupportedVersion());
 
         public event ServerState ServerStateChanged;
 
@@ -145,6 +178,25 @@ namespace Dev2.ViewModels.Search
         }
 
         public ISearch Search { get; set; }
+        public bool CanShowResults
+        {
+            get => _canShowResults;
+            set
+            {
+                _canShowResults = value;
+                OnPropertyChanged(() => CanShowResults);
+            }
+        }
+
+        public string VersionConflictError
+        {
+            get => _versionConflictError;
+            set
+            {
+                _versionConflictError = value;
+                OnPropertyChanged(() => VersionConflictError);
+            }
+        }
 
         public new void UpdateHelpDescriptor(string helpText)
         {

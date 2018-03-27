@@ -27,7 +27,7 @@ namespace Dev2.Runtime.Search
             if (searchParameters.SearchOptions.IsVariableSelected)
             {
                 var ioType = GetIoType(searchParameters);
-                var allResources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID);
+                var allResources = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID).Where(res => res.ResourceType != "ReservedService");
                 foreach (var resource in allResources)
                 {
                     if (resource.DataList != null && resource.DataList.Length > 0)
