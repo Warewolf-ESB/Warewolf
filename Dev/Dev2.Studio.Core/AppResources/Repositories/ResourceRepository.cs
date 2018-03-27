@@ -453,16 +453,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 return;
             }
-            foreach (var item in wfServices)
+            foreach (var item in wfServices.Where(p=>p.ResourceType != "ReservedService"))
             {
                 try
                 {
-                    var resourceType = item.ResourceType;
-                    if (resourceType == "ReservedService")
-                    {
-                        continue;
-                    }
-
                     var resource = HydrateResourceModel(item, serverId, force);
                     if (resource != null)
                     {
