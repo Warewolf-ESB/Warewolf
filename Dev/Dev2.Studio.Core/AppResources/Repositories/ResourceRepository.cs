@@ -68,18 +68,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _deployService.Deploy(dto, targetEnviroment, sourceEnviroment);
         }
 
-        public void Load()
+        public void Load(bool force)
         {
-            if (IsLoaded)
+            if (IsLoaded && !force)
             {
                 return;
             }
-
             IsLoaded = true;
             try
             {
                 _resourceModels.Clear();
-                LoadResources();
+                LoadResources(force);
             }
             catch (Exception ex)
             {
@@ -90,8 +89,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void UpdateWorkspace()
         {
-            IsLoaded = false;
-            Load();
+            Load(true);
         }
 
         void ShowServerDisconnectedPopup()
@@ -401,7 +399,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void ForceLoad()
         {
             IsLoaded = false;
-            Load();
         }
 
         static void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
@@ -425,6 +422,19 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
         }
 
+        protected virtual void LoadResources(bool force)
+        {
+            var comsController = GetCommunicationControllerForLoadResources();
+            var con = _server.Connection;
+            var resourceList = comsController.ExecuteCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
+            if (resourceList == null)
+            {
+                throw new Exception(ErrorResource.FailedToFetchResoureListAsJSONModel);
+            }
+            HydrateResourceModels(resourceList, _server.Connection.ServerID, force);
+            Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
+        }
+
         static CommunicationController GetCommunicationControllerForLoadResources()
         {
             Dev2Logger.Warn("Loading Resources - Start", GlobalConstants.WarewolfWarn);
@@ -437,7 +447,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public bool IsInCache(Guid id) => _cachedServices.Contains(id);
 
-        void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverId)
+        void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverId, bool force = false)
         {
             if (wfServices == null)
             {
@@ -453,7 +463,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         continue;
                     }
 
-                    var resource = HydrateResourceModel(item, serverId);
+                    var resource = HydrateResourceModel(item, serverId, force);
                     if (resource != null)
                     {
                         _resourceModels.Add(resource);
