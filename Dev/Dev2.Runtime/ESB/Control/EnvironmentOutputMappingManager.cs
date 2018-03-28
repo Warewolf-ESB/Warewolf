@@ -14,7 +14,6 @@ namespace Dev2.Runtime.ESB.Control
 {
     public class EnvironmentOutputMappingManager : IEnvironmentOutputMappingManager
     {
-
         public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors)
         {
             var innerEnvironment = dataObject.Environment;
@@ -69,9 +68,9 @@ namespace Dev2.Runtime.ESB.Control
                 var outputRecSets = DataListFactory.CreateRecordSetCollection(outputs, true);
                 var outputScalarList = DataListFactory.CreateScalarList(outputs, true);
                 var outputComplexObjectList = DataListFactory.CreateObjectList(outputs);
-                EvalAssignRecordSets(innerEnvironment, environment, update, outputRecSets, outputs);
-                EvalAssignScalars(innerEnvironment, environment, update, outputScalarList);
-                EvalAssignComplexObjects(innerEnvironment, environment, outputComplexObjectList);
+                TryEvalAssignRecordSets(innerEnvironment, environment, update, outputRecSets, outputs);
+                TryEvalAssignScalars(innerEnvironment, environment, update, outputScalarList);
+                TryEvalAssignComplexObjects(innerEnvironment, environment, outputComplexObjectList);
             }
             finally
             {
@@ -80,47 +79,29 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        static void EvalAssignComplexObjects(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, IEnumerable<IDev2Definition> outputComplexObjectList)
+        static void TryEvalAssignComplexObjects(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, IEnumerable<IDev2Definition> outputComplexObjectList)
         {
             foreach (var dev2Definition in outputComplexObjectList)
             {
                 if (dev2Definition.IsObject)
                 {
-                    var warewolfEvalResult = innerEnvironment.EvalJContainer(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name));
-                    if (warewolfEvalResult != null)
-                    {
-                        environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Value), warewolfEvalResult);
-                    }
+                    EvalAssignComplexObjects(innerEnvironment, environment, dev2Definition);
                 }
             }
         }
 
-        static void EvalAssignScalars(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IEnumerable<IDev2Definition> outputScalarList)
+        static void TryEvalAssignScalars(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IEnumerable<IDev2Definition> outputScalarList)
         {
             foreach (var dev2Definition in outputScalarList)
             {
                 if (!dev2Definition.IsRecordSet && !dev2Definition.IsObject)
                 {
-                    var warewolfEvalResult = innerEnvironment.Eval(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), update);
-                    if (warewolfEvalResult.IsWarewolfAtomListresult)
-                    {
-                        if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult data && data.Item.Any())
-                        {
-                            environment.Assign("[[" + dev2Definition.Value + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last()), update);
-                        }
-                    }
-                    else
-                    {
-                        if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data)
-                        {
-                            environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Value), ExecutionEnvironment.WarewolfAtomToString(data.Item), update);
-                        }
-                    }
+                    EvalAssignScalars(innerEnvironment, environment, update, dev2Definition);
                 }
             }
         }
 
-        static void EvalAssignRecordSets(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IRecordSetCollection outputRecSets, IList<IDev2Definition> outputs)
+        static void TryEvalAssignRecordSets(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IRecordSetCollection outputRecSets, IList<IDev2Definition> outputs)
         {
             foreach (var recordSetDefinition in outputRecSets.RecordSets)
             {
@@ -129,31 +110,63 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     foreach (var outputColumnDefinitions in recordSetDefinition.Columns)
                     {
-                        var correctRecSet = "[[" + outputColumnDefinitions.RecordSetName + "(*)." + outputColumnDefinitions.Name + "]]";
-                        var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0);
-                        if (warewolfEvalResult.IsWarewolfAtomListresult)
-                        {
-                            var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                            if (outPutRecSet.IsRecordSet)
-                            {
-                                var enRecordsetIndexType = DataListUtil.GetRecordsetIndexType(outputColumnDefinitions.RawValue);
-                                if (enRecordsetIndexType == enRecordsetIndexType.Star && recsetResult != null)
-                                {
-                                    environment.EvalAssignFromNestedStar(outputColumnDefinitions.RawValue, recsetResult, update);
-                                }
+                        EvalAssignRecordSets(innerEnvironment, environment, update, outPutRecSet, outputColumnDefinitions);
+                    }
+                }
+            }
+        }
 
-                                if (enRecordsetIndexType == enRecordsetIndexType.Blank && recsetResult != null)
-                                {
-                                    environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, 0);
-                                }
+        static void EvalAssignComplexObjects(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, IDev2Definition dev2Definition)
+        {
+            var warewolfEvalResult = innerEnvironment.EvalJContainer(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name));
+            if (warewolfEvalResult != null)
+            {
+                environment.AddToJsonObjects(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Value), warewolfEvalResult);
+            }
+        }
 
-                                if (enRecordsetIndexType == enRecordsetIndexType.Numeric && recsetResult != null)
-                                {
-                                    environment.EvalAssignFromNestedNumeric(outputColumnDefinitions.RawValue, recsetResult, 0);
-                                }
+        static void EvalAssignScalars(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IDev2Definition dev2Definition)
+        {
+            var warewolfEvalResult = innerEnvironment.Eval(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), update);
+            if (warewolfEvalResult.IsWarewolfAtomListresult)
+            {
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult data && data.Item.Any())
+                {
+                    environment.Assign("[[" + dev2Definition.Value + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last()), update);
+                }
+            }
+            else
+            {
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data)
+                {
+                    environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Value), ExecutionEnvironment.WarewolfAtomToString(data.Item), update);
+                }
+            }
+        }
 
-                            }
-                        }
+        static void EvalAssignRecordSets(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IDev2Definition outPutRecSet, IDev2Definition outputColumnDefinitions)
+        {
+            var correctRecSet = "[[" + outputColumnDefinitions.RecordSetName + "(*)." + outputColumnDefinitions.Name + "]]";
+            var warewolfEvalResult = innerEnvironment.Eval(correctRecSet, 0);
+            if (warewolfEvalResult.IsWarewolfAtomListresult)
+            {
+                var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+                if (outPutRecSet.IsRecordSet)
+                {
+                    var enRecordsetIndexType = DataListUtil.GetRecordsetIndexType(outputColumnDefinitions.RawValue);
+                    if (enRecordsetIndexType == enRecordsetIndexType.Star && recsetResult != null)
+                    {
+                        environment.EvalAssignFromNestedStar(outputColumnDefinitions.RawValue, recsetResult, update);
+                    }
+
+                    if (enRecordsetIndexType == enRecordsetIndexType.Blank && recsetResult != null)
+                    {
+                        environment.EvalAssignFromNestedLast(outputColumnDefinitions.RawValue, recsetResult, 0);
+                    }
+
+                    if (enRecordsetIndexType == enRecordsetIndexType.Numeric && recsetResult != null)
+                    {
+                        environment.EvalAssignFromNestedNumeric(outputColumnDefinitions.RawValue, recsetResult, 0);
                     }
                 }
             }
