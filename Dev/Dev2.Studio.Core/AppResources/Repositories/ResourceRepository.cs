@@ -224,11 +224,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 return null;
             }
-            var result = _resourceModels.Find(func.Invoke) as IContextualResourceModel;
+            var result = _resourceModels.Find(func.Invoke);
 
             if (result != null && fetchDefinition)
             {
-                result.WorkflowXaml = result.GetWorkflowXaml();
+                var contextualResourceModel = result as IContextualResourceModel;
+                result.WorkflowXaml = contextualResourceModel.GetWorkflowXaml();
             }
             return result;
         }
