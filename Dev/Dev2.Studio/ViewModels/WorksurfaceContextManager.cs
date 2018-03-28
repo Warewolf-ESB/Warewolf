@@ -1376,7 +1376,14 @@ namespace Dev2.Studio.ViewModels
             var exists = IsInOpeningState(resourceModel) || ActivateWorkSurfaceIfPresent(resourceModel);
             if (exists)
             {
-                return;
+                if (resourceModel.IsNotWarewolfPath)
+                {
+                    _shellViewModel.CloseResource(resourceModel, resourceModel.Environment.EnvironmentID);
+                }
+                else
+                {
+                    return;
+                }
             }
 
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel);
