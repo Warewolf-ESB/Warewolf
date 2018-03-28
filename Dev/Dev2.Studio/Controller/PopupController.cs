@@ -146,6 +146,18 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowOverwiteResourceDialog()
+        {
+            AssignCommonValues("Edited Resource already exists", "The Resource you are attempting to Save already exists in "+ EnvironmentVariables.ResourcePath + ". \nClick Ok to Overwrite the existing resource or Cancel to Exit.", MessageBoxButton.OKCancel);
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
         public MessageBoxResult ShowResourcesNotInCorrectPath()
         {
             AssignCommonValues("Unknown Resource", "The Resource you are attempting to open is unknown by the server. \nClick Ok to have the resource moved to the server or Cancel to Exit.", MessageBoxButton.OKCancel);
@@ -174,7 +186,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowCanNotMoveResource()
         {
-            AssignCommonValues("Source data contains encrypted connections strings.", "If the Source was created on this Server, Click Continue Warewolf will attempt to Open it. \nIf the Source was created on the Remote server, click Cancel and then deploy it to this machine from the resources originating server.", MessageBoxButton.OKCancel);
+            AssignCommonValues("Source data contains encrypted connections strings.", "If the Source was created on this Server, Click Continue Warewolf will attempt to Open it. \nIf the Source was created on the Remote server, click Cancel and then deploy it to this machine from the resource's originating server.", MessageBoxButton.OKCancel);
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;

@@ -170,7 +170,7 @@ namespace Dev2.Studio.ViewModels
         internal async Task<bool> LoadWorkflowAsync(string clickedResource)
         {
             _contextualResourceModel = null;
-            if (!File.Exists(clickedResource))
+            if (!File.Exists(clickedResource) || clickedResource.Contains(EnvironmentVariables.VersionsPath))
             {
                 return false;
             }
@@ -178,6 +178,7 @@ namespace Dev2.Studio.ViewModels
             var fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(clickedResource);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
+            var serverRepo = CustomContainer.Get<IServerRepository>();
             if (singleResource != null && clickedResource.Contains(EnvironmentVariables.ResourcePath))
             {
                 OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
@@ -186,12 +187,15 @@ namespace Dev2.Studio.ViewModels
             {
                 if (singleResource == null)
                 {
-                    var serverRepo = CustomContainer.Get<IServerRepository>();
                     _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(clickedResource, PopupProvider, this, _file, _filePath, serverRepo);
                     if (_contextualResourceModel != null && (_contextualResourceModel.ResourceType == ResourceType.WorkflowService || _contextualResourceModel.ResourceType == ResourceType.Service))
                     {
                         SaveDialogHelper.ShowNewWorkflowSaveDialog(_contextualResourceModel, false, clickedResource);
                     }
+                }
+                if (singleResource != null && !clickedResource.Contains(EnvironmentVariables.ResourcePath))
+                {
+                    _contextualResourceModel = await ResourceExtensionHelper.HandleResourceInResourceFolderAndOtherDir(clickedResource, PopupProvider, this, _file, _filePath, serverRepo);
                 }
             }
             return true;
@@ -684,7 +688,11 @@ namespace Dev2.Studio.ViewModels
                 _worksurfaceContextManager.AddWorkSurfaceContext(contextualResourceModel);
             }
         }
-
+        public void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer, IContextualResourceModel contextualResourceModel)
+        {
+            _contextualResourceModel = contextualResourceModel;
+            OpenResource(resourceId, environmentId, activeServer);
+        }
         public void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer)
         {
             var environmentModel = ServerRepository.Get(environmentId);
