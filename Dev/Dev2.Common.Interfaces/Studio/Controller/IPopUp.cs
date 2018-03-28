@@ -66,6 +66,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
 
         MessageBoxResult ShowRollbackVersionMessage(string displayName);
         MessageBoxResult ShowResourcesConflict(List<string> resourceDuplicates);
+        MessageBoxResult ShowSourceAlreadyExistOpenFromResources();
         MessageBoxResult ShowOverwiteResourceDialog();
         MessageBoxResult ShowResourcesNotInCorrectPath();
         MessageBoxResult ShowCanNotMoveResource();
