@@ -41,7 +41,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 try
                 {
-                    return LoadAssembly(assemblyLocation, assemblyName, gacPrefix);
+                    return LoadAssembly(assemblyLocation, assemblyName, gacPrefix, ref loadedAssembly);
                 }
                 catch (BadImageFormatException e)//WOLF-1640
                 {
