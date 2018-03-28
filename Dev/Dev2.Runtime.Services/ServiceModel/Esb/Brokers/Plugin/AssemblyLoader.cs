@@ -41,26 +41,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 try
                 {
-                    try
-                    {
-                        loadedAssembly = _assemblyWrapper.Load(assemblyName);
-                    }
-                    catch (Exception e)
-                    {
-                        if (assemblyLocation.StartsWith(gacPrefix) && loadedAssembly == null)
-                        {
-
-                            var assemblyQualified = assemblyLocation.Replace(gacPrefix, "");
-                            var indexOf = assemblyQualified.IndexOf(", processor", StringComparison.InvariantCultureIgnoreCase);
-                            var correctAssemblyName = assemblyQualified.Substring(0, indexOf);
-                            loadedAssembly = _assemblyWrapper.Load(correctAssemblyName);
-
-                        }
-                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                    }
-
-                    LoadDepencencies(loadedAssembly, assemblyLocation);
-                    return true;
+                    return LoadAssembly(assemblyLocation, assemblyName, gacPrefix);
                 }
                 catch (BadImageFormatException e)//WOLF-1640
                 {
@@ -77,12 +58,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 try
                 {
-                    if (assemblyLocation != null)
-                    {
-                        loadedAssembly = _assemblyWrapper.LoadFrom(assemblyLocation);
-                        LoadDepencencies(loadedAssembly, assemblyLocation);
-                    }
-                    return true;
+                    return LoadAssembly(assemblyLocation, ref loadedAssembly);
                 }
                 catch (BadImageFormatException e)//WOLF-1640
                 {
@@ -93,12 +69,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 {
                     try
                     {
-                        if (assemblyLocation != null)
-                        {
-                            loadedAssembly = _assemblyWrapper.UnsafeLoadFrom(assemblyLocation);
-                            LoadDepencencies(loadedAssembly, assemblyLocation);
-                        }
-                        return true;
+                        return LoadUnsafeAssembly(assemblyLocation, ref loadedAssembly);
                     }
                     catch (Exception e)
                     {
@@ -129,6 +100,50 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return false;
         }
 
+        private bool LoadUnsafeAssembly(string assemblyLocation, ref Assembly loadedAssembly)
+        {
+            if (assemblyLocation != null)
+            {
+                loadedAssembly = _assemblyWrapper.UnsafeLoadFrom(assemblyLocation);
+                LoadDepencencies(loadedAssembly, assemblyLocation);
+            }
+            return true;
+        }
+
+        bool LoadAssembly(string assemblyLocation, ref Assembly loadedAssembly)
+        {
+            if (assemblyLocation != null)
+            {
+                loadedAssembly = _assemblyWrapper.LoadFrom(assemblyLocation);
+                LoadDepencencies(loadedAssembly, assemblyLocation);
+            }
+            return true;
+        }
+
+        bool LoadAssembly(string assemblyLocation, string assemblyName, string gacPrefix, ref Assembly loadedAssembly)
+        {
+            try
+            {
+                loadedAssembly = _assemblyWrapper.Load(assemblyName);
+            }
+            catch (Exception e)
+            {
+                if (assemblyLocation.StartsWith(gacPrefix) && loadedAssembly == null)
+                {
+
+                    var assemblyQualified = assemblyLocation.Replace(gacPrefix, "");
+                    var indexOf = assemblyQualified.IndexOf(", processor", StringComparison.InvariantCultureIgnoreCase);
+                    var correctAssemblyName = assemblyQualified.Substring(0, indexOf);
+                    loadedAssembly = _assemblyWrapper.Load(correctAssemblyName);
+
+                }
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+            }
+
+            LoadDepencencies(loadedAssembly, assemblyLocation);
+            return true;
+        }
+
         public void LoadDepencencies(Assembly asm, string assemblyLocation)
         {
             if (asm != null)
@@ -149,30 +164,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     catch (Exception ex)
                     {
-                        var path = Path.GetDirectoryName(assemblyLocation);
-                        if (path != null)
-                        {
-                            var myLoad = Path.Combine(path, toLoad.Name + ".dll");
-                            try
-                            {
-                                depAsm = _assemblyWrapper.LoadFrom(myLoad);
-                            }
-                            catch (Exception)
-                            {
-                                if (!_loadedAssemblies.Contains(fullName))
-                                {
-                                    _loadedAssemblies.Add(fullName);
-                                }
-                            }
-                        }
+                        depAsm = LoadDependantAssembly(assemblyLocation, toLoad, fullName);
                     }
                     if (depAsm != null)
                     {
-                        if (!_loadedAssemblies.Contains(fullName))
-                        {
-                            _loadedAssemblies.Add(fullName);
-                        }
-                        LoadDepencencies(depAsm, assemblyLocation);
+                        TryLoadDepencencies(assemblyLocation, fullName, depAsm);
                     }
                 }
             }
@@ -180,6 +176,38 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 throw new Exception(string.Format(ErrorResource.CouldNotLocateAssembly, assemblyLocation));
             }
+        }
+
+        void TryLoadDepencencies(string assemblyLocation, string fullName, Assembly depAsm)
+        {
+            if (!_loadedAssemblies.Contains(fullName))
+            {
+                _loadedAssemblies.Add(fullName);
+            }
+            LoadDepencencies(depAsm, assemblyLocation);
+        }
+
+        Assembly LoadDependantAssembly(string assemblyLocation, AssemblyName toLoad, string fullName)
+        {
+            Assembly depAsm = null;
+            var path = Path.GetDirectoryName(assemblyLocation);
+            if (path != null)
+            {
+                var myLoad = Path.Combine(path, toLoad.Name + ".dll");
+                try
+                {
+                    depAsm = _assemblyWrapper.LoadFrom(myLoad);
+                }
+                catch (Exception)
+                {
+                    if (!_loadedAssemblies.Contains(fullName))
+                    {
+                        _loadedAssemblies.Add(fullName);
+                    }
+                }
+            }
+
+            return depAsm;
         }
 
         #endregion
