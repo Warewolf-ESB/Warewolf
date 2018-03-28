@@ -1545,23 +1545,28 @@ namespace Dev2.Studio.ViewModels
                     var contextualResourceModel = models.FirstOrDefault();
                     if (contextualResourceModel != null)
                     {
-                        var deletionName = folderName;
-                        var description = "";
-                        if (string.IsNullOrEmpty(deletionName))
-                        {
-                            deletionName = contextualResourceModel.ResourceName;
-                            description = contextualResourceModel.ResourceType.GetDescription();
-                        }
-
-                        var shouldDelete = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmDelete, deletionName, description),
-                                                              StringResources.DialogTitle_ConfirmDelete,
-                                                              MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false) == MessageBoxResult.Yes;
-
-                        return shouldDelete;
+                        return ShouldDelete(folderName, contextualResourceModel);
                     }
                 }
             }
             return false;
+        }
+
+        private bool ShouldDelete(string folderName, IContextualResourceModel contextualResourceModel)
+        {
+            var deletionName = folderName;
+            var description = "";
+            if (string.IsNullOrEmpty(deletionName))
+            {
+                deletionName = contextualResourceModel.ResourceName;
+                description = contextualResourceModel.ResourceType.GetDescription();
+            }
+
+            var shouldDelete = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmDelete, deletionName, description),
+                                                  StringResources.DialogTitle_ConfirmDelete,
+                                                  MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false) == MessageBoxResult.Yes;
+
+            return shouldDelete;
         }
 
         public bool ShowDeleteDialogForFolder(string folderBeingDeleted)
@@ -1640,27 +1645,9 @@ namespace Dev2.Studio.ViewModels
                         environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
                         var resource = environment.ResourceRepository?.All().FirstOrDefault(rm =>
                         {
-                            var sameEnv = true;
-                            if (item.EnvironmentID != Guid.Empty)
-                            {
-                                sameEnv = item.EnvironmentID == environment.EnvironmentID;
-                            }
-                            return rm.ID == item.ID && sameEnv;
+                            return EnvironmentContainsResourceModel(rm, item, environment);
                         }) as IContextualResourceModel;
-
-                        if (resource == null)
-                        {
-                            workspaceItemsToRemove.Add(item);
-                        }
-                        else
-                        {
-                            Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ", GlobalConstants.WarewolfInfo);
-                            var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, item.WorkspaceID, resource.ID, false);
-                            resource.WorkflowXaml = fetchResourceDefinition.Message;
-                            resource.IsWorkflowSaved = item.IsWorkflowSaved;
-                            resource.OnResourceSaved += model => _getWorkspaceItemRepository().UpdateWorkspaceItemIsWorkflowSaved(model);
-                            _worksurfaceContextManager.AddWorkSurfaceContextImpl(resource, true);
-                        }
+                        AddResourcesAsWorkSurfaceItem(workspaceItemsToRemove, item, environment, resource);
                     }
                 }
                 else
@@ -1673,6 +1660,33 @@ namespace Dev2.Studio.ViewModels
             {
                 _getWorkspaceItemRepository().WorkspaceItems.Remove(workspaceItem);
             }
+        }
+
+        private void AddResourcesAsWorkSurfaceItem(HashSet<IWorkspaceItem> workspaceItemsToRemove, IWorkspaceItem item, IServer environment, IContextualResourceModel resource)
+        {
+            if (resource == null)
+            {
+                workspaceItemsToRemove.Add(item);
+            }
+            else
+            {
+                Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ", GlobalConstants.WarewolfInfo);
+                var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, item.WorkspaceID, resource.ID, false);
+                resource.WorkflowXaml = fetchResourceDefinition.Message;
+                resource.IsWorkflowSaved = item.IsWorkflowSaved;
+                resource.OnResourceSaved += model => _getWorkspaceItemRepository().UpdateWorkspaceItemIsWorkflowSaved(model);
+                _worksurfaceContextManager.AddWorkSurfaceContextImpl(resource, true);
+            }
+        }
+
+        private static bool EnvironmentContainsResourceModel(IResourceModel rm, IWorkspaceItem item, IServer environment)
+        {
+            var sameEnv = true;
+            if (item.EnvironmentID != Guid.Empty)
+            {
+                sameEnv = item.EnvironmentID == environment.EnvironmentID;
+            }
+            return rm.ID == item.ID && sameEnv;
         }
 
         public bool IsWorkFlowOpened(IContextualResourceModel resource) => _worksurfaceContextManager.IsWorkFlowOpened(resource);
@@ -1745,13 +1759,10 @@ namespace Dev2.Studio.ViewModels
                 }
                 if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                 {
-                    if (vm is WorkflowDesignerViewModel workflowDesignerViewModel)
+                    if (vm is WorkflowDesignerViewModel workflowDesignerViewModel && workflowDesignerViewModel.ResourceModel is IContextualResourceModel resourceModel && !resourceModel.IsWorkflowSaved)
                     {
-                        if (workflowDesignerViewModel.ResourceModel is IContextualResourceModel resourceModel && !resourceModel.IsWorkflowSaved)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
                 }
                 else if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
