@@ -43,13 +43,7 @@ namespace Dev2.Studio
             ReadFileContent(filePath, shellViewModel, file, out IContextualResourceModel resourceModel, serverRepository, out IResource resource);
             if (resourceModel == null && (resource.ResourceType != "WorkflowService" || resource.ResourceType != "Workflow"))
             {
-                var moveSource = popupController.ShowCanNotMoveResource() == MessageBoxResult.OK;
-                if (moveSource)
-                {
-                    var destination = path.Combine(EnvironmentVariables.ResourcePath, path.GetFileName(filePath));
-                    await shellViewModel.ExplorerViewModel.RefreshEnvironment(serverRepository.ActiveServer.EnvironmentID);
-                    resourceModel = serverRepository.ActiveServer.ResourceRepository.LoadContextualResourceModel(resource.ResourceID);
-                }
+                popupController.ShowSourceAlreadyExistOpenFromResources();
                 return resourceModel;
             }
             if (resourceModel != null)

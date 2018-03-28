@@ -146,6 +146,18 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowSourceAlreadyExistOpenFromResources()
+        {
+            AssignCommonValues("Source already exists", "The Source you are attempting to Open already exists. \nOpen the Source from " + EnvironmentVariables.ResourcePath + ".", MessageBoxButton.OK);
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
         public MessageBoxResult ShowOverwiteResourceDialog()
         {
             AssignCommonValues("Edited Resource already exists", "The Resource you are attempting to Save already exists in "+ EnvironmentVariables.ResourcePath + ". \nClick Ok to Overwrite the existing resource or Cancel to Exit.", MessageBoxButton.OKCancel);
