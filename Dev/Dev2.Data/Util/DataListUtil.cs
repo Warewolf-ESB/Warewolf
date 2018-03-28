@@ -18,6 +18,7 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums.Enums;
+using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
@@ -531,17 +532,20 @@ namespace Dev2.Data.Util
 
         public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
 
-        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection, includeNoneDirection);
+        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection, ISearch searchParameters) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection, includeNoneDirection, searchParameters);
 
         internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection,bool includeNoneDirection)
         {
             if(includeNoneDirection && dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.None)
             {
                 return true;
-            }            
-            return ioDirection == dev2ColumnArgumentDirection ||
-                   ioDirection == enDev2ColumnArgumentDirection.Both &&
-                   (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
+            }
+            if (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Both)
+            {
+                return (ioDirection == enDev2ColumnArgumentDirection.Input || ioDirection == enDev2ColumnArgumentDirection.Output);
+            }
+
+            return ioDirection == dev2ColumnArgumentDirection;
         }
 
         internal static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
