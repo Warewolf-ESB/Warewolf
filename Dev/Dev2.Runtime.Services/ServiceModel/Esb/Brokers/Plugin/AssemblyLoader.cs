@@ -47,7 +47,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 {
                     Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                     throw;
-
                 }
                 catch (Exception e)
                 {
