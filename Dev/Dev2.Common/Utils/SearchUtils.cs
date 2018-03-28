@@ -9,7 +9,7 @@
 */
 
 using Dev2.Common.Interfaces.Search;
-using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Dev2.Common.Utils
 {
@@ -29,11 +29,11 @@ namespace Dev2.Common.Utils
             {
                 return filterValue.Contains(searchInput);
             }
-            else
+            if (!searchValue.SearchOptions.IsMatchCaseSelected)
             {
-                var words = filterValue.Split(' ');
-                return words.Contains(searchInput);
+                return Regex.IsMatch(filterValue, @"\b" + searchInput + @"\b", RegexOptions.IgnoreCase);
             }
+            return Regex.IsMatch(filterValue, @"\b" + searchInput + @"\b");
         }
     }
 }

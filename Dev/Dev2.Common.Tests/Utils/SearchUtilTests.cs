@@ -117,5 +117,24 @@ namespace Dev2.Common.Tests.Utils
             var result = SearchUtils.FilterText("this teSasdf", searchValue);
             Assert.IsFalse(result);
         }
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("SearchUtils_FilterText")]
+        public void SearchUtils_FilterText_MatchingWholeWord_RegexShouldReturnTrue()
+        {
+            var searchValue = new Search.Search
+            {
+                SearchInput = "Hello World",
+                SearchOptions = new SearchOptions
+                {
+                    IsAllSelected = false,
+                    IsWorkflowNameSelected = true,
+                    IsMatchCaseSelected = false,
+                    IsMatchWholeWordSelected = true
+                }
+            };
+            var result = SearchUtils.FilterText("Hello World", searchValue);
+            Assert.IsTrue(result);
+        }
     }
 }
