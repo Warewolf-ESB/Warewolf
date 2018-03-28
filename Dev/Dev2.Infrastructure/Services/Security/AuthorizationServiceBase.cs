@@ -221,54 +221,7 @@ namespace Dev2.Services.Security
                     var principleName = principal.Identity.Name;
                     if (!string.IsNullOrEmpty(principleName))
                     {
-                        isInRole = principal.IsInRole(windowsGroup);
-                        if (!isInRole)
-                        {
-                            isInRole = DoFallBackCheck(principal);
-                        }
-                        if (!isInRole)
-                        {
-                            var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
-                            var windowsPrincipal = principal as WindowsPrincipal;
-                            var windowsIdentity = principal.Identity as WindowsIdentity;
-                            if (windowsPrincipal != null)
-                            {
-                                isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
-                                if (windowsIdentity != null && !isInRole && windowsIdentity.Groups != null)
-                                {
-                                    isInRole = windowsIdentity.Groups.Any(reference =>
-                                    {
-                                        if (reference.Value == sid.Value)
-                                        {
-                                            return true;
-                                        }
-                                        try
-                                        {
-                                            var identityReference = reference.Translate(typeof(NTAccount));
-                                            if (identityReference != null)
-                                            {
-                                                return identityReference.Value == windowsGroup;
-                                            }
-                                        }
-                                        catch (Exception)
-                                        {
-                                            return false;
-                                        }
-                                        return false;
-                                    });
-                                }
-
-                            }
-                            else
-                            {
-                                isInRole = principal.IsInRole(sid.Value);
-                            }
-                        }
-                        if (!isInRole)
-                        {
-                            isInRole = DoFallBackCheck(principal);
-                        }
-                        return isInRole;
+                        return TryIsInRole(principal, windowsGroup);
                     }
                 }
                 else
@@ -283,6 +236,73 @@ namespace Dev2.Services.Security
 
 
             return isInRole || p.IsBuiltInGuestsForExecution;
+        }
+
+        bool TryIsInRole(IPrincipal principal, string windowsGroup)
+        {
+            bool isInRole = principal.IsInRole(windowsGroup);
+            if (!isInRole)
+            {
+                isInRole = DoFallBackCheck(principal);
+            }
+            if (!isInRole)
+            {
+                isInRole = IsInRole(principal, windowsGroup);
+            }
+            if (!isInRole)
+            {
+                isInRole = DoFallBackCheck(principal);
+            }
+            return isInRole;
+        }
+
+        static bool IsInRole(IPrincipal principal, string windowsGroup)
+        {
+            bool isInRole;
+            var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+            var windowsPrincipal = principal as WindowsPrincipal;
+            var windowsIdentity = principal.Identity as WindowsIdentity;
+            if (windowsPrincipal != null)
+            {
+                isInRole = IsInRole(windowsGroup, sid, windowsPrincipal, windowsIdentity);
+
+            }
+            else
+            {
+                isInRole = principal.IsInRole(sid.Value);
+            }
+
+            return isInRole;
+        }
+
+        static bool IsInRole(string windowsGroup, SecurityIdentifier sid, WindowsPrincipal windowsPrincipal, WindowsIdentity windowsIdentity)
+        {
+            bool isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
+            if (windowsIdentity != null && !isInRole && windowsIdentity.Groups != null)
+            {
+                isInRole = windowsIdentity.Groups.Any(reference =>
+                {
+                    if (reference.Value == sid.Value)
+                    {
+                        return true;
+                    }
+                    try
+                    {
+                        var identityReference = reference.Translate(typeof(NTAccount));
+                        if (identityReference != null)
+                        {
+                            return identityReference.Value == windowsGroup;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                    return false;
+                });
+            }
+
+            return isInRole;
         }
 
         bool DoFallBackCheck(IPrincipal principal)
