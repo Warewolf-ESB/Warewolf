@@ -544,6 +544,10 @@ namespace Dev2.Data.Util
             {
                 return (ioDirection == enDev2ColumnArgumentDirection.Input || ioDirection == enDev2ColumnArgumentDirection.Output);
             }
+            if (ioDirection == enDev2ColumnArgumentDirection.Both)
+            {
+                return (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
+            }
 
             return ioDirection == dev2ColumnArgumentDirection;
         }
