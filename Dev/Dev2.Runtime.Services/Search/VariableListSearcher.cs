@@ -100,9 +100,9 @@ namespace Dev2.Runtime.Search
             var variableDefinitions = DataListUtil.GenerateDefsFromDataList(variableList, type, true, searchParameters);
             var matchingRecordsets = variableDefinitions.Where(v => v.IsRecordSet);
 
-            foreach (var scalar in matchingRecordsets)
+            foreach (var recordset in matchingRecordsets)
             {
-                var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), option, scalar.Name);
+                var searchResult = new SearchResult(resource.ResourceID, resource.ResourceName, resource.GetResourcePath(GlobalConstants.ServerWorkspaceID), option, recordset.RecordSetName);
                 searchResults.Add(searchResult);
             }
         }
