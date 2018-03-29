@@ -568,12 +568,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (explorerItemViewModel != null)
             {
                 explorerItemViewModel.IsMergeVisible = true;
-                if (explorerItemViewModel.GetType() == typeof(VersionViewModel))
+                if (explorerItemViewModel.GetType() == typeof(VersionViewModel) && explorerItemViewModel.Parent != null)
                 {
-                    if (explorerItemViewModel.Parent != null)
-                    {
-                        explorerItemViewModel.Parent.AreVersionsVisible = true;
-                    }
+                    explorerItemViewModel.Parent.AreVersionsVisible = true;
                 }
             }
             mainViewModel?.UpdateExplorerWorkflowChanges(resource.ID);

@@ -67,7 +67,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Dev2Logger.Info($"Deploy Resources. Source:{sourceEnviroment.DisplayName} Destination:{targetEnviroment.Name}", GlobalConstants.WarewolfInfo);
             _deployService.Deploy(dto, targetEnviroment, sourceEnviroment);
         }
-
+        
         public void Load(bool force)
         {
             if (IsLoaded && !force)
@@ -396,11 +396,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _resourceModels.Insert(_resourceModels.Count, resource);
         }
 
-        public void ForceLoad()
-        {
-            IsLoaded = false;
-        }
-
         static void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
         {
             if (data.HasError)
@@ -409,6 +404,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
+        public void ReLoadResources()
+        {
+            Dev2Logger.Warn("Loading Resources - Start", GlobalConstants.WarewolfWarn);
+            var comsController = new CommunicationController { ServiceName = "ReloadResourceService" };
+            comsController.AddPayloadArgument("ResourceName", "*");
+            comsController.AddPayloadArgument("ResourceID", "*");
+            comsController.AddPayloadArgument("ResourceType", string.Empty);
+            var con = _server.Connection;
+            comsController.ExecuteCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
+            Load(true);
+            Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
+        }
         protected virtual void LoadResources()
         {
             var comsController = GetCommunicationControllerForLoadResources();
