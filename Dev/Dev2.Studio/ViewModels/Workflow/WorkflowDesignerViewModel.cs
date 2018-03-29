@@ -88,6 +88,7 @@ using Dev2.ViewModels.Merge;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using System.IO;
+using System.Xml;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -710,10 +711,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder DesignerText => ServiceDefinition;
 
-        public StringBuilder ServiceDefinition
-        {
-            get => _workflowHelper.SerializeWorkflow(_modelService);
-        }
+        public StringBuilder ServiceDefinition => _workflowHelper.SerializeWorkflow(_modelService);
 
         public ICommand CollapseAllCommand => _collapseAllCommand ?? (_collapseAllCommand = new DelegateCommand(param =>
                                                             {
@@ -2005,14 +2003,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         bool CheckServiceDefinition()
         {
-            var _serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
-            var serviceNodes = _serviceDifferenceParser.BuildWorkflow(ServiceDefinition);
-            var resourceNodes = _serviceDifferenceParser.BuildWorkflow(ResourceModel.WorkflowXaml);
-
-            var allServiceNodes = serviceNodes.Flatten(e => e.Children?.Select(c => c.node as ConflictTreeNode) ?? new List<ConflictTreeNode>());
-            var allResourceNodes = resourceNodes.Flatten(e => e.Children?.Select(c => c.node as ConflictTreeNode) ?? new List<ConflictTreeNode>());
-            bool hasConflict = allServiceNodes.Any(c => c.IsInConflict) || allResourceNodes.Any(c => c.IsInConflict);
-            return !hasConflict;
+            var serviceDef = WorkflowHelper.GetWorkflowHashCode(ServiceDefinition.ToString());
+            var resourceDef = WorkflowHelper.GetWorkflowHashCode(ResourceModel.WorkflowXaml.ToString());
+            return serviceDef == resourceDef;
         }
 
         /// <summary>

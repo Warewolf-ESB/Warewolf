@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xaml;
+using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Decision;
@@ -253,6 +254,28 @@ namespace Dev2.Utilities
                 variables = new Collection<Variable>();
                 variables.Clear();
             }
+        }
+
+        public static int GetWorkflowHashCode(string workflowXaml)
+        {
+            var xmlDoc = new XmlDocument();
+            xmlDoc.LoadXml(workflowXaml);
+            var nodes = xmlDoc.SelectNodes("//*");
+            int hash = 1234967;
+            foreach (XmlNode node in nodes)
+            {
+                hash += node.Name.GetHashCode();
+                foreach (XmlAttribute attr in node.Attributes)
+                {
+                    if (attr.Value == "ShapeSize")
+                    {
+                        continue;
+                    }
+                    hash += attr.Name.GetHashCode();
+                    hash += attr.Value.GetHashCode();
+                }
+            }
+            return hash;
         }
     }
 }
