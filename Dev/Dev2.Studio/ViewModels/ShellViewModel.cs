@@ -174,7 +174,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return false;
             }
-            ActiveServer.ResourceRepository.Load(true);
+            ActiveServer.ResourceRepository.ReLoadResources();
             var fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(clickedResource);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
