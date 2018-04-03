@@ -2006,6 +2006,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _serviceAndResourceDefinitionXamlSameCache;
         bool CheckServiceDefinition()
         {
+            if (ServiceDefinition is null || ResourceModel.WorkflowXaml is null)
+            {
+                return ServiceDefinition == ResourceModel.WorkflowXaml;
+            }
             var serviceDefinitionXaml = ServiceDefinition.ToString();
             var resourceDefinitionXaml = ResourceModel.WorkflowXaml.ToString();
             if (serviceDefinitionXaml == _serviceDefinitionXamlCache && resourceDefinitionXaml == _resourceDefinitionXamlCache)
