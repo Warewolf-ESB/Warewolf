@@ -2000,13 +2000,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return true;
         }
-
-        bool CheckServiceDefinition()
-        {
-            var serviceDef = WorkflowHelper.GetWorkflowHashCode(ServiceDefinition.ToString());
-            var resourceDef = WorkflowHelper.GetWorkflowHashCode(ResourceModel.WorkflowXaml.ToString());
-            return serviceDef == resourceDef;
-        }
+        bool CheckServiceDefinition() => ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
 
         /// <summary>
         /// Processes the data list configuration load.
