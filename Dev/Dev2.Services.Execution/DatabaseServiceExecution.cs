@@ -259,7 +259,7 @@ namespace Dev2.Services.Execution
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = ProcedureName;
                     connection.Open();
-                    if (!ReadForXml(update, startTime, cmd, scope))
+                    if (!ReadForXml(update, startTime, cmd, scope, connection))
                     {
                         using (var reader = cmd.ExecuteReader())
                         {
@@ -286,10 +286,11 @@ namespace Dev2.Services.Execution
                 connection.Dispose();
             }
         }
-
-        bool ReadForXml(int update, Stopwatch startTime, SqlCommand cmd, TransactionScope scope)
+        
+        bool ReadForXml(int update, Stopwatch startTime, SqlCommand cmd, TransactionScope scope, SqlConnection connection)
         {
             var xmlResults = false;
+            IDbTransaction dbTransaction = connection.BeginTransaction();
             try
             {
                 var reader1 = cmd.ExecuteXmlReader();
@@ -309,6 +310,7 @@ namespace Dev2.Services.Execution
             }
             catch (Exception e)
             {
+                dbTransaction.Rollback();
                 if (!e.Message.Equals(ErrorResource.NotXmlResults))
                 {
                     throw;
