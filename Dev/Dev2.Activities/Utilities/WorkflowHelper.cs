@@ -256,26 +256,66 @@ namespace Dev2.Utilities
             }
         }
 
-        public static int GetWorkflowHashCode(string workflowXaml)
+        public static bool AreWorkflowsEqual(string left, string right)
         {
-            var xmlDoc = new XmlDocument();
-            xmlDoc.LoadXml(workflowXaml);
-            var nodes = xmlDoc.SelectNodes("//*");
-            int hash = 1234967;
-            foreach (XmlNode node in nodes)
+            var xmlDoc_Left = new XmlDocument();
+            xmlDoc_Left.LoadXml(left);
+            var xmlDoc_Right = new XmlDocument();
+            xmlDoc_Right.LoadXml(right);
+            return CompareWorkflows(xmlDoc_Left, xmlDoc_Right);
+        }
+        private static bool CompareWorkflows(XmlNode lnode, XmlNode rnode)
+        {
+            if (lnode.Name.Equals("av:Size"))
             {
-                hash += node.Name.GetHashCode();
-                foreach (XmlAttribute attr in node.Attributes)
+                return true;
+            }
+            bool result = lnode.Name.Equals(rnode.Name);
+            if (!result)
+            {
+                return result;
+            }
+            if (lnode.Name.Equals("#text"))
+            {
+                result = lnode.InnerText.Equals(rnode.InnerText);
+                if (!result)
                 {
-                    if (attr.Value == "ShapeSize")
-                    {
-                        continue;
-                    }
-                    hash += attr.Name.GetHashCode();
-                    hash += attr.Value.GetHashCode();
+                    return result;
                 }
             }
-            return hash;
+
+            //list.Add(new Item(lnode))
+            if (lnode.HasChildNodes)
+            {
+                for (var i = 0; i < lnode.ChildNodes.Count; i++)
+                {
+                    var eq = CompareWorkflows(lnode.ChildNodes[i], rnode.ChildNodes[i]);
+                    if (!eq)
+                    {
+                        return eq;
+                    }
+                }
+            }
+
+            if (!(lnode.Attributes is null))
+            {
+                result = CompareAttributes(lnode, rnode);
+            }
+
+            return result;
+        }
+        private static bool CompareAttributes(XmlNode lnode, XmlNode rnode)
+        {
+            for (int i = 0; i < lnode.Attributes.Count; i++)
+            {
+                var eq = lnode.Attributes[i].Name.Equals(rnode.Attributes[i].Name);
+                eq &= lnode.Attributes[i].Value.Equals(rnode.Attributes[i].Value);
+                if (!eq)
+                {
+                    return eq;
+                }
+            }
+            return true;
         }
     }
 }
