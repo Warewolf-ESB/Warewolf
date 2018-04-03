@@ -266,10 +266,15 @@ namespace Dev2.Utilities
         }
         private static bool CompareWorkflows(XmlNode lnode, XmlNode rnode)
         {
+            if (lnode is null || rnode is null)
+            {
+                return lnode == rnode;
+            }
             if (lnode.Name.Equals("av:Size"))
             {
                 return true;
             }
+
             bool result = lnode.Name.Equals(rnode.Name);
             if (!result)
             {
