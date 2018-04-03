@@ -2000,7 +2000,27 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return true;
         }
-        bool CheckServiceDefinition() => ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
+
+        string _serviceDefinitionXamlCache = "";
+        string _resourceDefinitionXamlCache = "";
+        bool _serviceAndResourceDefinitionXamlSameCache;
+        bool CheckServiceDefinition()
+        {
+            var serviceDefinitionXaml = ServiceDefinition.ToString();
+            var resourceDefinitionXaml = ResourceModel.WorkflowXaml.ToString();
+            if (serviceDefinitionXaml == _serviceDefinitionXamlCache && resourceDefinitionXaml == _resourceDefinitionXamlCache)
+            {
+                return _serviceAndResourceDefinitionXamlSameCache;
+            }
+
+            _serviceDefinitionXamlCache = serviceDefinitionXaml;
+            _resourceDefinitionXamlCache = resourceDefinitionXaml;
+
+            var eq = WorkflowHelper.AreWorkflowsEqual(ServiceDefinition.ToString(), ResourceModel.WorkflowXaml.ToString());
+            _serviceAndResourceDefinitionXamlSameCache = eq;
+            return eq;
+        }
+
 
         /// <summary>
         /// Processes the data list configuration load.
