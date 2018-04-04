@@ -308,36 +308,39 @@ namespace Dev2.Services.Security
         bool DoFallBackCheck(IPrincipal principal)
         {
             var username = principal?.Identity?.Name;
-            if (username != null)
+            if (username == null)
             {
-                var theUser = username;
-                var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
-                if (domainChar >= 0)
+                return false;
+            }
+            var theUser = username;
+            var domainChar = username.IndexOf("\\", StringComparison.Ordinal);
+            if (domainChar >= 0)
+            {
+                theUser = username.Substring(domainChar + 1);
+            }
+            var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            {
+                ad.Children.SchemaFilter.Add("group");
+                foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    theUser = username.Substring(domainChar + 1);
-                }
-                var windowsBuiltInRole = WindowsBuiltInRole.Administrator.ToString();
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
-                {
-                    ad.Children.SchemaFilter.Add("group");
-                    foreach (DirectoryEntry dChildEntry in ad.Children)
+                    if (dChildEntry.Name != WindowsGroupPermission.BuiltInAdministratorsText && dChildEntry.Name != windowsBuiltInRole && dChildEntry.Name != "Administrators" && dChildEntry.Name != "BUILTIN\\Administrators")
                     {
-                        if (dChildEntry.Name == WindowsGroupPermission.BuiltInAdministratorsText || dChildEntry.Name == windowsBuiltInRole || dChildEntry.Name=="Administrators" || dChildEntry.Name=="BUILTIN\\Administrators")
-                        {
-                            var members = dChildEntry.Invoke("Members");
+                        return false;
+                    }
+                    var members = dChildEntry.Invoke("Members");
 
-                            if (members != null)
+                    if (members == null)
+                    {
+                        return false;
+                    }
+                    foreach (var member in (IEnumerable)members)
+                    {
+                        using (var memberEntry = new DirectoryEntry(member))
+                        {
+                            if (memberEntry.Name == theUser)
                             {
-                                foreach (var member in (IEnumerable)members)
-                                {
-                                    using (var memberEntry = new DirectoryEntry(member))
-                                    {
-                                        if (memberEntry.Name == theUser)
-                                        {
-                                            return true;
-                                        }
-                                    }
-                                }
+                                return true;
                             }
                         }
                     }
