@@ -65,7 +65,6 @@ namespace BusinessDesignStudio.Unit.Tests
         // Global variables
         readonly Mock<IEnvironmentConnection> _environmentConnection = CreateEnvironmentConnection();
         readonly Mock<IServer> _environmentModel = ResourceModelTest.CreateMockEnvironment();
-        //readonly Mock<IStudioClientContext> _dataChannel = new Mock<IStudioClientContext>();
         readonly Mock<IResourceModel> _resourceModel = new Mock<IResourceModel>();
         ResourceRepository _repo;
         readonly Guid _resourceGuid = Guid.NewGuid();
@@ -2122,11 +2121,6 @@ namespace BusinessDesignStudio.Unit.Tests
 
         }
 
-        void Marshal(System.Action action)
-        {
-
-        }
-
         #endregion
 
         #region DeployResource
@@ -2449,17 +2443,6 @@ namespace BusinessDesignStudio.Unit.Tests
             var exePayload = JsonConvert.SerializeObject(executeMessage);
             return executeMessage;
         }
-
-        static CompressedExecuteMessage MakeCompressedMsg(string msg)
-        {
-            var result = new CompressedExecuteMessage { HasError = false };
-            var executeMessage = new ExecuteMessage();
-            executeMessage.SetMessage(msg);
-            var exePayload = JsonConvert.SerializeObject(executeMessage);
-            result.SetMessage(exePayload);
-            return result;
-        }
-
     }
 
 
