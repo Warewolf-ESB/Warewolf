@@ -1041,6 +1041,15 @@ namespace System.Windows.Controls
             FocusChanged(HasFocus());
         }
 
+        protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnIsKeyboardFocusWithinChanged(e);
+            if (!IsKeyboardFocusWithin)
+            {
+                IsDropDownOpen = false;
+            }
+        }
+
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
