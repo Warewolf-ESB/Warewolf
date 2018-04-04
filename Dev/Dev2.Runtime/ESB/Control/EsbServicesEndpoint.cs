@@ -107,13 +107,9 @@ namespace Dev2.Runtime.ESB.Control
 
             return resource;
         }
-        
-        static IResource GetResource(Guid workspaceId, string resourceName)
-        {
-            var resource = rCatalog.GetResource(workspaceId, resourceName) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
-            return resource;
-        }
-        
+
+        static IResource GetResource(Guid workspaceId, string resourceName) => rCatalog.GetResource(workspaceId, resourceName) ?? rCatalog.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+
         public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors, int update)
         {
             errors = null;
