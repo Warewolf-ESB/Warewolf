@@ -220,36 +220,41 @@ namespace Dev2.UI
                 }
                 else
                 {
-                    var foundMinimum = -1;
-                    for (int i = index - 1; i >= 0; i--)
-                    {
-                        if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
-                        {
-                            foundMinimum = i;
-                            foundLength = index - i;
-                        }
-                        else
-                        {
-                            if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
-                            {
-#pragma warning disable S127 // "for" loop stop conditions should be invariant
-                                i = -1;
-#pragma warning restore S127 // "for" loop stop conditions should be invariant
-                            }
-                        }
-                    }
-
-                    if (foundMinimum != -1)
-                    {
-                        index = foundMinimum;
-                        Text = currentText = currentText.Remove(foundMinimum, foundLength);
-                    }
+                    PerformResultInsertion(appendText, ref index, ref currentText, ref foundLength);
                 }
             }
 
             if (appendText != null)
             {
                 AppendText(currentText, index, appendText);
+            }
+        }
+
+        void PerformResultInsertion(string appendText, ref int index, ref string currentText, ref int foundLength)
+        {
+            var foundMinimum = -1;
+            for (int i = index - 1; i >= 0; i--)
+            {
+                if (appendText.StartsWith(currentText.Substring(i, index - i), StringComparison.OrdinalIgnoreCase))
+                {
+                    foundMinimum = i;
+                    foundLength = index - i;
+                }
+                else
+                {
+                    if (foundMinimum != -1 || appendText.IndexOf(currentText[i].ToString(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) == -1)
+                    {
+#pragma warning disable S127 // "for" loop stop conditions should be invariant
+                        i = -1;
+#pragma warning restore S127 // "for" loop stop conditions should be invariant
+                    }
+                }
+            }
+
+            if (foundMinimum != -1)
+            {
+                index = foundMinimum;
+                Text = currentText = currentText.Remove(foundMinimum, foundLength);
             }
         }
 
@@ -514,73 +519,71 @@ namespace Dev2.UI
                         //This catch is intentionally blanks since if a provider throws an exception the intellisense
                         //box should simbly ignore that provider.
                     }
-                    ProcessResults(text, results, false);
+                    ProcessResults(text, results);
 
                 }
             }
         }
 
-        void ProcessResults(string text, IList<IntellisenseProviderResult> results, bool cleared)
+        void ProcessResults(string text, IList<IntellisenseProviderResult> results)
         {
             if (results != null && results.Count > 0)
             {
-                IntellisenseProviderResult popup = null;
-
-                for (int i = 0; i < results.Count; i++)
-                {
-                    var currentResult = results[i];
-
-                    if (!currentResult.IsError)
-                    {
-                        if (!currentResult.IsPopup)
-                        {
-                            if (!cleared)
-                            {
-                                cleared = true;
-                            }
-                        }
-                        else
-                        {
-                            popup = currentResult;
-                        }
-                    }
-                }
-                if (popup != null)
-                {
-                    var description = popup.Description;
-
-                    _toolTip.Content = string.IsNullOrEmpty(description) ? "" : description;
-                    _toolTip.IsOpen = true;
-                    ToolTip = _toolTip;
-                }
+                AppendResults(results);
             }
             else
             {
-                var ttErrorBuilder = new StringBuilder();
-                if (text.Contains("[[") && text.Contains("]]"))
-                {
-                    if (FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
-                    {
-                        if (!(text.Contains("(") && text.Contains(")")))
-                        {
-                            HasError = true;
-                            ttErrorBuilder.AppendLine("Scalar is not allowed");
-                        }
-                    }
-                    else
-                    {
-                        if (FilterType == enIntellisensePartType.ScalarsOnly && text.Contains("(") && text.Contains(")"))
-                        {
-                            HasError = true;
-                            ttErrorBuilder.AppendLine("Recordset is not allowed");
-                        }
+                AppendError(text);
+            }
+        }
 
+        void AppendResults(IList<IntellisenseProviderResult> results)
+        {
+            IntellisenseProviderResult popup = null;
+
+            foreach (var currentResult in results)
+            {
+                if (!currentResult.IsError && currentResult.IsPopup)
+                {
+                    popup = currentResult;
+                }
+            }
+            if (popup != null)
+            {
+                var description = popup.Description;
+
+                _toolTip.Content = string.IsNullOrEmpty(description) ? "" : description;
+                _toolTip.IsOpen = true;
+                ToolTip = _toolTip;
+            }
+        }
+
+        void AppendError(string text)
+        {
+            var ttErrorBuilder = new StringBuilder();
+            if (text.Contains("[[") && text.Contains("]]"))
+            {
+                if (FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
+                {
+                    if (!(text.Contains("(") && text.Contains(")")))
+                    {
+                        HasError = true;
+                        ttErrorBuilder.AppendLine("Scalar is not allowed");
                     }
                 }
+                else
+                {
+                    if (FilterType == enIntellisensePartType.ScalarsOnly && text.Contains("(") && text.Contains(")"))
+                    {
+                        HasError = true;
+                        ttErrorBuilder.AppendLine("Recordset is not allowed");
+                    }
 
-                var errorText = ttErrorBuilder.ToString();
-                _toolTip.Content = string.IsNullOrEmpty(errorText) ? "" : errorText;
+                }
             }
+
+            var errorText = ttErrorBuilder.ToString();
+            _toolTip.Content = string.IsNullOrEmpty(errorText) ? "" : errorText;
         }
 
         public int CaretIndex
