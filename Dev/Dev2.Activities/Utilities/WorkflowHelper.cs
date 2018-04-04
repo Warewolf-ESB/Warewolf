@@ -288,8 +288,6 @@ namespace Dev2.Utilities
                     return result;
                 }
             }
-
-            //list.Add(new Item(lnode))
             if (lnode.HasChildNodes)
             {
                 for (var i = 0; i < lnode.ChildNodes.Count; i++)
