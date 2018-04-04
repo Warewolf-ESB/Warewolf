@@ -594,7 +594,7 @@ function Find-Warewolf-Server-Exe {
     return $ServerPath
 }
 
-if ($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) {
+if (($ServerPath -eq $null -or $ServerPath -eq "" -or !(Test-Path $ServerPath)) -and !($RunWarewolfServiceTests.IsPresent)) {
     $ServerPath = Find-Warewolf-Server-Exe
 }
 
