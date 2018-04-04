@@ -103,7 +103,6 @@ namespace Dev2.Studio
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             Tracker.StartStudio();
-            CustomGitOps.SetCustomGitTool(new ExternalProcessExecutor());
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
             Task.Factory.StartNew(() =>
             {
