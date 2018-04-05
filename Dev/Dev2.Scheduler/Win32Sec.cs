@@ -126,7 +126,7 @@ public class SecurityWrapper : ISecurityWrapper
     {
         var windowsAuthorised = false;
 
-        userName = CleanUser(userName);
+        var username = CleanUser(userName);
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString(privilege);
         var ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
@@ -139,7 +139,6 @@ public class SecurityWrapper : ISecurityWrapper
             for (ulong i = 0; i < count; i++)
             {
                 var itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
-
                 LsaInfo[i] =
                     (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
                 var SID = new SecurityIdentifier(LsaInfo[i].PSid);
@@ -148,32 +147,33 @@ public class SecurityWrapper : ISecurityWrapper
 
             try
             {
-                var wp = new WindowsPrincipal(new WindowsIdentity(userName));
-
-                foreach (string account in Accounts)
-                {
-                    if (wp.IsInRole(account))
-                    {
-                        windowsAuthorised = true;
-                    }
-                }
-
-                return windowsAuthorised;
+                return IsWindowsAuthorised(username, ref windowsAuthorised, Accounts);
             }
             catch (Exception)
             {
-                var localGroups = GetLocalUserGroupsForTaskSchedule(userName);
-
+                var localGroups = GetLocalUserGroupsForTaskSchedule(username);
                 var intersection = localGroups.Intersect(Accounts);
-
-                return intersection.Any(s => !s.Equals(Environment.MachineName+"\\"+userName,StringComparison.InvariantCultureIgnoreCase));
-
+                return intersection.Any(s => !s.Equals(Environment.MachineName+"\\"+ username, StringComparison.InvariantCultureIgnoreCase));
             }
         }
 
         return false;
     }
 
+    static bool IsWindowsAuthorised(string userName, ref bool windowsAuthorised, List<string> Accounts)
+    {
+        var wp = new WindowsPrincipal(new WindowsIdentity(userName));
+
+        foreach (string account in Accounts)
+        {
+            if (wp.IsInRole(account))
+            {
+                windowsAuthorised = true;
+            }
+        }
+
+        return windowsAuthorised;
+    }
 
     IEnumerable<string> FetchSchedulerGroups()
     {
@@ -206,9 +206,7 @@ public class SecurityWrapper : ISecurityWrapper
         var groups = new List<string>();
         using (var pcLocal = new PrincipalContext(ContextType.Machine))
         {
-
             foreach (var grp in FetchSchedulerGroups())
-
             {
                 if (CleanUser(grp).ToLower() == userName.ToLower())
                 {
@@ -218,26 +216,29 @@ public class SecurityWrapper : ISecurityWrapper
                 {
                     try
                     {
-                        var group = GroupPrincipal.FindByIdentity(pcLocal, grp);
-                        if (group != null)
-                        {
-                            var members = group.GetMembers();
-                            if (members.Any(member => member.SamAccountName.ToLower() == userName.ToLower()))
-                            {
-                                groups.Add(grp);
-                            }
-                        }
+                        GetLocalUserGroupsForTaskSchedule(userName, groups, pcLocal, grp);
                     }
                     catch (Exception err)
                     {
                         Dev2Logger.Error(string.Format(ErrorResource.SchedulerErrorEnumeratingGroups, grp), err, GlobalConstants.WarewolfError);
                     }
                 }
-
             }
-
         }
         return groups;
+    }
+
+    static void GetLocalUserGroupsForTaskSchedule(string userName, List<string> groups, PrincipalContext pcLocal, string grp)
+    {
+        var group = GroupPrincipal.FindByIdentity(pcLocal, grp);
+        if (group != null)
+        {
+            var members = group.GetMembers();
+            if (members.Any(member => member.SamAccountName.ToLower() == userName.ToLower()))
+            {
+                groups.Add(grp);
+            }
+        }
     }
 
     static string CleanUser(string userName)
