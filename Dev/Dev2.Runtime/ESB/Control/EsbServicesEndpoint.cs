@@ -140,9 +140,9 @@ namespace Dev2.Runtime.ESB.Control
                 Dev2Logger.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]", dataObject.ExecutionID.ToString());
                 var oldStartTime = dataObject.StartTime;
                 dataObject.StartTime = DateTime.Now;
+                var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
                 if (dataObject.RunWorkflowAsync)
                 {
-
                     ExecuteRequestAsync(dataObject, inputDefs, invoker, isLocal, oldID, out invokeErrors, update);
                     dataObject.StartTime = oldStartTime;
                     errors.MergeErrors(invokeErrors);
@@ -156,33 +156,17 @@ namespace Dev2.Runtime.ESB.Control
                         return null;
                     }
 
-
-                    var executionContainer = invoker.GenerateInvokeContainer(dataObject, dataObject.ServiceName, isLocal, oldID);
-                    dataObject.IsServiceTestExecution = wasTestExecution;
-                    if (executionContainer != null)
-                    {
-                        CreateNewEnvironmentFromInputMappings(dataObject, inputDefs, update);
-                        if (!isLocal)
-                        {
-                            SetRemoteExecutionDataList(dataObject, executionContainer, errors);
-                        }
-                        if (!errors.HasErrors())
-                        {
-                            executionContainer.InstanceInputDefinition = inputDefs;
-                            executionContainer.InstanceOutputDefinition = outputDefs;
-                            executionContainer.Execute(out invokeErrors, update);
-                            var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
-
-                            errors.MergeErrors(invokeErrors);
-                            var errorString = dataObject.Environment.FetchErrors();
-                            invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                            errors.MergeErrors(invokeErrors);
-                            dataObject.StartTime = oldStartTime;
-                            return env;
-                        }
-                        errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
-                    }
+                    SetRemoteExecutionDataList(dataObject, executionContainer, inputDefs, update, wasTestExecution, isLocal, errors);
                 }
+                if (!dataObject.RunWorkflowAsync && executionContainer != null)
+                {
+                    if (!errors.HasErrors())
+                    {
+                        return UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, inputDefs, outputDefs, update, handleErrors, out invokeErrors, oldStartTime, executionContainer, errors);
+                    }
+                    errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
+                }
+
                 dataObject.StartTime = oldStartTime;
                 return new ExecutionEnvironment();
             }
@@ -193,7 +177,34 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-       
+        void SetRemoteExecutionDataList(IDSFDataObject dataObject, IEsbExecutionContainer executionContainer, string inputDefs, int update, bool wasTestExecution, bool isLocal, ErrorResultTO errors)
+        {
+            dataObject.IsServiceTestExecution = wasTestExecution;
+            if (executionContainer != null)
+            {
+                CreateNewEnvironmentFromInputMappings(dataObject, inputDefs, update);
+                if (!isLocal)
+                {
+                    SetRemoteExecutionDataList(dataObject, executionContainer, errors);
+                }
+            }
+        }
+
+        IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string inputDefs, string outputDefs, int update, bool handleErrors, out ErrorResultTO invokeErrors, DateTime oldStartTime, IEsbExecutionContainer executionContainer, ErrorResultTO errors)
+        {
+            executionContainer.InstanceInputDefinition = inputDefs;
+            executionContainer.InstanceOutputDefinition = outputDefs;
+            executionContainer.Execute(out invokeErrors, update);
+            var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
+
+            errors.MergeErrors(invokeErrors);
+            var errorString = dataObject.Environment.FetchErrors();
+            invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+            errors.MergeErrors(invokeErrors);
+            dataObject.StartTime = oldStartTime;
+            return env;
+        }
+
 
         public IExecutionEnvironment UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors)
         {
