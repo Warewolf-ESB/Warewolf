@@ -25,6 +25,11 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Workspaces;
 
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Text;
+
 namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
