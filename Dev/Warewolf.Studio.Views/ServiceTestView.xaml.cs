@@ -11,9 +11,6 @@ using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for ServiceTestView.xaml
-    /// </summary>
     public partial class ServiceTestView : IView
     {
         public ServiceTestView()
@@ -37,25 +34,30 @@ namespace Warewolf.Studio.Views
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                var node = e.OriginalSource as DependencyObject;
-                while (node != null)
-                {
-                    if (node is WorkflowViewElement)
-                    {
-                        var dt = DataContext as ServiceTestViewModel;
-                        var wd = dt?.WorkflowDesignerViewModel;
-                        var designer = node as WorkflowViewElement;
-                        var modelItem = designer.ModelItem;
-                        if (wd != null && wd.IsTestView && modelItem != null)
-                        {
-                            wd.ItemSelectedAction?.Invoke(modelItem);
-                        }
-                        break;
-                    }
-                    node = node is Visual ? VisualTreeHelper.GetParent(node) : null;
-                }
+                InvokeParentModelItem(e.OriginalSource as DependencyObject);
             }
         }
+
+        void InvokeParentModelItem(DependencyObject node)
+        {
+            while (node != null)
+            {
+                if (node is WorkflowViewElement)
+                {
+                    var dt = DataContext as ServiceTestViewModel;
+                    var wd = dt?.WorkflowDesignerViewModel;
+                    var designer = node as WorkflowViewElement;
+                    var modelItem = designer.ModelItem;
+                    if (wd != null && wd.IsTestView && modelItem != null)
+                    {
+                        wd.ItemSelectedAction?.Invoke(modelItem);
+                    }
+                    break;
+                }
+                node = node is Visual ? VisualTreeHelper.GetParent(node) : null;
+            }
+        }
+
         void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
 
@@ -116,7 +118,6 @@ namespace Warewolf.Studio.Views
             {
                 RefreshCommands(e);
             }
-
         }
 
         void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
