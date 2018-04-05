@@ -484,23 +484,27 @@ namespace Dev2.DataList
 
                 foreach (var rs in dataListModel.RecordSets)
                 {
-                    // build map for each column in a recordset ;)
-                    foreach (var col in rs.Columns)
-                    {
-                        foreach (var scalar in col.Value)
-                        {
-                            if (!tmp.Keys.Any(a => a.Item2 == scalar.Name && a.Item1 == rs.Name))
-                            {
-                                tmp[new Tuple<string, string>(rs.Name, scalar.Name)] = rs.Name;
-                            }
-                        }
-
-                    }
+                    MapRecordsetColumn(tmp, rs);
                 }
                 result = new FuzzyMatchVo(tmp);
             }
 
             return result;
+        }
+
+        private static void MapRecordsetColumn(IDictionary<Tuple<string, string>, string> tmp, IRecordSet rs)
+        {
+            // build map for each column in a recordset ;)
+            foreach (var col in rs.Columns)
+            {
+                foreach (var scalar in col.Value)
+                {
+                    if (!tmp.Keys.Any(a => a.Item2 == scalar.Name && a.Item1 == rs.Name))
+                    {
+                        tmp[new Tuple<string, string>(rs.Name, scalar.Name)] = rs.Name;
+                    }
+                }
+            }
         }
     }
 }
