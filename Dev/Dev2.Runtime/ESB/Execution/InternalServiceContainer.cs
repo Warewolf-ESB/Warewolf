@@ -96,40 +96,9 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else
                     {
-                        var serializer = new Dev2JsonSerializer();
-                        var msg = new ExecuteMessage { HasError = true };
-                        switch (eme.GetAuthorizationContextForService())
-                        {
-                            case AuthorizationContext.View:
-                                msg.SetMessage(ErrorResource.NotAuthorizedToViewException);
-                                break;
-                            case AuthorizationContext.Execute:
-                                msg.SetMessage(ErrorResource.NotAuthorizedToExecuteException);
-                                break;
-                            case AuthorizationContext.Contribute:
-                                msg.SetMessage(ErrorResource.NotAuthorizedToContributeException);
-                                break;
-                            case AuthorizationContext.DeployTo:
-                                msg.SetMessage(ErrorResource.NotAuthorizedToDeployToException);
-                                break;
-                            case AuthorizationContext.DeployFrom:
-                                msg.SetMessage(ErrorResource.NotAuthorizedToDeployFromException);
-                                break;
-                            case AuthorizationContext.Administrator:
-                                msg.SetMessage(ErrorResource.NotAuthorizedToAdministratorException);
-                                break;
-                            case AuthorizationContext.None:
-                                break;
-                            case AuthorizationContext.Any:
-                                break;
-                            default:
-                                break;
-                        }
-                        Request.ExecuteResult = serializer.SerializeToBuilder(msg);
-                        errors.AddError(ErrorResource.NotAuthorizedToExecuteException);
+                        SetMessage(errors, eme);
                     }
                     Request.WasInternalService = true;
-
                 }
                 else
                 {
@@ -142,6 +111,37 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             return result;
+        }
+
+        private void SetMessage(ErrorResultTO errors, IEsbManagementEndpoint eme)
+        {
+            var serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage { HasError = true };
+            switch (eme.GetAuthorizationContextForService())
+            {
+                case AuthorizationContext.View:
+                    msg.SetMessage(ErrorResource.NotAuthorizedToViewException);
+                    break;
+                case AuthorizationContext.Execute:
+                    msg.SetMessage(ErrorResource.NotAuthorizedToExecuteException);
+                    break;
+                case AuthorizationContext.Contribute:
+                    msg.SetMessage(ErrorResource.NotAuthorizedToContributeException);
+                    break;
+                case AuthorizationContext.DeployTo:
+                    msg.SetMessage(ErrorResource.NotAuthorizedToDeployToException);
+                    break;
+                case AuthorizationContext.DeployFrom:
+                    msg.SetMessage(ErrorResource.NotAuthorizedToDeployFromException);
+                    break;
+                case AuthorizationContext.Administrator:
+                    msg.SetMessage(ErrorResource.NotAuthorizedToAdministratorException);
+                    break;
+                default:
+                    Request.ExecuteResult = serializer.SerializeToBuilder(msg);
+                    errors.AddError(ErrorResource.NotAuthorizedToExecuteException);
+                    break;
+            }
         }
 
         bool CanExecute(IEsbManagementEndpoint eme) => CanExecute(eme.GetResourceID(Request.Args), DataObject, eme.GetAuthorizationContextForService());
