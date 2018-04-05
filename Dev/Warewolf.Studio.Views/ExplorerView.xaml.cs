@@ -52,7 +52,7 @@ namespace Warewolf.Studio.Views
 
         }
 
-        void DropTreeDrop(object sender, DragEventArgs e)
+        void TryDropTreeDrop(object sender, DragEventArgs e)
         {
             try
             {
@@ -67,21 +67,8 @@ namespace Warewolf.Studio.Views
 
                     if (!Equals(explorerItemViewModel.Parent, destination.DataContext))
                     {
-
-                        if (destination.DataContext is IExplorerItemViewModel dropTarget && dropTarget.IsFolder)
-                        {
-                            var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
-                            itemViewModel.MoveAsync(dropTarget);
-                        }
-                        if (destination.DataContext is IEnvironmentViewModel destEnv)
-                        {
-                            var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
-                            itemViewModel.MoveAsync(destEnv);
-                        }
-                        else
-                        {
-                            return;
-                        }
+                        MoveAsync(explorerItemViewModel, destination);
+                        return;
                     }
                     destination.Background = Brushes.Transparent;
                     _isDragging = false;
@@ -93,6 +80,20 @@ namespace Warewolf.Studio.Views
             {
                 _isDragging = false;
                 _canDrag = false;
+            }
+        }
+
+        static void MoveAsync(ExplorerItemViewModel explorerItemViewModel, TreeViewItem destination)
+        {
+            if (destination.DataContext is IExplorerItemViewModel dropTarget && dropTarget.IsFolder)
+            {
+                var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
+                itemViewModel.MoveAsync(dropTarget);
+            }
+            if (destination.DataContext is IEnvironmentViewModel destEnv)
+            {
+                var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
+                itemViewModel.MoveAsync(destEnv);
             }
         }
 
@@ -153,36 +154,58 @@ namespace Warewolf.Studio.Views
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
-            else if (dropOntoItem == null || !dropOntoItem.IsFolder)
+            else
             {
-                if (!(treeViewItem?.DataContext is EnvironmentViewModel environmentViewModel))
+                if (dropOntoItem == null || !dropOntoItem.IsFolder)
                 {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-                else if (itemToMove.Server.EnvironmentID != environmentViewModel.ResourceId)
-                {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-                else if (Equals(itemToMove.Parent, environmentViewModel))
-                {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
+                    if (!(treeViewItem?.DataContext is EnvironmentViewModel environmentViewModel))
+                    {
+                        e.Effects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        Drag(e, itemToMove, environmentViewModel);
+                    }
                 }
                 else
                 {
-                    e.Effects = DragDropEffects.Copy;
+                    if (!Equals(itemToMove.Server, dropOntoItem.Server))
+                    {
+                        e.Effects = DragDropEffects.None;
+                        e.Handled = true;
+                    }
+                    else
+                    {
+                        Drag(e, itemToMove, dropOntoItem);
+                    }
                 }
+            }
+        }
+
+        static void Drag(DragEventArgs e, ExplorerItemViewModel itemToMove, ExplorerItemViewModel dropOntoItem)
+        {
+            if (dropOntoItem.ResourcePath.Contains(itemToMove.ResourceName))
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
             }
             else
             {
-                if (!Equals(itemToMove.Server, dropOntoItem.Server))
-                {
-                    e.Effects = DragDropEffects.None;
-                    e.Handled = true;
-                }
-                else if (dropOntoItem.ResourcePath.Contains(itemToMove.ResourceName))
+                e.Effects = DragDropEffects.Copy;
+            }
+        }
+
+        static void Drag(DragEventArgs e, ExplorerItemViewModel itemToMove, EnvironmentViewModel environmentViewModel)
+        {
+            if (itemToMove.Server.EnvironmentID != environmentViewModel.ResourceId)
+            {
+                e.Effects = DragDropEffects.None;
+                e.Handled = true;
+            }
+            else
+            {
+                if (Equals(itemToMove.Parent, environmentViewModel))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
@@ -326,7 +349,6 @@ namespace Warewolf.Studio.Views
                 {
                     mergeServiceViewModel.SelectedMergeItem = explorerItemViewModel;
                 }
-
             }
             else
             {
@@ -348,16 +370,19 @@ namespace Warewolf.Studio.Views
                 }
                 else
                 {
-                    if (item is IEnvironmentViewModel environmentViewModel)
-                    {
-                        SetActiveServer(environmentViewModel.Server);
-                        if (explorerViewModel?.ConnectControlViewModel != null)
-                        {
-                            {
-                                explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
-                            }
-                        }
-                    }
+                    TryChangeSelectedConnection(item, explorerViewModel);
+                }
+            }
+        }
+
+        static void TryChangeSelectedConnection(object item, ExplorerViewModel explorerViewModel)
+        {
+            if (item is IEnvironmentViewModel environmentViewModel)
+            {
+                SetActiveServer(environmentViewModel.Server);
+                if (explorerViewModel?.ConnectControlViewModel != null)
+                {
+                    explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
                 }
             }
         }
@@ -502,19 +527,24 @@ namespace Warewolf.Studio.Views
                 if (explorerItemViewModel.CanView)
                 {
                     Mouse.OverrideCursor = Cursors.Wait;
-                    if (name == "VersionViewModel")
-                    {
-                        explorerItemViewModel.OpenCommand.Execute(this);
-                    }
-                    else
-                    {
-                        if (name == "ExplorerItemViewModel" && !explorerItemViewModel.IsResourceVersion)
-                        {
-                            explorerItemViewModel.OpenCommand.Execute(this);
-                        }
-                    }
+                    TryExecuteOpenCommand(name, explorerItemViewModel);
                     e.Handled = true;
                     Mouse.OverrideCursor = null;
+                }
+            }
+        }
+
+        void TryExecuteOpenCommand(string name, ExplorerItemViewModel explorerItemViewModel)
+        {
+            if (name == "VersionViewModel")
+            {
+                explorerItemViewModel.OpenCommand.Execute(this);
+            }
+            else
+            {
+                if (name == "ExplorerItemViewModel" && !explorerItemViewModel.IsResourceVersion)
+                {
+                    explorerItemViewModel.OpenCommand.Execute(this);
                 }
             }
         }
