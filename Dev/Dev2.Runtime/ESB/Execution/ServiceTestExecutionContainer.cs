@@ -313,7 +313,7 @@ namespace Dev2.Runtime.ESB.Execution
             if (DataObject.IsDebugMode())
             {
                 var debugState = wfappUtils.GetDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DateTime.Now, true, false, false);
-                wfappUtils.WriteDebug(DataObject, debugState);
+                wfappUtils.TryWriteDebug(DataObject, debugState);
             }
 
             var testRunResult = Eval(resourceId, DataObject, test);
@@ -330,7 +330,7 @@ namespace Dev2.Runtime.ESB.Execution
                         outputDebugItem.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
                     }
                     debugState.AssertResultList.Add(outputDebugItem);
-                    wfappUtils.WriteDebug(DataObject, debugState);
+                    wfappUtils.TryWriteDebug(DataObject, debugState);
                 }
                 DebugState testAggregateDebugState;
                 if (DataObject.StopExecution && DataObject.Environment.HasErrors())
@@ -357,7 +357,7 @@ namespace Dev2.Runtime.ESB.Execution
                     itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
                 }
                 testAggregateDebugState.AssertResultList.Add(itemToAdd);
-                wfappUtils.WriteDebug(DataObject, testAggregateDebugState);
+                wfappUtils.TryWriteDebug(DataObject, testAggregateDebugState);
 
                 if (testRunResult != null)
                 {
