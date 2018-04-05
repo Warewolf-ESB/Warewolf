@@ -429,12 +429,12 @@ namespace Dev2.Services.Execution
             {
                 if (c.Name != GlobalConstants.NaughtyTextNode)
                 {
-                    Convert(outputDefs, indexCache, update, level, c);
+                    Convert(outputDefs, indexCache, update, c, level);
                 }
             }
         }
 
-        void Convert(IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, int level, XmlNode c)
+        void Convert(IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, XmlNode c, int level)
         {
             // scalars and recordset fetch
             if (level > 0)
