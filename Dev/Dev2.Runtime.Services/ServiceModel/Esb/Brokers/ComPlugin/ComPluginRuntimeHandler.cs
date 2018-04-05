@@ -267,6 +267,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             return string.IsNullOrEmpty(classId) ? null : type;
         }
+
         public ServiceMethodList ListMethods(string classId, bool is32Bit)
         {
             var serviceMethodList = new List<ServiceMethod>();
