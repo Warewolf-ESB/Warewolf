@@ -246,35 +246,31 @@ namespace Dev2.Services.Execution
             };
             var connection = new SqlConnection(conStrBuilder.ConnectionString);
             var startTime = Stopwatch.StartNew();
-            var parameters = GetSqlParameters();
-            var cmd = connection.CreateCommand();
-            foreach (var item in parameters)
-            {
-                cmd.Parameters.Add(item);
-            }
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = ProcedureName;
             try
             {
                 connection.Open();
-                var isXmlRead = ReadForXml(update, startTime, cmd, connection);
+                var isXmlRead = ReadForXml(update, startTime, connection);
                 if (!isXmlRead)
                 {
                     using (SqlTransaction dbTransaction = connection.BeginTransaction())
                     {
                         try
                         {
-                            cmd.Transaction = dbTransaction;
-                            using (var reader = cmd.ExecuteReader())
+                            using (var cmd = CreateCommand(connection, GetSqlParameters()))
                             {
-                                var table = new DataTable();
-                                table.Load(reader);
-                                dbTransaction.Commit();
-                                Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                                var startTime1 = Stopwatch.StartNew();
-                                TranslateDataTableToEnvironment(table, DataObj.Environment, update);
-                                Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                                cmd.Transaction = dbTransaction;
+                                using (var reader = cmd.ExecuteReader())
+                                {
+                                    var table = new DataTable();
+                                    table.Load(reader);
+                                    reader.Close();
+                                    dbTransaction.Commit();
+                                    Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                                    var startTime1 = Stopwatch.StartNew();
+                                    TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                                    Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
 
+                                }
                             }
                         }
                         catch (Exception ex)
@@ -295,54 +291,72 @@ namespace Dev2.Services.Execution
             }
             finally
             {
-                cmd.Dispose();
                 connection.Dispose();
             }
         }
 
-        bool ReadForXml(int update, Stopwatch startTime, SqlCommand cmd, SqlConnection connection)
+        private SqlCommand CreateCommand(SqlConnection connection, List<SqlParameter> parameters)
+        {
+            var cmd = connection.CreateCommand();
+            foreach (var item in parameters)
+            {
+                cmd.Parameters.Add(item);
+            }
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = ProcedureName;
+            return cmd;
+        }
+
+        bool ReadForXml(int update, Stopwatch startTime, SqlConnection connection)
         {
             var xmlResults = false;
-            using (SqlTransaction dbTransaction = connection.BeginTransaction())
+            SqlTransaction dbTransaction = connection.BeginTransaction();
+            try
+            {
+                using (var cmd = CreateCommand(connection, GetSqlParameters()))
+                {
+                    cmd.Transaction = dbTransaction;
+                    using (var reader = cmd.ExecuteXmlReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var outerXml = reader.ReadOuterXml();
+                            var table = new DataTable("x");
+                            table.Columns.Add("ReadForXml");
+                            table.LoadDataRow(new object[] { outerXml }, true);
+                            dbTransaction.Commit();
+                            Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                            var startTime1 = Stopwatch.StartNew();
+                            TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                            Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                            xmlResults = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
             {
                 try
                 {
-                    cmd.Transaction = dbTransaction;
-                    var reader1 = cmd.ExecuteXmlReader();
-                    while (reader1.Read())
-                    {
-                        var outerXml = reader1.ReadOuterXml();
-                        var table = new DataTable("x");
-                        table.Columns.Add("ReadForXml");
-                        table.LoadDataRow(new object[] { outerXml }, true);
-                        dbTransaction.Commit();
-                        Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                        var startTime1 = Stopwatch.StartNew();
-                        TranslateDataTableToEnvironment(table, DataObj.Environment, update);
-                        Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                        xmlResults = true;
-                    }
+                    // Attempt to roll back the transaction.
+                    dbTransaction.Rollback();
                 }
-
-                catch (Exception e)
+                catch (Exception exRollback)
                 {
-                    try
-                    {
-                        // Attempt to roll back the transaction.
-                        dbTransaction.Rollback();
-                    }
-                    catch (Exception exRollback)
-                    {
-                        //Ignore the rollback exception
-                        Dev2Logger.Error("Error Rolling Back Transaction", exRollback, GlobalConstants.WarewolfError);
-                    }
-                    if (!e.Message.Equals(ErrorResource.NotXmlResults))
-                    {
-                        throw;
-                    }
-                    return xmlResults;
+                    //Ignore the rollback exception
+                    Dev2Logger.Error("Error Rolling Back Transaction", exRollback, GlobalConstants.WarewolfError);
                 }
+                if (!e.Message.Equals(ErrorResource.NotXmlResults))
+                {
+                    throw;
+                }
+                return xmlResults;
             }
+            finally
+            {
+                dbTransaction.Dispose();
+            }
+            
             return xmlResults;
         }
 
