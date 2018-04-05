@@ -241,21 +241,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
                 if (!string.IsNullOrEmpty(nameToCheck))
                 {
-                    var intellisenseResult = parser.ValidateName(nameToCheck, "Complex Object");
-                    if (intellisenseResult != null)
-                    {
-                        SetError(intellisenseResult.Message);
-                    }
-                    else
-                    {
-                        if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                        {
-                            RemoveError();
-                        }
-                    }
+                    ValidateName(nameToCheck, parser);
                 }
             }
             if (isArray)
@@ -263,6 +249,25 @@ namespace Dev2.Studio.Core.Models.DataList
                 nameToCheck = nameToCheck + "()";
             }
             return nameToCheck;
+        }
+
+        private void ValidateName(string name, Dev2DataLanguageParser parser)
+        {
+            var intellisenseResult = parser.ValidateName(name, "Complex Object");
+            if (intellisenseResult != null)
+            {
+                SetError(intellisenseResult.Message);
+            }
+            else
+            {
+                if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                    !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                    !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+                {
+                    RemoveError();
+                }
+            }
         }
 
         #endregion
