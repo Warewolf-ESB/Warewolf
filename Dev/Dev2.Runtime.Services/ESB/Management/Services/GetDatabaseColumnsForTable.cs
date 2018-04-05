@@ -171,20 +171,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     foreach (DataRow row in columnInfo.Rows)
                     {
-                        var columnName = row["ColumnName"] as string;
-                        var isNullable = row["AllowDBNull"] is bool && (bool)row["AllowDBNull"];
-                        var isIdentity = row["IsIdentity"] is bool && (bool)row["IsIdentity"];
-                        var dbColumn = new DbColumn { ColumnName = columnName, IsNullable = isNullable, IsAutoIncrement = isIdentity };
-
-                        var typeValue = dbSource.ServerType == enSourceType.SqlDatabase ? row["DataTypeName"] as string : ((Type)row["DataType"]).Name;
-                        if (Enum.TryParse(typeValue, true, out SqlDbType sqlDataType))
-                        {
-                            dbColumn.SqlDataType = sqlDataType;
-                        }
-
-                        var columnLength = row["ColumnSize"] as int? ?? -1;
-                        dbColumn.MaxLength = columnLength;
-                        dbColumns.Items.Add(dbColumn);
+                        AddDbColumn(dbSource, dbColumns, row);
                     }
                 }
                 return serializer.SerializeToBuilder(dbColumns);
@@ -195,6 +182,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new DbColumnList(ex);
                 return serializer.SerializeToBuilder(res);
             }
+        }
+
+        static void AddDbColumn(DbSource dbSource, DbColumnList dbColumns, DataRow row)
+        {
+            var columnName = row["ColumnName"] as string;
+            var isNullable = row["AllowDBNull"] is bool && (bool)row["AllowDBNull"];
+            var isIdentity = row["IsIdentity"] is bool && (bool)row["IsIdentity"];
+            var dbColumn = new DbColumn { ColumnName = columnName, IsNullable = isNullable, IsAutoIncrement = isIdentity };
+
+            var typeValue = dbSource.ServerType == enSourceType.SqlDatabase ? row["DataTypeName"] as string : ((Type)row["DataType"]).Name;
+            if (Enum.TryParse(typeValue, true, out SqlDbType sqlDataType))
+            {
+                dbColumn.SqlDataType = sqlDataType;
+            }
+
+            var columnLength = row["ColumnSize"] as int? ?? -1;
+            dbColumn.MaxLength = columnLength;
+            dbColumns.Items.Add(dbColumn);
         }
 
         #endregion
