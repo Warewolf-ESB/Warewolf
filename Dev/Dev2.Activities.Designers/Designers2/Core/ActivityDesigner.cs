@@ -63,13 +63,11 @@ namespace Dev2.Activities.Designers2.Core
                 keyEventArgs.Handled = true;
             }
 
-
-            if (keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) ||
-keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem) && ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete))
+            if ((keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) ||
+keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem)) && ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete))
             {
                 keyEventArgs.Handled = true;
             }
-
         }
 
         #region Overrides of WorkflowViewElement
