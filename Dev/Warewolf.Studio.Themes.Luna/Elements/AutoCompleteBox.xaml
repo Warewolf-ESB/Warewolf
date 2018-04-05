@@ -328,6 +328,15 @@
                         </MultiTrigger>
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False" />
+                                <Condition Property="Text" Value="{x:Null}" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_DefaultTextHost" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
                                 <Condition Property="ui:IntellisenseTextBox.AllowUserCalculateMode" Value="True" />
                                 <Condition Property="ui:IntellisenseTextBox.IsInCalculateMode" Value="True" />
                             </MultiTrigger.Conditions>
@@ -583,6 +592,15 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsFocused" Value="False" />
                                 <Condition Property="Text" Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_DefaultTextHost" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False" />
+                                <Condition Property="Text" Value="{x:Null}" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
                                 <Setter Property="Visibility" TargetName="PART_DefaultTextHost" Value="Visible" />
@@ -846,6 +864,15 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsFocused" Value="False" />
                                 <Condition Property="Text" Value="" />
+                            </MultiTrigger.Conditions>
+                            <MultiTrigger.Setters>
+                                <Setter Property="Visibility" TargetName="PART_DefaultTextHost" Value="Visible" />
+                            </MultiTrigger.Setters>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsFocused" Value="False" />
+                                <Condition Property="Text" Value="{x:Null}" />
                             </MultiTrigger.Conditions>
                             <MultiTrigger.Setters>
                                 <Setter Property="Visibility" TargetName="PART_DefaultTextHost" Value="Visible" />
