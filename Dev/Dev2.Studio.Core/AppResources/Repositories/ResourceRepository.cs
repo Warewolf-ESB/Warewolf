@@ -21,6 +21,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Controller;
@@ -66,19 +67,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Dev2Logger.Info($"Deploy Resources. Source:{sourceEnviroment.DisplayName} Destination:{targetEnviroment.Name}", GlobalConstants.WarewolfInfo);
             _deployService.Deploy(dto, targetEnviroment, sourceEnviroment);
         }
-
-        public void Load()
+        
+        public void Load(bool force)
         {
-            if (IsLoaded)
+            if (IsLoaded && !force)
             {
                 return;
             }
-
             IsLoaded = true;
             try
             {
                 _resourceModels.Clear();
-                LoadResources();
+                LoadResources(force);
             }
             catch (Exception ex)
             {
@@ -89,8 +89,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void UpdateWorkspace()
         {
-            IsLoaded = false;
-            Load();
+            Load(true);
         }
 
         void ShowServerDisconnectedPopup()
@@ -224,12 +223,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 return null;
             }
-            var result = _resourceModels.Find(func.Invoke);
+            var result = _resourceModels.Find(func.Invoke) as IContextualResourceModel;
 
             if (result != null && fetchDefinition)
             {
-                var contextualResourceModel = result as IContextualResourceModel;
-                result.WorkflowXaml = contextualResourceModel.GetWorkflowXaml();
+                result.WorkflowXaml = result.GetWorkflowXaml();
             }
             return result;
         }
@@ -398,12 +396,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             _resourceModels.Insert(_resourceModels.Count, resource);
         }
 
-        public void ForceLoad()
-        {
-            IsLoaded = false;
-            Load();
-        }
-
         static void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
         {
             if (data.HasError)
@@ -412,6 +404,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
+        public void ReLoadResources()
+        {
+            Dev2Logger.Warn("Loading Resources - Start", GlobalConstants.WarewolfWarn);
+            var comsController = new CommunicationController { ServiceName = "ReloadResourceService" };
+            comsController.AddPayloadArgument("ResourceName", "*");
+            comsController.AddPayloadArgument("ResourceID", "*");
+            comsController.AddPayloadArgument("ResourceType", string.Empty);
+            var con = _server.Connection;
+            comsController.ExecuteCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
+            Load(true);
+            Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
+        }
         protected virtual void LoadResources()
         {
             var comsController = GetCommunicationControllerForLoadResources();
@@ -422,6 +426,19 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 throw new Exception(ErrorResource.FailedToFetchResoureListAsJSONModel);
             }
             HydrateResourceModels(resourceList, _server.Connection.ServerID);
+            Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
+        }
+
+        protected virtual void LoadResources(bool force)
+        {
+            var comsController = GetCommunicationControllerForLoadResources();
+            var con = _server.Connection;
+            var resourceList = comsController.ExecuteCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
+            if (resourceList == null)
+            {
+                throw new Exception(ErrorResource.FailedToFetchResoureListAsJSONModel);
+            }
+            HydrateResourceModels(resourceList, _server.Connection.ServerID, force);
             Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
         }
 
@@ -437,23 +454,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public bool IsInCache(Guid id) => _cachedServices.Contains(id);
 
-        void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverId)
+        void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverId, bool force = false)
         {
             if (wfServices == null)
             {
                 return;
             }
-            foreach (var item in wfServices)
+            foreach (var item in wfServices.Where(p=>p.ResourceType != "ReservedService"))
             {
                 try
                 {
-                    var resourceType = item.ResourceType;
-                    if (resourceType == "ReservedService")
-                    {
-                        continue;
-                    }
-
-                    var resource = HydrateResourceModel(item, serverId);
+                    var resource = HydrateResourceModel(item, serverId, force);
                     if (resource != null)
                     {
                         _resourceModels.Add(resource);
@@ -683,6 +694,29 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 throw new NullReferenceException("Cannot load resource tests. Cannot get Communication Controller.");
             }
+        }
+
+        public List<IServiceTestModelTO> LoadAllTests()
+        {
+            if (GetCommunicationController != null)
+            {
+                var comsController = GetCommunicationController?.Invoke("FetchAllTests");
+                var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+                var serializer = new Dev2JsonSerializer();
+                var message = executeCommand.GetDecompressedMessage();
+                if (executeCommand.HasError)
+                {
+                    var msg = serializer.Deserialize<StringBuilder>(message);
+                    throw new Exception(msg.ToString());
+                }
+                var testsTO = serializer.Deserialize<List<IServiceTestModelTO>>(message);
+                if (testsTO != null)
+                {
+                    return testsTO;
+                }
+                return new List<IServiceTestModelTO>();
+            }
+            throw new NullReferenceException("Cannot load resource tests. Cannot get Communication Controller.");
         }
 
         public List<IServiceTestModelTO> LoadResourceTestsForDeploy(Guid resourceId)
@@ -1021,6 +1055,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     }
                 }
             }
+        }
+
+        public List<ISearchResult> Filter(ISearch searchValue)
+        {
+            var comController = new CommunicationController { ServiceName = "GetFilterListService" };
+            comController.AddPayloadArgument("Search", _serializer.Serialize(searchValue));
+            var lists = comController.ExecuteCommand<List<ISearchResult>>(_server.Connection, GlobalConstants.ServerWorkspaceID);
+            return lists;
         }
     }
 }

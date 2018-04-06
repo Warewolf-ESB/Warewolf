@@ -54,12 +54,26 @@ namespace Warewolf.UI.Tests
                 return this.mScriptErrorMessagebox;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private MainStudioWindow mMainStudioWindow;
         
         private ScriptErrorMessagebox mScriptErrorMessagebox;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -2934,6 +2948,22 @@ namespace Warewolf.UI.Tests
                 return this.mLockunlockthemenuButton;
             }
         }
+        
+        public WpfButton SearchButton
+        {
+            get
+            {
+                if ((this.mSearchButton == null))
+                {
+                    this.mSearchButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mSearchButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Search in Warewolf";
+                    this.mSearchButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSearchButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -2956,6 +2986,8 @@ namespace Warewolf.UI.Tests
         private WpfButton mLockMenuButton;
         
         private LockunlockthemenuButton mLockunlockthemenuButton;
+        
+        private WpfButton mSearchButton;
         #endregion
     }
     
@@ -20077,6 +20109,42 @@ namespace Warewolf.UI.Tests
         
         #region Fields
         private HtmlButton mNOButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom search
+        {
+            get
+            {
+                if ((this.msearch == null))
+                {
+                    this.msearch = new WpfCustom(this);
+                    #region Search Criteria
+                    this.msearch.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MenuView";
+                    this.msearch.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.msearch;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom msearch;
         #endregion
     }
 }

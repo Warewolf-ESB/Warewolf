@@ -36,19 +36,22 @@ namespace Dev2.Studio
             path.Setup(p => p.GetFileName(It.IsAny<string>())).Returns(It.IsAny<string>());
             var content = new MemoryStream(Encoding.ASCII.GetBytes(WorkflowContent));
             var serverRepository = new Mock<IServerRepository>();
+            var server = new Mock<IServer>();
             var resource = new Mock<IResource>();
+            var popupController = new Mock<IPopupController>();
+            server.Setup(p => p.EnvironmentID).Returns(It.IsAny<Guid>());            
             resource.Setup(p => p.ResourceID).Returns(Guid.Parse("e7ea5196-33f7-4e0e-9d66-44bd67528a96"));
             resource.Setup(p => p.ResourceName).Returns("AssignOutput");
-            resource.Setup(p => p.ResourceType).Returns("Workflow");
-            var popupController = new Mock<IPopupController>();
+            resource.Setup(p => p.ResourceType).Returns("Workflow");            
             popupController.Setup(p => p.ShowResourcesNotInCorrectPath()).Returns(System.Windows.MessageBoxResult.OK);
             var shellViewModel = new Mock<IShellViewModel>();
+            shellViewModel.Setup(p => p.ActiveServer).Returns(server.Object);
             shellViewModel.Setup(p => p.CreateResourceFromStreamContent(It.IsAny<string>())).Returns(resource.Object);
+            shellViewModel.Setup(p => p.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<IContextualResourceModel>()));
             file.Setup(p => p.OpenRead(It.IsAny<string>())).Returns(content);
             serverRepository.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
             var results = ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync("", popupController.Object, shellViewModel.Object, file.Object, path.Object, serverRepository.Object);
-            Assert.IsNotNull(results);
-            Assert.AreEqual("AssignOutput", results.Result.ResourceName);
+            shellViewModel.Verify(p => p.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<IContextualResourceModel>()), Times.AtLeastOnce);
         }
 
         [TestMethod]
@@ -69,8 +72,10 @@ namespace Dev2.Studio
             resource.Setup(p => p.ResourceID).Returns(Guid.Parse("e7ea5196-33f7-4e0e-9d66-44bd67528a96"));
             resource.Setup(p => p.ResourceName).Returns("AssignOutput");
             resource.Setup(p => p.ResourceType).Returns("Source");
+            shellViewModel.Setup(p => p.ActiveServer).Returns(activeServer.Object);
             shellViewModel.Setup(p => p.ExplorerViewModel).Returns(explorerViewModel.Object);
             shellViewModel.Setup(p => p.CreateResourceFromStreamContent(It.IsAny<string>())).Returns(resource.Object);
+            shellViewModel.Setup(p => p.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<IContextualResourceModel>()));
             popupController.Setup(p => p.ShowResourcesNotInCorrectPath()).Returns(System.Windows.MessageBoxResult.OK);
             popupController.Setup(p => p.ShowCanNotMoveResource()).Returns(System.Windows.MessageBoxResult.OK);
             file.Setup(p => p.OpenRead(It.IsAny<string>())).Returns(content);
@@ -80,8 +85,67 @@ namespace Dev2.Studio
             activeServer.Setup(p => p.ResourceRepository).Returns(resourceRepo.Object);
             serverRepository.Setup(p => p.ActiveServer).Returns(activeServer.Object);
             var results = ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync("", popupController.Object, shellViewModel.Object, file.Object, path.Object, serverRepository.Object);
-            Assert.IsNotNull(results);
-            Assert.AreEqual("WebPutServiceSource", results.Result.ResourceName);
+            shellViewModel.Verify(p => p.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<IContextualResourceModel>()), Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        public void HandleResourceInResourceFolderAndOtherDir_Given_MoveOK_On_Popup_MessageBox_Has_Null_ViewModel()
+        {
+            var file = new Mock<IFile>();
+            var path = new Mock<IFilePath>();
+            path.Setup(p => p.GetFileName(It.IsAny<string>())).Returns(It.IsAny<string>());
+            var content = new MemoryStream(Encoding.ASCII.GetBytes(WorkflowContent));
+            var serverRepository = new Mock<IServerRepository>();
+            var server = new Mock<IServer>();
+            var resource = new Mock<IResource>();
+            var popupController = new Mock<IPopupController>();
+            server.Setup(p => p.EnvironmentID).Returns(It.IsAny<Guid>());
+            resource.Setup(p => p.ResourceID).Returns(Guid.Parse("e7ea5196-33f7-4e0e-9d66-44bd67528a96"));
+            resource.Setup(p => p.ResourceName).Returns("AssignOutput");
+            resource.Setup(p => p.ResourceType).Returns("Workflow");
+            popupController.Setup(p => p.ShowResourcesNotInCorrectPath()).Returns(System.Windows.MessageBoxResult.OK);
+            var shellViewModel = new Mock<IShellViewModel>();
+            shellViewModel.Setup(p => p.ActiveServer).Returns(server.Object);
+            shellViewModel.Setup(p => p.CreateResourceFromStreamContent(It.IsAny<string>())).Returns(resource.Object);
+            shellViewModel.Setup(p => p.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<IContextualResourceModel>()));
+            file.Setup(p => p.OpenRead(It.IsAny<string>())).Returns(content);
+            serverRepository.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
+            var results = ResourceExtensionHelper.HandleResourceInResourceFolderAndOtherDir("", popupController.Object, shellViewModel.Object, file.Object, path.Object, serverRepository.Object);
+            shellViewModel.Verify(p => p.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<IContextualResourceModel>()), Times.AtLeastOnce);
+        }
+
+        [TestMethod]
+        public void HandleResourceInResourceFolderAndOtherDir_Given_Source_And_MoveOK_On_Popup_MessageBox_Has_Null_ViewModel()
+        {
+            var file = new Mock<IFile>();
+            var path = new Mock<IFilePath>();
+            var content = new MemoryStream(Encoding.ASCII.GetBytes(SourceContent));
+            var activeServer = new Mock<IServer>();
+            var resourceRepo = new Mock<IResourceRepository>();
+            var shellViewModel = new Mock<IShellViewModel>();
+            var serverRepository = new Mock<IServerRepository>();
+            var explorerViewModel = new Mock<IExplorerViewModel>();
+            var popupController = new Mock<IPopupController>();
+            var contextualResourceModel = new Mock<IContextualResourceModel>();
+            contextualResourceModel.Setup(p => p.ResourceName).Returns("WebPutServiceSource");
+            var resource = new Mock<IResource>();
+            resource.Setup(p => p.ResourceID).Returns(Guid.Parse("e7ea5196-33f7-4e0e-9d66-44bd67528a96"));
+            resource.Setup(p => p.ResourceName).Returns("AssignOutput");
+            resource.Setup(p => p.ResourceType).Returns("Source");
+            shellViewModel.Setup(p => p.ActiveServer).Returns(activeServer.Object);
+            shellViewModel.Setup(p => p.ExplorerViewModel).Returns(explorerViewModel.Object);
+            shellViewModel.Setup(p => p.CreateResourceFromStreamContent(It.IsAny<string>())).Returns(resource.Object);
+            shellViewModel.Setup(p => p.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>(), It.IsAny<IContextualResourceModel>()));
+            popupController.Setup(p => p.ShowResourcesNotInCorrectPath()).Returns(System.Windows.MessageBoxResult.OK);
+            popupController.Setup(p => p.ShowCanNotMoveResource()).Returns(System.Windows.MessageBoxResult.OK);
+            file.Setup(p => p.OpenRead(It.IsAny<string>())).Returns(content);
+            file.Setup(p => p.Move(It.IsAny<string>(), It.IsAny<string>()));
+            path.Setup(p => p.GetFileName(It.IsAny<string>())).Returns(It.IsAny<string>());
+            resourceRepo.Setup(p => p.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(contextualResourceModel.Object);
+            activeServer.Setup(p => p.ResourceRepository).Returns(resourceRepo.Object);
+            serverRepository.Setup(p => p.ActiveServer).Returns(activeServer.Object);
+            var results = ResourceExtensionHelper.HandleResourceInResourceFolderAndOtherDir("", popupController.Object, shellViewModel.Object, file.Object, path.Object, serverRepository.Object);
+            popupController.Verify(p => p.ShowSourceAlreadyExistOpenFromResources(), Times.AtLeastOnce);
         }
         public string WorkflowContent
         {

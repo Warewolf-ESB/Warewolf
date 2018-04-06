@@ -50,6 +50,7 @@
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
+    <core:ResourceIdToIconConverter x:Key="ResourceIdToIconConverter"/>
     <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
     <converters:ErrorTypeToTooltipConverter x:Key="ErrorTypeToTooltipConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>

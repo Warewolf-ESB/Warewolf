@@ -9,8 +9,6 @@
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:sharepointListDelete="clr-namespace:Dev2.Activities.Designers2.SharepointListDelete"
@@ -137,16 +135,6 @@
                                    ItemsSource="{Binding ModelItem.FilterCriteria, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMappingDataGridStyle}"
                                    Margin="0,3">
-                <i:Interaction.Behaviors>
-                    <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                        <behaviors:DataGridWatermarkModifier.WatermarkText>
-                            <system:String>[[Recordset().F1]]</system:String>
-                        </behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                            <system:Int32>0</system:Int32>
-                        </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                    </behaviors:DataGridWatermarkModifier>
-                </i:Interaction.Behaviors>
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="25"
                                             Header="#"

@@ -31,6 +31,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Diagnostics;
 using System.Transactions;
+using System.Xml;
 
 namespace Dev2.Services.Execution
 {
@@ -42,7 +43,7 @@ namespace Dev2.Services.Execution
         }
 
         public string ProcedureName { private get; set; }
-        
+
         MySqlServer SetupMySqlServer(ErrorResultTO errors)
         {
             var server = new MySqlServer();
@@ -166,7 +167,7 @@ namespace Dev2.Services.Execution
             foreach (var serviceOutputMapping in Outputs)
             {
                 if (!string.IsNullOrEmpty(serviceOutputMapping?.MappedTo))
-                {                    
+                {
                     ProcessOutputMapping(executeService, environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
                 }
             }
@@ -199,11 +200,12 @@ namespace Dev2.Services.Execution
                 }
             }
             GetRowIndex(ref started, ref rowIdx, rsType, rowIndex);
-            if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
+            if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom) && !executeService.Columns.Contains("ReadForXml"))
             {
                 return;
+
             }
-            var value = row[serviceOutputMapping.MappedFrom];
+            var value = GetColumnValue(executeService, row, serviceOutputMapping);
             if (update != 0)
             {
                 rowIdx = update;
@@ -215,6 +217,8 @@ namespace Dev2.Services.Execution
             }
             environment.Assign(displayExpression, value.ToString(), update);
         }
+
+        static object GetColumnValue(DataTable executeService, DataRow row, IServiceOutputMapping serviceOutputMapping) => executeService.Columns.Contains("ReadForXml") ? row["ReadForXml"] : row[serviceOutputMapping.MappedFrom];
 
         static void GetRowIndex(ref bool started, ref int rowIdx, enRecordsetIndexType rsType, string rowIndex)
         {
@@ -242,28 +246,40 @@ namespace Dev2.Services.Execution
             };
             var connection = new SqlConnection(conStrBuilder.ConnectionString);
             var startTime = Stopwatch.StartNew();
-            var cmd = connection.CreateCommand();
             try
             {
-                using (TransactionScope scope = new TransactionScope())
+                connection.Open();
+                var isXmlRead = ReadForXml(update, startTime, connection);
+                if (!isXmlRead)
                 {
-                    var parameters = GetSqlParameters();
-                    foreach (var item in parameters)
+                    using (SqlTransaction dbTransaction = connection.BeginTransaction())
                     {
-                        cmd.Parameters.Add(item);
-                    }
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.CommandText = ProcedureName;
-                    connection.Open();
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        var table = new DataTable();
-                        table.Load(reader);
-                        scope.Complete();
-                        Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                        var startTime1 = Stopwatch.StartNew();
-                        TranslateDataTableToEnvironment(table, DataObj.Environment, update);
-                        Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                        try
+                        {
+                            using (var cmd = CreateCommand(connection, GetSqlParameters()))
+                            {
+                                cmd.Transaction = dbTransaction;
+                                using (var reader = cmd.ExecuteReader())
+                                {
+                                    var table = new DataTable();
+                                    table.Load(reader);
+                                    reader.Close();
+                                    dbTransaction.Commit();
+                                    Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                                    var startTime1 = Stopwatch.StartNew();
+                                    TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                                    Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            dbTransaction.Rollback();
+                            Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
+                            Dev2Logger.Error("SQL Error:", ex.StackTrace);
+                            errors.AddError($"SQL Error: {ex.Message}");
+                        }
                     }
                 }
             }
@@ -275,9 +291,73 @@ namespace Dev2.Services.Execution
             }
             finally
             {
-                cmd.Dispose();
                 connection.Dispose();
             }
+        }
+
+        private SqlCommand CreateCommand(SqlConnection connection, List<SqlParameter> parameters)
+        {
+            var cmd = connection.CreateCommand();
+            foreach (var item in parameters)
+            {
+                cmd.Parameters.Add(item);
+            }
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = ProcedureName;
+            return cmd;
+        }
+
+        bool ReadForXml(int update, Stopwatch startTime, SqlConnection connection)
+        {
+            var xmlResults = false;
+            SqlTransaction dbTransaction = connection.BeginTransaction();
+            try
+            {
+                using (var cmd = CreateCommand(connection, GetSqlParameters()))
+                {
+                    cmd.Transaction = dbTransaction;
+                    using (var reader = cmd.ExecuteXmlReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var outerXml = reader.ReadOuterXml();
+                            var table = new DataTable("x");
+                            table.Columns.Add("ReadForXml");
+                            table.LoadDataRow(new object[] { outerXml }, true);
+                            dbTransaction.Commit();
+                            Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                            var startTime1 = Stopwatch.StartNew();
+                            TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                            Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                            xmlResults = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                try
+                {
+                    // Attempt to roll back the transaction.
+                    dbTransaction.Rollback();
+                }
+                catch (Exception exRollback)
+                {
+                    //Ignore the rollback exception
+                    Dev2Logger.Error("Error Rolling Back Transaction", exRollback, GlobalConstants.WarewolfError);
+                }
+                if (!e.Message.Equals(ErrorResource.NotXmlResults))
+                {
+                    throw;
+                }
+                return xmlResults;
+            }
+            finally
+            {
+                dbTransaction.Dispose();
+            }
+            
+            return xmlResults;
         }
 
         bool MySqlExecution(ErrorResultTO errors, int update)

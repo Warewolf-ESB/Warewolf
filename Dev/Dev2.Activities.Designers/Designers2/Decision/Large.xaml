@@ -8,8 +8,6 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:decision="clr-namespace:Dev2.Activities.Designers2.Decision"
                                xmlns:to="clr-namespace:Dev2.TO;assembly=Dev2.Activities"
@@ -69,17 +67,6 @@
                                    x:Name="LargeDataGrid"
                                    ItemsSource="{Binding Collection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                    Style="{StaticResource ActivityMappingDataGridStyle}">
-                <i:Interaction.Behaviors>
-                    <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                        <behaviors2:DataGridWatermarkModifier.WatermarkText>
-                            <sys:String>[[Recordset().F1]]</sys:String>
-                        </behaviors2:DataGridWatermarkModifier.WatermarkText>
-                        <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                            <sys:Int32>0</sys:Int32>
-                        </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                    </behaviors2:DataGridWatermarkModifier>
-                </i:Interaction.Behaviors>
-
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Width="25"
                                             Header="#"

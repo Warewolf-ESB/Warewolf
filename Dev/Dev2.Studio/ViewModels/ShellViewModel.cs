@@ -63,13 +63,8 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-using System.IO;
-using Dev2.Webs;
-using Dev2.Common.Wrappers;
-using Dev2.Common.Interfaces.Wrappers;
-using Dev2.Common.Interfaces.Data;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Common.Common;
+using Dev2.Views.Search;
+using Dev2.ViewModels.Search;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -105,6 +100,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _exitCommand;
         private AuthorizeCommand _settingsCommand;
         private AuthorizeCommand _schedulerCommand;
+        private ICommand _searchCommand;
         private ICommand _showCommunityPageCommand;
         readonly IAsyncWorker _asyncWorker;
         readonly IViewFactory _factory;
@@ -171,34 +167,36 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        internal async Task<bool> LoadWorkflowAsync(string e)
+        internal async Task<bool> LoadWorkflowAsync(string clickedResource)
         {
             _contextualResourceModel = null;
-            if (!File.Exists(e))
+            if (!File.Exists(clickedResource) || clickedResource.Contains(EnvironmentVariables.VersionsPath))
             {
                 return false;
             }
-            ActiveServer.ResourceRepository.Load();
+            ActiveServer.ResourceRepository.ReLoadResources();
             var fileName = string.Empty;
-            fileName = Path.GetFileNameWithoutExtension(e);
+            fileName = Path.GetFileNameWithoutExtension(clickedResource);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
             var serverRepo = CustomContainer.Get<IServerRepository>();
-            if (singleResource == null)
+            if (singleResource != null && clickedResource.Contains(EnvironmentVariables.ResourcePath))
             {
-                _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, PopupProvider, this, _file, _filePath, serverRepo);
-                if (_contextualResourceModel != null)
-                {
-                    var ctResourceModel = _contextualResourceModel;
-                    OpenResource(_contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
-                    if (ctResourceModel.ResourceType == ResourceType.WorkflowService || ctResourceModel.ResourceType == ResourceType.Service)
-                    {
-                        SaveDialogHelper.ShowNewWorkflowSaveDialog(ctResourceModel, false, e);
-                    }
-                }
+                OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
             }
             else
             {
-                OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
+                if (singleResource == null)
+                {
+                    _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(clickedResource, PopupProvider, this, _file, _filePath, serverRepo);
+                    if (_contextualResourceModel != null && (_contextualResourceModel.ResourceType == ResourceType.WorkflowService || _contextualResourceModel.ResourceType == ResourceType.Service))
+                    {
+                        SaveDialogHelper.ShowNewWorkflowSaveDialog(_contextualResourceModel, false, clickedResource);
+                    }
+                }
+                if (singleResource != null && !clickedResource.Contains(EnvironmentVariables.ResourcePath))
+                {
+                    _contextualResourceModel = await ResourceExtensionHelper.HandleResourceInResourceFolderAndOtherDir(clickedResource, PopupProvider, this, _file, _filePath, serverRepo);
+                }
             }
             return true;
         }
@@ -274,6 +272,15 @@ namespace Dev2.Studio.ViewModels
         {
             get => _settingsCommand ?? (_settingsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
         }
+
+        public ICommand SearchCommand
+        {
+            get
+            {
+                return _searchCommand ?? (_searchCommand = new DelegateCommand(param => ShowSearchWindow()));
+            }
+        }
+
         public IAuthorizeCommand SchedulerCommand
         {
             get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
@@ -357,7 +364,7 @@ namespace Dev2.Studio.ViewModels
         }
 
         public IVersionChecker Version { get; }
-        
+
         public ShellViewModel()
             : this(EventPublishers.Aggregator, new AsyncWorker(), CustomContainer.Get<IServerRepository>(), new VersionChecker(), new ViewFactory())
         {
@@ -622,14 +629,7 @@ namespace Dev2.Studio.ViewModels
             if (otherResourceModel != null && resourceModel != null)
             {
                 resourceModel.ResourceName = otherResourceModel.ResourceName;
-                if (resourceModel.IsVersionResource)
-                {
-                    resourceModel.VersionInfo = version.VersionInfo;
-                }
-                if (otherResourceModel.IsVersionResource)
-                {
-                    otherResourceModel.VersionInfo = version.VersionInfo;
-                }
+                resourceModel.VersionInfo = version.VersionInfo;
 
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
                 workSurfaceKey.EnvironmentID = otherResourceModel.Environment.EnvironmentID;
@@ -688,7 +688,11 @@ namespace Dev2.Studio.ViewModels
                 _worksurfaceContextManager.AddWorkSurfaceContext(contextualResourceModel);
             }
         }
-
+        public void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer, IContextualResourceModel contextualResourceModel)
+        {
+            _contextualResourceModel = contextualResourceModel;
+            OpenResource(resourceId, environmentId, activeServer);
+        }
         public void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer)
         {
             var environmentModel = ServerRepository.Get(environmentId);
@@ -1027,6 +1031,35 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void OpenSelectedTest(Guid resourceId, string testName)
+        {
+            var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
+            if (environmentModel != null)
+            {
+                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
+                if (contextualResourceModel != null)
+                {
+                    workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.EnvironmentID;
+                    workSurfaceKey.ResourceID = contextualResourceModel.ID;
+                    workSurfaceKey.ServerID = contextualResourceModel.ServerID;
+
+                    var loadTests = environmentModel.ResourceRepository.LoadResourceTests(resourceId);
+                    var selectedTest = loadTests.FirstOrDefault(model => model.TestName.ToLower().Contains(testName.ToLower()));
+
+                    if (selectedTest != null)
+                    {
+                        var workflow = new WorkflowDesignerViewModel(contextualResourceModel);
+                        var testViewModel = new ServiceTestViewModel(contextualResourceModel, new AsyncWorker(), EventPublisher, new ExternalProcessExecutor(), workflow);
+
+                        var serviceTestModel = testViewModel.ToServiceTestModel(selectedTest);
+                        _worksurfaceContextManager.ViewSelectedTestForService(contextualResourceModel, serviceTestModel, testViewModel, workSurfaceKey);
+                        testViewModel.SelectedServiceTest = serviceTestModel;
+                    }
+                }
+            }
+        }
+
         public void RunAllTests(string ResourcePath, Guid resourceId)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
@@ -1325,6 +1358,15 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void ShowSearchWindow()
+        {
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SearchViewer);
+            workSurfaceKey.EnvironmentID = ActiveServer.EnvironmentID;
+            workSurfaceKey.ResourceID = Guid.Empty;
+            workSurfaceKey.ServerID = ActiveServer.ServerID;
+            _worksurfaceContextManager.SearchView(workSurfaceKey);
+        }
+
         public void ShowCommunityPage()
         {
             BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
@@ -1506,7 +1548,7 @@ namespace Dev2.Studio.ViewModels
             }
             SetActiveServer(item.Environment);
         }
-        
+
         internal Action<WorkSurfaceContextViewModel> ActiveItemChanged;
 
         bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)

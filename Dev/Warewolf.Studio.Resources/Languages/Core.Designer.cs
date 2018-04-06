@@ -676,6 +676,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search.
+        /// </summary>
+        public static string MenuDialogSearchLabel {
+            get {
+                return ResourceManager.GetString("MenuDialogSearchLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Settings.
         /// </summary>
         public static string MenuDialogSettingsLabel {
@@ -1034,6 +1043,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string SchedulerUnsavedTaskMessage {
             get {
                 return ResourceManager.GetString("SchedulerUnsavedTaskMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server selected is not up to date with the latest server version..
+        /// </summary>
+        public static string SearchVersionConflictError {
+            get {
+                return ResourceManager.GetString("SearchVersionConflictError", resourceCulture);
             }
         }
         
