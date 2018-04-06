@@ -799,7 +799,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
             testFrameworkViewModel.SelectedServiceTest.Outputs.Add(new ServiceTestOutput("Message", "", "", ""));
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(IDebugState) }, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
@@ -844,7 +844,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             var testFrameworkViewModel = new ServiceTestViewModel(contextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, mockWorkflowDesignerViewModel.Object, newTestFromDebugMessage);
             testFrameworkViewModel.WebClient = new Mock<IWarewolfWebClient>().Object;
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance, null, new Type[] { typeof(IDebugState) }, null);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(testFrameworkViewModel);
             //---------------Execute Test ----------------------
