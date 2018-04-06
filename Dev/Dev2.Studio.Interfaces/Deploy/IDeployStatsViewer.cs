@@ -21,7 +21,7 @@ namespace Dev2.Studio.Interfaces.Deploy
         int Overrides { get; set; }
         string Status { get; set; }
 
-        void Calculate( IList<IExplorerTreeItem> items);
+        void TryCalculate( IList<IExplorerTreeItem> items);
 
         IList<Conflict> Conflicts { get; }
 
