@@ -591,7 +591,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             var builder = new ResourceCatalogBuilder();
 
-            builder.BuildCatalogFromWorkspace(workspacePath, folders);
+            builder.TryBuildCatalogFromWorkspace(workspacePath, folders);
             if (getDuplicates)
             {
                 DuplicateResources = builder.DuplicateResources;

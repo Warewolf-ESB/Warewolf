@@ -284,7 +284,7 @@ namespace Dev2.Runtime.Hosting
         public IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, bool getDuplicates, params string[] folders)
         {
             Builder = new ResourceCatalogBuilder();
-            Builder.BuildCatalogFromWorkspace(workspacePath, folders);
+            Builder.TryBuildCatalogFromWorkspace(workspacePath, folders);
             var resources = Builder.ResourceList;
             if (getDuplicates)
             {
