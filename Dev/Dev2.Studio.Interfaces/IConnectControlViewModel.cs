@@ -25,7 +25,7 @@ namespace Dev2.Studio.Interfaces
         bool CanEditServer { get; set; }
         bool CanCreateServer { get; set; }
 
-        Task<bool> ConnectAsync(IServer connection);
+        Task<bool> TryConnectAsync(IServer connection);
         event SelectedServerChanged SelectedEnvironmentChanged;
         void LoadServers();
     }
