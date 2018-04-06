@@ -1071,27 +1071,36 @@ namespace Warewolf.Studio.ViewModels
                 {
                     continue;
                 }
-                if (serviceTestStep.Children.Count == testStep.Children.Count)
+                AddMissingChild(serviceTestStep, testStep);
+            }
+        }
+
+        static void AddMissingChild(IServiceTestStep serviceTestStep, IServiceTestStep testStep)
+        {
+            if (serviceTestStep.Children.Count == testStep.Children.Count)
+            {
+                foreach (var child in testStep.Children)
                 {
-                    foreach (var child in testStep.Children)
-                    {
-                        var testStepChild = child as ServiceTestStep;
-                        AddMissingChild(serviceTestStep.Children, testStepChild);
-                    }
+                    AddMissingChild(serviceTestStep.Children, child);
                 }
-                else
+            }
+            else
+            {
+                foreach (var child in testStep.Children)
                 {
-                    foreach (var child in testStep.Children)
-                    {
-                        var testSteps = serviceTestStep.Children.Where(a => a.UniqueId == child.UniqueId);
-                        if (!testSteps.Any())
-                        {
-                            var indexOf = testStep.Children.IndexOf(child);
-                            child.Parent = serviceTestStep;
-                            serviceTestStep.Children.Insert(indexOf, child);
-                        }
-                    }
+                    AddMissingChild(serviceTestStep, testStep, child);
                 }
+            }
+        }
+
+        static void AddMissingChild(IServiceTestStep serviceTestStep, IServiceTestStep testStep, IServiceTestStep child)
+        {
+            var testSteps = serviceTestStep.Children.Where(a => a.UniqueId == child.UniqueId);
+            if (!testSteps.Any())
+            {
+                var indexOf = testStep.Children.IndexOf(child);
+                child.Parent = serviceTestStep;
+                serviceTestStep.Children.Insert(indexOf, child);
             }
         }
 
@@ -1226,28 +1235,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (step.Parent == null)
                 {
-                    var exists = FindExistingStep(step.UniqueId.ToString());
-                    if (exists == null)
-                    {
-                        SelectedServiceTest.TestSteps.Add(step);
-                    }
+                    ProcessActivity(step);
                 }
                 else
                 {
-                    var parent = step.Parent;
-                    while (parent != null)
-                    {
-                        var child = parent;
-                        if (child.Parent == null)
-                        {
-                            var exists = FindExistingStep(step.UniqueId.ToString());
-                            if (exists == null)
-                            {
-                                SelectedServiceTest.TestSteps.Add(child);
-                            }
-                        }
-                        parent = child.Parent;
-                    }
+                    ProcessParentsActivities(step);
                 }
             }
             else
@@ -1272,6 +1264,33 @@ namespace Warewolf.Studio.ViewModels
                     SelectedServiceTest.TestSteps.Add(testStep);
                     SetStepIcon(type, testStep);
                 }
+            }
+        }
+
+        void ProcessActivity(IServiceTestStep step)
+        {
+            var exists = FindExistingStep(step.UniqueId.ToString());
+            if (exists == null)
+            {
+                SelectedServiceTest.TestSteps.Add(step);
+            }
+        }
+
+        void ProcessParentsActivities(IServiceTestStep step)
+        {
+            var parent = step.Parent;
+            while (parent != null)
+            {
+                var child = parent;
+                if (child.Parent == null)
+                {
+                    var exists = FindExistingStep(step.UniqueId.ToString());
+                    if (exists == null)
+                    {
+                        SelectedServiceTest.TestSteps.Add(child);
+                    }
+                }
+                parent = child.Parent;
             }
         }
 
@@ -2029,15 +2048,20 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return;
                 }
-                foreach (var serviceTestOutput in step.StepOutputs)
+                MarkChildrenPending(step);
+            }
+        }
+
+        static void MarkChildrenPending(ServiceTestStep step)
+        {
+            foreach (var serviceTestOutput in step.StepOutputs)
+            {
+                if (serviceTestOutput is ServiceTestOutput stepOutput)
                 {
-                    if (serviceTestOutput is ServiceTestOutput stepOutput)
+                    stepOutput.TestPending = true;
+                    if (stepOutput.Result != null)
                     {
-                        stepOutput.TestPending = true;
-                        if (stepOutput.Result != null)
-                        {
-                            stepOutput.Result.RunTestResult = RunResult.TestPending;
-                        }
+                        stepOutput.Result.RunTestResult = RunResult.TestPending;
                     }
                 }
             }
