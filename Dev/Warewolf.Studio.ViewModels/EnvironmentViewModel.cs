@@ -1075,10 +1075,7 @@ namespace Warewolf.Studio.ViewModels
         public IExplorerTooltips ExplorerTooltips { get; set; }
         public bool IsMergeVisible
         {
-            get
-            {
-                return _isMergeVisible;
-            }
+            get => _isMergeVisible;
             set
             {
                 _isMergeVisible = value;
