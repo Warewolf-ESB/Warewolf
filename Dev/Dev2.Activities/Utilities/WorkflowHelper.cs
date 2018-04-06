@@ -256,6 +256,7 @@ namespace Dev2.Utilities
             }
         }
 
+
         public static bool AreWorkflowsEqual(string left, string right)
         {
             var xmlDoc_Left = new XmlDocument();

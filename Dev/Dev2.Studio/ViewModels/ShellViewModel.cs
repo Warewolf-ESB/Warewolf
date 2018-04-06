@@ -63,6 +63,13 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
+using System.IO;
+using Dev2.Webs;
+using Dev2.Common.Wrappers;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.Common;
 using Dev2.Views.Search;
 using Dev2.ViewModels.Search;
 
@@ -270,7 +277,11 @@ namespace Dev2.Studio.ViewModels
         }
         public IAuthorizeCommand SettingsCommand
         {
-            get => _settingsCommand ?? (_settingsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
+            get
+            {
+                return _settingsCommand ?? (_settingsCommand =
+                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
+            }
         }
 
         public ICommand SearchCommand
@@ -629,7 +640,14 @@ namespace Dev2.Studio.ViewModels
             if (otherResourceModel != null && resourceModel != null)
             {
                 resourceModel.ResourceName = otherResourceModel.ResourceName;
-                resourceModel.VersionInfo = version.VersionInfo;
+                if (resourceModel.IsVersionResource)
+                {
+                    resourceModel.VersionInfo = version.VersionInfo;
+                }
+                if (otherResourceModel.IsVersionResource)
+                {
+                    otherResourceModel.VersionInfo = version.VersionInfo;
+                }
 
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
                 workSurfaceKey.EnvironmentID = otherResourceModel.Environment.EnvironmentID;
@@ -1037,6 +1055,7 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
+
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
                 if (contextualResourceModel != null)
                 {
