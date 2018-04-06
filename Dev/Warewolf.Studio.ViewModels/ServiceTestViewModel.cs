@@ -605,38 +605,33 @@ namespace Warewolf.Studio.ViewModels
             }
             foreach (var output in outputs)
             {
-                AddOutput(output, serviceTestStep, serviceTestOutputs);
+                var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
+                foreach (var debugItemResult in actualOutputs)
+                {
+                    var variable = debugItemResult.Variable;
+                    var value = debugItemResult.Value;
+                    var assertOp = "=";
+                    if (debugItemResult.MoreLink != null)
+                    {
+                        if (serviceTestStep.ActivityType == typeof(DsfEnhancedDotNetDllActivity).Name)
+                        {
+                            var realValue = WebClient.DownloadString(debugItemResult.MoreLink);
+                            value = realValue.TrimEnd(Environment.NewLine.ToCharArray());
+                        }
+                        else
+                        {
+                            assertOp = "Contains";
+                        }
+                    }
+                    var serviceTestOutput = new ServiceTestOutput(variable ?? "", value, "", "")
+                    {
+                        AssertOp = assertOp,
+                        AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
+                    };
+                    serviceTestOutputs.Add(serviceTestOutput);
+                }
             }
             serviceTestStep.StepOutputs = serviceTestOutputs;
-        }
-
-        void AddOutput(IDebugItem output, ServiceTestStep serviceTestStep, ObservableCollection<IServiceTestOutput> serviceTestOutputs)
-        {
-            var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
-            foreach (var debugItemResult in actualOutputs)
-            {
-                var variable = debugItemResult.Variable;
-                var value = debugItemResult.Value;
-                var assertOp = "=";
-                if (debugItemResult.MoreLink != null)
-                {
-                    if (serviceTestStep.ActivityType == typeof(DsfEnhancedDotNetDllActivity).Name)
-                    {
-                        var realValue = WebClient.DownloadString(debugItemResult.MoreLink);
-                        value = realValue.TrimEnd(Environment.NewLine.ToCharArray());
-                    }
-                    else
-                    {
-                        assertOp = "Contains";
-                    }
-                }
-                var serviceTestOutput = new ServiceTestOutput(variable ?? "", value, "", "")
-                {
-                    AssertOp = assertOp,
-                    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
-                };
-                serviceTestOutputs.Add(serviceTestOutput);
-            }
         }
 
         void SetInputs(IDebugState inputState)
@@ -681,37 +676,32 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach (var debugItemResult in debugItem.ResultsList)
                 {
-                    SetOutputs(outPutState, dataList, outPuts, debugItemResult);
+                    var variable = debugItemResult.Variable.Replace("[[", "").Replace("]]", "");
+                    var value = debugItemResult.Value;
+                    var serviceTestOutput = new ServiceTestOutput(variable, value, "", "");
+                    var output = serviceTestOutput;
+                    serviceTestOutput.AddNewAction = () => ((ServiceTestModel)SelectedServiceTest).AddRow(output, dataList);
+
+                    if (!string.IsNullOrEmpty(debugItemResult.MoreLink))
+                    {
+                        if (outPutState.ActualType == typeof(DsfEnhancedDotNetDllActivity).Name)
+                        {
+                            var realValue = WebClient.DownloadString(debugItemResult.MoreLink);
+                            value = realValue.TrimEnd(Environment.NewLine.ToCharArray());
+                        }
+                        else
+                        {
+                            serviceTestOutput.AssertOp = "Contains";
+                        }
+                    }
+                    serviceTestOutput.Value = value;
+                    outPuts.Add(serviceTestOutput);
                 }
             }
             SelectedServiceTest.Outputs = outPuts;
             SelectedServiceTest.ErrorExpected = outPutState.HasError;
             SelectedServiceTest.NoErrorExpected = !outPutState.HasError;
             SelectedServiceTest.ErrorContainsText = outPutState.ErrorMessage;
-        }
-
-        void SetOutputs(IDebugState outPutState, DataListModel dataList, ObservableCollection<IServiceTestOutput> outPuts, IDebugItemResult debugItemResult)
-        {
-            var variable = debugItemResult.Variable.Replace("[[", "").Replace("]]", "");
-            var value = debugItemResult.Value;
-            var serviceTestOutput = new ServiceTestOutput(variable, value, "", "");
-            var output = serviceTestOutput;
-            serviceTestOutput.AddNewAction = () => ((ServiceTestModel)SelectedServiceTest).AddRow(output, dataList);
-
-            if (!string.IsNullOrEmpty(debugItemResult.MoreLink))
-            {
-                if (outPutState.ActualType == typeof(DsfEnhancedDotNetDllActivity).Name)
-                {
-                    var realValue = WebClient.DownloadString(debugItemResult.MoreLink);
-                    value = realValue.TrimEnd(Environment.NewLine.ToCharArray());
-                }
-                else
-                {
-                    serviceTestOutput.AssertOp = "Contains";
-                }
-            }
-            serviceTestOutput.Value = value;
-            outPuts.Add(serviceTestOutput);
         }
 
         static void OnError(Exception exception)
@@ -963,7 +953,35 @@ namespace Warewolf.Studio.ViewModels
             SetStepIcon(type, testStep);
             foreach (var activity in sequence.Activities)
             {
-                AddSequenceActivity(testStep, activity);
+                if (activity is DsfNativeActivity<string> act)
+                {
+                    if (act.GetType() == typeof(DsfSequenceActivity))
+                    {
+                        AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
+                    }
+                    else
+                    {
+                        AddChildActivity(act, testStep);
+                    }
+                }
+                else
+                {
+                    if (activity is DsfNativeActivity<bool> act2)
+                    {
+                        AddChildActivity(act2, testStep);
+                    }
+                    if (activity.GetType() == typeof(DsfForEachActivity))
+                    {
+                        AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
+                    }
+                    else
+                    {
+                        if (activity.GetType() == typeof(DsfSelectAndApplyActivity))
+                        {
+                            AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
+                        }
+                    }
+                }
             }
             if (exists == null)
             {
@@ -972,39 +990,6 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 AddMissingChild(serviceTestSteps, testStep);
-            }
-        }
-
-        void AddSequenceActivity(ServiceTestStep testStep, Activity activity)
-        {
-            if (activity is DsfNativeActivity<string> act)
-            {
-                if (act.GetType() == typeof(DsfSequenceActivity))
-                {
-                    AddSequence(act as DsfSequenceActivity, testStep, testStep.Children);
-                }
-                else
-                {
-                    AddChildActivity(act, testStep);
-                }
-            }
-            else
-            {
-                if (activity is DsfNativeActivity<bool> act2)
-                {
-                    AddChildActivity(act2, testStep);
-                }
-                if (activity.GetType() == typeof(DsfForEachActivity))
-                {
-                    AddForEach(activity as DsfForEachActivity, testStep, testStep.Children);
-                }
-                else
-                {
-                    if (activity.GetType() == typeof(DsfSelectAndApplyActivity))
-                    {
-                        AddSelectAndApply(activity as DsfSelectAndApplyActivity, testStep, testStep.Children);
-                    }
-                }
             }
         }
 
