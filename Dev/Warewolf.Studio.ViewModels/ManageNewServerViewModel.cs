@@ -255,10 +255,7 @@ namespace Warewolf.Studio.ViewModels
                         var src = ToSource();
                         src.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
-                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
-                        {
-                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ID);
-                        }
+                        AfterSave(requestServiceNameViewModel, src);
 
                         Item = src;
                         _serverSource = src;
@@ -277,6 +274,14 @@ namespace Warewolf.Studio.ViewModels
                 Item = src;
                 _serverSource = src;
                 SetupHeaderTextFromExisting();
+            }
+        }
+
+        void AfterSave(IRequestServiceNameViewModel requestServiceNameViewModel, IServerSource src)
+        {
+            if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+            {
+                AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ID);
             }
         }
 
