@@ -53,6 +53,7 @@ namespace Dev2.Studio.Interfaces.Enums
         RabbitMQSource,
         WcfSource,
         ServiceTestsViewer,
-        MergeConflicts
+        MergeConflicts,
+        SearchViewer
     }
 }

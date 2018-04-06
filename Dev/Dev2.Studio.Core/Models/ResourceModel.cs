@@ -355,6 +355,8 @@ namespace Dev2.Studio.Core.Models
         }
 
         public bool IsNewWorkflow { get; set; }
+        public bool IsNotWarewolfPath { get; set; }
+        public bool IsOpeningFromOtherDir { get; set ; }
 
         public string ServerResourceType { get; set; }
 
@@ -605,6 +607,8 @@ namespace Dev2.Studio.Core.Models
         }
         
         public string Error => null;
+
+        
 
         public string this[string columnName]
         {

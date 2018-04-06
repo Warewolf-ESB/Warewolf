@@ -18,6 +18,7 @@ using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Enums.Enums;
+using Dev2.Common.Interfaces.Search;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
@@ -27,8 +28,6 @@ using Newtonsoft.Json;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
-
 
 namespace Dev2.Data.Util
 {
@@ -129,26 +128,24 @@ namespace Dev2.Data.Util
         public static bool IsCalcEvaluation(string expression, out string newExpression)
         {
             var result = false;
-
             newExpression = string.Empty;
 
-            if (expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix, StringComparison.Ordinal) && expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix, StringComparison.Ordinal))
+            if (expression.StartsWith(GlobalConstants.CalculateTextConvertPrefix, StringComparison.Ordinal) &&
+                expression.EndsWith(GlobalConstants.CalculateTextConvertSuffix, StringComparison.Ordinal))
             {
                 newExpression = expression.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
                 result = true;
             }
 
-
-            if (expression.StartsWith(GlobalConstants.AggregateCalculateTextConvertPrefix, StringComparison.Ordinal) && expression.EndsWith(GlobalConstants.AggregateCalculateTextConvertSuffix, StringComparison.Ordinal))
+            if (expression.StartsWith(GlobalConstants.AggregateCalculateTextConvertPrefix, StringComparison.Ordinal) &&
+                expression.EndsWith(GlobalConstants.AggregateCalculateTextConvertSuffix, StringComparison.Ordinal))
             {
                 newExpression = expression.Substring(GlobalConstants.AggregateCalculateTextConvertPrefix.Length, expression.Length - (GlobalConstants.AggregateCalculateTextConvertSuffix.Length + GlobalConstants.AggregateCalculateTextConvertPrefix.Length));
                 result = true;
             }
 
-
             return result;
         }
-
 
         /// <summary>
         /// Removes the brackets.
@@ -164,7 +161,6 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static bool IsSystemTag(string tag)
         {
-
             // Nasty junk that has been carried!
             string[] nastyJunk = { "WebServerUrl", "Dev2WebServer", "PostData", "Service" };
 
@@ -173,8 +169,8 @@ namespace Dev2.Data.Util
 
             if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch, StringComparison.Ordinal))
             {
-                tag = tag.Replace(GlobalConstants.SystemTagNamespaceSearch, "");
-                result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
+                var replacedTag = tag.Replace(GlobalConstants.SystemTagNamespaceSearch, "");
+                result = SysTags.Contains(replacedTag) || nastyJunk.Contains(replacedTag);
             }
 
             return result;
@@ -190,7 +186,7 @@ namespace Dev2.Data.Util
                 var inputRecSets = DataListFactory.CreateRecordSetCollection(inputs, false);
                 var inputScalarList = DataListFactory.CreateScalarList(inputs, false);
                 var inputObjectList = DataListFactory.CreateObjectList(inputs);
-                Common.TryCreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
+                Common.CreateRecordSetsInputs(outerEnvironment, inputRecSets, inputs, env, update);
                 Common.CreateScalarInputs(outerEnvironment, inputScalarList, env, update);
                 Common.CreateObjectInputs(outerEnvironment, inputObjectList, env, update);
             }
@@ -287,11 +283,22 @@ namespace Dev2.Data.Util
 
         public static string AddBracketsToValueIfNotExist(string value)
         {
-            string result;
+            string WrapInBrackets(string val)
+            {
+                var result = val;
+                if (!value.Contains(OpeningSquareBrackets))
+                {
+                    result = string.Concat(OpeningSquareBrackets, result);
+                }
+                if (!value.Contains(ClosingSquareBrackets))
+                {
+                    result = string.Concat(result, ClosingSquareBrackets);
+                }
+                
+                return result;
+            }
 
-            result = !value.Contains(ClosingSquareBrackets) ? !value.Contains(OpeningSquareBrackets) ? string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets) : string.Concat(value, ClosingSquareBrackets) : value;
-
-            return result;
+            return WrapInBrackets(value); 
         }
 
         public static string MakeValueIntoHighLevelRecordset(string value) => RecSetCommon.MakeValueIntoHighLevelRecordset(value, false);
@@ -395,21 +402,7 @@ namespace Dev2.Data.Util
 
             if (!isXml)
             {
-                if (trimedData.Length > 1 && trimedData[1] == '<' && trimedData[2] == '?')
-                {
-                    trimedData = trimedData.Substring(1);
-                }
-                else if (trimedData.Length > 2 && trimedData[2] == '<' && trimedData[3] == '?')
-                {
-                    trimedData = trimedData.Substring(2);
-                }
-                else
-                {
-                    if (trimedData.Length > 3 && trimedData[3] == '<' && trimedData[4] == '?')
-                    {
-                        trimedData = trimedData.Substring(3);
-                    }
-                }
+                trimedData = TrimNonXmlData(trimedData);
             }
             var bomMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
             if (trimedData.StartsWith(bomMarkUtf8, StringComparison.OrdinalIgnoreCase))
@@ -419,6 +412,28 @@ namespace Dev2.Data.Util
 
             trimedData = trimedData.Replace("\0", "");
             return trimedData;
+        }
+
+        private static string TrimNonXmlData(string trimedData)
+        {
+            var nonXmlData = trimedData;
+            if (nonXmlData.Length > 1 && nonXmlData[1] == '<' && nonXmlData[2] == '?')
+            {
+                nonXmlData = nonXmlData.Substring(1);
+            }
+            else if (nonXmlData.Length > 2 && nonXmlData[2] == '<' && nonXmlData[3] == '?')
+            {
+                nonXmlData = nonXmlData.Substring(2);
+            }
+            else
+            {
+                if (nonXmlData.Length > 3 && nonXmlData[3] == '<' && nonXmlData[4] == '?')
+                {
+                    nonXmlData = nonXmlData.Substring(3);
+                }
+            }
+
+            return nonXmlData;
         }
 
         public static string RemoveRecordsetBracketsFromValue(string value) => RecSetCommon.RemoveRecordsetBracketsFromValue(value);
@@ -465,8 +480,6 @@ namespace Dev2.Data.Util
             }
         }
 
-
-
         public static string ReplaceRecordsetBlankWithIndex(string fullRecSetName, int length) => RecSetCommon.ReplaceRecordsetBlankWithIndex(fullRecSetName, length);
         public static string ReplaceObjectBlankWithIndex(string objectName, int length) => RecSetCommon.ReplaceObjectBlankWithIndex(objectName, length);
 
@@ -496,7 +509,6 @@ namespace Dev2.Data.Util
             return false;
         }
 
-
         public static string GenerateSerializableDefsFromDataList(string datalist, enDev2ColumnArgumentDirection direction)
         {
             var db = new DefinitionBuilder();
@@ -518,21 +530,36 @@ namespace Dev2.Data.Util
             return db.Generate();
         }
 
-        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.TryGenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
+        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection);
 
-        internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection) => ioDirection == dev2ColumnArgumentDirection ||
-                   ioDirection == enDev2ColumnArgumentDirection.Both &&
-                   (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
+        public static IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, bool includeNoneDirection, ISearch searchParameters) => Common.GenerateDefsFromDataList(dataList, dev2ColumnArgumentDirection, includeNoneDirection, searchParameters);
+
+        internal static bool CheckIODirection(enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, enDev2ColumnArgumentDirection ioDirection,bool includeNoneDirection)
+        {
+            if(includeNoneDirection && dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.None)
+            {
+                return true;
+            }
+            if (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Both)
+            {
+                return (ioDirection == enDev2ColumnArgumentDirection.Input || ioDirection == enDev2ColumnArgumentDirection.Output);
+            }
+            if (ioDirection == enDev2ColumnArgumentDirection.Both)
+            {
+                return (dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Input || dev2ColumnArgumentDirection == enDev2ColumnArgumentDirection.Output);
+            }
+
+            return ioDirection == dev2ColumnArgumentDirection;
+        }
 
         internal static enDev2ColumnArgumentDirection GetDev2ColumnArgumentDirection(XmlNode tmpNode)
         {
             var ioDirectionAttribute = tmpNode.Attributes[GlobalConstants.DataListIoColDirection];
 
             enDev2ColumnArgumentDirection ioDirection;
-            ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) : enDev2ColumnArgumentDirection.Both;
+            ioDirection = ioDirectionAttribute != null ? (enDev2ColumnArgumentDirection)(Dev2EnumConverter.GetEnumFromStringDiscription(ioDirectionAttribute.Value, typeof(enDev2ColumnArgumentDirection)) ?? enDev2ColumnArgumentDirection.Both) : enDev2ColumnArgumentDirection.Both;
             return ioDirection;
         }
-
        
         public static IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection) => Common.GenerateDefsFromDataListForDebug(dataList, dev2ColumnArgumentDirection);
 
@@ -544,7 +571,6 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static T ConvertFromJsonToModel<T>(StringBuilder payload)
         {
-
             var obj = JsonConvert.DeserializeObject<T>(payload.ToString());
 
             return obj;

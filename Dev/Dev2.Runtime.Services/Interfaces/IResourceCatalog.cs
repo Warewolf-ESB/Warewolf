@@ -2,6 +2,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Warewolf.ResourceManagement;
 
 namespace Dev2.Runtime.Interfaces
 {
@@ -20,5 +21,6 @@ namespace Dev2.Runtime.Interfaces
         IDev2Activity Parse(Guid workspaceID, Guid resourceID);
         IDev2Activity Parse(Guid workspaceID, Guid resourceID, string executionId);
         void CleanUpOldVersionControlStructure();
+        IResourceActivityCache GetResourceActivityCache(Guid workspaceID);
     }
 }

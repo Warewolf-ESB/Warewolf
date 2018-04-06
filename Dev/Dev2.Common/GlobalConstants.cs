@@ -351,6 +351,8 @@ where pn.nspname = 'public';
         public static readonly string UpgradedExplorerItemModelFormat = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
         public static readonly string VersionDownloadPath = "Installers\\";
         public static readonly string VersionFolder = "VersionControl";
+        public static readonly string ServerVersion = "Server Version: ";
+        public static readonly string MinimumSupportedVersion = "Minimum supported version:";
         public static readonly Guid NullDataListID = Guid.Empty;
         
         public static readonly Guid ServerWorkspaceID = Guid.Empty;

@@ -43,7 +43,6 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Moq.Language.Flow;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -787,10 +786,6 @@ namespace Dev2.Activities.Designers.Tests.Service
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            using (viewModel)
-            {
-
-            }
             //---------------Test Result -----------------------
             Assert.IsTrue(true);
         }
@@ -1018,7 +1013,6 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         {
             var eventAggregator = new Mock<IEventAggregator>();
-            //eventAggregator.Setup(e => e.Publish(It.IsAny<EditActivityMessage>())).Verifiable();
 
             var instanceID = Guid.NewGuid();
             var error1 = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = "xxxxx" };

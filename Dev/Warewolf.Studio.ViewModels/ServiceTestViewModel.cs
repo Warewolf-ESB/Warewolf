@@ -2384,7 +2384,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        ServiceTestModel ToServiceTestModel(IServiceTestModelTO to)
+        public ServiceTestModel ToServiceTestModel(IServiceTestModelTO to)
         {
             var serviceTestModel = new ServiceTestModel(ResourceModel.ID)
             {

@@ -22,6 +22,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xaml;
+using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Decision;
@@ -253,6 +254,72 @@ namespace Dev2.Utilities
                 variables = new Collection<Variable>();
                 variables.Clear();
             }
+        }
+
+
+        public static bool AreWorkflowsEqual(string left, string right)
+        {
+            var xmlDoc_Left = new XmlDocument();
+            xmlDoc_Left.LoadXml(left);
+            var xmlDoc_Right = new XmlDocument();
+            xmlDoc_Right.LoadXml(right);
+            return CompareWorkflows(xmlDoc_Left, xmlDoc_Right);
+        }
+        private static bool CompareWorkflows(XmlNode lnode, XmlNode rnode)
+        {
+            if (lnode is null || rnode is null)
+            {
+                return lnode == rnode;
+            }
+            if (lnode.Name.Equals("av:Size"))
+            {
+                return true;
+            }
+
+            bool result = lnode.Name.Equals(rnode.Name);
+            if (!result)
+            {
+                return result;
+            }
+            if (lnode.Name.Equals("#text"))
+            {
+                result = lnode.InnerText.Equals(rnode.InnerText);
+                if (!result)
+                {
+                    return result;
+                }
+            }
+            if (lnode.HasChildNodes)
+            {
+                for (var i = 0; i < lnode.ChildNodes.Count; i++)
+                {
+                    var eq = CompareWorkflows(lnode.ChildNodes[i], rnode.ChildNodes[i]);
+                    if (!eq)
+                    {
+                        return eq;
+                    }
+                }
+            }
+
+            if (!(lnode.Attributes is null))
+            {
+                result = CompareAttributes(lnode, rnode);
+            }
+
+            return result;
+        }
+        private static bool CompareAttributes(XmlNode lnode, XmlNode rnode)
+        {
+            for (int i = 0; i < lnode.Attributes.Count; i++)
+            {
+                var eq = lnode.Attributes[i].Name.Equals(rnode.Attributes[i].Name);
+                eq &= lnode.Attributes[i].Value.Equals(rnode.Attributes[i].Value);
+                if (!eq)
+                {
+                    return eq;
+                }
+            }
+            return true;
         }
     }
 }

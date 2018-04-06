@@ -103,7 +103,6 @@ namespace Dev2.Studio
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
             Tracker.StartStudio();
-            CustomGitOps.SetCustomGitTool(new ExternalProcessExecutor());
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
             Task.Factory.StartNew(() =>
             {
@@ -307,7 +306,7 @@ namespace Dev2.Studio
             var serverLogFile = HelperUtils.GetServerLogSettingsConfigFile();
             if (!File.Exists(serverLogFile))
             {
-                File.WriteAllText(serverLogFile, GlobalConstants.DefaultServerLogFileConfig);
+                return false;
             }
             try
             {
@@ -321,7 +320,7 @@ namespace Dev2.Studio
                     }
                     if (line.Contains(@"[Header]"))
                     {
-                        return true;
+                        break;
                     }
                 }
                 return false;

@@ -9,6 +9,7 @@
 */
 
 using Dev2.Common;
+using System.Activities.Presentation;
 using System.Collections.Generic;
 
 namespace Dev2.Studio.Interfaces
@@ -17,5 +18,7 @@ namespace Dev2.Studio.Interfaces
     {
         (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference);
         (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadDiffFromLocalServer);
+
+        List<ConflictTreeNode> BuildWorkflow(System.Text.StringBuilder xaml);
     }
 }

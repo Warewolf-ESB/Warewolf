@@ -191,6 +191,8 @@
     </Compile>
     <Compile Include="ESB\Management\DefaultEsbManagementEndpoint.cs" />
     <Compile Include="ESB\Management\EsbManagementServiceEntry.cs" />
+    <Compile Include="ESB\Management\Services\FetchAllTests.cs" />
+    <Compile Include="ESB\Management\Services\GetFilterListService.cs" />
     <Compile Include="ESB\Management\Services\TaskExtentions.cs" />
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />
@@ -378,6 +380,10 @@
     <Compile Include="ResourceCatalogImpl\ResourceSyncProvider.cs" />
     <Compile Include="ResourceUpgrades\BaseResourceUpgrader.cs" />
     <Compile Include="ResourceUpgrades\EncryptionResourceUpgrader.cs" />
+    <Compile Include="Search\ActivitySearcher.cs" />
+    <Compile Include="Search\ResourceSearcher.cs" />
+    <Compile Include="Search\TestSearcher.cs" />
+    <Compile Include="Search\VariableListSearcher.cs" />
     <Compile Include="Security\ServerAuthorizationService.cs" />
     <Compile Include="Security\ProcessHost.cs" />
     <Compile Include="Security\ServerSecurityService.cs" />
@@ -546,9 +552,9 @@
   <ItemGroup>
     <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.Common.dll" />
     <Analyzer Include="..\packages\codecracker.CSharp.1.0.1\analyzers\dotnet\cs\CodeCracker.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\Google.Protobuf.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.CSharp.dll" />
-    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.6.0.3969\analyzers\SonarAnalyzer.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.8.2.4717\analyzers\Google.Protobuf.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.8.2.4717\analyzers\SonarAnalyzer.CSharp.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.6.8.2.4717\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

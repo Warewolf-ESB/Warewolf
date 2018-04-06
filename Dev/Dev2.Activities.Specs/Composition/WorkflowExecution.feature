@@ -1278,8 +1278,8 @@ Scenario Outline: Database SqlDB  service using scalar outputs
      Given I have a workflow "<WorkflowName>"
 	 And "<WorkflowName>" contains a sqlserver database service "<ServiceName>" with mappings as
 	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | name     | <nameVariable>  |
-	  |                  |               | email    | <emailVariable> |
+	  |                  |               | name                | <nameVariable>  |
+	  |                  |               | email               | <emailVariable> |
       When "<WorkflowName>" is executed
      Then the workflow execution has "<errorOccured>" error
 	 And the "<ServiceName>" in Workflow "<WorkflowName>" debug outputs as

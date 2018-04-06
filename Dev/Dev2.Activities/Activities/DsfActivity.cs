@@ -35,6 +35,8 @@ using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using Dev2.Common.Interfaces.Search;
+using Dev2.Common.Utils;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -408,7 +410,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.EnvironmentID = Guid.Empty;
             dataObject.ResourceID = oldResourceId;
         }
-
+       
         protected virtual void ChildDebugStateDispatch(IDSFDataObject dataObject)
         {
         }

@@ -14,17 +14,10 @@ namespace Dev2.Studio
     {
         public static async Task<IContextualResourceModel> HandleResourceNotInResourceFolderAsync(string filePath, Common.Interfaces.Studio.Controller.IPopupController popupController, IShellViewModel shellViewModel, IFile file, IFilePath path, IServerRepository serverRepository)
         {
-            IContextualResourceModel resourceModel = null;
-            var serverRepo = serverRepository;
-            IResource resource = null;
-            if (filePath.Contains(EnvironmentVariables.VersionsPath))
-            {
-                return resourceModel;
-            }
             var saveResource = popupController.ShowResourcesNotInCorrectPath();
             if (saveResource == MessageBoxResult.OK)
             {
-                ReadFileContent(filePath, shellViewModel, file, out resourceModel, serverRepo, out resource);
+                ReadFileContent(filePath, shellViewModel, file, out IContextualResourceModel resourceModel, serverRepository, out IResource resource);
                 if (resourceModel == null && (resource.ResourceType != "WorkflowService" || resource.ResourceType != "Workflow"))
                 {
                     var moveSource = popupController.ShowCanNotMoveResource() == MessageBoxResult.OK;
@@ -32,14 +25,36 @@ namespace Dev2.Studio
                     {
                         var destination = path.Combine(EnvironmentVariables.ResourcePath, path.GetFileName(filePath));
                         file.Move(filePath, destination);
-                        await shellViewModel.ExplorerViewModel.RefreshEnvironment(serverRepo.ActiveServer.EnvironmentID);
-                        resourceModel = serverRepo.ActiveServer.ResourceRepository.LoadContextualResourceModel(resource.ResourceID);
+                        await shellViewModel.ExplorerViewModel.RefreshEnvironment(serverRepository.ActiveServer.EnvironmentID);
+                        resourceModel = serverRepository.ActiveServer.ResourceRepository.LoadContextualResourceModel(resource.ResourceID);
                     }
                 }
+                var ctResourceModel = resourceModel;
+                if (resourceModel != null)
+                {
+                    shellViewModel.OpenResource(resourceModel.ID, shellViewModel.ActiveServer.EnvironmentID, shellViewModel.ActiveServer, resourceModel);
+                }
+                return ctResourceModel;
+            }
+            return null;
+        }
+        public static async Task<IContextualResourceModel> HandleResourceInResourceFolderAndOtherDir(string filePath, Common.Interfaces.Studio.Controller.IPopupController popupController, IShellViewModel shellViewModel, IFile file, IFilePath path, IServerRepository serverRepository)
+        {
+            ReadFileContent(filePath, shellViewModel, file, out IContextualResourceModel resourceModel, serverRepository, out IResource resource);
+            if (resourceModel == null && (resource.ResourceType != "WorkflowService" || resource.ResourceType != "Workflow"))
+            {
+                popupController.ShowSourceAlreadyExistOpenFromResources();
                 return resourceModel;
+            }
+            if (resourceModel != null)
+            {
+                resourceModel.IsNewWorkflow = true;
+                resourceModel.IsNotWarewolfPath = true;
+                shellViewModel.OpenResource(resourceModel.ID, shellViewModel.ActiveServer.EnvironmentID, shellViewModel.ActiveServer, resourceModel);
             }
             return resourceModel;
         }
+
 
         static void ReadFileContent(string filePath, IShellViewModel shellViewModel, IFile file, out IContextualResourceModel resourceModel, IServerRepository serverRepo, out IResource resource)
         {
