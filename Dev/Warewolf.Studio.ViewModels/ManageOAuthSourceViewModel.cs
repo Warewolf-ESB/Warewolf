@@ -375,10 +375,7 @@ namespace Warewolf.Studio.ViewModels
                         src.ResourceName = requestServiceNameViewModel.ResourceName.Name;
                         src.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
-                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
-                        {
-                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
-                        }
+                        AfterSave(requestServiceNameViewModel, src);
 
                         _oAuthSource = src;
                         Path = _oAuthSource.ResourcePath;
@@ -399,6 +396,14 @@ namespace Warewolf.Studio.ViewModels
                 Item = src;
                 _oAuthSource = src;
                 SetupHeaderTextFromExisting();
+            }
+        }
+
+        void AfterSave(IRequestServiceNameViewModel requestServiceNameViewModel, IOAuthSource src)
+        {
+            if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+            {
+                AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
             }
         }
 
