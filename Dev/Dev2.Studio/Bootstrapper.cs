@@ -13,13 +13,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Studio.Controller;
-using Dev2.Diagnostics;
 using Dev2.Network;
-using Dev2.Services;
 using Dev2.Studio;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Helpers;
@@ -116,7 +113,39 @@ namespace Dev2
 
         #region Private Methods
 
-        bool CheckWindowsService() => true;
+#pragma warning disable CC0091 // Use static method
+#pragma warning disable CC0038 // You should use expression bodied members whenever possible.
+        bool CheckWindowsService()
+#pragma warning restore CC0091 // Use static method
+        {
+#if DEBUG
+            return true;
+#else
+            IWindowsServiceManager windowsServiceManager = CustomContainer.Get<IWindowsServiceManager>();
+            IPopupController popup = CustomContainer.Get<IPopupController>();
+            ServerServiceConfiguration ssc = new ServerServiceConfiguration(windowsServiceManager, popup);
+
+            if (ssc.DoesServiceExist())
+            {
+                if (ssc.IsServiceRunning())
+                {
+                    return true;
+                }
+
+                if (ssc.PromptUserToStartService())
+                {
+                    if (ssc.StartService())
+                    {
+                        _serverServiceStartedFromStudio = true;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+#endif
+        }
+#pragma warning restore CC0038 // You should use expression bodied members whenever possible.
 
         void CheckPath()
         {

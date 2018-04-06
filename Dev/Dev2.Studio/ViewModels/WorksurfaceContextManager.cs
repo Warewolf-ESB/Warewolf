@@ -46,6 +46,8 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Dev2.ViewModels.Merge;
 using Dev2.Views.Merge;
+using Dev2.ViewModels.Search;
+using Dev2.Views.Search;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -139,8 +141,10 @@ namespace Dev2.Studio.ViewModels
         void ViewTestsForService(IContextualResourceModel resourceModel);
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt);
         void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer);
+        void SearchView(IWorkSurfaceKey workSurfaceKey);
         void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer, IWorkSurfaceKey workSurfaceKey);
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey);
+        void ViewSelectedTestForService(IContextualResourceModel resourceModel, IServiceTestModel selectedServiceTest, ServiceTestViewModel testViewModel, IWorkSurfaceKey workSurfaceKey);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
         void RunAllTestsForFolder(string ResourcePath);
         WorkSurfaceContextViewModel EditResource<T>(IWorkSurfaceKey workSurfaceKey, SourceViewModel<T> viewModel) where T : IEquatable<T>;
@@ -348,6 +352,15 @@ namespace Dev2.Studio.ViewModels
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
+        public void SearchView(IWorkSurfaceKey workSurfaceKey)
+        {
+            var vm = new SearchModel(_shellViewModel.EventPublisher, new SearchViewModel(_shellViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>()), new SearchView());
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.SearchViewer, Guid.Empty);
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
         public void ViewTestsForService(IContextualResourceModel resourceModel) => ViewTestsForService(resourceModel, null);
         public void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey)
         {
@@ -358,6 +371,17 @@ namespace Dev2.Studio.ViewModels
             var key = workSurfaceKey as WorkSurfaceKey;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
+        }
+
+        public void ViewSelectedTestForService(IContextualResourceModel resourceModel, IServiceTestModel selectedServiceTest, ServiceTestViewModel testViewModel, IWorkSurfaceKey workSurfaceKey)
+        {
+            var workflow = new WorkflowDesignerViewModel(resourceModel);
+            var vm = new StudioTestViewModel(_shellViewModel.EventPublisher, testViewModel, _shellViewModel.PopupProvider, new ServiceTestView());
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.ServiceTestsViewer, resourceModel.ID);
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
+            testViewModel.SelectedServiceTest = selectedServiceTest;
         }
 
         public void RunAllTestsForService(IContextualResourceModel resourceModel)
@@ -1352,7 +1376,14 @@ namespace Dev2.Studio.ViewModels
             var exists = IsInOpeningState(resourceModel) || ActivateWorkSurfaceIfPresent(resourceModel);
             if (exists)
             {
-                return;
+                if (resourceModel.IsNotWarewolfPath)
+                {
+                    _shellViewModel.CloseResource(resourceModel, resourceModel.Environment.EnvironmentID);
+                }
+                else
+                {
+                    return;
+                }
             }
 
             var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel);

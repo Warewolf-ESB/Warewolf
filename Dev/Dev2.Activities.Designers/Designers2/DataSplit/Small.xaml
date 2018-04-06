@@ -7,12 +7,9 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.DataSplit"
-                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -80,18 +77,7 @@
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
                                MinHeight="56">
-            <i:Interaction.Behaviors>
-                <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors2:DataGridWatermarkModifier.WatermarkText>
-                        <sys:String>[[Recordset().F1]]</sys:String>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                        <sys:Int32>0</sys:Int32>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors2:DataGridWatermarkModifier>
-            </i:Interaction.Behaviors>
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=activities:DataSplitDTO}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
@@ -108,7 +94,7 @@
                                                     Padding="3"
                                                     AllowUserInsertLine="False"
                                                     Margin="0,0,1,1"
-                                                    DefaultText="{Binding WatermarkTextVariable}"
+                                                    DefaultText="[[Recordset().F1]]"
                                                     WrapInBrackets="True"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.DataSplitToolTipResults}"

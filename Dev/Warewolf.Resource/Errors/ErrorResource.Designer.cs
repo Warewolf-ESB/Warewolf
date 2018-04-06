@@ -2401,6 +2401,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid command sent to ExecuteXmlReader.  The command must return an Xml result..
+        /// </summary>
+        public static string NotXmlResults {
+            get {
+                return ResourceManager.GetString("NotXmlResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No username and password provided,.
         /// </summary>
         public static string NoUserNameAndPassword {

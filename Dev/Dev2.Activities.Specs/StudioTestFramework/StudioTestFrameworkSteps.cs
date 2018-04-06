@@ -220,7 +220,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
             var environmentModel = ServerRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
-            environmentModel.ResourceRepository.ForceLoad();
+            environmentModel.ResourceRepository.Load(true);
             var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
             MyContext["PluginSource" + "id"] = savedSource.ID;
 
@@ -1588,7 +1588,7 @@ namespace Dev2.Activities.Specs.TestFramework
             MyContext.TryGetValue("folderPath", out string path);
             var environmentModel = ServerRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
-            environmentModel.ResourceRepository.ForceLoad();
+            environmentModel.ResourceRepository.Load(true);
             if (!string.IsNullOrEmpty(path))
             {
 

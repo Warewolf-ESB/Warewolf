@@ -88,6 +88,7 @@ using Dev2.ViewModels.Merge;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using System.IO;
+using System.Xml;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -710,10 +711,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder DesignerText => ServiceDefinition;
 
-        public StringBuilder ServiceDefinition
-        {
-            get => _workflowHelper.SerializeWorkflow(_modelService);
-        }
+        public StringBuilder ServiceDefinition => _workflowHelper.SerializeWorkflow(_modelService);
 
         public ICommand CollapseAllCommand => _collapseAllCommand ?? (_collapseAllCommand = new DelegateCommand(param =>
         {
@@ -2015,8 +2013,30 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return true;
         }
+        string _serviceDefinitionXamlCache = "";
+        string _resourceDefinitionXamlCache = "";
+        bool _serviceAndResourceDefinitionXamlSameCache;
+        bool CheckServiceDefinition()
+        {
+            if (ServiceDefinition is null || ResourceModel.WorkflowXaml is null)
+            {
+                return ServiceDefinition == ResourceModel.WorkflowXaml;
+            }
+            var serviceDefinitionXaml = ServiceDefinition.ToString();
+            var resourceDefinitionXaml = ResourceModel.WorkflowXaml.ToString();
+            if (serviceDefinitionXaml == _serviceDefinitionXamlCache && resourceDefinitionXaml == _resourceDefinitionXamlCache)
+            {
+                return _serviceAndResourceDefinitionXamlSameCache;
+            }
 
-        bool CheckServiceDefinition() => ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
+            _serviceDefinitionXamlCache = serviceDefinitionXaml;
+            _resourceDefinitionXamlCache = resourceDefinitionXaml;
+
+            var eq = WorkflowHelper.AreWorkflowsEqual(ServiceDefinition.ToString(), ResourceModel.WorkflowXaml.ToString());
+            _serviceAndResourceDefinitionXamlSameCache = eq;
+            return eq;
+        }
+
 
         /// <summary>
         /// Processes the data list configuration load.

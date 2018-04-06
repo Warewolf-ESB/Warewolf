@@ -180,6 +180,8 @@
     <Compile Include="MessageBoxViewModelTests.cs" />
     <Compile Include="RequestNameServiceViewModelTests.cs" />
     <Compile Include="RequestServiceNameViewModelTests.cs" />
+    <Compile Include="Search\SearchValueTests.cs" />
+    <Compile Include="Search\SearchViewModelTests.cs" />
     <Compile Include="ServiceTestStepTests.cs" />
     <Compile Include="ServiceTestViewModelTests.partial.cs" />
     <Compile Include="SharepointServerSourceModelTests.cs" />
@@ -261,6 +263,10 @@
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj">
+      <Project>{9623c7dd-85ee-41ab-89b1-1a9784a97da7}</Project>
+      <Name>Dev2.Runtime</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">
       <Project>{1FD73E36-FC73-4BDF-BCBA-278A44F06550}</Project>
       <Name>Dev2.Studio.Core.Tests</Name>
@@ -276,6 +282,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
+      <Project>{F36B2034-94BF-485C-B584-4E590CCC6DD3}</Project>
+      <Name>Warewolf.ResourceManagement</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>

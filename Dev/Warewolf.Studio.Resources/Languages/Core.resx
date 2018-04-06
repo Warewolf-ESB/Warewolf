@@ -192,6 +192,9 @@
   <data name="MenuDialogSupportLabel" xml:space="preserve">
     <value>Help</value>
   </data>
+  <data name="MenuDialogSearchLabel" xml:space="preserve">
+    <value>Search</value>
+  </data>
   <data name="MenuDialogTaskLabel" xml:space="preserve">
     <value>Task</value>
   </data>
@@ -578,5 +581,8 @@ Please note that tabs are fully supported at runtime, in variables and when read
   </data>
   <data name="DotNetFrameworkInstallError" xml:space="preserve">
     <value>Your .Net installation appears to be corrupt. Uninstall Warewolf, reinstall the .Net framework and then reinstall Warewolf.</value>
+  </data>
+  <data name="SearchVersionConflictError" xml:space="preserve">
+    <value>The server selected is not up to date with the latest server version.</value>
   </data>
 </root>

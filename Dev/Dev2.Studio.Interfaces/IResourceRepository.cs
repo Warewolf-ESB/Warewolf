@@ -21,6 +21,7 @@ using Dev2.Data.Settings;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.Enums;
+using Dev2.Common.Interfaces.Search;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -30,7 +31,6 @@ namespace Dev2.Studio.Interfaces
         void DeployResource(IResourceModel resource, string savePath);
         ExecuteMessage DeleteResource(IResourceModel resource);
         void Add(IResourceModel resource);
-        void ForceLoad();
         void UpdateServer(IServer server);
         bool IsLoaded { get; }
         bool DoesResourceExistInRepo(IResourceModel resource);
@@ -57,7 +57,8 @@ namespace Dev2.Studio.Interfaces
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition, bool prepairForDeployment);
         ExecuteMessage Save(IResourceModel instanceObj);
-        void Load();
+        void Load(bool force);
+        void ReLoadResources();
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
         IResourceModel LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
         IContextualResourceModel LoadContextualResourceModel(Guid resourceId);
@@ -65,10 +66,12 @@ namespace Dev2.Studio.Interfaces
         Task<IContextualResourceModel> LoadContextualResourceModelAsync(Guid resourceId);
         TestSaveResult SaveTests(IResourceModel resourceId, List<IServiceTestModelTO> tests);
         List<IServiceTestModelTO> LoadResourceTests(Guid resourceId);
+        List<IServiceTestModelTO> LoadAllTests();
         void DeleteResourceTest(Guid resourceId, string testName);
         List<IServiceTestModelTO> LoadResourceTestsForDeploy(Guid resourceId);
         IServiceTestModelTO ExecuteTest(IContextualResourceModel resourceModel, string testName);
 
         Task<ExecuteMessage> DeleteResourceFromWorkspaceAsync(IContextualResourceModel resourceModel);
+        List<ISearchResult> Filter(ISearch searchValue);
     }
 }

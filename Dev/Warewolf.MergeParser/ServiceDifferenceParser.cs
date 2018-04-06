@@ -54,7 +54,6 @@ namespace Warewolf.MergeParser
 
         List<ConflictTreeNode> BuildTree(IContextualResourceModel resourceModel, bool loadFromServer)
         {
-            var wd = new WorkflowDesigner();
             var xaml = resourceModel.WorkflowXaml;
 
             var workspace = GlobalConstants.ServerWorkspaceID;
@@ -88,7 +87,16 @@ namespace Warewolf.MergeParser
             {
                 throw new Exception($"Could not find resource definition for {resourceModel.ResourceName}");
             }
-            wd.Text = xaml.ToString();
+           
+            return BuildWorkflow(xaml);
+        }
+
+        public List<ConflictTreeNode> BuildWorkflow(System.Text.StringBuilder xaml)
+        {
+            var wd = new WorkflowDesigner
+            {
+                Text = xaml.ToString()
+            };
             wd.Load();
             var modelService = wd.Context.Services.GetService<ModelService>();
             var workflowHelper = new WorkflowHelper();

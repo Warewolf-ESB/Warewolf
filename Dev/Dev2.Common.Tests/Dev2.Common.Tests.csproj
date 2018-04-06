@@ -75,6 +75,7 @@
     <Compile Include="GetComputerNamesTests.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
+    <Compile Include="Utils\SearchUtilTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>

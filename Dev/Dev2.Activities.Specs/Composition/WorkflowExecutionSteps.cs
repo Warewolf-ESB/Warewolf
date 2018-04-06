@@ -198,7 +198,7 @@ namespace Dev2.Activities.Specs.Composition
             AppUsageStats.LocalHost = "http://localhost:3142";
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
-            environmentModel.ResourceRepository.ForceLoad();
+            environmentModel.ResourceRepository.Load(true);
 
             // connect to the remove environment now ;)
             var remoteServerList = environmentModel.ResourceRepository.FindSourcesByType<Connection>(environmentModel, enSourceType.Dev2Server);
@@ -624,7 +624,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             var environmentModel = ServerRepository.Instance.Source;
             var repository = new ResourceRepository(environmentModel);
-            repository.Load();
+            repository.Load(false);
             var resource = repository.FindSingle(r => r.ResourceName.Equals(serviceName), true, true);
             if (resource == null)
             {

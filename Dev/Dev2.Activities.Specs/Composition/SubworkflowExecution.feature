@@ -124,6 +124,25 @@ Examples:
 | RecToBlank                 | [[rec().in]]   | hello       | [[rec().in]]   | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 | ScalToBlank                | [[var]]        | hello       | [[var]]        | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 
+ Scenario: Executing Sql For Xml testing workflow base
+	  Given I have a workflow "Testing - Sql For Xml"
+	  And "Testing - Sql For Xml" contains "TestSqlReturningXml" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Sql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "TestSqlReturningXml" in Workflow "TestSqlReturningXml" debug outputs as
+	  |                     |
+	  | [[Result]] = Passed |
+	  
+ Scenario: Executing Sql Store Procedure Executese once
+	  Given I have a workflow "Testing - Sql For Xml"
+	  And "Testing - Sql For Xml" contains "TestSqlExecutesOnce" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Sql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "TestSqlExecutesOnce" in Workflow "TestSqlExecutesOnce" debug outputs as
+	  |                     |
+	  | [[Result]] = Passed |
 
  Scenario: Executing Asynchrounous testing workflow base
 	  Given I have a workflow "Testing - Async Test Master Testc"
