@@ -365,11 +365,28 @@ namespace Dev2.Runtime
             return serviceTestModelTos;
         }
 
-        public List<IServiceTestModelTO> Fetch(Guid resourceId) => Tests.GetOrAdd(resourceId, guid =>
-                                                                              {
-                                                                                  var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
-                                                                                  return GetTestList(dir);
-                                                                              });
+        public List<IServiceTestModelTO> FetchAllTests()
+        {
+            var list = new List<IServiceTestModelTO>();
+            if (Tests != null)
+            {
+                foreach (var test in Tests)
+                {
+                    list.AddRange(test.Value);
+                }
+            }
+
+            return list;
+        }
+
+        public List<IServiceTestModelTO> Fetch(Guid resourceId)
+        {
+            return Tests.GetOrAdd(resourceId, guid =>
+             {
+                 var dir = Path.Combine(EnvironmentVariables.TestPath, guid.ToString());
+                 return GetTestList(dir);
+             });
+        }
 
         public void DeleteTest(Guid resourceID, string testName)
         {
@@ -433,6 +450,6 @@ namespace Dev2.Runtime
                 }
             }
             return null;
-        }
+        }           
     }
 }

@@ -254,6 +254,10 @@
     <Compile Include="Plugins\ServiceConstructorListTests.cs" />
     <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="ResourceUpgraders\EncryptionResourceUpgraderTests.cs" />
+    <Compile Include="Search\ActivitySearcherTests.cs" />
+    <Compile Include="Search\ResourceSearcherTests.cs" />
+    <Compile Include="Search\TestSearcherTests.cs" />
+    <Compile Include="Search\VariableListSearcherTests.cs" />
     <Compile Include="ServiceModel\ComPluginServicesTest.cs" />
     <Compile Include="ServiceModel\Data\ComPluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DropBoxSourceTests.cs" />
@@ -363,6 +367,7 @@
     <Compile Include="Services\PingTests.cs" />
     <Compile Include="Services\TestSettingsRead.cs" />
     <Compile Include="Services\SavePerformanceCountesTests.cs" />
+    <Compile Include="Services\FetchAllTestsTest.cs" />
     <Compile Include="Util\FindResourceHelperTest.cs" />
     <Compile Include="Util\ScrubberTestsJson.cs" />
     <Compile Include="Util\ScrubberTestsXml.cs" />

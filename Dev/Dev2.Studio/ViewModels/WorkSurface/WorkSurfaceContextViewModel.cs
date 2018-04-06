@@ -106,7 +106,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     return workflowDesignerViewModel.DataListViewModel;
                 }
-                if(WorkSurfaceViewModel is MergeViewModel mergeViewModel)
+                if (WorkSurfaceViewModel is MergeViewModel mergeViewModel)
                 {
                     return mergeViewModel.DataListViewModel;
                 }
@@ -439,14 +439,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             if (WorkflowDesignerViewModel.ValidatResourceModel(ContextualResourceModel.DataList))
             {
-                if(!ContextualResourceModel.IsWorkflowSaved && !_workspaceSaved)
+                if (!ContextualResourceModel.IsWorkflowSaved && !_workspaceSaved)
                 {
                     var successfuleSave = Save(ContextualResourceModel, true);
-                    if(!successfuleSave)
+                    if (!successfuleSave)
                     {
                         return;
                     }
-                }                
+                }
             }
             else
             {
@@ -524,12 +524,21 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return false;
             }
 
-            if (resource.IsNewWorkflow && !isLocalSave && !_waitingforDialog)
+            if (resource.IsNewWorkflow && !isLocalSave && !_waitingforDialog && !resource.IsNotWarewolfPath)
             {
                 _waitingforDialog = true;
                 _saveDialogAction(resource, addToTabManager, () => _waitingforDialog = false);
 
                 return true;
+            }
+            if (resource.IsNewWorkflow && resource.IsNotWarewolfPath && !isLocalSave)
+            {
+                var overwrite = _popupController.ShowOverwiteResourceDialog();
+                if (overwrite == MessageBoxResult.Cancel)
+                {
+                    return false;
+                }
+                resource.IsNotWarewolfPath = false;
             }
 
             BindToModel();
@@ -559,12 +568,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if (explorerItemViewModel != null)
             {
                 explorerItemViewModel.IsMergeVisible = true;
-                if (explorerItemViewModel.GetType() == typeof(VersionViewModel))
+                if (explorerItemViewModel.GetType() == typeof(VersionViewModel) && explorerItemViewModel.Parent != null)
                 {
-                    if (explorerItemViewModel.Parent != null)
-                    {
-                        explorerItemViewModel.Parent.AreVersionsVisible = true;
-                    }
+                    explorerItemViewModel.Parent.AreVersionsVisible = true;
                 }
             }
             mainViewModel?.UpdateExplorerWorkflowChanges(resource.ID);
@@ -638,7 +644,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
                 if (_server.Connection != null)
                 {
-                    
+
                     _server.Connection.ReceivedResourceAffectedMessage -= OnReceivedResourceAffectedMessage;
                 }
             }

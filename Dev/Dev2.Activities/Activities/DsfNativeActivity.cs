@@ -44,6 +44,7 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Activities.Statements;
+using Dev2.Common.Interfaces.Search;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {

@@ -88,6 +88,7 @@ using Dev2.ViewModels.Merge;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using System.IO;
+using System.Xml;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -710,10 +711,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder DesignerText => ServiceDefinition;
 
-        public StringBuilder ServiceDefinition
-        {
-            get => _workflowHelper.SerializeWorkflow(_modelService);
-        }
+        public StringBuilder ServiceDefinition => _workflowHelper.SerializeWorkflow(_modelService);
 
         public ICommand CollapseAllCommand => _collapseAllCommand ?? (_collapseAllCommand = new DelegateCommand(param =>
                                                             {
@@ -905,30 +903,17 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return;
             }
+            var environmentViewModel = shellViewModel.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == shellViewModel.ActiveServer.EnvironmentID);
 
-            var explorerItem = shellViewModel.ActiveItem.ContextualResourceModel.IsVersionResource 
-                             ? GetMergeResourceVersion(shellViewModel) 
-                             : GetMergeCurrentResource(shellViewModel);
+            var contextualResourceModel = shellViewModel.ActiveItem.ContextualResourceModel;
+            var resourceId = contextualResourceModel.IsVersionResource ? contextualResourceModel.OriginalId : contextualResourceModel.ID;
 
+            var explorerItem = environmentViewModel?.UnfilteredChildren?.Flatten(model => model.UnfilteredChildren).FirstOrDefault(c => c.ResourceId == resourceId);
             if (explorerItem == null)
             {
                 return;
             }
             shellViewModel.OpenMergeDialogView(explorerItem);
-        }
-
-        private static IExplorerItemViewModel GetMergeResourceVersion(ShellViewModel shellViewModel)
-        {
-            var resourceId = shellViewModel.ActiveItem.ContextualResourceModel.OriginalId;
-            var environmentViewModel = shellViewModel.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == shellViewModel.ActiveServer.EnvironmentID);
-            return environmentViewModel?.UnfilteredChildren?.Flatten(model => model.UnfilteredChildren).FirstOrDefault(c => c.ResourceId == resourceId);
-        }
-
-        private static IExplorerItemViewModel GetMergeCurrentResource(ShellViewModel shellViewModel)
-        {
-            var resourceId = shellViewModel.ActiveItem.ContextualResourceModel.ID;
-            var environmentViewModel = shellViewModel.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == shellViewModel.ActiveServer.EnvironmentID);
-            return environmentViewModel?.UnfilteredChildren?.Flatten(model => model.UnfilteredChildren).Where(a => !a.IsVersion).FirstOrDefault(c => c.ResourceId == resourceId);
         }
 
         static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
@@ -2016,7 +2001,30 @@ namespace Dev2.Studio.ViewModels.Workflow
             return true;
         }
 
-        bool CheckServiceDefinition() => ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
+        string _serviceDefinitionXamlCache = "";
+        string _resourceDefinitionXamlCache = "";
+        bool _serviceAndResourceDefinitionXamlSameCache;
+        bool CheckServiceDefinition()
+        {
+            if (ServiceDefinition is null || ResourceModel.WorkflowXaml is null)
+            {
+                return ServiceDefinition == ResourceModel.WorkflowXaml;
+            }
+            var serviceDefinitionXaml = ServiceDefinition.ToString();
+            var resourceDefinitionXaml = ResourceModel.WorkflowXaml.ToString();
+            if (serviceDefinitionXaml == _serviceDefinitionXamlCache && resourceDefinitionXaml == _resourceDefinitionXamlCache)
+            {
+                return _serviceAndResourceDefinitionXamlSameCache;
+            }
+
+            _serviceDefinitionXamlCache = serviceDefinitionXaml;
+            _resourceDefinitionXamlCache = resourceDefinitionXaml;
+
+            var eq = WorkflowHelper.AreWorkflowsEqual(ServiceDefinition.ToString(), ResourceModel.WorkflowXaml.ToString());
+            _serviceAndResourceDefinitionXamlSameCache = eq;
+            return eq;
+        }
+
 
         /// <summary>
         /// Processes the data list configuration load.

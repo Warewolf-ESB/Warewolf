@@ -34,12 +34,12 @@ namespace Dev2.Studio.Core.Factories
             var contextualResource = CreateResourceModel(environment);
             contextualResource.ID = resource.ResourceID;
             contextualResource.UserPermissions = Permissions.Contribute;
-            contextualResource.Category = Path.Combine(EnvironmentVariables.ResourcePath, resource.ResourceName);
             if (resource.ResourceType == "WorkflowService" || resource.ResourceType == "Workflow")
             {
+                contextualResource.Category = xElement.Element("Service").Element("Category").ToString().Replace("<Category>", "").Replace("</Category>", "");
                 var def = xElement.Element("Service").Element("Action").Element("XamlDefinition").ToStringBuilder();
                 var xaml = def.Unescape().Replace("<XamlDefinition>", "").Replace("</XamlDefinition>", "").ToXElement();
-                contextualResource.WorkflowXaml = xaml.ToString(SaveOptions.DisableFormatting).ToStringBuilder();
+                contextualResource.WorkflowXaml = xaml.ToString(SaveOptions.DisableFormatting).ToStringBuilder();                
                 return SetResourceProperties(resource.ResourceType, resource.ResourceName, resource.ResourceName, contextualResource);
             }
             return null;

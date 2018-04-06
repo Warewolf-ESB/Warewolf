@@ -74,7 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             p.SetProperty("SqlBulkInserter",new Mock<ISqlBulkInserter>().Object);
             
             //------------Execute Test---------------------------
-            var sqlBulkInserter = p.GetProperty("SqlBulkInserter"); ;
+            var sqlBulkInserter = p.GetProperty("SqlBulkInserter");
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(sqlBulkInserter, typeof(ISqlBulkInserter));
             Assert.IsNotInstanceOfType(sqlBulkInserter, typeof(SqlBulkInserter));

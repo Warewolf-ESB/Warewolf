@@ -16,14 +16,14 @@ namespace Dev2.Core.Tests.Merge
     [TestClass]
     public class ConnectorConflictItemTests
     {
-        readonly Guid Grouping = Guid.Empty;
+        readonly Guid _grouping = Guid.Empty;
         const string ArmDescription = "Arm -> Arm";
-        readonly Guid SourceUniqueId = Guid.Empty;
-        readonly Guid DestinationUniqueId = Guid.Empty;
+        readonly Guid _sourceUniqueId = Guid.Empty;
+        readonly Guid _destinationUniqueId = Guid.Empty;
         const string Key = "Key";
 
-        readonly Guid SourceUniqueIdDiff = Guid.NewGuid();
-        readonly Guid DestinationUniqueIdDiff = Guid.NewGuid();
+        readonly Guid _sourceUniqueIdDiff = Guid.NewGuid();
+        readonly Guid _destinationUniqueIdDiff = Guid.NewGuid();
         const string KeyDiff = "KeyDiff";
 
         ConflictRowList CreateConflictRowList()
@@ -38,12 +38,12 @@ namespace Dev2.Core.Tests.Merge
         ConnectorConflictItem CreateConnectorConflictItem()
         {
             var rowList = CreateConflictRowList();
-            return new ConnectorConflictItem(rowList, ConflictRowList.Column.Current, Grouping, ArmDescription, SourceUniqueId, DestinationUniqueId, Key);
+            return new ConnectorConflictItem(rowList, ConflictRowList.Column.Current, _grouping, ArmDescription, _sourceUniqueId, _destinationUniqueId, Key);
         }
         private ConnectorConflictItem CreateConnectorConflictItemDiff()
         {
             var rowList = CreateConflictRowList();
-            return new ConnectorConflictItem(rowList, ConflictRowList.Column.Different, Grouping, ArmDescription, SourceUniqueIdDiff, DestinationUniqueIdDiff, KeyDiff);
+            return new ConnectorConflictItem(rowList, ConflictRowList.Column.Different, _grouping, ArmDescription, _sourceUniqueIdDiff, _destinationUniqueIdDiff, KeyDiff);
         }
 
         [TestMethod]
@@ -58,10 +58,10 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual(ArmDescription, connectorConflictItem.ArmDescription);
             Assert.AreEqual("Arm", connectorConflictItem.LeftArmDescription);
             Assert.AreEqual("Arm", connectorConflictItem.RightArmDescription);
-            Assert.AreEqual(SourceUniqueId, connectorConflictItem.SourceUniqueId);
-            Assert.AreEqual(DestinationUniqueId, connectorConflictItem.DestinationUniqueId);
+            Assert.AreEqual(_sourceUniqueId, connectorConflictItem.SourceUniqueId);
+            Assert.AreEqual(_destinationUniqueId, connectorConflictItem.DestinationUniqueId);
             Assert.AreEqual(Key, connectorConflictItem.Key);
-            Assert.AreEqual(Grouping, connectorConflictItem.Grouping);
+            Assert.AreEqual(_grouping, connectorConflictItem.Grouping);
             Assert.IsTrue(connectorConflictItem.IsArmConnectorVisible);
         }
 

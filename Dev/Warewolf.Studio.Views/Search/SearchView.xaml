@@ -1,0 +1,297 @@
+﻿<UserControl x:Class="Dev2.Views.Search.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:search="clr-namespace:Dev2.ViewModels.Search;assembly=Warewolf.Studio.ViewModels"
+             xmlns:views="clr-namespace:Warewolf.Studio.Views"
+             xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls;assembly=Dev2.Activities.Designers"
+             xmlns:fa="http://schemas.fontawesome.io/icons/"
+             xmlns:converters1="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
+             xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
+             xmlns:help="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+             mc:Ignorable="d"
+             KeyDown="Window_KeyDown"
+             d:DataContext="{d:DesignInstance search:SearchViewModel}"
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="SearchViewUserControl" >
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <converters1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible"/>
+            <converters1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <help:ResourceIdToIconConverter x:Key="ResourceIdToIconConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid x:Name="GridMain" Margin="{StaticResource ElementBorder}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- CONNECT CONTROL -->
+        <views:ConnectControl x:Name="SearchConnectControl"
+                              DataContext="{Binding ConnectControlViewModel}"
+                              Margin="{StaticResource ControlBorderTop}"
+                              ConnectButtonAutomationID="UI_SearchConnectServerbtn_AutoID"
+                              EditButtonAutomationID="UI_SearchServerEditbtn_AutoID"
+                              ServerComboBoxAutomationID="UI_SearchServercbx_AutoID" />
+
+        <!-- SEARCH INPUT -->
+        <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="txtSearchInput" 
+                     ToolTip="{x:Static languages:Tooltips.SearchInputTooltip}" 
+                     Text="{Binding Search.SearchInput}" 
+                     IsEnabled="{Binding CanShowResults}">
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static languages:HelpText.SearchInputHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                </i:Interaction.Behaviors>
+            </TextBox>
+            <Button x:Name="btnSearchInput" 
+                    Grid.Column="1" 
+                    Margin="{StaticResource ControlBorderLeft}" 
+                    Command="{Binding SearchInputCommand}">
+                <fa:FontAwesome HorizontalAlignment="Center" VerticalAlignment="Top" FontSize="16" FontWeight="Light" Icon="Search" />
+                <Button.Style>
+                    <Style BasedOn="{StaticResource ButtonStyle}" TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=txtSearchInput, Path=Text}" Value="">
+                                <Setter Property="Button.IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="-6,0,0,0">
+            <CheckBox x:Name="cbSearchMatchCase" 
+                      Grid.Column="6" 
+                      Grid.Row="0" 
+                      ToolTip="{x:Static languages:Tooltips.SearchMatchCaseTooltip}"
+                      IsChecked="{Binding Search.SearchOptions.IsMatchCaseSelected}">Match case
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchCaseHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                </i:Interaction.Behaviors>
+            </CheckBox>
+            <CheckBox x:Name="cbSearchMatchWholeWord" 
+                      Grid.Column="6" 
+                      Grid.Row="1" 
+                      ToolTip="{x:Static languages:Tooltips.SearchMatchWholeWordTooltip}"
+                      IsChecked="{Binding Search.SearchOptions.IsMatchWholeWordSelected}">Match whole word
+                <i:Interaction.Behaviors>
+                    <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchWholeWordHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                </i:Interaction.Behaviors>
+            </CheckBox>
+        </StackPanel>
+
+        <!-- SEARCH OPTIONS -->
+        <Expander Grid.Row="3" Style="{StaticResource ServiceTestTestStepExpander}" IsExpanded="True" Header="Search Options" >
+            <Grid HorizontalAlignment="Stretch" DataContext="{Binding Search.SearchOptions}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <CheckBox x:Name="cbSearchAll" Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" 
+                          ToolTip="{x:Static languages:Tooltips.SearchAllTooltip}"
+                          Unchecked="CbSearchAll_Unchecked" Checked="CbSearchAll_Checked" 
+                          IsChecked="{Binding IsAllSelected}" Margin="-5,0,0,0">All
+                    <i:Interaction.Behaviors>
+                        <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchAllHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                    </i:Interaction.Behaviors>
+                </CheckBox>
+
+                <CheckBox x:Name="cbSearchWorkflowName" Grid.Column="1" Grid.Row="0" 
+                          ToolTip="{x:Static languages:Tooltips.SearchWorkflowNameTooltip}"
+                          Unchecked="CbSearch_Checked" Checked="CbSearch_Checked" 
+                          IsChecked="{Binding IsWorkflowNameSelected}">Resource
+                    <i:Interaction.Behaviors>
+                        <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchWorkflowNameHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                    </i:Interaction.Behaviors>
+                </CheckBox>
+                <CheckBox x:Name="cbSearchTestName" Grid.Column="2" Grid.Row="0" 
+                          ToolTip="{x:Static languages:Tooltips.SearchTestNameTooltip}"
+                          Unchecked="CbSearch_Checked" Checked="CbSearch_Checked" 
+                          IsChecked="{Binding IsTestNameSelected}">Test Name
+                    <i:Interaction.Behaviors>
+                        <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchTestNameHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                    </i:Interaction.Behaviors>
+                </CheckBox>
+                <CheckBox x:Name="cbSearchToolTitle" Grid.Column="3" Grid.Row="0" 
+                          ToolTip="{x:Static languages:Tooltips.SearchToolTitleTooltip}"
+                          Unchecked="CbSearch_Checked" Checked="CbSearch_Checked" 
+                          IsChecked="{Binding IsToolTitleSelected}">Tool Title
+                    <i:Interaction.Behaviors>
+                        <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchToolTitleHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                    </i:Interaction.Behaviors>
+                </CheckBox>
+                <CheckBox x:Name="cbSearchInputVariable" Grid.Column="4" Grid.Row="0" 
+                          ToolTip="{x:Static languages:Tooltips.SearchInputVariableTooltip}"
+                          Unchecked="CbSearch_Checked" Checked="CbSearch_Checked" 
+                          IsChecked="{Binding IsInputVariableSelected}">Input Variable
+                    <i:Interaction.Behaviors>
+                        <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchInputVariableHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                    </i:Interaction.Behaviors>
+                </CheckBox>
+
+                <CheckBox x:Name="cbSearchScalarName" Grid.Column="1" Grid.Row="1" 
+                          ToolTip="{x:Static languages:Tooltips.SearchScalarNameTooltip}"
+                          Unchecked="CbSearch_Checked" Checked="CbSearch_Checked" 
+                          IsChecked="{Binding IsScalarNameSelected}">Scalar
+                    <i:Interaction.Behaviors>
+                        <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchScalarNameHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                    </i:Interaction.Behaviors>
+                </CheckBox>
+                <CheckBox x:Name="cbSearchRecSetName" Grid.Column="2" Grid.Row="1" 
+                          ToolTip="{x:Static languages:Tooltips.SearchRecSetNameTooltip}" 
+                          Unchecked="CbSearch_Checked" Checked="CbSearch_Checked" 
+                          IsChecked="{Binding IsRecSetNameSelected}">Recordset
+                    <i:Interaction.Behaviors>
+                        <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchRecSetNameHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                    </i:Interaction.Behaviors>
+                </CheckBox>
+                <CheckBox x:Name="cbSearchObjectName" Grid.Column="3" Grid.Row="1" 
+                          ToolTip="{x:Static languages:Tooltips.SearchObjectNameTooltip}"
+                          Unchecked="CbSearch_Checked" Checked="CbSearch_Checked" 
+                          IsChecked="{Binding IsObjectNameSelected}">Object
+                    <i:Interaction.Behaviors>
+                        <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchObjectNameHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                    </i:Interaction.Behaviors>
+                </CheckBox>
+                <CheckBox x:Name="cbSearchOutputVariable" Grid.Column="4" Grid.Row="1" 
+                          ToolTip="{x:Static languages:Tooltips.SearchOutputVariableTooltip}"
+                          Unchecked="CbSearch_Checked" Checked="CbSearch_Checked" 
+                          IsChecked="{Binding IsOutputVariableSelected}">Output Variable
+                    <i:Interaction.Behaviors>
+                        <help:HelpSetter Text="{x:Static languages:HelpText.SearchMatchOutputVariableHelpText}" DataContext="{Binding DataContext, ElementName=SearchViewUserControl}" />
+                    </i:Interaction.Behaviors>
+                </CheckBox>
+            </Grid>
+        </Expander>
+
+        <Grid Grid.Row="4" Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <views:CircularProgressBar Height="75" Width="75" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Grid>
+
+        <Grid Grid.Row="4" Visibility="{Binding IsSearching, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+            <StackPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Orientation="Horizontal">
+                <TextBlock Text="{Binding VersionConflictError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                           Margin="{StaticResource ElementBorder}"
+                           FontSize="16"
+                           Visibility="{Binding CanShowResults, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
+            </StackPanel>
+            <!-- SEARCH RESULTS -->
+            <controls:Dev2DataGrid x:Name="SearchResults"
+                                   ItemsSource="{Binding SearchResults, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                   Style="{StaticResource ActivityMappingDataGridStyle}"
+                                   Height="Auto"
+                                   IsEnabled="{Binding IsSearchResultsEnabled}"
+                                   ColumnWidth="*"
+                                   Visibility="{Binding CanShowResults, Converter={StaticResource BoolToVisibilityConverter}}"
+                                   Margin="{StaticResource ControlBorderTop}">
+
+                <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Width="0"
+                                            MinWidth="0"
+                                            Header="Id"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="5,0,0,0" Text="{Binding Path=ResourceId}" HorizontalAlignment="Left"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="*"
+                                            MinWidth="125"
+                                            Header="Name"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Margin="{StaticResource ControlBorderLeft}" Width="14" Height="14" Source="{Binding Path=ResourceId, Converter={StaticResource ResourceIdToIconConverter}}" />
+                                    <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="{Binding Path=Name}" HorizontalAlignment="Left">
+                                        <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.OpenResourceCommand}" 
+                                                   Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
+                                            <Run Text="{Binding Path=Name,Mode=OneWay}" />
+                                        </Hyperlink>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="*"
+                                            MinWidth="125"
+                                            Header="Path"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="5,0,0,0" TextWrapping="Wrap" VerticalAlignment="Top" ToolTip="{Binding Path=Path}" HorizontalAlignment="Left">
+                                    <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}}, Path=DataContext.OpenResourceCommand}" 
+                                               Style="{StaticResource HyperLinkStyle}" CommandParameter="{Binding .}">
+                                        <Run Text="{Binding Path=Path,Mode=OneWay}" />
+                                    </Hyperlink>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="*"
+                                            MinWidth="125"
+                                            Header="Type"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="5,0,0,0" 
+                                           ToolTip="{Binding Path=Type, Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                           Text="{Binding Path=Type, Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                                           HorizontalAlignment="Left"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Width="*"
+                                            MinWidth="125"
+                                            Header="Match"
+                                            HeaderStyle="{StaticResource ActivityMappingDataGridHeaderStyle}"
+                                            d:DataContext="{d:DesignInstance Type=interfaces:ISearchResult}">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Margin="5,0,0,0" ToolTip="{Binding Path=Match}" Text="{Binding Path=Match}" HorizontalAlignment="Left"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </controls:Dev2DataGrid>
+        </Grid>
+    </Grid>
+</UserControl>

@@ -1337,4 +1337,7 @@ Please contact your Windows System Administrator.</value>
   <data name="UserNotAuthorizedToExecuteOuterWorkflowException" xml:space="preserve">
     <value>User: {0} requires View and Execute permissions to Execute resource {1}.</value>
   </data>
+  <data name="NotXmlResults" xml:space="preserve">
+    <value>Invalid command sent to ExecuteXmlReader.  The command must return an Xml result.</value>
+  </data>
 </root>

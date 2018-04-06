@@ -1992,6 +1992,23 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search in Warewolf for &lt;br/&gt;
+        ///- Resource Name &lt;br/&gt;
+        ///- Tool Title &lt;br/&gt;
+        ///- Scalar &lt;br/&gt;
+        ///- Object &lt;br/&gt;
+        ///- Recordset &lt;br/&gt;
+        ///- Input Variable &lt;br/&gt;
+        ///- Output Variable &lt;br/&gt;
+        ///- Test Name.
+        /// </summary>
+        public static string MenuSearchHelp {
+            get {
+                return ResourceManager.GetString("MenuSearchHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Edit or View system settings such as Security and Logging..
         /// </summary>
         public static string MenuSettingsHelp {
@@ -2928,6 +2945,114 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ScriptingHelpScript {
             get {
                 return ResourceManager.GetString("ScriptingHelpScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input text to search for any matching search options.
+        /// </summary>
+        public static string SearchInputHelpText {
+            get {
+                return ResourceManager.GetString("SearchInputHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Search All&quot; option will check or uncheck all search options.
+        /// </summary>
+        public static string SearchMatchAllHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchAllHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Match case&quot; option will find only those instances that are written the same way.
+        /// </summary>
+        public static string SearchMatchCaseHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchCaseHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Search Input Variable&quot; option will find only variables marked as &quot;Input&quot; that match the input field.
+        /// </summary>
+        public static string SearchMatchInputVariableHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchInputVariableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Search Object&quot; option will find only variables created as &quot;Objects&quot; that match the input field.
+        /// </summary>
+        public static string SearchMatchObjectNameHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchObjectNameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Search Output Variable&quot; option will find only variables marked as &quot;Output&quot; that match the input field.
+        /// </summary>
+        public static string SearchMatchOutputVariableHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchOutputVariableHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Search Recordset&quot; option will find only variables created as &quot;Recordset&quot; that match the input field.
+        /// </summary>
+        public static string SearchMatchRecSetNameHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchRecSetNameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Search Scalar&quot; option will find only variables created as &quot;Scalar&quot; that match the input field.
+        /// </summary>
+        public static string SearchMatchScalarNameHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchScalarNameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Search Test Name&quot; option will find only &quot;Tests&quot; that match the input field.
+        /// </summary>
+        public static string SearchMatchTestNameHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchTestNameHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Search Tool Title&quot; option will find only &quot;Tools&quot; that match the input field.
+        /// </summary>
+        public static string SearchMatchToolTitleHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchToolTitleHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Match whole word&quot; option will find only the words that are written the same way.
+        /// </summary>
+        public static string SearchMatchWholeWordHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchWholeWordHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The &quot;Search Resource Name&quot; option will find only &quot;Resources&quot; that match the input field.
+        /// </summary>
+        public static string SearchMatchWorkflowNameHelpText {
+            get {
+                return ResourceManager.GetString("SearchMatchWorkflowNameHelpText", resourceCulture);
             }
         }
         
