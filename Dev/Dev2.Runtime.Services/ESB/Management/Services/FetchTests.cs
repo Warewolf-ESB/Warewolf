@@ -53,16 +53,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                var tests = new List<IServiceTestModelTO>();
-                if (resourceId == Guid.Empty)
-                {
-                    tests = TestCatalog.FetchAllTests();
-                }
-                else
-                {
-                    tests = TestCatalog.Fetch(resourceId);
-                }
-                CompressedExecuteMessage message = new CompressedExecuteMessage();
+                var tests = TestCatalog.Fetch(resourceId);
+                var message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(tests));
                 message.HasError = false;
                 

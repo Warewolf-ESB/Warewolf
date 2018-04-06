@@ -157,7 +157,9 @@ Scenario: Merge Workflow Containing Position Change tools
 	 And Different workflow contains "3" tools
 	 And Different workflow contains "3" connectors
 	 And Current workflow header is "MergeToolPositionChange"
-	 And Different workflow header is "MergeToolPositionChange v.2"
+	 And Current workflow header version is "[Current]"
+	 And Different workflow header is "MergeToolPositionChange"
+	 And Different workflow header version is "[v.2]"
 	 And Merge conflicts count is "6"
 	 And Merge variable conflicts is false
 	 And conflict "0" Current matches tool "Start"
@@ -185,8 +187,10 @@ Scenario: Merge Workflow Version Containing Position Change tools
 	 Then Current workflow contains "3" connectors
 	 And Different workflow contains "3" tools
 	 And Different workflow contains "3" connectors
-	 And Current workflow header is "MergeToolPositionChange v.2"
+	 And Current workflow header is "MergeToolPositionChange"
+	 And Current workflow header version is "[v.2]"
 	 And Different workflow header is "MergeToolPositionChange"
+	 And Different workflow header version is "[Current]"
 	 And Merge conflicts count is "6"
 	 And Merge variable conflicts is false
 	 And conflict "0" Current matches tool "Start"
