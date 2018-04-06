@@ -158,7 +158,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         ConnectControlViewModel.SelectedConnection.Permissions = new List<IWindowsGroupPermission>();
                     }
-                    ConnectControlViewModel.ConnectAsync(ConnectControlViewModel.SelectedConnection);
+                    ConnectControlViewModel.TryConnectAsync(ConnectControlViewModel.SelectedConnection);
                 }
                 else
                 {

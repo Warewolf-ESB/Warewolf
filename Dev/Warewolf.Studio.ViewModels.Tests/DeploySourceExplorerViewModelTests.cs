@@ -283,7 +283,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
 
             //act
-            await _target.ConnectControlViewModel.ConnectAsync(serverMock.Object);
+            await _target.ConnectControlViewModel.TryConnectAsync(serverMock.Object);
 
             //assert
             Assert.IsTrue(isEnvironmentChanged);
