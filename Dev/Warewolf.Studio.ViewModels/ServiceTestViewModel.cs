@@ -1042,14 +1042,19 @@ namespace Warewolf.Studio.ViewModels
                 }
                 foreach (var pluginAction in dotNetDllActivity.MethodsToRun)
                 {
-                    if (!pluginAction.IsVoid)
-                    {
-                        var actionExists = exists.Children.FirstOrDefault(step => step.UniqueId == pluginAction.ID);
-                        if (actionExists != null)
-                        {
-                            AddEnhancedDotNetDllMethod(pluginAction, exists);
-                        }
-                    }
+                    AddEnhancedDotNetDllMethodChild(pluginAction, exists);
+                }
+            }
+        }
+
+        static void AddEnhancedDotNetDllMethodChild(IPluginAction pluginAction, IServiceTestStep exists)
+        {
+            if (!pluginAction.IsVoid)
+            {
+                var actionExists = exists.Children.FirstOrDefault(step => step.UniqueId == pluginAction.ID);
+                if (actionExists != null)
+                {
+                    AddEnhancedDotNetDllMethod(pluginAction, exists);
                 }
             }
         }
