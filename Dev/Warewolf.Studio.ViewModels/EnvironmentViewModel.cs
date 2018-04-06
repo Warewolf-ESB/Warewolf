@@ -223,17 +223,17 @@ namespace Warewolf.Studio.ViewModels
             IsConnected = server.IsConnected;
 
             server.NetworkStateChanged += (args, server1) =>
-             {
-                 IsConnected = server1.IsConnected;
-                 if (args.State == ConnectionNetworkState.Connected)
-                 {
-                     Application.Current.Dispatcher.Invoke(async () =>
-                     {
-                         await RefreshAsync().ConfigureAwait(true);
-                     }, DispatcherPriority.Background);
+            {
+                IsConnected = server1.IsConnected;
+                if (args.State == ConnectionNetworkState.Connected)
+                {
+                    Application.Current.Dispatcher.Invoke(async () =>
+                    {
+                        await RefreshAsync().ConfigureAwait(true);
+                    }, DispatcherPriority.Background);
 
-                 }
-             };
+                }
+            };
 
             AllowEdit = server.AllowEdit;
             ShowServerVersionCommand = new DelegateCommand(ShowServerVersionAbout);
@@ -287,21 +287,21 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach (var explorerItemModel in Children)
                 {
-                    total += GetChildrenCount(explorerItemModel);
+                    if (!explorerItemModel.IsResourceVersion && explorerItemModel.ResourceType != "Message")
+                    {
+                        if (explorerItemModel.IsFolder)
+                        {
+                            total += explorerItemModel.ChildrenCount;
+                        }
+                        else
+                        {
+                            total++;
+                        }
+                    }
                 }
             }
 
             return total;
-        }
-
-        static int GetChildrenCount(IExplorerItemViewModel explorerItemModel)
-        {
-            if (!explorerItemModel.IsResourceVersion && explorerItemModel.ResourceType != "Message")
-            {
-                return explorerItemModel.IsFolder ? explorerItemModel.ChildrenCount : 1;
-            }
-
-            return 0;
         }
 
         public bool ShowContextMenu
@@ -893,66 +893,52 @@ namespace Warewolf.Studio.ViewModels
             }
             return false;
         }
+        public void ReloadConnectControl() => ReloadConnectControl(false);
 
         public void ReloadConnectControl(bool isDeploy)
         {
             if (!isDeploy)
             {
-                ReloadConnectControl();
-            }
-        }
-
-        void ReloadConnectControl()
-        {
-            var explorerViewModel = ShellViewModel?.ExplorerViewModel;
-            if (explorerViewModel?.Environments != null)
-            {
-                ReloadConnectControl(explorerViewModel);
-            }
-        }
-
-        void ReloadConnectControl(IExplorerViewModel explorerViewModel)
-        {
-            var environmentViewModel = explorerViewModel?.Environments[0];
-
-            var explorerServers = environmentViewModel?.Children?
-                                                        .Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>())
-                                                        .Where(y => y != null && y.ResourceType == "Dev2Server")
-                                                        .ToList();
-            var connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
-            if (explorerServers != null && (connectControlViewModel != null && explorerServers.Any()))
-            {
-                ReloadConnectControl(explorerServers, connectControlViewModel);
-            }
-        }
-
-        private void ReloadConnectControl(List<IExplorerItemViewModel> explorerServers, IConnectControlViewModel connectControlViewModel)
-        {
-            var connectControlServers = connectControlViewModel.Servers?.Where(o => !o.IsLocalHost).ToObservableCollection();
-
-            if (connectControlServers?.Count > explorerServers?.Count())
-            {
-                foreach (var serv in connectControlServers)
+                var explorerViewModel = ShellViewModel?.ExplorerViewModel;
+                if (explorerViewModel?.Environments != null)
                 {
-                    var found = explorerServers.FirstOrDefault(a => a.ResourceId == serv.EnvironmentID);
-                    if (found == null)
+                    var environmentViewModel = explorerViewModel?.Environments[0];
+
+                    var explorerServers = environmentViewModel?.Children?
+                                                                .Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>())
+                                                                .Where(y => y != null && y.ResourceType == "Dev2Server")
+                                                                .ToList();
+                    var connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
+                    if (explorerServers != null && (connectControlViewModel != null && explorerServers.Any()))
                     {
-                        _connectControlSingleton.ReloadServer();
-                        ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(serv.EnvironmentID);
-                        connectControlViewModel.LoadServers();
-                    }
-                }
-            }
-            else
-            {
-                foreach (var server in explorerServers)
-                {
-                    var serverExists = connectControlServers?.FirstOrDefault(o => o.EnvironmentID == server.ResourceId);
-                    if (serverExists == null)
-                    {
-                        _connectControlSingleton.ReloadServer();
-                        ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(server.ResourceId);
-                        connectControlViewModel.LoadServers();
+                        var connectControlServers = connectControlViewModel.Servers?.Where(o => !o.IsLocalHost).ToObservableCollection();
+
+                        if (connectControlServers?.Count > explorerServers?.Count())
+                        {
+                            foreach (var serv in connectControlServers)
+                            {
+                                var found = explorerServers.FirstOrDefault(a => a.ResourceId == serv.EnvironmentID);
+                                if (found == null)
+                                {
+                                    _connectControlSingleton.ReloadServer();
+                                    ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(serv.EnvironmentID);
+                                    connectControlViewModel.LoadServers();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (var server in explorerServers)
+                            {
+                                var serverExists = connectControlServers?.FirstOrDefault(o => o.EnvironmentID == server.ResourceId);
+                                if (serverExists == null)
+                                {
+                                    _connectControlSingleton.ReloadServer();
+                                    ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(server.ResourceId);
+                                    connectControlViewModel.LoadServers();
+                                }
+                            }
+                        }
                     }
                 }
             }
