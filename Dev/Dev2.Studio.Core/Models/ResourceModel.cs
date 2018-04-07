@@ -532,22 +532,29 @@ namespace Dev2.Studio.Core.Models
 
                 if (result != null)
                 {
-                    var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
-                    var endNode = result.IndexOf("</Category>", 0, true);
-                    if (endNode > startNode)
-                    {
-                        var len = endNode - startNode;
-                        var oldCategory = result.Substring(startNode, len);
-                        if (oldCategory != Category)
-                        {
-                            result = result.Replace(oldCategory, Category);
-                        }
-                    }
+                    result = ReplaceCategory(result);
                 }
             }
             else
             {
                 throw new Exception(ErrorResource.ToServiceDefinitionDoesNotRupportResourcesOfTypeSource);
+            }
+
+            return result;
+        }
+
+        StringBuilder ReplaceCategory(StringBuilder result)
+        {
+            var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
+            var endNode = result.IndexOf("</Category>", 0, true);
+            if (endNode > startNode)
+            {
+                var len = endNode - startNode;
+                var oldCategory = result.Substring(startNode, len);
+                if (oldCategory != Category)
+                {
+                    result = result.Replace(oldCategory, Category);
+                }
             }
 
             return result;
