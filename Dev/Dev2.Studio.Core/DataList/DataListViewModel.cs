@@ -383,23 +383,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                     else
                     {
-                        var recsetToAddTo = RecsetCollection.FirstOrDefault(c => c.DisplayName == part.Recordset);
-
-                        var tmpRecset = tmpRecsetList.FirstOrDefault(c => c.DisplayName == part.Recordset);
-
-                        if (recsetToAddTo != null)
-                        {
-                            _recordsetHandler.AddMissingRecordSetPart(recsetToAddTo, part);
-                        }
-                        else if (tmpRecset != null)
-                        {
-                            _recordsetHandler.AddMissingTempRecordSet(part, tmpRecset);
-                        }
-                        else
-                        {
-                            var recset = DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description);
-                            tmpRecsetList.Add(recset);
-                        }
+                        AddMissingRecsetParts(tmpRecsetList, part);
                     }
                 }
             }
@@ -414,6 +398,27 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             UpdateIntellisenseList();
             WriteToResourceModel();
+        }
+
+        private void AddMissingRecsetParts(List<IRecordSetItemModel> tmpRecsetList, IDataListVerifyPart part)
+        {
+            var recsetToAddTo = RecsetCollection.FirstOrDefault(c => c.DisplayName == part.Recordset);
+
+            var tmpRecset = tmpRecsetList.FirstOrDefault(c => c.DisplayName == part.Recordset);
+
+            if (recsetToAddTo != null)
+            {
+                _recordsetHandler.AddMissingRecordSetPart(recsetToAddTo, part);
+            }
+            else if (tmpRecset != null)
+            {
+                _recordsetHandler.AddMissingTempRecordSet(part, tmpRecset);
+            }
+            else
+            {
+                var recset = DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description);
+                tmpRecsetList.Add(recset);
+            }
         }
 
         void UpdateIntellisenseList()
@@ -461,39 +466,44 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             foreach (var dataListItemModel in toList)
             {
-                if (!string.IsNullOrEmpty(dataListItemModel.DisplayName))
-                {
-                    var recsetAppend = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName);
-                    var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName, true);
+                RefreshRecordSets(dataListItemModel, accList);
+            }
+            return accList;
+        }
 
-                    accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetAppend));
-                    accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetStar));
-                }
-                foreach (var listItemModel in dataListItemModel.Children)
+        void RefreshRecordSets(IRecordSetItemModel dataListItemModel, IList<string> accList)
+        {
+            if (!string.IsNullOrEmpty(dataListItemModel.DisplayName))
+            {
+                var recsetAppend = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName);
+                var recsetStar = DataListUtil.MakeValueIntoHighLevelRecordset(dataListItemModel.DisplayName, true);
+
+                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetAppend));
+                accList.Add(DataListUtil.AddBracketsToValueIfNotExist(recsetStar));
+            }
+            foreach (var listItemModel in dataListItemModel.Children)
+            {
+                if (!string.IsNullOrEmpty(listItemModel.Name))
                 {
-                    if (!string.IsNullOrEmpty(listItemModel.Name))
+                    var rec = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(dataListItemModel.DisplayName, listItemModel.DisplayName, ""));
+                    if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
                     {
-                        var rec = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(dataListItemModel.DisplayName, listItemModel.DisplayName, ""));
-                        if (ExecutionEnvironment.IsRecordsetIdentifier(rec))
-                        {
-                            accList.Add(DataListUtil.ReplaceRecordBlankWithStar(rec));
-                            accList.Add(rec);
-                        }
-                    }
-                }
-                foreach (var listItemModel in ScalarCollection)
-                {
-                    if (!string.IsNullOrEmpty(listItemModel.DisplayName))
-                    {
-                        var rec = "[[" + listItemModel.DisplayName + "]]";
-                        if (ExecutionEnvironment.IsScalar(rec))
-                        {
-                            accList.Add(rec);
-                        }
+                        accList.Add(DataListUtil.ReplaceRecordBlankWithStar(rec));
+                        accList.Add(rec);
                     }
                 }
             }
-            return accList;
+            foreach (var listItemModel in ScalarCollection)
+            {
+                if (!string.IsNullOrEmpty(listItemModel.DisplayName))
+                {
+                    var rec = "[[" + listItemModel.DisplayName + "]]";
+                    if (ExecutionEnvironment.IsScalar(rec))
+                    {
+                        accList.Add(rec);
+                    }
+                }
+            }
         }
 
         public void AddBlankRow(IDataListItemModel item)
@@ -823,34 +833,39 @@ namespace Dev2.Studio.ViewModels.DataList
                     return;
                 }
 
-                var children = xDoc.DocumentElement.ChildNodes;
-                foreach (XmlNode child in children)
-                {
-                    if (DataListUtil.IsSystemTag(child.Name))
-                    {
-                        continue;
-                    }
-
-                    if (IsJsonAttribute(child))
-                    {
-                        _complexObjectHandler.AddComplexObjectFromXmlNode(child, null);
-                    }
-                    else
-                    {
-                        if (child.HasChildNodes)
-                        {
-                            _recordsetHandler.AddRecordSets(child);
-                        }
-                        else
-                        {
-                            AddScalars(child);
-                        }
-                    }
-                }
+                ConvertDataListStringToCollections(xDoc);
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(e, "Warewolf Error");
+            }
+        }
+
+        void ConvertDataListStringToCollections(XmlDocument xDoc)
+        {
+            var children = xDoc.DocumentElement.ChildNodes;
+            foreach (XmlNode child in children)
+            {
+                if (DataListUtil.IsSystemTag(child.Name))
+                {
+                    continue;
+                }
+
+                if (IsJsonAttribute(child))
+                {
+                    _complexObjectHandler.AddComplexObjectFromXmlNode(child, null);
+                }
+                else
+                {
+                    if (child.HasChildNodes)
+                    {
+                        _recordsetHandler.AddRecordSets(child);
+                    }
+                    else
+                    {
+                        AddScalars(child);
+                    }
+                }
             }
         }
 
