@@ -220,57 +220,54 @@ namespace Dev2.Controller
                 {
                     var popupController = CustomContainer.Get<IPopupController>();
                     popupController?.Show(string.Format(ErrorResource.ServerDisconnected, connection.DisplayName) + Environment.NewLine +
-                                          ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
-                                          MessageBoxImage.Information, "", false, false, true, false, false, false);
+                                            ErrorResource.ServerReconnectForActions, ErrorResource.ServerDisconnectedHeader, MessageBoxButton.OK,
+                                            MessageBoxImage.Information, "", false, false, true, false, false, false);
+                }
+                return default(T);
+            }
+            try
+            {
+                if (ServicePayload == null)
+                {
+                    ServicePayload = new EsbExecuteRequest();
+                }
+
+                ServicePayload.ServiceName = ServiceName;
+                var toSend = serializer.SerializeToBuilder(ServicePayload);
+                var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
+                var executeCommand = serializer.Deserialize<T>(payload);
+                if (executeCommand == null)
+                {
+                    var execMessage = serializer.Deserialize<ExecuteMessage>(payload);
+                    if (execMessage != null)
+                    {
+                        return CheckAuthorization<T>(execMessage);
+                    }
+                }
+                else
+                {
+                    if (typeof(T) == typeof(ExecuteMessage))
+                    {
+                        return CheckAuthorization<T>(executeCommand as ExecuteMessage);
+                    }
+                    return executeCommand;
                 }
 
             }
-            else
+            catch (ServiceNotAuthorizedException ex)
             {
-                try
-                {
-                    if (ServicePayload == null)
-                    {
-                        ServicePayload = new EsbExecuteRequest();
-                    }
-
-                    ServicePayload.ServiceName = ServiceName;
-                    var toSend = serializer.SerializeToBuilder(ServicePayload);
-                    var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
-                    var executeCommand = serializer.Deserialize<T>(payload);
-                    if (executeCommand == null)
-                    {
-                        var execMessage = serializer.Deserialize<ExecuteMessage>(payload);
-                        if (execMessage != null)
-                        {
-                            return CheckAuthorization<T>(execMessage);
-                        }
-                    }
-                    else
-                    {
-                        if (typeof(T) == typeof(ExecuteMessage))
-                        {
-                            return CheckAuthorization<T>(executeCommand as ExecuteMessage);
-                        }
-                        return executeCommand;
-                    }
-
-                }
-                catch (ServiceNotAuthorizedException ex)
+                ShowAuthorizationErrorPopup(ex.Message);
+                return default(T);
+            }
+            catch (AggregateException ex)
+            {
+                var aggregateException = ex.Flatten();
+                var baseException = aggregateException.GetBaseException();
+                var isAuthorizationError = baseException is ServiceNotAuthorizedException;
+                if (isAuthorizationError)
                 {
                     ShowAuthorizationErrorPopup(ex.Message);
                     return default(T);
-                }
-                catch (AggregateException ex)
-                {
-                    var aggregateException = ex.Flatten();
-                    var baseException = aggregateException.GetBaseException();
-                    var isAuthorizationError = baseException is ServiceNotAuthorizedException;
-                    if (isAuthorizationError)
-                    {
-                        ShowAuthorizationErrorPopup(ex.Message);
-                        return default(T);
-                    }
                 }
             }
             return default(T);
