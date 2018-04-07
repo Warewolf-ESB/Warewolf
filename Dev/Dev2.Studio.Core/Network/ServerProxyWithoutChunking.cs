@@ -138,16 +138,21 @@ namespace Dev2.Network
                 var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId).ConfigureAwait(true)).GetAwaiter().GetResult();
                 if (!string.IsNullOrWhiteSpace(result))
                 {
-                    var obj = _serializer.Deserialize<CompileMessageList>(result);
-                    if (obj != null)
-                    {
-                        ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
-                        var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                        if (shellViewModel != null)
-                        {
-                            shellViewModel.ResourceCalled = false;
-                        }
-                    }
+                    FetchResourcesAffectedMemo(result);
+                }
+            }
+        }
+
+        void FetchResourcesAffectedMemo(string result)
+        {
+            var obj = _serializer.Deserialize<CompileMessageList>(result);
+            if (obj != null)
+            {
+                ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                if (shellViewModel != null)
+                {
+                    shellViewModel.ResourceCalled = false;
                 }
             }
         }
@@ -651,15 +656,13 @@ namespace Dev2.Network
                 if (result.Length > 0)
                 {
                     var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if (start > 0)
+                    var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+                    if (start > 0 && start < end && end - start > 1)
                     {
-                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                        if (start < end && end - start > 1)
-                        {
-                            start += GlobalConstants.ManagementServicePayload.Length + 2;
-                            return new StringBuilder(result.Substring(start, end - start));
-                        }
+                        start += GlobalConstants.ManagementServicePayload.Length + 2;
+                        return new StringBuilder(result.Substring(start, end - start));
                     }
+
                 }
             }
             catch (Exception e)
