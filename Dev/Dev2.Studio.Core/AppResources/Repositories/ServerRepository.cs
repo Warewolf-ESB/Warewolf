@@ -435,7 +435,7 @@ namespace Dev2.Studio.Core
 
         #region LookupEnvironments
 
-        public IList<IServer> LookupEnvironments(IServer defaultEnvironment) => LookupEnvironments(defaultEnvironment, null);
+        public IList<IServer> LookupEnvironments(IServer defaultEnvironment) => LookupEnvironments(defaultEnvironment, (IList<string>)null);
 
         public IList<IServer> LookupEnvironments(IServer defaultEnvironment, IList<string> environmentGuids)
         {
@@ -463,75 +463,80 @@ namespace Dev2.Studio.Core
 
             var hasEnvironmentGuids = environmentGuids != null;
 
-            if (hasEnvironmentGuids)
+            result = hasEnvironmentGuids ? LookupEnvironments(defaultEnvironment, environmentGuids, result) : LookupEnvironments(defaultEnvironment, result);
+
+            return result;
+        }
+
+        static List<IServer> LookupEnvironments(IServer defaultEnvironment, List<IServer> result)
+        {
+            var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
+            if (servers != null)
             {
-                var servers = defaultEnvironment.ResourceRepository.FindResourcesByID(defaultEnvironment, environmentGuids, ResourceType.Source);
-                foreach (var env in servers)
+                foreach (var connection in servers)
                 {
-                    var payload = env.WorkflowXaml;
-
-                    if (payload != null)
+                    if (!string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress))
                     {
-                        #region Parse connection string values
-
-                        // Let this use of strings go, payload should be under the LOH size limit if 85k bytes ;)
-                        var xe = XElement.Parse(payload.ToString());
-                        var conStr = xe.AttributeSafe("ConnectionString");
-                        var connectionParams = ParseConnectionString(conStr);
-
-                        if (!connectionParams.TryGetValue("AppServerUri", out string tmp))
-                        {
-                            continue;
-                        }
-
-                        Uri appServerUri;
-                        try
-                        {
-                            appServerUri = new Uri(tmp);
-                        }
-                        catch (Exception ex)
-                        {
-                            continue;
-                        }
-
-                        if (!connectionParams.TryGetValue("WebServerPort", out tmp) || !int.TryParse(tmp, out int webServerPort))
-                        {
-                            continue;
-                        }
-
-                        if (!connectionParams.TryGetValue("AuthenticationType", out tmp))
-                        {
-                            tmp = "";
-                        }
-                        if (!Enum.TryParse(tmp, true, out AuthenticationType authenticationType))
-                        {
-                            authenticationType = AuthenticationType.Windows;
-                        }
-                        connectionParams.TryGetValue("UserName", out string userName);
-                        connectionParams.TryGetValue("Password", out string password);
-                        #endregion
-
-                        var environment = CreateEnvironmentModel(env.ID, appServerUri, authenticationType, userName, password, env.DisplayName);
-                        result.Add(environment);
+                        var environmentModel = CreateEnvironmentModel(connection);
+                        result.Add(environmentModel);
                     }
                 }
             }
-            else
+            return result;
+        }
+
+        static List<IServer> LookupEnvironments(IServer defaultEnvironment, IList<string> environmentGuids, List<IServer> result)
+        {
+            var servers = defaultEnvironment.ResourceRepository.FindResourcesByID(defaultEnvironment, environmentGuids, ResourceType.Source);
+            foreach (var env in servers)
             {
-                var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
-                if (servers != null)
+                var payload = env.WorkflowXaml;
+
+                if (payload != null)
                 {
-                    foreach (var connection in servers)
+                    #region Parse connection string values
+
+                    // Let this use of strings go, payload should be under the LOH size limit if 85k bytes ;)
+                    var xe = XElement.Parse(payload.ToString());
+                    var conStr = xe.AttributeSafe("ConnectionString");
+                    var connectionParams = ParseConnectionString(conStr);
+
+                    if (!connectionParams.TryGetValue("AppServerUri", out string tmp))
                     {
-                        if (!string.IsNullOrEmpty(connection.Address) && !string.IsNullOrEmpty(connection.WebAddress))
-                        {
-                            var environmentModel = CreateEnvironmentModel(connection);
-                            result.Add(environmentModel);
-                        }
+                        continue;
                     }
+
+                    Uri appServerUri;
+                    try
+                    {
+                        appServerUri = new Uri(tmp);
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+
+                    if (!connectionParams.TryGetValue("WebServerPort", out tmp) || !int.TryParse(tmp, out int webServerPort))
+                    {
+                        continue;
+                    }
+
+                    if (!connectionParams.TryGetValue("AuthenticationType", out tmp))
+                    {
+                        tmp = "";
+                    }
+                    if (!Enum.TryParse(tmp, true, out AuthenticationType authenticationType))
+                    {
+                        authenticationType = AuthenticationType.Windows;
+                    }
+                    connectionParams.TryGetValue("UserName", out string userName);
+                    connectionParams.TryGetValue("Password", out string password);
+                    #endregion
+
+                    var environment = CreateEnvironmentModel(env.ID, appServerUri, authenticationType, userName, password, env.DisplayName);
+                    result.Add(environment);
                 }
             }
-
             return result;
         }
 
