@@ -209,33 +209,38 @@ namespace Dev2.Studio.Core
                 var groups = new Dictionary<string, DebugLineGroup>();
                 foreach (var result in item.FetchResultsList())
                 {
-                    if (string.IsNullOrEmpty(result.GroupName))
-                    {
-                        list.LineItems.Add(new DebugLineItem(result));
-                    }
-                    else
-                    {
-                        if (!groups.TryGetValue(result.GroupName, out DebugLineGroup group))
-                        {
-                            group = new DebugLineGroup(result.GroupName, result.Label)
-                            {
-                                MoreLink = result.MoreLink
-                            };
-
-                            groups.Add(group.GroupName, group);
-                            list.LineItems.Add(group);
-                        }
-
-                        if (!group.Rows.TryGetValue(result.GroupIndex, out DebugLineGroupRow row))
-                        {
-                            row = new DebugLineGroupRow();
-                            group.Rows.Add(result.GroupIndex, row);
-                        }
-                        row.LineItems.Add(new DebugLineItem(result));
-                    }
+                    BuildBindableListFromDebugItems(list, groups, result);
                 }
 
                 destinationList.Add(list);
+            }
+        }
+
+        static void BuildBindableListFromDebugItems(DebugLine list, Dictionary<string, DebugLineGroup> groups, IDebugItemResult result)
+        {
+            if (string.IsNullOrEmpty(result.GroupName))
+            {
+                list.LineItems.Add(new DebugLineItem(result));
+            }
+            else
+            {
+                if (!groups.TryGetValue(result.GroupName, out DebugLineGroup group))
+                {
+                    group = new DebugLineGroup(result.GroupName, result.Label)
+                    {
+                        MoreLink = result.MoreLink
+                    };
+
+                    groups.Add(group.GroupName, group);
+                    list.LineItems.Add(group);
+                }
+
+                if (!group.Rows.TryGetValue(result.GroupIndex, out DebugLineGroupRow row))
+                {
+                    row = new DebugLineGroupRow();
+                    group.Rows.Add(result.GroupIndex, row);
+                }
+                row.LineItems.Add(new DebugLineItem(result));
             }
         }
 
