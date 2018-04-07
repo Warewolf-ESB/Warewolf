@@ -227,27 +227,13 @@ namespace Dev2.Studio.Core
             lock (FileLock)
             {
                 var path = GetEnvironmentsFilePath();
-
                 var tryReadFile = File.Exists(path) ? File.ReadAllText(path) : null;
-
-
-                var xml = new XElement("Environments");
-
                 var result = new List<Guid>();
-
                 if (!string.IsNullOrEmpty(tryReadFile))
                 {
                     try
                     {
-                        xml = XElement.Parse(tryReadFile);
-                        var guids = xml.Descendants("Environment").Select(id => id.Value).ToList();
-                        foreach (var guidStr in guids)
-                        {
-                            if (Guid.TryParse(guidStr, out Guid guid))
-                            {
-                                result.Add(guid);
-                            }
-                        }
+                        result = ReadSession(tryReadFile, result);
                     }
                     catch (Exception e)
                     {
@@ -255,9 +241,23 @@ namespace Dev2.Studio.Core
                     }
 
                 }
-
                 return result;
             }
+        }
+
+        static List<Guid> ReadSession(string tryReadFile, List<Guid> result)
+        {
+            var xml = new XElement("Environments");
+            xml = XElement.Parse(tryReadFile);
+            var guids = xml.Descendants("Environment").Select(id => id.Value).ToList();
+            foreach (var guidStr in guids)
+            {
+                if (Guid.TryParse(guidStr, out Guid guid))
+                {
+                    result.Add(guid);
+                }
+            }
+            return result;
         }
 
         public virtual void WriteSession(IEnumerable<Guid> environmentGuids)
@@ -494,11 +494,7 @@ namespace Dev2.Studio.Core
                             continue;
                         }
 
-                        if (!connectionParams.TryGetValue("WebServerPort", out tmp))
-                        {
-                            continue;
-                        }
-                        if (!int.TryParse(tmp, out int webServerPort))
+                        if (!connectionParams.TryGetValue("WebServerPort", out tmp) || !int.TryParse(tmp, out int webServerPort))
                         {
                             continue;
                         }
