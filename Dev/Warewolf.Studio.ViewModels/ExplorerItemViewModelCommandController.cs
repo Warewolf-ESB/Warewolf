@@ -177,7 +177,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_popupController.ShowDeleteVersionMessage(resourceName) == MessageBoxResult.Yes)
             {
-                explorerRepository.Delete(explorerItemViewModel);
+                explorerRepository.TryDelete(explorerItemViewModel);
                 var parentChildren = new ObservableCollection<IExplorerItemViewModel>(parent.Children);
 
                 var index = 0;
@@ -237,7 +237,7 @@ namespace Warewolf.Studio.ViewModels
             if (server != null && messageBoxResult == MessageBoxResult.Yes)
             {
                 _shellViewModel.CloseResource(explorerItemViewModel.ResourceId, server.EnvironmentID);
-                var deletedFileMetadata = explorerRepository.Delete(explorerItemViewModel);
+                var deletedFileMetadata = explorerRepository.TryDelete(explorerItemViewModel);
                 if (deletedFileMetadata.IsDeleted)
                 {
                     if (explorerItemViewModel.ResourceType == @"ServerSource" || explorerItemViewModel.IsServer)
