@@ -120,13 +120,10 @@ namespace Dev2.ViewModels
                         case MessageBoxResult.No:
                             return true;
                         case MessageBoxResult.Yes:
-                            if (ViewModel.CanSave)
-                            {
-                                ViewModel.Save();
-                            }
+                            TrySave();
                             break;
                         default:
-                            break;
+                            return true;
                     }
                 }
             }
@@ -139,6 +136,14 @@ namespace Dev2.ViewModels
                 }
             }
             return true;
+        }
+
+        void TrySave()
+        {
+            if (ViewModel.CanSave)
+            {
+                ViewModel.Save();
+            }
         }
 
         #endregion
