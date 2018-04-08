@@ -1839,7 +1839,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 else
                 {
-                    if (vm.GetType().Name == "SourceViewModel`1")
+                    if (vm.GetType().Name != "SourceViewModel`1")
                     {
                         continue;
                     }
