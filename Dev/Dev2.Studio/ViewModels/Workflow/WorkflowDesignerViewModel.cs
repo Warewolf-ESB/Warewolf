@@ -2233,7 +2233,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (dp != null && !WizardEngineAttachedProperties.GetDontOpenWizard(dp))
                     {
-                        FlowController.EditSwitchCaseExpression(new EditCaseExpressionMessage
+                        FlowController.TryEditSwitchCaseExpression(new EditCaseExpressionMessage
                         {
                             ModelItem = item,
                             Server = _resourceModel.Environment
