@@ -228,7 +228,7 @@ namespace Dev2.Settings.Scheduler
             ViewModelUtils.RaiseCanExecuteChanged(_schedulerViewModel.NewCommand);
         }
 
-        public void DeleteTask()
+        public void TryDeleteTask()
         {
             if (_schedulerViewModel.SelectedTask != null && _schedulerViewModel.CurrentEnvironment != null)
             {
@@ -236,36 +236,7 @@ namespace Dev2.Settings.Scheduler
                 {
                     if (_schedulerViewModel.CurrentEnvironment.AuthorizationService.IsAuthorized(AuthorizationContext.Administrator, null))
                     {
-                        if (_schedulerViewModel.PopupController.ShowDeleteConfirmation(_schedulerViewModel.SelectedTask.Name) == MessageBoxResult.Yes)
-                        {
-                            var index = _schedulerViewModel.ScheduledResourceModel.ScheduledResources
-                                .ToList()
-                                .FindIndex(resource => resource.ResourceId == _schedulerViewModel.SelectedTask.ResourceId);
-                            var indexInFilteredList = _schedulerViewModel.TaskList
-                                .ToList()
-                                .FindIndex(resource => resource.ResourceId == _schedulerViewModel.SelectedTask.ResourceId);
-                            if (index != -1)
-                            {
-                                Dev2Logger.Info($"Delete Schedule Name: {_schedulerViewModel.SelectedTask.Name} Resource:{_schedulerViewModel.SelectedTask.ResourceId} Env:{_schedulerViewModel.CurrentEnvironment.Name}", "Warewolf Info");
-
-                                _schedulerViewModel.ScheduledResourceModel.DeleteSchedule(_schedulerViewModel.SelectedTask);
-                                //if delete is successfull then do the code below
-                                _schedulerViewModel.ScheduledResourceModel.ScheduledResources.RemoveAt(index);
-                                _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.TaskList);
-                                if (indexInFilteredList <= _schedulerViewModel.TaskList.Count && indexInFilteredList > 0)
-                                {
-                                    _schedulerViewModel.SelectedTask = _schedulerViewModel.TaskList[indexInFilteredList - 1];
-                                }
-                                else
-                                {
-                                    if (indexInFilteredList == 0 && _schedulerViewModel.TaskList.Count > 0)
-                                    {
-                                        _schedulerViewModel.SelectedTask = _schedulerViewModel.TaskList[0];
-                                    }
-                                }
-                            }
-                            _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.History);
-                        }
+                        DeleteTask();
                     }
                     else
                     {
@@ -275,6 +246,45 @@ namespace Dev2.Settings.Scheduler
                 else
                 {
                     _schedulerViewModel.ShowError(Core.SchedulerNotConnectedErrorMessage);
+                }
+            }
+        }
+
+        void DeleteTask()
+        {
+            if (_schedulerViewModel.PopupController.ShowDeleteConfirmation(_schedulerViewModel.SelectedTask.Name) == MessageBoxResult.Yes)
+            {
+                var index = _schedulerViewModel.ScheduledResourceModel.ScheduledResources
+                    .ToList()
+                    .FindIndex(resource => resource.ResourceId == _schedulerViewModel.SelectedTask.ResourceId);
+                var indexInFilteredList = _schedulerViewModel.TaskList
+                    .ToList()
+                    .FindIndex(resource => resource.ResourceId == _schedulerViewModel.SelectedTask.ResourceId);
+                if (index != -1)
+                {
+                    DeleteTask(index, indexInFilteredList);
+                }
+                _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.History);
+            }
+        }
+
+        void DeleteTask(int index, int indexInFilteredList)
+        {
+            Dev2Logger.Info($"Delete Schedule Name: {_schedulerViewModel.SelectedTask.Name} Resource:{_schedulerViewModel.SelectedTask.ResourceId} Env:{_schedulerViewModel.CurrentEnvironment.Name}", "Warewolf Info");
+
+            _schedulerViewModel.ScheduledResourceModel.DeleteSchedule(_schedulerViewModel.SelectedTask);
+            //if delete is successfull then do the code below
+            _schedulerViewModel.ScheduledResourceModel.ScheduledResources.RemoveAt(index);
+            _schedulerViewModel.NotifyOfPropertyChange(() => _schedulerViewModel.TaskList);
+            if (indexInFilteredList <= _schedulerViewModel.TaskList.Count && indexInFilteredList > 0)
+            {
+                _schedulerViewModel.SelectedTask = _schedulerViewModel.TaskList[indexInFilteredList - 1];
+            }
+            else
+            {
+                if (indexInFilteredList == 0 && _schedulerViewModel.TaskList.Count > 0)
+                {
+                    _schedulerViewModel.SelectedTask = _schedulerViewModel.TaskList[0];
                 }
             }
         }
