@@ -82,7 +82,12 @@ namespace Dev2.Studio.Core.DataList
         }
 
         public IEnumerable<IDataListVerifyPart> MissingScalars(IEnumerable<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems) => (from dataListItem in _scalarCollection
-        
+                                                                                                                                            where !string.IsNullOrEmpty(dataListItem.DisplayName)
+                                                                                                                                            where partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0
+                                                                                                                                            where dataListItem.IsEditable
+                                                                                                                                            where !excludeUnusedItems || dataListItem.IsUsed
+                                                                                                                                            select IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description)).ToList();
+
         static void AddMissingWorkFlowRecordsetPart(List<IDataListVerifyPart> missingWorkflowParts,
         IRecordSetItemModel dataListItem,
         IRecordSetFieldItemModel child = null)
