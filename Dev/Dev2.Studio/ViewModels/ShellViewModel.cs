@@ -438,7 +438,7 @@ namespace Dev2.Studio.ViewModels
             Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
             if (message.Model != null)
             {
-                _worksurfaceContextManager.AddReverseDependencyVisualizerWorkSurface(message.Model);
+                _worksurfaceContextManager.TryShowDependencies(message.Model);
             }
         }
 
@@ -1019,7 +1019,7 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
-            _worksurfaceContextManager.CreateNewScheduleWorkSurface(contextualResourceModel);
+            _worksurfaceContextManager.TryCreateNewScheduleWorkSurface(contextualResourceModel);
         }
 
         public void CreateTest(Guid resourceId)

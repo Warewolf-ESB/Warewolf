@@ -3891,7 +3891,7 @@ namespace Dev2.Core.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
-            wcm.Setup(manager => manager.CreateNewScheduleWorkSurface(resourceModel.Object));
+            wcm.Setup(manager => manager.TryCreateNewScheduleWorkSurface(resourceModel.Object));
             EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
                 .Returns(resourceModel.Object);
             pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
