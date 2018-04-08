@@ -555,30 +555,35 @@ namespace Dev2.Studio.Views
             {
                 if (DataContext is ShellViewModel shellViewModel)
                 {
-                    var paneToolWindow = sender as PaneToolWindow;
-                    if (paneToolWindow?.Pane?.Panes.Count > 0)
-                    {
-                        if (paneToolWindow.Pane.Panes[0] is ContentPane contentPane)
-                        {
-                            var workSurfaceContextViewModel = contentPane.DataContext as WorkSurfaceContextViewModel;
-                            shellViewModel.ActivateItem(workSurfaceContextViewModel);
-                        }
-                        else
-                        {
-                            var tabGroupPane = paneToolWindow.Pane.Panes[0] as TabGroupPane;
-                            if (tabGroupPane?.Items.Count >= 1)
-                            {
-                                var selectedContent = tabGroupPane.SelectedContent as ContentPane;
-                                var workSurfaceContextViewModel = selectedContent?.DataContext as WorkSurfaceContextViewModel;
-                                shellViewModel.ActivateItem(workSurfaceContextViewModel);
-                            }
-                        }
-                    }
+                    WindowOnPreviewMouseDown(sender, shellViewModel);
                 }
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, "Warewolf Error");
+            }
+        }
+
+        static void WindowOnPreviewMouseDown(object sender, ShellViewModel shellViewModel)
+        {
+            var paneToolWindow = sender as PaneToolWindow;
+            if (paneToolWindow?.Pane?.Panes.Count > 0)
+            {
+                if (paneToolWindow.Pane.Panes[0] is ContentPane contentPane)
+                {
+                    var workSurfaceContextViewModel = contentPane.DataContext as WorkSurfaceContextViewModel;
+                    shellViewModel.ActivateItem(workSurfaceContextViewModel);
+                }
+                else
+                {
+                    var tabGroupPane = paneToolWindow.Pane.Panes[0] as TabGroupPane;
+                    if (tabGroupPane?.Items.Count >= 1)
+                    {
+                        var selectedContent = tabGroupPane.SelectedContent as ContentPane;
+                        var workSurfaceContextViewModel = selectedContent?.DataContext as WorkSurfaceContextViewModel;
+                        shellViewModel.ActivateItem(workSurfaceContextViewModel);
+                    }
+                }
             }
         }
 
