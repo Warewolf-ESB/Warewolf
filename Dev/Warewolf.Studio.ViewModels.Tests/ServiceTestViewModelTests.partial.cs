@@ -1352,8 +1352,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(invoke);
             Assert.IsTrue(invoke);
         }
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void RunSelectedTestInBrowser_GivenIsInvoked_ShouldFirePropertyChanges()
@@ -1390,9 +1389,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Test Result -----------------------
             mock.Verify(executor => executor.OpenInBrowser(It.IsAny<Uri>()));
         }
-
-
-
+        
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MarkChildrenPending_GivenIsInvoked_ShouldSetAsPending()
@@ -1405,10 +1402,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             serviceTestStep.Result = new TestRunResult();
             var serviceTestOutput = serviceTestStep.StepOutputs.Single();
             serviceTestOutput.Result = new TestRunResult();
-            var methodInfo = typeof(ServiceTestViewModel).GetMethod("MarkChildrenPending", BindingFlags.NonPublic | BindingFlags.Static);
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("MarkChildrenPending", BindingFlags.NonPublic | BindingFlags.Static, null, new Type[] { typeof(IServiceTestStep) }, null);
 
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(methodInfo);
+            Assert.IsNotNull(methodInfo, "nathi is an idioto");
             //---------------Execute Test ----------------------
             methodInfo.Invoke(null, new object[] { serviceTestStep });
             //---------------Test Result -----------------------
