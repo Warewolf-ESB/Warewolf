@@ -126,7 +126,7 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        void TabControlSelectionChanged(object sender, SelectionChangedEventArgs e)
+        void TryChangeTab(object sender, SelectionChangedEventArgs e)
         {
             if (e.Source is TabControl ctrl)
             {
@@ -146,23 +146,28 @@ namespace Dev2.Studio.Views.Workflow
                     }
                     else
                     {
-                        try
-                        {
-                            var xmlData = _editor.Text;
-                            if (_currentTab == InputTab.Json)
-                            {
-                                xmlData = GetXmlDataFromJson();
-                            }
-                            vm.XmlData = xmlData;
-                            vm.SetWorkflowInputData();
-                            _currentTab = InputTab.Grid;
-                        }
-                        catch (Exception ex)
-                        {
-                            vm.IsInError = true;
-                        }
+                        TryChangeTab(vm);
                     }
                 }
+            }
+        }
+
+        void TryChangeTab(WorkflowInputDataViewModel vm)
+        {
+            try
+            {
+                var xmlData = _editor.Text;
+                if (_currentTab == InputTab.Json)
+                {
+                    xmlData = GetXmlDataFromJson();
+                }
+                vm.XmlData = xmlData;
+                vm.SetWorkflowInputData();
+                _currentTab = InputTab.Grid;
+            }
+            catch (Exception ex)
+            {
+                vm.IsInError = true;
             }
         }
 
@@ -343,15 +348,21 @@ namespace Dev2.Studio.Views.Workflow
                     var count = VisualTreeHelper.GetChildrenCount(current);
                     for (var supplierCounter = 0; supplierCounter < count; ++supplierCounter)
                     {
-                        var child = VisualTreeHelper.GetChild(current, supplierCounter);
-                        if (child is FrameworkElement item)
-                        {
-                            tree.Push(item);
-                        }
+                        tree = TreePushChild(tree, current, supplierCounter);
                     }
                 }
             }
             return null;
+        }
+
+        static Stack<FrameworkElement> TreePushChild(Stack<FrameworkElement> tree, FrameworkElement current, int supplierCounter)
+        {
+            var child = VisualTreeHelper.GetChild(current, supplierCounter);
+            if (child is FrameworkElement item)
+            {
+                tree.Push(item);
+            }
+            return tree;
         }
 
         static CellsPanel GetSelectedRow(XamGrid grid)
