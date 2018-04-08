@@ -1262,37 +1262,18 @@ namespace Dev2.Studio.ViewModels.Workflow
             else
             {
                 var propertyName = string.Empty;
-                switch (flowNode.ItemType.Name)
+                if (flowNode.ItemType.Name == "FlowDecision")
                 {
-                    case "FlowDecision":
-                        propertyName = "Condition";
-                        break;
-                    case "FlowSwitch`1":
-                        propertyName = "Expression";
-                        break;
-                    default:
-                        break;
+                    propertyName = "Condition";
+                }
+                if (flowNode.ItemType.Name == "FlowSwitch`1")
+                {
+                    propertyName = "Expression";
                 }
                 var property = flowNode.Properties[propertyName];
                 if (property != null)
                 {
-                    if (!string.IsNullOrEmpty(_expressionString))
-                    {
-                        workflowFields = GetDecisionElements(_expressionString, DataListSingleton.ActiveDataList);
-                        var activity = property.ComputedValue;
-                        if (activity != null)
-                        {
-                            workflowFields.AddRange(GetDecisionElements(((dynamic)activity).ExpressionText, DataListSingleton.ActiveDataList));
-                        }
-                    }
-                    else
-                    {
-                        var activity = property.ComputedValue;
-                        if (activity != null)
-                        {
-                            workflowFields.AddRange(GetDecisionElements(((dynamic)activity).ExpressionText, DataListSingleton.ActiveDataList));
-                        }
-                    }
+                    workflowFields = GetWorkflowFieldsFromProperty(workflowFields, property);
                 }
                 else
                 {
@@ -1302,7 +1283,30 @@ namespace Dev2.Studio.ViewModels.Workflow
             return workflowFields;
         }
 
-        public static List<String> GetDecisionElements(string expression, IDataListViewModel datalistModel)
+        List<string> GetWorkflowFieldsFromProperty(List<string> workflowFields, ModelProperty property)
+        {
+            if (!string.IsNullOrEmpty(_expressionString))
+            {
+                workflowFields = TryGetDecisionElements(_expressionString, DataListSingleton.ActiveDataList);
+                var activity = property.ComputedValue;
+                if (activity != null)
+                {
+                    workflowFields.AddRange(TryGetDecisionElements(((dynamic)activity).ExpressionText, DataListSingleton.ActiveDataList));
+                }
+            }
+            else
+            {
+                var activity = property.ComputedValue;
+                if (activity != null)
+                {
+                    workflowFields.AddRange(TryGetDecisionElements(((dynamic)activity).ExpressionText, DataListSingleton.ActiveDataList));
+                }
+            }
+
+            return workflowFields;
+        }
+
+        public static List<String> TryGetDecisionElements(string expression, IDataListViewModel datalistModel)
         {
             var decisionFields = new List<string>();
             if (!string.IsNullOrEmpty(expression))
@@ -1311,31 +1315,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 startIndex = startIndex + 1;
                 var endindex = expression.IndexOf('"', startIndex);
                 var decisionValue = expression.Substring(startIndex, endindex - startIndex);
-
                 try
                 {
-                    var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
-                    foreach (var decision in dds.TheStack)
-                    {
-                        var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
-                        for (var i = 0; i < 3; i++)
-                        {
-                            var getCol = getCols[i];
-                            if (datalistModel != null)
-                            {
-                                var parsed = GetParsedRegions(getCol, datalistModel);
-                                if (!DataListUtil.IsValueRecordset(getCol) && parsed.Any(DataListUtil.IsValueRecordset))
-                                {
-                                    var parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
-                                    decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
-                                }
-                                else
-                                {
-                                    decisionFields = decisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
-                                }
-                            }
-                        }
-                    }
+                    decisionFields = GetDecisionElements(datalistModel, decisionFields, decisionValue);
                 }
                 catch (Exception)
                 {
@@ -1343,18 +1325,49 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         var parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
                         decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                        return decisionFields;
                     }
-                    else
+                    if (DataListSingleton.ActiveDataList != null)
                     {
-                        if (DataListSingleton.ActiveDataList != null)
-                        {
-                            var parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue, DataListSingleton.ActiveDataList.WriteToResourceModel(), true);
-                            decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
-                        }
+                        var parts = DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(decisionValue, DataListSingleton.ActiveDataList.WriteToResourceModel(), true);
+                        decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
                     }
-
                 }
             }
+            return decisionFields;
+        }
+
+        private static List<string> GetDecisionElements(IDataListViewModel datalistModel, List<string> decisionFields, string decisionValue)
+        {
+            var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+            foreach (var decision in dds.TheStack)
+            {
+                var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
+                for (var i = 0; i < 3; i++)
+                {
+                    decisionFields = GetDecisionFields(datalistModel, decisionFields, decisionValue, getCols, i);
+                }
+            }
+            return decisionFields;
+        }
+
+        private static List<string> GetDecisionFields(IDataListViewModel datalistModel, List<string> decisionFields, string decisionValue, string[] getCols, int i)
+        {
+            var getCol = getCols[i];
+            if (datalistModel != null)
+            {
+                var parsed = GetParsedRegions(getCol, datalistModel);
+                if (!DataListUtil.IsValueRecordset(getCol) && parsed.Any(DataListUtil.IsValueRecordset))
+                {
+                    var parts = DataListFactory.CreateLanguageParser().ParseExpressionIntoParts(decisionValue, new List<IDev2DataLanguageIntellisensePart>());
+                    decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
+                }
+                else
+                {
+                    decisionFields = decisionFields.Union(GetParsedRegions(getCol, datalistModel)).ToList();
+                }
+            }
+
             return decisionFields;
         }
 
@@ -1594,29 +1607,24 @@ namespace Dev2.Studio.ViewModels.Workflow
                 designerConfigService.AutoSurroundWithSequenceEnabled = false;
             }
         }
-
-        [ExcludeFromCodeCoverage] //This method is used to prevent the drill down on the designer
+        
         static void ViewOnKeyDown(object sender, KeyEventArgs e)
         {
             var grid = sender as Grid;
             if (e.OriginalSource != null)
             {
                 var origSource = e.OriginalSource.GetType();
-                if (origSource.BaseType == typeof(ActivityDesigner))
+                if (origSource.BaseType == typeof(ActivityDesigner) && e.Key == Key.Return)
                 {
-                    if (e.Key == Key.Return)
-                    {
-                        e.Handled = true;
-                    }
+                    e.Handled = true;
                 }
+
                 var type = grid?.DataContext.GetType();
-                if (type == typeof(ServiceTestViewModel))
+                if (type == typeof(ServiceTestViewModel) && e.Key == Key.Delete)
                 {
-                    if (e.Key == Key.Delete)
-                    {
-                        e.Handled = true;
-                    }
+                    e.Handled = true;
                 }
+
                 if (type == typeof(MergeWorkflowViewModel))
                 {
                     if (origSource == typeof(TextBox))
@@ -1629,20 +1637,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                         return;
                     }
 
-                    if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+                    if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control &&
+                        (e.Key == Key.X || e.Key == Key.C || e.Key == Key.V || e.Key == Key.Z || e.Key == Key.Y))
                     {
-                        switch (e.Key)
-                        {
-                            case Key.X:
-                            case Key.C:
-                            case Key.V:
-                            case Key.Z:
-                            case Key.Y:
-                                e.Handled = true;
-                                break;
-                            default:
-                                break;
-                        }
+                        e.Handled = true;
                     }
                 }
             }
@@ -2553,7 +2551,19 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _wd?.View?.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
+            
+            if (!Handle(e))
+            {
+                new Task(() =>
+                {
+                    BuildWorkflowFields();
+                }).Start();
+            }
+        }
 
+        bool Handle(ExecutedRoutedEventArgs e)
+        {
+            var Handled = false;
             if (e.Command.Equals(System.Activities.Presentation.View.DesignerView.PasteCommand))
             {
                 _isPaste = true;
@@ -2563,24 +2573,26 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var dataPresent = dataObject.GetDataPresent("WorkflowXamlFormat");
                     if (dataPresent)
                     {
-                        var data = dataObject.GetData("WorkflowXamlFormat") as string;
-                        if (!string.IsNullOrEmpty(data))
-                        {
-                            var indexOf = data.IndexOf("ResourceID=", StringComparison.InvariantCultureIgnoreCase);
-                            var guid = data.Substring(indexOf + 12, 36);
-                            if (guid.Equals(ResourceModel.ID.ToString(), StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                e.Handled = true;
-                                return;
-                            }
-                        }
+                        Handled = Handle(e, dataObject);
                     }
                 }
-                new Task(() =>
-                {
-                    BuildWorkflowFields();
-                }).Start();
             }
+            return Handled;
+        }
+
+        bool Handle(ExecutedRoutedEventArgs e, IDataObject dataObject)
+        {
+            var data = dataObject.GetData("WorkflowXamlFormat") as string;
+            if (!string.IsNullOrEmpty(data))
+            {
+                var indexOf = data.IndexOf("ResourceID=", StringComparison.InvariantCultureIgnoreCase);
+                var guid = data.Substring(indexOf + 12, 36);
+                if (guid.Equals(ResourceModel.ID.ToString(), StringComparison.InvariantCultureIgnoreCase))
+                {
+                    e.Handled = true;
+                }
+            }
+            return e.Handled;
         }
 
         protected override void OnDispose()
