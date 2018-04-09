@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WfExecutionContainer : EsbExecutionContainer
     {
-        
+
 
         public WfExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)
@@ -150,7 +150,7 @@ namespace Dev2.Runtime.ESB.Execution
             return isAuthorized;
         }
 
-    
+
         public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
         {
             var resource = new ActivityParser().Parse(flowchartProcess);
@@ -195,25 +195,48 @@ namespace Dev2.Runtime.ESB.Execution
                     throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
                 }
                 WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
+
                 Dev2Logger.Debug("Starting Execute", GlobalConstants.WarewolfDebug);
-                var next = resource.Execute(dsfDataObject, update);
+                dsfDataObject.StateLogger.LogPreExecuteState(resource);
+
+                IDev2Activity next;
+                try
+                {
+                    next = resource.Execute(dsfDataObject, update);
+                    dsfDataObject.StateLogger.LogPostExecuteState(resource, next);
+                }
+                catch (Exception e)
+                {
+                    dsfDataObject.StateLogger.LogExecuteException(e, resource);
+                    throw;
+                }
+
                 Dev2Logger.Debug("Executed first node", GlobalConstants.WarewolfDebug);
                 while (next != null)
                 {
-                    if (!dsfDataObject.StopExecution)
+                    if (dsfDataObject.StopExecution)
                     {
-                        next = next.Execute(dsfDataObject, update);
-                        dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);                                                
+                        break;
                     }
-                    else
+
+                    dsfDataObject.StateLogger.LogPreExecuteState(next);
+                    var current = next;
+                    try
                     {
-                        next = null;
+                        next = current.Execute(dsfDataObject, update);
+                        dsfDataObject.StateLogger.LogPostExecuteState(current, next);
                     }
+                    catch (Exception e)
+                    {
+                        dsfDataObject.StateLogger.LogExecuteException(e, current);
+                        throw;
+                    }
+                    dsfDataObject.Environment.AllErrors.UnionWith(dsfDataObject.Environment?.Errors);
                 }
-                
             }
             finally
             {
+                dsfDataObject.StateLogger.LogExecuteCompleteState();
                 var exe = CustomContainer.Get<IExecutionManager>();
                 exe?.CompleteExecution();
             }
