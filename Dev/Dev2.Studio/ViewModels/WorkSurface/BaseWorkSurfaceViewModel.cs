@@ -10,6 +10,7 @@
 
 using Caliburn.Micro;
 using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -39,5 +40,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public virtual bool HasDebugOutput => false;
 
         public virtual bool CanSave => true;
+
+        public IServiceTestViewModel ViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
+
+        public string GetWorkflowLink()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
