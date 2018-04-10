@@ -113,6 +113,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 return ResourceCatalogResultBuilder.CreateFailResult($"<CompilerMessage>Failed to Category from \'{oldCategory}\' to \'{newCategory}\'</CompilerMessage>");
             }
         }
+
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
         {
             var oldPath = resource.GetSavePath();
@@ -121,7 +122,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 newPath = oldPath.Replace(oldCategory, newCategory);
             }
-            ((ResourceCatalog)_resourceCatalog).SetResourceFilePath(workspaceID, resource, ref newPath);
+            _resourceCatalog.SetResourceFilePath(workspaceID, resource, ref newPath);
             return new ResourceCatalogResult {Status = ExecStatus.Success};
         }
 
@@ -179,7 +180,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             resource.ResourceName = newName;
             var contents = resourceElement.ToStringBuilder();
-            return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, savePath);
+            return _resourceCatalog.SaveImpl(workspaceID, resource, contents, savePath);
 
         }
 
@@ -229,7 +230,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 //re-create, resign and save to file system the new resource
                 var result = resourceElement.ToStringBuilder();
 
-                ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, dependantResource, result);
+                _resourceCatalog.SaveImpl(workspaceID, dependantResource, result);
             }
         }
 

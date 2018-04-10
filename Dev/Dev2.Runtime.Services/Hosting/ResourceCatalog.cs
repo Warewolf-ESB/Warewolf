@@ -29,7 +29,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Interfaces;
-using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
 using Dev2.Common.Interfaces.Wrappers;
@@ -467,6 +466,21 @@ namespace Dev2.Runtime.Hosting
         }
 
         public ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResourceCatalogResult IResourceCatalog.SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResourceCatalogResult IResourceCatalog.SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        ResourceCatalogResult IResourceCatalog.SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason)
         {
             throw new NotImplementedException();
         }
