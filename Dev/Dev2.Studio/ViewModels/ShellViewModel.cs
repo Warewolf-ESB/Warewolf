@@ -937,7 +937,7 @@ namespace Dev2.Studio.ViewModels
             return def;
         }
 
-        void ProcessDBSource(DatabaseSourceViewModelBase dbSourceViewModel, WorkSurfaceKey workSurfaceKey)
+        void ProcessDBSource(DatabaseSourceViewModelBase dbSourceViewModel, IWorkSurfaceKey workSurfaceKey)
         {
             var vm = new SourceViewModel<IDbSource>(EventPublisher, dbSourceViewModel, PopupProvider, new ManageDatabaseSourceControl(), ActiveServer);
             var key = workSurfaceKey;
@@ -1151,7 +1151,7 @@ namespace Dev2.Studio.ViewModels
         public void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
             key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.SqlServerSource, selectedSource.Id);
-            ProcessDBSource(ProcessSQLDBSource(selectedSource), key as WorkSurfaceKey);
+            ProcessDBSource(ProcessSQLDBSource(selectedSource), key);
         }
 
         public void EditMySqlResource(IDbSource selectedSource) => EditMySqlResource(selectedSource, null);
@@ -1159,7 +1159,7 @@ namespace Dev2.Studio.ViewModels
         public void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
             key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.MySqlSource, selectedSource.Id);
-            ProcessDBSource(ProcessMySQLDBSource(selectedSource), key as WorkSurfaceKey);
+            ProcessDBSource(ProcessMySQLDBSource(selectedSource), key);
         }
 
         public void EditPostgreSqlResource(IDbSource selectedSource) => EditPostgreSqlResource(selectedSource, null);
@@ -1167,7 +1167,7 @@ namespace Dev2.Studio.ViewModels
         public void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
             key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.PostgreSqlSource, selectedSource.Id);
-            ProcessDBSource(ProcessPostgreSQLDBSource(selectedSource), key as WorkSurfaceKey);
+            ProcessDBSource(ProcessPostgreSQLDBSource(selectedSource), key);
         }
 
         public void EditOracleResource(IDbSource selectedSource) => EditOracleResource(selectedSource, null);
@@ -1175,7 +1175,7 @@ namespace Dev2.Studio.ViewModels
         public void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
             key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.OracleSource, selectedSource.Id);
-            ProcessDBSource(ProcessOracleDBSource(selectedSource), key as WorkSurfaceKey);
+            ProcessDBSource(ProcessOracleDBSource(selectedSource), key);
         }
 
         public void EditOdbcResource(IDbSource selectedSource) => EditOdbcResource(selectedSource, null);
@@ -1183,7 +1183,7 @@ namespace Dev2.Studio.ViewModels
         public void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey key)
         {
             key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.OdbcSource, selectedSource.Id);
-            ProcessDBSource(ProcessODBCDBSource(selectedSource), key as WorkSurfaceKey);
+            ProcessDBSource(ProcessODBCDBSource(selectedSource), key);
         }
 
         public void EditResource(IPluginSource selectedSource) => EditResource(selectedSource, null);
@@ -1242,10 +1242,7 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.EditResource(selectedSource, view, key);
         }
 
-        public void NewService(string resourcePath)
-        {
-            _worksurfaceContextManager.NewService(resourcePath);
-        }
+        public void NewService(string resourcePath) => _worksurfaceContextManager.NewService(resourcePath);
 
         public void NewServerSource(string resourcePath)
         {
@@ -1260,50 +1257,23 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
-        public void NewSqlServerSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewSqlServerSource(resourcePath);
-        }
+        public void NewSqlServerSource(string resourcePath) => _worksurfaceContextManager.NewSqlServerSource(resourcePath);
 
-        public void NewMySqlSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewMySqlSource(resourcePath);
-        }
+        public void NewMySqlSource(string resourcePath) => _worksurfaceContextManager.NewMySqlSource(resourcePath);
 
-        public void NewPostgreSqlSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewPostgreSqlSource(resourcePath);
-        }
+        public void NewPostgreSqlSource(string resourcePath) => _worksurfaceContextManager.NewPostgreSqlSource(resourcePath);
 
-        public void NewOracleSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewOracleSource(resourcePath);
-        }
+        public void NewOracleSource(string resourcePath) => _worksurfaceContextManager.NewOracleSource(resourcePath);
 
-        public void NewOdbcSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewOdbcSource(resourcePath);
-        }
+        public void NewOdbcSource(string resourcePath) => _worksurfaceContextManager.NewOdbcSource(resourcePath);
 
-        public void NewWebSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewWebSource(resourcePath);
-        }
+        public void NewWebSource(string resourcePath) => _worksurfaceContextManager.NewWebSource(resourcePath);
 
-        public void NewPluginSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewPluginSource(resourcePath);
-        }
+        public void NewPluginSource(string resourcePath) => _worksurfaceContextManager.NewPluginSource(resourcePath);
 
-        public void NewWcfSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewWcfSource(resourcePath);
-        }
+        public void NewWcfSource(string resourcePath) => _worksurfaceContextManager.NewWcfSource(resourcePath);
 
-        public void NewComPluginSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewComPluginSource(resourcePath);
-        }
+        public void NewComPluginSource(string resourcePath) => _worksurfaceContextManager.NewComPluginSource(resourcePath);
 
         void ShowServerDisconnectedPopup()
         {
@@ -1325,30 +1295,15 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void NewDropboxSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewDropboxSource(resourcePath);
-        }
+        public void NewDropboxSource(string resourcePath) => _worksurfaceContextManager.NewDropboxSource(resourcePath);
 
-        public void NewRabbitMQSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewRabbitMQSource(resourcePath);
-        }
+        public void NewRabbitMQSource(string resourcePath) => _worksurfaceContextManager.NewRabbitMQSource(resourcePath);
 
-        public void NewSharepointSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewSharepointSource(resourcePath);
-        }
+        public void NewSharepointSource(string resourcePath) => _worksurfaceContextManager.NewSharepointSource(resourcePath);
 
-        public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)
-        {
-            _worksurfaceContextManager.AddDeploySurface(items);
-        }
+        public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items) => _worksurfaceContextManager.AddDeploySurface(items);
 
-        public void OpenVersion(Guid resourceId, IVersionInfo versionInfo)
-        {
-            _worksurfaceContextManager.OpenVersion(resourceId, versionInfo);
-        }
+        public void OpenVersion(Guid resourceId, IVersionInfo versionInfo) => _worksurfaceContextManager.OpenVersion(resourceId, versionInfo);
 
         public async void ShowStartPageAsync()
         {
@@ -1373,10 +1328,7 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.SearchView(workSurfaceKey);
         }
 
-        public void ShowCommunityPage()
-        {
-            BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
-        }
+        public void ShowCommunityPage() => BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
 
         public bool IsActiveServerConnected()
         {
@@ -1397,15 +1349,9 @@ namespace Dev2.Studio.ViewModels
             return isActiveServerConnected;
         }
 
-        public void NewEmailSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewEmailSource(resourcePath);
-        }
+        public void NewEmailSource(string resourcePath) => _worksurfaceContextManager.NewEmailSource(resourcePath);
 
-        public void NewExchangeSource(string resourcePath)
-        {
-            _worksurfaceContextManager.NewExchangeSource(resourcePath);
-        }
+        public void NewExchangeSource(string resourcePath) => _worksurfaceContextManager.NewExchangeSource(resourcePath);
 
         protected override void Dispose(bool disposing)
         {
@@ -1426,10 +1372,7 @@ namespace Dev2.Studio.ViewModels
             RefreshActiveServer();
         }
 
-        public void BaseDeactivateItem(WorkSurfaceContextViewModel item, bool close)
-        {
-            base.DeactivateItem(item, close);
-        }
+        public void BaseDeactivateItem(WorkSurfaceContextViewModel item, bool close) => base.DeactivateItem(item, close);
         public bool DontPrompt { get; set; }
         public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
         {
@@ -1460,8 +1403,7 @@ namespace Dev2.Studio.ViewModels
                 CloseCurrent = false;
             }
         }
-
-        // Process saving tabs and such when exiting ;)
+        
         protected override void OnDeactivate(bool close)
         {
             if (close)
@@ -1943,10 +1885,7 @@ namespace Dev2.Studio.ViewModels
             return hasNewVersion;
         }
 
-        public void DisplayDialogForNewVersion()
-        {
-            BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
-        }
+        public void DisplayDialogForNewVersion() => BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
 
         public bool MenuExpanded
         {
