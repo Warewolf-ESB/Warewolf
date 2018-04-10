@@ -44,7 +44,6 @@ using System.IO;
 namespace Dev2.Activities.Specs.TestFramework
 {
     [Binding]
-
     public class StudioTestFrameworkSteps
     {
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
@@ -110,7 +109,6 @@ namespace Dev2.Activities.Specs.TestFramework
             commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
         }
 
-
         [Then(@"test folder is cleaned")]
         public void ThenTestFolderIsCleaned()
         {
@@ -129,9 +127,8 @@ namespace Dev2.Activities.Specs.TestFramework
                     UniqueID = id.ToString()
                 }
             };
-
-
         }
+
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
@@ -185,17 +182,17 @@ namespace Dev2.Activities.Specs.TestFramework
                 Category = workflowName
             };
             return resourceModel;
-
         }
 
         readonly object _syncRoot = new object();
         const string SimpleJson = "{\"$type\":\"Dev2.Data.ServiceTestModelTO,Dev2.Data\",\"OldTestName\":null,\"TestName\":\"Test 1\",\"UserName\":null,\"Password\":null,\"LastRunDate\":\"0001-01-01T00:00:00\",\"Inputs\":null,\"Outputs\":null,\"NoErrorExpected\":false,\"ErrorExpected\":false,\"TestPassed\":false,\"TestFailing\":false,\"TestInvalid\":false,\"TestPending\":false,\"Enabled\":true,\"IsDirty\":false,\"AuthenticationType\":0,\"ResourceId\":\"00000000-0000-0000-0000-000000000000\"}";
+
         [Given(@"I have a resouce ""(.*)""")]
         public void GivenIHaveAResouce(string resourceName)
         {
             _resourceForTests = resourceName;
             var resourceId = Guid.NewGuid();
-            
+
             var environmentModel = ServerRepository.Instance.Source;
             var resourceModel = new ResourceModel(environmentModel)
             {
@@ -213,11 +210,12 @@ namespace Dev2.Activities.Specs.TestFramework
 
             ScenarioContext.Current.Add(resourceName + "id", resourceId);
         }
+
         string _resourceForTests = "";
+
         [Given(@"I add ""(.*)"" as tests")]
         public void GivenIAddAsTests(string p0)
         {
-
             var environmentModel = ServerRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             environmentModel.ResourceRepository.Load(true);
@@ -241,7 +239,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     serviceTestModelTos.Add(serviceTestModelTO);
                 }
             }
-            
+
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ID = savedSource.ID,
@@ -250,14 +248,16 @@ namespace Dev2.Activities.Specs.TestFramework
             };
             environmentModel.ResourceRepository.SaveTests(resourceModel, serviceTestModelTos);
         }
+
         const string ResourceCat = "ResourceCat\\";
+
         [Then(@"""(.*)"" has (.*) tests")]
         public void ThenHasTests(string resourceName, int numberOdTests)
         {
             var environmentModel = ServerRepository.Instance.Source;
             var resourceID = MyContext.Get<Guid>(resourceName + "id");
             var serviceTestModelTos = environmentModel.ResourceRepository.LoadResourceTests(resourceID);
-            Assert.AreEqual(numberOdTests, serviceTestModelTos.Count);
+            Assert.AreEqual(numberOdTests, serviceTestModelTos.Count, "Number count is not the same for resource - " + resourceName);
         }
 
         [When(@"I delete resource ""(.*)""")]
@@ -265,10 +265,9 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var environmentModel = ServerRepository.Instance.Source;
             MyContext.Get<Guid>(resourceName + "id");
-            
+
             var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
             environmentModel.ResourceRepository.DeleteResource(savedSource);
-
         }
 
         static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
@@ -291,8 +290,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 {
                     var recordSetItemModel = new RecordSetItemModel(rsName);
                     datalistViewModel.RecsetCollection.Add(recordSetItemModel);
-                    recordSetItemModel.Children.Add(new RecordSetFieldItemModel(fieldName,
-                        recordSetItemModel, ioDirection));
+                    recordSetItemModel.Children.Add(new RecordSetFieldItemModel(fieldName, recordSetItemModel, ioDirection));
                 }
                 else
                 {
@@ -305,6 +303,30 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        private static string GetActualResult(IServiceTestModel serviceTestModel)
+        {
+            var actual = string.Empty;
+
+            if (serviceTestModel.TestPending)
+            {
+                actual = "Pending";
+            }
+            if (serviceTestModel.TestFailing)
+            {
+                actual = "Failing";
+            }
+            if (serviceTestModel.TestInvalid)
+            {
+                actual = "Invalid";
+            }
+            if (serviceTestModel.TestPassed)
+            {
+                actual = "Passed";
+            }
+
+            return actual;
+        }
+
         [Given(@"""(.*)"" Tests as")]
         public void GivenTestsAs(string workFlowName, Table table)
         {
@@ -314,7 +336,6 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             foreach (var tableRow in table.Rows)
             {
-
                 var serializer = new Dev2JsonSerializer();
                 var serviceTestModelTO = serializer.Deserialize<ServiceTestModelTO>(SimpleJson);
                 serviceTestModelTO.TestName = tableRow["TestName"];
@@ -329,9 +350,8 @@ namespace Dev2.Activities.Specs.TestFramework
                 serviceTestModelTO.TestSteps = new List<IServiceTestStep>();
 
                 serviceTestModelTos.Add(serviceTestModelTO);
-
             }
-            
+
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ID = resourceID,
@@ -346,9 +366,8 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             var serviceTestModel = serviceTest.Tests.Single(model => model.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
-
-
-            Assert.IsTrue(serviceTestModel.TestPassed);
+            var actual = GetActualResult(serviceTestModel);
+            Assert.IsTrue(serviceTestModel.TestPassed, "Expected " + testName + " to be Passed. Actual result is " + actual);
         }
 
         [Then(@"""(.*)"" is failing")]
@@ -356,7 +375,8 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             var serviceTestModel = serviceTest.Tests.Single(model => model.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
-            Assert.IsTrue(serviceTestModel.TestFailing);
+            var actual = GetActualResult(serviceTestModel);
+            Assert.IsTrue(serviceTestModel.TestFailing, "Expected " + testName + " to be Passed. Actual result is " + actual);
         }
 
         [Then(@"""(.*)"" is invalid")]
@@ -364,7 +384,8 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             var serviceTestModel = serviceTest.Tests.Single(model => model.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
-            Assert.IsTrue(serviceTestModel.TestInvalid);
+            var actual = GetActualResult(serviceTestModel);
+            Assert.IsTrue(serviceTestModel.TestInvalid, "Expected " + testName + " to be Passed. Actual result is " + actual);
         }
 
         [Given(@"there are no tests")]
@@ -381,7 +402,8 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             var serviceTestModel = serviceTest.Tests.Single(model => model.TestName.Equals(testName, StringComparison.InvariantCultureIgnoreCase));
-            Assert.IsTrue(serviceTestModel.TestPending);
+            var actual = GetActualResult(serviceTestModel);
+            Assert.IsTrue(serviceTestModel.TestPending, "Expected " + testName + " to be Passed. Actual result is " + actual);
         }
 
         [Then(@"debug window is visible")]
@@ -409,7 +431,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
                 else
                 {
-                    Assert.Fail("No Datalist found");
+                    Assert.Fail("No Datalist found for Workflow - " + workflowName);
                 }
             }
             else
@@ -445,8 +467,8 @@ namespace Dev2.Activities.Specs.TestFramework
             loadContextualResourceModel.WorkflowXaml = msg.Message;
             var testFramework = new ServiceTestViewModel(loadContextualResourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new SpecExternalProcessExecutor(), new Mock<IWorkflowDesignerViewModel>().Object);
             testFramework.WebClient = new Mock<IWarewolfWebClient>().Object;
-            Assert.IsNotNull(testFramework);
-            Assert.IsNotNull(testFramework.ResourceModel);
+            Assert.IsNotNull(testFramework, "ServiceTestViewModel expects Not Null using Workflow - " + workflowName);
+            Assert.IsNotNull(testFramework.ResourceModel, "ServiceTestViewModel ResourceModel expects Not Null using Workflow - " + workflowName);
             MyContext.Add("testFramework", testFramework);
         }
 
@@ -488,13 +510,12 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            
+
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.End).AssertResultList.First().ResultsList;
-            
+
             var actualAssetMessage = debugItemResults.Select(result =>  result.Value).First();
             StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
         }
-
 
         [Then(@"the service debug assert Aggregate message contains ""(.*)""")]
         [Given(@"the service debug assert Aggregate message contains ""(.*)""")]
@@ -503,14 +524,12 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            
+
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
 
             var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
             StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
         }
-
-
 
         [Then(@"the service debug assert Json message contains ""(.*)""")]
         [When(@"the service debug assert Json message contains ""(.*)""")]
@@ -519,12 +538,11 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var debugForTest = serviceTestViewModel.SelectedServiceTest.DebugForTest;
-            
+
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.TestAggregate).AssertResultList.First().ResultsList;
             var externalProcessExecutor = new SpecExternalProcessExecutor();
             var first = debugItemResults.Select(result =>
             {
-               
                 externalProcessExecutor.OpenInBrowser( new Uri(result.MoreLink));
                 var downloadStrings = externalProcessExecutor.WebResult[0];
                 return downloadStrings;
@@ -532,25 +550,24 @@ namespace Dev2.Activities.Specs.TestFramework
             StringAssert.Contains(first.ToLower(), assertString.ToLower());
         }
 
-
         [Then(@"All test pieces are pending")]
         public void ThenAllTestPiecesArePending()
         {
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var testPending = serviceTestViewModel.SelectedServiceTest.TestPending;
-            Assert.IsTrue(testPending);
+            Assert.IsTrue(testPending, "Expected Test Pending to be True. TestName - " + serviceTestViewModel.SelectedServiceTest.TestName);
             var stepsPending = serviceTestViewModel.SelectedServiceTest.TestSteps.All(step => ((ServiceTestStep)step).TestPending);
             var serviceTestSteps = serviceTestViewModel.SelectedServiceTest.TestSteps.Flatten(step => step.Children).ToList();
             var allPending = serviceTestSteps.All(step => ((ServiceTestStep)step).TestPending && ((ServiceTestStep)step).Result.RunTestResult == RunResult.TestPending);
             var allOutputsPending = serviceTestViewModel.SelectedServiceTest.Outputs.All(output => ((ServiceTestOutput)output).TestPending && output.Result?.RunTestResult == RunResult.TestPending);
-            Assert.IsTrue(stepsPending);
-            Assert.IsTrue(allPending);
-            Assert.IsTrue(allOutputsPending);
-            
+            Assert.IsTrue(stepsPending, "Expected Pending Step to be True");
+            Assert.IsTrue(allPending, "Expected All Pending Steps to be True");
+            Assert.IsTrue(allOutputsPending, "Expected All Output Pending Steps to be True");
+
             foreach (var serviceTestStep in serviceTestSteps)
             {
                 var allStepOutPutspending = serviceTestStep.StepOutputs.All(output => output.Result?.RunTestResult == RunResult.TestPending);
-                Assert.IsTrue(allStepOutPutspending);
+                Assert.IsTrue(allStepOutPutspending, "Expected All Step Outputs Pending to be True. Step Description - " + serviceTestStep.StepDescription);
             }
         }
 
@@ -568,9 +585,8 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTestViewModel = GetTestFrameworkFromContext();
             var serviceTestStep = serviceTestViewModel.SelectedServiceTest.TestSteps.Single(step => step.StepDescription.TrimEnd().Equals(stepname));
             var testPending = ((ServiceTestStep)serviceTestStep).TestPending;
-            Assert.IsTrue(testPending);
+            Assert.IsTrue(testPending, "Expected Step Pending to be True. Step Description - " + stepname);
         }
-
 
         [Then(@"I update outputs as")]
         public void ThenIUpdateOutputsAs(Table table)
@@ -591,6 +607,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 }
             }
         }
+
         [Given(@"Tab Header is ""(.*)""")]
         [When(@"Tab Header is ""(.*)""")]
         [Then(@"Tab Header is ""(.*)""")]
@@ -622,15 +639,12 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(allPassed);
         }
 
-
         [Then(@"I run all tests")]
         public void ThenIRunAllTests()
         {
             var serviceTest = GetTestFrameworkFromContext();
             serviceTest.RunAllTestsCommand.Execute(null);
         }
-
-
 
         [When(@"I run all tests in Web")]
         public void WhenIRunAllTestsInWeb()
@@ -639,15 +653,14 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTest.RunAllTestsInBrowserCommand.Execute(null);
         }
 
-
         [Then(@"test result is Passed")]
         public void ThenTestResultIsPassed()
         {
             var serviceTest = GetTestFrameworkFromContext();
             var test = serviceTest.SelectedServiceTest;
-            Assert.IsNotNull(test, "Workflow service test null.");
-            Assert.IsTrue(test.TestPassed, "Workflow service test failed.");
-            Assert.IsFalse(test.TestFailing, "Workflow service test failed.");
+            Assert.IsNotNull(test, "Workflow Service Test expects Not Null for Test - " + test.TestName);
+            Assert.IsTrue(test.TestPassed, "Workflow Service Test expects Passed for Test - " + test.TestName);
+            Assert.IsFalse(test.TestFailing, "Workflow Service Test expects Failed to be false for Test - " + test.TestName);
         }
 
         [Then(@"I change Decision ""(.*)"" arm to ""(.*)""")]
@@ -675,19 +688,19 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             var test = serviceTest.SelectedServiceTest;
-            Assert.IsNotNull(test);
-            Assert.IsTrue(test.TestInvalid);
+            Assert.IsNotNull(test, "Workflow Service Test expects Not Null for Test - " + test.TestName);
+            Assert.IsNotNull(test, "Workflow Service Test expects Not Null for Test - " + test.TestName);
+            Assert.IsTrue(test.TestInvalid, "Workflow Service Test expects Invalid for Test - " + test.TestName);
         }
-
 
         [Then(@"test result is Failed")]
         public void ThenTestResultIsFailed()
         {
             var serviceTest = GetTestFrameworkFromContext();
             var test = serviceTest.SelectedServiceTest;
-            Assert.IsNotNull(test);
-            Assert.IsFalse(test.TestPassed);
-            Assert.IsTrue(test.TestFailing);
+            Assert.IsNotNull(test, "Workflow Service Test expects Not Null for Test - " + test.TestName);
+            Assert.IsFalse(test.TestPassed, "Workflow Service Test expects Passed to be false for Test - " + test.TestName);
+            Assert.IsTrue(test.TestFailing, "Workflow Service Test expects Failed for Test - " + test.TestName);
         }
 
         [When(@"I remove input ""(.*)"" from workflow ""(.*)""")]
@@ -700,8 +713,8 @@ namespace Dev2.Activities.Specs.TestFramework
             var newDatalist = resourceToChange.DataList.Replace(input, input + "Newname");
             resourceToChange.DataList = newDatalist;
             _resourceModelWithDifInputs = resourceToChange;
-
         }
+
         IResourceModel _resourceModelWithDifInputs;
 
         [When(@"I save Workflow\t""(.*)""")]
@@ -754,7 +767,6 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             serviceTest.CreateTestCommand.Execute(null);
-
         }
 
         [Given(@"a decision variable ""(.*)"" value ""(.*)""")]
@@ -799,7 +811,6 @@ namespace Dev2.Activities.Specs.TestFramework
 
             variableList.Add(new Tuple<string, string>(variable, value));
         }
-
 
         [Then(@"a new test is added")]
         public void ThenANewTestIsAdded()
@@ -883,7 +894,6 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-
         [Then(@"username is blank")]
         public void ThenUsernameIsBlank()
         {
@@ -919,7 +929,6 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTest.SelectedServiceTest.Password = p0;
         }
 
-
         [Then(@"password is blank")]
         public void ThenPasswordIsBlank()
         {
@@ -941,9 +950,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 Assert.AreEqual(expected, inputs[i].Value);
                 i++;
             }
-
         }
-
 
         [Then(@"outputs as")]
         public void ThenOutputsAs(Table table)
@@ -978,9 +985,7 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-
         [Then(@"The WebResponse as")]
-        
         public void ThenTheWebResponseAs(Table table)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -1006,14 +1011,13 @@ namespace Dev2.Activities.Specs.TestFramework
                                     continue;
                                 }
                                 var testResult = testObj.Property("Result").Value.ToString();
-                                Assert.AreEqual(tableRow["Result"], testResult, "Result message dont match");
+                                Assert.AreEqual(tableRow["Result"], testResult, "Result message dont match for Test - " + testName);
                                 var hasMessage = testObj.TryGetValue("Message", out JToken testMessageToken);
                                 if (hasMessage)
                                 {
                                     var testMessage = testMessageToken.ToString();
-                                    Assert.AreEqual(tableRow["Message"], testMessage.Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "error message dont match");
+                                    Assert.AreEqual(tableRow["Message"], testMessage.Replace("\n", "").Replace("\r", "").Replace(Environment.NewLine, ""), "Error message dont match for Test - " + testName);
                                 }
-
                             }
                         }
                     }
@@ -1024,7 +1028,6 @@ namespace Dev2.Activities.Specs.TestFramework
                         {
                             foreach (var resultPairs in jObject)
                             {
-                                // Assert.AreEqual(tableRow["Test Name"], resultPairs);
                                 if (resultPairs.Key == "Test Name")
                                 {
                                     Assert.AreEqual(tableRow["Test Name"], resultPairs.Value, "value message dont match");
@@ -1041,12 +1044,9 @@ namespace Dev2.Activities.Specs.TestFramework
                             }
                         }
                     }
-
                 }
             }
         }
-
-
 
         [When(@"""(.*)"" is deleted")]
         public void WhenIsDeleted(string workflowName)
@@ -1076,6 +1076,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTest = GetTestFrameworkFromContext();
             Assert.IsFalse(serviceTest.CanSave);
         }
+
         [Then(@"save is enabled")]
         [When(@"save is enabled")]
         public void ThenSaveIsEnabled()
@@ -1089,7 +1090,6 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             Assert.IsTrue(serviceTest.SelectedServiceTest.TestPending);
-
         }
 
         [Then(@"test is enabled")]
@@ -1117,7 +1117,6 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTest?.Dispose();
             ScenarioContext.Current.Remove("testFramework");
         }
-
 
         [Then(@"Inputs are empty")]
         public void ThenInputsAreEmpty()
@@ -1185,16 +1184,18 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenNameForDisplayIsAndTestIsEdited(string nameForDisplay)
         {
             var serviceTest = GetTestFrameworkFromContext();
-            Assert.IsTrue(serviceTest.SelectedServiceTest.IsDirty);
-            Assert.AreEqual(nameForDisplay, serviceTest.SelectedServiceTest.NameForDisplay);
+            var selectedServiceTest = serviceTest.SelectedServiceTest;
+            Assert.IsTrue(selectedServiceTest.IsDirty, "Workflow Service Test expects IsDirty for Test - " + selectedServiceTest.TestName);
+            Assert.AreEqual(nameForDisplay, selectedServiceTest.NameForDisplay, "Workflow Service Test expects Name for Display to be " + nameForDisplay + " for Test - " + selectedServiceTest.TestName);
         }
 
         [Then(@"Name for display is ""(.*)"" and test is not edited")]
         public void ThenNameForDisplayIs(string nameForDisplay)
         {
             var serviceTest = GetTestFrameworkFromContext();
-            Assert.IsFalse(serviceTest.SelectedServiceTest.IsDirty);
-            Assert.AreEqual(nameForDisplay, serviceTest.SelectedServiceTest.NameForDisplay);
+            var selectedServiceTest = serviceTest.SelectedServiceTest;
+            Assert.IsFalse(selectedServiceTest.IsDirty, "Workflow Service Test expects IsDirty to be false for Test - " + selectedServiceTest.TestName);
+            Assert.AreEqual(nameForDisplay, selectedServiceTest.NameForDisplay, "Workflow Service Test expects Name for Display to be " + nameForDisplay + " for Test - " + selectedServiceTest.TestName);
         }
 
         [When(@"I ""(.*)"" the selected test")]
@@ -1210,11 +1211,11 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTest = GetTestFrameworkFromContext();
             if (status == "Active")
             {
-                Assert.IsTrue(serviceTest.DeleteTestCommand.CanExecute(null));
+                Assert.IsTrue(serviceTest.DeleteTestCommand.CanExecute(null), "Expected the Delete test command to be Enabled");
             }
             else
             {
-                Assert.IsFalse(serviceTest.DeleteTestCommand.CanExecute(null));
+                Assert.IsFalse(serviceTest.DeleteTestCommand.CanExecute(null), "Expected the Delete test command to be Disabled");
             }
         }
 
@@ -1243,7 +1244,6 @@ namespace Dev2.Activities.Specs.TestFramework
                 serviceTest.SelectedServiceTest.TestName = testName;
                 serviceTest.SelectedServiceTest.ErrorExpected = bool.Parse(error);
                 serviceTest.SelectedServiceTest.AuthenticationType = authent;
-
             }
         }
 
@@ -1277,8 +1277,7 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var hasError = bool.Parse(error);
             var serviceTest = GetTestFrameworkFromContext();
-            Assert.AreEqual(hasError, serviceTest.SelectedServiceTest.NoErrorExpected);
-
+            Assert.AreEqual(hasError, serviceTest.SelectedServiceTest.NoErrorExpected, "Workflow Service Test expects NoErrorExpected for Test - " + serviceTest.SelectedServiceTest.TestName);
         }
 
         [Then(@"Authentication is Public")]
@@ -1304,7 +1303,6 @@ namespace Dev2.Activities.Specs.TestFramework
             serviceTestModel.Enabled = true;
         }
 
-
         [Then(@"Delete is disabled for ""(.*)""")]
         public void ThenDeleteIsDisabledFor(string testName)
         {
@@ -1323,7 +1321,6 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.IsTrue(canDelete);
         }
 
-
         [Given(@"I set inputs as")]
         [When(@"I set inputs as")]
         [Then(@"I set inputs as")]
@@ -1335,10 +1332,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 var vname = tableRow["Variable Name"];
                 var value = tableRow["Value"];
-                serviceTest.SelectedServiceTest.Inputs.Add
-                    (
-                            new ServiceTestInput(vname, value)
-                    );
+                serviceTest.SelectedServiceTest.Inputs.Add(new ServiceTestInput(vname, value));
             }
         }
 
@@ -1355,10 +1349,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 var value = tableRow["Value"];
                 var from = tableRow["From"];
                 var to = tableRow["To"];
-                serviceTest.SelectedServiceTest.Outputs.Add
-                    (
-                       new ServiceTestOutput(vname, value, from, to)
-                    );
+                serviceTest.SelectedServiceTest.Outputs.Add(new ServiceTestOutput(vname, value, from, to));
             }
         }
 
@@ -1393,14 +1384,12 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var serviceTest = GetTestFrameworkFromContext();
             serviceTest.DeleteTestCommand.Execute(null);
-
         }
 
         [Then(@"The Confirmation popup is shown")]
         public void ThenTheConfirmationPopupIsShown()
         {
             var mock = MyContext["popupController"] as Mock<Common.Interfaces.Studio.Controller.IPopupController>;
-            
             mock.VerifyAll();
         }
 
@@ -1420,8 +1409,6 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreEqual(error, errorExpected);
         }
 
-
-
         [When(@"test is disabled")]
         public void WhenTestIsDisabled()
         {
@@ -1437,7 +1424,6 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTestModel = serviceTest.Tests.Single(model => model.TestName == testName);
             serviceTest.SelectedServiceTest = serviceTestModel;
         }
-
 
         [Then(@"Duplicate Test is visible")]
         public void ThenDuplicateTestIsVisible()
