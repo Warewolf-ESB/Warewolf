@@ -48,6 +48,7 @@ using Dev2.ViewModels.Merge;
 using Dev2.Views.Merge;
 using Dev2.ViewModels.Search;
 using Dev2.Views.Search;
+using Dev2.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -212,8 +213,7 @@ namespace Dev2.Studio.ViewModels
                 var vm = found.WorkSurfaceViewModel;
                 if (vm != null)
                 {
-                    var studioTestViewModel = vm as StudioTestViewModel;
-                    var serviceTestViewModel = studioTestViewModel?.ViewModel;
+                    var serviceTestViewModel = vm?.ViewModel;
                     serviceTestViewModel?.PrepopulateTestsUsingDebug(message.RootItems);
                 }
                 AddAndActivateWorkSurface(found);
@@ -1223,7 +1223,7 @@ namespace Dev2.Studio.ViewModels
                 var workSurfaceViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel;
                 if (workSurfaceViewModel != null)
                 {
-                    var findWorkSurfaceContextViewModel = (SchedulerViewModel)workSurfaceViewModel;
+                    var findWorkSurfaceContextViewModel = (ISchedulerViewModel)workSurfaceViewModel;
 
                     if (findWorkSurfaceContextViewModel.IsDirty)
                     {
@@ -1367,7 +1367,7 @@ namespace Dev2.Studio.ViewModels
             }
 
             AddWorkspaceItem(resourceModel);
-            var workSurfaceContextViewModel = _getWorkSurfaceContextViewModel(resourceModel, _createDesigners) as WorkSurfaceContextViewModel;
+            var workSurfaceContextViewModel = _getWorkSurfaceContextViewModel(resourceModel, _createDesigners);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
             OpeningWorkflowsHelper.RemoveWorkflow(workSurfaceKey);
             _shellViewModel.CanDebug = true;
