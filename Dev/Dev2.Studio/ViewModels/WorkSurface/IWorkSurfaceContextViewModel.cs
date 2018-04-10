@@ -14,7 +14,6 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Messages;
 using Dev2.Security;
-using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
@@ -24,7 +23,7 @@ using Dev2.Studio.ViewModels.Diagnostics;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
-    public interface IWorkSurfaceContextViewModel : IDisposable
+    public interface IWorkSurfaceContextViewModel : IDisposable, IScreen
     {
         IWorkSurfaceKey WorkSurfaceKey { get; }
         IServer Environment { get; }

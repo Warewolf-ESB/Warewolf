@@ -133,13 +133,13 @@ namespace Dev2.Studio.ViewModels
         void AddWorkspaceItem(IContextualResourceModel model);
         void DeleteContext(IContextualResourceModel model);
         T ActivateOrCreateUniqueWorkSurface<T>(WorkSurfaceContext context) where T : IWorkSurfaceViewModel;
-        WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IContextualResourceModel resource);
+        IWorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IContextualResourceModel resource);
         void AddWorkSurfaceContextImpl(IContextualResourceModel resourceModel, bool isLoadingWorkspace);
-        void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context);
+        void AddAndActivateWorkSurface(IWorkSurfaceContextViewModel context);
         void AddWorkSurface(IWorkSurfaceObject obj);
-        bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e);
+        bool CloseWorkSurfaceContext(IWorkSurfaceContextViewModel context, PaneClosingEventArgs e);
         void ViewTestsForService(IContextualResourceModel resourceModel);
-        bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt);
+        bool CloseWorkSurfaceContext(IWorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt);
         void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer);
         void SearchView(IWorkSurfaceKey workSurfaceKey);
         void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer, IWorkSurfaceKey workSurfaceKey);
@@ -783,7 +783,7 @@ namespace Dev2.Studio.ViewModels
 
         public void DisplayResourceWizard(IWorkSurfaceContextViewModel contextViewModel)
         {
-            AddAndActivateWorkSurface(contextViewModel as WorkSurfaceContextViewModel);
+            AddAndActivateWorkSurface(contextViewModel);
         }
 
 
@@ -1316,7 +1316,7 @@ namespace Dev2.Studio.ViewModels
             return false;
         }
 
-        WorkSurfaceContextViewModel ActivateAndReturnWorkSurfaceIfPresent(IWorkSurfaceKey key)
+        IWorkSurfaceContextViewModel ActivateAndReturnWorkSurfaceIfPresent(IWorkSurfaceKey key)
         {
             var currentContext = FindWorkSurfaceContextViewModel(key);
 
@@ -1328,9 +1328,9 @@ namespace Dev2.Studio.ViewModels
             return null;
         }
 
-        WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IWorkSurfaceKey key) => _shellViewModel.Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
+        IWorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IWorkSurfaceKey key) => _shellViewModel.Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
 
-        public WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IContextualResourceModel resource)
+        public IWorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IContextualResourceModel resource)
         {
             var key = WorkSurfaceKeyFactory.CreateKey(resource);
             return FindWorkSurfaceContextViewModel(key);
@@ -1379,7 +1379,7 @@ namespace Dev2.Studio.ViewModels
             return OpeningWorkflowsHelper.FetchOpeningKeys().Any(c => WorkSurfaceKeyEqualityComparer.Current.Equals(key, c));
         }
 
-        public void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context)
+        public void AddAndActivateWorkSurface(IWorkSurfaceContextViewModel context)
         {
             if (context != null)
             {
@@ -1398,8 +1398,8 @@ namespace Dev2.Studio.ViewModels
             TypeSwitch.Do(obj, TypeSwitch.Case<IContextualResourceModel>(AddWorkSurfaceContext));
         }
 
-        public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e) => CloseWorkSurfaceContext(context, e, false);
-        public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt)
+        public bool CloseWorkSurfaceContext(IWorkSurfaceContextViewModel context, PaneClosingEventArgs e) => CloseWorkSurfaceContext(context, e, false);
+        public bool CloseWorkSurfaceContext(IWorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt)
         {
             var remove = true;
             if (context != null && !context.DeleteRequested)
@@ -1461,7 +1461,7 @@ namespace Dev2.Studio.ViewModels
             return remove;
         }
 
-        bool CloseWorkflow(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt, IWorkSurfaceViewModel vm, ref bool remove)
+        bool CloseWorkflow(IWorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt, IWorkSurfaceViewModel vm, ref bool remove)
         {
             var workflowVm = vm as IWorkflowDesignerViewModel;
             var resource = workflowVm?.ResourceModel;
