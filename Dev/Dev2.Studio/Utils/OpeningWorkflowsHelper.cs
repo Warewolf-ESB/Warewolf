@@ -20,7 +20,7 @@ namespace Dev2.Utils
         static readonly List<IWorkSurfaceKey> _resourcesCurrentlyInOpeningState = new List<IWorkSurfaceKey>();
         static readonly List<IWorkSurfaceKey> _resourcesCurrentlyInOpeningStateWaitingForLoad = new List<IWorkSurfaceKey>();
         static readonly IDictionary<string, bool> _resourcesCurrentlyWaitingForFirstFocusLoss = new Dictionary<string, bool>();
-        static readonly List<IWorkSurfaceKey> _resourceCurrentlyWaitingForWaterMarkUpdates = new List<WorkSurfaceKey>();
+        static readonly List<IWorkSurfaceKey> _resourceCurrentlyWaitingForWaterMarkUpdates = new List<IWorkSurfaceKey>();
         
         public static void AddWorkflow(IWorkSurfaceKey workSurfaceKey)
         {
