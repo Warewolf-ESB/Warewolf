@@ -346,12 +346,12 @@ namespace Dev2.Activities.Specs.Composition
                 throw new TimeoutException("Connection to Warewolf server \"" + server.Name + "\" timed out.");
             }
 
-            if (!server.IsConnected)
+            if (!server.IsConnected && !server.Connection.IsConnected)
             {
                 server.Connect();
             }
 
-            if (!server.IsConnected)
+            if (!server.IsConnected && !server.Connection.IsConnected)
             {
                 Thread.Sleep(GlobalConstants.NetworkTimeOut);
                 timeout--;
