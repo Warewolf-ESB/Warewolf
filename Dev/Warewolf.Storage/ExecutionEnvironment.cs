@@ -746,23 +746,17 @@ namespace Warewolf.Storage
             return obj;
         }
 
-        public string EvalScalars()
+        public string ToJson()
         {
-            var scalars = PublicFunctions.EvalEnv(_env);
+            var json = PublicFunctions.EvalEnv(_env);
 
             var sb = new StringBuilder(4096);
-            foreach (var scalar in scalars)
+            foreach (var scalar in json)
             {
                 sb.Append(scalar);
             }
 
             return sb.ToString();
-        }
-
-        public string ToJson()
-        {
-            EvalScalars();
-            return "";
         }
     }
 }

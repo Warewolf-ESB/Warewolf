@@ -12,18 +12,18 @@ using System;
 using System.Activities.Persistence;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.IO;
+
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
 using System.Text;
 using System.Xml.Linq;
+
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Diagnostics.Logging;
-using Dev2.Diagnostics.State;
 using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Web;
@@ -63,7 +63,6 @@ namespace Dev2.DynamicServices
 
         public DsfDataObject(string xmldata, Guid dataListId, string rawPayload)
         {
-            StateLogger = new Dev2StateLogger(this, File.CreateText(Guid.NewGuid() + ".txt"));
             Environment = new ExecutionEnvironment();
             _environments = new ConcurrentStack<IExecutionEnvironment>();
             ThreadsToDispose = new Dictionary<int, List<Guid>>();

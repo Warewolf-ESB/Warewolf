@@ -76,6 +76,18 @@ namespace Dev2.Common
                 return resourcePath;
             }
         }
+        public static string DetailLogPath
+        {
+            get
+            {
+                var resourcePath = Path.Combine(AppDataPath, "DetailedLogs");
+                if (!Directory.Exists(resourcePath))
+                {
+                    Directory.CreateDirectory(resourcePath);
+                }
+                return resourcePath;
+            }
+        }
 
         public static string AppDataPath
         {
