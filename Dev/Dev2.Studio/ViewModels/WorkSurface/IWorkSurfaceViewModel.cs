@@ -9,6 +9,7 @@
 */
 
 using Caliburn.Micro;
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 
 
@@ -17,5 +18,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     public interface IWorkSurfaceViewModel : IScreen
     {
         WorkSurfaceContext WorkSurfaceContext { get; set; }
+        IServiceTestViewModel ViewModel { get; set; }
+        string GetWorkflowLink();
     }
 }

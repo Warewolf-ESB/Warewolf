@@ -367,9 +367,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             inputDataViewModel.DebugExecutionStart += () =>
             {
                 SetDebugStatus(DebugStatus.Executing);
-                var workfloDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
                 DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
-                workfloDesignerViewModel?.GetWorkflowLink();
+                WorkSurfaceViewModel?.GetWorkflowLink();
             };
             inputDataViewModel.DebugExecutionFinished += () =>
             {
