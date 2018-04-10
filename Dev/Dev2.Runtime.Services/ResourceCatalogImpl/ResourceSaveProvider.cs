@@ -112,7 +112,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return saveResult;
         }
 
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath = "", string reason = "")
+        public ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting) => SaveImpl(workspaceID, resource, contents, overwriteExisting, "", "");
+        public ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath) => SaveImpl(workspaceID, resource, contents, overwriteExisting, savedPath, "");
+        public ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason)
         {
             ResourceCatalogResult saveResult = null;
             Dev2.Common.Utilities.PerformActionInsideImpersonatedContext(Dev2.Common.Utilities.ServerUser, () => { PerformSaveResult(out saveResult, workspaceID, resource, contents, overwriteExisting, savedPath, reason); });

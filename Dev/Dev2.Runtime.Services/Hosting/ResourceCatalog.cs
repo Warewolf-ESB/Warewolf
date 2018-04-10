@@ -332,9 +332,9 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, "", "");
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, "");
-        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason) => ((ResourceSaveProvider)_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents) => (_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, "", "");
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath) => (_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, "");
+        internal ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath, string reason) => (_catalogPluginContainer.SaveProvider).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
 
         public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type) => _catalogPluginContainer.DeleteProvider.DeleteResource(workspaceID, resourceName, type, true);
         public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, bool deleteVersions) => _catalogPluginContainer.DeleteProvider.DeleteResource(workspaceID, resourceName, type, deleteVersions);
@@ -454,6 +454,21 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogDuplicateResult DuplicateResource(Guid resourceId, string sourcePath, string destinationPath) => _catalogPluginContainer.DuplicateProvider.DuplicateResource(resourceId, sourcePath, destinationPath);
 
-        public ResourceCatalogDuplicateResult DuplicateFolder(string sourcePath, string destinationPath, string newName, bool fixRefences) => _catalogPluginContainer.DuplicateProvider.DuplicateFolder(sourcePath, destinationPath, newName, fixRefences);        
+        public ResourceCatalogDuplicateResult DuplicateFolder(string sourcePath, string destinationPath, string newName, bool fixRefences) => _catalogPluginContainer.DuplicateProvider.DuplicateFolder(sourcePath, destinationPath, newName, fixRefences);
+
+        public ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
