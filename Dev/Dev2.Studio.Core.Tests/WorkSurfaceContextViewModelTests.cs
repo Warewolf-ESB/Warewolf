@@ -1276,6 +1276,7 @@ namespace Dev2.Core.Tests
         #region Implementation of IWorkflowDesignerViewModel
 
         public System.Action WorkflowChanged { get; set; }
+        public bool CanMerge { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #endregion
 

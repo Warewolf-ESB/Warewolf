@@ -1148,8 +1148,7 @@ namespace Dev2.Core.Tests
 
 
         #region DeactivateItem
-
-        // PBI 9405 - 2013.06.13 - Massimo.Guerrera
+        
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
         {

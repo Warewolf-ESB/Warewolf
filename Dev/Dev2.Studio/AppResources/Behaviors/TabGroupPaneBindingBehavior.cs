@@ -114,7 +114,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         static List<TabGroupPane> _tabGroupPanes;
         ShellViewModel _shellViewModel;
 
-        void ActiveItemChanged(WorkSurfaceContextViewModel workSurfaceContextViewModel)
+        void ActiveItemChanged(IWorkSurfaceContextViewModel workSurfaceContextViewModel)
         {
             if (_tabGroupPanes == null || _tabGroupPanes.Count <= 0)
             {
@@ -161,7 +161,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        static void SetActivePane(WorkSurfaceContextViewModel newValue)
+        static void SetActivePane(IWorkSurfaceContextViewModel newValue)
         {
             if (_tabGroupPanes != null && _tabGroupPanes.Count > 0)
             {

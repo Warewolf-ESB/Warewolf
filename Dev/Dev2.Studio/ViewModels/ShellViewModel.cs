@@ -72,10 +72,11 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
 using Dev2.Views.Search;
 using Dev2.ViewModels.Search;
+using Dev2.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels
 {
-    public class ShellViewModel : BaseConductor<WorkSurfaceContextViewModel>,
+    public class ShellViewModel : BaseConductor<IWorkSurfaceContextViewModel>,
                                         IHandle<DeleteResourcesMessage>,
                                         IHandle<AddWorkSurfaceMessage>,
                                         IHandle<RemoveResourceAndCloseTabMessage>,
@@ -85,7 +86,7 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<NewTestFromDebugMessage>,
                                         IShellViewModel
     {
-        WorkSurfaceContextViewModel _previousActive;
+        IWorkSurfaceContextViewModel _previousActive;
         bool _disposed;
         private AuthorizeCommand<string> _newServiceCommand;
         private AuthorizeCommand<string> _newPluginSourceCommand;
@@ -1105,7 +1106,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IWorkSurfaceKey key) => Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
+        IWorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IWorkSurfaceKey key) => Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
 
         public void CloseResource(IContextualResourceModel currentResourceModel, Guid environmentId)
         {
@@ -1366,15 +1367,15 @@ namespace Dev2.Studio.ViewModels
             base.Dispose(disposing);
         }
 
-        protected override void ChangeActiveItem(WorkSurfaceContextViewModel newItem, bool closePrevious)
+        protected override void ChangeActiveItem(IWorkSurfaceContextViewModel newItem, bool closePrevious)
         {
             base.ChangeActiveItem(newItem, closePrevious);
             RefreshActiveServer();
         }
 
-        public void BaseDeactivateItem(WorkSurfaceContextViewModel item, bool close) => base.DeactivateItem(item, close);
+        public void BaseDeactivateItem(IWorkSurfaceContextViewModel item, bool close) => base.DeactivateItem(item, close);
         public bool DontPrompt { get; set; }
-        public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
+        public override void DeactivateItem(IWorkSurfaceContextViewModel item, bool close)
         {
             if (item == null)
             {
@@ -1413,7 +1414,7 @@ namespace Dev2.Studio.ViewModels
             base.OnDeactivate(close);
         }
 
-        protected override void OnActivationProcessed(WorkSurfaceContextViewModel item, bool success)
+        protected override void OnActivationProcessed(IWorkSurfaceContextViewModel item, bool success)
         {
             if (success)
             {
@@ -1423,7 +1424,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 if (item?.WorkSurfaceViewModel is StudioTestViewModel studioTestViewModel)
                 {
-                    var serviceTestViewModel = studioTestViewModel.ViewModel as ServiceTestViewModel;
+                    var serviceTestViewModel = studioTestViewModel.ViewModel;
                     EventPublisher.Publish(serviceTestViewModel?.SelectedServiceTest != null
                         ? new DebugOutputMessage(serviceTestViewModel.SelectedServiceTest?.DebugForTest ?? new List<IDebugState>())
                         : new DebugOutputMessage(new List<IDebugState>()));
@@ -1483,7 +1484,7 @@ namespace Dev2.Studio.ViewModels
             ActiveItem?.DataListViewModel?.GenerateComplexObjectFromJson(parentObjectName, json);
         }
 
-        public override void ActivateItem(WorkSurfaceContextViewModel item)
+        public override void ActivateItem(IWorkSurfaceContextViewModel item)
         {
             _previousActive = ActiveItem;
             base.ActivateItem(item);
@@ -1495,7 +1496,7 @@ namespace Dev2.Studio.ViewModels
             SetActiveServer(item.Environment);
         }
 
-        internal Action<WorkSurfaceContextViewModel> ActiveItemChanged;
+        internal Action<IWorkSurfaceContextViewModel> ActiveItemChanged;
 
         bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
         {
@@ -1747,7 +1748,7 @@ namespace Dev2.Studio.ViewModels
         {
             var closeStudio = true;
             var workSurfaceContextViewModels = Items.ToList();
-            foreach (WorkSurfaceContextViewModel workSurfaceContextViewModel in workSurfaceContextViewModels)
+            foreach (IWorkSurfaceContextViewModel workSurfaceContextViewModel in workSurfaceContextViewModels)
             {
                 var vm = workSurfaceContextViewModel.WorkSurfaceViewModel;
                 if (vm == null || vm.WorkSurfaceContext == WorkSurfaceContext.Help)
@@ -1772,7 +1773,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 else if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
                 {
-                    var schedulerViewModel = vm as SchedulerViewModel;
+                    var schedulerViewModel = vm as ISchedulerViewModel;
                     if (schedulerViewModel?.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
                     {
                         closeStudio = CallSaveDialog(closeStudio);
@@ -1902,7 +1903,7 @@ namespace Dev2.Studio.ViewModels
 
         public IHelpWindowViewModel HelpViewModel => CustomContainer.Get<IHelpWindowViewModel>();
 
-        public WorkSurfaceContextViewModel PreviousActive
+        public IWorkSurfaceContextViewModel PreviousActive
         {
             get => _previousActive;
             set
@@ -1945,7 +1946,7 @@ namespace Dev2.Studio.ViewModels
             {
                 var key = WorkSurfaceKeyFactory.CreateKey(resource);
                 var currentContext = FindWorkSurfaceContextViewModel(key);
-                var vm = currentContext?.WorkSurfaceViewModel as WorkflowDesignerViewModel;
+                var vm = currentContext?.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
                 if (vm != null)
                 {
                     vm.CanMerge = true;
