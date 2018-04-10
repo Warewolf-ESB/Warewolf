@@ -11,6 +11,7 @@
 using System;
 using System.Runtime.Serialization;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Messages;
 using Dev2.Security;
 using Dev2.Studio.AppResources.Comparers;
@@ -25,7 +26,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 {
     public interface IWorkSurfaceContextViewModel : IDisposable
     {
-        WorkSurfaceKey WorkSurfaceKey { get; }
+        IWorkSurfaceKey WorkSurfaceKey { get; }
         IServer Environment { get; }
         DebugOutputViewModel DebugOutputViewModel { get; set; }
         bool DeleteRequested { get; set; }
@@ -75,15 +76,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         void FindMissing();
 
         void Debug();
-
-        /// <summary>
-        /// Requests tha the view bound to this view model closes
-        /// </summary>
+        
         void RequestClose();
-
-        /// <summary>
-        /// Requests tha the view bound to this view model closes
-        /// </summary>
+        
         void RequestClose(ViewModelDialogResults dialogResult);
 
         void CanClose(Action<bool> callback);

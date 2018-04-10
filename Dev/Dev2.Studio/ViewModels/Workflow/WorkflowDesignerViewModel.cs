@@ -2135,22 +2135,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             var workflowFields = BuildWorkflowFields();
             DataListViewModel?.UpdateDataListItems(ResourceModel, workflowFields);
         }
-
-        [ExcludeFromCodeCoverage]
+        
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
         }
-
-        /// <summary>
-        /// Handles Mouse click events on Designer
-        /// </summary>
-        /// <param name="leftButtonState">State of left button</param>
-        /// <param name="clickCount">Double,Single click</param>
-        /// <param name="dp">Item Clicked</param>
-        /// <param name="designerView">Designer view</param>
-        /// <returns></returns>
-        [ExcludeFromCodeCoverage]
+        
         bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
         {
             if (HandleDoubleClick(leftButtonState, clickCount, dp, designerView))

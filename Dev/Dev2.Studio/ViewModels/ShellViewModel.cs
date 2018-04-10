@@ -1105,7 +1105,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key) => Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
+        WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(IWorkSurfaceKey key) => Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
 
         public void CloseResource(IContextualResourceModel currentResourceModel, Guid environmentId)
         {
@@ -1247,7 +1247,7 @@ namespace Dev2.Studio.ViewModels
         public void NewServerSource(string resourcePath)
         {
             var saveViewModel = _worksurfaceContextManager.GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.ServerSourceNewHeaderLabel);
-            var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServerSource);
             key.ServerID = ActiveServer.ServerID;
 
             var manageNewServerSourceModel = new ManageNewServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name);
