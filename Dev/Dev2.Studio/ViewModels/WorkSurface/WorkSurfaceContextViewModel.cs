@@ -39,6 +39,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 using Dev2.ViewModels;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -72,7 +73,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region public properties
 
-        public WorkSurfaceKey WorkSurfaceKey { get; }
+        public IWorkSurfaceKey WorkSurfaceKey { get; }
 
         public IServer Environment
         {
@@ -152,12 +153,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region ctors
 
-        public WorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
+        public WorkSurfaceContextViewModel(IWorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
             : this(EventPublishers.Aggregator, workSurfaceKey, workSurfaceViewModel, new PopupController(), (a, b, c) => SaveDialogHelper.ShowNewWorkflowSaveDialog(a, null, b, c))
         {
         }
 
-        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IPopupController popupController, Action<IContextualResourceModel, bool, System.Action> saveDialogAction)
+        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, IWorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IPopupController popupController, Action<IContextualResourceModel, bool, System.Action> saveDialogAction)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("popupController", popupController);
