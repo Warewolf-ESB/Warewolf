@@ -162,26 +162,27 @@ namespace Dev2.Runtime.ESB.Control
                     if (executionContainer != null)
                     {
                         CreateNewEnvironmentFromInputMappings(dataObject, inputDefs, update);
-#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        if (!isLocal)
-                        {
-                            SetRemoteExecutionDataList(dataObject, executionContainer, errors);
-                        }
-                        if (!errors.HasErrors())
-#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
-                        {
-                            executionContainer.InstanceInputDefinition = inputDefs;
-                            executionContainer.InstanceOutputDefinition = outputDefs;
-                            executionContainer.Execute(out invokeErrors, update);
-                            var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
+                    }
+                    if (executionContainer != null && !isLocal)
+                    {
+                        SetRemoteExecutionDataList(dataObject, executionContainer, errors);
+                    }
+                    if (executionContainer != null && !errors.HasErrors())
+                    {
+                        executionContainer.InstanceInputDefinition = inputDefs;
+                        executionContainer.InstanceOutputDefinition = outputDefs;
+                        executionContainer.Execute(out invokeErrors, update);
+                        var env = UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dataObject, outputDefs, update, handleErrors, errors);
 
-                            errors.MergeErrors(invokeErrors);
-                            var errorString = dataObject.Environment.FetchErrors();
-                            invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                            errors.MergeErrors(invokeErrors);
-                            dataObject.StartTime = oldStartTime;
-                            return env;
-                        }
+                        errors.MergeErrors(invokeErrors);
+                        var errorString = dataObject.Environment.FetchErrors();
+                        invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                        errors.MergeErrors(invokeErrors);
+                        dataObject.StartTime = oldStartTime;
+                        return env;
+                    }
+                    if (executionContainer != null)
+                    {
                         errors.AddError(string.Format(ErrorResource.ResourceNotFound, dataObject.ServiceName));
                     }
                 }
