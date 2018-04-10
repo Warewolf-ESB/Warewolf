@@ -205,7 +205,6 @@
     <Compile Include="Common\TypeExtensionMethods.cs" />
     <Compile Include="CustomContainer.cs" />
     <Compile Include="Dev2ActivityComparer.cs" />
-    <Compile Include="Dev2StateLogger.cs" />
     <Compile Include="Dev2UniqueActivityComparer.cs" />
     <Compile Include="DynamicServices\Objects\Dev2XamlLoader.cs" />
     <Compile Include="enFindMissingType.cs" />
