@@ -6,13 +6,13 @@ namespace Dev2.Common.Interfaces
     [Serializable]
     public class DllListing : IFileListing
     {
-        public DllListing(IFileListing selectedDll)
+        public DllListing(IDllListingModel selectedDll)
         {
             Name = selectedDll.Name;
             FullName = selectedDll.FullName;
             IsDirectory = selectedDll.IsDirectory;
-            ClsId = (selectedDll as DllListing)?.ClsId;
-            Is32Bit = (selectedDll as DllListing)?.Is32Bit ?? false;
+            ClsId = selectedDll?.ClsId;
+            Is32Bit = selectedDll?.Is32Bit ?? false;
         }
 
         public DllListing()
