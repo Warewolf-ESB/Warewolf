@@ -276,9 +276,11 @@ namespace Dev2.Activities.Designers2.Decision
             }
         }
 
-        void UpdateDecisionDisplayName(DecisionTO dec)
+        protected void UpdateDecisionDisplayName(DecisionTO dec)
         {
-            if (DisplayText.StartsWith("If ") || DisplayText == "Decision" && dec != null && !_isInitializing && dec.IndexNumber == 1)
+            var isIfOrDecision = DisplayText.StartsWith("If ") || DisplayText == "Decision";
+
+            if (isIfOrDecision && dec != null && !_isInitializing && dec.IndexNumber == 1)
             {
                 DisplayName = string.Format("If {0} {3} {1} {2}", dec.MatchValue, dec.SearchType,
                     dec.IsBetweenCriteriaVisible
@@ -291,7 +293,6 @@ namespace Dev2.Activities.Designers2.Decision
                         : dec.SearchCriteria,
                     dec.SearchType == null || dec.SearchType.ToLower().Contains("is") ? "" : "Is");
             }
-
         }
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
