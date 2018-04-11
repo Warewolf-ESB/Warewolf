@@ -1234,6 +1234,11 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
+        public string GetWorkflowLink()
+        {
+            throw new NotImplementedException();
+        }
+
         public IServer Server
         {
             get { throw new NotImplementedException(); }
@@ -1277,6 +1282,7 @@ namespace Dev2.Core.Tests
 
         public System.Action WorkflowChanged { get; set; }
         public bool CanMerge { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IServiceTestViewModel ViewModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         #endregion
 
