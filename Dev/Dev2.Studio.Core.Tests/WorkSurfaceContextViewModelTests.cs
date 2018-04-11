@@ -518,10 +518,6 @@ namespace Dev2.Core.Tests
 
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
             rsHandler.Verify(a => a.ShowResourceChanged(It.IsAny<IContextualResourceModel>(), It.IsAny<IList<string>>(), null), Times.Never());
-
-
-
-
         }
 
         [TestMethod]
@@ -565,10 +561,6 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
 
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
-
-
-
-
         }
         
         [TestMethod]
@@ -631,8 +623,7 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Verify(m => m.BindToModel(), Times.Once());
             mockRepository.Verify(m => m.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
         }
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WorkSurfaceContextViewModel_Handle")]
@@ -709,8 +700,7 @@ namespace Dev2.Core.Tests
             //------------Assert---------------------------------
             Assert.IsTrue(called);
         }
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WorkSurfaceContextViewModel_Handle")]
@@ -752,8 +742,7 @@ namespace Dev2.Core.Tests
             //------------Assert---------------------------------
             Assert.IsTrue(called);
         }
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WorkSurfaceContextViewModel_Dispose")]
@@ -912,8 +901,7 @@ namespace Dev2.Core.Tests
 
             return workSurfaceContextViewModel;
         }
-
-
+        
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
@@ -963,8 +951,7 @@ namespace Dev2.Core.Tests
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             environmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
-
-
+            
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             workSurfaceContextViewModel.DebugCommand.Execute(null);
@@ -989,8 +976,7 @@ namespace Dev2.Core.Tests
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
             environmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
             environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
-
-
+            
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             workSurfaceContextViewModel.DebugCommand.Execute(null);
@@ -1030,18 +1016,13 @@ namespace Dev2.Core.Tests
             pvt.SetField("_popupController", popup.Object);
             ctx.Setup(a => a.Environment).Returns(environmentModel.Object);
             pvt.SetField("_dataListViewModel", new DataListViewModel());
-
-
+            
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             workSurfaceContextViewModel.QuickDebug();
 
             popup.Verify(a => a.Show(It.IsAny<string>(), "Error Debugging", MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false));
-
         }
-
-
-
     }
 
     public class WorkSurfaceViewModelTest : IWorkSurfaceViewModel, IWorkflowDesignerViewModel
@@ -1121,141 +1102,43 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-        public void UpdateModelItem(ModelItem modelItem)
-        {
-
-        }
-        public object SelectedModelItem
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public string WorkflowName
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public bool RequiredSignOff
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public WorkflowDesigner Designer
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public UIElement DesignerView
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public StringBuilder DesignerText
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public void UpdateModelItem(ModelItem modelItem) => throw new NotImplementedException();
+        public object SelectedModelItem => throw new NotImplementedException();
+        public string WorkflowName => throw new NotImplementedException();
+        public bool RequiredSignOff => throw new NotImplementedException();
+        public WorkflowDesigner Designer => throw new NotImplementedException();
+        public UIElement DesignerView => throw new NotImplementedException();
+        public StringBuilder DesignerText => throw new NotImplementedException();
         public Action<ModelItem> ItemSelectedAction { get; set; }
         public bool IsTestView { get; set; }
         public ModelItem SelectedItem { get; set; }
-
         public bool CanViewWorkflowLink { get; set; }
-
         public void UpdateWorkflowLink(string newLink)
         {
         }
 
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool NotifyItemSelected(object primarySelection)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void BindToModel()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
-        {
-            throw new NotImplementedException();
-        }
-
-        public ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetWorkflowInputs(string field)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void CreateBlankWorkflow()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveItem(IToolConflictItem model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void AddItem(IToolConflictItem model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void LinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key)
-        {
-
-        }
-
-        public void RemoveStartNodeConnection()
-        {
-            
-        }
-        public void LinkStartNode(IToolConflictItem model)
-        {
-
-        }
-        public void UpdateModelItem(ModelItem modelItem, IToolConflictItem modelTool)
-        {
-            throw new NotImplementedException();
-        }
-
+        public void Dispose() => throw new NotImplementedException();
+        public bool NotifyItemSelected(object primarySelection) => throw new NotImplementedException();
+        public void BindToModel() => throw new NotImplementedException();
+        public void AddMissingWithNoPopUpAndFindUnusedDataListItems() => throw new NotImplementedException();
+        public ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID) => throw new NotImplementedException();
+        public string GetWorkflowInputs(string field) => throw new NotImplementedException();
+        public void CreateBlankWorkflow() => throw new NotImplementedException();
+        public void RemoveItem(IToolConflictItem model) => throw new NotImplementedException();
+        public void AddItem(IToolConflictItem model) => throw new NotImplementedException();
+        public void LinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key) => throw new NotImplementedException();
+        public void RemoveStartNodeConnection() => throw new NotImplementedException();
+        public void LinkStartNode(IToolConflictItem model) => throw new NotImplementedException();
+        public void UpdateModelItem(ModelItem modelItem, IToolConflictItem modelTool) => throw new NotImplementedException();
         public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel) => throw new NotImplementedException();
-
-        public void DeLinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetWorkflowLink()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IServer Server
-        {
-            get { throw new NotImplementedException(); }
-        }
-
+        public void DeLinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key) => throw new NotImplementedException();
+        public string GetWorkflowLink() => throw new NotImplementedException();
+        public IServer Server => throw new NotImplementedException();
         public StringBuilder ServiceDefinition
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get => throw new NotImplementedException();
+            set => throw new NotImplementedException();
         }
-
         public IContextualResourceModel ResourceModel
         {
             get
@@ -1268,24 +1151,11 @@ namespace Dev2.Core.Tests
                 ax.Setup(a => a.UserPermissions).Returns(Permissions.Administrator);
                 return ax.Object;
             }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set => throw new NotImplementedException();
         }
-
-        #region Implementation of IWorkflowDesignerViewModel
-
         public bool WorkspaceSave => _workspaceSave;
-
-        #region Implementation of IWorkflowDesignerViewModel
-
         public System.Action WorkflowChanged { get; set; }
         public bool CanMerge { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public IServiceTestViewModel ViewModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-        #endregion
-
-        #endregion
     }
 }
