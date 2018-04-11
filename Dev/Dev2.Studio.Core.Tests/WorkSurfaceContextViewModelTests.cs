@@ -1100,8 +1100,6 @@ namespace Dev2.Core.Tests
         public bool PreventSelection { get; set; }
         public string IconPath { get; set; }
 
-        #endregion
-
         public void UpdateModelItem(ModelItem modelItem) => throw new NotImplementedException();
         public object SelectedModelItem => throw new NotImplementedException();
         public string WorkflowName => throw new NotImplementedException();
@@ -1157,5 +1155,7 @@ namespace Dev2.Core.Tests
         public System.Action WorkflowChanged { get; set; }
         public bool CanMerge { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
         public IServiceTestViewModel ViewModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+        #endregion
     }
 }
