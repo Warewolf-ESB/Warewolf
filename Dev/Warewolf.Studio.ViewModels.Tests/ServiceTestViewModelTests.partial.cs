@@ -1405,7 +1405,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var methodInfo = typeof(ServiceTestViewModel).GetMethod("MarkChildrenPending", BindingFlags.NonPublic | BindingFlags.Static, null, new Type[] { typeof(IServiceTestStep) }, null);
 
             //---------------Assert Precondition----------------
-            Assert.IsNotNull(methodInfo, "nathi is an idioto");
+            Assert.IsNotNull(methodInfo);
             //---------------Execute Test ----------------------
             methodInfo.Invoke(null, new object[] { serviceTestStep });
             //---------------Test Result -----------------------
