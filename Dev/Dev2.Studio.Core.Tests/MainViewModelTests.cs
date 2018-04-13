@@ -4065,17 +4065,11 @@ namespace Dev2.Core.Tests
             public SpecialContext WorksurfaceContextManager { get; internal set; }
             public object ActiveItem { get; internal set; }
 
-            internal void ActivateItem(object p)
-            {
-                throw new NotImplementedException();
-            }
+            internal void ActivateItem(object p) => throw new NotImplementedException();
 
             public class SpecialContext
             {
-                internal void TryRemoveContext(object contextualResourceModel)
-                {
-                    throw new NotImplementedException();
-                }
+                internal void TryRemoveContext(object contextualResourceModel) => throw new NotImplementedException();
             }
         }
     }
