@@ -19,6 +19,5 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     {
         WorkSurfaceContext WorkSurfaceContext { get; set; }
         IServiceTestViewModel ViewModel { get; set; }
-        string GetWorkflowLink();
     }
 }

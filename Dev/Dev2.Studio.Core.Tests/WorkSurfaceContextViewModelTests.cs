@@ -1130,7 +1130,6 @@ namespace Dev2.Core.Tests
         public void UpdateModelItem(ModelItem modelItem, IToolConflictItem modelTool) => throw new NotImplementedException();
         public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel) => throw new NotImplementedException();
         public void DeLinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key) => throw new NotImplementedException();
-        public string GetWorkflowLink() => throw new NotImplementedException();
         public IServer Server => throw new NotImplementedException();
         public StringBuilder ServiceDefinition
         {
