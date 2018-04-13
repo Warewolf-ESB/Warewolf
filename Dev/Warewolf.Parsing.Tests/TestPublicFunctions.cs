@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
@@ -179,6 +181,62 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
             var p = new PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("PublicFunctions")]
+        public void PublicFunctions_EvalEnv_ShouldReturn()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+
+            //------------Execute Test---------------------------
+            var res = PublicFunctions.EvalEnv(env);
+
+            var sb = new StringBuilder();
+            foreach (var s in res)
+            {
+                sb.Append(s);
+            }
+            var expected = "{\"scalars\":{\"r\":\"s\",\"s\":\"s\",\"x\":1,\"y\":\"y\"}," +
+                             "\"record_sets\":{\"Rec\":{\"WarewolfPositionColumn\":[1,2,3,4],\"a\":[1,2,3,2],\"b\":[\"a\",\"b\",\"c\",\"c\"]}}," +
+                             "\"json_objects\":{\"Person\":{\"Name\":\"bob\",\"Age\":\"22\",\"Spouse\":{\"Name\":\"dora\"},\"Children\":[{\"Name\":\"Mary\"},{\"Name\":\"Jane\"}],\"Score\":[\"2\",\"3\"]},\"array\":[\"bob\"],\"arrayObj\":[{\"Name\":\"bob\"},{\"Name\":\"bobe\"}]}}";
+
+            var actual = sb.ToString();
+            Assert.AreEqual(expected, actual);
+            var jsonOb = JsonConvert.DeserializeObject(actual);
+            Assert.IsNotNull(jsonOb);
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("PublicFunctions")]
+        public void PublicFunctions_EvalEnv_ShouldReturn1()
+        {
+            //------------Setup for test--------------------------
+            var e = new ExecutionEnvironment();
+            var p = new PrivateObject(e);
+            var env = (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
+
+            //------------Execute Test---------------------------
+            var res = PublicFunctions.EvalEnv(env);
+
+            var sb = new StringBuilder();
+            foreach (var s in res)
+            {
+                sb.Append(s);
+            }
+            var expected = "{\"scalars\":{}," +
+                             "\"record_sets\":{}," +
+                             "\"json_objects\":{}}";
+
+            var actual = sb.ToString();
+            Assert.AreEqual(expected, actual);
+            var jsonOb = JsonConvert.DeserializeObject(actual);
+            Assert.IsNotNull(jsonOb);
         }
     }
 }
