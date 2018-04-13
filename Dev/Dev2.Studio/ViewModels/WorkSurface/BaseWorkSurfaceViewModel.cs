@@ -42,10 +42,5 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public virtual bool CanSave => true;
 
         public IServiceTestViewModel ViewModel { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
-
-        public string GetWorkflowLink()
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }
