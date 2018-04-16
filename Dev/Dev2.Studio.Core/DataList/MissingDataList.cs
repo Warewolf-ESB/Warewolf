@@ -75,7 +75,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 missingWorkflowParts.AddRange(
                     from child in dataListItem.Children
-                    where partsToVerify.Count(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0 && child.IsEditable
+                    where !partsToVerify.Any(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) && child.IsEditable
                     where !excludeUnusedItems || dataListItem.IsUsed
                     select IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
             }
