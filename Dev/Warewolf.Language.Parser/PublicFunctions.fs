@@ -6,6 +6,8 @@ open DataStorage
 open Dev2.Common.Interfaces
 open CommonFunctions
 open Delete
+open System.Text.RegularExpressions
+open Newtonsoft.Json
 
 let PositionColumn = "WarewolfPositionColumn"
 ///Create a RecordSet
@@ -123,3 +125,91 @@ let RecordsetExpressionExists (exp : string) (env : WarewolfEnvironment) =
         if env.RecordSets.ContainsKey recset.Name then env.RecordSets.[recset.Name].Data.ContainsKey recset.Column
         else false
     | _ -> false
+
+
+let EvalEnvRecordSets (env : WarewolfEnvironment) =
+    Map.toSeq env.RecordSets
+let EvalEnvJsonObjects (env : WarewolfEnvironment) =
+    Map.toSeq env.JsonObjects
+
+let private escapeChars = Regex("[\n\r\"]", RegexOptions.Compiled)
+let private matchev =
+    MatchEvaluator(fun m ->
+        match m.Value with
+        | "\n" -> "\\n"
+        | "\r" -> "\\r"
+        | "\"" -> "\\\""
+        | v -> v)
+
+let EscapeJsonString (s : string) =
+    escapeChars.Replace(s, matchev)
+
+
+let private YieldAtomAsJson(atom : WarewolfAtom) =
+    seq {
+        match atom with
+        | DataString s ->
+            match s with
+            | z when z.ToLower() = "true" -> yield z.ToLower()
+            | z when z.ToLower() = "false" -> yield z.ToLower()
+            | _ ->
+                yield "\""
+                yield string atom
+                yield "\""
+        | _ -> yield atom.ToString()
+    }
+let EvalEnv (env : WarewolfEnvironment) =
+    seq {
+        yield "{\"scalars\":{"
+        let mutable i = 0
+        for scalar in env.Scalar do
+            yield "\""
+            yield scalar.Key
+            yield "\":"
+            yield! YieldAtomAsJson scalar.Value
+
+            if i < env.Scalar.Count - 1 then
+                yield ","
+            i <- i + 1
+
+        yield "},\"record_sets\":{"
+        let mutable i = 0
+        for recordset in env.RecordSets do
+            yield "\""
+            yield recordset.Key
+            yield "\":{"
+            let columns = recordset.Value.Data
+            let mutable j = 0
+            for column in columns do
+                yield "\""
+                yield column.Key
+                yield "\":["
+                let mutable k = 0
+                for item in column.Value do
+                    yield! YieldAtomAsJson item
+                    if k < column.Value.Count - 1 then
+                        yield ","
+                    k <- k + 1
+                yield "]"
+                if j < columns.Count - 1 then
+                    yield ","
+                j <- j + 1
+            yield "}"
+
+            if i < env.RecordSets.Count - 1 then
+                yield ","
+            i <- i + 1
+
+        yield "},\"json_objects\":{"
+        let mutable i = 0
+        for jsonObject in env.JsonObjects do
+            yield "\""
+            yield jsonObject.Key
+            yield "\":"
+            yield jsonObject.Value.ToString(Formatting.None);
+
+            if i < env.JsonObjects.Count - 1 then
+                yield ","
+            i <- i + 1
+        yield "}}"
+    }
