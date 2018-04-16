@@ -126,11 +126,14 @@ namespace Dev2.Studio.Dock
             {
                 var tabGroupPane = contentPane.Parent as TabGroupPane;
                 var splitPane = tabGroupPane?.Parent as SplitPane;
-                if (splitPane?.Parent is PaneToolWindow paneToolWindow && string.IsNullOrWhiteSpace(paneToolWindow.Title) && Application.Current != null && Application.Current.MainWindow != null && Application.Current.MainWindow.DataContext != null && Application.Current.MainWindow.DataContext is ShellViewModel mainViewModel)
+                if (splitPane?.Parent is PaneToolWindow paneToolWindow && string.IsNullOrWhiteSpace(paneToolWindow.Title))
                 {
-                    paneToolWindow.Title = mainViewModel.DisplayName;
+                    var hasMainWindow = Application.Current != null && Application.Current.MainWindow != null;
+                    if (hasMainWindow && Application.Current.MainWindow.DataContext != null && Application.Current.MainWindow.DataContext is ShellViewModel mainViewModel)
+                    {
+                        paneToolWindow.Title = mainViewModel.DisplayName;
+                    }
                 }
-
             }
         }
 
