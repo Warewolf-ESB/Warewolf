@@ -1278,10 +1278,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     workflowFields = GetWorkflowFieldsFromProperty(workflowFields, property);
                 }
-                else
-                {
-                    return workflowFields;
-                }
             }
             return workflowFields;
         }
