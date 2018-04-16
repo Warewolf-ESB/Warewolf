@@ -1636,9 +1636,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                         e.Handled = true;
                         return;
                     }
-
-                    if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control &&
-                        (e.Key == Key.X || e.Key == Key.C || e.Key == Key.V || e.Key == Key.Z || e.Key == Key.Y))
+                    var isControlPressed = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
+                    var isExpectedKey = e.Key == Key.C || e.Key == Key.V;
+                    isExpectedKey |= e.Key == Key.X || e.Key == Key.Y || e.Key == Key.Z;
+                    if (isControlPressed && isExpectedKey)
                     {
                         e.Handled = true;
                     }
