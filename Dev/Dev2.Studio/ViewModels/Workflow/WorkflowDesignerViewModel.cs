@@ -1265,11 +1265,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (flowNode.ItemType.Name == "FlowDecision")
                 {
                     propertyName = "Condition";
-                }
-                if (flowNode.ItemType.Name == "FlowSwitch`1")
+                } else if (flowNode.ItemType.Name == "FlowSwitch`1")
                 {
                     propertyName = "Expression";
+                } else
+                {
+                    throw new Exception("unexpected FlowNode ItemType");
                 }
+
                 var property = flowNode.Properties[propertyName];
                 if (property != null)
                 {
