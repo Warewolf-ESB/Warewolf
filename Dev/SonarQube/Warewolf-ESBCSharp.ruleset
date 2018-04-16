@@ -204,7 +204,7 @@
     <Rule Id="S3458" Action="Warning" />
     <Rule Id="S3459" Action="Warning" />
     <Rule Id="S3466" Action="Warning" />
-    <Rule Id="S3532" Action="Warning" />
+    <Rule Id="S3532" Action="None" />
     <Rule Id="S3597" Action="Warning" />
     <Rule Id="S3598" Action="Warning" />
     <Rule Id="S3600" Action="Warning" />
@@ -337,7 +337,7 @@
     <Rule Id="CC0034" Action="None" />
     <Rule Id="CC0035" Action="None" />
     <Rule Id="CC0037" Action="None" />
-    <Rule Id="CC0038" Action="Warning" />
+    <Rule Id="CC0038" Action="None" />
     <Rule Id="CC0039" Action="None" />
     <Rule Id="CC0042" Action="None" />
     <Rule Id="CC0043" Action="None" />
@@ -357,7 +357,7 @@
     <Rule Id="CC0063" Action="Warning" />
     <Rule Id="CC0064" Action="Warning" />
     <Rule Id="CC0065" Action="None" />
-    <Rule Id="CC0067" Action="Warning" />
+    <Rule Id="CC0067" Action="None" />
     <Rule Id="CC0068" Action="None" />
     <Rule Id="CC0070" Action="None" />
     <Rule Id="CC0071" Action="None" />
@@ -378,7 +378,7 @@
     <Rule Id="CC0095" Action="Warning" />
     <Rule Id="CC0097" Action="Warning" />
     <Rule Id="CC0105" Action="None" />
-    <Rule Id="CC0108" Action="Warning" />
+    <Rule Id="CC0108" Action="None" />
     <Rule Id="CC0111" Action="Warning" />
   </Rules>
 </RuleSet>
