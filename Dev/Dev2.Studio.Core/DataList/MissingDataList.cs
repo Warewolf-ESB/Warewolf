@@ -44,12 +44,13 @@ namespace Dev2.Studio.Core.DataList
                 }
                 else
                 {
-                    if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0 && dataListItem.IsEditable && excludeUnusedItems && !dataListItem.IsUsed)
+                    var hasNoPartsToVerifyAndEditable = !partsToVerify.Any(part => part.Field == dataListItem.DisplayName && part.IsScalar) && dataListItem.IsEditable;
+                    if (hasNoPartsToVerifyAndEditable && excludeUnusedItems && !dataListItem.IsUsed)
                     {
                         continue;
                     }
 
-                    if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0 && dataListItem.IsEditable && excludeUnusedItems && !dataListItem.IsUsed)
+                    if (hasNoPartsToVerifyAndEditable)
                     {
                         missingWorkflowParts.Add(
                         IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
