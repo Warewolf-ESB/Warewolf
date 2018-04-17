@@ -23,8 +23,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 {
     public class DsfActivityDropViewModel : SimpleBaseViewModel
     {
-
         public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
+
         #region Fields
 
         RelayCommand _executeCommmand;
@@ -108,8 +108,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public RelayCommand OkCommand => _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Okay(), param => CanOkay));
 
         public bool CanOkay => CanSelect();
-
-
+        
         bool CanSelect()
         {
             var isMatched = false;
@@ -119,17 +118,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (explorerItemModel != null)
             {
                 isMatched = explorerItemModel.IsService;
-            }
-
-            var explorerViewModelBase = ((Warewolf.Studio.ViewModels.ExplorerViewModelBase)SingleEnvironmentExplorerViewModel);
-            var conductorBaseWithActiveItem = (Caliburn.Micro.ConductorBaseWithActiveItem<WorkSurfaceContextViewModel>)
-                ((Warewolf.Studio.ViewModels.ExplorerItemViewModel)explorerViewModelBase?.SelectedItem)?.ShellViewModel;
-            var workSurfaceContextViewModel = conductorBaseWithActiveItem?.ActiveItem;
-            var contextualResourceModel = workSurfaceContextViewModel?.ContextualResourceModel;
-            var guid = contextualResourceModel?.ID;
-            if (explorerItemModel != null && explorerItemModel.ResourceId == guid)
-            {
-                return false;
             }
 
             return explorerItemModel != null && isMatched;
