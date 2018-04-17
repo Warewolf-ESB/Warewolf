@@ -118,14 +118,12 @@ namespace Warewolf.Storage
             if (s.Contains("[[@"))
             {
                 var res = _inner.Eval(s, 0);
-                if (res.IsWarewolfAtomResult)
+                if (res.IsWarewolfAtomResult && res is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
                 {
-                    if (res is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
-                    {
-                        var resClause = clause.Invoke(atom.Item);
-                        _inner.AssignJson(new AssignValue(s, resClause.ToString()), 0);
-                    }
+                    var resClause = clause.Invoke(atom.Item);
+                    _inner.AssignJson(new AssignValue(s, resClause.ToString()), 0);
                 }
+
             }
             else
             {

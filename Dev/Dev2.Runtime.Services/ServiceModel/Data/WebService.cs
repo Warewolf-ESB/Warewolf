@@ -177,15 +177,13 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 // If disposing equals true, dispose all managed 
                 // and unmanaged resources. 
-                if(disposing)
+                // Dispose managed resources.
+                if (disposing && Source != null)
                 {
-                    // Dispose managed resources.
-                    if(Source != null)
-                    {
-                        ((WebSource)Source).Dispose();
-                        Source = null;
-                    }
+                    ((WebSource)Source).Dispose();
+                    Source = null;
                 }
+
 
                 // Call the appropriate methods to clean up 
                 // unmanaged resources here. 

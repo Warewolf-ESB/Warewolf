@@ -667,7 +667,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
 
             //assert
-            _explorerRepositoryMock.Verify(it => it.Delete(_target));
+            _explorerRepositoryMock.Verify(it => it.TryDelete(_target));
         }
 
         [TestMethod]
@@ -683,7 +683,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.DeleteCommand.CanExecute(null));
 
             //assert
-            _explorerRepositoryMock.Verify(it => it.Delete(It.IsAny<IExplorerItemViewModel>()), Times.Never);
+            _explorerRepositoryMock.Verify(it => it.TryDelete(It.IsAny<IExplorerItemViewModel>()), Times.Never);
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never);
             //assert
         }
@@ -695,7 +695,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentModelMock = new Mock<IServer>();
             environmentModelMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
+            _explorerRepositoryMock.Setup(it => it.TryDelete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
             var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
             environmentModelMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
             _target.Server = environmentModelMock.Object;
@@ -709,7 +709,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.EnvironmentID));
-            _explorerRepositoryMock.Verify(it => it.Delete(_target));
+            _explorerRepositoryMock.Verify(it => it.TryDelete(_target));
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
             studioManagerUpdateMock.Verify(it => it.FireServerSaved(It.IsAny<Guid>(), It.IsAny<bool>()));
         }
@@ -720,7 +720,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var environmentModelMock = new Mock<IServer>();
             environmentModelMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
-            _explorerRepositoryMock.Setup(it => it.Delete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
+            _explorerRepositoryMock.Setup(it => it.TryDelete(_target)).Returns(new DeletedFileMetadata { IsDeleted = true });
             var studioManagerUpdateMock = new Mock<IStudioUpdateManager>();
             environmentModelMock.SetupGet(it => it.UpdateRepository).Returns(studioManagerUpdateMock.Object);
             _target.Server = environmentModelMock.Object;
@@ -735,7 +735,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             _shellViewModelMock.Verify(it => it.CloseResource(_target.ResourceId, environmentModelMock.Object.EnvironmentID));
-            _explorerRepositoryMock.Verify(it => it.Delete(_target));
+            _explorerRepositoryMock.Verify(it => it.TryDelete(_target));
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target));
             studioManagerUpdateMock.Verify(it => it.FireServerSaved(It.IsAny<Guid>(), It.IsAny<bool>()));
         }
@@ -951,7 +951,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.DeleteVersionCommand.CanExecute(null));
 
             //assert
-            _explorerRepositoryMock.Verify(it => it.Delete(_target));
+            _explorerRepositoryMock.Verify(it => it.TryDelete(_target));
         }
 
         [TestMethod]
@@ -978,7 +978,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.DeleteCommand.Execute(null);
 
             //assert
-            _explorerRepositoryMock.Verify(it => it.Delete(_target));
+            _explorerRepositoryMock.Verify(it => it.TryDelete(_target));
             _explorerTreeItemMock.Verify(it => it.RemoveChild(_target), Times.Never());
 
             Assert.AreEqual(1, _target.ChildrenCount);
@@ -1534,7 +1534,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var mock = new Mock<IExplorerRepository>();
-            mock.Setup(metadata => metadata.Delete(It.IsAny<IExplorerItemViewModel>())).Returns(new DeletedFileMetadata() { IsDeleted = false });
+            mock.Setup(metadata => metadata.TryDelete(It.IsAny<IExplorerItemViewModel>())).Returns(new DeletedFileMetadata() { IsDeleted = false });
             _popupControllerMock.Setup(a => a.Show(It.IsAny<IPopupMessage>())).Returns(MessageBoxResult.Yes);
             _target.Server = new Mock<IServer>().Object;
             var child = new Mock<IExplorerItemViewModel>();

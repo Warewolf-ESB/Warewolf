@@ -225,11 +225,7 @@ namespace Warewolf.Studio.ViewModels
                         src.ResourceName = requestServiceNameViewModel.ResourceName.Name;
                         src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
-                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
-                        {
-                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
-                        }
-
+                        AfterSave(requestServiceNameViewModel, src);
                         Item = src;
                         _emailServiceSource = src;
                         ResourceName = _emailServiceSource.ResourceName;
@@ -246,6 +242,14 @@ namespace Warewolf.Studio.ViewModels
                 SetupHeaderTextFromExisting();
             }
             TestPassed = false;
+        }
+
+        void AfterSave(IRequestServiceNameViewModel requestServiceNameViewModel, IEmailServiceSource src)
+        {
+            if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+            {
+                AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+            }
         }
 
         public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }

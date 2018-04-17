@@ -47,13 +47,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
             ServiceMethodList cacheResult;
-            if (!dbSource.ReloadActions)
+            if (!dbSource.ReloadActions && GetCachedResult(dbSource, out cacheResult))
             {
-                if (GetCachedResult(dbSource, out cacheResult))
-                {
-                    return cacheResult;
-                }
+                return cacheResult;
             }
+
 
             var serviceMethods = new ServiceMethodList();
             

@@ -81,20 +81,15 @@ namespace Dev2
                     }
                     else
                     {
-                        if (!DataListUtil.IsValueRecordset(output.Variable))
-                        {
-                            dataObject.Environment.Assign(variable, value, 0);
-                        }
+                        AssignNotJson(dataObject, output, variable, value);
                     }
-                    if (dataObject.IsServiceTestExecution)
+                    if (dataObject.IsServiceTestExecution && dataObject.IsDebugMode())
                     {
-                        if (dataObject.IsDebugMode())
-                        {
-                            var res = new DebugEvalResult(dataObject.Environment.ToStar(variable), "", dataObject.Environment, update, false, false, true);
-                            AddDebugOutputItem(new DebugEvalResult(variable, "", dataObject.Environment, update));
-                            AddDebugAssertResultItem(res);
-                        }
+                        var res = new DebugEvalResult(dataObject.Environment.ToStar(variable), "", dataObject.Environment, update, false, false, true);
+                        AddDebugOutputItem(new DebugEvalResult(variable, "", dataObject.Environment, update));
+                        AddDebugAssertResultItem(res);
                     }
+
                 }
             }
             if (dataObject.IsDebugMode())
@@ -102,6 +97,14 @@ namespace Dev2
                 DispatchDebugState(dataObject, StateType.After, update);
             }
             NextNodes = _originalActivity.NextNodes;
+        }
+
+        private static void AssignNotJson(IDSFDataObject dataObject, IServiceTestOutput output, string variable, string value)
+        {
+            if (!DataListUtil.IsValueRecordset(output.Variable))
+            {
+                dataObject.Environment.Assign(variable, value, 0);
+            }
         }
 
         #region Overrides of DsfNativeActivity<string>
@@ -124,26 +127,31 @@ namespace Dev2
                 var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
                 foreach (var groupedRecset in groupedRecsets)
                 {
-                    var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
-                    foreach (var dataListItem in dataListItems)
+                    AddEntireRecsetGroup(environment, groupedRecset);
+                }
+            }
+        }
+
+        private static void AddEntireRecsetGroup(IExecutionEnvironment environment, IGrouping<string, IServiceTestOutput> groupedRecset)
+        {
+            var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
+            foreach (var dataListItem in dataListItems)
+            {
+                var recSetsToAssign = new List<IServiceTestOutput>();
+                var empty = true;
+                foreach (var listItem in dataListItem)
+                {
+                    if (!string.IsNullOrEmpty(listItem.Value))
                     {
-                        var recSetsToAssign = new List<IServiceTestOutput>();
-                        var empty = true;
-                        foreach (var listItem in dataListItem)
-                        {
-                            if (!string.IsNullOrEmpty(listItem.Value))
-                            {
-                                empty = false;
-                            }
-                            recSetsToAssign.Add(listItem);
-                        }
-                        if (!empty)
-                        {
-                            foreach (var serviceTestInput in recSetsToAssign)
-                            {
-                                environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
-                            }
-                        }
+                        empty = false;
+                    }
+                    recSetsToAssign.Add(listItem);
+                }
+                if (!empty)
+                {
+                    foreach (var serviceTestInput in recSetsToAssign)
+                    {
+                        environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
                     }
                 }
             }
