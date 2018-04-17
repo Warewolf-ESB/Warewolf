@@ -86,111 +86,112 @@ namespace Dev2.Runtime.ServiceModel
             }
             if (dbService.Source is DbSource source)
             {
-                switch (source.ServerType)
-                {
-                    case enSourceType.SqlDatabase:
-                        {
-                            var broker = CreateDatabaseBroker();
-                            var outputDescription = broker.TestService(dbService);
-
-                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-                            {
-                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
-                            }
-                            if (dbService.Recordset != null)
-                            {
-                                dbService.Recordset.Name = dbService.Method.ExecuteAction;
-                                if (dbService.Recordset.Name != null)
-                                {
-                                    dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
-                                }
-                                dbService.Recordset.Fields.Clear();
-
-                                var smh = new ServiceMappingHelper();
-                                smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-                            }
-                            return dbService.Recordset;
-                        }
-
-                    case enSourceType.MySqlDatabase:
-                        {
-
-                            var broker = new MySqlDatabaseBroker();
-                            var outputDescription = broker.TestService(dbService);
-
-                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-                            {
-                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
-                            }
-
-                            dbService.Recordset.Fields.Clear();
-
-                            var smh = new ServiceMappingHelper();
-
-                            smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
-
-                            return dbService.Recordset;
-
-                        }
-                    case enSourceType.PostgreSQL:
-                        {
-                            var broker = new PostgreSqlDataBaseBroker();
-                            var outputDescription = broker.TestService(dbService);
-
-                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-                            {
-                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
-                            }
-
-                            dbService.Recordset.Fields.Clear();
-
-                            var smh = new ServiceMappingHelper();
-
-                            smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
-
-                            return dbService.Recordset;
-                        }
-                    case enSourceType.Oracle:
-                        {
-                            var broker = new OracleDatabaseBroker();
-                            var outputDescription = broker.TestService(dbService);
-
-                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-                            {
-                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
-                            }
-
-                            dbService.Recordset.Fields.Clear();
-
-                            var smh = new ServiceMappingHelper();
-
-                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-
-                            return dbService.Recordset;
-                        }
-                    case enSourceType.ODBC:
-                        {
-                            var broker = new ODBCDatabaseBroker();
-                            var outputDescription = broker.TestService(dbService);
-
-                            if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
-                            {
-                                throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
-                            }
-
-                            dbService.Recordset.Fields.Clear();
-
-                            var smh = new ServiceMappingHelper();
-
-                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-                            dbService.Recordset.Name = @"Unnamed";
-                            return dbService.Recordset;
-                        }
-                    default: return null;
-
-                }
+                return FetchDbSourceRecordset(source, ref dbService, addFields);
             }
             return null;
+        }
+
+        Recordset FetchDbSourceRecordset(DbSource source, ref DbService dbService, bool addFields)
+        {
+            switch (source.ServerType)
+            {
+                case enSourceType.SqlDatabase:
+                    {
+                        var broker = CreateDatabaseBroker();
+                        var outputDescription = broker.TestService(dbService);
+
+                        if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                        {
+                            throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
+                        }
+                        if (dbService.Recordset != null)
+                        {
+                            dbService.Recordset.Name = dbService.Method.ExecuteAction;
+                            if (dbService.Recordset.Name != null)
+                            {
+                                dbService.Recordset.Name = dbService.Recordset.Name.Replace(".", "_");
+                            }
+                            dbService.Recordset.Fields.Clear();
+
+                            var smh = new ServiceMappingHelper();
+                            smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+                        }
+                        return dbService.Recordset;
+                    }
+                case enSourceType.MySqlDatabase:
+                    {
+                        var broker = new MySqlDatabaseBroker();
+                        var outputDescription = broker.TestService(dbService);
+
+                        if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                        {
+                            throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
+                        }
+
+                        dbService.Recordset.Fields.Clear();
+
+                        var smh = new ServiceMappingHelper();
+
+                        smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
+
+                        return dbService.Recordset;
+                    }
+                case enSourceType.PostgreSQL:
+                    {
+                        var broker = new PostgreSqlDataBaseBroker();
+                        var outputDescription = broker.TestService(dbService);
+
+                        if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                        {
+                            throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
+                        }
+
+                        dbService.Recordset.Fields.Clear();
+
+                        var smh = new ServiceMappingHelper();
+
+                        smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
+
+                        return dbService.Recordset;
+                    }
+                case enSourceType.Oracle:
+                    {
+                        var broker = new OracleDatabaseBroker();
+                        var outputDescription = broker.TestService(dbService);
+
+                        if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                        {
+                            throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
+                        }
+
+                        dbService.Recordset.Fields.Clear();
+
+                        var smh = new ServiceMappingHelper();
+
+                        smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+
+                        return dbService.Recordset;
+                    }
+                case enSourceType.ODBC:
+                    {
+                        var broker = new ODBCDatabaseBroker();
+                        var outputDescription = broker.TestService(dbService);
+
+                        if (outputDescription?.DataSourceShapes == null || outputDescription.DataSourceShapes.Count == 0)
+                        {
+                            throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
+                        }
+
+                        dbService.Recordset.Fields.Clear();
+
+                        var smh = new ServiceMappingHelper();
+
+                        smh.MapDbOutputs(outputDescription, ref dbService, addFields);
+                        dbService.Recordset.Name = @"Unnamed";
+                        return dbService.Recordset;
+                    }
+                default: return null;
+            }
         }
 
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
@@ -207,41 +208,45 @@ namespace Dev2.Runtime.ServiceModel
             {
                 foreach (var recordset in recSet)
                 {
-                    foreach (var field in recordset.Fields)
-                    {
-                        if (string.IsNullOrEmpty(field.Name))
-                        {
-                            continue;
-                        }
-                        var path = field.Path;
-                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
-
-                        var value = string.Empty;
-                        if (!string.IsNullOrEmpty(field.Alias))
-                        {
-                            value = string.IsNullOrEmpty(rsAlias)
-                                        ? $"[[{field.Alias}]]"
-                                : $"[[{rsAlias}().{field.Alias}]]";
-                        }
-
-                        if (path != null)
-                        {
-                            path.OutputExpression = value;
-                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
-                            if (foundPath == null)
-                            {
-                                dataSourceShape.Paths.Add(path);
-                            }
-                            else
-                            {
-                                foundPath.OutputExpression = path.OutputExpression;
-                            }
-
-                        }
-                    }
+                    FetchRecordsetFields(dataSourceShape, recordset);
                 }
             }
             return recSet;
+        }
+
+        static void FetchRecordsetFields(Common.Interfaces.Core.Graph.IDataSourceShape dataSourceShape, Recordset recordset)
+        {
+            foreach (var field in recordset.Fields)
+            {
+                if (string.IsNullOrEmpty(field.Name))
+                {
+                    continue;
+                }
+                var path = field.Path;
+                var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
+
+                var value = string.Empty;
+                if (!string.IsNullOrEmpty(field.Alias))
+                {
+                    value = string.IsNullOrEmpty(rsAlias)
+                                ? $"[[{field.Alias}]]"
+                        : $"[[{rsAlias}().{field.Alias}]]";
+                }
+
+                if (path != null)
+                {
+                    path.OutputExpression = value;
+                    var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
+                    if (foundPath == null)
+                    {
+                        dataSourceShape.Paths.Add(path);
+                    }
+                    else
+                    {
+                        foundPath.OutputExpression = path.OutputExpression;
+                    }
+                }
+            }
         }
 
         protected virtual RecordsetList FetchRecordset(ComPluginService pluginService, bool addFields)
@@ -258,38 +263,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 foreach (var recordset in recSet)
                 {
-                    foreach (var field in recordset.Fields)
-                    {
-                        if (string.IsNullOrEmpty(field.Name))
-                        {
-                            continue;
-                        }
-                        var path = field.Path;
-                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
-
-                        var value = string.Empty;
-                        if (!string.IsNullOrEmpty(field.Alias))
-                        {
-                            value = string.IsNullOrEmpty(rsAlias)
-                                        ? $"[[{field.Alias}]]"
-                                : $"[[{rsAlias}().{field.Alias}]]";
-                        }
-
-                        if (path != null)
-                        {
-                            path.OutputExpression = value;
-                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
-                            if (foundPath == null)
-                            {
-                                dataSourceShape.Paths.Add(path);
-                            }
-                            else
-                            {
-                                foundPath.OutputExpression = path.OutputExpression;
-                            }
-
-                        }
-                    }
+                    FetchRecordsetFields(dataSourceShape, recordset);
                 }
             }
             return recSet;
@@ -320,29 +294,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 foreach (var recordset in recSet)
                 {
-                    foreach (var field in recordset.Fields)
-                    {
-                        if (string.IsNullOrEmpty(field.Name))
-                        {
-                            continue;
-                        }
-                        var path = field.Path;
-                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
-
-                        var value = string.Empty;
-                        if (!string.IsNullOrEmpty(field.Alias))
-                        {
-                            value = string.IsNullOrEmpty(rsAlias)
-                                        ? $"[[{field.Alias}]]"
-                                : $"[[{rsAlias}().{field.Alias}]]";
-                        }
-
-                        if (path != null)
-                        {
-                            path.OutputExpression = value;
-                            dataSourceShape.Paths.Add(path);
-                        }
-                    }
+                    FetchRecordsetFields(dataSourceShape, recordset);
                 }
             }
             return recSet;

@@ -114,10 +114,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             var replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
-            IErrorResultTO errors;
+            IErrorResultTO errors = new ErrorResultTO();
             IErrorResultTO allErrors = new ErrorResultTO();
 
             var replacementCount = 0;
@@ -127,20 +125,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 IList<string> toSearch = FieldsToSearch.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                AddTypeDebugItem(dataObject, update, toSearch);
 
-                foreach (var s in toSearch)
+                foreach (string s in toSearch)
                 {
-                    if (dataObject.IsDebugMode())
+                    if (!DataListUtil.IsEvaluated(s))
                     {
-                        AddDebugInputItem(new DebugEvalResult(s, "In Field(s)", dataObject.Environment, update));
-                        if (Find != null)
-                        {
-                            AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment, update));
-                        }
-                        if (ReplaceWith != null)
-                        {
-                            AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With", dataObject.Environment, update));
-                        }
+                        allErrors.AddError(ErrorResource.RequiredVaraibleNameONLY);
+                        return;
                     }
                 }
                 IWarewolfListIterator iteratorCollection = new WarewolfListIterator();
@@ -168,90 +160,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var counter = 1;
-                        while (iteratorCollection.HasMoreData())
-                        {
-                            // now process each field for entire evaluated Where expression....                    
-                            var findValue = iteratorCollection.FetchNextValue(itrFind);
-                            var replaceWithValue = iteratorCollection.FetchNextValue(itrReplace);
-                            foreach (string s in toSearch)
-                            {
-                                if (!DataListUtil.IsEvaluated(s))
-                                {
-                                    allErrors.AddError(ErrorResource.RequiredVaraibleNameONLY);
-                                    return;
-                                }
-                                if (!string.IsNullOrEmpty(findValue))
-                                {
-                                    if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
-                                    {
-                                        if (!dataObject.Environment.HasRecordSet(DataListUtil.ExtractRecordsetNameFromValue(Result)))
-                                        {
-                                            dataObject.Environment.AssignDataShape(Result);
-                                        }
-                                    }
-                                    try
-                                    {
-                                        dataObject.Environment.ApplyUpdate(s, a =>
-                                        {
-                                            replacementCount = 0;
-                                            var replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount);
-                                            if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
-                                            {
-                                                dataObject.Environment.Assign(Result, replacementCount.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
-                                            }
-                                            replacementTotal += replacementCount;
-                                            counter++;
-                                            return DataStorage.WarewolfAtom.NewDataString(replace);
-                                        }, update);
-
-                                    }
-                                    catch (Exception)
-                                    {
-                                        replacementCount = 0;
-                                        var toReplaceIn = dataObject.Environment.Eval(s, update);
-                                        var a = ExecutionEnvironment.WarewolfEvalResultToString(toReplaceIn);
-                                        var replace = replaceOperation.Replace(a, findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount);
-                                        if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
-                                        {
-                                            dataObject.Environment.AssignStrict(Result, replacementCount.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
-                                        }
-                                        replacementTotal += replacementCount;
-                                        counter++;
-                                        dataObject.Environment.AssignStrict(s, replace, update == 0 ? counter : update);
-                                    }
-
-                                }
-                                if (DataListUtil.IsValueScalar(Result))
-                                {
-                                    dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
-                                }
-
-                                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                                {
-                                    if (!string.IsNullOrEmpty(Result))
-                                    {
-                                        if (replacementTotal > 0)
-                                        {
-                                            AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment, update));
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        allErrors = TryExecute(dataObject, update, replaceOperation, ref errors, allErrors, ref replacementCount, ref replacementTotal, toSearch, iteratorCollection, itrFind, itrReplace);
                     }
 
                 }
-                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(Result))
                 {
-                    if (!string.IsNullOrEmpty(Result))
-                    {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                    }
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                 }
+
                 // now push the result to the server
             }
-            
+
             catch (Exception ex)
             {
                 Dev2Logger.Error("DSFReplace", ex, GlobalConstants.WarewolfError);
@@ -275,6 +195,98 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        IErrorResultTO TryExecute(IDSFDataObject dataObject, int update, IDev2ReplaceOperation replaceOperation, ref IErrorResultTO errors, IErrorResultTO allErrors, ref int replacementCount, ref int replacementTotal, IList<string> toSearch, IWarewolfListIterator iteratorCollection, WarewolfIterator itrFind, WarewolfIterator itrReplace)
+        {
+            var counter = 1;
+            while (iteratorCollection.HasMoreData())
+            {
+                // now process each field for entire evaluated Where expression....                    
+                var findValue = iteratorCollection.FetchNextValue(itrFind);
+                var replaceWithValue = iteratorCollection.FetchNextValue(itrReplace);
+                foreach (string s in toSearch)
+                {
+                    ExecuteEachField(dataObject, update, replaceOperation, ref errors, allErrors, ref replacementCount, ref replacementTotal, ref counter, findValue, replaceWithValue, s);
+                }
+            }
+            return allErrors;
+        }
+
+        private void ExecuteEachField(IDSFDataObject dataObject, int update, IDev2ReplaceOperation replaceOperation, ref IErrorResultTO errors, IErrorResultTO allErrors, ref int replacementCount, ref int replacementTotal, ref int counter, string findValue, string replaceWithValue, string s)
+        {
+            if (!string.IsNullOrEmpty(findValue))
+            {
+                if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result) && !dataObject.Environment.HasRecordSet(DataListUtil.ExtractRecordsetNameFromValue(Result)))
+                {
+                    dataObject.Environment.AssignDataShape(Result);
+                }
+
+                try
+                {
+                    var replacementTotalInner = replacementTotal;
+                    var errorsInner = errors;
+                    var counterInner = counter;
+                    dataObject.Environment.ApplyUpdate(s, a =>
+                    {
+                        var replacementCountInner = 0;
+                        var replace = replaceOperation.Replace(a.ToString(), findValue, replaceWithValue, CaseMatch, out errorsInner, ref replacementCountInner);
+                        if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
+                        {
+                            dataObject.Environment.Assign(Result, replacementCountInner.ToString(CultureInfo.InvariantCulture), update == 0 ? counterInner : update);
+                        }
+                        replacementTotalInner += replacementCountInner;
+                        counterInner++;
+                        return DataStorage.WarewolfAtom.NewDataString(replace);
+                    }, update);
+                    replacementTotal = replacementTotalInner;
+                    errors = errorsInner;
+                    counter = counterInner;
+                }
+                catch (Exception)
+                {
+                    replacementCount = 0;
+                    var toReplaceIn = dataObject.Environment.Eval(s, update);
+                    var a = ExecutionEnvironment.WarewolfEvalResultToString(toReplaceIn);
+                    var replace = replaceOperation.Replace(a, findValue, replaceWithValue, CaseMatch, out errors, ref replacementCount);
+                    if (!string.IsNullOrEmpty(Result) && !DataListUtil.IsValueScalar(Result))
+                    {
+                        dataObject.Environment.AssignStrict(Result, replacementCount.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
+                    }
+                    replacementTotal += replacementCount;
+                    counter++;
+                    dataObject.Environment.AssignStrict(s, replace, update == 0 ? counter : update);
+                }
+
+            }
+            if (DataListUtil.IsValueScalar(Result))
+            {
+                dataObject.Environment.Assign(Result, replacementTotal.ToString(CultureInfo.InvariantCulture), update == 0 ? counter : update);
+            }
+
+            if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(Result) && replacementTotal > 0)
+            {
+                AddDebugOutputItem(new DebugEvalResult(s, "", dataObject.Environment, update));
+            }
+        }
+
+        private void AddTypeDebugItem(IDSFDataObject dataObject, int update, IList<string> toSearch)
+        {
+            foreach (var s in toSearch)
+            {
+                if (dataObject.IsDebugMode())
+                {
+                    AddDebugInputItem(new DebugEvalResult(s, "In Field(s)", dataObject.Environment, update));
+                    if (Find != null)
+                    {
+                        AddDebugInputItem(new DebugEvalResult(Find, "Find", dataObject.Environment, update));
+                    }
+                    if (ReplaceWith != null)
+                    {
+                        AddDebugInputItem(new DebugEvalResult(ReplaceWith, "Replace With", dataObject.Environment, update));
+                    }
                 }
             }
         }

@@ -76,31 +76,29 @@ namespace Dev2.Studio.Views.Workflow
                 return false;
             }
 
-            if (_workflowDesignerView.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel)
+            if (_workflowDesignerView.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel && objectData is ExplorerItemViewModel explorerItemViewModel)
             {
-                if (objectData is ExplorerItemViewModel explorerItemViewModel)
+                if (workflowDesignerViewModel.Server.EnvironmentID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
                 {
-                    if (workflowDesignerViewModel.Server.EnvironmentID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
-                    {
-                        return true;
-                    }
-                    if (workflowDesignerViewModel.Server.EnvironmentID != explorerItemViewModel.Server.EnvironmentID &&
-                        !workflowDesignerViewModel.Server.IsLocalHostCheck() && explorerItemViewModel.IsService)
-                    {
-                        return true;
-                    }
+                    return true;
+                }
+                if (workflowDesignerViewModel.Server.EnvironmentID != explorerItemViewModel.Server.EnvironmentID &&
+                    !workflowDesignerViewModel.Server.IsLocalHostCheck() && explorerItemViewModel.IsService)
+                {
+                    return true;
+                }
 
-                    if (workflowDesignerViewModel.ResourceModel.ID == explorerItemViewModel.ResourceId)
-                    {
-                        return true;
-                    }
+                if (workflowDesignerViewModel.ResourceModel.ID == explorerItemViewModel.ResourceId)
+                {
+                    return true;
+                }
 
-                    if (explorerItemViewModel.CanExecute && explorerItemViewModel.CanView && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
-                    {
-                        return false;
-                    }
+                if (explorerItemViewModel.CanExecute && explorerItemViewModel.CanView && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
+                {
+                    return false;
                 }
             }
+
             return true;
         }
     }

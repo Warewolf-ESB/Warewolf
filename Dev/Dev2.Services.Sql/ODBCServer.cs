@@ -159,15 +159,7 @@ namespace Dev2.Services.Sql
                     _transaction?.Dispose();
 
                     _command?.Dispose();
-
-                    if (_connection != null)
-                    {
-                        if (_connection.State != ConnectionState.Closed)
-                        {
-                            _connection.Close();
-                        }
-                        _connection.Dispose();
-                    }
+                    DisposeConnection();
                 }
 
                 // Call the appropriate methods to clean up 
@@ -177,6 +169,18 @@ namespace Dev2.Services.Sql
 
                 // Note disposing has been done.
                 _disposed = true;
+            }
+        }
+
+        private void DisposeConnection()
+        {
+            if (_connection != null)
+            {
+                if (_connection.State != ConnectionState.Closed)
+                {
+                    _connection.Close();
+                }
+                _connection.Dispose();
             }
         }
 
