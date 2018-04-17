@@ -400,8 +400,66 @@ namespace Dev2.Services.Sql
 
             return true;
         }
+		public DataSet FetchDataSet(IDbCommand command)
+		{
+			if (_connection == null)
+			{
+				throw new Exception(ErrorResource.PleaseConnectFirst);
+			}
+			_connection.TryOpen();
+			_connection.TryOpen();
+			using (var sqlCommand = _connection.CreateCommand())
+			{
+				TrySetTransaction(_transaction, sqlCommand);
+				sqlCommand.CommandText = _commantText;
+				sqlCommand.CommandType = _commandType;
+				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
+				
+				return FetchDataSet(sqlCommand);
+			}
+		}
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			if (_connection == null)
+			{
+				throw new Exception(ErrorResource.PleaseConnectFirst);
+			}
+			_connection.TryOpen();
+			_connection.TryOpen();
+			int retValue = 0;
+			using (var sqlCommand = _connection.CreateCommand())
+			{
+				TrySetTransaction(_transaction, sqlCommand);
+				sqlCommand.CommandText = _commantText;
+				sqlCommand.CommandType = _commandType;
+				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
 
-        public DataTable FetchDataTable(params IDbDataParameter[] dbDataParameters)
+				retValue = Convert.ToInt32(sqlCommand.ExecuteNonQuery());
+				return retValue;
+			}
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			if (_connection == null)
+			{
+				throw new Exception(ErrorResource.PleaseConnectFirst);
+			}
+			_connection.TryOpen();
+			_connection.TryOpen();
+			int retValue = 0;
+			using (var sqlCommand = _connection.CreateCommand())
+			{
+				TrySetTransaction(_transaction, sqlCommand);
+				sqlCommand.CommandText = _commantText;
+				sqlCommand.CommandType = _commandType;
+				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
+
+				retValue = Convert.ToInt32(sqlCommand.ExecuteScalar());
+				return retValue;
+			}		
+		}
+		public DataTable FetchDataTable(params IDbDataParameter[] dbDataParameters)
         {
 
             if (_connection == null)

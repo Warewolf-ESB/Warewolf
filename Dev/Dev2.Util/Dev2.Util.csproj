@@ -61,6 +61,9 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="TSQL_Parser, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TSQL.Parser.1.1.1\lib\net40\TSQL_Parser.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +79,7 @@
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="JsonNetValueSystem.cs" />
     <Compile Include="jsonpath.cs" />
+    <Compile Include="TSqlStatementExtensions.cs" />
     <Compile Include="TypeSwitch.cs" />
     <None Include="Dev2.Util.ruleset" />
     <None Include="packages.config" />

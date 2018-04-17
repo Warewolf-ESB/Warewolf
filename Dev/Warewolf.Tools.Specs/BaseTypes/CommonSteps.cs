@@ -99,6 +99,8 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
+        [Given(@"the debug inputs as")]
+        [When(@"the debug inputs as")]
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
@@ -120,6 +122,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 _scenarioContext.TryGetValue("activity", out object baseAct);
                 var stringAct = baseAct as DsfFlowNodeActivity<string>;
                 var boolAct = baseAct as DsfFlowNodeActivity<bool>;
+                var baseBoolAct = baseAct as DsfActivityAbstract<bool>;
                 var multipleFilesActivity = baseAct as DsfAbstractMultipleFilesActivity;
                 if (stringAct != null)
                 {
@@ -131,7 +134,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         ThenTheDebugInputsAs(table, inputDebugItems);
                     }
                 }
-                else if (boolAct != null)
+                else if (boolAct != null || baseBoolAct != null)
                 {
                     var dsfActivityAbstract = containsKey ? _scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
                     var result = _scenarioContext.Get<IDSFDataObject>("result");
@@ -150,7 +153,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         var inputDebugItems = GetInputDebugItems(dsfActivityAbstract, result.Environment);
                         ThenTheDebugInputsAs(table, inputDebugItems);
                     }
-                }
+                }                
             }
         }
 
@@ -800,7 +803,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                         else
                         {
-                            debugItemResult.Value = rowValue;
+                            debugItemResult.Value = rowValue.Replace("\\r","").Replace("\n",Environment.NewLine);
                             debugItemResult.Type = DebugItemResultType.Value;
                         }
                     }
