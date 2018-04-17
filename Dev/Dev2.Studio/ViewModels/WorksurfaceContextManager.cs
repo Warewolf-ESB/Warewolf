@@ -211,9 +211,9 @@ namespace Dev2.Studio.ViewModels
             if (found != null)
             {
                 var vm = found.WorkSurfaceViewModel;
-                if (vm != null)
+                if (vm != null && vm is IStudioTestWorkSurfaceViewModel testVm)
                 {
-                    var serviceTestViewModel = vm?.ViewModel;
+                    var serviceTestViewModel = testVm?.ViewModel;
                     serviceTestViewModel?.PrepopulateTestsUsingDebug(message.RootItems);
                 }
                 AddAndActivateWorkSurface(found);

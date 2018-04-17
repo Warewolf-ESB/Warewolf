@@ -40,6 +40,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="IStudioTestWorkSurfaceViewModel.cs" />
     <Compile Include="IWorksurfaceKey.cs" />
     <Compile Include="Search\ISearchViewModel.cs" />
     <None Include="..\Run Tests.ps1">
