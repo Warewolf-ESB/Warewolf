@@ -41,6 +41,7 @@ namespace Dev2.Activities
         {
             Type = "Advanced Recordset";
             DisplayName = "Advanced Recordset";
+            DeclareVariables = new List<INameValue>();
         }
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
         protected override void OnExecute(NativeActivityContext context)
@@ -61,12 +62,15 @@ namespace Dev2.Activities
                     {
                         var resDebug = new DebugEvalResult(SqlQuery, "Query", dataObject.Environment, update);
                         AddDebugInputItem(resDebug);
-                        foreach (var item in DeclareVariables)
+                        if (DeclareVariables != null)
                         {
-                            if (!string.IsNullOrEmpty(item.Name))
+                            foreach (var item in DeclareVariables)
                             {
-                                var decVarDebug = new DebugEvalResult(item.Value, item.Name, dataObject.Environment, update);
-                                AddDebugInputItem(decVarDebug);
+                                if (!string.IsNullOrEmpty(item.Name))
+                                {
+                                    var decVarDebug = new DebugEvalResult(item.Value, item.Name, dataObject.Environment, update);
+                                    AddDebugInputItem(decVarDebug);
+                                }
                             }
                         }
                     }
