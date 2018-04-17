@@ -119,6 +119,11 @@
     </Compile>
     <Compile Include="Sources\ServerSourceSteps.cs" />
     <Compile Include="SpecExternalProcessExecutor.cs" />
+    <Compile Include="StudioTestFramework\StudioTestFrameworkAdvancedRecordset.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StudioTestFrameworkAdvancedRecordset.feature</DependentUpon>
+    </Compile>
     <Compile Include="StudioTestFramework\StudioTestFrameworkWithDeletedResources.feature.cs">
       <DependentUpon>StudioTestFrameworkWithDeletedResources.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -420,6 +425,10 @@
     <None Include="Sources\ServerSource.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ServerSource.feature.cs</LastGenOutput>
+    </None>
+    <None Include="StudioTestFramework\StudioTestFrameworkAdvancedRecordset.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StudioTestFrameworkAdvancedRecordset.feature.cs</LastGenOutput>
     </None>
     <None Include="StudioTestFramework\StudioTestFrameworkWithDeletedResources.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
