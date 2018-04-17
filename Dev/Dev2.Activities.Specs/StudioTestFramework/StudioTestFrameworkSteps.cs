@@ -46,6 +46,8 @@ namespace Dev2.Activities.Specs.TestFramework
     [Binding]
     public class StudioTestFrameworkSteps
     {
+        static IServer environmentModel;
+
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
             MyContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
@@ -53,12 +55,25 @@ namespace Dev2.Activities.Specs.TestFramework
 
         ScenarioContext MyContext { get; }
 
+        [BeforeFeature]
+        static void SetupFeature()
+        {
+            environmentModel = ServerRepository.Instance.Source;
+            environmentModel.Connect();
+            environmentModel.ResourceRepository.Load(true);
+            Assert.AreEqual(95, environmentModel.ResourceRepository.All().Count);
+        }
+
         [AfterFeature("StudioTestFramework")]
         public static void ScenarioCleaning()
         {
-            var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
-            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
+            ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string> { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
+        }
+
+        [BeforeScenario]
+        public static void SetupScenario()
+        {
+            Assert.AreEqual(95, environmentModel.ResourceRepository.All().Count);
         }
 
         [AfterScenario("StudioTestFrameworkWithDropboxTools")]
@@ -83,6 +98,16 @@ namespace Dev2.Activities.Specs.TestFramework
         [AfterScenario]
         public void CleanupTestFramework()
         {
+            var allKeys = MyContext.Keys;
+            foreach(var key in allKeys)
+            {
+                if (key.Contains("Resourceid"))
+                {
+                    var resourceName = key.Replace("Resourceid", "");
+                    var resource = MyContext.Get<ResourceModel>(resourceName);
+                    ((ResourceRepository)environmentModel.ResourceRepository).DeleteResource(resource);
+                }
+            }
             if (MyContext.TryGetValue("testFramework", out ServiceTestViewModel serviceTest))
             {
                 serviceTest?.Dispose();
@@ -94,8 +119,6 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenTestFolderIsCleaned()
         {
             DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
-            var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
             commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
         }
@@ -103,8 +126,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"I reload tests")]
         public void WhenIReloadTests()
         {
-            var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
             commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
         }
@@ -112,8 +133,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"test folder is cleaned")]
         public void ThenTestFolderIsCleaned()
         {
-            var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
             ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string>() { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
         }
 
@@ -132,8 +151,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I have ""(.*)"" with inputs as")]
         public void GivenIHaveWithInputsAs(string workflowName, Table inputVariables)
         {
-            var environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
             var resourceModel = BuildResourceModel(workflowName, environmentModel);
             MyContext.Add(workflowName + "Resourceid", resourceModel.ID);
             var workflowHelper = new WorkflowHelper();
@@ -193,7 +210,6 @@ namespace Dev2.Activities.Specs.TestFramework
             _resourceForTests = resourceName;
             var resourceId = Guid.NewGuid();
 
-            var environmentModel = ServerRepository.Instance.Source;
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ResourceName = resourceName,
@@ -216,9 +232,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Given(@"I add ""(.*)"" as tests")]
         public void GivenIAddAsTests(string p0)
         {
-            var environmentModel = ServerRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
-            environmentModel.ResourceRepository.Load(true);
             var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
             MyContext["PluginSource" + "id"] = savedSource.ID;
 
@@ -254,7 +268,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"""(.*)"" has (.*) tests")]
         public void ThenHasTests(string resourceName, int numberOdTests)
         {
-            var environmentModel = ServerRepository.Instance.Source;
             var resourceID = MyContext.Get<Guid>(resourceName + "id");
             var serviceTestModelTos = environmentModel.ResourceRepository.LoadResourceTests(resourceID);
             Assert.AreEqual(numberOdTests, serviceTestModelTos.Count, "Number count is not the same for resource - " + resourceName);
@@ -263,7 +276,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"I delete resource ""(.*)""")]
         public void WhenIDeleteResource(string resourceName)
         {
-            var environmentModel = ServerRepository.Instance.Source;
             MyContext.Get<Guid>(resourceName + "id");
 
             var savedSource = environmentModel.ResourceRepository.All().First(model => model.ResourceName.Equals(_resourceForTests, StringComparison.InvariantCultureIgnoreCase));
@@ -332,7 +344,6 @@ namespace Dev2.Activities.Specs.TestFramework
         {
             var resourceIdKey = workFlowName + "Resourceid";
             var resourceID = MyContext.Get<Guid>(resourceIdKey);
-            var environmentModel = ServerRepository.Instance.Source;
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             foreach (var tableRow in table.Rows)
             {
@@ -426,7 +437,6 @@ namespace Dev2.Activities.Specs.TestFramework
                         AddVariables(variablesRow["Ouput Var Name"], dataListViewModel, enDev2ColumnArgumentDirection.Output);
                     }
                     dataListViewModel.WriteToResourceModel();
-                    var environmentModel = ServerRepository.Instance.Source;
                     environmentModel.ResourceRepository.SaveToServer(resourceModel);
                 }
                 else
@@ -706,7 +716,6 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIRemoveInputFromWorkflow(string input, string workflow)
         {
             var resourceIdKey = workflow + "Resourceid";
-            var environmentModel = ServerRepository.Instance.Source;
             var resourceId = MyContext.Get<Guid>(resourceIdKey);
             var resourceToChange = environmentModel.ResourceRepository.FindResourcesByID(environmentModel, new[] { resourceId.ToString() }, ResourceType.WorkflowService).Single();
             var newDatalist = resourceToChange.DataList.Replace(input, input + "Newname");
@@ -719,7 +728,6 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"I save Workflow\t""(.*)""")]
         public void WhenISaveWorkflow(string workflow)
         {
-            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.ResourceRepository.SaveToServer(_resourceModelWithDifInputs);
         }
 
@@ -1547,11 +1555,8 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenIHaveAResouceWorkflowInsideHome(string resourceName)
         {
             var path = MyContext.Get<string>("folderPath");
-            var environmentModel = ServerRepository.Instance.Source;
-
 
             var resourceId = Guid.NewGuid();
-            
             var resourceModel = new ResourceModel(environmentModel)
             {
                 ResourceName = resourceName,
@@ -1571,9 +1576,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void GivenIAddTo(string testNames, string rName)
         {
             MyContext.TryGetValue("folderPath", out string path);
-            var environmentModel = ServerRepository.Instance.Source;
-            var serviceTestModelTos = new List<IServiceTestModelTO>();
-            environmentModel.ResourceRepository.Load(true);
+            var serviceTestModelTos = new List<IServiceTestModelTO>();            
             if (!string.IsNullOrEmpty(path))
             {
 
@@ -1642,8 +1645,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIDeleteFolder(string folderName)
         {
             var path = MyContext.Get<string>("folderPath");
-            var environmentModel = ServerRepository.Instance.Source;
-
+            
             var controller = new CommunicationController { ServiceName = "DeleteItemService" };
             controller.AddPayloadArgument("folderToDelete", path);
             var result = controller.ExecuteCommand<IExplorerRepositoryResult>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
