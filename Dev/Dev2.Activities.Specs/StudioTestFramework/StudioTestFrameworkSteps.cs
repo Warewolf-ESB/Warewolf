@@ -55,7 +55,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
         ScenarioContext MyContext { get; }
 
-        [BeforeFeature]
+        [BeforeFeature("StudioTestFramework")]
         static void SetupFeature()
         {
             environmentModel = ServerRepository.Instance.Source;
@@ -70,7 +70,7 @@ namespace Dev2.Activities.Specs.TestFramework
             ((ResourceRepository)environmentModel.ResourceRepository).DeleteAlltests(new List<string> { "0bdc3207-ff6b-4c01-a5eb-c7060222f75d" });
         }
 
-        [BeforeScenario]
+        [BeforeScenario("StudioTestFramework")]
         public static void SetupScenario()
         {
             Assert.AreEqual(95, environmentModel.ResourceRepository.All().Count);
@@ -98,13 +98,11 @@ namespace Dev2.Activities.Specs.TestFramework
         [AfterScenario]
         public void CleanupTestFramework()
         {
-            var allKeys = MyContext.Keys;
-            foreach(var key in allKeys)
+            var allValues = MyContext.Values;
+            foreach(var value in allValues)
             {
-                if (key.Contains("Resourceid"))
+                if (value is ResourceModel resource)
                 {
-                    var resourceName = key.Replace("Resourceid", "");
-                    var resource = MyContext.Get<ResourceModel>(resourceName);
                     ((ResourceRepository)environmentModel.ResourceRepository).DeleteResource(resource);
                 }
             }
@@ -118,6 +116,13 @@ namespace Dev2.Activities.Specs.TestFramework
         [When(@"test folder is cleaned")]
         public void GivenTestFolderIsCleaned()
         {
+            if (environmentModel == null)
+            {
+                environmentModel = ServerRepository.Instance.Source;
+                environmentModel.Connect();
+                environmentModel.ResourceRepository.Load(true);
+            }
+
             DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
             commsController.ExecuteCommand<ExecuteMessage>(environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
