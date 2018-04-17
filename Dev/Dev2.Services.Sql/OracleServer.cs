@@ -169,8 +169,26 @@ namespace Dev2.Services.Sql
             }
             return FetchDataTable(_command);
         }
+		public DataSet FetchDataSet(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
 
-        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+			return _factory.FetchDataSet(command);
+		}
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteNonQuery(command);
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteScalar(command);
+		}
+		public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
 
         public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,

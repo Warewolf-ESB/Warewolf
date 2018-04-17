@@ -78,7 +78,7 @@ namespace Dev2.Studio
         private bool _hasShutdownStarted;
         public App(IMergeFactory mergeFactory)
         {
-            this.mergeFactory = mergeFactory;
+            this._mergeFactory = mergeFactory;
         }
         public App() : this(new MergeFactory())
         {
@@ -138,7 +138,7 @@ namespace Dev2.Studio
         ManualResetEvent _resetSplashCreated;
         Thread _splashThread;
         private bool _hasDotNetFramweworkError;
-        private readonly IMergeFactory mergeFactory;
+        private readonly IMergeFactory _mergeFactory;
         protected void InitializeShell(System.Windows.StartupEventArgs e)
         {
             _resetSplashCreated = new ManualResetEvent(false);
@@ -193,7 +193,7 @@ namespace Dev2.Studio
         {
             if (e.Args.Any(p => p.Contains("-merge")))
             {
-                mergeFactory.OpenMergeWindow(_shellViewModel, e);
+                _mergeFactory.OpenMergeWindow(_shellViewModel, e);
             }
             else
             {

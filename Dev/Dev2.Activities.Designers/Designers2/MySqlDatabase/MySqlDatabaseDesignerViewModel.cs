@@ -361,18 +361,18 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 OnPropertyChanged();
             }
         }
-        public ISourceToolRegion<IDbSource> SourceRegion
-        {
-            get
-            {
-                return _sourceRegion;
-            }
-            set
-            {
-                _sourceRegion = value;
-                OnPropertyChanged();
-            }
-        }
+			public ISourceToolRegion<IDbSource> SourceRegion
+			{
+				get
+				{
+					return _sourceRegion;
+				}
+				set
+				{
+					_sourceRegion = value;
+					OnPropertyChanged();
+				}
+			}
         public IDatabaseInputRegion InputArea
         {
             get

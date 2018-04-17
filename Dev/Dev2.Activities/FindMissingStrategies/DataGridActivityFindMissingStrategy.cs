@@ -120,7 +120,36 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
-            else if (activityType == typeof(DsfMySqlDatabaseActivity))
+            else if (activityType == typeof(AdvancedRecordsetActivity))
+			{
+				if (activity is AdvancedRecordsetActivity maAct)
+				{
+					if (maAct.Inputs != null)
+					{
+						results.AddRange(InternalFindMissing(maAct.Inputs));
+					}
+					if (maAct.Outputs != null)
+					{
+						results.AddRange(InternalFindMissing(maAct.Outputs));
+					}
+					if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+					{
+						results.Add(maAct.OnErrorVariable);
+					}
+                    if(maAct.DeclareVariables != null)
+                    {
+                        foreach(var item in maAct.DeclareVariables)
+                        {
+                            results.Add(item.Value);
+                        }
+                    }
+					if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+					{
+						results.Add(maAct.OnErrorWorkflow);
+					}
+				}
+			}
+			else if (activityType == typeof(DsfMySqlDatabaseActivity))
             {
                 if (activity is DsfMySqlDatabaseActivity maAct)
                 {

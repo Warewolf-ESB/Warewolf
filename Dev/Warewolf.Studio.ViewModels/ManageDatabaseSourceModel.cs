@@ -48,8 +48,8 @@ namespace Warewolf.Studio.ViewModels
         public IList<string> GetComputerNames() => _queryProxy.GetComputerNames();
 
         public IList<string> TestDbConnection(IDbSource resource) => _updateRepository.TestDbConnection(resource);
-
-        public void Save(IDbSource toDbSource)
+		public IList<string> TestSqliteConnection(ISqliteDBSource resource) => _updateRepository.TestSqliteConnection(resource);
+		public void Save(IDbSource toDbSource)
         {
             _updateRepository.Save(toDbSource);
         }

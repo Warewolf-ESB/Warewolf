@@ -153,6 +153,7 @@
     <Compile Include="ManageOdbcSourceViewModel.cs" />
     <Compile Include="ManageOracleSourceViewModel.cs" />
     <Compile Include="ManagePostgreSqlSourceViewModel.cs" />
+    <Compile Include="ManageSqliteSourceViewModel.cs" />
     <Compile Include="ManageSqlServerSourceViewModel.cs" />
     <Compile Include="MergeServiceViewModel.cs" />
     <Compile Include="Search\SearchViewModel.cs" />
