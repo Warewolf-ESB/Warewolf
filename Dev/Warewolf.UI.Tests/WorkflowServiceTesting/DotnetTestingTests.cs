@@ -174,6 +174,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             UIMap.AssertStudioIsRunning();
             ExplorerUIMap.Filter_Explorer("DotnetWorkflowForTesting");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Click_Save_RibbonButton();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
         }
