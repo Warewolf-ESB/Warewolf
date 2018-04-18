@@ -4374,22 +4374,6 @@ namespace Warewolf.UI.Tests
                 return this.mSQLServer;
             }
         }
-        
-        public WpfListItem AdvancedRecordset
-        {
-            get
-            {
-                if ((this.mAdvancedRecordset == null))
-                {
-                    this.mAdvancedRecordset = new WpfListItem(this);
-                    #region Search Criteria
-                    this.mAdvancedRecordset.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Advanced Recordset";
-                    this.mAdvancedRecordset.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mAdvancedRecordset;
-            }
-        }
         #endregion
         
         #region Fields
@@ -4404,8 +4388,6 @@ namespace Warewolf.UI.Tests
         private SQLBulkInsert mSQLBulkInsert;
         
         private SQLServer mSQLServer;
-        
-        private WpfListItem mAdvancedRecordset;
         #endregion
     }
     
@@ -5626,6 +5608,22 @@ namespace Warewolf.UI.Tests
                 return this.mUniqueRecords;
             }
         }
+        
+        public WpfListItem AdvancedRecordset
+        {
+            get
+            {
+                if ((this.mAdvancedRecordset == null))
+                {
+                    this.mAdvancedRecordset = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mAdvancedRecordset.SearchProperties[WpfListItem.PropertyNames.AutomationId] = "Advanced Recordset";
+                    this.mAdvancedRecordset.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mAdvancedRecordset;
+            }
+        }
         #endregion
         
         #region Fields
@@ -5640,6 +5638,8 @@ namespace Warewolf.UI.Tests
         private Count mCount;
         
         private UniqueRecords mUniqueRecords;
+        
+        private WpfListItem mAdvancedRecordset;
         #endregion
     }
     
