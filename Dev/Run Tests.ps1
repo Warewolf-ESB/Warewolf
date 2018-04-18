@@ -791,7 +791,6 @@ function Start-Studio {
     }
 	if ($StudioPath -eq "") {
 		Write-Error -Message "Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath"
-        sleep 30
 		exit 1
 	}
     $StudioLogFile = "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log"
@@ -830,14 +829,13 @@ function Start-Studio {
     }
     $i = 0
     while (!(Test-Path $StudioLogFile) -and $i++ -lt 200){
-        Write-Warning "Waiting for Studio to start..."
+        Write-Warning "Waiting for Studio at $StudioPath to start..."
         Sleep 3
     }
     if (Test-Path $StudioLogFile) {
 	    Write-Host Studio has started.
     } else {
 		Write-Error -Message "Warewolf studio failed to start within 10 minutes."
-        sleep 30
 		exit 1
     }
 }
