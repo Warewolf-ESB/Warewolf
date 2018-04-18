@@ -169,14 +169,14 @@ namespace Dev2.Studio.Core.Models.DataList
                     }
                     else
                     {
-                        RemoveError();
+                        ConditionallyRemoveError();
                     }
                 }
             }
             return name;
         }
 
-        void RemoveError()
+        void ConditionallyRemoveError()
         {
             if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
                                         !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&

@@ -1265,19 +1265,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (flowNode.ItemType.Name == "FlowDecision")
                 {
                     propertyName = "Condition";
-                }
-                if (flowNode.ItemType.Name == "FlowSwitch`1")
+                } else if (flowNode.ItemType.Name == "FlowSwitch`1")
                 {
                     propertyName = "Expression";
+                } else
+                {
+                    throw new Exception("unexpected FlowNode ItemType");
                 }
+
                 var property = flowNode.Properties[propertyName];
                 if (property != null)
                 {
                     workflowFields = GetWorkflowFieldsFromProperty(workflowFields, property);
-                }
-                else
-                {
-                    return workflowFields;
                 }
             }
             return workflowFields;
@@ -1636,9 +1635,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                         e.Handled = true;
                         return;
                     }
-
-                    if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control &&
-                        (e.Key == Key.X || e.Key == Key.C || e.Key == Key.V || e.Key == Key.Z || e.Key == Key.Y))
+                    var isControlPressed = (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control;
+                    var isExpectedKey = e.Key == Key.C || e.Key == Key.V;
+                    isExpectedKey |= e.Key == Key.X || e.Key == Key.Y || e.Key == Key.Z;
+                    if (isControlPressed && isExpectedKey)
                     {
                         e.Handled = true;
                     }

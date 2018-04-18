@@ -284,7 +284,7 @@ namespace Dev2.Studio.Core.Models
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
-            if (e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline && AuthorizationService != null)
+            if ((e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline) && AuthorizationService != null)
             {
                 AuthorizationService.PermissionsChanged -= OnAuthorizationServicePermissionsChanged;
             }
