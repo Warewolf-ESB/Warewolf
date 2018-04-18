@@ -26,6 +26,7 @@ namespace Dev2.FindMissingStrategies
         
         public List<string> GetActivityFields(object activity)
         {
+            // TODO: refactor into all activities havnig a GetActivityFields() method
             var activityType = activity.GetType();
             if (activityType == typeof(DsfBaseConvertActivity))
             {
