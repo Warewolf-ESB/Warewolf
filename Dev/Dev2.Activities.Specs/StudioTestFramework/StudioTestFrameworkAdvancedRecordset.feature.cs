@@ -69,11 +69,11 @@ namespace Dev2.Activities.Specs.StudioTestFramework
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Advanced Recordset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Advanced Recordset Select All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkAdvancedRecordset")]
-        public virtual void TestWFWithAdvancedRecordset()
+        public virtual void TestWFWithAdvancedRecordsetSelectAll()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Advanced Recordset", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Advanced Recordset Select All", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -168,6 +168,107 @@ this.ScenarioSetup(scenarioInfo);
 #line 37
  testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
+ testRunner.Then("workflow \"AdvancedRecsetTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test WF with Advanced Recordset Select Names")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "StudioTestFrameworkAdvancedRecordset")]
+        public virtual void TestWFWithAdvancedRecordsetSelectNames()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test WF with Advanced Recordset Select Names", ((string[])(null)));
+#line 41
+this.ScenarioSetup(scenarioInfo);
+#line 42
+ testRunner.Given("I have a workflow \"AdvancedRecsetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table5.AddRow(new string[] {
+                        "[[person(1).name]]",
+                        "Bob"});
+            table5.AddRow(new string[] {
+                        "[[person(2).name]]",
+                        "Alice"});
+            table5.AddRow(new string[] {
+                        "[[person(1).surname]]",
+                        "Smith"});
+            table5.AddRow(new string[] {
+                        "[[person(2).surname]]",
+                        "Jones"});
+#line 43
+ testRunner.And("\"AdvancedRecsetTestWF\" contains an Assign \"assignrecordset\" as", ((string)(null)), table5, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+                        "MappedTo",
+                        "MappedFrom"});
+            table6.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+            table6.AddRow(new string[] {
+                        "surname",
+                        "[[TableCopy().surname]]"});
+#line 49
+ testRunner.And("\"AdvancedRecsetTestWF\" contains Advanced Recordset \"selectall\" with Query \"Select" +
+                    " name from person\"", ((string)(null)), table6, "And ");
+#line 53
+ testRunner.And("I save workflow \"AdvancedRecsetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
+ testRunner.Then("the test builder is open with \"AdvancedRecsetTestWF\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 55
+ testRunner.And("I click New Test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 56
+ testRunner.And("a new test is added", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 57
+    testRunner.And("test name starts with \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Condition",
+                        "Value"});
+            table7.AddRow(new string[] {
+                        "[[person(1).name]]",
+                        "=",
+                        "Bob"});
+            table7.AddRow(new string[] {
+                        "[[person(2).name]]",
+                        "=",
+                        "Alice"});
+            table7.AddRow(new string[] {
+                        "[[person(1).surname]]",
+                        "=",
+                        "Smith"});
+            table7.AddRow(new string[] {
+                        "[[person(2).surname]]",
+                        "=",
+                        "Jones"});
+#line 58
+ testRunner.And("I Add \"assignrecordset\" as TestStep with", ((string)(null)), table7, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable Name",
+                        "Condition",
+                        "Value"});
+            table8.AddRow(new string[] {
+                        "[[TableCopy(2).name]]",
+                        "=",
+                        "Alice"});
+#line 64
+ testRunner.And("I Add \"selectall\" as TestStep with", ((string)(null)), table8, "And ");
+#line 67
+ testRunner.When("I save", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 68
+ testRunner.And("I run the test", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 69
+ testRunner.Then("test result is Passed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 70
+ testRunner.When("I delete \"Test 1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 71
+ testRunner.Then("The \"DeleteConfirmation\" popup is shown I click Ok", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 72
  testRunner.Then("workflow \"AdvancedRecsetTestWF\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
