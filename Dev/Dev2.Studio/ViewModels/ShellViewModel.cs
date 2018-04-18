@@ -1787,6 +1787,7 @@ namespace Dev2.Studio.ViewModels
                         continue;
                     }
 
+                    // TODO: refactor to common interface possibly extracted from SourceViewModel
                     if (vm is SourceViewModel<IServerSource> serverSourceModel && (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged))
                     {
                         closeStudio = CallSaveDialog(closeStudio);

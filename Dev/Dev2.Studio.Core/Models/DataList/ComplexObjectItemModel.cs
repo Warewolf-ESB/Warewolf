@@ -168,7 +168,9 @@ namespace Dev2.Studio.Core.Models.DataList
                         itemModel.Filter(searchText);
                     }
                 }
-                IsVisible = _children != null && _children.Any(model => model.IsVisible) ? true : !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
+                var anyChildrenVisible = _children != null && _children.Any(model => model.IsVisible);
+                var displayNameContainsSearchString = !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
+                IsVisible = anyChildrenVisible || displayNameContainsSearchString;
             }
             else
             {
@@ -280,11 +282,11 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public bool Equals(IComplexObjectItemModel other)
         {
-            var equals = Equals(IsArray, other.IsArray) 
-                      && Equals(HasError, other.HasError)
-                      && Equals(Input, other.Input)
-                      && Equals(Output, other.Output)
-                      && string.Equals(Name, other.Name);
+            var equals = Equals(IsArray, other.IsArray);
+            equals &= Equals(HasError, other.HasError);
+            equals &= Equals(Input, other.Input);
+            equals &= Equals(Output, other.Output);
+            equals &= string.Equals(Name, other.Name);
            
             var collectionEquals = CommonEqualityOps.CollectionEquals(Children, other.Children, new ComplexObjectItemModelComparer());
             return base.Equals(other) && equals && collectionEquals;
