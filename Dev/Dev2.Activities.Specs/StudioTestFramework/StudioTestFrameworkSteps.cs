@@ -93,7 +93,7 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
-        [AfterScenario]
+        [AfterScenario("StudioTestFramework")]
         public void CleanupTestFramework()
         {
             if (environmentModel == null)
