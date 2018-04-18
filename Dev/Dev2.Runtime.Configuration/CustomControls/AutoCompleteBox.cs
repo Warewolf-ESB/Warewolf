@@ -1560,7 +1560,7 @@ namespace System.Windows.Controls
                     _items[e.NewStartingIndex] = t;
                 }
             }
-            if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace && e.OldItems != null)
+            if ((e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace) && e.OldItems != null)
             {
                 foreach (object t in e.OldItems)
                 {
