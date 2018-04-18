@@ -158,38 +158,39 @@ namespace Dev2.Services.Sql
 		// other objects. Only unmanaged resources can be disposed.
 		void Dispose(bool disposing)
 		{
-			// Check to see if Dispose has already been called.
-			if (!_disposed)
+            // Check to see if Dispose has already been called.
+            if (_disposed)
+            {
+                return;
+            }
+			// If disposing equals true, dispose all managed
+			// and unmanaged resources.
+			if (disposing)
 			{
-				// If disposing equals true, dispose all managed
-				// and unmanaged resources.
-				if (disposing)
+				// Dispose managed resources.
+
+				if (_command != null)
 				{
-					// Dispose managed resources.
-
-					if (_command != null)
-					{
-						_command.Dispose();
-					}
-
-					if (_connection != null)
-					{
-						if (_connection.State != ConnectionState.Closed)
-						{
-							_connection.Close();
-						}
-						_connection.Dispose();
-					}
+					_command.Dispose();
 				}
 
-				// Call the appropriate methods to clean up
-				// unmanaged resources here.
-				// If disposing is false,
-				// only the following code is executed.
-
-				// Note disposing has been done.
-				_disposed = true;
+				if (_connection != null)
+				{
+					if (_connection.State != ConnectionState.Closed)
+					{
+						_connection.Close();
+					}
+					_connection.Dispose();
+				}
 			}
+
+			// Call the appropriate methods to clean up
+			// unmanaged resources here.
+			// If disposing is false,
+			// only the following code is executed.
+
+			// Note disposing has been done.
+			_disposed = true;
 		}
 
 		#endregion IDisposable

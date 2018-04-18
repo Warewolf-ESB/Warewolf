@@ -60,19 +60,7 @@ namespace Dev2.Activities
                 {
                     if (dataObject.IsDebugMode())
                     {
-                        var resDebug = new DebugEvalResult(SqlQuery, "Query", dataObject.Environment, update);
-                        AddDebugInputItem(resDebug);
-                        if (DeclareVariables != null)
-                        {
-                            foreach (var item in DeclareVariables)
-                            {
-                                if (!string.IsNullOrEmpty(item.Name))
-                                {
-                                    var decVarDebug = new DebugEvalResult(item.Value, item.Name, dataObject.Environment, update);
-                                    AddDebugInputItem(decVarDebug);
-                                }
-                            }
-                        }
+                        ExecuteToolAddDebugItems(dataObject, update);
                     }
                     ExecuteRecordset(dataObject, update);
                 }
@@ -100,6 +88,24 @@ namespace Dev2.Activities
                 }
             }
         }
+
+        private void ExecuteToolAddDebugItems(IDSFDataObject dataObject, int update)
+        {
+            var resDebug = new DebugEvalResult(SqlQuery, "Query", dataObject.Environment, update);
+            AddDebugInputItem(resDebug);
+            if (DeclareVariables != null)
+            {
+                foreach (var item in DeclareVariables)
+                {
+                    if (!string.IsNullOrEmpty(item.Name))
+                    {
+                        var decVarDebug = new DebugEvalResult(item.Value, item.Name, dataObject.Environment, update);
+                        AddDebugInputItem(decVarDebug);
+                    }
+                }
+            }
+        }
+
         void ExecuteRecordset(IDSFDataObject dataObject, int update)
         {
             AdvancedRecordset = new AdvancedRecordset(dataObject.Environment);

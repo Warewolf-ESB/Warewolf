@@ -269,52 +269,60 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
 				var result = advancedRecordset.ExecuteQuery(sql);
 				var table = result.Tables[0];
 				if (table.Columns.Count > 0)
-				{
-					var fields = new List<string>();
-					foreach (var item in table.Columns)
-					{
-						if (!item.ToString().Contains("Primary_Id"))
-						{
-							fields.Add(item.ToString());
-						}
-					}
-					AddToRegionOutputs(fields, table.TableName);
-					OutputsRegion.IsEnabled = OutputsRegion.Outputs.Count > 0;
-					OutputsRegion.IsOutputsEmptyRows = OutputsRegion.Outputs.Count <= 0;
-					OutputCountExpandAllowed = OutputsRegion.Outputs.Count > 3;
-				}
-			}
+                {
+                    var fields = GetFields(table);
+                    AddToRegionOutputs(fields, table.TableName);
+                    OutputsRegion.IsEnabled = OutputsRegion.Outputs.Count > 0;
+                    OutputsRegion.IsOutputsEmptyRows = OutputsRegion.Outputs.Count <= 0;
+                    OutputCountExpandAllowed = OutputsRegion.Outputs.Count > 3;
+                }
+            }
 			else
-			{
-				for (var i = 0; i < countOfStatements; i++)
-				{
-					var statement = statements[i];
-					var sql = advancedRecordset.ReturnSql(statement.Tokens);
-					sql = Regex.Replace(sql, @"\@\w+\b", match => "''");
-					var result = advancedRecordset.ExecuteStatement(statement, sql);
-					if (i == countOfStatements - 1)
-					{
-						var table = result.Tables[0];
-						if (table.Columns.Count > 0)
-						{
-							var fields = new List<string>();
-							foreach (var item in table.Columns)
-							{
-								if (!item.ToString().Contains("Primary_Id"))
-								{
-									fields.Add(item.ToString());
-								}
-							}
-							AddToRegionOutputs(fields, table.TableName);
-							OutputsRegion.IsEnabled = OutputsRegion.Outputs.Count > 0;
-							OutputsRegion.IsOutputsEmptyRows = OutputsRegion.Outputs.Count <= 0;
-							OutputCountExpandAllowed = OutputsRegion.Outputs.Count > 3;
-						}
-					}
-				}
-			}
-		}
-		void FormatSql()
+            {
+                LoadRecordsets(advancedRecordset, statements, countOfStatements);
+            }
+        }
+
+        private void LoadRecordsets(Activities.AdvancedRecordset advancedRecordset, List<TSQLStatement> statements, int countOfStatements)
+        {
+            for (var i = 0; i < countOfStatements; i++)
+            {
+                var statement = statements[i];
+                var sql = advancedRecordset.ReturnSql(statement.Tokens);
+                sql = Regex.Replace(sql, @"\@\w+\b", match => "''");
+                var result = advancedRecordset.ExecuteStatement(statement, sql);
+                if (i == countOfStatements - 1)
+                {
+                    var table = result.Tables[0];
+                    if (table.Columns.Count > 0)
+                    {
+                        var fields = GetFields(table);
+                        AddToRegionOutputs(fields, table.TableName);
+                        OutputsRegion.IsEnabled = OutputsRegion.Outputs.Count > 0;
+                        OutputsRegion.IsOutputsEmptyRows = OutputsRegion.Outputs.Count <= 0;
+                        OutputCountExpandAllowed = OutputsRegion.Outputs.Count > 3;
+                    }
+                }
+            }
+        }
+
+        private static List<string> GetFields(DataTable table)
+        {
+            var fields = new List<string>();
+            foreach (var item in table.Columns)
+            {
+                if (!item.ToString().Contains("Primary_Id"))
+                {
+                    fields.Add(item.ToString());
+                }
+            }
+
+            return fields;
+        }
+
+
+
+        void FormatSql()
 		{
 			var replacement = Regex.Replace(SqlQuery, @"\t|\n|\r", " ");
 

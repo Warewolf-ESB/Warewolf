@@ -568,7 +568,7 @@ namespace Dev2.FindMissingStrategies
             return results;
         }
 
-        List<string> GetDsfAdvancedRecordsetActivity() {
+        List<string> GetDsfAdvancedRecordsetActivity(object activity) {
             var results = new List<string>();
             if (activity is AdvancedRecordsetActivity maAct)
             {
