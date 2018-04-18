@@ -131,24 +131,24 @@ namespace Dev2.Activities.Designers2.Switch
             }
             else
             {
-                ValidateProperties();
+                if (ModelItem != null && ModelItem.Properties.Any())
+                {
+                    ValidateProperties();
+                }
             }
         }
 
         void ValidateProperties()
         {
-            if (ModelItem != null && ModelItem.Properties.Any())
+            foreach (var property in ModelItem.Properties)
             {
-                foreach (var property in ModelItem.Properties)
+                if (property?.Name == "Case")
                 {
-                    if (property?.Name == "Case")
+                    var modelItem = property.ComputedValue;
+                    if (modelItem?.ToString() == SwitchExpression)
                     {
-                        var modelItem = property.ComputedValue;
-                        if (modelItem?.ToString() == SwitchExpression)
-                        {
-                            ValidExpression = false;
-                            break;
-                        }
+                        ValidExpression = false;
+                        break;
                     }
                 }
             }
@@ -156,18 +156,15 @@ namespace Dev2.Activities.Designers2.Switch
 
         void ValidateParentProperties()
         {
-            if (ModelItem?.Parent?.Source?.Collection != null)
+            foreach (var value in ModelItem.Parent.Source.Collection)
             {
-                foreach (var value in ModelItem.Parent.Source.Collection)
+                if (value?.Properties.Any(property => property.Name == "Key") ?? false)
                 {
-                    if (value?.Properties.Any(property => property.Name == "Key") ?? false)
+                    var modelItem = value.Properties["Key"]?.ComputedValue;
+                    if (modelItem?.ToString() == SwitchExpression)
                     {
-                        var modelItem = value.Properties["Key"]?.ComputedValue;
-                        if (modelItem?.ToString() == SwitchExpression)
-                        {
-                            ValidExpression = false;
-                            break;
-                        }
+                        ValidExpression = false;
+                        break;
                     }
                 }
             }

@@ -76,11 +76,7 @@ namespace Dev2.Activities
 
 
         #region Overrides of DsfNativeActivity<string>
-
-        /// <summary>
-        ///     When overridden runs the activity's execution logic
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -100,49 +96,9 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                allErrors.MergeErrors(_errorsTo);
-                if(dataObject.IsDebugMode())
-                {
-                    var debugItem = new DebugItem();
-                    AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment, update), debugItem);
-                    _debugInputs.Add(debugItem);
-                }
-                var colItr = new WarewolfListIterator();
-                var urlitr = new WarewolfIterator(dataObject.Environment.Eval(Url, update));
-                var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers, update));
-                colItr.AddVariableToIterateOn(urlitr);
-                colItr.AddVariableToIterateOn(headerItr);
-                const int IndexToUpsertTo = 1;
-                while(colItr.HasMoreData())
-                {
-                    var c = colItr.FetchNextValue(urlitr);
-                    var headerValue = colItr.FetchNextValue(headerItr);
-                    var headers = string.IsNullOrEmpty(headerValue)
-                        ? new string[0]
-                        : headerValue.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    var headersEntries = new List<Tuple<string, string>>();
-
-                    foreach(var header in headers)
-                    {
-                        var headerSegments = header.Split(':');
-                        headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
-
-                        if(dataObject.IsDebugMode())
-                        {
-                            var debugItem = new DebugItem();
-                            AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment, update), debugItem);
-                            _debugInputs.Add(debugItem);
-                        }
-                    }
-
-                    var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries);
-                    allErrors.MergeErrors(_errorsTo);
-                    var expression = GetExpression(IndexToUpsertTo);
-                    PushResultsToDataList(expression, result, dataObject, update);
-                }
+                allErrors = TryExecute(dataObject, update, allErrors);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFWebGetRequest", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
@@ -163,6 +119,52 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+        }
+
+        ErrorResultTO TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            allErrors.MergeErrors(_errorsTo);
+            if (dataObject.IsDebugMode())
+            {
+                var debugItem = new DebugItem();
+                AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment, update), debugItem);
+                _debugInputs.Add(debugItem);
+            }
+            var colItr = new WarewolfListIterator();
+            var urlitr = new WarewolfIterator(dataObject.Environment.Eval(Url, update));
+            var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers, update));
+            colItr.AddVariableToIterateOn(urlitr);
+            colItr.AddVariableToIterateOn(headerItr);
+            const int IndexToUpsertTo = 1;
+            while (colItr.HasMoreData())
+            {
+                var c = colItr.FetchNextValue(urlitr);
+                var headerValue = colItr.FetchNextValue(headerItr);
+                var headers = string.IsNullOrEmpty(headerValue)
+                    ? new string[0]
+                    : headerValue.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                var headersEntries = new List<Tuple<string, string>>();
+
+                foreach (var header in headers)
+                {
+                    var headerSegments = header.Split(':');
+                    headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
+
+                    if (dataObject.IsDebugMode())
+                    {
+                        var debugItem = new DebugItem();
+                        AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment, update), debugItem);
+                        _debugInputs.Add(debugItem);
+                    }
+                }
+
+                var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries);
+                allErrors.MergeErrors(_errorsTo);
+                var expression = GetExpression(IndexToUpsertTo);
+                PushResultsToDataList(expression, result, dataObject, update);
+            }
+            return allErrors;
         }
 
         string GetExpression(int indexToUpsertTo)

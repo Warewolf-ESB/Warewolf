@@ -45,13 +45,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
-            if (tmp != null)
+            if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
             {
-                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
-                {
-                    return resourceId;
-                }
+                return resourceId;
             }
+
 
             return Guid.Empty;
         }
@@ -67,16 +65,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 values.TryGetValue("ResourceID", out StringBuilder tmp);
                 var resourceId = Guid.Empty;
-                if (tmp != null)
+                if (tmp != null && !Guid.TryParse(tmp.ToString(), out resourceId))
                 {
-                    if (!Guid.TryParse(tmp.ToString(), out resourceId))
-                    {
-                        Dev2Logger.Info("Delete Resource Service. Invalid Parameter Guid:", GlobalConstants.WarewolfInfo);
-                        var failureResult = new ExecuteMessage { HasError = true };
-                        failureResult.SetMessage("Invalid guid passed for ResourceID");
-                        return serializer.SerializeToBuilder(failureResult);
-                    }
+                    Dev2Logger.Info("Delete Resource Service. Invalid Parameter Guid:", GlobalConstants.WarewolfInfo);
+                    var failureResult = new ExecuteMessage { HasError = true };
+                    failureResult.SetMessage("Invalid guid passed for ResourceID");
+                    return serializer.SerializeToBuilder(failureResult);
                 }
+
                 values.TryGetValue("ResourceType", out tmp);
                 if (tmp != null)
                 {

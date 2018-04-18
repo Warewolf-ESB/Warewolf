@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 return null;
             }
-            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
+            var methodToRun = TryExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             var formater = setupInfo.OutputFormatter;
             if (formater != null)
@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 {
                     return null;
                 }
-                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
+                var methodToRun = TryExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
 
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
                 // do formating here to avoid object serialization issues ;)
@@ -113,7 +113,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        MethodBase ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
+        MethodBase TryExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
         {
             var typeList = BuildTypeList(setupInfo.Parameters, loadedAssembly);
             var type = loadedAssembly.GetType(setupInfo.Fullname);
@@ -124,11 +124,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 {
                     try
                     {
-                        var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
-                        if (anonymousType != null)
-                        {
-                            valuedTypeList.Add(anonymousType);
-                        }
+                        ExecutePlugin(valuedTypeList, methodParameter);
                     }
                     catch (Exception)
                     {
@@ -165,6 +161,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return null;
         }
 
+        private static void ExecutePlugin(List<object> valuedTypeList, MethodParameter methodParameter)
+        {
+            var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
+            if (anonymousType != null)
+            {
+                valuedTypeList.Add(anonymousType);
+            }
+        }
 
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {

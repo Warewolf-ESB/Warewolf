@@ -264,26 +264,32 @@ namespace Dev2.Activities
             {
                 foreach (var sid in identity.Groups)
                 {
-                    try
-                    {
-                        var translatedGroup = sid.Translate(typeof(NTAccount));
-                        var name = translatedGroup.Value;
-                        stringBuilder.AppendFormat(name + ",");
-                    }
-                    catch (Exception)
-                    {
-                        var winQuery = new ObjectQuery("SELECT * FROM Win32_Group WHERE SID='" + sid.Value + "'");
-                        var searcher = new ManagementObjectSearcher(winQuery);
-                        foreach (var o in searcher.Get())
-                        {
-                            var item = (ManagementObject)o;
-                            var name = Convert.ToString(item["Name"]);
-                            stringBuilder.AppendFormat(name + ",");
-                        }
-                    }
+                    stringBuilder = TryAppendGroup(stringBuilder, sid);
                 }
             }
             return stringBuilder.ToString().TrimEnd(',');
+        }
+
+        static StringBuilder TryAppendGroup(StringBuilder stringBuilder, IdentityReference sid)
+        {
+            try
+            {
+                var translatedGroup = sid.Translate(typeof(NTAccount));
+                var name = translatedGroup.Value;
+                stringBuilder.AppendFormat(name + ",");
+            }
+            catch (Exception)
+            {
+                var winQuery = new ObjectQuery("SELECT * FROM Win32_Group WHERE SID='" + sid.Value + "'");
+                var searcher = new ManagementObjectSearcher(winQuery);
+                foreach (var o in searcher.Get())
+                {
+                    var item = (ManagementObject)o;
+                    var name = Convert.ToString(item["Name"]);
+                    stringBuilder.AppendFormat(name + ",");
+                }
+            }
+            return stringBuilder;
         }
 
         public string GetUserNameInformation() => Environment.UserName;

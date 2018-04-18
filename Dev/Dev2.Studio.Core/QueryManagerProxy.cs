@@ -553,18 +553,16 @@ namespace Dev2.Studio.Core
             }
             var pluginConstructors = serializer.Deserialize<List<IPluginConstructor>>(result.Message.ToString());
 
-            if (DataListSingleton.ActiveDataList != null)
+            if (DataListSingleton.ActiveDataList != null && DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
             {
-                if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+                var objectCollection = DataListSingleton.ActiveDataList.ComplexObjectCollection;
+                pluginConstructors.AddRange(objectCollection.Select(objectItemModel => new PluginConstructor
                 {
-                    var objectCollection = DataListSingleton.ActiveDataList.ComplexObjectCollection;
-                    pluginConstructors.AddRange(objectCollection.Select(objectItemModel => new PluginConstructor
-                    {
-                        ConstructorName = objectItemModel.Name,
-                        IsExistingObject = true
-                    }));
-                }
+                    ConstructorName = objectItemModel.Name,
+                    IsExistingObject = true
+                }));
             }
+
 
             return pluginConstructors;
         }

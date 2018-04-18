@@ -613,7 +613,7 @@ namespace Warewolf.Studio.ViewModels
 
         void LostFocusCommand() => IsRenaming = false;
 
-        public void Delete() => _explorerItemViewModelCommandController.DeleteCommand(Parent, _explorerRepository, this, _popupController, Server);
+        public void Delete() => _explorerItemViewModelCommandController.TryDeleteCommand(Parent, _explorerRepository, this, _popupController, Server);
 
         public void SetPermissions(Permissions explorerItemPermissions) => SetPermissions(explorerItemPermissions, false);
 

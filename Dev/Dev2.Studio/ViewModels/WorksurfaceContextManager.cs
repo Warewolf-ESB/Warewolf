@@ -129,10 +129,10 @@ namespace Dev2.Studio.ViewModels
         void EditResource(ISharepointServerSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header);
         Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel);
-        void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource);
+        void TryShowDependencies(IContextualResourceModel resource);
         void AddSettingsWorkSurface();
         void AddSchedulerWorkSurface();
-        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
+        void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
 
         void AddWorkspaceItem(IContextualResourceModel model);
         void DeleteContext(IContextualResourceModel model);
@@ -1271,16 +1271,6 @@ namespace Dev2.Studio.ViewModels
             return await RequestServiceNameViewModel.CreateAsync(environmentViewModel, resourcePath, header, explorerItemViewModel);
         }
 
-        public void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource)
-        {
-            if (resource == null)
-            {
-                return;
-            }
-
-            ShowDependencies(true, resource, ActiveServer);
-        }
-
         public void AddSettingsWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
@@ -1291,40 +1281,53 @@ namespace Dev2.Studio.ViewModels
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
-        public void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
+        public void TryShowDependencies(IContextualResourceModel resource)
+        {
+            if (resource != null)
+            {
+                ShowDependencies(true, resource, ActiveServer);
+            }
+        }
+
+        public void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
             if (resourceModel != null)
             {
-                var key = WorkSurfaceKeyFactory.CreateEnvKey(WorkSurfaceContext.Scheduler, ActiveServer.EnvironmentID) as WorkSurfaceKey;
-                var workSurfaceContextViewModel = FindWorkSurfaceContextViewModel(key);
-                if (workSurfaceContextViewModel != null)
-                {
-                    var workSurfaceViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel;
-                    if (workSurfaceViewModel != null)
-                    {
-                        var findWorkSurfaceContextViewModel = (SchedulerViewModel)workSurfaceViewModel;
+                CreateNewScheduleWorkSurface(resourceModel);
+            }
+        }
 
-                        if (findWorkSurfaceContextViewModel.IsDirty)
-                        {
-                            _shellViewModel.PopupProvider.Show(Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskMessage,
-                                Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskHeader,
-                                MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
-                            ActivateAndReturnWorkSurfaceIfPresent(key);
-                        }
-                        else
-                        {
-                            ActivateAndReturnWorkSurfaceIfPresent(key);
-                            findWorkSurfaceContextViewModel.CreateNewTask();
-                            findWorkSurfaceContextViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
-                        }
+        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
+        {
+            var key = WorkSurfaceKeyFactory.CreateEnvKey(WorkSurfaceContext.Scheduler, ActiveServer.EnvironmentID) as WorkSurfaceKey;
+            var workSurfaceContextViewModel = FindWorkSurfaceContextViewModel(key);
+            if (workSurfaceContextViewModel != null)
+            {
+                var workSurfaceViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel;
+                if (workSurfaceViewModel != null)
+                {
+                    var findWorkSurfaceContextViewModel = (SchedulerViewModel)workSurfaceViewModel;
+
+                    if (findWorkSurfaceContextViewModel.IsDirty)
+                    {
+                        _shellViewModel.PopupProvider.Show(Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskMessage,
+                            Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskHeader,
+                            MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
+                        ActivateAndReturnWorkSurfaceIfPresent(key);
+                    }
+                    else
+                    {
+                        ActivateAndReturnWorkSurfaceIfPresent(key);
+                        findWorkSurfaceContextViewModel.CreateNewTask();
+                        findWorkSurfaceContextViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
                     }
                 }
-                else
-                {
-                    var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
-                    schedulerViewModel.CreateNewTask();
-                    schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
-                }
+            }
+            else
+            {
+                var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
+                schedulerViewModel.CreateNewTask();
+                schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
             }
         }
 
@@ -1482,37 +1485,35 @@ namespace Dev2.Studio.ViewModels
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt)
         {
             var remove = true;
-            if (context != null)
+            if (context != null && !context.DeleteRequested)
             {
-                if (!context.DeleteRequested)
+                var vm = context.WorkSurfaceViewModel;
+                if (vm != null)
                 {
-                    var vm = context.WorkSurfaceViewModel;
-                    if (vm != null)
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                     {
-                        if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
-                        {
-                            return CloseWorkflow(context, e, dontPrompt, vm, ref remove) && remove;
-                        }
-                        if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
-                        {
-                            return CloseSettings(vm, true);
-                        }
-                        if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
-                        {
-                            return RemoveScheduler(vm, true);
-                        }
+                        return CloseWorkflow(context, e, dontPrompt, vm, ref remove) && remove;
                     }
-                    if (vm is IStudioTab tab)
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
                     {
-                        remove = tab.DoDeactivate(true);
-                        if (remove)
-                        {
-                            tab.Dispose();
-                            tab.CloseView();
-                        }
+                        return CloseSettings(vm, true);
+                    }
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                    {
+                        return RemoveScheduler(vm, true);
+                    }
+                }
+                if (vm is IStudioTab tab)
+                {
+                    remove = tab.DoDeactivate(true);
+                    if (remove)
+                    {
+                        tab.Dispose();
+                        tab.CloseView();
                     }
                 }
             }
+
 
             return remove;
         }

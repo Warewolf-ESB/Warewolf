@@ -9,8 +9,6 @@
 */
 
 
-#region
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,13 +22,9 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-#endregion
 
 namespace Dev2.Diagnostics.Debug
 {
-    /// <summary>
-    ///     A default debug state
-    /// </summary>
     [Serializable]
     public class DebugState : IDebugState, INotifyPropertyChanged
     {
@@ -61,14 +55,8 @@ namespace Dev2.Diagnostics.Debug
 
         public Guid DisconnectedID
         {
-            get
-            {
-                return _disconnectedID;
-            }
-            set
-            {
-                _disconnectedID = value;
-            }
+            get => _disconnectedID;
+            set => _disconnectedID = value;
         }
 
         static DebugState()
@@ -79,6 +67,7 @@ namespace Dev2.Diagnostics.Debug
                 Directory.CreateDirectory(tempPath);
             }
         }
+
         #endregion
 
         #region IDebugState - Properties
@@ -549,12 +538,9 @@ namespace Dev2.Diagnostics.Debug
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            if (propertyName?.Equals("ParentID") ?? false)
+            if (propertyName?.Equals("ParentID") != null && ParentID == Guid.Empty)
             {
-                if (ParentID == Guid.Empty)
-                {
-                    ParentID = null;
-                }
+                ParentID = null;
             }
         }
     }

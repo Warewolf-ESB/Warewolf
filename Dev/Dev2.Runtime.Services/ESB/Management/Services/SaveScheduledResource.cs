@@ -42,46 +42,50 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                if (tmp != null)
-                {
-
-                    var res = serializer.Deserialize<IScheduledResource>(tmp);
-                    Dev2Logger.Info("Save Scheduled Resource. Scheduled Resource:" +res, GlobalConstants.WarewolfInfo);
-                    using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
-                    {
-
-                        values.TryGetValue("UserName", out StringBuilder userName);
-                        values.TryGetValue("Password", out StringBuilder password);
-                        if(userName == null || password == null)
-                        {
-                            result.Message.Append(ErrorResource.NoUserNameAndPassword);
-                            result.HasError = true;
-                        }
-                        else
-                        {
-                            values.TryGetValue("PreviousResource", out StringBuilder previousTask);
-
-                            model.Save(res, userName.ToString(), password.ToString());
-                            if(!string.IsNullOrEmpty(previousTask?.ToString()) && previousTask.ToString() != res.Name)
-                            {
-                                model.DeleteSchedule(new ScheduledResource(previousTask.ToString(), SchedulerStatus.Disabled, DateTime.MaxValue, null, null,Guid.NewGuid().ToString()));
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    result.Message.Append(ErrorResource.NoResourceSelected);
-                    result.HasError = true;
-                }
+                TryExecute(values, result, tmp, serializer);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 result.Message.Append($"Error while saving: {e.Message.Remove(e.Message.IndexOf('.'))}");
                 result.HasError = true;
             }
             return serializer.SerializeToBuilder(result);
+        }
+
+        void TryExecute(Dictionary<string, StringBuilder> values, ExecuteMessage result, StringBuilder tmp, Dev2JsonSerializer serializer)
+        {
+            if (tmp != null)
+            {
+                var res = serializer.Deserialize<IScheduledResource>(tmp);
+                Dev2Logger.Info("Save Scheduled Resource. Scheduled Resource:" + res, GlobalConstants.WarewolfInfo);
+                using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
+                {
+
+                    values.TryGetValue("UserName", out StringBuilder userName);
+                    values.TryGetValue("Password", out StringBuilder password);
+                    if (userName == null || password == null)
+                    {
+                        result.Message.Append(ErrorResource.NoUserNameAndPassword);
+                        result.HasError = true;
+                    }
+                    else
+                    {
+                        values.TryGetValue("PreviousResource", out StringBuilder previousTask);
+
+                        model.Save(res, userName.ToString(), password.ToString());
+                        if (!string.IsNullOrEmpty(previousTask?.ToString()) && previousTask.ToString() != res.Name)
+                        {
+                            model.DeleteSchedule(new ScheduledResource(previousTask.ToString(), SchedulerStatus.Disabled, DateTime.MaxValue, null, null, Guid.NewGuid().ToString()));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                result.Message.Append(ErrorResource.NoResourceSelected);
+                result.HasError = true;
+            }
         }
 
         public IServerSchedulerFactory SchedulerFactory

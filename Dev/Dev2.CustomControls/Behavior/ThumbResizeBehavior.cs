@@ -104,32 +104,28 @@ namespace Dev2.Studio.AppResources.Behaviors
             var minHeight = ContentElement?.MinHeight ?? TargetElement.MinHeight;
             var maxHeight = ContentElement?.MaxHeight ?? TargetElement.MaxHeight;
 
-            if (TargetElement.Height + e.VerticalChange > 0)
+            if (TargetElement.Height + e.VerticalChange > 0 && Math.Abs(e.VerticalChange) > ChangeThreshold)
             {
-                if (Math.Abs(e.VerticalChange) > ChangeThreshold)
-                {
-                    var newHeight = TargetElement.Height + e.VerticalChange;
+                var newHeight = TargetElement.Height + e.VerticalChange;
 
-                    if ((minHeight.Equals(0D) || newHeight > minHeight + MinHeightOffset) &&
-                        (maxHeight.Equals(double.PositiveInfinity) || newHeight < maxHeight))
-                    {
-                        TargetElement.Height += e.VerticalChange;
-                    }
+                if ((minHeight.Equals(0D) || newHeight > minHeight + MinHeightOffset) &&
+                    (maxHeight.Equals(double.PositiveInfinity) || newHeight < maxHeight))
+                {
+                    TargetElement.Height += e.VerticalChange;
                 }
             }
 
-            if (TargetElement.Width + e.HorizontalChange > 0)
+
+            if (TargetElement.Width + e.HorizontalChange > 0 && Math.Abs(e.HorizontalChange) > ChangeThreshold)
             {
-                if (Math.Abs(e.HorizontalChange) > ChangeThreshold)
+                var newWidth = TargetElement.Width + e.HorizontalChange;
+                if ((minWidth.Equals(0D) || newWidth > minWidth + MinWidthOffset) &&
+                    (maxWidth.Equals(double.PositiveInfinity) || newWidth < maxWidth))
                 {
-                    var newWidth = TargetElement.Width + e.HorizontalChange;
-                    if ((minWidth.Equals(0D) || newWidth > minWidth + MinWidthOffset) &&
-                        (maxWidth.Equals(double.PositiveInfinity) || newWidth < maxWidth))
-                    {
-                        TargetElement.Width += e.HorizontalChange;
-                    }
+                    TargetElement.Width += e.HorizontalChange;
                 }
             }
+
         }
 
         #endregion Event Handlers
