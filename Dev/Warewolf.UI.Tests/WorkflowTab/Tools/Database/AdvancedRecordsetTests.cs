@@ -15,56 +15,73 @@ namespace Warewolf.UI.Tests.Tools
         [TestMethod]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Small_And_LargeView()
-        {            
+        {
             WorkflowTabUIMap.Drag_Toolbox_AdvancedRecordset_Onto_DesignSurface();
-            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.Exists, "My SQL Connector tool does not exist on design surface.");
+
+            var advancedRecordset = DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset;
+
+            Assert.IsTrue(advancedRecordset.Exists, "Advanced Recordset tool does not exist on design surface.");
+            Assert.IsTrue(advancedRecordset.LargeView.Exists, "Advanced Recordset large does not exist on design surface on initial drop from Toolbox.");
             //Small View
             DatabaseToolsUIMap.AdvancedRecordsetTool_ChangeView_With_DoubleClick();
-            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.SmallView.Exists, "My SQL Connector tool small view does not exist after collapsing large view with a double click.");
+            Assert.IsTrue(advancedRecordset.SmallView.Exists, "Advanced Recordset tool small view does not exist after collapsing large view with a double click.");
             //Large View
             DatabaseToolsUIMap.AdvancedRecordsetTool_ChangeView_With_DoubleClick();
-            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.DeclareVariablesDataTable.Exists, "Sources combobox does not exist on Advanced Recordset connector tool large view.");
-            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.QueryComboBox.Exists, "Query combo box does not exist on Advanced Recordset connector tool large view.");
-            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.GenerateOutputsButton.Exists, "Generate Outputs button does not exist on Advanced Recordset connector tool large view.");
+            Assert.IsTrue(advancedRecordset.LargeView.DeclareVariablesDataTable.Exists, "Declare Variables Data Table does not exist on Advanced Recordset connector tool large view.");
+            Assert.IsTrue(advancedRecordset.LargeView.QueryComboBox.Exists, "Query text box does not exist on Advanced Recordset connector tool large view.");
+            Assert.IsTrue(advancedRecordset.LargeView.GenerateOutputsButton.Exists, "Generate Outputs button does not exist on Advanced Recordset connector tool large view.");
         }
+
         [TestMethod]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Clicking_GenerateOutputs_Creates_A_Recordset_Name()
         {
             ExplorerUIMap.Filter_Explorer(AdvancedRecordset);
-            WorkflowTabUIMap.Drag_Toolbox_AdvancedRecordset_Onto_DesignSurface();
-            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.Exists, "My SQL Connector tool does not exist on design surface.");
-            DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.QueryComboBox.TextEdit.Text = "select name from person";
-            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.GenerateOutputsButton);
-            Assert.AreEqual("person", DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.RecordSetTextBoxEdit.Text);
-        }
+            ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
+            DatabaseToolsUIMap.AdvancedRecordsetTool_ChangeView_With_DoubleClick();
 
+            var advancedRecordset = DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset;
+
+            Assert.IsTrue(advancedRecordset.LargeView.Exists, "Advanced Recordset tool does not exist on design surface.");
+            advancedRecordset.LargeView.QueryComboBox.TextEdit.Text = "select name from person";
+            Mouse.Click(advancedRecordset.LargeView.GenerateOutputsButton);
+            Assert.AreEqual("TableCopy", advancedRecordset.LargeView.RecordSetTextBoxEdit.Text);
+        }
 
         [TestMethod]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Select_Name_From_Person_Creates_PersonName_Mapping()
         {
             ExplorerUIMap.Filter_Explorer(AdvancedRecordset);
-            WorkflowTabUIMap.Drag_Toolbox_AdvancedRecordset_Onto_DesignSurface();
-            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.Exists, "My SQL Connector tool does not exist on design surface.");
-            DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.QueryComboBox.TextEdit.Text = "select name from person";
-            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.GenerateOutputsButton);
-            Assert.AreEqual("[[person().name]]", DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow.Row1Cell.Row1Combobox.TextEdit.Text);
-        }
+            ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
+            DatabaseToolsUIMap.AdvancedRecordsetTool_ChangeView_With_DoubleClick();
 
+            var advancedRecordset = DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset;
+
+            Assert.IsTrue(advancedRecordset.LargeView.Exists, "Advanced Recordset tool does not exist on design surface.");
+            advancedRecordset.LargeView.QueryComboBox.TextEdit.Text = "select name from person";
+            Keyboard.SendKeys("{Escape}");
+            Mouse.Click(advancedRecordset.LargeView.GenerateOutputsButton);
+            Assert.AreEqual("[[TableCopy().name]]", advancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow.Row1Cell.Row1Combobox.TextEdit.Text);
+        }
 
         [TestMethod]
         [TestCategory("Database Tools")]
         public void AdvancedRecordsetTool_Select_Multiple_Fields_From_Person_Creates_All_Field_Mapping()
         {
             ExplorerUIMap.Filter_Explorer(AdvancedRecordset);
-            WorkflowTabUIMap.Drag_Toolbox_AdvancedRecordset_Onto_DesignSurface();
-            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.Exists, "My SQL Connector tool does not exist on design surface.");
-            DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.QueryComboBox.TextEdit.Text = "select name, lastname, age from person";
-            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.GenerateOutputsButton);
-            Assert.AreEqual("[[person().name]]", DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow.Row1Cell.Row1Combobox.TextEdit.Text);
-            Assert.AreEqual("[[person().lastname]]", DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow2.Row2Cell.Row2ComboBox.TextEdit.Text);
-            Assert.AreEqual("[[person().age]]", DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow3.Row3Cell.Row3ComboBox.TextEdit.Text);
+            ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
+            DatabaseToolsUIMap.AdvancedRecordsetTool_ChangeView_With_DoubleClick();
+
+            var advancedRecordset = DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset;
+
+            Assert.IsTrue(advancedRecordset.LargeView.Exists, "Advanced Recordset tool does not exist on design surface.");
+            advancedRecordset.LargeView.QueryComboBox.TextEdit.Text = "select name, age, address_id from person";
+            Keyboard.SendKeys("{Escape}");
+            Mouse.Click(advancedRecordset.LargeView.GenerateOutputsButton);
+            Assert.AreEqual("[[TableCopy().name]]", advancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow.Row1Cell.Row1Combobox.TextEdit.Text);
+            Assert.AreEqual("[[TableCopy().age]]", advancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow2.Row2Cell.Row2ComboBox.TextEdit.Text);
+            Assert.AreEqual("[[TableCopy().address_id]]", advancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow3.Row3Cell.Row3ComboBox.TextEdit.Text);
         }
 
         [TestMethod]
@@ -72,11 +89,16 @@ namespace Warewolf.UI.Tests.Tools
         public void AdvancedRecordsetTool_Select_Name_With_An_Elias_From_Person_Creates_PersonAliasName_Mapping()
         {
             ExplorerUIMap.Filter_Explorer(AdvancedRecordset);
-            WorkflowTabUIMap.Drag_Toolbox_AdvancedRecordset_Onto_DesignSurface();
-            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.Exists, "My SQL Connector tool does not exist on design surface.");
-            DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.QueryComboBox.TextEdit.Text = "select name as firstName from person";
-            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.GenerateOutputsButton);
-            Assert.AreEqual("[[person().firstName]]", DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow.Row1Cell.Row1Combobox.TextEdit.Text);
+            ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
+            DatabaseToolsUIMap.AdvancedRecordsetTool_ChangeView_With_DoubleClick();
+
+            var advancedRecordset = DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset;
+
+            Assert.IsTrue(advancedRecordset.LargeView.Exists, "Advanced Recordset tool does not exist on design surface.");
+            advancedRecordset.LargeView.QueryComboBox.TextEdit.Text = "select name as firstName from person";
+            Keyboard.SendKeys("{Escape}");
+            Mouse.Click(advancedRecordset.LargeView.GenerateOutputsButton);
+            Assert.AreEqual("[[TableCopy().firstName]]", advancedRecordset.LargeView.OutputsMappingDataGrTable.ItemRow.Row1Cell.Row1Combobox.TextEdit.Text);
         }
 
         #region Additional test attributes
@@ -118,21 +140,6 @@ namespace Warewolf.UI.Tests.Tools
         }
 
         private WorkflowTabUIMap _WorkflowTabUIMap;
-
-        DBSourceUIMap DBSourceUIMap
-        {
-            get
-            {
-                if (_DBSourceUIMap == null)
-                {
-                    _DBSourceUIMap = new DBSourceUIMap();
-                }
-
-                return _DBSourceUIMap;
-            }
-        }
-
-        private DBSourceUIMap _DBSourceUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {
