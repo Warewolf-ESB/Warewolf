@@ -157,6 +157,11 @@ namespace Dev2.ViewModels.Workflow
         static bool IsJSonInputValid(string dataPartFieldData, Dev2DataLanguageParser dataLanguageParser)
         {
             var isValid = false;
+            if (dataPartFieldData.Length < 1 || dataPartFieldData[0] != '@')
+            {
+                return isValid;
+            }
+
             var removeBrace = dataPartFieldData.Contains("()") ? dataPartFieldData.Replace("()", "") : RemoveRecordSetBrace(dataPartFieldData);
             var replaceAtSign = removeBrace.Replace("@", "");
             var intellisenseResult = dataLanguageParser.ValidateName(string.IsNullOrEmpty(replaceAtSign) ? dataPartFieldData : replaceAtSign, "");
@@ -166,24 +171,36 @@ namespace Dev2.ViewModels.Workflow
             }
             else
             {
-                var indexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
-                if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0) && (indexOfAtSign + 1 >= dataPartFieldData.Length) && !intellisenseResult.Message.Contains("invalid char") && char.IsLetter(dataPartFieldData[1]))
+                isValid = isValidObject(intellisenseResult);
+                if (!isValid)
                 {
-                    isValid = true;
-                }
-
-
-
-                if (dataPartFieldData.Contains('.'))
-                {
-                    var fields = dataPartFieldData.Replace("@", "").Split('.');
-                    if (fields.All(p => !string.IsNullOrEmpty(p) && char.IsLetter(p[0])))
-                    {
-                        isValid = true;
-                    }
+                    isValid = isValidParts();
                 }
             }
             return isValid;
+
+
+            bool isValidObject(IIntellisenseResult resultError)
+            {
+                var indexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
+                if (indexOfAtSign == 0 && (dataPartFieldData.Length >= 2) && char.IsLetter(dataPartFieldData[1]) && !resultError.Message.Contains("invalid char"))
+                {
+                    return true;
+                }
+                return false;
+            }
+            bool isValidParts()
+            {
+                if (dataPartFieldData.Contains("."))
+                {
+                    var fields = dataPartFieldData.Substring(1).Split('.');
+                    if (fields.All(p => !string.IsNullOrEmpty(p) && char.IsLetter(p[0])))
+                    {
+                        return true;
+                    }
+                }
+                return false;
+            }
         }
 
         public  static void AddDataVerifyPart(IDataListVerifyPart part, string nameOfPart, Dictionary<IDataListVerifyPart, string> unique)

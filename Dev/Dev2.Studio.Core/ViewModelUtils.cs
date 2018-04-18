@@ -44,6 +44,8 @@ namespace Dev2
                     return;
                 }
 
+                // TODO: refactor RaiseCanExecuteChanged into a common interface for the "Command" type
+
                 if (typeOfCommand.BaseType == typeof(Microsoft.Practices.Prism.Commands.DelegateCommandBase) && commandForCanExecuteChange is Microsoft.Practices.Prism.Commands.DelegateCommandBase commandBase)
                 {
                     commandBase.RaiseCanExecuteChanged();
