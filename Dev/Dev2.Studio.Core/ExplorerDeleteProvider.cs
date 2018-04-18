@@ -90,7 +90,8 @@ namespace Dev2.Studio.Core
 
                     showDependenciesApplyToAll = ShowDependenciesApplyToAll(explorerItemViewModel, deleteFileMetaData, showDependenciesApplyToAll, itemViewModel, dependants, deletedFileMetadata);
 
-                    if (dependants != null && !showDependenciesApplyToAll && !deletedFileMetadata.IsDeleted && !(deletedFileMetadata.ApplyToAll && deletedFileMetadata.ShowDependencies) && deletedFileMetadata.ApplyToAll)
+                    var deletedConditions = !deletedFileMetadata.IsDeleted && !(deletedFileMetadata.ApplyToAll && deletedFileMetadata.ShowDependencies) && deletedFileMetadata.ApplyToAll;
+                    if (dependants != null && !showDependenciesApplyToAll && deletedConditions)
                     {
                         break;
                     }

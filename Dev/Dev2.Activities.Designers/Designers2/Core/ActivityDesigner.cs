@@ -63,8 +63,9 @@ namespace Dev2.Activities.Designers2.Core
                 keyEventArgs.Handled = true;
             }
 
-            if ((keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) ||
-keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem)) && ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete))
+            var isComboBoxOrComboBoxItem = (keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) || keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem));
+            var keyIsUndoOrDelete = ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete);
+            if (isComboBoxOrComboBoxItem && keyIsUndoOrDelete)
             {
                 keyEventArgs.Handled = true;
             }

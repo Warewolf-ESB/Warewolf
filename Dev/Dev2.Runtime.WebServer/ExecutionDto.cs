@@ -105,35 +105,31 @@ namespace Dev2.Runtime.WebServer
 
         static string GetExecutePayload(IDSFDataObject dataObject, IResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
         {
-            var executePayload = "";
-            if (!dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke)
+            var notDebug = !dataObject.IsDebug || dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke;
+            if (notDebug && resource?.DataList != null)
             {
-                if (resource?.DataList != null)
-                {
-                    if (dataObject.ReturnType == EmitionTypes.JSON)
+                switch (dataObject.ReturnType) {
+                    case EmitionTypes.XML:
                     {
-                        formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                        executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject,
+                        return ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,
                             resource.DataList.ToString(), 0);
                     }
-                    if (dataObject.ReturnType == EmitionTypes.XML)
-                    {
-                        executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,
-                            resource.DataList.ToString(), 0);
-                    }
-                    if (dataObject.ReturnType == EmitionTypes.SWAGGER)
+                    case EmitionTypes.SWAGGER:
                     {
                         formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                        executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource,
+                        return ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource,
                             resource.DataList.ToString(), webRequest.WebServerUrl);
+                    }
+                    default:
+                    case EmitionTypes.JSON:
+                    {
+                        formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+                        return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject,
+                            resource.DataList.ToString(), 0);
                     }
                 }
             }
-            else
-            {
-                executePayload = string.Empty;
-            }
-            return executePayload;
+            return string.Empty;
         }
 
         static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)

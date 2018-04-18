@@ -164,7 +164,8 @@ namespace Dev2.Activities
                 {
                     if(!string.IsNullOrEmpty(field))
                     {
-                        TryAddDebugOutputItem(dataObject, hasErrors, update, i++, field);
+                        TryAddDebugOutputItem(dataObject, hasErrors, update, i, field);
+                        i++;
                     }
                 }
             }
