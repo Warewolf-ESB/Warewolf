@@ -102,7 +102,6 @@ namespace Dev2.Studio
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(System.Windows.StartupEventArgs e)
         {
-            Dev2Logger.Info("Studio Starting.", GlobalConstants.WarewolfInfo);
             Tracker.StartStudio();
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
             Task.Factory.StartNew(() =>
