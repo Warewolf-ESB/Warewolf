@@ -1,5 +1,10 @@
-﻿using Dev2.Studio;
+﻿using Dev2.Common;
+using Dev2.Studio;
+using Dev2.Utils;
+using log4net.Config;
 using System;
+using System.IO;
+using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Dev2
 {
@@ -8,8 +13,21 @@ namespace Dev2
         [STAThread]
         public static void Main(string[] args)
         {
+            ConfigureLogging();
+            Dev2Logger.Info("Studio " + Utils.FetchVersionInfo() + " Starting.", GlobalConstants.WarewolfInfo);
             var wrapper = new SingleInstanceApplicationWrapper();
             wrapper.Run(args);
+        }
+
+        static void ConfigureLogging()
+        {
+            var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
+            if (!File.Exists(settingsConfigFile))
+            {
+                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
+            }
+            Dev2Logger.AddEventLogging(settingsConfigFile, GlobalConstants.WarewolfStudio);
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
         }
     }
 
