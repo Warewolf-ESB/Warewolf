@@ -255,10 +255,7 @@ namespace Warewolf.Studio.ViewModels
                         var src = ToSource();
                         src.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
-                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
-                        {
-                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ID);
-                        }
+                        AfterSave(requestServiceNameViewModel, src);
 
                         Item = src;
                         _serverSource = src;
@@ -277,6 +274,14 @@ namespace Warewolf.Studio.ViewModels
                 Item = src;
                 _serverSource = src;
                 SetupHeaderTextFromExisting();
+            }
+        }
+
+        void AfterSave(IRequestServiceNameViewModel requestServiceNameViewModel, IServerSource src)
+        {
+            if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+            {
+                AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ID);
             }
         }
 
@@ -365,18 +370,16 @@ namespace Warewolf.Studio.ViewModels
 
         void CancelTest()
         {
-            if (_token != null)
+            if (_token != null && !_token.IsCancellationRequested && _token.Token.CanBeCanceled)
             {
-                if (!_token.IsCancellationRequested && _token.Token.CanBeCanceled)
+                _token.Cancel();
+                Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    _token.Cancel();
-                    Dispatcher.CurrentDispatcher.Invoke(() =>
-                    {
-                        FailedTesting();
-                        TestMessage = "Test Cancelled";
-                    });
-                }
+                    FailedTesting();
+                    TestMessage = "Test Cancelled";
+                });
             }
+
         }
 
         void TestConnection()

@@ -285,20 +285,18 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             };
             message.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "SelectedFiles")
+                if (args.PropertyName == "SelectedFiles" && message.SelectedFiles != null)
                 {
-                    if (message.SelectedFiles != null)
+                    if (string.IsNullOrEmpty(Attachments))
                     {
-                        if (string.IsNullOrEmpty(Attachments))
-                        {
-                            Attachments = string.Join(Separator, message.SelectedFiles);
-                        }
-                        else
-                        {
-                            Attachments += Separator + string.Join(Separator, message.SelectedFiles);
-                        }
+                        Attachments = string.Join(Separator, message.SelectedFiles);
+                    }
+                    else
+                    {
+                        Attachments += Separator + string.Join(Separator, message.SelectedFiles);
                     }
                 }
+
             };
             _eventPublisher.Publish(message);
         }

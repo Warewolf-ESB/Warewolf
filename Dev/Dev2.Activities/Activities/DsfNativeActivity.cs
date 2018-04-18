@@ -337,13 +337,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                if (dataObject.RemoteServiceType != "Workflow" && !string.IsNullOrWhiteSpace(dataObject.RemoteServiceType))
+                if (dataObject.RemoteServiceType != "Workflow" && !string.IsNullOrWhiteSpace(dataObject.RemoteServiceType) && _debugState != null)
                 {
-                    if (_debugState != null)
-                    {
-                        _debugState.ActivityType = ActivityType.Service;
-                    }
+                    _debugState.ActivityType = ActivityType.Service;
                 }
+
 
                 DebugCleanUp(dataObject, stateType);
             }
@@ -430,23 +428,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.ErrorMessage = errorMessage;
                 try
                 {
-                    if (dataObject.RunWorkflowAsync && !_debugState.HasError)
-                    {
-                        var debugItem = new DebugItem();
-                        var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Value = "Asynchronous execution started" };
-                        debugItem.Add(debugItemResult);
-                        _debugState.Outputs.Add(debugItem);
-                        _debugState.NumberOfSteps = 0;
-                    }
-                    else
-                    {
-                        if (_debugState.StateType != StateType.Duration)
-                        {
-                            UpdateDebugWithAssertions(dataObject);
-                        }
-                        var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
-                        Copy(debugOutputs, _debugState.Outputs);
-                    }
+                    TryDispatchDebugOutput(dataObject, update);
                 }
                 catch (Exception e)
                 {
@@ -458,6 +440,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
             return clearErrors;
+        }
+
+        private void TryDispatchDebugOutput(IDSFDataObject dataObject, int update)
+        {
+            if (dataObject.RunWorkflowAsync && !_debugState.HasError)
+            {
+                var debugItem = new DebugItem();
+                var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Value = "Asynchronous execution started" };
+                debugItem.Add(debugItemResult);
+                _debugState.Outputs.Add(debugItem);
+                _debugState.NumberOfSteps = 0;
+            }
+            else
+            {
+                if (_debugState.StateType != StateType.Duration)
+                {
+                    UpdateDebugWithAssertions(dataObject);
+                }
+                var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
+                Copy(debugOutputs, _debugState.Outputs);
+            }
         }
 
         void DispatchForBeforeState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime, Guid remoteID)
@@ -645,25 +648,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                              && step.ActivityType != typeof(DsfSequenceActivity).Name) ?? new List<IServiceTestStep>();
                 foreach (var stepToBeAsserted in assertSteps)
                 {
-                    if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
-                    {
-                        if (stepToBeAsserted.Result != null)
-                        {
-                            stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
-                        }
-                        if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
-                        {
-                            UpdateForDecision(dataObject, stepToBeAsserted);
-                        }
-                        else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
-                        {
-                            UpdateForSwitch(dataObject, stepToBeAsserted);
-                        }
-                        else
-                        {
-                            UpdateForRegularActivity(dataObject, stepToBeAsserted);
-                        }
-                    }
+                    UpdateStep(dataObject, stepToBeAsserted);
+                }
+            }
+        }
+
+        private void UpdateStep(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        {
+            if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
+            {
+                if (stepToBeAsserted.Result != null)
+                {
+                    stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
+                }
+                if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
+                {
+                    UpdateForDecision(dataObject, stepToBeAsserted);
+                }
+                else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
+                {
+                    UpdateForSwitch(dataObject, stepToBeAsserted);
+                }
+                else
+                {
+                    UpdateForRegularActivity(dataObject, stepToBeAsserted);
                 }
             }
         }
