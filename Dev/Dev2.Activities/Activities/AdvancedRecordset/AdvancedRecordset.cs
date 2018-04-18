@@ -193,13 +193,16 @@ namespace Dev2.Activities
                 {
                     _insertSql = "'" + value + "',";
                 }
-				else if (colType == "Float")
-				{
-					_insertSql = value + ",";
-				}
-				else if (colType == "Int" && colType != "DataString")
+                else if (colType == "Float")
                 {
                     _insertSql = value + ",";
+                }
+                else
+                {
+                    if (colType == "Int" && colType != "DataString")
+                    {
+                        _insertSql = value + ",";
+                    }
                 }
             }
             return _insertSql;
@@ -239,15 +242,7 @@ namespace Dev2.Activities
                 Environment.EvalDelete(recSet, 0);
                 foreach (DataRow row in rows)
                 {
-                    foreach (var col in row.Table.Columns)
-                    {
-                        var column = col as DataColumn;
-                        if (!column.ColumnName.Contains("_Primary_Id"))
-                        {
-                            var serviceOutputMapping = new ServiceOutputMapping(column.ColumnName, column.ColumnName, returnRecordsetName);
-                            ExecutionEnvironmentUtils.ProcessOutputMapping(Environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
-                        }
-                    }
+                    ApplyResultToEnvironmentForEachColumn(returnRecordsetName, update, ref started, ref rowIdx, row);
                     rowIdx++;
                 }
             }
@@ -263,7 +258,21 @@ namespace Dev2.Activities
                 }
             }
 		}
-		public void ApplyScalarResultToEnvironment(string returnRecordsetName, List<DataRow> recordset)
+
+        private void ApplyResultToEnvironmentForEachColumn(string returnRecordsetName, int update, ref bool started, ref int rowIdx, DataRow row)
+        {
+            foreach (var col in row.Table.Columns)
+            {
+                var column = col as DataColumn;
+                if (!column.ColumnName.Contains("_Primary_Id"))
+                {
+                    var serviceOutputMapping = new ServiceOutputMapping(column.ColumnName, column.ColumnName, returnRecordsetName);
+                    ExecutionEnvironmentUtils.ProcessOutputMapping(Environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
+                }
+            }
+        }
+
+        public void ApplyScalarResultToEnvironment(string returnRecordsetName, List<DataRow> recordset)
 		{
 			var l = new List<AssignValue>();
 			if (DataListUtil.IsEvaluated(returnRecordsetName))

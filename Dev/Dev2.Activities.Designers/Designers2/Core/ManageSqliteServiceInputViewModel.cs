@@ -166,34 +166,10 @@ namespace Dev2.Activities.Designers2.Core
 			IsTesting = true;
 			ResetTestForExecute();
 			try
-			{
-				TestResults = _serverModel.TestService(Model);
-				if (TestResults != null)
-				{
-					if (TestResults.Columns.Count >= 1)
-					{
-						TestResultsAvailable = TestResults.Rows.Count != 0;
-						IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
-						_generateOutputArea.IsEnabled = true;
-						OutputCountExpandAllowed = TestResults.Rows.Count > 3;
-
-						if (!OutputCountExpandAllowed)
-						{
-							InputCountExpandAllowed = true;
-						}
-					}
-					IsTesting = false;
-					TestPassed = true;
-					ShowTestMessage = TestResults.Columns.Count < 1;
-					if (ShowTestMessage)
-					{
-						TestMessage = Warewolf.Studio.Resources.Languages.Core.NoReturnedDataExecuteSuccess;
-					}
-
-					TestFailed = false;
-				}
-			}
-			catch (Exception e)
+            {
+                ExecuteTest_Helper();
+            }
+            catch (Exception e)
 			{
 				Errors.Add(e.Message);
 				IsTesting = false;
@@ -206,7 +182,36 @@ namespace Dev2.Activities.Designers2.Core
 			}
 		}
 
-		void ResetTestForExecute()
+        private void ExecuteTest_Helper()
+        {
+            TestResults = _serverModel.TestService(Model);
+            if (TestResults != null)
+            {
+                if (TestResults.Columns.Count >= 1)
+                {
+                    TestResultsAvailable = TestResults.Rows.Count != 0;
+                    IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
+                    _generateOutputArea.IsEnabled = true;
+                    OutputCountExpandAllowed = TestResults.Rows.Count > 3;
+
+                    if (!OutputCountExpandAllowed)
+                    {
+                        InputCountExpandAllowed = true;
+                    }
+                }
+                IsTesting = false;
+                TestPassed = true;
+                ShowTestMessage = TestResults.Columns.Count < 1;
+                if (ShowTestMessage)
+                {
+                    TestMessage = Warewolf.Studio.Resources.Languages.Core.NoReturnedDataExecuteSuccess;
+                }
+
+                TestFailed = false;
+            }
+        }
+
+        void ResetTestForExecute()
 		{
 			TestResults = null;
 			TestPassed = false;
