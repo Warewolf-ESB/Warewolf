@@ -32,6 +32,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Diagnostics;
 using System.Transactions;
+using System.Xml;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
 
@@ -162,8 +163,24 @@ namespace Dev2.Services.Execution
                 }
             }
         }
-
-
+        void MapDataRowsToEnvironment(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx)
+        {
+            foreach (DataRow row in executeService.Rows)
+            {
+                ProcessDataRow(executeService, environment, update, ref started, ref rowIdx, row);
+            }
+        }        
+        void ProcessDataRow(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row)
+        {
+            foreach (var serviceOutputMapping in Outputs)
+            {
+                if (!string.IsNullOrEmpty(serviceOutputMapping?.MappedTo))
+                {
+                    ProcessOutputMapping(executeService, environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
+                }
+            }
+            rowIdx++;
+        }
         void TranslateDataSetToEnvironment(DataSet executeService, IExecutionEnvironment environment, int update)
         {
             var started = true;
@@ -183,24 +200,63 @@ namespace Dev2.Services.Execution
                 }
             }
         }
-        void MapDataRowsToEnvironment(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx)
+        static void ProcessOutputMapping(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row, IServiceOutputMapping serviceOutputMapping)
         {
-            foreach (DataRow row in executeService.Rows)
-            {
-                ProcessDataRow(environment, update, ref started, ref rowIdx, row);
-            }
-        }
+            var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
+            var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
+            var rs = serviceOutputMapping.RecordSetName;
 
-        void ProcessDataRow(IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row)
-        {
-            foreach (var serviceOutputMapping in Outputs)
+            if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(rs))
             {
-                if (!string.IsNullOrEmpty(serviceOutputMapping?.MappedTo))
+                if (started)
                 {
-                    ExecutionEnvironmentUtils.ProcessOutputMapping(environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
+                    rowIdx = environment.GetLength(rs) + 1;
+                    started = false;
                 }
             }
-            rowIdx++;
+            else
+            {
+                try
+                {
+                    environment.AssignDataShape(serviceOutputMapping.MappedTo);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                }
+            }
+            GetRowIndex(ref started, ref rowIdx, rsType, rowIndex);
+            if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom) && !executeService.Columns.Contains("ReadForXml"))
+            {
+                return;
+
+            }
+            var value = GetColumnValue(executeService, row, serviceOutputMapping);
+            if (update != 0)
+            {
+                rowIdx = update;
+            }
+            var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
+            if (rsType == enRecordsetIndexType.Star)
+            {
+                displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
+            }
+            environment.Assign(displayExpression, value.ToString(), update);
+        }
+
+        static object GetColumnValue(DataTable executeService, DataRow row, IServiceOutputMapping serviceOutputMapping) => executeService.Columns.Contains("ReadForXml") ? row["ReadForXml"] : row[serviceOutputMapping.MappedFrom];
+
+        static void GetRowIndex(ref bool started, ref int rowIdx, enRecordsetIndexType rsType, string rowIndex)
+        {
+            if (rsType == enRecordsetIndexType.Star && started)
+            {
+                rowIdx = 1;
+                started = false;
+            }
+            if (rsType == enRecordsetIndexType.Numeric)
+            {
+                rowIdx = int.Parse(rowIndex);
+            }
         }
 
 
