@@ -58,9 +58,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [BeforeFeature("StudioTestFramework")]
         static void SetupFeature()
         {
-            environmentModel = ServerRepository.Instance.Source;
-            environmentModel.Connect();
-            environmentModel.ResourceRepository.Load(true);
+            ConnectAndLoadServer();
             Assert.AreEqual(95, environmentModel.ResourceRepository.All().Count);
         }
 
@@ -98,6 +96,10 @@ namespace Dev2.Activities.Specs.TestFramework
         [AfterScenario]
         public void CleanupTestFramework()
         {
+            if (environmentModel == null)
+            {
+                ConnectAndLoadServer();
+            }
             var allValues = MyContext.Values;
             foreach(var value in allValues)
             {
@@ -112,15 +114,20 @@ namespace Dev2.Activities.Specs.TestFramework
             }
         }
 
+        private static void ConnectAndLoadServer()
+        {
+            environmentModel = ServerRepository.Instance.Source;
+            environmentModel.Connect();
+            environmentModel.ResourceRepository.Load(true);
+        }
+
         [Given(@"test folder is cleaned")]
         [When(@"test folder is cleaned")]
         public void GivenTestFolderIsCleaned()
         {
             if (environmentModel == null)
             {
-                environmentModel = ServerRepository.Instance.Source;
-                environmentModel.Connect();
-                environmentModel.ResourceRepository.Load(true);
+                ConnectAndLoadServer();
             }
 
             DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
