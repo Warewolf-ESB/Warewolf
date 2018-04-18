@@ -4,7 +4,6 @@ using Dev2.Utils;
 using log4net.Config;
 using System;
 using System.IO;
-using Warewolf.Studio.AntiCorruptionLayer;
 
 namespace Dev2
 {
@@ -14,7 +13,7 @@ namespace Dev2
         public static void Main(string[] args)
         {
             ConfigureLogging();
-            Dev2Logger.Info("Studio " + Utils.FetchVersionInfo() + " Starting.", GlobalConstants.WarewolfInfo);
+            Dev2Logger.Info("Studio " + Warewolf.Studio.AntiCorruptionLayer.Utils.FetchVersionInfo() + " Starting.", GlobalConstants.WarewolfInfo);
             var wrapper = new SingleInstanceApplicationWrapper();
             wrapper.Run(args);
         }
