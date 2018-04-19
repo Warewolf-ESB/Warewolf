@@ -73,16 +73,7 @@ namespace Dev2.Runtime.ESB
         }
 
         #endregion Constructors
-
-        #region Travis New Methods
-
-        /// <summary>
-        /// Invokes the specified service as per the dataObject against theHost
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        /// <exception cref="System.Exception">Can only execute workflows from web browser</exception>
+                
         public Guid Invoke(IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             var result = GlobalConstants.NullDataListID;
@@ -97,100 +88,7 @@ namespace Dev2.Runtime.ESB
             errors.ClearErrors();
             try
             {
-                var serviceId = dataObject.ResourceID;
-
-                var serviceName = dataObject.ServiceName;
-                if (serviceId == Guid.Empty && string.IsNullOrEmpty(serviceName))
-                {
-                    errors.AddError(Resources.DynamicServiceError_ServiceNotSpecified);
-                }
-                else
-                {
-                    try
-                    {
-                        Dev2Logger.Debug("Finding service", dataObject.ExecutionID.ToString());
-                        var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
-
-                        if (theService == null)
-                        {
-                            if (!dataObject.IsServiceTestExecution)
-                            {
-                                theService = _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID);
-                            }
-                            if (theService == null)
-                            {
-                                if (dataObject.IsServiceTestExecution)
-                                {
-                                    var testResult = new ServiceTestModelTO
-                                    {
-                                        Result = new TestRunResult
-                                        {
-                                            RunTestResult = RunResult.TestResourceDeleted,
-                                            Message = "Resource has been deleted",
-                                            DebugForTest = new List<IDebugState>(),
-                                            TestName = dataObject.TestName
-                                        },
-                                        TestPassed = false,
-                                        TestInvalid = true,
-                                        FailureMessage = "Resource has been deleted",
-                                        TestName = dataObject.TestName,
-                                    };
-                                    var ser = new Dev2JsonSerializer();
-                                    _request.ExecuteResult = ser.SerializeToBuilder(testResult);
-                                }
-
-                                errors.AddError(string.Format(ErrorResource.ServiceNotFound, serviceName));
-                            }
-                        }
-                        else if (theService.Actions.Count <= 1)
-                        {
-                            #region Execute ESB container
-
-                            var theStart = theService.Actions.FirstOrDefault();
-                            if (theStart != null && theStart.ActionType != enActionType.InvokeManagementDynamicService && theStart.ActionType != enActionType.Workflow && dataObject.IsFromWebServer)
-                            {
-                                throw new Exception(ErrorResource.CanOnlyExecuteWorkflowsFromWebBrowser);
-                            }
-                            Dev2Logger.Debug("Mapping Action Dependencies", dataObject.ExecutionID.ToString());
-                            MapServiceActionDependencies(theStart);
-
-                            if (theStart != null)
-                            {
-                                theStart.Service = theService;
-                                theStart.DataListSpecification = theService.DataListSpecification;
-                                Dev2Logger.Debug("Getting container", dataObject.ExecutionID.ToString());
-                                var container = GenerateContainer(theStart, dataObject, _workspace);
-                                container.Execute(out errors, 0);
-                            }
-
-                            #endregion Execute ESB container
-                        }
-                        else
-                        {
-                            errors.AddError(string.Format(ErrorResource.MalformedService, serviceId));
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        errors.AddError(e.Message);
-                    }
-                    finally
-                    {
-                        if (dataObject.Environment.HasErrors())
-                        {
-                            var errorString = dataObject.Environment.FetchErrors();
-                            var executionErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-                            errors.MergeErrors(executionErrors);
-                        }
-
-                        dataObject.Environment.AddError(errors.MakeDataListReady());
-
-                        if (errors.HasErrors())
-                        {
-                            Dev2Logger.Error(errors.MakeDisplayReady(), GlobalConstants.WarewolfError);
-                        }
-                    }
-                }
+                errors = TryInvokeService(dataObject, errors);
             }
             finally
             {
@@ -200,6 +98,113 @@ namespace Dev2.Runtime.ESB
                 DispatchDebugErrors(errors, dataObject, StateType.End);
             }
             return result;
+        }
+
+        ErrorResultTO TryInvokeService(IDSFDataObject dataObject, ErrorResultTO errors)
+        {
+            var serviceId = dataObject.ResourceID;
+
+            var serviceName = dataObject.ServiceName;
+            if (serviceId == Guid.Empty && string.IsNullOrEmpty(serviceName))
+            {
+                errors.AddError(Resources.DynamicServiceError_ServiceNotSpecified);
+            }
+            else
+            {
+                try
+                {
+                    errors = InvokeService(dataObject, errors, serviceId, serviceName);
+                }
+                catch (Exception e)
+                {
+                    errors.AddError(e.Message);
+                }
+                finally
+                {
+                    if (dataObject.Environment.HasErrors())
+                    {
+                        var errorString = dataObject.Environment.FetchErrors();
+                        var executionErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                        errors.MergeErrors(executionErrors);
+                    }
+
+                    dataObject.Environment.AddError(errors.MakeDataListReady());
+
+                    if (errors.HasErrors())
+                    {
+                        Dev2Logger.Error(errors.MakeDisplayReady(), GlobalConstants.WarewolfError);
+                    }
+                }
+            }
+
+            return errors;
+        }
+
+        private ErrorResultTO InvokeService(IDSFDataObject dataObject, ErrorResultTO errors, Guid serviceId, string serviceName)
+        {
+            Dev2Logger.Debug("Finding service", dataObject.ExecutionID.ToString());
+            var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
+
+            if (theService == null)
+            {
+                if (!dataObject.IsServiceTestExecution)
+                {
+                    theService = _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID);
+                }
+                if (theService == null)
+                {
+                    if (dataObject.IsServiceTestExecution)
+                    {
+                        var testResult = new ServiceTestModelTO
+                        {
+                            Result = new TestRunResult
+                            {
+                                RunTestResult = RunResult.TestResourceDeleted,
+                                Message = "Resource has been deleted",
+                                DebugForTest = new List<IDebugState>(),
+                                TestName = dataObject.TestName
+                            },
+                            TestPassed = false,
+                            TestInvalid = true,
+                            FailureMessage = "Resource has been deleted",
+                            TestName = dataObject.TestName,
+                        };
+                        var ser = new Dev2JsonSerializer();
+                        _request.ExecuteResult = ser.SerializeToBuilder(testResult);
+                    }
+
+                    errors.AddError(string.Format(ErrorResource.ServiceNotFound, serviceName));
+                }
+            }
+            else if (theService.Actions.Count <= 1)
+            {
+                #region Execute ESB container
+
+                var theStart = theService.Actions.FirstOrDefault();
+                if (theStart != null && theStart.ActionType != enActionType.InvokeManagementDynamicService && theStart.ActionType != enActionType.Workflow && dataObject.IsFromWebServer)
+                {
+                    throw new Exception(ErrorResource.CanOnlyExecuteWorkflowsFromWebBrowser);
+                }
+                Dev2Logger.Debug("Mapping Action Dependencies", dataObject.ExecutionID.ToString());
+                MapServiceActionDependencies(theStart);
+
+                if (theStart != null)
+                {
+                    theStart.Service = theService;
+                    theStart.DataListSpecification = theService.DataListSpecification;
+                    Dev2Logger.Debug("Getting container", dataObject.ExecutionID.ToString());
+                    var container = GenerateContainer(theStart, dataObject, _workspace);
+                    container.Execute(out errors, 0);
+                }
+
+                #endregion Execute ESB container
+            }
+            else
+            {
+                errors.AddError(string.Format(ErrorResource.MalformedService, serviceId));
+            }
+
+            return errors;
         }
 
         public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke) => GenerateInvokeContainer(dataObject, serviceId, isLocalInvoke, default(Guid));
@@ -242,33 +247,36 @@ namespace Dev2.Runtime.ESB
                 if (_cache.ContainsKey(dataObject.ResourceID))
                 {
                     var sa = _cache[dataObject.ResourceID];
-
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
                 else
-
                 {
-                    var resourceId = dataObject.ResourceID;
-                    Dev2Logger.Debug($"Getting DynamicService: {serviceName}", dataObject.ExecutionID.ToString());
-                    var theService = GetService(serviceName, resourceId);
-                    IEsbExecutionContainer executionContainer = null;
-
-                    if (theService != null && theService.Actions.Any())
-                    {
-                        var sa = theService.Actions.FirstOrDefault();
-                        if (sa != null)
-                        {
-                            MapServiceActionDependencies(sa);
-                            sa.Service = theService;
-                            _cache.TryAdd(dataObject.ResourceID, sa);
-                            executionContainer = GenerateContainer(sa, dataObject, _workspace);
-                        }
-                    }
-
-                    return executionContainer;
+                    return GenerateInvokeContainerAndCache(dataObject, serviceName);
                 }
             }
             return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
+        }
+
+        private IEsbExecutionContainer GenerateInvokeContainerAndCache(IDSFDataObject dataObject, string serviceName)
+        {
+            var resourceId = dataObject.ResourceID;
+            Dev2Logger.Debug($"Getting DynamicService: {serviceName}", dataObject.ExecutionID.ToString());
+            var theService = GetService(serviceName, resourceId);
+            IEsbExecutionContainer executionContainer = null;
+
+            if (theService != null && theService.Actions.Any())
+            {
+                var sa = theService.Actions.FirstOrDefault();
+                if (sa != null)
+                {
+                    MapServiceActionDependencies(sa);
+                    sa.Service = theService;
+                    _cache.TryAdd(dataObject.ResourceID, sa);
+                    executionContainer = GenerateContainer(sa, dataObject, _workspace);
+                }
+            }
+
+            return executionContainer;
         }
 
         DynamicService GetService(string serviceName, Guid resourceId)
@@ -329,8 +337,6 @@ namespace Dev2.Runtime.ESB
                 serviceAction.Source = _serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
             }
         }
-
-        #endregion Travis New Methods
 
         #region IDisposable Members
 

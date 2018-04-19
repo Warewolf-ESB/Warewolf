@@ -8,16 +8,11 @@ namespace Dev2.Diagnostics.Debug
     public class TestDebugMessageRepo
     {
         readonly IDictionary<Tuple<Guid,string>, IList<IDebugState>> _data = new Dictionary<Tuple<Guid, string>, IList<IDebugState>>();
+
         static readonly object Lock = new object();
 
         static TestDebugMessageRepo _instance;
-
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        /// <value>
-        /// The instance.
-        /// </value>
+        
         public static TestDebugMessageRepo Instance => _instance ?? (_instance = new TestDebugMessageRepo());
         
         public void AddDebugItem(Guid resourceID,string testName, IDebugState ds)
@@ -31,11 +26,7 @@ namespace Dev2.Diagnostics.Debug
                     {
                         if (list.Contains(ds))
                         {
-                            var existingItem = list.FirstOrDefault(state => state.Equals(ds));
-                            if (existingItem != null && ds.StateType != StateType.Duration)
-                            {
-                                list.Add(ds);
-                            }
+                            UpdateExistingItem(ds, list);
                             return;
                         }
                         list.Add(ds);
@@ -48,7 +39,16 @@ namespace Dev2.Diagnostics.Debug
                 }
             }
         }
-        
+
+        private static void UpdateExistingItem(IDebugState ds, IList<IDebugState> list)
+        {
+            var existingItem = list.FirstOrDefault(state => state.Equals(ds));
+            if (existingItem != null && ds.StateType != StateType.Duration)
+            {
+                list.Add(ds);
+            }
+        }
+
         public IList<IDebugState> FetchDebugItems(Guid resourceId,string testName)
         {
 

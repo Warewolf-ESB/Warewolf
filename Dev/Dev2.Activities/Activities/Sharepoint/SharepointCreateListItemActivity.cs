@@ -84,53 +84,7 @@ namespace Dev2.Activities.Sharepoint
                 var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
-                    var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
-                    var listOfIterators = new Dictionary<string, IWarewolfIterator>();
-                    if (sharepointSource == null)
-                    {
-                        var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
-                        sharepointSource = new SharepointSource(contents.ToXElement());
-                    }
-                    var env = dataObject.Environment;
-                    if (dataObject.IsDebugMode())
-                    {
-                        AddInputDebug(env, update);
-                    }
-                    var sharepointHelper = sharepointSource.CreateSharepointHelper();
-                    var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
-                    using (var ctx = sharepointHelper.GetContext())
-                    {
-                        var list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, true);
-                        var iteratorList = new WarewolfListIterator();
-                        foreach (var sharepointReadListTo in sharepointReadListTos)
-                        {
-                            var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName, update));
-                            iteratorList.AddVariableToIterateOn(warewolfIterator);
-                            listOfIterators.Add(sharepointReadListTo.FieldName, warewolfIterator);
-                        }
-                        while (iteratorList.HasMoreData())
-                        {
-                            var itemCreateInfo = new ListItemCreationInformation();
-                            var listItem = list.AddItem(itemCreateInfo);
-                            foreach (var warewolfIterator in listOfIterators)
-                            {
-                                var sharepointFieldTo = fields.FirstOrDefault(to => to.Name == warewolfIterator.Key);
-                                if (sharepointFieldTo != null)
-                                {
-                                    object value = warewolfIterator.Value.GetNextValue();
-                                    value = SharepointUtils.CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
-                                    listItem[sharepointFieldTo.InternalName] = value;
-                                }
-                            }
-                            listItem.Update();
-                            ctx.ExecuteQuery();
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(Result))
-                    {
-                        env.Assign(Result, "Success", update);
-                        AddOutputDebug(dataObject, env, update);
-                    }
+                    TryExecute(dataObject, update, sharepointReadListTos);
                 }
             }
             catch (Exception e)
@@ -153,6 +107,57 @@ namespace Dev2.Activities.Sharepoint
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+            }
+        }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, List<SharepointReadListTo> sharepointReadListTos)
+        {
+            var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+            var listOfIterators = new Dictionary<string, IWarewolfIterator>();
+            if (sharepointSource == null)
+            {
+                var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
+                sharepointSource = new SharepointSource(contents.ToXElement());
+            }
+            var env = dataObject.Environment;
+            if (dataObject.IsDebugMode())
+            {
+                AddInputDebug(env, update);
+            }
+            var sharepointHelper = sharepointSource.CreateSharepointHelper();
+            var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
+            using (var ctx = sharepointHelper.GetContext())
+            {
+                var list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, true);
+                var iteratorList = new WarewolfListIterator();
+                foreach (var sharepointReadListTo in sharepointReadListTos)
+                {
+                    var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName, update));
+                    iteratorList.AddVariableToIterateOn(warewolfIterator);
+                    listOfIterators.Add(sharepointReadListTo.FieldName, warewolfIterator);
+                }
+                while (iteratorList.HasMoreData())
+                {
+                    var itemCreateInfo = new ListItemCreationInformation();
+                    var listItem = list.AddItem(itemCreateInfo);
+                    foreach (var warewolfIterator in listOfIterators)
+                    {
+                        var sharepointFieldTo = fields.FirstOrDefault(to => to.Name == warewolfIterator.Key);
+                        if (sharepointFieldTo != null)
+                        {
+                            object value = warewolfIterator.Value.GetNextValue();
+                            value = SharepointUtils.CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
+                            listItem[sharepointFieldTo.InternalName] = value;
+                        }
+                    }
+                    listItem.Update();
+                    ctx.ExecuteQuery();
+                }
+            }
+            if (!string.IsNullOrEmpty(Result))
+            {
+                env.Assign(Result, "Success", update);
+                AddOutputDebug(dataObject, env, update);
             }
         }
 

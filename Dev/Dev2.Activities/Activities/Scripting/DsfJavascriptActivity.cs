@@ -99,25 +99,7 @@ namespace Dev2.Activities.Scripting
                         return;
                     }
 
-                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
-                    while (scriptItr.HasMoreData())
-                    {
-                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
-                        var value = engine.Execute(scriptItr.GetNextValue());
-
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                        {
-
-                            env.Assign(region, value, update);
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                            {
-                                if (!string.IsNullOrEmpty(region))
-                                {
-                                    AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
-                                }
-                            }
-                        }
-                    }
+                    TryExecute(dataObject, update, allErrors, env);
                 }
             }
             catch (Exception e) when (e is NullReferenceException || e is RuntimeBinderException)
@@ -145,6 +127,28 @@ namespace Dev2.Activities.Scripting
                 }
             }
         }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, IExecutionEnvironment env)
+        {
+            var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
+            while (scriptItr.HasMoreData())
+            {
+                var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
+                var value = engine.Execute(scriptItr.GetNextValue());
+
+                foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                {
+
+                    env.Assign(region, value, update);
+                    if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(region))
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
+                    }
+
+                }
+            }
+        }
+
         void AddScriptSourcePathsToList()
         {
             if (!string.IsNullOrEmpty(IncludeFile))

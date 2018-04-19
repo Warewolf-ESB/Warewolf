@@ -58,15 +58,13 @@ namespace Dev2.Runtime.ServiceModel
 #pragma warning restore S1848 // Objects should not be created to be dropped immediately without being used
 
                 var connectResult = ConnectToServer(connection);
-                if (!string.IsNullOrEmpty(connectResult))
+                if (!string.IsNullOrEmpty(connectResult) && connectResult.Contains("FatalError"))
                 {
-                    if (connectResult.Contains("FatalError"))
-                    {
-                        var error = XElement.Parse(connectResult);
-                        result.IsValid = false;
-                        result.ErrorMessage = string.Join(" - ", error.Nodes().Cast<XElement>().Select(n => n.Value));
-                    }
+                    var error = XElement.Parse(connectResult);
+                    result.IsValid = false;
+                    result.ErrorMessage = string.Join(" - ", error.Nodes().Cast<XElement>().Select(n => n.Value));
                 }
+
             }
             catch (Exception ex)
             {
