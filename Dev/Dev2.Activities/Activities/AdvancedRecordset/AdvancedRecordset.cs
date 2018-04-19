@@ -20,6 +20,7 @@ using Dev2.Data.Util;
 using Warewolf.Core;
 using TSQL.Statements;
 using TSQL.Tokens;
+using System.Text;
 
 namespace Dev2.Activities
 {
@@ -33,46 +34,46 @@ namespace Dev2.Activities
         {
             Environment = env;
         }
-		public AdvancedRecordset()
-		{
-		}
-		public void AddRecordsetAsTable((string recordsetName,List<string> fields) recordSet)
-		{
-			ExecuteQuery("CREATE TABLE IF NOT EXISTS " + recordSet.recordsetName + "([" + recordSet.recordsetName + "_Primary_Id] INTEGER NOT NULL, CONSTRAINT[PK_" + recordSet.recordsetName + "] PRIMARY KEY([" + recordSet.recordsetName + "_Primary_Id]))");
-			foreach (var field in recordSet.fields)
-			{
-				if (!string.IsNullOrEmpty(field))
-				{
-					ExecuteNonQuery("ALTER TABLE  " + recordSet.recordsetName + " ADD COLUMN " + field + " string;");
-				}
-			}
-		}
+        public AdvancedRecordset()
+        {
+        }
+        public void AddRecordsetAsTable((string recordsetName,List<string> fields) recordSet)
+        {
+            ExecuteQuery("CREATE TABLE IF NOT EXISTS " + recordSet.recordsetName + "([" + recordSet.recordsetName + "_Primary_Id] INTEGER NOT NULL, CONSTRAINT[PK_" + recordSet.recordsetName + "] PRIMARY KEY([" + recordSet.recordsetName + "_Primary_Id]))");
+            foreach (var field in recordSet.fields)
+            {
+                if (!string.IsNullOrEmpty(field))
+                {
+                    ExecuteNonQuery("ALTER TABLE  " + recordSet.recordsetName + " ADD COLUMN " + field + " string;");
+                }
+            }
+        }
 
-		public DataSet ExecuteStatement(TSQLStatement sqlStatement,string query)
-		{
-			if(sqlStatement.Type == TSQLStatementType.Select)
-			{
-				return ExecuteQuery(query);
-			}
+        public DataSet ExecuteStatement(TSQLStatement sqlStatement,string query)
+        {
+            if(sqlStatement.Type == TSQLStatementType.Select)
+            {
+                return ExecuteQuery(query);
+            }
 
-			var recordset = new DataTable();
-			recordset.Columns.Add("records_affected", typeof(int));
-			recordset.Rows.Add(ExecuteNonQuery(query));
-			var ds = new DataSet();
-			ds.Tables.Add(recordset);
-			return ds;
-		}
-		public string ReturnSql(List<TSQLToken> tokens)
-		{
-			var tokenString = "";
-			foreach (TSQLToken token in tokens)
-			{
-				tokenString = string.Concat(tokenString, " ", token.Text);
-			}
-			return tokenString.Replace(" ( ", "(").Replace(" ) ", ") ").Replace(" )", ")").Replace(" . ", ".").Trim();
-		}
+            var recordset = new DataTable();
+            recordset.Columns.Add("records_affected", typeof(int));
+            recordset.Rows.Add(ExecuteNonQuery(query));
+            var ds = new DataSet();
+            ds.Tables.Add(recordset);
+            return ds;
+        }
+        public string ReturnSql(List<TSQLToken> tokens)
+        {
+            var tokenString = "";
+            foreach (TSQLToken token in tokens)
+            {
+                tokenString = string.Concat(tokenString, " ", token.Text);
+            }
+            return tokenString.Replace(" ( ", "(").Replace(" ) ", ") ").Replace(" )", ")").Replace(" . ", ".").Trim();
+        }
 
-		public DataSet ExecuteQuery(string sqlQuery)
+        public DataSet ExecuteQuery(string sqlQuery)
         {
             try
             {
@@ -152,22 +153,23 @@ namespace Dev2.Activities
             command.CommandType = CommandType.Text;
             var dt = _dbManager.FetchDataTable(command);
             var value = dt.Rows[0]["Value"].ToString();
-            int Num;
-            var isNumber = int.TryParse(value, out Num);
-            var newVariableValue = "";
+            var isNumber = int.TryParse(value, out int Num);
+
             if (isNumber)
             {
-                newVariableValue = value;
+                return value;
             }
             else
             {
+                var newVariableValue = new StringBuilder();
                 var arrayString = value.Split(',');
                 foreach (var str in arrayString)
                 {
-                    newVariableValue += newVariableValue.Length > 0 ? ",'" + str + "'" : "'" + str + "'";
+                    var s = newVariableValue.Length > 0 ? ",'{0}'" : "'{0}'";
+                    newVariableValue.AppendFormat(s, str);
                 }
+                return newVariableValue.ToString();
             }
-            return newVariableValue;
         }
         public void DeleteTableInSqlite(string recordsetName)
         {
@@ -257,7 +259,7 @@ namespace Dev2.Activities
                     rowIdx++;
                 }
             }
-		}
+        }
 
         private void ApplyResultToEnvironmentForEachColumn(string returnRecordsetName, int update, ref bool started, ref int rowIdx, DataRow row)
         {
@@ -273,18 +275,18 @@ namespace Dev2.Activities
         }
 
         public void ApplyScalarResultToEnvironment(string returnRecordsetName, List<DataRow> recordset)
-		{
-			var l = new List<AssignValue>();
-			if (DataListUtil.IsEvaluated(returnRecordsetName))
-			{
-				l.Add(new AssignValue(returnRecordsetName, recordset[0].ItemArray[0].ToString()));
-			}
-			Environment.AssignWithFrame(l, 0);
-			Environment.CommitAssign();
-		}
-		public void Dispose()
-		{
-			_dbManager.Dispose();
-		}
-	}
+        {
+            var l = new List<AssignValue>();
+            if (DataListUtil.IsEvaluated(returnRecordsetName))
+            {
+                l.Add(new AssignValue(returnRecordsetName, recordset[0].ItemArray[0].ToString()));
+            }
+            Environment.AssignWithFrame(l, 0);
+            Environment.CommitAssign();
+        }
+        public void Dispose()
+        {
+            _dbManager.Dispose();
+        }
+    }
 }
