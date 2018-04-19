@@ -198,12 +198,12 @@ namespace Warewolf.Storage
 
         public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update)
         {
-            throw new NotImplementedException();
+            return _inner.EvalAsTable(recordsetExpression, update);
         }
 
         public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update, bool throwsifnotexists)
         {
-            throw new NotImplementedException();
+            return _inner.EvalAsTable(recordsetExpression, update, throwsifnotexists);
         }
     }
 }
