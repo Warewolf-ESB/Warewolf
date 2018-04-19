@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             InitializeComponent();
         }
 
-        protected override AdvancedRecordsetDesignerViewModel CreateViewModel() => new AdvancedRecordsetDesignerViewModel(ModelItem, new AsyncWorker(), new ViewPropertyBuilder());
+        protected override AdvancedRecordsetDesignerViewModel CreateViewModel() => new AdvancedRecordsetDesignerViewModel(ModelItem, new ViewPropertyBuilder());
     }
 }
     

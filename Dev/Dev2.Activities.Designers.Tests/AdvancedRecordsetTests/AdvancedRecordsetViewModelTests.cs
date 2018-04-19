@@ -55,7 +55,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             var mod = new SqliteModel();
             var act = new AdvancedRecordsetActivity();
 
-            using (var advancedRecordset = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var advancedRecordset = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 //------------Execute Test---------------------------
                 advancedRecordset.ClearValidationMemoWithNoFoundError();
@@ -91,12 +91,12 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var mod = new SqliteModel{
-                mod.HasRecError = true
+                HasRecError = true
             };
             var act = new AdvancedRecordsetActivity();
 
             //------------Execute Test---------------------------
-            using (var advancedRecordset = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var advancedRecordset = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 advancedRecordset.GenerateOutputsCommand.Execute(null);
 
@@ -140,9 +140,9 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             DataListSingleton.SetDataList(dataListViewModel);
 
             var act = new AdvancedRecordsetActivity();
-            const var query = "select name as username,age,address_id from person";
+            const string query = "select name as username,age,address_id from person";
             //------------Execute Test---------------------------
-            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 viewModel.SqlQuery = query;
                 viewModel.GenerateOutputsCommand.Execute(query);
@@ -183,9 +183,9 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
 
             var act = new AdvancedRecordsetActivity();
 
-            const var query = "select p.name as username,p.address_id as address from person p";
+            const string query = "select p.name as username,p.address_id as address from person p";
             //------------Execute Test---------------------------
-            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 viewModel.SqlQuery = query;
                 viewModel.OutputsRegion.RecordsetName = "NewPerson";
@@ -238,9 +238,9 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             dataListViewModel.RecsetCollection.Add(recordSetItemModel);
             DataListSingleton.SetDataList(dataListViewModel);
             var act = new AdvancedRecordsetActivity();
-            const var query = "select person.name as username,person.age as Age,person.address_id as Address from person";
+            const string query = "select person.name as username,person.age as Age,person.address_id as Address from person";
             //------------Execute Test---------------------------
-            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 viewModel.SqlQuery = query;
                 viewModel.GenerateOutputsCommand.Execute(query);
@@ -293,9 +293,9 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             dataListViewModel.RecsetCollection.Add(recordSetItemModel);
             DataListSingleton.SetDataList(dataListViewModel);
             var act = new AdvancedRecordsetActivity();
-            const var query = "select name as username,age as Age,address_id as Address from person";
+            const string query = "select name as username,age as Age,address_id as Address from person";
             //------------Execute Test---------------------------
-            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 viewModel.SqlQuery = query;
                 viewModel.GenerateOutputsCommand.Execute(query);
@@ -356,9 +356,9 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             DataListSingleton.SetDataList(dataListViewModel);
 
             var act = new AdvancedRecordsetActivity();
-            const var query = "select name as username,age as age,address_id as Address from person;Select addr from address";
+            const string query = "select name as username,age as age,address_id as Address from person;Select addr from address";
             //------------Execute Test---------------------------
-            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 viewModel.SqlQuery = query;
                 viewModel.GenerateOutputsCommand.Execute(query);
@@ -409,9 +409,9 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             DataListSingleton.SetDataList(dataListViewModel);
 
             var act = new AdvancedRecordsetActivity();
-            const var query = "Update person set age = 30 where name = 'bob'";
+            const string query = "Update person set age = 30 where name = 'bob'";
             //------------Execute Test---------------------------
-            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 viewModel.SqlQuery = query;
                 viewModel.GenerateOutputsCommand.Execute(query);
@@ -468,9 +468,9 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             dataListViewModel.RecsetCollection.Add(recordSetItemModel2);
             DataListSingleton.SetDataList(dataListViewModel);
             var act = new AdvancedRecordsetActivity();
-            const var query = "select name as username,age as Age,address_id as Address from person p;Select addr from address a";
+            const string query = "select name as username,age as Age,address_id as Address from person p;Select addr from address a";
             //------------Execute Test---------------------------
-            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 viewModel.SqlQuery = query;
                 viewModel.GenerateOutputsCommand.Execute(query);
@@ -510,10 +510,10 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
             CustomContainer.Register(mockMainViewModel.Object);
 
             var mod = new SqliteModel{
-                mod.HasRecError = true
+                HasRecError = true
             };
             var act = new AdvancedRecordsetActivity();
-            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new SynchronousAsyncWorker(), new ViewPropertyBuilder()))
+            using (var viewModel = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
                 //------------Execute Test---------------------------
                 viewModel.UpdateHelpDescriptor("help");
