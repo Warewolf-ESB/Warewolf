@@ -3,7 +3,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
@@ -14,14 +13,11 @@ using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using TSQL;
-using TSQL.Tokens;
 using TSQL.Statements;
 using Warewolf.Storage.Interfaces;
 using Dev2.Common.Interfaces;
 using System.Text.RegularExpressions;
-using Dev2.Common.Interfaces.DB;
 using Dev2.DataList.Contract;
-using System.Globalization;
 using Dev2.Util;
 
 namespace Dev2.Activities
@@ -33,7 +29,6 @@ namespace Dev2.Activities
         public IExecutionEnvironment ExecutionEnvironment { get; protected set; }
         private AdvancedRecordset AdvancedRecordset { get; set; }
         public string SqlQuery { get; set; }
-        public string ObjectName { get; set; }
         public string RecordsetName { get; set; }
         public IList<INameValue> DeclareVariables { get; set; }
         public string ExecuteActionString { get; set; }
@@ -111,61 +106,61 @@ namespace Dev2.Activities
             AdvancedRecordset = new AdvancedRecordset(dataObject.Environment);
             AddDeclarations(dataObject, update);
 
-			var queryText = AddSqlForVariables(SqlQuery);
-			var statements = TSQLStatementReader.ParseStatements(queryText);
-			var allTables = new List<string>();
-			if (queryText.Contains("UNION") && statements.Count == 2)
-			{
-				var tables = statements[0].GetAllTables();
-				foreach (var table in tables)
-				{
-					LoadRecordset(table.TableName);
-					allTables.Add(table.TableName);
-				}
-				var results = AdvancedRecordset.ExecuteQuery(queryText);
-				foreach (DataTable dt in results.Tables)
-				{
-					AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update);
-				}
-			}
-			else
-			{
-				foreach (TSQLStatement statement in statements)
-				{
-					var tables = statement.GetAllTables();
-					foreach (var table in tables)
-					{
-						LoadRecordset(table.TableName);
-						allTables.Add(table.TableName);
-					}
-					if (statement.Type == TSQLStatementType.Select)
-					{
-						var selectStatement = statement as TSQLSelectStatement;
-						ProcessSelectStatement(selectStatement, update);
-					}
-					else
-					{
-						var unknownStatement = statement as TSQLUnknownStatement;
-						ProcessComplexStatement(unknownStatement, update);
-					}
-				}
-			}
+            var queryText = AddSqlForVariables(SqlQuery);
+            var statements = TSQLStatementReader.ParseStatements(queryText);
+            var allTables = new List<string>();
+            if (queryText.Contains("UNION") && statements.Count == 2)
+            {
+                var tables = statements[0].GetAllTables();
+                foreach (var table in tables)
+                {
+                    LoadRecordset(table.TableName);
+                    allTables.Add(table.TableName);
+                }
+                var results = AdvancedRecordset.ExecuteQuery(queryText);
+                foreach (DataTable dt in results.Tables)
+                {
+                    AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update);
+                }
+            }
+            else
+            {
+                foreach (var statement in statements)
+                {
+                    var tables = statement.GetAllTables();
+                    foreach (var table in tables)
+                    {
+                        LoadRecordset(table.TableName);
+                        allTables.Add(table.TableName);
+                    }
+                    if (statement.Type == TSQLStatementType.Select)
+                    {
+                        var selectStatement = statement as TSQLSelectStatement;
+                        ProcessSelectStatement(selectStatement, update);
+                    }
+                    else
+                    {
+                        var unknownStatement = statement as TSQLUnknownStatement;
+                        ProcessComplexStatement(unknownStatement, update);
+                    }
+                }
+            }
             foreach (var table in allTables)
             {
                 AdvancedRecordset.DeleteTableInSqlite(table);
             }
         }
 
-		void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update)
-		{
-			var results = AdvancedRecordset.ExecuteQuery(AdvancedRecordset.ReturnSql(selectStatement.Tokens));
-			foreach (DataTable dt in results.Tables)
-			{
-				AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update);
-			}
+        void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update)
+        {
+            var results = AdvancedRecordset.ExecuteQuery(AdvancedRecordset.ReturnSql(selectStatement.Tokens));
+            foreach (DataTable dt in results.Tables)
+            {
+                AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update);
+            }
 
-		}
-		void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update)
+        }
+        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update)
         {
             var tokens = complexStatement.Tokens;
             for (int i = 0; i < complexStatement.Tokens.Count; i++)
@@ -182,15 +177,15 @@ namespace Dev2.Activities
                 {
                     ProcessUpdateStatement(complexStatement, update);
                 }
-				if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
-				{
-					ProcessUpdateStatement(complexStatement, update);
-				}
-				if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
-				{
-					ProcessUpdateStatement(complexStatement, update);
-				}
-			}
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                {
+                    ProcessUpdateStatement(complexStatement, update);
+                }
+                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                {
+                    ProcessUpdateStatement(complexStatement, update);
+                }
+            }
         }
         void ProcessCreateTableStatement(TSQLUnknownStatement complexStatement)
         {
@@ -210,15 +205,15 @@ namespace Dev2.Activities
                 {
                     outputRecordsetName = tokens[i].Text;
                 }
-				if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
-				{
-					outputRecordsetName = tokens[i + 2].Text;
-				}
-				if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
-				{
-					outputRecordsetName = tokens[i + 2].Text;
-				}
-				if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+                if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
+                {
+                    outputRecordsetName = tokens[i + 2].Text;
+                }
+                if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
                 {
                     outputRecordsetName = tokens[i + 2].Text;
                 }
@@ -325,7 +320,7 @@ namespace Dev2.Activities
         }
         public bool Equals(AdvancedRecordsetActivity other)
         {
-            if (ReferenceEquals(null, other))
+            if (other is null)
             {
                 return false;
             }
@@ -339,22 +334,11 @@ namespace Dev2.Activities
         }
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            if (obj is AdvancedRecordsetActivity act)
             {
-                return false;
+                return Equals(act);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != this.GetType())
-            {
-                return false;
-            }
-
-            return Equals((AdvancedRecordsetActivity)obj);
+            return false;
         }
         public override int GetHashCode()
         {
