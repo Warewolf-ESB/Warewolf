@@ -103,6 +103,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ConnectionBuilder.cs" />
     <Compile Include="IConnectionBuilder.cs" />
     <Compile Include="ISqlConnection.cs" />

@@ -132,6 +132,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ConnectControlViewModelTests.cs" />
     <Compile Include="DeployDestinationViewModelTests.cs" />
     <Compile Include="DeploySourceExplorerViewModelTests.cs" />

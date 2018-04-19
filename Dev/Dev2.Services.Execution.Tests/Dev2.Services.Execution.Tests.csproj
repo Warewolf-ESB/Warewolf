@@ -68,6 +68,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="DatabaseServiceExecutionTests.cs" />
   </ItemGroup>
   <ItemGroup>

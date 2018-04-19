@@ -62,6 +62,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ServerForTesting.cs" />
   </ItemGroup>
   <ItemGroup>

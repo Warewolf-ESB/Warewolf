@@ -222,6 +222,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
     <Compile Include="Designers2\.Net Dll Enhanced\DotNetDllDesigner.xaml.cs">
       <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>

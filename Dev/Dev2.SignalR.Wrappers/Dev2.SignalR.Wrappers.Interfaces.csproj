@@ -68,6 +68,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ConnectionStateWrapped.cs" />
     <Compile Include="IHubConnectionWrapper.cs" />
     <Compile Include="IHubProxyWrapper.cs" />

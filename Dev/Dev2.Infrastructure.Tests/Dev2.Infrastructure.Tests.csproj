@@ -109,6 +109,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="Collections\ObservableReadOnlyListTests.cs" />
     <Compile Include="Communication\FutureRecieptTest.cs" />
     <Compile Include="Communication\JsonSerializerTest.cs" />

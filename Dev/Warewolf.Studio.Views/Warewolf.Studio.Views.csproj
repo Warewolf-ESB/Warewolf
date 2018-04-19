@@ -235,6 +235,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="RequestServiceNameView.xaml.cs">
       <DependentUpon>RequestServiceNameView.xaml</DependentUpon>
     </Compile>

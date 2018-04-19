@@ -133,6 +133,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="Languages\Core.Designer.cs">
       <DependentUpon>Core.resx</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -85,6 +85,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <None Include="app.config" />
     <None Include="Dev2.SignalR.Wrappers.New.ruleset" />
     <None Include="packages.config">

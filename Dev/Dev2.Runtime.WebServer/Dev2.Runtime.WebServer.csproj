@@ -133,6 +133,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ApisJsonBuilder.cs" />
     <Compile Include="CommunicationContextExtenstions.cs" />
     <Compile Include="Controllers\AbstractController.cs" />
