@@ -333,7 +333,7 @@ namespace Dev2.Activities.Specs.Merge
             var toolConflict = conflict as IToolConflictRow;
             return toolConflict;
         }
-        
+
         [Then(@"conflict ""(.*)"" Current matches tool ""(.*)""")]
         public void ThenConflictCurrentMatchesTool(int conflictRow, string mergeToolDescription)
         {

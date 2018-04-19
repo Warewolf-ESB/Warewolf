@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
             }
 
-            var instance = BuildInstance(constructor, type, constructorArgs, loadedAssembly);
+            var instance = TryBuildInstance(constructor, type, constructorArgs, loadedAssembly);
             var serializeToJsonString = instance.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { type } });
             
             constructor.PluginConstructor.ReturnObject = serializeToJsonString;
@@ -66,28 +66,18 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             };
         }
 
-        static object BuildInstance(PluginInvokeArgs setupInfo, Type type, List<object> constructorArgs, Assembly loadedAssembly)
+        static object TryBuildInstance(PluginInvokeArgs setupInfo, Type type, List<object> constructorArgs, Assembly loadedAssembly)
         {
             var instance = new object();
             if (setupInfo.PluginConstructor?.Inputs != null && (setupInfo.PluginConstructor == null || setupInfo.PluginConstructor.Inputs.Any()))
             {
                 try
                 {
-                    var types = setupInfo.PluginConstructor?.Inputs.Select(parameter => GetTypeFromLoadedAssembly(parameter.TypeName, loadedAssembly));
-                    if (types != null)
-                    {
-                        var constructorInfo = type.GetConstructor(types.ToArray());
-                        if (constructorInfo != null)
-                        {
-                            instance = constructorInfo.Invoke(constructorArgs.ToArray());
-                        }
-                    }
+                    instance = BuildInstance(setupInfo, type, constructorArgs, loadedAssembly, instance);
                 }
                 catch (Exception)
                 {
                     instance = Activator.CreateInstance(type, constructorArgs);
-
-
                 }
             }
             else
@@ -97,7 +87,20 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return instance;
         }
 
+        private static object BuildInstance(PluginInvokeArgs setupInfo, Type type, List<object> constructorArgs, Assembly loadedAssembly, object instance)
+        {
+            var types = setupInfo.PluginConstructor?.Inputs.Select(parameter => GetTypeFromLoadedAssembly(parameter.TypeName, loadedAssembly));
+            if (types != null)
+            {
+                var constructorInfo = type.GetConstructor(types.ToArray());
+                if (constructorInfo != null)
+                {
+                    instance = constructorInfo.Invoke(constructorArgs.ToArray());
+                }
+            }
 
+            return instance;
+        }
 
         public IDev2MethodInfo Run(IDev2MethodInfo dev2MethodInfo, PluginExecutionDto dto, out string objectString)
         {
@@ -316,14 +319,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             return serviceMethodList;
         }
-
-        /// <summary>
-        /// Lists the methods.
-        /// </summary>
-        /// <param name="assemblyLocation">The assembly location.</param>
-        /// <param name="assemblyName">Name of the assembly.</param>
-        /// <param name="fullName">The full name.</param>
-        /// <returns></returns>
+        
         public ServiceMethodList ListMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
         {
             var serviceMethodList = new ServiceMethodList();
@@ -331,7 +327,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
-
                 
                 methodInfos.ToList().ForEach(info =>
                 {
@@ -349,7 +344,6 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     {
                         serviceMethod.Dev2ReturnType = $"return: {returnType.Name}";
                         serviceMethod.IsObject = false;
-
                     }
                     else if (info.ReturnType == typeof(void))
                     {
@@ -357,28 +351,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     else
                     {
-                        var enumerableType = GetEnumerableType(returnType);
-                        if (enumerableType != null)
-                        {
-                            if (enumerableType.IsPrimitive || enumerableType == typeof(decimal) || enumerableType == typeof(string))
-                            {
-                                serviceMethod.Dev2ReturnType = $"return: {returnType.Name}";
-                                serviceMethod.IsObject = false;
-                            }
-                            else
-                            {
-                                var jObject = GetPropertiesJArray(enumerableType);
-                                serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
-                                serviceMethod.IsObject = true;
-                            }
-                        }
-                        else
-                        {
-                            var jObject = GetPropertiesJObject(returnType);
-                            serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
-                            serviceMethod.IsObject = true;
-                        }
-
+                        ListReturnTypes(serviceMethod, returnType);
                     }
                     var parameterInfos = info.GetParameters().ToList();
                     foreach (var parameterInfo in parameterInfos)
@@ -402,6 +375,31 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
 
             return serviceMethodList;
+        }
+
+        private static void ListReturnTypes(ServiceMethod serviceMethod, Type returnType)
+        {
+            var enumerableType = GetEnumerableType(returnType);
+            if (enumerableType != null)
+            {
+                if (enumerableType.IsPrimitive || enumerableType == typeof(decimal) || enumerableType == typeof(string))
+                {
+                    serviceMethod.Dev2ReturnType = $"return: {returnType.Name}";
+                    serviceMethod.IsObject = false;
+                }
+                else
+                {
+                    var jObject = GetPropertiesJArray(enumerableType);
+                    serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                    serviceMethod.IsObject = true;
+                }
+            }
+            else
+            {
+                var jObject = GetPropertiesJObject(returnType);
+                serviceMethod.Dev2ReturnType = jObject.ToString(Formatting.None);
+                serviceMethod.IsObject = true;
+            }
         }
 
         static void BuildParameter(Type parameterType, IMethodParameter methodParameter)

@@ -31,15 +31,12 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         protected virtual void Dispose(bool disposing)
         {
-            if(!_disposed)
+            if (!_disposed && disposing)
             {
-                if(disposing)
-                {
-                    // If we have any managed, IDisposable resources, Dispose of them here.
-                    EventPublisher.Unsubscribe(this);
-                }
-
+                // If we have any managed, IDisposable resources, Dispose of them here.
+                EventPublisher.Unsubscribe(this);
             }
+
             // Mark us as disposed, to prevent multiple calls to dispose from having an effect, 
             _disposed = true;
         }

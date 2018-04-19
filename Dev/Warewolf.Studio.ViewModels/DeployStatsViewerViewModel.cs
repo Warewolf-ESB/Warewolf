@@ -132,10 +132,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string Status
         {
-            get
-            {
-                return _status;
-            }
+            get => _status;
             set
             {
                 _status = value;
@@ -147,7 +144,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_items != null)
             {
-                Calculate(_items);
+                TryCalculate(_items);
             }
         }
 
@@ -167,93 +164,38 @@ namespace Warewolf.Studio.ViewModels
                 {
                     foreach (var currentItem in _items)
                     {
-                        var explorerItemViewModel =
-                            _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
-                        {
-                            if (explorerItemViewModel != null)
-                            {
-                                if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
-                                {
-                                    currentItem.CanDeploy = !IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel) ? explorerItemViewModel.CanContribute : true;
-                                }
-                            }
-                            else
-                            {
-                                currentItem.CanDeploy = true;
-                            }
-                        }
+                        CheckDestinationPermissions(currentItem);
                     }
+                }
+            }
+        }
+
+        void CheckDestinationPermissions(IExplorerTreeItem currentItem)
+        {
+            var explorerItemViewModel = _destinationItems.FirstOrDefault(p => p.ResourceId == currentItem.ResourceId);
+            {
+                if (explorerItemViewModel != null)
+                {
+                    if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
+                    {
+                        currentItem.CanDeploy = !IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel) ? explorerItemViewModel.CanContribute : true;
+                    }
+                }
+                else
+                {
+                    currentItem.CanDeploy = true;
                 }
             }
         }
 
         static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel) => Equals(currentItem.Server, explorerItemViewModel.Server);
 
-        public void Calculate(IList<IExplorerTreeItem> items)
+        public void TryCalculate(IList<IExplorerTreeItem> items)
         {
             _items = items;
             if (items != null)
             {
-                Connectors = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                        && a.ResourceType.Contains(@"Service")
-                                        && a.ResourceType != @"WorkflowService"
-                                        && a.ResourceType != @"ReservedService");
-
-                Services = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                        && a.ResourceType == @"WorkflowService"
-                                        && a.IsResourceChecked == true);
-
-                Sources = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
-                                            && IsSource(a.ResourceType)
-                                            && a.IsResourceChecked == true);
-
-                Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
-
-                if (_destination.SelectedEnvironment != null && _destination.SelectedEnvironment.UnfilteredChildren != null)
-                {
-                    var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren?? new ObservableCollection<IExplorerItemViewModel>());
-                    var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
-                    var idConflicts = from b in explorerTreeItems
-                               join explorerTreeItem in items on b.ResourceId equals explorerTreeItem.ResourceId
-                               where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
-                               select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId,SourceId = explorerTreeItem.ResourceId};
-
-                    var pathConflicts = from b in explorerTreeItems
-                                      join explorerTreeItem in items on b.ResourcePath equals explorerTreeItem.ResourcePath
-                                      where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
-                                      select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
-                    var allConflicts = new List<Conflict>();
-                    allConflicts.AddRange(idConflicts);
-                    allConflicts.AddRange(pathConflicts);
-                    _conflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
-                    _new = items.Where(p=>p.IsResourceChecked == true && Conflicts.All(c => p.ResourceId != c.SourceId)).Except(explorerTreeItems);
-                    var ren = from b in explorerTreeItems
-                              join explorerTreeItem in items on new { b.ResourcePath } equals new { explorerTreeItem.ResourcePath }
-                              where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
-                              select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };
-                    var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
-                    if (errors.Any())
-                    {
-                        RenameErrors = Resources.Languages.Core.DeployResourcesSamePathAndName;
-                        foreach (var error in errors)
-                        {
-                            RenameErrors += $"\n{error.SourceName}-->{error.DestinationName}";
-                        }
-                        RenameErrors += Environment.NewLine + Resources.Languages.Core.DeployRenameBeforeContinue;
-                    }
-                    else
-                    {
-                        RenameErrors = @"";
-                    }
-                }
-                else
-                {
-                    _conflicts = new List<Conflict>();
-                    _new = new List<IExplorerTreeItem>();
-                }
-
-                Overrides = Conflicts.Count;
-                NewResources = New.Count;
+                Calculate(items);
             }
             else
             {
@@ -269,6 +211,70 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
             CheckDestinationPermissions();
+        }
+
+        void Calculate(IList<IExplorerTreeItem> items)
+        {
+            Connectors = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
+                                                    && a.ResourceType.Contains(@"Service")
+                                                    && a.ResourceType != @"WorkflowService"
+                                                    && a.ResourceType != @"ReservedService");
+
+            Services = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
+                                    && a.ResourceType == @"WorkflowService"
+                                    && a.IsResourceChecked == true);
+
+            Sources = items.Count(a => !string.IsNullOrEmpty(a.ResourceType)
+                                        && IsSource(a.ResourceType)
+                                        && a.IsResourceChecked == true);
+
+            Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
+
+            if (_destination.SelectedEnvironment != null && _destination.SelectedEnvironment.UnfilteredChildren != null)
+            {
+                var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
+                var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
+                var idConflicts = from b in explorerTreeItems
+                                  join explorerTreeItem in items on b.ResourceId equals explorerTreeItem.ResourceId
+                                  where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
+                                  select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
+
+                var pathConflicts = from b in explorerTreeItems
+                                    join explorerTreeItem in items on b.ResourcePath equals explorerTreeItem.ResourcePath
+                                    where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
+                                    select new Conflict { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, DestinationId = b.ResourceId, SourceId = explorerTreeItem.ResourceId };
+                var allConflicts = new List<Conflict>();
+                allConflicts.AddRange(idConflicts);
+                allConflicts.AddRange(pathConflicts);
+                _conflicts = allConflicts.Distinct(new ConflictEqualityComparer()).ToList();
+                _new = items.Where(p => p.IsResourceChecked == true && Conflicts.All(c => p.ResourceId != c.SourceId)).Except(explorerTreeItems);
+                var ren = from b in explorerTreeItems
+                          join explorerTreeItem in items on new { b.ResourcePath } equals new { explorerTreeItem.ResourcePath }
+                          where b.ResourceType != @"Folder" && explorerTreeItem.ResourceType != @"Folder" && explorerTreeItem.IsResourceChecked.HasValue && explorerTreeItem.IsResourceChecked.Value
+                          select new { SourceName = explorerTreeItem.ResourcePath, DestinationName = b.ResourcePath, SourceId = explorerTreeItem.ResourceId, DestinationId = b.ResourceId };
+                var errors = ren.Where(ax => ax.SourceId != ax.DestinationId).ToArray();
+                if (errors.Any())
+                {
+                    RenameErrors = Resources.Languages.Core.DeployResourcesSamePathAndName;
+                    foreach (var error in errors)
+                    {
+                        RenameErrors += $"\n{error.SourceName}-->{error.DestinationName}";
+                    }
+                    RenameErrors += Environment.NewLine + Resources.Languages.Core.DeployRenameBeforeContinue;
+                }
+                else
+                {
+                    RenameErrors = @"";
+                }
+            }
+            else
+            {
+                _conflicts = new List<Conflict>();
+                _new = new List<IExplorerTreeItem>();
+            }
+
+            Overrides = Conflicts.Count;
+            NewResources = New.Count;
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();

@@ -572,6 +572,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     explorerItemViewModel.Parent.AreVersionsVisible = true;
                 }
+
             }
             mainViewModel?.UpdateExplorerWorkflowChanges(resource.ID);
         }

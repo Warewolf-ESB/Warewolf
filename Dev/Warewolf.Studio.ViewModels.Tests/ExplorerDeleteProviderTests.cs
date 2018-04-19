@@ -59,7 +59,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(explorerDeleteProvider);
             //---------------Execute Test ----------------------
-            explorerDeleteProvider.Delete(mockExplorerItemModel.Object);
+            explorerDeleteProvider.TryDelete(mockExplorerItemModel.Object);
             //---------------Test Result -----------------------
             updateManagerProxy.Verify(manager => manager.DeleteResource(It.IsAny<Guid>()));
         }
@@ -108,7 +108,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(explorerDeleteProvider);
             //---------------Execute Test ----------------------
-            var deletedFileMetadata = explorerDeleteProvider.Delete(mockExplorerItemModel.Object);
+            var deletedFileMetadata = explorerDeleteProvider.TryDelete(mockExplorerItemModel.Object);
             //---------------Test Result -----------------------
             mockVersionManager.Verify(manager => manager.DeleteVersion(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()));
             Assert.IsTrue(deletedFileMetadata.IsDeleted);
@@ -152,7 +152,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(explorerDeleteProvider);
             //---------------Execute Test ----------------------
-            var item = explorerDeleteProvider.Delete(mockExplorerItemModel.Object);
+            var item = explorerDeleteProvider.TryDelete(mockExplorerItemModel.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(item);
             mockQueryManager.Verify(manager => manager.FetchDependants(It.IsAny<Guid>()));
@@ -203,7 +203,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(explorerDeleteProvider);
             //---------------Execute Test ----------------------
-            var item = explorerDeleteProvider.Delete(mockExplorerItemModel.Object);
+            var item = explorerDeleteProvider.TryDelete(mockExplorerItemModel.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(item);
             mockQueryManager.Verify(manager => manager.FetchDependants(It.IsAny<Guid>()), Times.Once);
@@ -255,7 +255,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(explorerDeleteProvider);
             //---------------Execute Test ----------------------
-            var item = explorerDeleteProvider.Delete(mockExplorerItemModel.Object);
+            var item = explorerDeleteProvider.TryDelete(mockExplorerItemModel.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(item);
             mockQueryManager.Verify(manager => manager.FetchDependants(It.IsAny<Guid>()), Times.Once);

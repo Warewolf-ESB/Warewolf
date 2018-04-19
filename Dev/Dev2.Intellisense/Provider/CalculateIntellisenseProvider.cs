@@ -149,16 +149,12 @@ namespace Dev2.Studio.InterfaceImplementors
                 var text = (string)value;
                 var allowUserCalculateMode = (string)parameter == "True";
 
-                if (allowUserCalculateMode && text.Length > 0)
+                if (allowUserCalculateMode && text.Length > 0 && text.StartsWith(GlobalConstants.CalculateTextConvertPrefix) && text.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
                 {
-                    if(text.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
-                    {
-                        if(text.EndsWith(GlobalConstants.CalculateTextConvertSuffix))
-                        {
-                            text = "=" + text.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, text.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
-                        }
-                    }
+                    text = "=" + text.Substring(GlobalConstants.CalculateTextConvertPrefix.Length, text.Length - (GlobalConstants.CalculateTextConvertSuffix.Length + GlobalConstants.CalculateTextConvertPrefix.Length));
                 }
+
+
 
                 return text;
             }
@@ -173,13 +169,11 @@ namespace Dev2.Studio.InterfaceImplementors
                 var text = (string)value;
                 var allowUserCalculateMode = (string)parameter == "True";
 
-                if (allowUserCalculateMode && text.Length > 0)
+                if (allowUserCalculateMode && text.Length > 0 && text[0] == '=')
                 {
-                    if(text[0] == '=')
-                    {
-                        text = String.Format(GlobalConstants.CalculateTextConvertFormat, text.Substring(1));
-                    }
+                    text = String.Format(GlobalConstants.CalculateTextConvertFormat, text.Substring(1));
                 }
+
 
                 return text;
             }
