@@ -2322,13 +2322,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         static void ApplyIsDraggedInstance(string isWorkflow)
         {
-            IsItemDragged.Instance.IsDragged |= (isWorkflow.Contains("DsfSqlServerDatabaseActivity") || isWorkflow.Contains("DsfMySqlDatabaseActivity")
-                || isWorkflow.Contains("DsfODBCDatabaseActivity") || isWorkflow.Contains("DsfOracleDatabaseActivity")
-                || isWorkflow.Contains("DsfPostgreSqlActivity") || isWorkflow.Contains("DsfWebDeleteActivity")
-                || isWorkflow.Contains("DsfWebGetActivity") || isWorkflow.Contains("DsfWebPostActivity")
-                || isWorkflow.Contains("DsfWebPutActivity") || isWorkflow.Contains("DsfComDllActivity")
-                || isWorkflow.Contains("DsfEnhancedDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity")
-                || isWorkflow.Contains("AdvancedRecordsetActivity"));
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfSqlServerDatabaseActivity") || isWorkflow.Contains("DsfMySqlDatabaseActivity");
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfODBCDatabaseActivity") || isWorkflow.Contains("DsfOracleDatabaseActivity");
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfPostgreSqlActivity") || isWorkflow.Contains("DsfWebDeleteActivity");
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfWebGetActivity") || isWorkflow.Contains("DsfWebPostActivity");
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfWebPutActivity") || isWorkflow.Contains("DsfComDllActivity");
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("DsfEnhancedDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity");
+            IsItemDragged.Instance.IsDragged |= isWorkflow.Contains("AdvancedRecordsetActivity");
         }
 
         [ExcludeFromCodeCoverage]
