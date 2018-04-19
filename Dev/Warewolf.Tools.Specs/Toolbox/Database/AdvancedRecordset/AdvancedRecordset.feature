@@ -2308,14 +2308,14 @@ Scenario: Using a recordset for IN values
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
 	| rs                | value |
-	| TableCopy(1).name | Hatter     |
-	| TableCopy(2).name | Bob     |
+	| TableCopy(1).name | Bob     |
+	| TableCopy(2).name | Hatter     |
 	And the debug inputs as  
 	| Query  |
 	| String |
 	And the debug output as
 	|                             |
-	| [[TableCopy(2).name]] = Bob |
+	| [[TableCopy(2).name]] = Hatter |
 
 Scenario:   Update statement with variable in where clause
 	Given I have a recordset with this shape
