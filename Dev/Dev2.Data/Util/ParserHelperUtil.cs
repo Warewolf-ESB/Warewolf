@@ -81,13 +81,11 @@ namespace Dev2.Data.Util
             if (cur == charToCheck && prev != charToCheck)
             {
                 var checkIndex = i + 1;
-                if (checkIndex < payload.Length)
+                if (checkIndex < payload.Length && payload[checkIndex] == charToCheck)
                 {
-                    if (payload[checkIndex] == charToCheck)
-                    {
-                        shouldAddToRegion = false;
-                    }
+                    shouldAddToRegion = false;
                 }
+
             }
             return shouldAddToRegion;
         }
@@ -146,6 +144,7 @@ namespace Dev2.Data.Util
                 {
                     if (!string.IsNullOrEmpty(name))
                     {
+#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
                         if (Char.IsNumber(name[0]))
                         {
                             return IntellisenseFactory.CreateErrorResult(1, 1, dataListVerifyPart, displayString + " name " + displayName + " begins with a number", enIntellisenseErrorCode.SyntaxError, true);
@@ -166,8 +165,8 @@ namespace Dev2.Data.Util
                         {
                             return intellisenseResult;
                         }
+#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
                         XmlConvert.VerifyName(name);
-
                     }
                 }
                 catch (Exception ex)
@@ -209,10 +208,7 @@ namespace Dev2.Data.Util
                     }
                     else
                     {
-                        if (match == search)
-                        {
-                            emptyOk = true;
-                        }
+                        emptyOk = match == search;
                     }
                 }
             }

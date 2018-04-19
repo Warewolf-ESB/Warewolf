@@ -44,7 +44,7 @@ namespace Dev2.Runtime.ESB.WF
             if (dataObject != null)
             {
                 var debugState = GetDebugState(dataObject, stateType, hasErrors, existingErrors, errors, workflowStartTime, interrogateInputs, interrogateOutputs, durationVisible);
-                WriteDebug(dataObject, debugState);
+                TryWriteDebug(dataObject, debugState);
             }
         }
 
@@ -114,7 +114,7 @@ namespace Dev2.Runtime.ESB.WF
             return debugState;
         }
 
-        public void WriteDebug(IDSFDataObject dataObject, DebugState debugState)
+        public void TryWriteDebug(IDSFDataObject dataObject, DebugState debugState)
         {
             if (dataObject.IsDebugMode() || dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer)
             {
@@ -125,17 +125,7 @@ namespace Dev2.Runtime.ESB.WF
                     var dataObjectExecutionId = dataObject.ExecutionID.ToString();
                     try
                     {
-                        var resource = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID);
-                        var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-                        var executionLogginResultString = GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag;
-                        if (dataObject.Environment.HasErrors())
-                        {
-                            Dev2Logger.Error(executionLogginResultString, dataObjectExecutionId);
-                        }
-                        else
-                        {
-                            Dev2Logger.Debug(executionLogginResultString, dataObjectExecutionId);
-                        }
+                        WriteDebug(dataObject, dataObjectExecutionId);
                     }
                     catch (Exception)
                     {
@@ -149,6 +139,20 @@ namespace Dev2.Runtime.ESB.WF
             }
         }
 
+        private void WriteDebug(IDSFDataObject dataObject, string dataObjectExecutionId)
+        {
+            var resource = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID);
+            var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
+            var executionLogginResultString = GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag;
+            if (dataObject.Environment.HasErrors())
+            {
+                Dev2Logger.Error(executionLogginResultString, dataObjectExecutionId);
+            }
+            else
+            {
+                Dev2Logger.Debug(executionLogginResultString, dataObjectExecutionId);
+            }
+        }
 
         static DebugState BuildDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, DateTime? workflowStartTime, bool durationVisible, Guid parentInstanceId, string name, bool hasError)
         {

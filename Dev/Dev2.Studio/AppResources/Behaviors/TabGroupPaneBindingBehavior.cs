@@ -102,13 +102,11 @@ namespace Dev2.Studio.AppResources.Behaviors
                 var mainViewModel = DocumentHost?.DataContext as ShellViewModel;
                 _shellViewModel = mainViewModel;
             }
-            if (_shellViewModel != null)
+            if (_shellViewModel != null && _shellViewModel.ActiveItem != workSurfaceContextViewModel)
             {
-                if (_shellViewModel.ActiveItem != workSurfaceContextViewModel)
-                {
-                    _shellViewModel.ActiveItem = workSurfaceContextViewModel;
-                }
+                _shellViewModel.ActiveItem = workSurfaceContextViewModel;
             }
+
         }
 
         #endregion DocumentHost

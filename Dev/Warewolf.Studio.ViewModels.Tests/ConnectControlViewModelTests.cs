@@ -289,7 +289,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public async Task TestConnectNullArgument()
         {
             //act
-            var result = await _target.ConnectAsync(null);
+            var result = await _target.TryConnectAsync(null);
 
             //assert
             Assert.IsFalse(result);
@@ -303,7 +303,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.Setup(it => it.ConnectAsync()).ThrowsAsync(new Exception());
 
             //act
-            var result = await _target.ConnectAsync(serverMock.Object);
+            var result = await _target.TryConnectAsync(serverMock.Object);
 
             //assert
             Assert.IsFalse(result);
@@ -328,7 +328,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(mainViewModelMock.Object);
 
             //act
-            var result = await _target.ConnectAsync(serverMock.Object);
+            var result = await _target.TryConnectAsync(serverMock.Object);
 
             //assert
             Assert.IsTrue(result);
@@ -366,7 +366,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(popupControllerMock.Object);
 
             //act
-            var result = await _target.ConnectAsync(serverMock.Object);
+            var result = await _target.TryConnectAsync(serverMock.Object);
 
             //assert
             Assert.IsTrue(result);
@@ -622,7 +622,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Returns(MessageBoxResult.None);
             var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator(), popupController.Object);
             //------------Execute Test---------------------------
-            var connect = await connectControlViewModel.ConnectAsync(_serverMock.Object);
+            var connect = await connectControlViewModel.TryConnectAsync(_serverMock.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(connect);
         }

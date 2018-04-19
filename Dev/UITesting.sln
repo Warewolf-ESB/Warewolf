@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Specs", "Warewo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UI.Load.Specs", "Warewolf.UI.Load.Specs\Warewolf.UI.Load.Specs.csproj", "{D694D1B5-C299-459C-AFAB-2CAE589204B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Launcher", "Warewolf.Launcher\Warewolf.Launcher.csproj", "{9B669D51-14CE-44A3-9407-8251BA3BAD19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{D694D1B5-C299-459C-AFAB-2CAE589204B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D694D1B5-C299-459C-AFAB-2CAE589204B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D694D1B5-C299-459C-AFAB-2CAE589204B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B669D51-14CE-44A3-9407-8251BA3BAD19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

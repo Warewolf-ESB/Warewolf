@@ -326,41 +326,51 @@ namespace Dev2.Activities.Designers2.Core
 
         public string ObjectName
         {
-            get { return _objectName; }
+            get => _objectName;
             set
             {
-                if (IsObject &&!string.IsNullOrEmpty(ObjectResult))
+                if (IsObject && !string.IsNullOrEmpty(ObjectResult))
                 {
-                    try
-                    {
-                        if (value != null)
-                        {
-                            _objectName = value;
-                            OnPropertyChanged();
-                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
-                            if (language.IsJsonIdentifierExpression)
-                            {
-                                if (_shellViewModel == null)
-                                {
-                                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
-                                }
-                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
-                            }
-                            _modelItem.SetProperty("ObjectName", value);
-                        }
-                        else
-                        {
-                            _objectName = string.Empty;
-                            _modelItem.SetProperty("ObjectName", _objectName);
-                            OnPropertyChanged();
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
-                    }
+                    TrySetObjectName(value);
                 }
             }
+        }
+
+        private void TrySetObjectName(string value)
+        {
+            try
+            {
+                if (value != null)
+                {
+                    SetObjectName(value);
+                }
+                else
+                {
+                    _objectName = string.Empty;
+                    _modelItem.SetProperty("ObjectName", _objectName);
+                    OnPropertyChanged();
+                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
+            }
+        }
+
+        private void SetObjectName(string value)
+        {
+            _objectName = value;
+            OnPropertyChanged();
+            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
+            if (language.IsJsonIdentifierExpression)
+            {
+                if (_shellViewModel == null)
+                {
+                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
+                }
+                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
+            }
+            _modelItem.SetProperty("ObjectName", value);
         }
 
         public string ObjectResult

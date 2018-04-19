@@ -241,13 +241,11 @@ namespace Dev2.Studio.ViewModels
                 {
                     return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
-                if (ActiveItem.WorkSurfaceKey.WorkSurfaceContext != WorkSurfaceContext.Workflow)
+                if (ActiveItem.WorkSurfaceKey.WorkSurfaceContext != WorkSurfaceContext.Workflow && ActiveItem.WorkSurfaceViewModel is IStudioTab vm)
                 {
-                    if (ActiveItem.WorkSurfaceViewModel is IStudioTab vm)
-                    {
-                        return new AuthorizeCommand(AuthorizationContext.Any, o => vm.DoDeactivate(false), o => vm.IsDirty);
-                    }
+                    return new AuthorizeCommand(AuthorizationContext.Any, o => vm.DoDeactivate(false), o => vm.IsDirty);
                 }
+
                 return ActiveItem.SaveCommand;
             }
         }
@@ -440,7 +438,7 @@ namespace Dev2.Studio.ViewModels
             Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
             if (message.Model != null)
             {
-                _worksurfaceContextManager.AddReverseDependencyVisualizerWorkSurface(message.Model);
+                _worksurfaceContextManager.TryShowDependencies(message.Model);
             }
         }
 
@@ -455,13 +453,11 @@ namespace Dev2.Studio.ViewModels
             IsNewWorkflowSaved = true;
             Dev2Logger.Info(message.GetType().Name, GlobalConstants.WarewolfInfo);
             _worksurfaceContextManager.AddWorkSurface(message.WorkSurfaceObject);
-            if (message.ShowDebugWindowOnLoad)
+            if (message.ShowDebugWindowOnLoad && ActiveItem != null && _canDebug)
             {
-                if (ActiveItem != null && _canDebug)
-                {
-                    ActiveItem.DebugCommand.Execute(null);
-                }
+                ActiveItem.DebugCommand.Execute(null);
             }
+
         }
 
         public bool IsNewWorkflowSaved { get; set; }
@@ -659,29 +655,20 @@ namespace Dev2.Studio.ViewModels
 
         public void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server)
         {
-            if (currentResource is ExplorerItemViewModel normalExplorer)
+            if (currentResource is ExplorerItemViewModel normalExplorer && normalExplorer.Server != null)
             {
-                switch (normalExplorer)
+                var currentResourceModel = normalExplorer.Server.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
+                var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
+                var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+                if (currentResourceModel != null && differenceResourceModel != null)
                 {
-                    case ExplorerItemViewModel b:
-                        if (b.Server != null)
-                        {
-                            var currentResourceModel = b.Server.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
-                            var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
-                            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
-                            if (currentResourceModel != null && differenceResourceModel != null)
-                            {
-                                workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
-                                workSurfaceKey.ResourceID = currentResourceModel.ID;
-                                workSurfaceKey.ServerID = currentResourceModel.ServerID;
-                                _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, true, workSurfaceKey);
-                            }
-                        }
-                        break;
-                    default:
-                        break;
+                    workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
+                    workSurfaceKey.ResourceID = currentResourceModel.ID;
+                    workSurfaceKey.ServerID = currentResourceModel.ServerID;
+                    _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, true, workSurfaceKey);
                 }
             }
+
         }
 
         public void OpenMergeConflictsView(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer)
@@ -1032,7 +1019,7 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
-            _worksurfaceContextManager.CreateNewScheduleWorkSurface(contextualResourceModel);
+            _worksurfaceContextManager.TryCreateNewScheduleWorkSurface(contextualResourceModel);
         }
 
         public void CreateTest(Guid resourceId)
@@ -1398,13 +1385,11 @@ namespace Dev2.Studio.ViewModels
                 return false;
             }
             var isActiveServerConnected = ActiveServer != null && ActiveServer.IsConnected && ActiveServer.CanStudioExecute && ShouldUpdateActiveState;
-            if (ActiveServer.IsConnected && ShouldUpdateActiveState)
+            if (ActiveServer.IsConnected && ShouldUpdateActiveState && ToolboxViewModel?.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
             {
-                if (ToolboxViewModel?.BackedUpTools != null && ToolboxViewModel.BackedUpTools.Count == 0)
-                {
-                    ToolboxViewModel.BuildToolsList();
-                }
+                ToolboxViewModel.BuildToolsList();
             }
+
             if (ToolboxViewModel != null)
             {
                 ToolboxViewModel.IsVisible = isActiveServerConnected;
@@ -1615,23 +1600,28 @@ namespace Dev2.Studio.ViewModels
                     var contextualResourceModel = models.FirstOrDefault();
                     if (contextualResourceModel != null)
                     {
-                        var deletionName = folderName;
-                        var description = "";
-                        if (string.IsNullOrEmpty(deletionName))
-                        {
-                            deletionName = contextualResourceModel.ResourceName;
-                            description = contextualResourceModel.ResourceType.GetDescription();
-                        }
-
-                        var shouldDelete = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmDelete, deletionName, description),
-                                                              StringResources.DialogTitle_ConfirmDelete,
-                                                              MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false) == MessageBoxResult.Yes;
-
-                        return shouldDelete;
+                        return ShouldDelete(folderName, contextualResourceModel);
                     }
                 }
             }
             return false;
+        }
+
+        private bool ShouldDelete(string folderName, IContextualResourceModel contextualResourceModel)
+        {
+            var deletionName = folderName;
+            var description = "";
+            if (string.IsNullOrEmpty(deletionName))
+            {
+                deletionName = contextualResourceModel.ResourceName;
+                description = contextualResourceModel.ResourceType.GetDescription();
+            }
+
+            var shouldDelete = PopupProvider.Show(string.Format(StringResources.DialogBody_ConfirmDelete, deletionName, description),
+                                                  StringResources.DialogTitle_ConfirmDelete,
+                                                  MessageBoxButton.YesNo, MessageBoxImage.Information, @"", false, false, true, false, false, false) == MessageBoxResult.Yes;
+
+            return shouldDelete;
         }
 
         public bool ShowDeleteDialogForFolder(string folderBeingDeleted)
@@ -1710,27 +1700,9 @@ namespace Dev2.Studio.ViewModels
                         environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
                         var resource = environment.ResourceRepository?.All().FirstOrDefault(rm =>
                         {
-                            var sameEnv = true;
-                            if (item.EnvironmentID != Guid.Empty)
-                            {
-                                sameEnv = item.EnvironmentID == environment.EnvironmentID;
-                            }
-                            return rm.ID == item.ID && sameEnv;
+                            return EnvironmentContainsResourceModel(rm, item, environment);
                         }) as IContextualResourceModel;
-
-                        if (resource == null)
-                        {
-                            workspaceItemsToRemove.Add(item);
-                        }
-                        else
-                        {
-                            Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ", GlobalConstants.WarewolfInfo);
-                            var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, item.WorkspaceID, resource.ID, false);
-                            resource.WorkflowXaml = fetchResourceDefinition.Message;
-                            resource.IsWorkflowSaved = item.IsWorkflowSaved;
-                            resource.OnResourceSaved += model => _getWorkspaceItemRepository().UpdateWorkspaceItemIsWorkflowSaved(model);
-                            _worksurfaceContextManager.AddWorkSurfaceContextImpl(resource, true);
-                        }
+                        AddResourcesAsWorkSurfaceItem(workspaceItemsToRemove, item, environment, resource);
                     }
                 }
                 else
@@ -1743,6 +1715,33 @@ namespace Dev2.Studio.ViewModels
             {
                 _getWorkspaceItemRepository().WorkspaceItems.Remove(workspaceItem);
             }
+        }
+
+        private void AddResourcesAsWorkSurfaceItem(HashSet<IWorkspaceItem> workspaceItemsToRemove, IWorkspaceItem item, IServer environment, IContextualResourceModel resource)
+        {
+            if (resource == null)
+            {
+                workspaceItemsToRemove.Add(item);
+            }
+            else
+            {
+                Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ", GlobalConstants.WarewolfInfo);
+                var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, item.WorkspaceID, resource.ID, false);
+                resource.WorkflowXaml = fetchResourceDefinition.Message;
+                resource.IsWorkflowSaved = item.IsWorkflowSaved;
+                resource.OnResourceSaved += model => _getWorkspaceItemRepository().UpdateWorkspaceItemIsWorkflowSaved(model);
+                _worksurfaceContextManager.AddWorkSurfaceContextImpl(resource, true);
+            }
+        }
+
+        private static bool EnvironmentContainsResourceModel(IResourceModel rm, IWorkspaceItem item, IServer environment)
+        {
+            var sameEnv = true;
+            if (item.EnvironmentID != Guid.Empty)
+            {
+                sameEnv = item.EnvironmentID == environment.EnvironmentID;
+            }
+            return rm.ID == item.ID && sameEnv;
         }
 
         public bool IsWorkFlowOpened(IContextualResourceModel resource) => _worksurfaceContextManager.IsWorkFlowOpened(resource);
@@ -1786,13 +1785,16 @@ namespace Dev2.Studio.ViewModels
             {
                 closeStudio = false;
             }
-            else if (result == MessageBoxResult.Yes)
+            else
             {
-                closeStudio = true;
-                SaveAllCommand.Execute(null);
-                if (!_continueShutDown)
+                if (result == MessageBoxResult.Yes)
                 {
-                    closeStudio = false;
+                    closeStudio = true;
+                    SaveAllCommand.Execute(null);
+                    if (!_continueShutDown)
+                    {
+                        closeStudio = false;
+                    }
                 }
             }
 
@@ -1812,13 +1814,10 @@ namespace Dev2.Studio.ViewModels
                 }
                 if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                 {
-                    if (vm is WorkflowDesignerViewModel workflowDesignerViewModel)
+                    if (vm is WorkflowDesignerViewModel workflowDesignerViewModel && workflowDesignerViewModel.ResourceModel is IContextualResourceModel resourceModel && !resourceModel.IsWorkflowSaved)
                     {
-                        if (workflowDesignerViewModel.ResourceModel is IContextualResourceModel resourceModel && !resourceModel.IsWorkflowSaved)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
                 }
                 else if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
@@ -1838,96 +1837,80 @@ namespace Dev2.Studio.ViewModels
                         break;
                     }
                 }
-                else if (vm.GetType().Name == "SourceViewModel`1")
+                else
                 {
-                    if (vm is SourceViewModel<IServerSource> serverSourceModel)
+                    if (vm.GetType().Name != "SourceViewModel`1")
                     {
-                        if (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        continue;
                     }
-                    if (vm is SourceViewModel<IPluginSource> pluginSourceModel)
+
+                    // TODO: refactor to common interface possibly extracted from SourceViewModel
+                    if (vm is SourceViewModel<IServerSource> serverSourceModel && (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged))
                     {
-                        if (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
-                    if (vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel)
+
+                    if (vm is SourceViewModel<IPluginSource> pluginSourceModel && (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged))
                     {
-                        if (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
-                    if (vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel)
+
+                    if (vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel && (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged))
                     {
-                        if (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
-                    if (vm is SourceViewModel<ISharepointServerSource> sharepointServerSourceModel)
+
+                    if (vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel && (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged))
                     {
-                        if (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
-                    if (vm is SourceViewModel<IOAuthSource> oAuthSourceModel)
+
+                    if (vm is SourceViewModel<ISharepointServerSource> sharepointServerSourceModel && (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged))
                     {
-                        if (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
-                    if (vm is SourceViewModel<IExchangeSource> exchangeSourceModel)
+
+                    if (vm is SourceViewModel<IOAuthSource> oAuthSourceModel && (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged))
                     {
-                        if (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
-                    if (vm is SourceViewModel<IComPluginSource> comPluginSourceModel)
+
+                    if (vm is SourceViewModel<IExchangeSource> exchangeSourceModel && (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged))
                     {
-                        if (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
-                    if (vm is SourceViewModel<IWebServiceSource> webServiceSourceModel)
+
+                    if (vm is SourceViewModel<IComPluginSource> comPluginSourceModel && (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged))
                     {
-                        if (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
-                    if (vm is SourceViewModel<IEmailServiceSource> emailServiceSourceModel)
+
+                    if (vm is SourceViewModel<IWebServiceSource> webServiceSourceModel && (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged))
                     {
-                        if (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
-                    if (vm is SourceViewModel<IDbSource> dbSourceModel)
+
+                    if (vm is SourceViewModel<IEmailServiceSource> emailServiceSourceModel && (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged))
                     {
-                        if (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged)
-                        {
-                            closeStudio = CallSaveDialog(closeStudio);
-                            break;
-                        }
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
                     }
+
+                    if (vm is SourceViewModel<IDbSource> dbSourceModel && (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged))
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
+
                 }
             }
             return closeStudio;
