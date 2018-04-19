@@ -55,6 +55,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="Program.cs" />
     <None Include="app.config" />
     <None Include="packages.config" />

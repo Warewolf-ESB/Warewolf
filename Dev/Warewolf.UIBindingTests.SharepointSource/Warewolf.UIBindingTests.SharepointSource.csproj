@@ -99,6 +99,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="Sharepoint.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

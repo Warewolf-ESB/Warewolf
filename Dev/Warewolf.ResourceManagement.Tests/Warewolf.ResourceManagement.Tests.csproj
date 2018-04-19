@@ -54,6 +54,11 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceActivityCacheTests.cs" />
+	<None Include="..\Run Tests.ps1">
+      <Link>Run Tests.ps1</Link>
+	  <Visible>False</Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">

@@ -45,6 +45,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <None Include="Dev2.Data.Interfaces.ruleset" />
     <None Include="packages.config" />
     <Reference Include="Ionic.Zip.Reduced">

@@ -228,6 +228,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="Activities\ActivityParser.cs" />
     <Compile Include="Activities\DateAndTime\DsfDotNetDateTimeActivity.cs" />
     <Compile Include="Activities\DateAndTime\DsfDotNetDateTimeDifferenceActivity.cs" />

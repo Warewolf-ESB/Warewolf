@@ -95,6 +95,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ComDll.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -183,6 +183,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ActivityComparerTests\PathOperations\DsfFolderReadNewComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Exchange\DsfExchangeNewEmailActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sequence\DsfSequenceActivityComparerTest.cs" />
