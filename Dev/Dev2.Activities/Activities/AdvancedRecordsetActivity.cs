@@ -33,7 +33,6 @@ namespace Dev2.Activities
         public IExecutionEnvironment ExecutionEnvironment { get; protected set; }
         private AdvancedRecordset AdvancedRecordset { get; set; }
         public string SqlQuery { get; set; }
-        public string ObjectName { get; set; }
         public string RecordsetName { get; set; }
         public IList<INameValue> DeclareVariables { get; set; }
         public string ExecuteActionString { get; set; }
