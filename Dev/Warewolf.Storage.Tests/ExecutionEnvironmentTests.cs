@@ -584,7 +584,7 @@ namespace Warewolf.Storage.Tests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ExecutionEnvironmentEvalDelete_Should_Clear_RecirdSet()
+        public void ExecutionEnvironmentEvalDelete_Should_Clear_RecordSet()
         {
             Assert.IsNotNull(_environment);
             _environment.Assign("[[rec().a]]", "Some Value", 0);
