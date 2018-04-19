@@ -124,6 +124,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ESB\Control\EnvironmentOutputMappingManager.cs" />
     <Compile Include="ESB\Control\EsbServiceInvoker.cs" />
     <Compile Include="ESB\Control\IEnvironmentOutputMappingManager.cs" />

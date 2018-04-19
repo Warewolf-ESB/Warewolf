@@ -70,6 +70,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="Tracker.cs" />
     <Compile Include="TrackerEventGroup.cs" />
     <None Include="Dev2.Instrumentation.ruleset" />

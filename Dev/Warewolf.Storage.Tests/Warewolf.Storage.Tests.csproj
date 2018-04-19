@@ -85,6 +85,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="WarewolfListIteratorTests.cs" />
     <Compile Include="WarewolfAtomIteratorTests.cs" />
     <Compile Include="FsInteropFunctionsTests.cs" />

@@ -57,6 +57,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="Toolbox\ToolBoxModel.cs" />
     <None Include="packages.config" />
     <None Include="Warewolf.Studio.Models.ruleset" />

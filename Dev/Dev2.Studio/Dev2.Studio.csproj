@@ -328,6 +328,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
     <Compile Include="AppResources\Behaviors\PopupBuildVisualTreeOnLoad.cs" />
