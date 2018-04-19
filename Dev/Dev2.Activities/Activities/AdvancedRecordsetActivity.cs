@@ -265,15 +265,9 @@ namespace Dev2.Activities
                 var value = varValue;
                 if (DataListUtil.IsFullyEvaluated(value))
                 {
-                    var variableValue = dataObject.Environment.Eval(value, update);
-                    if (variableValue.IsWarewolfAtomResult && variableValue is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data && !data.Item.IsNothing)
-                    {
-                        AdvancedRecordset.InsertIntoVariableTable(varName, data.Item.ToString());
-                    }
-                    if (variableValue.IsWarewolfAtomResult && variableValue is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult dataValue && dataValue.Item.IsNothing)
-                    {
-                        AdvancedRecordset.InsertIntoVariableTable(varName, value);
-                    }
+                    var variableValue = dataObject.Environment.EvalAsListOfStrings(value, update);
+                    var valueToUse = string.Join(",", variableValue);
+                    AdvancedRecordset.InsertIntoVariableTable(varName, valueToUse);
                 }
                 else
                 {
