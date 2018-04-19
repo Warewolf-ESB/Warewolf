@@ -61,7 +61,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to execute Tsql command on a recordset data source.
+        ///   Looks up a localized string similar to execute SQL command on a recordset data source.
         /// </summary>
         public static string Tool_AdvancedRecordset {
             get {

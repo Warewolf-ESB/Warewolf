@@ -349,6 +349,6 @@
     <value>python script</value>
   </data>
   <data name="Tool_AdvancedRecordset" xml:space="preserve">
-    <value>execute Tsql command on a recordset data source</value>
+    <value>execute SQL command on a recordset data source</value>
   </data>
 </root>
