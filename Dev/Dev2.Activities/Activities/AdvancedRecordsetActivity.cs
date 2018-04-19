@@ -313,36 +313,7 @@ namespace Dev2.Activities
         }
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            var execErrors = new ErrorResultTO();
-
-            tmpErrors = new ErrorResultTO();
-            tmpErrors.MergeErrors(execErrors);
-
-            var allErrors = new ErrorResultTO();
-            InitializeDebug(dataObject);
-            try
-            {
-                var advancedRecordset = new AdvancedRecordset(dataObject.Environment);
-                var personRecordsetName = "person";
-                var addressRecordsetName = "address";
-                advancedRecordset.LoadRecordsetAsTable(personRecordsetName);
-                advancedRecordset.LoadRecordsetAsTable(addressRecordsetName);
-                var results = advancedRecordset.ExecuteQuery(dataObject.QueryString);
-                // apply sql results to environment
-                advancedRecordset.ApplyResultToEnvironment("", Outputs, results.Tables[0].Rows.Cast<DataRow>().ToList(), false, 0);
-                var fetchErrors = allErrors.FetchErrors();
-                foreach (var error in fetchErrors)
-                {
-                    dataObject.Environment.Errors.Add(error);
-                }
-            }
-            catch (Exception e)
-            {
-                allErrors.AddError(e.Message);
-            }
-
-            tmpErrors.MergeErrors(execErrors);
-
+            throw new NotImplementedException();
         }
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
