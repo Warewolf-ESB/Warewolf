@@ -71,6 +71,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarLint.xml" />
     <Compile Include="ComponentModel\Extensions.cs" />
     <None Include="Dev2.Sql.ruleset" />
     <None Include="packages.config" />
