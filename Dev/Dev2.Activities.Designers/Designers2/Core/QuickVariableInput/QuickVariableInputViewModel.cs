@@ -42,9 +42,9 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         readonly Action<IEnumerable<string>, bool> _addToCollection;
 
         readonly PreviewViewModel _previewViewModel;
-        
+
         readonly List<IErrorInfo> _tokenizerValidationErrors = new List<IErrorInfo>();
-        
+
 
         #region CTOR
 
@@ -106,7 +106,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         {
             var viewModel = (QuickVariableInputViewModel)d;
             var isClosed = (bool)e.NewValue;
-            if(isClosed)
+            if (isClosed)
             {
                 viewModel.DoClear(null);
             }
@@ -282,7 +282,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             PreviewViewModel.Output = string.Empty;
             Validate();
 
-            if(IsValid)
+            if (IsValid)
             {
                 PreviewViewModel.Output = GetPreviewOutput();
             }
@@ -296,7 +296,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             var count = 1;
 
             var result = string.Join(Environment.NewLine, PreviewViewModel.Inputs.Take(MaxCount).Select(input => string.Format("{0} {1}", count++, input.Key)));
-            if(PreviewViewModel.Inputs.Count > MaxCount)
+            if (PreviewViewModel.Inputs.Count > MaxCount)
             {
                 result = string.Join(Environment.NewLine, result, "...");
             }
@@ -329,7 +329,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             UpdatePreviewViewModelInputs();
 
             var inputs = PreviewViewModel.Inputs.Select(input => input.Key);
-            var enumerable  = inputs as IList<string> ?? inputs.ToList();
+            var enumerable = inputs as IList<string> ?? inputs.ToList();
             EventPublishers.Aggregator.Publish(new AddStringListToDataListMessage(enumerable.ToList()));
             _addToCollection(enumerable, Overwrite);
             DoClear(o);
@@ -357,7 +357,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             var splitType = SplitType;
             var at = SplitToken;
 
-            if(string.IsNullOrWhiteSpace(stringToSplit))
+            if (string.IsNullOrWhiteSpace(stringToSplit))
             {
                 return null;
             }
@@ -418,7 +418,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             {
                 return dtb.Generate();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _tokenizerValidationErrors.Add(new ErrorInfo { ErrorType = ErrorType.Critical, Message = ex.Message });
             }
@@ -456,7 +456,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         IEnumerable<IActionableErrorInfo> ValidationErrorsImpl()
         {
-            if(string.IsNullOrWhiteSpace(VariableListString))
+            if (string.IsNullOrWhiteSpace(VariableListString))
             {
                 var doFocused = new Action(() => { IsVariableListFocused = true; });
                 yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = ErrorResource.VariableListStringRequired };
@@ -487,7 +487,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
                 yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Prefix contains invalid characters" };
             }
 
-            if(!string.IsNullOrEmpty(Suffix) && !IsValidName(Suffix))
+            if (!string.IsNullOrEmpty(Suffix) && !IsValidName(Suffix))
             {
                 var doFocused = new Action(() => { IsSuffixFocused = true; });
 
@@ -499,7 +499,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         {
             var doFocused = new Action(() => { IsSplitOnFocused = true; });
 
-            if(!SplitToken.IsWholeNumber())
+            if (!SplitToken.IsWholeNumber())
             {
                 yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Please supply a whole positive number for an Index split" };
             }
@@ -528,7 +528,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         {
             var doFocused = new Action(() => { IsSplitOnFocused = true; });
 
-            if(string.IsNullOrEmpty(SplitToken))
+            if (string.IsNullOrEmpty(SplitToken))
             {
                 yield return new ActionableErrorInfo(doFocused) { ErrorType = ErrorType.Critical, Message = "Please supply a value for a Character split" };
             }
@@ -536,18 +536,18 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         static bool IsValidRecordsetPrefix(string value)
         {
-            if(value.Contains("(") && value.Contains(")."))
+            if (value.Contains("(") && value.Contains(")."))
             {
                 var startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
                 var endIndex = value.LastIndexOf(").", StringComparison.Ordinal);
 
                 var tmp = value.Substring(startIndex, endIndex - startIndex);
                 var idxNum = 1;
-                if(tmp != "*" && !string.IsNullOrEmpty(tmp) && !int.TryParse(tmp, out idxNum))
+                if (tmp != "*" && !string.IsNullOrEmpty(tmp) && !int.TryParse(tmp, out idxNum))
                 {
                     return false;
                 }
-                if(idxNum < 1)
+                if (idxNum < 1)
                 {
                     return false;
                 }
@@ -558,14 +558,14 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         static bool IsValidName(string value)
         {
-            if(!string.IsNullOrWhiteSpace(value) && !value.Contains("."))
+            if (!string.IsNullOrWhiteSpace(value) && !value.Contains("."))
             {
                 try
                 {
                     XmlConvert.VerifyName(value);
                     return true;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     return false;
                 }
@@ -579,10 +579,10 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 
         void SplitTypeChanged()
         {
-            if(!String.IsNullOrEmpty(SplitType))
+            if (!String.IsNullOrEmpty(SplitType))
             {
                 var val = SplitType;
-                if(val == "Index" || val == "Chars")
+                if (val == "Index" || val == "Chars")
                 {
                     IsSplitTokenEnabled = true;
                 }
@@ -598,13 +598,12 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
         void UpdateUiState()
         {
             CanAdd = !string.IsNullOrWhiteSpace(VariableListString) && (!IsSplitTokenEnabled || !string.IsNullOrEmpty(SplitToken));
-            if(PreviewViewModel != null)
+            if (PreviewViewModel != null)
             {
                 PreviewViewModel.CanPreview = CanAdd;
             }
         }
 
         #endregion
-
     }
 }

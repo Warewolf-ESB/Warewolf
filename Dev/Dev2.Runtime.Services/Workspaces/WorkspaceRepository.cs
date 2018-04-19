@@ -341,19 +341,17 @@ namespace Dev2.Workspaces
             lock(UserMapLock)
             {
                 var filePath = GetUserMapFileName();
-                var fileExists = File.Exists(filePath);
                 using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
                 {
+                    var fileExists = File.Exists(filePath);
                     var formatter = new BinaryFormatter();
                     if(fileExists)
                     {
                         try
                         {
                             return (ConcurrentDictionary<string, Guid>)formatter.Deserialize(stream);
-                        }
-                         
-                        catch(Exception ex)
-                        
+                        }                         
+                        catch(Exception ex)                        
                         {
                             Dev2Logger.Error("WorkspaceRepository", ex, GlobalConstants.WarewolfError);
                             // Deserialization failed so overwrite with new one.
@@ -369,11 +367,15 @@ namespace Dev2.Workspaces
 
         static void WriteUserMap(ConcurrentDictionary<string, Guid> userMap)
         {
-            var filePath = GetUserMapFileName();
-            using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
+            // force a lock on the file system ;)
+            lock (UserMapLock)
             {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, userMap);
+                var filePath = GetUserMapFileName();
+                using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
+                {
+                    var formatter = new BinaryFormatter();
+                    formatter.Serialize(stream, userMap);
+                }
             }
         }
 

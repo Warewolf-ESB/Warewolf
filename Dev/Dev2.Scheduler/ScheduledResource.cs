@@ -341,13 +341,11 @@ namespace Dev2.Scheduler
                 {
                     return false;
                 }
-                if (otherTrigger.Trigger.Repetition == null)
+                if (otherTrigger.Trigger.Repetition == null && otherTrigger.Trigger.Repetition != null)
                 {
-                    if (otherTrigger.Trigger.Repetition != null)
-                    {
-                        return false;
-                    }
+                    return false;
                 }
+
                 if (otherTrigger.Trigger.Repetition != null && otherTrigger.Trigger.Repetition == null)
                 {
                     return false;

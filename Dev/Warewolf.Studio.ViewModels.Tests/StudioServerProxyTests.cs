@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
             //------------Execute Test---------------------------
-            var item = studioServerProxy.Delete(mockExplorerItemModel.Object);
+            var item = studioServerProxy.TryDelete(mockExplorerItemModel.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(item);
             mockUpdateManagerProxy.Verify(manager => manager.DeleteResource(It.IsAny<Guid>()), Times.Once);
@@ -154,7 +154,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockPopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, "false", true, true, false, false, false, false)).Returns(MessageBoxResult.OK);
             CustomContainer.Register(mockPopupController.Object);
             //------------Execute Test---------------------------
-            var item = studioServerProxy.Delete(mockExplorerItemModel.Object);
+            var item = studioServerProxy.TryDelete(mockExplorerItemModel.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(item);
             mockVersionManager.Verify(manager => manager.DeleteVersion(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once);
