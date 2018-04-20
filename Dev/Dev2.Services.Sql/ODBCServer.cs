@@ -199,8 +199,26 @@ namespace Dev2.Services.Sql
             return ExecuteReader(_command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
+		public DataSet FetchDataSet(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
 
-        public static T ExecuteReaader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
+			return _factory.FetchDataSet(command);
+		}
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteNonQuery(command);
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteScalar(command);
+		}
+		public static T ExecuteReaader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
         {
             try
             {

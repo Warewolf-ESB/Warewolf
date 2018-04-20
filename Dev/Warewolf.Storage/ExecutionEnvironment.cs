@@ -168,7 +168,13 @@ namespace Warewolf.Storage
                 throw;
             }
         }
-
+        public void AssignWithFrame(IEnumerable<IAssignValue> values, int update)
+        {
+            foreach (var value in values)
+            {
+                AssignWithFrame(value, update);
+            }
+        }
         public int GetLength(string recordSetName) => _env.RecordSets[recordSetName.Trim()].LastIndex;
 
         public int GetObjectLength(string recordSetName)
@@ -207,7 +213,7 @@ namespace Warewolf.Storage
                 var recSetData = recSetResult?.Item;
                 if (recSetData != null)
                 {
-                    return EvalAsRecordset(recSetData);
+                    return EvalListOfStringsHelper(recSetData);
                 }
             }
             var warewolfAtomListresult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
@@ -216,13 +222,11 @@ namespace Warewolf.Storage
                 throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
             }
 
-            {
-                var x = warewolfAtomListresult.Item;
-                return x.Select(WarewolfAtomToString).ToList();
-            }
+            var item = warewolfAtomListresult.Item;
+            return item.Select(WarewolfAtomToString).ToList();
         }
 
-        private static List<string> EvalAsRecordset(DataStorage.WarewolfRecordset recSetData)
+        private static IList<string> EvalListOfStringsHelper(DataStorage.WarewolfRecordset recSetData)
         {
             var data = recSetData.Data.ToArray();
             var listOfData = new List<string>();
@@ -234,7 +238,6 @@ namespace Warewolf.Storage
                 }
                 listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
             }
-
             return listOfData;
         }
 
@@ -311,8 +314,7 @@ namespace Warewolf.Storage
                 var recSetData = recSetResult?.Item;
                 if (recSetData != null)
                 {
-                    List<string> listOfData = EvalAsAtomResult(recSetData);
-                    return string.Join(",", listOfData);
+                    return WarewolfEvalResultToStringHelper(recSetData);
                 }
             }
             if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
@@ -336,7 +338,7 @@ namespace Warewolf.Storage
             throw new Exception(@"Null when value should have been returned.");
         }
 
-        private static List<string> EvalAsAtomResult(DataStorage.WarewolfRecordset recSetData)
+        private static string WarewolfEvalResultToStringHelper(DataStorage.WarewolfRecordset recSetData)
         {
             var data = recSetData.Data.ToArray();
             var listOfData = new List<string>();
@@ -348,8 +350,7 @@ namespace Warewolf.Storage
                 }
                 listOfData.AddRange(keyValuePair.Value.Select(WarewolfAtomToString).ToList());
             }
-
-            return listOfData;
+            return string.Join(",", listOfData);
         }
 
         public void EvalAssignFromNestedStar(string exp, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult, int update)
@@ -382,7 +383,7 @@ namespace Warewolf.Storage
         }
 
         public void EvalDelete(string exp, int update)
-        {
+    {
             _env = PublicFunctions.EvalDelete(exp, update, _env);
         }
 
@@ -404,12 +405,10 @@ namespace Warewolf.Storage
                 return $"[[{rec.Item.Name}(*).{rec.Item.Column}]]";
             }
 
-
-            if (exp.IsRecordSetNameExpression && exp is LanguageAST.LanguageExpression.RecordSetNameExpression recName)
+            if (exp.IsRecordSetNameExpression && exp is LanguageAST.LanguageExpression.RecordSetNameExpression recNameExp)
             {
-                return $"[[{recName.Item.Name}(*)]]";
+                return $"[[{recNameExp.Item.Name}(*)]]";
             }
-
 
             if (exp.IsJsonIdentifierExpression)
             {
@@ -418,15 +417,27 @@ namespace Warewolf.Storage
             }
             return expression;
         }
+        public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update) => EvalAsTable(recordsetExpression, update, false);
+        public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update, bool throwsifnotexists)
+
+        {           
+            var result = PublicFunctions.EvalEnvExpressionToTable(recordsetExpression, update, _env, throwsifnotexists);
+            return result;
+        }
 
         public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update) => EvalAsList(expression, update, false);
-
         public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string expression, int update, bool throwsifnotexists)
         {
             var result = Eval(expression, update, throwsifnotexists);
             if (result.IsWarewolfAtomResult)
             {
-                DataStorage.WarewolfAtom item = EvalAsRecordset(result);
+                var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
+                if (warewolfAtomResult == null)
+                {
+                    throw new Exception(@"Null when value should have been returned.");
+                }
+
+                var item = warewolfAtomResult.Item;
                 return new List<DataStorage.WarewolfAtom> { item };
             }
             if (result.IsWarewolfRecordSetResult)
@@ -435,14 +446,14 @@ namespace Warewolf.Storage
                 var recSetData = recSetResult?.Item;
                 if (recSetData != null)
                 {
-                    return EvalRecordsetAsAtom(recSetData);
+                    return EvalAsListHelper(recSetData);
                 }
             }
             var x = (result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)?.Item;
             return x?.ToList();
         }
 
-        private static List<DataStorage.WarewolfAtom> EvalRecordsetAsAtom(DataStorage.WarewolfRecordset recSetData)
+        private static IEnumerable<DataStorage.WarewolfAtom> EvalAsListHelper(DataStorage.WarewolfRecordset recSetData)
         {
             var data = recSetData.Data.ToArray();
             var listOfData = new List<DataStorage.WarewolfAtom>();
@@ -454,26 +465,14 @@ namespace Warewolf.Storage
                 }
                 listOfData.AddRange(keyValuePair.Value.ToList());
             }
-
             return listOfData;
-        }
-
-        private static DataStorage.WarewolfAtom EvalAsRecordset(CommonFunctions.WarewolfEvalResult result)
-        {
-            var warewolfAtomResult = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            if (warewolfAtomResult == null)
-            {
-                throw new Exception(@"Null when value should have been returned.");
-            }
-
-            var item = warewolfAtomResult.Item;
-            return item;
         }
 
         public IEnumerable<int> EvalWhere(string expression, Func<DataStorage.WarewolfAtom, bool> clause, int update) => PublicFunctions.EvalWhere(expression, _env, update, clause);
 
         public void ApplyUpdate(string expression, Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> clause, int update)
         {
+
             var temp = PublicFunctions.EvalUpdate(expression, _env, update, clause);
             _env = temp;
         }
@@ -551,6 +550,7 @@ namespace Warewolf.Storage
 
             var recordSetExpression = rec as LanguageAST.LanguageExpression.RecordSetExpression;
             var recordSetNameExpression = rec as LanguageAST.LanguageExpression.RecordSetNameExpression;
+
             var index = recordSetExpression?.Item?.Name ?? recordSetNameExpression?.Item?.Name;
             return $"[[{index}(*).{EvaluationFunctions.PositionColumn}]]";
         }
@@ -617,94 +617,96 @@ namespace Warewolf.Storage
 
                 if (var.IsJsonIdentifierExpression)
                 {
-                    ParseAsJson(exp, indexMap, var);
+                    if (var is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
+                    {
+                        BuildIndexMap(jsonIdentifierExpression.Item, exp, indexMap, null);
+                    }
                 }
                 else
                 {
-                    ParseAsWarewolfLanguage(exp, indexMap, var);
+                    if (var.IsRecordSetExpression && var is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
+                    {
+                        GetIndexAddRecordSetIndexes(exp, indexMap, recSetExpression);
+                    }
+
                 }
             }
             return indexMap.Where(s => !s.Contains(@"(*)")).ToList();
         }
 
-        private void ParseAsJson(string exp, List<string> indexMap, LanguageAST.LanguageExpression var)
+        private void GetIndexAddRecordSetIndexes(string exp, List<string> indexMap, LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
         {
-            if (var is LanguageAST.LanguageExpression.JsonIdentifierExpression jsonIdentifierExpression)
+            var indexes = EvalRecordSetIndexes(@"[[" + recSetExpression.Item.Name + @"(*)]]", 0);
+            foreach (var index in indexes)
             {
-                BuildIndexMap(jsonIdentifierExpression.Item, exp, indexMap, null);
-            }
-        }
-
-        private void ParseAsWarewolfLanguage(string exp, List<string> indexMap, LanguageAST.LanguageExpression var)
-        {
-            if (var.IsRecordSetExpression && var is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
-            {
-                var indexes = EvalRecordSetIndexes(@"[[" + recSetExpression.Item.Name + @"(*)]]", 0);
-                foreach (var index in indexes)
-                {
-                    indexMap.Add(exp.Replace(@"(*).", $"({index})."));
-                }
+                indexMap.Add(exp.Replace(@"(*).", $"({index})."));
             }
         }
 
         void BuildIndexMap(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
         {
             var jsonIdentifierExpression = var;
-            if (jsonIdentifierExpression != null)
+            if (jsonIdentifierExpression == null)
             {
-                if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression)
+                return;
+            }
+            if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression)
+            {
+                var objectName = nameExpression.Item.ObjectName;
+                JContainer obj;
+                JArray arr = null;
+                if (container == null)
                 {
-                    var objectName = nameExpression.Item.ObjectName;
-                    JContainer obj;
-                    JArray arr = null;
-                    obj = FindJContainerFromJArray(container, objectName, ref arr);
-
-                    if (arr != null)
-                    {
-                        BuildIndexMapFromJArray(exp, indexMap, nameExpression, objectName, arr);
-                    }
-                    else
-                    {
-                        BuildIndexMapFromJContainer(exp, indexMap, nameExpression, obj);
-                    }
+                    obj = _env.JsonObjects[objectName];
+                    arr = obj as JArray;
                 }
                 else
                 {
-                    if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.NestedNameExpression nestedNameExpression)
+                    var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
+                    if (props != null)
                     {
-                        JContainer obj;
-                        var objectName = nestedNameExpression.Item.ObjectName;
-                        obj = BuildIndexMapFromEnvironmentJContainer(exp, indexMap, container, nestedNameExpression, objectName);
+                        obj = props.First as JContainer;
+                        arr = obj as JArray;
                     }
+                    else
+                    {
+                        obj = container;
+                    }
+                }
+
+                if (arr != null)
+                {
+                    BuildIndexMapHelper(exp, indexMap, nameExpression, objectName, arr);
+                }
+                else
+                {
+                    if (!nameExpression.Item.Next.IsTerminal)
+                    {
+                        BuildIndexMap(nameExpression.Item.Next, exp, indexMap, obj);
+                    }
+                }
+            }
+            else
+            {
+                if (jsonIdentifierExpression is LanguageAST.JsonIdentifierExpression.NestedNameExpression nestedNameExpression)
+                {
+                    JContainer obj;
+                    var objectName = nestedNameExpression.Item.ObjectName;
+                    if (container == null)
+                    {
+                        obj = _env.JsonObjects[objectName];
+                    }
+                    else
+                    {
+                        var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
+                        obj = props != null ? props.First as JContainer : container;
+                    }
+                    BuildIndexMap(nestedNameExpression.Item.Next, exp, indexMap, obj);
                 }
             }
         }
 
-        private JContainer BuildIndexMapFromEnvironmentJContainer(string exp, List<string> indexMap, JContainer container, LanguageAST.JsonIdentifierExpression.NestedNameExpression nestedNameExpression, string objectName)
-        {
-            JContainer obj;
-            if (container == null)
-            {
-                obj = _env.JsonObjects[objectName];
-            }
-            else
-            {
-                var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
-                obj = props != null ? props.First as JContainer : container;
-            }
-            BuildIndexMap(nestedNameExpression.Item.Next, exp, indexMap, obj);
-            return obj;
-        }
-
-        private void BuildIndexMapFromJContainer(string exp, List<string> indexMap, LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression, JContainer obj)
-        {
-            if (!nameExpression.Item.Next.IsTerminal)
-            {
-                BuildIndexMap(nameExpression.Item.Next, exp, indexMap, obj);
-            }
-        }
-
-        private void BuildIndexMapFromJArray(string exp, List<string> indexMap, LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression, string objectName, JArray arr)
+        private void BuildIndexMapHelper(string exp, List<string> indexMap, LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression nameExpression, string objectName, JArray arr)
         {
             var indexToInt = AssignEvaluation.indexToInt(LanguageAST.Index.Star, arr).ToList();
             foreach (var i in indexToInt)
@@ -717,31 +719,6 @@ namespace Warewolf.Storage
                     BuildIndexMap(nameExpression.Item.Next, updatedExp, indexMap, arr[i - 1] as JContainer);
                 }
             }
-        }
-
-        private JContainer FindJContainerFromJArray(JContainer container, string objectName, ref JArray arr)
-        {
-            JContainer obj;
-            if (container == null)
-            {
-                obj = _env.JsonObjects[objectName];
-                arr = obj as JArray;
-            }
-            else
-            {
-                var props = container.FirstOrDefault(token => token.Type == JTokenType.Property && ((JProperty)token).Name == objectName);
-                if (props != null)
-                {
-                    obj = props.First as JContainer;
-                    arr = obj as JArray;
-                }
-                else
-                {
-                    obj = container;
-                }
-            }
-
-            return obj;
         }
     }
 }

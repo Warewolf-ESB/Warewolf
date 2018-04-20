@@ -61,6 +61,54 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Local variable to be used in SQL Query..
+        /// </summary>
+        public static string AdvancedRecordsetLocalVariable {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetLocalVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;b&gt;Examples&lt;/b&gt;
+        ///&lt;b&gt;Note: &lt;/b&gt;Data changes in SQL are persisted to Wareworf recorsets.
+        ///	&lt;br /&gt;&lt;br /&gt;	
+        ///	&lt;b&gt;SELECT &lt;/b&gt; &lt;i&gt;*&lt;/i&gt;&lt;br /&gt;
+        ///	&lt;b&gt;FROM&lt;/b&gt; &lt;i&gt;person&lt;/i&gt;&lt;br /&gt;
+        ///	&lt;b&gt;JOIN&lt;/b&gt; &lt;i&gt;address&lt;/i&gt;&lt;b&gt; ON&lt;/b&gt; &lt;i&gt;person.addressID == address.ID&lt;/i&gt;&lt;br /&gt;
+        ///	&lt;b&gt;WHERE&lt;/b&gt; &lt;i&gt;person.name = &apos;Bob&apos;&lt;/i&gt;&lt;br /&gt;
+        ///	&lt;b&gt;ORDER BY&lt;/b&gt; &lt;i&gt;person.name&lt;/i&gt;&lt;br /&gt;
+        ///	&lt;b&gt;LIMIT &lt;/b&gt;&lt;i&gt;10&lt;/i&gt;
+        ///	&lt;br /&gt;&lt;br /&gt;
+        ///	&lt;b&gt;SELECT DISTINCT&lt;/b&gt; &lt;i&gt;city, country, postalcode, &lt;b&gt;COUNT&lt;/b&gt;(person.name)&lt;/i&gt;&lt;br /&gt;
+        ///	&lt;b&gt;FROM&lt;/b&gt; &lt;i&gt;person&lt;/i&gt;&lt;br /&gt;
+        ///	&lt;b [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string AdvancedRecordsetSqlQuery {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetSqlQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Generate the Outputs of the SQL Query..
+        /// </summary>
+        public static string AdvancedRecordsetSqlQueryExecuteCommand {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetSqlQueryExecuteCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value of the local variable to be used in SQL Query. Scalar variables can be used as a value..
+        /// </summary>
+        public static string AdvancedRecordsetVariable {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.	To assign a value to a variable, put the value in here.	If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[[Recordset(n).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset(*).Field]]&lt;/li&gt;	&lt;li&gt;[[Recordset().Field]]&lt;/li&gt;	&lt;/ol&gt;	= fx.
         /// </summary>
         public static string AssignHelpNewValue {
@@ -4038,6 +4086,20 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string TestsDeleteSelectedTestHelpText {
             get {
                 return ResourceManager.GetString("TestsDeleteSelectedTestHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use the Advanced Recordset tool to write and execute Structured Query Language (SQL) against any combination of Warewolf Recordsets already set up.&lt;br /&gt;
+        ///	&lt;br /&gt; The tool will allow you to execute SQL against a Warewolf recordset and then map Warewolf data out of the new recordset created from the results.
+        ///	&lt;br /&gt;&lt;br /&gt;
+        ///	Warewolf Recordsets and Warewolf Scalars used in the SQL Statement are loaded.
+        ///	This will allow you to write simple or complex SQL to manipulate your data. &lt;br /&gt;&lt;br /&gt;
+        ///	Once executed  [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string Tool_AdvancedRecordset {
+            get {
+                return ResourceManager.GetString("Tool_AdvancedRecordset", resourceCulture);
             }
         }
         

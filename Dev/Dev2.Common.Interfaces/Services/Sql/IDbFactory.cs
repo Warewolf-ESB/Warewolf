@@ -23,5 +23,10 @@ namespace Dev2.Common.Interfaces.Services.Sql
         DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges);
 
         DataSet FetchDataSet(IDbCommand command);
-    }
+
+		int ExecuteNonQuery(IDbCommand command);
+
+		int ExecuteScalar(IDbCommand command);
+
+	}
 }
