@@ -95,9 +95,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             string query = "select * from person";
             var worker = CreatePersonAddressWorkers();
             var results = worker.ExecuteQuery(query);
+            var started = false;
 
-			// apply sql results to environment
-			worker.ApplyResultToEnvironment(returnRecordsetName,new List<IServiceOutputMapping>(), results.Tables[0].Rows.Cast<DataRow>().ToList(),false,0);
+            // apply sql results to environment
+            worker.ApplyResultToEnvironment(returnRecordsetName,new List<IServiceOutputMapping>(), results.Tables[0].Rows.Cast<DataRow>().ToList(),false,0, ref started);
 
             // fetch newly inserted data from environment
             var internalResult = worker.Environment.EvalAsList("[[person(*).name]]", 0);
