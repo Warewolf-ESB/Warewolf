@@ -46,7 +46,11 @@ namespace Dev2.Runtime.ServiceModel
                     var postgreBroker = CreatePostgreDatabaseBroker();
                     result.DatabaseList = postgreBroker.GetDatabases(dbSourceDetails);
                     break;
-                case enSourceType.WebService:
+				case enSourceType.SQLiteDatabase:
+					var sqliteBroker = CreateSqliteDatabaseBroker();
+					result.DatabaseList = sqliteBroker.GetDatabases(dbSourceDetails);
+					break;
+				case enSourceType.WebService:
                     break;
                 case enSourceType.DynamicService:
                     break;
@@ -92,5 +96,7 @@ namespace Dev2.Runtime.ServiceModel
         protected ODBCDatabaseBroker CreateODBCDatabaseBroker() => new ODBCDatabaseBroker();
 
         protected PostgreSqlDataBaseBroker CreatePostgreDatabaseBroker() => new PostgreSqlDataBaseBroker();
-    }
+
+		protected SqliteDatabaseBroker CreateSqliteDatabaseBroker() => new SqliteDatabaseBroker();
+	}
 }

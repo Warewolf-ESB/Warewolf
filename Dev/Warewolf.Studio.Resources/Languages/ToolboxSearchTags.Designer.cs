@@ -61,6 +61,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to execute SQL command on a recordset data source.
+        /// </summary>
+        public static string Tool_AdvancedRecordset {
+            get {
+                return ResourceManager.GetString("Tool_AdvancedRecordset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to declare setup variable set.
         /// </summary>
         public static string Tool_Data_Assign {
