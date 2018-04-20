@@ -208,11 +208,19 @@ namespace Dev2.Data.Util
                     }
                     else
                     {
-                        emptyOk = match == search;
+                        ShouldUpdateEmptyOk(search, ref emptyOk, match);
                     }
                 }
             }
             return false;
+        }
+
+        private static void ShouldUpdateEmptyOk(string search,ref bool emptyOk, string match)
+        {
+            if (match == search)
+            {
+                emptyOk = true;
+            }
         }
 
         public void ProcessResults(IList<IIntellisenseResult> realResults, IIntellisenseResult intellisenseResult)
