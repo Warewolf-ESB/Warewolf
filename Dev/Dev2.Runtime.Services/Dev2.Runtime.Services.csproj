@@ -222,7 +222,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
     <Compile Include="DynamicProxy\Constants.cs" />
     <Compile Include="DynamicProxy\DynamicObject.cs" />
     <Compile Include="DynamicProxy\DynamicProxy.cs" />
