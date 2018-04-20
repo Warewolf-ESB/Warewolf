@@ -1312,9 +1312,6 @@ Scenario:  Select all With Condition Age Is Greater Than
 	| person(2).age  | 31     |
 	| person(3).age  | 19     |
 	And I drag on an Advanced Recordset tool
-	And Declare variables as
-	| Name  | Value        |
-	| inAge | [[checkAge]] |
 	And I have the following sql statement "SELECT * from person where age > 30"
 	When I click Generate Outputs
 	Then Outputs are as follows
@@ -2308,15 +2305,15 @@ Scenario: Using a recordset for IN values
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
 	| rs                | value  |
-	| TableCopy(1).name | Bob    |
-	| TableCopy(2).name | Hatter |
+	| TableCopy(1).name | Hatter |
+	| TableCopy(2).name | Bob    |
 	And the debug inputs as  
 	| Query  | names                       |
 	| String | [[other(1).value]] = Hatter |
 	|        | [[other(2).value]] = Bob    |
 	And the debug output as
-	|                                |
-	| [[TableCopy(2).name]] = Hatter |
+	|                             |
+	| [[TableCopy(2).name]] = Bob |
 
 Scenario: Using a recordset for IN value
 	Given I have a recordset with this shape

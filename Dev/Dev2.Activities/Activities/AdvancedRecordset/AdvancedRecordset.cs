@@ -234,10 +234,9 @@ namespace Dev2.Activities
                 } while (enumerator.MoveNext());
             }
         }
-        public void ApplyResultToEnvironment(string returnRecordsetName, ICollection<IServiceOutputMapping> outputs, List<DataRow> rows, bool updated, int update)
+        public void ApplyResultToEnvironment(string returnRecordsetName, ICollection<IServiceOutputMapping> outputs, List<DataRow> rows, bool updated, int update,ref bool started)
         {
-            var rowIdx = 1;
-            var started = true;
+            var rowIdx = 1;            
             if (updated)
             {
                 var recSet = DataListUtil.ReplaceRecordBlankWithStar(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(returnRecordsetName)));
@@ -256,6 +255,7 @@ namespace Dev2.Activities
                     {                        
                         ExecutionEnvironmentUtils.ProcessOutputMapping(Environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
                     }
+                    started = true;
                     rowIdx++;
                 }
             }
