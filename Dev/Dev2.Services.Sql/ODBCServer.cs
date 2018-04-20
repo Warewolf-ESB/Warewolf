@@ -12,10 +12,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
+using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Microsoft.Win32;
-
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Sql
 {
@@ -101,7 +102,37 @@ namespace Dev2.Services.Sql
                 }
             }
         }
+        public DataTable FetchXmlData()
+        {
+            var table = new DataTable();
+            table.Columns.Add("ReadForXml");
+            VerifyConnection();
+            try
+            {
+                if (_command.CommandType == CommandType.StoredProcedure)
+                {
+                    _command.CommandType = CommandType.Text;
+                }
 
+                var reader = _factory.FetchDataSet(_command);
+                var doc = new XmlDocument();
+                doc.LoadXml(reader.GetXml());
+                table.LoadDataRow(new object[] { doc.InnerText }, true);
+                return table;
+
+            }
+            catch (Exception e)
+            {
+                if (!e.Message.Equals(ErrorResource.NotXmlResults))
+                {
+                    throw;
+                }
+                table.LoadDataRow(new object[] { "Error" }, true);
+                return table;
+            }
+            table.LoadDataRow(new object[] { "Error" }, true);
+            return table;
+        }
         public void Connect(string connectionString)
         {
             if (!Testing)

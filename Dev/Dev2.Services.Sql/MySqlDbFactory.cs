@@ -50,13 +50,13 @@ namespace Dev2.Services.Sql
 
         public DataSet FetchDataSet(IDbCommand command)
         {
-            if (!(command is SqlCommand))
+            if (!(command is MySqlCommand))
             {
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBComman"));
             }
 
             var dataSet = new DataSet();
-            using (var adapter = new SqlDataAdapter(command as SqlCommand))
+            using (var adapter = new MySqlDataAdapter(command as MySqlCommand))
             {
                 adapter.Fill(dataSet);
             }
