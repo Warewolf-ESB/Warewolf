@@ -39,7 +39,6 @@ Scenario: New COMPlugin Source File
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@MSTest:DeploymentItem:TechTalk.SpecFlow.dll
 Scenario: Change Plugin Source Assembly Input
 	Given I open "Test File" plugin source
 	Then title is "Test File"
@@ -54,7 +53,6 @@ Scenario: Change Plugin Source Assembly Input
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@MSTest:DeploymentItem:TechTalk.SpecFlow.dll
 Scenario: load all dependancies after filter cleared 
 	Given I open New COMPlugin Source
 	And DLLs is "loading"
