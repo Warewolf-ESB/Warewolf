@@ -148,21 +148,20 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf_Studio.exe",
                         "MSTest:DeploymentItem:Newtonsoft.Json.dll",
                         "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
-                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
-                        "MSTest:DeploymentItem:TechTalk.SpecFlow.dll"});
-#line 43
+                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
+#line 42
 this.ScenarioSetup(scenarioInfo);
-#line 44
+#line 43
  testRunner.Given("I open \"Test File\" plugin source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
+#line 44
  testRunner.Then("title is \"Test File\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 46
+#line 45
  testRunner.And("\"Save\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 46
  testRunner.When("I click \"Development\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
+#line 47
  testRunner.And("\"Save\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
+#line 48
  testRunner.When("I save Plugin source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -181,19 +180,18 @@ this.ScenarioSetup(scenarioInfo);
                         "MSTest:DeploymentItem:Warewolf_Studio.exe",
                         "MSTest:DeploymentItem:Newtonsoft.Json.dll",
                         "MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll",
-                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll",
-                        "MSTest:DeploymentItem:TechTalk.SpecFlow.dll"});
-#line 58
+                        "MSTest:DeploymentItem:System.Windows.Interactivity.dll"});
+#line 56
 this.ScenarioSetup(scenarioInfo);
-#line 59
+#line 57
  testRunner.Given("I open New COMPlugin Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 60
+#line 58
  testRunner.And("DLLs is \"loading\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 59
  testRunner.And("I filter for \"Development\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 60
  testRunner.And("\"Development\" is \"Visible\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 61
  testRunner.When("I \"clear\" the filter", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
