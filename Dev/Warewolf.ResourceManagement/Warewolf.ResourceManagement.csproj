@@ -76,7 +76,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <None Include="packages.config" />
     <None Include="Warewolf.ResourceManagement.ruleset" />
   </ItemGroup>

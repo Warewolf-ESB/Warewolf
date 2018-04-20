@@ -141,7 +141,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Attribute\ReasonAttribute.cs" />
     <Compile Include="AuthenticationType.cs" />
     <Compile Include="Communication\IMemo.cs" />

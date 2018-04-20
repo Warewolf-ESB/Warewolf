@@ -69,7 +69,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Dev2ActionCollectionTest.cs" />
     <Compile Include="Dev2ActionTest.cs" />
     <Compile Include="Dev2RepetitiionPatternTest.cs" />

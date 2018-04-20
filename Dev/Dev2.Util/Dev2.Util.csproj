@@ -75,7 +75,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="AppUsageStats.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="JsonNetValueSystem.cs" />
