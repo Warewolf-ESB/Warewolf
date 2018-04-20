@@ -222,10 +222,8 @@ namespace Warewolf.Storage
                 throw new Exception(string.Format(ErrorResource.CouldNotRetrieveStringsFromExpression, expression));
             }
 
-            {
-                var x = warewolfAtomListresult.Item;
-                return x.Select(WarewolfAtomToString).ToList();
-            }
+            var item = warewolfAtomListresult.Item;
+            return item.Select(WarewolfAtomToString).ToList();
         }
 
         private static IList<string> EvalListOfStringsHelper(DataStorage.WarewolfRecordset recSetData)

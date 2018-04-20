@@ -580,7 +580,7 @@ namespace Dev2
             var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
             var rs = serviceOutputMapping.RecordSetName;
 
-            if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(rs))
+            if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(rs,rsType==enRecordsetIndexType.Star))))
             {
                 if (started)
                 {

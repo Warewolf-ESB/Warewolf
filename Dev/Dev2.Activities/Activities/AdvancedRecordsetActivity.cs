@@ -19,6 +19,8 @@ using Dev2.Common.Interfaces;
 using System.Text.RegularExpressions;
 using Dev2.DataList.Contract;
 using Dev2.Util;
+using Warewolf.Storage;
+using Dev2.Data;
 
 namespace Dev2.Activities
 {
@@ -103,12 +105,51 @@ namespace Dev2.Activities
 
         void ExecuteRecordset(IDSFDataObject dataObject, int update)
         {
-            AdvancedRecordset = new AdvancedRecordset(dataObject.Environment);
-            AddDeclarations(dataObject, update);
+            var env = dataObject.Environment;
+            AdvancedRecordset = new AdvancedRecordset(env);
+            var iter = new WarewolfListIterator();
+            var started = false;
+            var itemsToIterateOver = new Dictionary<string, IWarewolfIterator>();
+            var allTables = new List<string>();
+            if (DeclareVariables == null || DeclareVariables.All(d=>String.IsNullOrEmpty(d.Value)))
+            {
+                ExecuteSql(update, allTables,ref started);
+            }
+            else
+            {
+                foreach (var declare in DeclareVariables)
+                {
+                    if (string.IsNullOrEmpty(declare.Value))
+                    {
+                        continue;
+                    }
+                    var res = new WarewolfIterator(env.Eval(declare.Value, update));
+                    iter.AddVariableToIterateOn(res);
+                    itemsToIterateOver.Add(declare.Name, res);
+                }
+                
+                while (iter.HasMoreData())
+                {
+                    foreach (var item in itemsToIterateOver)
+                    {
+                        AddDeclarations(item.Key, iter.FetchNextValue(item.Value));
+                    }
+                    ExecuteSql(update, allTables,ref started);
+                    started = true;
+                }
+            }
+            foreach (var table in allTables)
+            {
+                AdvancedRecordset.DeleteTableInSqlite(table);
+            }
 
+        }
+
+        private void ExecuteSql(int update, List<string> allTables,ref bool started)
+        {
             var queryText = AddSqlForVariables(SqlQuery);
             var statements = TSQLStatementReader.ParseStatements(queryText);
-            var allTables = new List<string>();
+
             if (queryText.Contains("UNION") && statements.Count == 2)
             {
                 var tables = statements[0].GetAllTables();
@@ -120,47 +161,48 @@ namespace Dev2.Activities
                 var results = AdvancedRecordset.ExecuteQuery(queryText);
                 foreach (DataTable dt in results.Tables)
                 {
-                    AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update);
+                    AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update,ref started);
                 }
             }
             else
             {
-                foreach (var statement in statements)
-                {
-                    var tables = statement.GetAllTables();
-                    foreach (var table in tables)
-                    {
-                        LoadRecordset(table.TableName);
-                        allTables.Add(table.TableName);
-                    }
-                    if (statement.Type == TSQLStatementType.Select)
-                    {
-                        var selectStatement = statement as TSQLSelectStatement;
-                        ProcessSelectStatement(selectStatement, update);
-                    }
-                    else
-                    {
-                        var unknownStatement = statement as TSQLUnknownStatement;
-                        ProcessComplexStatement(unknownStatement, update);
-                    }
-                }
-            }
-            foreach (var table in allTables)
-            {
-                AdvancedRecordset.DeleteTableInSqlite(table);
+                ExecuteAllSqlStatements(update, allTables, statements, ref started);
             }
         }
 
-        void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update)
+        private void ExecuteAllSqlStatements(int update, List<string> allTables, List<TSQLStatement> statements,ref bool started)
+        {
+            foreach (var statement in statements)
+            {
+                var tables = statement.GetAllTables();
+                foreach (var table in tables)
+                {
+                    LoadRecordset(table.TableName);
+                    allTables.Add(table.TableName);
+                }
+                if (statement.Type == TSQLStatementType.Select)
+                {
+                    var selectStatement = statement as TSQLSelectStatement;
+                    ProcessSelectStatement(selectStatement, update,ref started);
+                }
+                else
+                {
+                    var unknownStatement = statement as TSQLUnknownStatement;
+                    ProcessComplexStatement(unknownStatement, update, ref started);
+                }
+            }
+        }
+
+        void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update,ref bool started)
         {
             var results = AdvancedRecordset.ExecuteQuery(AdvancedRecordset.ReturnSql(selectStatement.Tokens));
             foreach (DataTable dt in results.Tables)
             {
-                AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update);
+                AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update,ref started);
             }
 
         }
-        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update)
+        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update,ref bool started)
         {
             var tokens = complexStatement.Tokens;
             for (int i = 0; i < complexStatement.Tokens.Count; i++)
@@ -171,19 +213,19 @@ namespace Dev2.Activities
                 }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "UPDATE"))
                 {
-                    ProcessUpdateStatement(complexStatement, update);
+                    ProcessUpdateStatement(complexStatement, update,ref started);
                 }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
                 {
-                    ProcessUpdateStatement(complexStatement, update);
+                    ProcessUpdateStatement(complexStatement, update, ref started);
                 }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
                 {
-                    ProcessUpdateStatement(complexStatement, update);
+                    ProcessUpdateStatement(complexStatement, update, ref started);
                 }
                 if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
                 {
-                    ProcessUpdateStatement(complexStatement, update);
+                    ProcessUpdateStatement(complexStatement, update, ref started);
                 }
             }
         }
@@ -195,7 +237,7 @@ namespace Dev2.Activities
             var outputName = Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected").MappedTo;
             AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, recordset.Rows.Cast<DataRow>().ToList());
         }
-        void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update)
+        void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update,ref bool started)
         {
             var tokens = complexStatement.Tokens;
             var outputRecordsetName = "";
@@ -229,7 +271,7 @@ namespace Dev2.Activities
             var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + outputRecordsetName);
             foreach (DataTable dt in results.Tables)
             {
-                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update);
+                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update,ref started);
             }
         }
 
@@ -239,18 +281,12 @@ namespace Dev2.Activities
             AdvancedRecordset.LoadRecordsetAsTable(tableName);
         }
        
-        void AddDeclarations(IDSFDataObject dataObject, int update)
+        void AddDeclarations(string varName,string varValue)
         {
-            AdvancedRecordset.CreateVariableTable();
             try
             {
-                foreach (var variable in DeclareVariables)
-                {
-                    if (variable.Name.Length > 0 && variable.Value.Length > 0)
-                    {
-                        InsertIntoVariableTable(variable.Name, variable.Value, dataObject, update);
-                    }
-                }
+                AdvancedRecordset.CreateVariableTable();
+                InsertIntoVariableTable(varName, varValue);
             }
             catch (Exception e)
             {
@@ -258,27 +294,11 @@ namespace Dev2.Activities
             }
         }
         string AddSqlForVariables(string queryText) => Regex.Replace(queryText, @"\@\w+\b", match => AdvancedRecordset.GetVariableValue(match.Value));
-        void InsertIntoVariableTable(string varName, string varValue, IDSFDataObject dataObject, int update)
+        void InsertIntoVariableTable(string varName, string value)
         {
             try
             {
-                var value = varValue;
-                if (DataListUtil.IsFullyEvaluated(value))
-                {
-                    var variableValue = dataObject.Environment.Eval(value, update);
-                    if (variableValue.IsWarewolfAtomResult && variableValue is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data && !data.Item.IsNothing)
-                    {
-                        AdvancedRecordset.InsertIntoVariableTable(varName, data.Item.ToString());
-                    }
-                    if (variableValue.IsWarewolfAtomResult && variableValue is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult dataValue && dataValue.Item.IsNothing)
-                    {
-                        AdvancedRecordset.InsertIntoVariableTable(varName, value);
-                    }
-                }
-                else
-                {
-                    AdvancedRecordset.InsertIntoVariableTable(varName, value);
-                }
+                AdvancedRecordset.InsertIntoVariableTable(varName, value);
             }
             catch (Exception e)
             {
