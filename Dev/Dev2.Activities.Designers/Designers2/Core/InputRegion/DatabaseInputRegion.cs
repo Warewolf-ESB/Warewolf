@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 }
                 else
                 {
-
+                    ResetInputs(selectedActionInputs);
                     _datatalistMapper.MapInputsToDatalist(Inputs);
                     IsInputsEmptyRows = Inputs.Count < 1;
                     IsEnabled = true;
