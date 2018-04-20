@@ -47,7 +47,7 @@ namespace Dev2.Activities.Specs.TestFramework
     public class StudioTestFrameworkSteps
     {
         static IServer _environmentModel;
-        const int EXPECTED_NUMBER_OF_RESOURCES = 112;
+        const int EXPECTED_NUMBER_OF_RESOURCES = 100;
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
             MyContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
