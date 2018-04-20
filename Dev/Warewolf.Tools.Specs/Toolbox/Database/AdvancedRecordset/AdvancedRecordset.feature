@@ -2139,7 +2139,7 @@ Scenario: Select all with fields but Limit to 5 rows
 	| [[TableCopy(5).age]] = 30      |
 	| [[TableCopy(5).salary]] = 2000 |	
 
-	Scenario: Select all with fields from 2 but Limit to 5 rows
+Scenario: Select all with fields from 2 but Limit to 5 rows
 	Given I have a recordset with this shape 
 	| [[person]]       |      |
 	| person(1).name   | A    |
@@ -2343,6 +2343,11 @@ Scenario:   Update statement with variable in where clause
 	Then recordset "[[newPerson(*).records_affected]]"  will be 
 	| rs                           | value |
 	| newPerson().records_affected | 1     |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 |
@@ -2379,6 +2384,11 @@ Scenario:   Update statement with variable in where clause and Select statement
 	| newPerson().name | Bob        |
 	| newPerson().name | Alice      |
 	| newPerson().name | Mad Hatter |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 |
@@ -2408,6 +2418,11 @@ Scenario:   complex Update statement
 	| records_affected | [[records_affected]] |
 	When Advanced Recordset tool is executed	
 	Then the result variable "[[records_affected]]" will be "1"
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the debug inputs as  
 	| Query  |
 	| String |
@@ -2441,6 +2456,11 @@ Scenario:   Update statement with variable in where clause and Select Where stat
 	Then recordset "[[TableCopy(*).name]]"  will be 
 	| rs               | value      |
 	| TableCopy().name | Mad Hatter |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 |
@@ -2475,6 +2495,10 @@ Scenario:   Delete statement with variable in where clause
 	Then recordset "[[newPerson(*).records_affected]]"  will be 
 	| rs                           | value |
 	| newPerson().records_affected | 1     |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 |
@@ -2510,6 +2534,10 @@ Scenario:   Delete statement with variable in where clause and Select statement
 	| rs               | value |
 	| newPerson().name | Bob   |
 	| newPerson().name | Alice   |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 |
@@ -2544,6 +2572,10 @@ Scenario:   Delete statement with variable in where clause and Select Where stat
 	Then recordset "[[newPerson(*).name]]"  will be 
 	| rs               | value |
 	| newPerson().name | Bob   |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 |
@@ -2697,6 +2729,11 @@ Scenario:   Update statement with variable in where clause and Like starts with
 	Then recordset "[[TableCopy(*).name]]"  will be 
 	| rs                | value      |
 	| TableCopy().name | Mad Hatter |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 | newMatch           |
@@ -2726,8 +2763,13 @@ Scenario:   Update statement with variable in where clause and Like ends with
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
-	| rs                | value      |
-	| TableCopy().name | Mad Hatter |
+	| rs               | value      |
+	| TableCopy().name | Mad Hatter  |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 | newMatch            |
@@ -2757,8 +2799,13 @@ Scenario:   Update statement with variable in where clause and Like in any posit
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
-	| rs                | value      |
+	| rs               | value      |
 	| TableCopy().name | Mad Hatter |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 | newMatch             |
@@ -2788,8 +2835,13 @@ Scenario:   Update statement with variable in where clause and Like in second po
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
-	| rs                | value      |
+	| rs               | value      |
 	| TableCopy().name | Mad Hatter |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 | newMatch           |
@@ -2819,8 +2871,13 @@ Scenario:   Update statement with variable in where clause and Like starts with 
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
-	| rs                | value      |
+	| rs               | value      |
 	| TableCopy().name | Mad Hatter |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 | newMatch             |
@@ -2828,7 +2885,7 @@ Scenario:   Update statement with variable in where clause and Like starts with 
 	And the debug output as
 	|                                     |
 	| [[TableCopy(1).name]] = Mad Hatter |
-
+	
 Scenario:   Update statement with variable in where clause and Like starts with and ends with
 	Given I have a recordset with this shape
 	| [[person]]    |        |
@@ -2850,8 +2907,13 @@ Scenario:   Update statement with variable in where clause and Like starts with 
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
-	| rs                | value      |
+	| rs               | value      |
 	| TableCopy().name | Mad Hatter |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name               | Bob        |
+	| person(2).name               | Alice      |
+    | person(3).name               | Mad Hatter |
 	And the execution has "NO" error
 	And the debug inputs as  
 	| Query  | newName                 | newMatch           |
@@ -2860,7 +2922,56 @@ Scenario:   Update statement with variable in where clause and Like starts with 
 	|                                     |
 	| [[TableCopy(1).name]] = Mad Hatter |
 
-	Scenario:  aggregate functions Select with AVG
+Scenario:   Update statement with variable in where clause and Like starts with and ends with Multiple
+	Given I have a recordset with this shape
+	| [[person]]    |        |
+	| person(1).name | Bober  |
+	| person(1).aid  | 1      |
+	| person(2).name | Alice  |
+	| person(2).aid  | 2      |
+	| person(3).name | Hatter |
+	| person(3).aid  | 1      |
+	| address(1).id  | 2      |
+	| address(1).name| addr1  |
+	| address(2).id  | 1      |
+	| address(2).name| addr2  |
+	| updateName    | %er    |
+	| likeName      | %ter   |
+	And I drag on an Advanced Recordset tool
+	And Declare variables as
+	| Name     | Value          |
+	| nameLike | [[updateName]] |
+	| newMatch | [[likeName]]   |
+	And I have the following sql statement "UPDATE address SET name = 'Mad Hatter address' WHERE EXISTS (SELECT aid FROM person WHERE name LIKE @nameLike AND person.aid=address.id); UPDATE person SET name='Lucy' WHERE aid=2; SELECT * FROM person WHERE name LIKE @newMatch;" 
+	When I click Generate Outputs
+	Then Outputs are as follows
+	| Mapped From | Mapped To             |
+	| name        | [[TableCopy().name]] |
+	| aid         | [[TableCopy().aid]]  |
+	And Recordset is "TableCopy"
+	When Advanced Recordset tool is executed	
+	Then recordset "[[TableCopy(*).name]]"  will be 
+	| rs               | value      |
+	| TableCopy().name | Hatter     |
+	Then recordset "[[address(*).name]]"  will be
+    | rs | row |
+	| address(1).name               | addr1              |
+	| address(2).name               | Mad Hatter address |
+	Then recordset "[[person(*).name]]"  will be
+    | rs | row |
+	| person(1).name | Bober  |
+	| person(2).name | Lucy   |
+	| person(3).name | Hatter |
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Query  | nameLike              | newMatch            |
+	| String | [[updateName]] = %er  | [[likeName]] = %ter |
+	And the debug output as
+	|                                |
+	| [[TableCopy(1).name]] = Hatter |
+	| [[TableCopy(1).aid]]  = 1      |
+
+Scenario:  aggregate functions Select with AVG
 	Given I have a recordset with this shape
 	| [[avg_tests]]    |	     |
 	| avg_tests().val | 1		 |
@@ -2918,7 +3029,7 @@ Scenario:   Update statement with variable in where clause and Like starts with 
 	|                                     |
 	| [[TableCopy(1).val]] = 12.86666666666670 |
 
-	Scenario:  aggregate functions Select With MAX
+Scenario:  aggregate functions Select With MAX
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -2946,7 +3057,7 @@ Scenario:   Update statement with variable in where clause and Like starts with 
 	|                          |
 	| [[TableCopy(1).MaxAge]] = 31 |
 
-	Scenario:  aggregate functions Select With MAX with Max in where clause
+Scenario:  aggregate functions Select With MAX with Max in where clause
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -2977,7 +3088,7 @@ Scenario:   Update statement with variable in where clause and Like starts with 
 	| [[TableCopy(1).name]] = Alice |
 	| [[TableCopy(1).age]] = 31 |
 
-	Scenario:  aggregate functions Select With ROUND
+Scenario:  aggregate functions Select With ROUND
 	Given I have a recordset with this shape
 	| [[avg_tests]]    |	     |
 	| avg_tests().val | 1		 |
@@ -3008,7 +3119,7 @@ Scenario:   Update statement with variable in where clause and Like starts with 
 	|                                     |
 	| [[TableCopy(1).val]] = 12.87 |
 
-	Scenario:  aggregate functions Select With MIN
+Scenario:  aggregate functions Select With MIN
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -3193,7 +3304,7 @@ Scenario: String  Function Select With RTrim
 	|                                |
 	| [[TableCopy(3).name]] = Hatter |
 
-	Scenario: String  Function Select With Length 
+Scenario: String  Function Select With Length 
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -3218,7 +3329,7 @@ Scenario: String  Function Select With RTrim
 	|                           |
 	| [[TableCopy(3).name]] = 6 |
 
-	Scenario: String  Function Select With Complex Length 
+Scenario: String  Function Select With Complex Length 
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -3286,7 +3397,7 @@ Scenario: String  Function Select With Replace Then Select
 	| [[TableCopy(4).name]] = Robocop |
 	| [[TableCopy(4).age]] = 1000 |
 
-	Scenario: String  Function Select With Replace
+Scenario: String  Function Select With Replace
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -3317,7 +3428,7 @@ Scenario: String  Function Select With Replace Then Select
 	|                                       |
 	| [[newPerson(1).records_affected]] = 1 |
 
-	Scenario: String  Function Select With INSERT Then Select
+Scenario: String  Function Select With INSERT Then Select
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -3353,7 +3464,7 @@ Scenario: String  Function Select With Replace Then Select
 	| [[TableCopy(4).name]] = Robocop |
 	| [[TableCopy(4).age]] = 1000 |
 
-	Scenario: String  Function Select With Insert
+Scenario: String  Function Select With Insert
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -3367,14 +3478,14 @@ Scenario: String  Function Select With Replace Then Select
 	And I have the following sql statement "INSERT INTO person (name, age) VALUES ('Robocop', 1000)"
 	When I click Generate Outputs
 	Then Outputs are as follows
-	| Mapped From      | Mapped To                     |
+	| Mapped From      | Mapped To                         |
 	| records_affected | [[Table1Copy().records_affected]] |
 	And Recordset is "Table1Copy"
 	When I update Recordset to "newPerson"
 	Then Recordset is "newPerson"
 	And Outputs are as follows
-	| Mapped From | Mapped To            |
-	| records_affected        | [[newPerson().records_affected]] |
+	| Mapped From      | Mapped To                        |
+	| records_affected | [[newPerson().records_affected]] |
 	When Advanced Recordset tool is executed	
 	Then recordset "[[newPerson(*).records_affected]]"  will be 
 	| rs                           | value |
@@ -3384,7 +3495,7 @@ Scenario: String  Function Select With Replace Then Select
 	|                                       |
 	| [[newPerson(1).records_affected]] = 1 |
 
-	Scenario:  String Function Select With INSTR
+Scenario:  String Function Select With INSTR
 	Given I have a recordset with this shape
 	| [[person]]     |            |
 	| person(1).name | Bob        |
@@ -3395,18 +3506,18 @@ Scenario: String  Function Select With Replace Then Select
 	And I have the following sql statement "SELECT INSTR(name,'Hatter') as position from person;"
 	When I click Generate Outputs
 	Then Outputs are as follows
-	| Mapped From | Mapped To    |       
-	| position        | [[TableCopy().position]] |
+	| Mapped From | Mapped To                |
+	| position    | [[TableCopy().position]] |
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).position]]"  will be 
-	| rs                | value  |
-	| TableCopy(1).position | 0 |
-	| TableCopy(2).position | 0 |
-	| TableCopy(3).position | 5 |
+	| rs                    | value |
+	| TableCopy(1).position | 0     |
+	| TableCopy(2).position | 0     |
+	| TableCopy(3).position | 5     |
 	And the execution has "NO" error
 	And the debug output as
-	|                                |
+	|                               |
 	| [[TableCopy(3).position]] = 5 |
 
 Scenario:  String Function Select With Upper
@@ -3420,14 +3531,14 @@ Scenario:  String Function Select With Upper
 	And I have the following sql statement "SELECT upper(name) as name from person;"
 	When I click Generate Outputs
 	Then Outputs are as follows
-	| Mapped From | Mapped To    |       
+	| Mapped From | Mapped To            |
 	| name        | [[TableCopy().name]] |
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
 	| rs                | value  |
-	| TableCopy(1).name | BOB |
-	| TableCopy(2).name | ALICE |
+	| TableCopy(1).name | BOB    |
+	| TableCopy(2).name | ALICE  |
 	| TableCopy(3).name | HATTER |
 	And the execution has "NO" error
 	And the debug output as
@@ -3445,21 +3556,21 @@ Scenario:  String Function Select With Lower
 	And I have the following sql statement "SELECT lower(name) as name from person;"
 	When I click Generate Outputs
 	Then Outputs are as follows
-	| Mapped From | Mapped To    |       
+	| Mapped From | Mapped To            |
 	| name        | [[TableCopy().name]] |
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
 	| rs                | value  |
-	| TableCopy(1).name | bob |
-	| TableCopy(2).name | alice |
+	| TableCopy(1).name | bob    |
+	| TableCopy(2).name | alice  |
 	| TableCopy(3).name | hatter |
 	And the execution has "NO" error
 	And the debug output as
 	|                                |
-	| [[TableCopy(3).name]] = hatter  |
+	| [[TableCopy(3).name]] = hatter |
 
-	Scenario:   Select All UNION ALL clause which DOES remove duplicates.
+Scenario:   Select All UNION ALL clause which DOES remove duplicates.
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -3473,28 +3584,28 @@ Scenario:  String Function Select With Lower
 	And I have the following sql statement "SELECT * from person UNION  SELECT * from person;"
 	When I click Generate Outputs
 	Then Outputs are as follows
-	| Mapped From | Mapped To         |
+	| Mapped From | Mapped To            |
 	| name        | [[TableCopy().name]] |
-	| age        | [[TableCopy().age]] |
+	| age         | [[TableCopy().age]]  |
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
-	| rs            | value |
-	| TableCopy(1).name | Bob   |
-	| TableCopy(2).name | Alice   |
-	| TableCopy(3).name | Hatter   |
+	| rs                | value  |
+	| TableCopy(1).name | Bob    |
+	| TableCopy(2).name | Alice  |
+	| TableCopy(3).name | Hatter |
 	Then recordset "[[TableCopy(*).age]]"  will be 
-	| rs            | value |
-	| TableCopy(1).age | 25   |
-	| TableCopy(2).age | 31   |
-	| TableCopy(3).age | 19   |
+	| rs               | value |
+	| TableCopy(1).age | 25    |
+	| TableCopy(2).age | 31    |
+	| TableCopy(3).age | 19    |
 	And the execution has "NO" error
 	And the debug output as
-	|                          |
+	|                                |
 	| [[TableCopy(3).name]] = Hatter |
-	| [[TableCopy(3).age]] = 19 |
+	| [[TableCopy(3).age]] = 19      |
 	
-	Scenario:  Select All UNION  clause which DOES NOT remove duplicates.
+Scenario:  Select All UNION  clause which DOES NOT remove duplicates.
 	Given I have a recordset with this shape
 	| [[person]]     |        |
 	| person(1).name | Bob    |
@@ -3508,19 +3619,19 @@ Scenario:  String Function Select With Lower
 	And I have the following sql statement "SELECT * from person UNION ALL  SELECT * from person;"
 	When I click Generate Outputs
 	Then Outputs are as follows
-	| Mapped From | Mapped To         |
+	| Mapped From | Mapped To            |
 	| name        | [[TableCopy().name]] |
-	| age        | [[TableCopy().age]] |
+	| age         | [[TableCopy().age]]  |
 	And Recordset is "TableCopy"
 	When Advanced Recordset tool is executed	
 	Then recordset "[[TableCopy(*).name]]"  will be 
-	| rs            | value |
-	| TableCopy(1).name | Bob   |
-	| TableCopy(2).name | Alice   |
-	| TableCopy(3).name | Hatter   |
-	| TableCopy(4).name | Bob   |
-	| TableCopy(5).name | Alice   |
-	| TableCopy(6).name | Hatter   |
+	| rs                | value  |
+	| TableCopy(1).name | Bob    |
+	| TableCopy(2).name | Alice  |
+	| TableCopy(3).name | Hatter |
+	| TableCopy(4).name | Bob    |
+	| TableCopy(5).name | Alice  |
+	| TableCopy(6).name | Hatter |
 	Then recordset "[[TableCopy(*).age]]"  will be 
 	| rs            | value |
 	| TableCopy(1).age | 25   |
