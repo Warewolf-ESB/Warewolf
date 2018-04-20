@@ -86,7 +86,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
     <Compile Include="Scripting\StringScriptSources.cs" />
     <Compile Include="Scripting\JavaScriptContext.cs" />
     <Compile Include="Scripting\Dev2PythonContext.cs" />

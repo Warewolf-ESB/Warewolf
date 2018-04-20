@@ -60,7 +60,9 @@
 	  <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">

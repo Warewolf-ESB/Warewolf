@@ -205,7 +205,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
     <Compile Include="RequestServiceNameViewModel.cs" />
     <Compile Include="SharepointServerSourceModel.cs" />
     <Compile Include="SharepointServerSourceViewModel.cs" />
