@@ -36,11 +36,6 @@ namespace Dev2.Services.Sql
             
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                var type = row["proretset"];
-                if (type.ToString().ToUpperInvariant() == "FALSE")
-                {
-                    continue;
-                }
                 var fullProcedureName = row["Name"].ToString();
 
                 if (row["Db"].ToString() == dbName)
