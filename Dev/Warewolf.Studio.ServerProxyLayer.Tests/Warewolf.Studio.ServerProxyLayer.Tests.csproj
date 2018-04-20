@@ -77,7 +77,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="QueryManagerProxyTest.cs" />
     <Compile Include="UpdateProxyTest.cs" />
   </ItemGroup>

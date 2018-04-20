@@ -110,7 +110,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Web Source.feature.cs">
       <DependentUpon>Web Source.feature</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -93,7 +93,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Dev2Action.cs" />
     <Compile Include="Dev2ActionCollection.cs" />
     <Compile Include="Dev2RepetitionPattern.cs" />

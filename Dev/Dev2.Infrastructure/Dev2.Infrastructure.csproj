@@ -107,7 +107,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Communication\EsbExecuteRequest.cs" />
     <Compile Include="Communication\ExecuteMessage.cs" />
     <Compile Include="Communication\FutureReceipt.cs" />

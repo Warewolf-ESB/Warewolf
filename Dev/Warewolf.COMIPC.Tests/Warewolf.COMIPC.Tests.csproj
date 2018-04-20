@@ -59,7 +59,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="IpcClientTests.cs" />
     <Compile Include="WarewolfComIpcTests.cs" />
     <None Include="App.config" />

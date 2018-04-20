@@ -201,7 +201,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Activities\Interegators\WorkerServicePropertyInterigator.cs" />
     <Compile Include="Activities\Interegators\WorkflowPropertyInterigator.cs" />
     <Compile Include="Activities\Services\DesignerManagementService.cs" />
