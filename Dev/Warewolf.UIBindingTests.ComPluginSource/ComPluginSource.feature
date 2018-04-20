@@ -16,7 +16,6 @@ Feature: ComPluginSource
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
-@MSTest:DeploymentItem:TechTalk.SpecFlow.dll
 Scenario: New COMPlugin Source File
 	Given I open New COMPlugin Source
 	Then "New COM Plugin Source" tab is opened
