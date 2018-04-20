@@ -535,7 +535,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
             var debugItemResults = debugForTest.LastOrDefault(state => state.StateType == StateType.End).AssertResultList.First().ResultsList;
 
-            var actualAssetMessage = debugItemResults.Select(result =>  result.Value).First();
+            var actualAssetMessage = debugItemResults.Select(result => result.Value).First();
             StringAssert.Contains(actualAssetMessage.ToLower(), assertString.ToLower());
         }
 
@@ -565,7 +565,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var externalProcessExecutor = new SpecExternalProcessExecutor();
             var first = debugItemResults.Select(result =>
             {
-                externalProcessExecutor.OpenInBrowser( new Uri(result.MoreLink));
+                externalProcessExecutor.OpenInBrowser(new Uri(result.MoreLink));
                 var downloadStrings = externalProcessExecutor.WebResult[0];
                 return downloadStrings;
             }).First();
@@ -762,8 +762,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"The ""(.*)"" popup is shown I click Ok")]
         public void ThenThePopupIsShownIClickOk(string popupViewName)
         {
-            var popupController = MyContext.Get<Mock<Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
-
+            var popupController = GetPopupController();
             switch (popupViewName)
             {
                 case "Delete Confirmation":
@@ -778,6 +777,21 @@ namespace Dev2.Activities.Specs.TestFramework
                 default:
                     break;
             }
+        }
+
+        private Mock<Common.Interfaces.Studio.Controller.IPopupController> GetPopupController()
+        {            
+            if (!MyContext.ContainsKey("popupController"))
+            {
+                var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+                popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+                popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false)).Verifiable();
+                popupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Information, null, false, true, false, false, false, false)).Verifiable();
+                CustomContainer.Register(popupController.Object);
+                MyContext["popupController"] = popupController;
+                return popupController;
+            }
+            return MyContext.Get<Mock<Common.Interfaces.Studio.Controller.IPopupController>>("popupController");
         }
 
         [Given(@"I click New Test")]
@@ -1613,7 +1627,7 @@ namespace Dev2.Activities.Specs.TestFramework
                     }
                 }
 
-                
+
                 var resourceModel = new ResourceModel(environmentModel)
                 {
                     ID = savedSource.ID,
@@ -1793,7 +1807,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         if (foundNode != null)
                         {
                             var decisionNode = foundNode as FlowDecision;
-                            
+
                             var condition = decisionNode.Condition;
                             var activity = (DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
@@ -1833,7 +1847,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
-                        
+
                         var action = decisionNode.Action;
                         var activity = (DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];
@@ -1887,7 +1901,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"I Add Decision ""(.*)"" as TestStep")]
         [Given(@"I Add Decision ""(.*)"" as TestStep")]
         [When(@"I Add Decision ""(.*)"" as TestStep")]
-        
+
         public void ThenIAddDecisionAsTestStep(string actNameToFind)
         {
             var serviceTest = GetTestFrameworkFromContext();
@@ -2042,46 +2056,7 @@ namespace Dev2.Activities.Specs.TestFramework
         [Then(@"I Add ""(.*)"" as TestStep")]
         public void ThenIAddAsTestStep(string actNameToFind)
         {
-            var serviceTest = GetTestFrameworkFromContext();
-            var helper = new WorkflowHelper();
-            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
-            Assert.IsNotNull(builder);
-            var act = (Flowchart)builder.Implementation;
-            var actStartNode = act.StartNode;
-            if (act.Nodes.Count == 0 && actStartNode != null)
-            {
-                var searchNode = actStartNode as FlowStep;
-                while (searchNode != null)
-                {
-                    var isCorr = searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
-                    if (isCorr)
-                    {
-                        var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
-                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
-                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
-                        searchNode = null;
-                    }
-                    else
-                    {
-                        searchNode = searchNode.Next as FlowStep;
-                    }
-                }
-            }
-            else
-            {
-                foreach (var flowNode in act.Nodes)
-                {
-                    var searchNode = flowNode as FlowStep;
-                    var isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
-                    if (isCorr)
-                    {
-                        var modelItem = ModelItemUtils.CreateModelItem(flowNode);
-                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
-                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
-                        break;
-                    }
-                }
-            }
+            AddTestStep(actNameToFind);
         }
 
         [Then(@"I Add all ""(.*)"" as TestStep")]
@@ -2112,6 +2087,75 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTest = GetTestFrameworkFromContext();
             var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.First();
             serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
+        }
+
+        [Then(@"I Add ""(.*)"" as TestStep with")]
+        public void ThenIAddAsTestStepWith(string actNameToFind, Table table)
+        {
+            var serviceTest = AddTestStep(actNameToFind);
+            var serviceTestStep = serviceTest.SelectedServiceTest.TestSteps.FirstOrDefault(p => p.StepDescription == actNameToFind);
+            serviceTestStep.StepOutputs = new BindableCollection<IServiceTestOutput>();
+            foreach (var tableRow in table.Rows)
+            {
+                var varName = tableRow["Variable Name"];
+                var condition = tableRow["Condition"];
+                var value = tableRow["Value"];
+
+                serviceTestStep.StepOutputs.Add(new ServiceTestOutput(varName, value, "", "")
+                {
+                    AssertOp = condition
+                });
+            }
+
+        }
+
+        ServiceTestViewModel AddTestStep(string actNameToFind)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var helper = new WorkflowHelper();
+            var builder = helper.ReadXamlDefinition(serviceTest.ResourceModel.WorkflowXaml);
+            Assert.IsNotNull(builder);
+            var act = (Flowchart)builder.Implementation;
+            var actStartNode = act.StartNode;
+            if (act.Nodes.Count == 0 && actStartNode != null)
+            {
+                var searchNode = actStartNode as FlowStep;
+                while (searchNode != null)
+                {
+                    var isCorr = searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    if (isCorr)
+                    {
+
+
+
+                        var modelItem = ModelItemUtils.CreateModelItem(searchNode.Action);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        searchNode = null;
+                    }
+                    else
+                    {
+                        searchNode = searchNode.Next as FlowStep;
+                    }
+                }
+            }
+            else
+            {
+                foreach (var flowNode in act.Nodes)
+                {
+                    var searchNode = flowNode as FlowStep;
+                    var isCorr = searchNode != null && searchNode.Action.DisplayName.TrimEnd(' ').Equals(actNameToFind, StringComparison.InvariantCultureIgnoreCase);
+                    if (isCorr)
+                    {
+                        var modelItem = ModelItemUtils.CreateModelItem(flowNode);
+                        var methodInfo = typeof(ServiceTestViewModel).GetMethod("ItemSelectedAction", BindingFlags.Instance | BindingFlags.NonPublic);
+                        methodInfo.Invoke(serviceTest, new object[] { modelItem });
+                        break;
+                    }
+                }
+            }
+
+            return serviceTest;
         }
 
         [Then(@"I add StepOutputs as")]
@@ -2255,7 +2299,7 @@ namespace Dev2.Activities.Specs.TestFramework
                         if (foundNode != null)
                         {
                             var decisionNode = foundNode as FlowDecision;
-                            
+
                             var condition = decisionNode.Condition;
                             var activity = (DsfFlowNodeActivity<bool>)condition;
                             var expression = activity.ExpressionText;
@@ -2286,7 +2330,7 @@ namespace Dev2.Activities.Specs.TestFramework
                             return false;
                         });
                         var decisionNode = foundNode as FlowStep;
-                        
+
                         var action = decisionNode.Action;
                         var activity = (DsfActivityAbstract<string>)action;
                         var var = tableRow["Output Variable"];

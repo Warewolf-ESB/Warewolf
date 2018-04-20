@@ -142,6 +142,27 @@ Examples:
 	  |                     |
 	  | [[Result]] = Passed |
 	  
+
+ Scenario: Executing Advanced Recordset testing workflow Extended
+	  Given I have a workflow "Testing - Advanced Recordset"
+	  And "Testing - Advanced Recordset" contains "AdvancedRecordsetAcceptanceTest2" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Sql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "AdvancedRecordsetAcceptanceTest2" in Workflow "AdvancedRecordsetAcceptanceTest2" debug outputs as
+	  |                      |
+	  | [[Result]] = Passed |
+
+ Scenario: Executing Advanced Recordset testing workflow
+	  Given I have a workflow "Testing - Advanced Recordset"
+	  And "Testing - Advanced Recordset" contains "AdvancedRecordsetAcceptanceTest" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Sql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "AdvancedRecordsetAcceptanceTest" in Workflow "AdvancedRecordsetAcceptanceTest" debug outputs as
+	  |                      |
+	  | [[Result]] = Passed |
+	  
  Scenario: Executing Sql Store Procedure Executese once
 	  Given I have a workflow "Testing - Sql For Xml"
 	  And "Testing - Sql For Xml" contains "TestSqlExecutesOnce" from server "localhost" with mapping as

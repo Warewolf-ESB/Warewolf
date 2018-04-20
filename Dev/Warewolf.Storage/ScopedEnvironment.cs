@@ -45,8 +45,14 @@ namespace Warewolf.Storage
             return magic;
 
         }
-
-        public void AssignWithFrame(IAssignValue values, int update)
+		public void AssignWithFrame(IEnumerable<IAssignValue> values, int update)
+		{
+			foreach (var value in values)
+			{
+				AssignWithFrame(value, update);
+			}
+		}
+		public void AssignWithFrame(IAssignValue values, int update)
         {
             var name = UpdateDataSourceWithIterativeValue(_datasource, update, values.Name);
             var valuerep = UpdateDataSourceWithIterativeValue(_datasource, update, values.Value);
@@ -190,6 +196,14 @@ namespace Warewolf.Storage
             _datasource = ds;
         }
 
-       
+        public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update)
+        {
+            return _inner.EvalAsTable(recordsetExpression, update);
+        }
+
+        public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update, bool throwsifnotexists)
+        {
+            return _inner.EvalAsTable(recordsetExpression, update, throwsifnotexists);
+        }
     }
 }
