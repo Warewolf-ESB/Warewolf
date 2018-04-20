@@ -283,6 +283,7 @@
     <Compile Include="WorkflowTab\Tools\Database\DatabaseToolsUIMap.Designer.cs">
       <DependentUpon>DatabaseToolsUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="WorkflowTab\Tools\Database\AdvancedRecordsetTests.cs" />
     <Compile Include="WorkflowTab\Tools\Database\MySqlTests.cs" />
     <Compile Include="WorkflowTab\Tools\Database\ODBCTests.cs" />
     <Compile Include="WorkflowTab\Tools\Database\OracleDatabaseTests.cs" />

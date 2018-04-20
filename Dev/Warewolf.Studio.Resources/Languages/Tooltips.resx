@@ -2282,4 +2282,16 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="SearchOutputVariableTooltip" xml:space="preserve">
     <value>Search Output Variable</value>
   </data>
+  <data name="AdvancedRecordsetLocalVariable" xml:space="preserve">
+    <value>Set a local variable to be used in the SQL Query.</value>
+  </data>
+  <data name="AdvancedRecordsetVariable" xml:space="preserve">
+    <value>The value of the local variable to be used in SQL Query. Scalar variables can be used as a value.</value>
+  </data>
+  <data name="AdvancedRecordsetSqlQuery" xml:space="preserve">
+    <value>The SQL query</value>
+  </data>
+  <data name="AdvancedRecordsetSqlQueryExecuteCommand" xml:space="preserve">
+    <value>Returns the output of the execution if any. Varies depending on what was executed.</value>
+  </data>
 </root>
