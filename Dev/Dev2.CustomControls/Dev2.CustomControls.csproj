@@ -97,7 +97,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Behavior\DataGridWatermarkModifier.cs" />
     <Compile Include="Behavior\ThumbResizeBehavior.cs" />
     <Compile Include="Converters\BoolToStringConvert.cs" />

@@ -89,7 +89,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="AssignJsonTests.cs" />
     <Compile Include="TestPublicFunctions.cs" />
     <Compile Include="TestUpdate.cs" />

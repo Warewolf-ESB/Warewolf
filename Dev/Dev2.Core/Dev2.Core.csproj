@@ -142,7 +142,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <Visible>False</Visible>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
     <Compile Include="Common\ConflictTreeNode.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />

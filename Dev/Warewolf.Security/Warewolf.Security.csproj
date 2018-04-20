@@ -59,7 +59,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Encryption\DPAPIWrapper.cs" />
     <None Include="packages.config" />
     <None Include="Warewolf.Security.ruleset" />

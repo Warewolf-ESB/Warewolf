@@ -83,7 +83,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Debug\DebugDispatcher.cs" />
     <Compile Include="Debug\DebugItem.cs" />
     <Compile Include="Debug\DebugItemResult.cs" />

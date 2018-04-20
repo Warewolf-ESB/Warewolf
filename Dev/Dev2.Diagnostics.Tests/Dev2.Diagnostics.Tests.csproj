@@ -68,7 +68,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="PerfCounterBuilderTest.cs" />
     <Compile Include="PerfCounterOps.cs" />
     <Compile Include="PerformanceCounterPersistenceTest.cs" />

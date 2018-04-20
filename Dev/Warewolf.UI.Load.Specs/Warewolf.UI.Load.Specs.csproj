@@ -78,7 +78,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="LoadSteps.cs" />
     <Compile Include="SetDefaultPlaybackSettings.cs" />
     <None Include="App.config" />
