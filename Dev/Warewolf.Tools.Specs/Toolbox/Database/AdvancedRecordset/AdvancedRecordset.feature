@@ -3913,3 +3913,18 @@ Scenario:  math functions Select With ABS
     | [[TableCopy(3).dob]] = 10:34:56 |
     | [[TableCopy(3).name]] = Hatter  |
 
+Scenario:  Use an undeclare variable on the query returns error
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    | person().name | Mandy  |
+    | person().name | Hatter |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "SELECT * from person  where name = @undeclaredVariable"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    And the advancerecodset execution has "AN" error

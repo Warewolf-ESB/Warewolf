@@ -6865,12 +6865,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Using a recordset for IN value")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Using multiple recordset for IN value")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
-        public virtual void UsingARecordsetForINValue()
+        public virtual void UsingMultipleRecordsetForINValue()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Using a recordset for IN value", ((string[])(null)));
-#line 2318
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Using multiple recordset for IN value", ((string[])(null)));
+#line 2321
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table345 = new TechTalk.SpecFlow.Table(new string[] {
@@ -6891,10 +6891,10 @@ this.ScenarioSetup(scenarioInfo);
             table345.AddRow(new string[] {
                         "other(2).value",
                         "Bob"});
-#line 2319
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table345, "Given ");
-#line 2326
-    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2322
+ testRunner.Given("I have a recordset with this shape", ((string)(null)), table345, "Given ");
+#line 2329
+ testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table346 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
@@ -6902,13 +6902,16 @@ this.ScenarioSetup(scenarioInfo);
             table346.AddRow(new string[] {
                         "names",
                         "[[other().value]]"});
-#line 2327
-    testRunner.And("Declare variables as", ((string)(null)), table346, "And ");
+            table346.AddRow(new string[] {
+                        "people",
+                        "[[person().name]]"});
 #line 2330
-    testRunner.And("I have the following sql statement \"SELECT * from person where name IN (@names);\"" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2331
-    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("Declare variables as", ((string)(null)), table346, "And ");
+#line 2334
+ testRunner.And("I have the following sql statement \"SELECT * from person where name IN (@names) o" +
+                    "r name in (@people);\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2335
+ testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table347 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
@@ -6916,12 +6919,12 @@ this.ScenarioSetup(scenarioInfo);
             table347.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2332
-    testRunner.Then("Outputs are as follows", ((string)(null)), table347, "Then ");
-#line 2335
-    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 2336
-    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Then("Outputs are as follows", ((string)(null)), table347, "Then ");
+#line 2339
+ testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2340
+ testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table348 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -6929,35 +6932,40 @@ this.ScenarioSetup(scenarioInfo);
             table348.AddRow(new string[] {
                         "TableCopy(1).name",
                         "Bob"});
-#line 2337
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table348, "Then ");
+            table348.AddRow(new string[] {
+                        "TableCopy(2).name",
+                        "Hatter"});
+#line 2341
+ testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table348, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table349 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
-                        "names"});
+                        "names",
+                        "people"});
             table349.AddRow(new string[] {
                         "String",
-                        "[[other(2).value]] = Bob"});
-#line 2340
-    testRunner.And("the debug inputs as", ((string)(null)), table349, "And ");
+                        "[[other(2).value]] = Bob",
+                        "[[person(3).name]] = Hatter"});
+#line 2345
+ testRunner.And("the debug inputs as", ((string)(null)), table349, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table350 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table350.AddRow(new string[] {
-                        "[[TableCopy(1).name]] = Bob"});
-#line 2343
-    testRunner.And("the debug output as", ((string)(null)), table350, "And ");
+                        "[[TableCopy(2).name]] = Hatter"});
+#line 2348
+ testRunner.And("the debug output as", ((string)(null)), table350, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Using a recordset for IN value using scalar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Using a recordset for IN value")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
-        public virtual void UsingARecordsetForINValueUsingScalar()
+        public virtual void UsingARecordsetForINValue()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Using a recordset for IN value using scalar", ((string[])(null)));
-#line 2347
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Using a recordset for IN value", ((string[])(null)));
+#line 2353
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table351 = new TechTalk.SpecFlow.Table(new string[] {
@@ -6973,11 +6981,14 @@ this.ScenarioSetup(scenarioInfo);
                         "person(3).name",
                         "Hatter"});
             table351.AddRow(new string[] {
-                        "value",
+                        "other(1).value",
                         "Hatter"});
-#line 2348
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table351, "Given ");
+            table351.AddRow(new string[] {
+                        "other(2).value",
+                        "Bob"});
 #line 2354
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table351, "Given ");
+#line 2361
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table352 = new TechTalk.SpecFlow.Table(new string[] {
@@ -6985,13 +6996,13 @@ this.ScenarioSetup(scenarioInfo);
                         "Value"});
             table352.AddRow(new string[] {
                         "names",
-                        "[[value]]"});
-#line 2355
+                        "[[other().value]]"});
+#line 2362
     testRunner.And("Declare variables as", ((string)(null)), table352, "And ");
-#line 2358
+#line 2365
     testRunner.And("I have the following sql statement \"SELECT * from person where name IN (@names);\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2359
+#line 2366
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table353 = new TechTalk.SpecFlow.Table(new string[] {
@@ -7000,11 +7011,11 @@ this.ScenarioSetup(scenarioInfo);
             table353.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2360
+#line 2367
     testRunner.Then("Outputs are as follows", ((string)(null)), table353, "Then ");
-#line 2363
+#line 2370
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2364
+#line 2371
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table354 = new TechTalk.SpecFlow.Table(new string[] {
@@ -7012,8 +7023,8 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table354.AddRow(new string[] {
                         "TableCopy(1).name",
-                        "Hatter"});
-#line 2365
+                        "Bob"});
+#line 2372
     testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table354, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table355 = new TechTalk.SpecFlow.Table(new string[] {
@@ -7021,16 +7032,100 @@ this.ScenarioSetup(scenarioInfo);
                         "names"});
             table355.AddRow(new string[] {
                         "String",
-                        "[[value]] = Hatter"});
-#line 2368
+                        "[[other(2).value]] = Bob"});
+#line 2375
     testRunner.And("the debug inputs as", ((string)(null)), table355, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table356 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table356.AddRow(new string[] {
-                        "[[TableCopy(1).name]] = Hatter"});
-#line 2371
+                        "[[TableCopy(1).name]] = Bob"});
+#line 2378
     testRunner.And("the debug output as", ((string)(null)), table356, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Using a recordset for IN value using scalar")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
+        public virtual void UsingARecordsetForINValueUsingScalar()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Using a recordset for IN value using scalar", ((string[])(null)));
+#line 2382
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table357 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[person]]",
+                        ""});
+            table357.AddRow(new string[] {
+                        "person(1).name",
+                        "Bob"});
+            table357.AddRow(new string[] {
+                        "person(2).name",
+                        "Alice"});
+            table357.AddRow(new string[] {
+                        "person(3).name",
+                        "Hatter"});
+            table357.AddRow(new string[] {
+                        "value",
+                        "Hatter"});
+#line 2383
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table357, "Given ");
+#line 2389
+    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table358 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table358.AddRow(new string[] {
+                        "names",
+                        "[[value]]"});
+#line 2390
+    testRunner.And("Declare variables as", ((string)(null)), table358, "And ");
+#line 2393
+    testRunner.And("I have the following sql statement \"SELECT * from person where name IN (@names);\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2394
+    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table359 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table359.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+#line 2395
+    testRunner.Then("Outputs are as follows", ((string)(null)), table359, "Then ");
+#line 2398
+    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2399
+    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table360 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table360.AddRow(new string[] {
+                        "TableCopy(1).name",
+                        "Hatter"});
+#line 2400
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table360, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table361 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Query",
+                        "names"});
+            table361.AddRow(new string[] {
+                        "String",
+                        "[[value]] = Hatter"});
+#line 2403
+    testRunner.And("the debug inputs as", ((string)(null)), table361, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table362 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table362.AddRow(new string[] {
+                        "[[TableCopy(1).name]] = Hatter"});
+#line 2406
+    testRunner.And("the debug output as", ((string)(null)), table362, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7041,110 +7136,110 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UpdateStatementWithVariableInWhereClause()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause", ((string[])(null)));
-#line 2376
+#line 2411
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table357 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table363 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table357.AddRow(new string[] {
+            table363.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table357.AddRow(new string[] {
+            table363.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table357.AddRow(new string[] {
+            table363.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table357.AddRow(new string[] {
+            table363.AddRow(new string[] {
                         "updateName",
                         "Hatter"});
-#line 2377
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table357, "Given ");
-#line 2383
+#line 2412
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table363, "Given ");
+#line 2418
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table358 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table364 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table358.AddRow(new string[] {
+            table364.AddRow(new string[] {
                         "newName",
                         "[[updateName]]"});
-#line 2384
-    testRunner.And("Declare variables as", ((string)(null)), table358, "And ");
-#line 2387
+#line 2419
+    testRunner.And("Declare variables as", ((string)(null)), table364, "And ");
+#line 2422
     testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' WHERE n" +
                     "ame = @newName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2388
+#line 2423
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table359 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table365 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table359.AddRow(new string[] {
+            table365.AddRow(new string[] {
                         "records_affected",
                         "[[Table1Copy().records_affected]]"});
-#line 2389
-    testRunner.Then("Outputs are as follows", ((string)(null)), table359, "Then ");
-#line 2392
+#line 2424
+    testRunner.Then("Outputs are as follows", ((string)(null)), table365, "Then ");
+#line 2427
     testRunner.And("Recordset is \"Table1Copy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2393
+#line 2428
     testRunner.When("I update Recordset to \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2394
+#line 2429
     testRunner.Then("Recordset is \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table360 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table366 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table360.AddRow(new string[] {
+            table366.AddRow(new string[] {
                         "records_affected",
                         "[[newPerson().records_affected]]"});
-#line 2395
-    testRunner.And("Outputs are as follows", ((string)(null)), table360, "And ");
-#line 2398
+#line 2430
+    testRunner.And("Outputs are as follows", ((string)(null)), table366, "And ");
+#line 2433
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table361 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table367 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table361.AddRow(new string[] {
+            table367.AddRow(new string[] {
                         "newPerson().records_affected",
                         "1"});
-#line 2399
-    testRunner.Then("recordset \"[[newPerson(*).records_affected]]\"  will be", ((string)(null)), table361, "Then ");
+#line 2434
+    testRunner.Then("recordset \"[[newPerson(*).records_affected]]\"  will be", ((string)(null)), table367, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table362 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table368 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table362.AddRow(new string[] {
+            table368.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table362.AddRow(new string[] {
+            table368.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table362.AddRow(new string[] {
+            table368.AddRow(new string[] {
                         "person(3).name",
                         "Mad Hatter"});
-#line 2402
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table362, "Then ");
-#line 2407
+#line 2437
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table368, "Then ");
+#line 2442
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table363 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table369 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName"});
-            table363.AddRow(new string[] {
+            table369.AddRow(new string[] {
                         "String",
                         "[[updateName]] = Hatter"});
-#line 2408
-    testRunner.And("the debug inputs as", ((string)(null)), table363, "And ");
+#line 2443
+    testRunner.And("the debug inputs as", ((string)(null)), table369, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table364 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table370 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table364.AddRow(new string[] {
+            table370.AddRow(new string[] {
                         "[[newPerson(1).records_affected]] = 1"});
-#line 2411
-    testRunner.And("the debug output as", ((string)(null)), table364, "And ");
+#line 2446
+    testRunner.And("the debug output as", ((string)(null)), table370, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7155,181 +7250,83 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UpdateStatementWithVariableInWhereClauseAndSelectStatement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Select statement", ((string[])(null)));
-#line 2415
+#line 2450
 this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table365 = new TechTalk.SpecFlow.Table(new string[] {
-                        "[[person]]",
-                        ""});
-            table365.AddRow(new string[] {
-                        "person().name",
-                        "Bob"});
-            table365.AddRow(new string[] {
-                        "person().name",
-                        "Alice"});
-            table365.AddRow(new string[] {
-                        "person().name",
-                        "Hatter"});
-            table365.AddRow(new string[] {
-                        "updateName",
-                        "Hatter"});
-#line 2416
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table365, "Given ");
-#line 2422
-    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table366 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Value"});
-            table366.AddRow(new string[] {
-                        "newName",
-                        "[[updateName]]"});
-#line 2423
-    testRunner.And("Declare variables as", ((string)(null)), table366, "And ");
-#line 2426
-    testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' where n" +
-                    "ame = @newName; SELECT * FROM person\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2427
-    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table367 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table367.AddRow(new string[] {
-                        "name",
-                        "[[TableCopy().name]]"});
-#line 2428
-    testRunner.Then("Outputs are as follows", ((string)(null)), table367, "Then ");
-#line 2431
-    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2432
-    testRunner.When("I update Recordset to \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2433
-    testRunner.Then("Recordset is \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table368 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table368.AddRow(new string[] {
-                        "name",
-                        "[[newPerson().name]]"});
-#line 2434
-    testRunner.And("Outputs are as follows", ((string)(null)), table368, "And ");
-#line 2437
-    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table369 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table369.AddRow(new string[] {
-                        "newPerson().name",
-                        "Bob"});
-            table369.AddRow(new string[] {
-                        "newPerson().name",
-                        "Alice"});
-            table369.AddRow(new string[] {
-                        "newPerson().name",
-                        "Mad Hatter"});
-#line 2438
-    testRunner.Then("recordset \"[[newPerson(*).name]]\"  will be", ((string)(null)), table369, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table370 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "row"});
-            table370.AddRow(new string[] {
-                        "person(1).name",
-                        "Bob"});
-            table370.AddRow(new string[] {
-                        "person(2).name",
-                        "Alice"});
-            table370.AddRow(new string[] {
-                        "person(3).name",
-                        "Mad Hatter"});
-#line 2443
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table370, "Then ");
-#line 2448
-    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table371 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Query",
-                        "newName"});
-            table371.AddRow(new string[] {
-                        "String",
-                        "[[updateName]] = Hatter"});
-#line 2449
-    testRunner.And("the debug inputs as", ((string)(null)), table371, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table372 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table372.AddRow(new string[] {
-                        "[[newPerson(3).name]] = Mad Hatter"});
-#line 2452
-    testRunner.And("the debug output as", ((string)(null)), table372, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("complex Update statement")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
-        public virtual void ComplexUpdateStatement()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("complex Update statement", ((string[])(null)));
-#line 2456
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table373 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table373.AddRow(new string[] {
+            table371.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table373.AddRow(new string[] {
+            table371.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table373.AddRow(new string[] {
+            table371.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table373.AddRow(new string[] {
-                        "other().name",
+            table371.AddRow(new string[] {
+                        "updateName",
                         "Hatter"});
+#line 2451
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table371, "Given ");
 #line 2457
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table373, "Given ");
-#line 2463
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2464
+#line hidden
+            TechTalk.SpecFlow.Table table372 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table372.AddRow(new string[] {
+                        "newName",
+                        "[[updateName]]"});
+#line 2458
+    testRunner.And("Declare variables as", ((string)(null)), table372, "And ");
+#line 2461
     testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' where n" +
-                    "ame IN (SELECT name FROM other);\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2465
+                    "ame = @newName; SELECT * FROM person\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2462
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table373 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table373.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+#line 2463
+    testRunner.Then("Outputs are as follows", ((string)(null)), table373, "Then ");
+#line 2466
+    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2467
+    testRunner.When("I update Recordset to \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2468
+    testRunner.Then("Recordset is \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table374 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
             table374.AddRow(new string[] {
-                        "records_affected",
-                        "[[Table1Copy().records_affected]]"});
-#line 2466
-    testRunner.Then("Outputs are as follows", ((string)(null)), table374, "Then ");
+                        "name",
+                        "[[newPerson().name]]"});
 #line 2469
-    testRunner.And("Recordset is \"Table1Copy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2470
-    testRunner.When("I update Recordset to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2471
-    testRunner.Then("Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.And("Outputs are as follows", ((string)(null)), table374, "And ");
+#line 2472
+    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table375 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
+                        "rs",
+                        "value"});
             table375.AddRow(new string[] {
-                        "records_affected",
-                        "[[records_affected]]"});
-#line 2472
-    testRunner.And("Outputs are as follows", ((string)(null)), table375, "And ");
-#line 2475
-    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2476
-    testRunner.Then("the result variable \"[[records_affected]]\" will be \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+                        "newPerson().name",
+                        "Bob"});
+            table375.AddRow(new string[] {
+                        "newPerson().name",
+                        "Alice"});
+            table375.AddRow(new string[] {
+                        "newPerson().name",
+                        "Mad Hatter"});
+#line 2473
+    testRunner.Then("recordset \"[[newPerson(*).name]]\"  will be", ((string)(null)), table375, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table376 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -7343,33 +7340,37 @@ this.ScenarioSetup(scenarioInfo);
             table376.AddRow(new string[] {
                         "person(3).name",
                         "Mad Hatter"});
-#line 2477
+#line 2478
     testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table376, "Then ");
+#line 2483
+    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table377 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Query"});
+                        "Query",
+                        "newName"});
             table377.AddRow(new string[] {
-                        "String"});
-#line 2482
+                        "String",
+                        "[[updateName]] = Hatter"});
+#line 2484
     testRunner.And("the debug inputs as", ((string)(null)), table377, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table378 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table378.AddRow(new string[] {
-                        "[[records_affected]] = 1"});
-#line 2485
+                        "[[newPerson(3).name]] = Mad Hatter"});
+#line 2487
     testRunner.And("the debug output as", ((string)(null)), table378, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update statement with variable in where clause and Select Where statement")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("complex Update statement")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
-        public virtual void UpdateStatementWithVariableInWhereClauseAndSelectWhereStatement()
+        public virtual void ComplexUpdateStatement()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Select Where statement", ((string[])(null)));
-#line 2489
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("complex Update statement", ((string[])(null)));
+#line 2491
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table379 = new TechTalk.SpecFlow.Table(new string[] {
@@ -7385,94 +7386,188 @@ this.ScenarioSetup(scenarioInfo);
                         "person().name",
                         "Hatter"});
             table379.AddRow(new string[] {
-                        "updateName",
+                        "other().name",
                         "Hatter"});
-#line 2490
+#line 2492
     testRunner.Given("I have a recordset with this shape", ((string)(null)), table379, "Given ");
-#line 2496
+#line 2498
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2499
+    testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' where n" +
+                    "ame IN (SELECT name FROM other);\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2500
+    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table380 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Value"});
+                        "Mapped From",
+                        "Mapped To"});
             table380.AddRow(new string[] {
-                        "newName",
-                        "[[updateName]]"});
-#line 2497
-    testRunner.And("Declare variables as", ((string)(null)), table380, "And ");
-#line 2500
-    testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' where n" +
-                    "ame = @newName; SELECT * FROM person WHERE name = \'Mad Hatter\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+                        "records_affected",
+                        "[[Table1Copy().records_affected]]"});
 #line 2501
-    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.Then("Outputs are as follows", ((string)(null)), table380, "Then ");
+#line 2504
+    testRunner.And("Recordset is \"Table1Copy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2505
+    testRunner.When("I update Recordset to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2506
+    testRunner.Then("Recordset is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table381 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
             table381.AddRow(new string[] {
-                        "name",
-                        "[[TableCopy().name]]"});
-#line 2502
-    testRunner.Then("Outputs are as follows", ((string)(null)), table381, "Then ");
-#line 2505
-    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2506
-    testRunner.When("I update Recordset to \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                        "records_affected",
+                        "[[records_affected]]"});
 #line 2507
-    testRunner.Then("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.And("Outputs are as follows", ((string)(null)), table381, "And ");
+#line 2510
+    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2511
+    testRunner.Then("the result variable \"[[records_affected]]\" will be \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table382 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table382.AddRow(new string[] {
-                        "name",
-                        "[[TableCopy().name]]"});
-#line 2508
-    testRunner.And("Outputs are as follows", ((string)(null)), table382, "And ");
-#line 2511
-    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table383 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table383.AddRow(new string[] {
-                        "TableCopy().name",
-                        "Mad Hatter"});
-#line 2512
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table383, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table384 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table384.AddRow(new string[] {
+            table382.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table384.AddRow(new string[] {
+            table382.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table384.AddRow(new string[] {
+            table382.AddRow(new string[] {
                         "person(3).name",
                         "Mad Hatter"});
-#line 2515
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table384, "Then ");
+#line 2512
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table382, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table383 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Query"});
+            table383.AddRow(new string[] {
+                        "String"});
+#line 2517
+    testRunner.And("the debug inputs as", ((string)(null)), table383, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table384 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table384.AddRow(new string[] {
+                        "[[records_affected]] = 1"});
 #line 2520
-    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("the debug output as", ((string)(null)), table384, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update statement with variable in where clause and Select Where statement")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
+        public virtual void UpdateStatementWithVariableInWhereClauseAndSelectWhereStatement()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Select Where statement", ((string[])(null)));
+#line 2524
+this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table385 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Query",
-                        "newName"});
+                        "[[person]]",
+                        ""});
             table385.AddRow(new string[] {
-                        "String",
-                        "[[updateName]] = Hatter"});
-#line 2521
-    testRunner.And("the debug inputs as", ((string)(null)), table385, "And ");
+                        "person().name",
+                        "Bob"});
+            table385.AddRow(new string[] {
+                        "person().name",
+                        "Alice"});
+            table385.AddRow(new string[] {
+                        "person().name",
+                        "Hatter"});
+            table385.AddRow(new string[] {
+                        "updateName",
+                        "Hatter"});
+#line 2525
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table385, "Given ");
+#line 2531
+    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table386 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
+                        "Name",
+                        "Value"});
             table386.AddRow(new string[] {
+                        "newName",
+                        "[[updateName]]"});
+#line 2532
+    testRunner.And("Declare variables as", ((string)(null)), table386, "And ");
+#line 2535
+    testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' where n" +
+                    "ame = @newName; SELECT * FROM person WHERE name = \'Mad Hatter\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2536
+    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table387 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table387.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+#line 2537
+    testRunner.Then("Outputs are as follows", ((string)(null)), table387, "Then ");
+#line 2540
+    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2541
+    testRunner.When("I update Recordset to \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 2542
+    testRunner.Then("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table388 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table388.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+#line 2543
+    testRunner.And("Outputs are as follows", ((string)(null)), table388, "And ");
+#line 2546
+    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table389 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table389.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Mad Hatter"});
+#line 2547
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table389, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table390 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "row"});
+            table390.AddRow(new string[] {
+                        "person(1).name",
+                        "Bob"});
+            table390.AddRow(new string[] {
+                        "person(2).name",
+                        "Alice"});
+            table390.AddRow(new string[] {
+                        "person(3).name",
+                        "Mad Hatter"});
+#line 2550
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table390, "Then ");
+#line 2555
+    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table391 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Query",
+                        "newName"});
+            table391.AddRow(new string[] {
+                        "String",
+                        "[[updateName]] = Hatter"});
+#line 2556
+    testRunner.And("the debug inputs as", ((string)(null)), table391, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table392 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table392.AddRow(new string[] {
                         "[[TableCopy(1).name]] =  Mad Hatter"});
-#line 2524
-    testRunner.And("the debug output as", ((string)(null)), table386, "And ");
+#line 2559
+    testRunner.And("the debug output as", ((string)(null)), table392, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7483,106 +7578,106 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeleteStatementWithVariableInWhereClause()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete statement with variable in where clause", ((string[])(null)));
-#line 2528
+#line 2563
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table387 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table393 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table387.AddRow(new string[] {
+            table393.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table387.AddRow(new string[] {
+            table393.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table387.AddRow(new string[] {
+            table393.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table387.AddRow(new string[] {
+            table393.AddRow(new string[] {
                         "deleteName",
                         "Hatter"});
-#line 2529
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table387, "Given ");
-#line 2535
+#line 2564
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table393, "Given ");
+#line 2570
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table388 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table394 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table388.AddRow(new string[] {
+            table394.AddRow(new string[] {
                         "newName",
                         "[[deleteName]]"});
-#line 2536
-    testRunner.And("Declare variables as", ((string)(null)), table388, "And ");
-#line 2539
+#line 2571
+    testRunner.And("Declare variables as", ((string)(null)), table394, "And ");
+#line 2574
     testRunner.And("I have the following sql statement \"DELETE FROM person WHERE name = @newName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2540
+#line 2575
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table389 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table395 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table389.AddRow(new string[] {
+            table395.AddRow(new string[] {
                         "records_affected",
                         "[[Table1Copy().records_affected]]"});
-#line 2541
-    testRunner.Then("Outputs are as follows", ((string)(null)), table389, "Then ");
-#line 2544
+#line 2576
+    testRunner.Then("Outputs are as follows", ((string)(null)), table395, "Then ");
+#line 2579
     testRunner.And("Recordset is \"Table1Copy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2545
+#line 2580
     testRunner.When("I update Recordset to \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2546
+#line 2581
     testRunner.Then("Recordset is \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table390 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table396 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table390.AddRow(new string[] {
+            table396.AddRow(new string[] {
                         "records_affected",
                         "[[newPerson().records_affected]]"});
-#line 2547
-    testRunner.And("Outputs are as follows", ((string)(null)), table390, "And ");
-#line 2550
+#line 2582
+    testRunner.And("Outputs are as follows", ((string)(null)), table396, "And ");
+#line 2585
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table391 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table397 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table391.AddRow(new string[] {
+            table397.AddRow(new string[] {
                         "newPerson().records_affected",
                         "1"});
-#line 2551
-    testRunner.Then("recordset \"[[newPerson(*).records_affected]]\"  will be", ((string)(null)), table391, "Then ");
+#line 2586
+    testRunner.Then("recordset \"[[newPerson(*).records_affected]]\"  will be", ((string)(null)), table397, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table392 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table398 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table392.AddRow(new string[] {
+            table398.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table392.AddRow(new string[] {
+            table398.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-#line 2554
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table392, "Then ");
-#line 2558
+#line 2589
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table398, "Then ");
+#line 2593
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table393 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table399 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName"});
-            table393.AddRow(new string[] {
+            table399.AddRow(new string[] {
                         "String",
                         "[[deleteName]] = Hatter"});
-#line 2559
-    testRunner.And("the debug inputs as", ((string)(null)), table393, "And ");
+#line 2594
+    testRunner.And("the debug inputs as", ((string)(null)), table399, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table394 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table400 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table394.AddRow(new string[] {
+            table400.AddRow(new string[] {
                         "[[newPerson(1).records_affected]] = 1"});
-#line 2562
-    testRunner.And("the debug output as", ((string)(null)), table394, "And ");
+#line 2597
+    testRunner.And("the debug output as", ((string)(null)), table400, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7593,110 +7688,110 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeleteStatementWithVariableInWhereClauseAndSelectStatement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete statement with variable in where clause and Select statement", ((string[])(null)));
-#line 2566
+#line 2601
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table395 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table401 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table395.AddRow(new string[] {
+            table401.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table395.AddRow(new string[] {
+            table401.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table395.AddRow(new string[] {
+            table401.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table395.AddRow(new string[] {
+            table401.AddRow(new string[] {
                         "deleteName",
                         "Hatter"});
-#line 2567
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table395, "Given ");
-#line 2573
+#line 2602
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table401, "Given ");
+#line 2608
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table396 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table402 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table396.AddRow(new string[] {
+            table402.AddRow(new string[] {
                         "newName",
                         "[[deleteName]]"});
-#line 2574
-    testRunner.And("Declare variables as", ((string)(null)), table396, "And ");
-#line 2577
+#line 2609
+    testRunner.And("Declare variables as", ((string)(null)), table402, "And ");
+#line 2612
     testRunner.And("I have the following sql statement \"DELETE FROM person WHERE name = @newName; SEL" +
                     "ECT * FROM person\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2578
+#line 2613
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table397 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table403 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table397.AddRow(new string[] {
+            table403.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2579
-    testRunner.Then("Outputs are as follows", ((string)(null)), table397, "Then ");
-#line 2582
+#line 2614
+    testRunner.Then("Outputs are as follows", ((string)(null)), table403, "Then ");
+#line 2617
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2583
+#line 2618
     testRunner.When("I update Recordset to \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2584
+#line 2619
     testRunner.Then("Recordset is \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table398 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table404 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table398.AddRow(new string[] {
+            table404.AddRow(new string[] {
                         "name",
                         "[[newPerson().name]]"});
-#line 2585
-    testRunner.And("Outputs are as follows", ((string)(null)), table398, "And ");
-#line 2588
+#line 2620
+    testRunner.And("Outputs are as follows", ((string)(null)), table404, "And ");
+#line 2623
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table399 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table405 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table399.AddRow(new string[] {
+            table405.AddRow(new string[] {
                         "newPerson().name",
                         "Bob"});
-            table399.AddRow(new string[] {
+            table405.AddRow(new string[] {
                         "newPerson().name",
                         "Alice"});
-#line 2589
-    testRunner.Then("recordset \"[[newPerson(*).name]]\"  will be", ((string)(null)), table399, "Then ");
+#line 2624
+    testRunner.Then("recordset \"[[newPerson(*).name]]\"  will be", ((string)(null)), table405, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table400 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table406 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table400.AddRow(new string[] {
+            table406.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table400.AddRow(new string[] {
+            table406.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-#line 2593
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table400, "Then ");
-#line 2597
+#line 2628
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table406, "Then ");
+#line 2632
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table401 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table407 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName"});
-            table401.AddRow(new string[] {
+            table407.AddRow(new string[] {
                         "String",
                         "[[deleteName]] = Hatter"});
-#line 2598
-    testRunner.And("the debug inputs as", ((string)(null)), table401, "And ");
+#line 2633
+    testRunner.And("the debug inputs as", ((string)(null)), table407, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table402 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table408 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table402.AddRow(new string[] {
+            table408.AddRow(new string[] {
                         "[[newPerson(2).name]] =  Alice"});
-#line 2601
-    testRunner.And("the debug output as", ((string)(null)), table402, "And ");
+#line 2636
+    testRunner.And("the debug output as", ((string)(null)), table408, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7707,107 +7802,107 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeleteStatementWithVariableInWhereClauseAndSelectWhereStatement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete statement with variable in where clause and Select Where statement", ((string[])(null)));
-#line 2605
+#line 2640
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table403 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table409 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table403.AddRow(new string[] {
+            table409.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table403.AddRow(new string[] {
+            table409.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table403.AddRow(new string[] {
+            table409.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table403.AddRow(new string[] {
+            table409.AddRow(new string[] {
                         "deleteName",
                         "Hatter"});
-#line 2606
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table403, "Given ");
-#line 2612
+#line 2641
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table409, "Given ");
+#line 2647
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table404 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table410 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table404.AddRow(new string[] {
+            table410.AddRow(new string[] {
                         "newName",
                         "[[deleteName]]"});
-#line 2613
-    testRunner.And("Declare variables as", ((string)(null)), table404, "And ");
-#line 2616
+#line 2648
+    testRunner.And("Declare variables as", ((string)(null)), table410, "And ");
+#line 2651
     testRunner.And("I have the following sql statement \"DELETE FROM person WHERE name = @newName; SEL" +
                     "ECT * FROM person WHERE name = \'Bob\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2617
+#line 2652
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table405 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table411 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table405.AddRow(new string[] {
+            table411.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2618
-    testRunner.Then("Outputs are as follows", ((string)(null)), table405, "Then ");
-#line 2621
+#line 2653
+    testRunner.Then("Outputs are as follows", ((string)(null)), table411, "Then ");
+#line 2656
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2622
+#line 2657
     testRunner.When("I update Recordset to \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 2623
+#line 2658
     testRunner.Then("Recordset is \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table406 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table412 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table406.AddRow(new string[] {
+            table412.AddRow(new string[] {
                         "name",
                         "[[newPerson().name]]"});
-#line 2624
-    testRunner.And("Outputs are as follows", ((string)(null)), table406, "And ");
-#line 2627
+#line 2659
+    testRunner.And("Outputs are as follows", ((string)(null)), table412, "And ");
+#line 2662
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table407 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table413 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table407.AddRow(new string[] {
+            table413.AddRow(new string[] {
                         "newPerson().name",
                         "Bob"});
-#line 2628
-    testRunner.Then("recordset \"[[newPerson(*).name]]\"  will be", ((string)(null)), table407, "Then ");
+#line 2663
+    testRunner.Then("recordset \"[[newPerson(*).name]]\"  will be", ((string)(null)), table413, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table408 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table414 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table408.AddRow(new string[] {
+            table414.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table408.AddRow(new string[] {
+            table414.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-#line 2631
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table408, "Then ");
-#line 2635
+#line 2666
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table414, "Then ");
+#line 2670
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table409 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table415 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName"});
-            table409.AddRow(new string[] {
+            table415.AddRow(new string[] {
                         "String",
                         "[[deleteName]] = Hatter"});
-#line 2636
-    testRunner.And("the debug inputs as", ((string)(null)), table409, "And ");
+#line 2671
+    testRunner.And("the debug inputs as", ((string)(null)), table415, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table410 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table416 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table410.AddRow(new string[] {
+            table416.AddRow(new string[] {
                         "[[newPerson(1).name]] = Bob"});
-#line 2639
-    testRunner.And("the debug output as", ((string)(null)), table410, "And ");
+#line 2674
+    testRunner.And("the debug output as", ((string)(null)), table416, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7818,74 +7913,74 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SimpleJoinStatement()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("simple Join statement", ((string[])(null)));
-#line 2643
+#line 2678
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table411 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table417 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table411.AddRow(new string[] {
+            table417.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table411.AddRow(new string[] {
+            table417.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table411.AddRow(new string[] {
+            table417.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table411.AddRow(new string[] {
+            table417.AddRow(new string[] {
                         "other().name",
                         "Hatter"});
-            table411.AddRow(new string[] {
+            table417.AddRow(new string[] {
                         "other().name",
                         "Gary"});
-#line 2644
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table411, "Given ");
-#line 2651
+#line 2679
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table417, "Given ");
+#line 2686
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2652
+#line 2687
     testRunner.And("I have the following sql statement \"select o.name from person p join other o on p" +
                     ".name=o.name\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2653
+#line 2688
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table412 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table418 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table412.AddRow(new string[] {
+            table418.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2654
-    testRunner.Then("Outputs are as follows", ((string)(null)), table412, "Then ");
-#line 2657
+#line 2689
+    testRunner.Then("Outputs are as follows", ((string)(null)), table418, "Then ");
+#line 2692
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2658
+#line 2693
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table413 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table419 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table413.AddRow(new string[] {
+            table419.AddRow(new string[] {
                         "TableCopy().name",
                         "Hatter"});
-#line 2659
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table413, "Then ");
-#line 2662
+#line 2694
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table419, "Then ");
+#line 2697
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table414 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table420 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query"});
-            table414.AddRow(new string[] {
+            table420.AddRow(new string[] {
                         "String"});
-#line 2663
-    testRunner.And("the debug inputs as", ((string)(null)), table414, "And ");
+#line 2698
+    testRunner.And("the debug inputs as", ((string)(null)), table420, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table415 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table421 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table415.AddRow(new string[] {
+            table421.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Hatter"});
-#line 2666
-    testRunner.And("the debug output as", ((string)(null)), table415, "And ");
+#line 2701
+    testRunner.And("the debug output as", ((string)(null)), table421, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7896,74 +7991,74 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SimpleJoinStatementWithStarInFieldNames()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("simple Join statement with star in field names", ((string[])(null)));
-#line 2670
+#line 2705
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table416 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table422 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table416.AddRow(new string[] {
+            table422.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table416.AddRow(new string[] {
+            table422.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table416.AddRow(new string[] {
+            table422.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table416.AddRow(new string[] {
+            table422.AddRow(new string[] {
                         "other().name",
                         "Hatter"});
-            table416.AddRow(new string[] {
+            table422.AddRow(new string[] {
                         "other().name",
                         "Gary"});
-#line 2671
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table416, "Given ");
-#line 2678
+#line 2706
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table422, "Given ");
+#line 2713
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2679
+#line 2714
     testRunner.And("I have the following sql statement \"select o.* from person p join other o on p.na" +
                     "me=o.name\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2680
+#line 2715
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table417 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table423 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table417.AddRow(new string[] {
+            table423.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2681
-    testRunner.Then("Outputs are as follows", ((string)(null)), table417, "Then ");
-#line 2684
+#line 2716
+    testRunner.Then("Outputs are as follows", ((string)(null)), table423, "Then ");
+#line 2719
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2685
+#line 2720
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table418 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table424 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table418.AddRow(new string[] {
+            table424.AddRow(new string[] {
                         "TableCopy().name",
                         "Hatter"});
-#line 2686
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table418, "Then ");
-#line 2689
+#line 2721
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table424, "Then ");
+#line 2724
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table419 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table425 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query"});
-            table419.AddRow(new string[] {
+            table425.AddRow(new string[] {
                         "String"});
-#line 2690
-    testRunner.And("the debug inputs as", ((string)(null)), table419, "And ");
+#line 2725
+    testRunner.And("the debug inputs as", ((string)(null)), table425, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table420 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table426 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table420.AddRow(new string[] {
+            table426.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Hatter"});
-#line 2693
-    testRunner.And("the debug output as", ((string)(null)), table420, "And ");
+#line 2728
+    testRunner.And("the debug output as", ((string)(null)), table426, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -7974,74 +8069,74 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SimpleInnerJoinStatementWithStarInFieldNames()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("simple inner Join statement with star in field names", ((string[])(null)));
-#line 2697
+#line 2732
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table421 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table427 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table421.AddRow(new string[] {
+            table427.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table421.AddRow(new string[] {
+            table427.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table421.AddRow(new string[] {
+            table427.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table421.AddRow(new string[] {
+            table427.AddRow(new string[] {
                         "other().name",
                         "Hatter"});
-            table421.AddRow(new string[] {
+            table427.AddRow(new string[] {
                         "other().name",
                         "Gary"});
-#line 2698
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table421, "Given ");
-#line 2705
+#line 2733
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table427, "Given ");
+#line 2740
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2706
+#line 2741
     testRunner.And("I have the following sql statement \"select o.* from person p join other o on p.na" +
                     "me=o.name\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2707
+#line 2742
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table422 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table428 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table422.AddRow(new string[] {
+            table428.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2708
-    testRunner.Then("Outputs are as follows", ((string)(null)), table422, "Then ");
-#line 2711
+#line 2743
+    testRunner.Then("Outputs are as follows", ((string)(null)), table428, "Then ");
+#line 2746
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2712
+#line 2747
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table423 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table429 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table423.AddRow(new string[] {
+            table429.AddRow(new string[] {
                         "TableCopy().name",
                         "Hatter"});
-#line 2713
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table423, "Then ");
-#line 2716
+#line 2748
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table429, "Then ");
+#line 2751
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table424 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table430 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query"});
-            table424.AddRow(new string[] {
+            table430.AddRow(new string[] {
                         "String"});
-#line 2717
-    testRunner.And("the debug inputs as", ((string)(null)), table424, "And ");
+#line 2752
+    testRunner.And("the debug inputs as", ((string)(null)), table430, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table425 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table431 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table425.AddRow(new string[] {
+            table431.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Hatter"});
-#line 2720
-    testRunner.And("the debug output as", ((string)(null)), table425, "And ");
+#line 2755
+    testRunner.And("the debug output as", ((string)(null)), table431, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8052,128 +8147,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SimpleCrossJoinStatementWithStarInFieldNames()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("simple cross Join statement with star in field names", ((string[])(null)));
-#line 2724
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table426 = new TechTalk.SpecFlow.Table(new string[] {
-                        "[[person]]",
-                        ""});
-            table426.AddRow(new string[] {
-                        "person().name",
-                        "Bob"});
-            table426.AddRow(new string[] {
-                        "person().name",
-                        "Alice"});
-            table426.AddRow(new string[] {
-                        "person().name",
-                        "Hatter"});
-            table426.AddRow(new string[] {
-                        "other().surname",
-                        "tt"});
-            table426.AddRow(new string[] {
-                        "other().surname",
-                        "uu"});
-#line 2725
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table426, "Given ");
-#line 2732
-    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2733
-    testRunner.And("I have the following sql statement \"select * from person cross join other\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2734
-    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table427 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table427.AddRow(new string[] {
-                        "name",
-                        "[[TableCopy().name]]"});
-            table427.AddRow(new string[] {
-                        "surname",
-                        "[[TableCopy().surname]]"});
-#line 2735
-    testRunner.Then("Outputs are as follows", ((string)(null)), table427, "Then ");
-#line 2739
-    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2740
-    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table428 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table428.AddRow(new string[] {
-                        "TableCopy().name",
-                        "Bob"});
-            table428.AddRow(new string[] {
-                        "TableCopy().name",
-                        "Bob"});
-            table428.AddRow(new string[] {
-                        "TableCopy().name",
-                        "Alice"});
-            table428.AddRow(new string[] {
-                        "TableCopy().name",
-                        "Alice"});
-            table428.AddRow(new string[] {
-                        "TableCopy().name",
-                        "Hatter"});
-            table428.AddRow(new string[] {
-                        "TableCopy().name",
-                        "Hatter"});
-#line 2741
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table428, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table429 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table429.AddRow(new string[] {
-                        "TableCopy().surname",
-                        "tt"});
-            table429.AddRow(new string[] {
-                        "TableCopy().surname",
-                        "uu"});
-            table429.AddRow(new string[] {
-                        "TableCopy().surname",
-                        "tt"});
-            table429.AddRow(new string[] {
-                        "TableCopy().surname",
-                        "uu"});
-            table429.AddRow(new string[] {
-                        "TableCopy().surname",
-                        "tt"});
-            table429.AddRow(new string[] {
-                        "TableCopy().surname",
-                        "uu"});
-#line 2749
-    testRunner.Then("recordset \"[[TableCopy(*).surname]]\"  will be", ((string)(null)), table429, "Then ");
-#line 2757
-    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table430 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Query"});
-            table430.AddRow(new string[] {
-                        "String"});
-#line 2758
-    testRunner.And("the debug inputs as", ((string)(null)), table430, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table431 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table431.AddRow(new string[] {
-                        "[[TableCopy(6).name]] = Hatter"});
-            table431.AddRow(new string[] {
-                        "[[TableCopy(6).surname]] = uu"});
-#line 2761
-    testRunner.And("the debug output as", ((string)(null)), table431, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update statement with variable in where clause and Like starts with")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
-        public virtual void UpdateStatementWithVariableInWhereClauseAndLikeStartsWith()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Like starts with", ((string[])(null)));
-#line 2766
+#line 2759
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table432 = new TechTalk.SpecFlow.Table(new string[] {
@@ -8189,87 +8163,208 @@ this.ScenarioSetup(scenarioInfo);
                         "person().name",
                         "Hatter"});
             table432.AddRow(new string[] {
-                        "updateName",
-                        "Hatter"});
+                        "other().surname",
+                        "tt"});
             table432.AddRow(new string[] {
-                        "likeName",
-                        "Ma%"});
-#line 2767
+                        "other().surname",
+                        "uu"});
+#line 2760
     testRunner.Given("I have a recordset with this shape", ((string)(null)), table432, "Given ");
-#line 2774
+#line 2767
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table433 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Name",
-                        "Value"});
-            table433.AddRow(new string[] {
-                        "newName",
-                        "[[updateName]]"});
-            table433.AddRow(new string[] {
-                        "newMatch",
-                        "[[likeName]]"});
-#line 2775
-    testRunner.And("Declare variables as", ((string)(null)), table433, "And ");
-#line 2779
-    testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' WHERE n" +
-                    "ame = @newName; SELECT * FROM person WHERE name LIKE @newMatch;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2780
+#line 2768
+    testRunner.And("I have the following sql statement \"select * from person cross join other\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2769
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table434 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table433 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table434.AddRow(new string[] {
+            table433.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2781
-    testRunner.Then("Outputs are as follows", ((string)(null)), table434, "Then ");
-#line 2784
+            table433.AddRow(new string[] {
+                        "surname",
+                        "[[TableCopy().surname]]"});
+#line 2770
+    testRunner.Then("Outputs are as follows", ((string)(null)), table433, "Then ");
+#line 2774
+    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2775
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table434 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table434.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Bob"});
+            table434.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Bob"});
+            table434.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Alice"});
+            table434.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Alice"});
+            table434.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Hatter"});
+            table434.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Hatter"});
+#line 2776
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table434, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table435 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
             table435.AddRow(new string[] {
-                        "TableCopy().name",
-                        "Mad Hatter"});
-#line 2785
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table435, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table436 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "row"});
-            table436.AddRow(new string[] {
-                        "person(1).name",
-                        "Bob"});
-            table436.AddRow(new string[] {
-                        "person(2).name",
-                        "Alice"});
-            table436.AddRow(new string[] {
-                        "person(3).name",
-                        "Mad Hatter"});
-#line 2788
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table436, "Then ");
-#line 2793
+                        "TableCopy().surname",
+                        "tt"});
+            table435.AddRow(new string[] {
+                        "TableCopy().surname",
+                        "uu"});
+            table435.AddRow(new string[] {
+                        "TableCopy().surname",
+                        "tt"});
+            table435.AddRow(new string[] {
+                        "TableCopy().surname",
+                        "uu"});
+            table435.AddRow(new string[] {
+                        "TableCopy().surname",
+                        "tt"});
+            table435.AddRow(new string[] {
+                        "TableCopy().surname",
+                        "uu"});
+#line 2784
+    testRunner.Then("recordset \"[[TableCopy(*).surname]]\"  will be", ((string)(null)), table435, "Then ");
+#line 2792
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
+            TechTalk.SpecFlow.Table table436 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Query"});
+            table436.AddRow(new string[] {
+                        "String"});
+#line 2793
+    testRunner.And("the debug inputs as", ((string)(null)), table436, "And ");
+#line hidden
             TechTalk.SpecFlow.Table table437 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table437.AddRow(new string[] {
+                        "[[TableCopy(6).name]] = Hatter"});
+            table437.AddRow(new string[] {
+                        "[[TableCopy(6).surname]] = uu"});
+#line 2796
+    testRunner.And("the debug output as", ((string)(null)), table437, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Update statement with variable in where clause and Like starts with")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
+        public virtual void UpdateStatementWithVariableInWhereClauseAndLikeStartsWith()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Like starts with", ((string[])(null)));
+#line 2801
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table438 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[person]]",
+                        ""});
+            table438.AddRow(new string[] {
+                        "person().name",
+                        "Bob"});
+            table438.AddRow(new string[] {
+                        "person().name",
+                        "Alice"});
+            table438.AddRow(new string[] {
+                        "person().name",
+                        "Hatter"});
+            table438.AddRow(new string[] {
+                        "updateName",
+                        "Hatter"});
+            table438.AddRow(new string[] {
+                        "likeName",
+                        "Ma%"});
+#line 2802
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table438, "Given ");
+#line 2809
+    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table439 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Name",
+                        "Value"});
+            table439.AddRow(new string[] {
+                        "newName",
+                        "[[updateName]]"});
+            table439.AddRow(new string[] {
+                        "newMatch",
+                        "[[likeName]]"});
+#line 2810
+    testRunner.And("Declare variables as", ((string)(null)), table439, "And ");
+#line 2814
+    testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' WHERE n" +
+                    "ame = @newName; SELECT * FROM person WHERE name LIKE @newMatch;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 2815
+    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table440 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table440.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+#line 2816
+    testRunner.Then("Outputs are as follows", ((string)(null)), table440, "Then ");
+#line 2819
+    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table441 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table441.AddRow(new string[] {
+                        "TableCopy().name",
+                        "Mad Hatter"});
+#line 2820
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table441, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table442 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "row"});
+            table442.AddRow(new string[] {
+                        "person(1).name",
+                        "Bob"});
+            table442.AddRow(new string[] {
+                        "person(2).name",
+                        "Alice"});
+            table442.AddRow(new string[] {
+                        "person(3).name",
+                        "Mad Hatter"});
+#line 2823
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table442, "Then ");
+#line 2828
+    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table443 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName",
                         "newMatch"});
-            table437.AddRow(new string[] {
+            table443.AddRow(new string[] {
                         "String",
                         "[[updateName]] = Hatter",
                         "[[likeName]] = Ma%"});
-#line 2794
-    testRunner.And("the debug inputs as", ((string)(null)), table437, "And ");
+#line 2829
+    testRunner.And("the debug inputs as", ((string)(null)), table443, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table438 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table444 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table438.AddRow(new string[] {
+            table444.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Mad Hatter"});
-#line 2797
-    testRunner.And("the debug output as", ((string)(null)), table438, "And ");
+#line 2832
+    testRunner.And("the debug output as", ((string)(null)), table444, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8280,105 +8375,105 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UpdateStatementWithVariableInWhereClauseAndLikeEndsWith()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Like ends with", ((string[])(null)));
-#line 2801
+#line 2836
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table439 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table445 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table439.AddRow(new string[] {
+            table445.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table439.AddRow(new string[] {
+            table445.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table439.AddRow(new string[] {
+            table445.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table439.AddRow(new string[] {
+            table445.AddRow(new string[] {
                         "updateName",
                         "Hatter"});
-            table439.AddRow(new string[] {
+            table445.AddRow(new string[] {
                         "likeName",
                         "%ter"});
-#line 2802
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table439, "Given ");
-#line 2809
+#line 2837
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table445, "Given ");
+#line 2844
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table440 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table446 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table440.AddRow(new string[] {
+            table446.AddRow(new string[] {
                         "newName",
                         "[[updateName]]"});
-            table440.AddRow(new string[] {
+            table446.AddRow(new string[] {
                         "newMatch",
                         "[[likeName]]"});
-#line 2810
-    testRunner.And("Declare variables as", ((string)(null)), table440, "And ");
-#line 2814
+#line 2845
+    testRunner.And("Declare variables as", ((string)(null)), table446, "And ");
+#line 2849
     testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' WHERE n" +
                     "ame = @newName; SELECT * FROM person WHERE name LIKE @newMatch;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2815
+#line 2850
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table441 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table447 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table441.AddRow(new string[] {
+            table447.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2816
-    testRunner.Then("Outputs are as follows", ((string)(null)), table441, "Then ");
-#line 2819
+#line 2851
+    testRunner.Then("Outputs are as follows", ((string)(null)), table447, "Then ");
+#line 2854
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2820
+#line 2855
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table442 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table448 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table442.AddRow(new string[] {
+            table448.AddRow(new string[] {
                         "TableCopy().name",
                         "Mad Hatter"});
-#line 2821
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table442, "Then ");
+#line 2856
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table448, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table443 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table449 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table443.AddRow(new string[] {
+            table449.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table443.AddRow(new string[] {
+            table449.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table443.AddRow(new string[] {
+            table449.AddRow(new string[] {
                         "person(3).name",
                         "Mad Hatter"});
-#line 2824
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table443, "Then ");
-#line 2829
+#line 2859
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table449, "Then ");
+#line 2864
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table444 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table450 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName",
                         "newMatch"});
-            table444.AddRow(new string[] {
+            table450.AddRow(new string[] {
                         "String",
                         "[[updateName]] = Hatter",
                         "[[likeName]] = %ter"});
-#line 2830
-    testRunner.And("the debug inputs as", ((string)(null)), table444, "And ");
+#line 2865
+    testRunner.And("the debug inputs as", ((string)(null)), table450, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table445 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table451 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table445.AddRow(new string[] {
+            table451.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Mad Hatter"});
-#line 2833
-    testRunner.And("the debug output as", ((string)(null)), table445, "And ");
+#line 2868
+    testRunner.And("the debug output as", ((string)(null)), table451, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8389,105 +8484,105 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UpdateStatementWithVariableInWhereClauseAndLikeInAnyPosition()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Like in any position", ((string[])(null)));
-#line 2837
+#line 2872
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table446 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table452 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table446.AddRow(new string[] {
+            table452.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table446.AddRow(new string[] {
+            table452.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table446.AddRow(new string[] {
+            table452.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table446.AddRow(new string[] {
+            table452.AddRow(new string[] {
                         "updateName",
                         "Hatter"});
-            table446.AddRow(new string[] {
+            table452.AddRow(new string[] {
                         "likeName",
                         "%att%"});
-#line 2838
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table446, "Given ");
-#line 2845
+#line 2873
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table452, "Given ");
+#line 2880
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table447 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table453 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table447.AddRow(new string[] {
+            table453.AddRow(new string[] {
                         "newName",
                         "[[updateName]]"});
-            table447.AddRow(new string[] {
+            table453.AddRow(new string[] {
                         "newMatch",
                         "[[likeName]]"});
-#line 2846
-    testRunner.And("Declare variables as", ((string)(null)), table447, "And ");
-#line 2850
+#line 2881
+    testRunner.And("Declare variables as", ((string)(null)), table453, "And ");
+#line 2885
     testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' WHERE n" +
                     "ame = @newName; SELECT * FROM person WHERE name LIKE @newMatch;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2851
+#line 2886
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table448 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table454 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table448.AddRow(new string[] {
+            table454.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2852
-    testRunner.Then("Outputs are as follows", ((string)(null)), table448, "Then ");
-#line 2855
+#line 2887
+    testRunner.Then("Outputs are as follows", ((string)(null)), table454, "Then ");
+#line 2890
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2856
+#line 2891
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table449 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table455 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table449.AddRow(new string[] {
+            table455.AddRow(new string[] {
                         "TableCopy().name",
                         "Mad Hatter"});
-#line 2857
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table449, "Then ");
+#line 2892
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table455, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table450 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table456 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table450.AddRow(new string[] {
+            table456.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table450.AddRow(new string[] {
+            table456.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table450.AddRow(new string[] {
+            table456.AddRow(new string[] {
                         "person(3).name",
                         "Mad Hatter"});
-#line 2860
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table450, "Then ");
-#line 2865
+#line 2895
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table456, "Then ");
+#line 2900
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table451 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table457 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName",
                         "newMatch"});
-            table451.AddRow(new string[] {
+            table457.AddRow(new string[] {
                         "String",
                         "[[updateName]] = Hatter",
                         "[[likeName]] = %att%"});
-#line 2866
-    testRunner.And("the debug inputs as", ((string)(null)), table451, "And ");
+#line 2901
+    testRunner.And("the debug inputs as", ((string)(null)), table457, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table452 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table458 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table452.AddRow(new string[] {
+            table458.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Mad Hatter"});
-#line 2869
-    testRunner.And("the debug output as", ((string)(null)), table452, "And ");
+#line 2904
+    testRunner.And("the debug output as", ((string)(null)), table458, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8498,105 +8593,105 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void UpdateStatementWithVariableInWhereClauseAndLikeInSecondPosition()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Like in second position", ((string[])(null)));
-#line 2873
+#line 2908
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table453 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table459 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table453.AddRow(new string[] {
+            table459.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table453.AddRow(new string[] {
+            table459.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table453.AddRow(new string[] {
+            table459.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table453.AddRow(new string[] {
+            table459.AddRow(new string[] {
                         "updateName",
                         "Hatter"});
-            table453.AddRow(new string[] {
+            table459.AddRow(new string[] {
                         "likeName",
                         "_a%"});
-#line 2874
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table453, "Given ");
-#line 2881
+#line 2909
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table459, "Given ");
+#line 2916
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table454 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table460 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table454.AddRow(new string[] {
+            table460.AddRow(new string[] {
                         "newName",
                         "[[updateName]]"});
-            table454.AddRow(new string[] {
+            table460.AddRow(new string[] {
                         "newMatch",
                         "[[likeName]]"});
-#line 2882
-    testRunner.And("Declare variables as", ((string)(null)), table454, "And ");
-#line 2886
+#line 2917
+    testRunner.And("Declare variables as", ((string)(null)), table460, "And ");
+#line 2921
     testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' WHERE n" +
                     "ame = @newName; SELECT * FROM person WHERE name LIKE @newMatch;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2887
+#line 2922
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table455 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table461 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table455.AddRow(new string[] {
+            table461.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2888
-    testRunner.Then("Outputs are as follows", ((string)(null)), table455, "Then ");
-#line 2891
+#line 2923
+    testRunner.Then("Outputs are as follows", ((string)(null)), table461, "Then ");
+#line 2926
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2892
+#line 2927
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table456 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table462 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table456.AddRow(new string[] {
+            table462.AddRow(new string[] {
                         "TableCopy().name",
                         "Mad Hatter"});
-#line 2893
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table456, "Then ");
+#line 2928
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table462, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table457 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table463 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table457.AddRow(new string[] {
+            table463.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table457.AddRow(new string[] {
+            table463.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table457.AddRow(new string[] {
+            table463.AddRow(new string[] {
                         "person(3).name",
                         "Mad Hatter"});
-#line 2896
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table457, "Then ");
-#line 2901
+#line 2931
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table463, "Then ");
+#line 2936
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table458 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table464 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName",
                         "newMatch"});
-            table458.AddRow(new string[] {
+            table464.AddRow(new string[] {
                         "String",
                         "[[updateName]] = Hatter",
                         "[[likeName]] = _a%"});
-#line 2902
-    testRunner.And("the debug inputs as", ((string)(null)), table458, "And ");
+#line 2937
+    testRunner.And("the debug inputs as", ((string)(null)), table464, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table459 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table465 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table459.AddRow(new string[] {
+            table465.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Mad Hatter"});
-#line 2905
-    testRunner.And("the debug output as", ((string)(null)), table459, "And ");
+#line 2940
+    testRunner.And("the debug output as", ((string)(null)), table465, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8609,105 +8704,105 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Like starts with and at least " +
                     "three characters in length", ((string[])(null)));
-#line 2909
+#line 2944
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table460 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table466 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table460.AddRow(new string[] {
+            table466.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table460.AddRow(new string[] {
+            table466.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table460.AddRow(new string[] {
+            table466.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table460.AddRow(new string[] {
+            table466.AddRow(new string[] {
                         "updateName",
                         "Hatter"});
-            table460.AddRow(new string[] {
+            table466.AddRow(new string[] {
                         "likeName",
                         "M_%_%"});
-#line 2910
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table460, "Given ");
-#line 2917
+#line 2945
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table466, "Given ");
+#line 2952
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table461 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table467 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table461.AddRow(new string[] {
+            table467.AddRow(new string[] {
                         "newName",
                         "[[updateName]]"});
-            table461.AddRow(new string[] {
+            table467.AddRow(new string[] {
                         "newMatch",
                         "[[likeName]]"});
-#line 2918
-    testRunner.And("Declare variables as", ((string)(null)), table461, "And ");
-#line 2922
+#line 2953
+    testRunner.And("Declare variables as", ((string)(null)), table467, "And ");
+#line 2957
     testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' WHERE n" +
                     "ame = @newName; SELECT * FROM person WHERE name LIKE @newMatch;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2923
+#line 2958
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table462 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table468 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table462.AddRow(new string[] {
+            table468.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2924
-    testRunner.Then("Outputs are as follows", ((string)(null)), table462, "Then ");
-#line 2927
+#line 2959
+    testRunner.Then("Outputs are as follows", ((string)(null)), table468, "Then ");
+#line 2962
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2928
+#line 2963
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table463 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table469 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table463.AddRow(new string[] {
+            table469.AddRow(new string[] {
                         "TableCopy().name",
                         "Mad Hatter"});
-#line 2929
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table463, "Then ");
+#line 2964
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table469, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table464 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table470 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table464.AddRow(new string[] {
+            table470.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table464.AddRow(new string[] {
+            table470.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table464.AddRow(new string[] {
+            table470.AddRow(new string[] {
                         "person(3).name",
                         "Mad Hatter"});
-#line 2932
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table464, "Then ");
-#line 2937
+#line 2967
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table470, "Then ");
+#line 2972
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table465 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table471 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName",
                         "newMatch"});
-            table465.AddRow(new string[] {
+            table471.AddRow(new string[] {
                         "String",
                         "[[updateName]] = Hatter",
                         "[[likeName]] = M_%_%"});
-#line 2938
-    testRunner.And("the debug inputs as", ((string)(null)), table465, "And ");
+#line 2973
+    testRunner.And("the debug inputs as", ((string)(null)), table471, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table466 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table472 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table466.AddRow(new string[] {
+            table472.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Mad Hatter"});
-#line 2941
-    testRunner.And("the debug output as", ((string)(null)), table466, "And ");
+#line 2976
+    testRunner.And("the debug output as", ((string)(null)), table472, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8720,105 +8815,105 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Like starts with and ends with" +
                     "", ((string[])(null)));
-#line 2945
+#line 2980
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table467 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table473 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table467.AddRow(new string[] {
+            table473.AddRow(new string[] {
                         "person().name",
                         "Bob"});
-            table467.AddRow(new string[] {
+            table473.AddRow(new string[] {
                         "person().name",
                         "Alice"});
-            table467.AddRow(new string[] {
+            table473.AddRow(new string[] {
                         "person().name",
                         "Hatter"});
-            table467.AddRow(new string[] {
+            table473.AddRow(new string[] {
                         "updateName",
                         "Hatter"});
-            table467.AddRow(new string[] {
+            table473.AddRow(new string[] {
                         "likeName",
                         "M%r"});
-#line 2946
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table467, "Given ");
-#line 2953
+#line 2981
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table473, "Given ");
+#line 2988
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table468 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table474 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table468.AddRow(new string[] {
+            table474.AddRow(new string[] {
                         "newName",
                         "[[updateName]]"});
-            table468.AddRow(new string[] {
+            table474.AddRow(new string[] {
                         "newMatch",
                         "[[likeName]]"});
-#line 2954
-    testRunner.And("Declare variables as", ((string)(null)), table468, "And ");
-#line 2958
+#line 2989
+    testRunner.And("Declare variables as", ((string)(null)), table474, "And ");
+#line 2993
     testRunner.And("I have the following sql statement \"UPDATE person SET name = \'Mad Hatter\' WHERE n" +
                     "ame = @newName; SELECT * FROM person WHERE name LIKE @newMatch;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2959
+#line 2994
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table469 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table475 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table469.AddRow(new string[] {
+            table475.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 2960
-    testRunner.Then("Outputs are as follows", ((string)(null)), table469, "Then ");
-#line 2963
+#line 2995
+    testRunner.Then("Outputs are as follows", ((string)(null)), table475, "Then ");
+#line 2998
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 2964
+#line 2999
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table470 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table476 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table470.AddRow(new string[] {
+            table476.AddRow(new string[] {
                         "TableCopy().name",
                         "Mad Hatter"});
-#line 2965
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table470, "Then ");
+#line 3000
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table476, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table471 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table477 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table471.AddRow(new string[] {
+            table477.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table471.AddRow(new string[] {
+            table477.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table471.AddRow(new string[] {
+            table477.AddRow(new string[] {
                         "person(3).name",
                         "Mad Hatter"});
-#line 2968
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table471, "Then ");
-#line 2973
+#line 3003
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table477, "Then ");
+#line 3008
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table472 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table478 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName",
                         "newMatch"});
-            table472.AddRow(new string[] {
+            table478.AddRow(new string[] {
                         "String",
                         "[[updateName]] = Hatter",
                         "[[likeName]] = M%r"});
-#line 2974
-    testRunner.And("the debug inputs as", ((string)(null)), table472, "And ");
+#line 3009
+    testRunner.And("the debug inputs as", ((string)(null)), table478, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table473 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table479 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table473.AddRow(new string[] {
+            table479.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Mad Hatter"});
-#line 2977
-    testRunner.And("the debug output as", ((string)(null)), table473, "And ");
+#line 3012
+    testRunner.And("the debug output as", ((string)(null)), table479, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8831,142 +8926,142 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Update statement with variable in where clause and Like starts with and ends with" +
                     " Multiple", ((string[])(null)));
-#line 2981
+#line 3016
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table474 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table480 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "person(1).name",
                         "Bober"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "person(1).aid",
                         "1"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "person(2).aid",
                         "2"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "person(3).aid",
                         "1"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "address(1).id",
                         "2"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "address(1).name",
                         "addr1"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "address(2).id",
                         "1"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "address(2).name",
                         "addr2"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "updateName",
                         "%er"});
-            table474.AddRow(new string[] {
+            table480.AddRow(new string[] {
                         "likeName",
                         "%ter"});
-#line 2982
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table474, "Given ");
-#line 2996
+#line 3017
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table480, "Given ");
+#line 3031
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table475 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table481 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table475.AddRow(new string[] {
+            table481.AddRow(new string[] {
                         "nameLike",
                         "[[updateName]]"});
-            table475.AddRow(new string[] {
+            table481.AddRow(new string[] {
                         "newMatch",
                         "[[likeName]]"});
-#line 2997
-    testRunner.And("Declare variables as", ((string)(null)), table475, "And ");
-#line 3001
+#line 3032
+    testRunner.And("Declare variables as", ((string)(null)), table481, "And ");
+#line 3036
     testRunner.And(@"I have the following sql statement ""UPDATE address SET name = 'Mad Hatter address' WHERE EXISTS (SELECT aid FROM person WHERE name LIKE @nameLike AND person.aid=address.id); UPDATE person SET name='Lucy' WHERE aid=2; SELECT * FROM person WHERE name LIKE @newMatch;""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3002
+#line 3037
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table476 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table482 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table476.AddRow(new string[] {
+            table482.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-            table476.AddRow(new string[] {
+            table482.AddRow(new string[] {
                         "aid",
                         "[[TableCopy().aid]]"});
-#line 3003
-    testRunner.Then("Outputs are as follows", ((string)(null)), table476, "Then ");
-#line 3007
+#line 3038
+    testRunner.Then("Outputs are as follows", ((string)(null)), table482, "Then ");
+#line 3042
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3008
+#line 3043
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table477 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table483 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table477.AddRow(new string[] {
+            table483.AddRow(new string[] {
                         "TableCopy().name",
                         "Hatter"});
-#line 3009
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table477, "Then ");
+#line 3044
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table483, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table478 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table484 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table478.AddRow(new string[] {
+            table484.AddRow(new string[] {
                         "address(1).name",
                         "addr1"});
-            table478.AddRow(new string[] {
+            table484.AddRow(new string[] {
                         "address(2).name",
                         "Mad Hatter address"});
-#line 3012
-    testRunner.Then("recordset \"[[address(*).name]]\"  will be", ((string)(null)), table478, "Then ");
+#line 3047
+    testRunner.Then("recordset \"[[address(*).name]]\"  will be", ((string)(null)), table484, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table479 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table485 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "row"});
-            table479.AddRow(new string[] {
+            table485.AddRow(new string[] {
                         "person(1).name",
                         "Bober"});
-            table479.AddRow(new string[] {
+            table485.AddRow(new string[] {
                         "person(2).name",
                         "Lucy"});
-            table479.AddRow(new string[] {
+            table485.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-#line 3016
-    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table479, "Then ");
-#line 3021
+#line 3051
+    testRunner.Then("recordset \"[[person(*).name]]\"  will be", ((string)(null)), table485, "Then ");
+#line 3056
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table480 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table486 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "nameLike",
                         "newMatch"});
-            table480.AddRow(new string[] {
+            table486.AddRow(new string[] {
                         "String",
                         "[[updateName]] = %er",
                         "[[likeName]] = %ter"});
-#line 3022
-    testRunner.And("the debug inputs as", ((string)(null)), table480, "And ");
+#line 3057
+    testRunner.And("the debug inputs as", ((string)(null)), table486, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table481 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table487 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table481.AddRow(new string[] {
+            table487.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Hatter"});
-            table481.AddRow(new string[] {
+            table487.AddRow(new string[] {
                         "[[TableCopy(1).aid]]  = 1"});
-#line 3025
-    testRunner.And("the debug output as", ((string)(null)), table481, "And ");
+#line 3060
+    testRunner.And("the debug output as", ((string)(null)), table487, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -8977,73 +9072,73 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AggregateFunctionsSelectWithAVG()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aggregate functions Select with AVG", ((string[])(null)));
-#line 3030
+#line 3065
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table482 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table488 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[avg_tests]]",
                         ""});
-            table482.AddRow(new string[] {
+            table488.AddRow(new string[] {
                         "avg_tests().val",
                         "1"});
-            table482.AddRow(new string[] {
+            table488.AddRow(new string[] {
                         "avg_tests().val",
                         "2"});
-            table482.AddRow(new string[] {
+            table488.AddRow(new string[] {
                         "avg_tests().val",
                         "10.1"});
-            table482.AddRow(new string[] {
+            table488.AddRow(new string[] {
                         "avg_tests().val",
                         "20.5"});
-            table482.AddRow(new string[] {
+            table488.AddRow(new string[] {
                         "avg_tests().val",
                         "8"});
-#line 3031
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table482, "Given ");
-#line 3038
+#line 3066
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table488, "Given ");
+#line 3073
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3039
+#line 3074
     testRunner.And("I have the following sql statement \"SELECT avg(val) as val FROM avg_tests;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3040
+#line 3075
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table483 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table489 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table483.AddRow(new string[] {
+            table489.AddRow(new string[] {
                         "val",
                         "[[TableCopy().val]]"});
-#line 3041
-    testRunner.Then("Outputs are as follows", ((string)(null)), table483, "Then ");
-#line 3044
+#line 3076
+    testRunner.Then("Outputs are as follows", ((string)(null)), table489, "Then ");
+#line 3079
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3045
+#line 3080
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table484 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table490 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table484.AddRow(new string[] {
+            table490.AddRow(new string[] {
                         "TableCopy().val",
                         "8.32"});
-#line 3046
-    testRunner.Then("recordset \"[[TableCopy(*).val]]\"  will be", ((string)(null)), table484, "Then ");
-#line 3049
+#line 3081
+    testRunner.Then("recordset \"[[TableCopy(*).val]]\"  will be", ((string)(null)), table490, "Then ");
+#line 3084
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table485 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table491 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query"});
-            table485.AddRow(new string[] {
+            table491.AddRow(new string[] {
                         "String"});
-#line 3050
-    testRunner.And("the debug inputs as", ((string)(null)), table485, "And ");
+#line 3085
+    testRunner.And("the debug inputs as", ((string)(null)), table491, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table486 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table492 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table486.AddRow(new string[] {
+            table492.AddRow(new string[] {
                         "[[TableCopy(1).val]] = 8.32"});
-#line 3053
-    testRunner.And("the debug output as", ((string)(null)), table486, "And ");
+#line 3088
+    testRunner.And("the debug output as", ((string)(null)), table492, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9054,88 +9149,88 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AggregateFunctionsSelectWithAVGUsingVariable()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aggregate functions  Select with AVG using variable", ((string[])(null)));
-#line 3057
+#line 3092
     this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table487 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table493 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[avg_tests]]",
                         ""});
-            table487.AddRow(new string[] {
+            table493.AddRow(new string[] {
                         "avg_tests().val",
                         "1"});
-            table487.AddRow(new string[] {
+            table493.AddRow(new string[] {
                         "avg_tests().val",
                         "2"});
-            table487.AddRow(new string[] {
+            table493.AddRow(new string[] {
                         "avg_tests().val",
                         "10.1"});
-            table487.AddRow(new string[] {
+            table493.AddRow(new string[] {
                         "avg_tests().val",
                         "20.5"});
-            table487.AddRow(new string[] {
+            table493.AddRow(new string[] {
                         "avg_tests().val",
                         "8"});
-            table487.AddRow(new string[] {
+            table493.AddRow(new string[] {
                         "avg_variable",
                         "2"});
-#line 3058
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table487, "Given ");
-#line 3066
+#line 3093
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table493, "Given ");
+#line 3101
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table488 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table494 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table488.AddRow(new string[] {
+            table494.AddRow(new string[] {
                         "newName",
                         "[[avg_variable]]"});
-#line 3067
-    testRunner.And("Declare variables as", ((string)(null)), table488, "And ");
-#line 3070
+#line 3102
+    testRunner.And("Declare variables as", ((string)(null)), table494, "And ");
+#line 3105
     testRunner.And("I have the following sql statement \"SELECT avg(val) as val FROM avg_tests where v" +
                     "al > @newName ;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3071
+#line 3106
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table489 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table495 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table489.AddRow(new string[] {
+            table495.AddRow(new string[] {
                         "val",
                         "[[TableCopy().val]]"});
-#line 3072
-    testRunner.Then("Outputs are as follows", ((string)(null)), table489, "Then ");
-#line 3075
+#line 3107
+    testRunner.Then("Outputs are as follows", ((string)(null)), table495, "Then ");
+#line 3110
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3076
+#line 3111
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table490 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table496 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table490.AddRow(new string[] {
+            table496.AddRow(new string[] {
                         "TableCopy().val",
                         "12.86666666666670"});
-#line 3077
-    testRunner.Then("recordset \"[[TableCopy(*).val]]\"  will be", ((string)(null)), table490, "Then ");
-#line 3080
+#line 3112
+    testRunner.Then("recordset \"[[TableCopy(*).val]]\"  will be", ((string)(null)), table496, "Then ");
+#line 3115
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table491 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table497 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName"});
-            table491.AddRow(new string[] {
+            table497.AddRow(new string[] {
                         "String",
                         "[[avg_variable]] = 2"});
-#line 3081
-    testRunner.And("the debug inputs as", ((string)(null)), table491, "And ");
+#line 3116
+    testRunner.And("the debug inputs as", ((string)(null)), table497, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table492 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table498 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table492.AddRow(new string[] {
+            table498.AddRow(new string[] {
                         "[[TableCopy(1).val]] = 12.86666666666670"});
-#line 3084
-    testRunner.And("the debug output as", ((string)(null)), table492, "And ");
+#line 3119
+    testRunner.And("the debug output as", ((string)(null)), table498, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9146,78 +9241,78 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AggregateFunctionsSelectWithMAX()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aggregate functions Select With MAX", ((string[])(null)));
-#line 3088
+#line 3123
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table493 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table499 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table493.AddRow(new string[] {
+            table499.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table493.AddRow(new string[] {
+            table499.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table493.AddRow(new string[] {
+            table499.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table493.AddRow(new string[] {
+            table499.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table493.AddRow(new string[] {
+            table499.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table493.AddRow(new string[] {
+            table499.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3089
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table493, "Given ");
-#line 3097
+#line 3124
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table499, "Given ");
+#line 3132
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3098
+#line 3133
     testRunner.And("I have the following sql statement \"SELECT MAX(age) as MaxAge from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3099
+#line 3134
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table494 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table500 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table494.AddRow(new string[] {
+            table500.AddRow(new string[] {
                         "MaxAge",
                         "[[TableCopy().MaxAge]]"});
-#line 3100
-    testRunner.Then("Outputs are as follows", ((string)(null)), table494, "Then ");
-#line 3103
+#line 3135
+    testRunner.Then("Outputs are as follows", ((string)(null)), table500, "Then ");
+#line 3138
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table495 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table501 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table495.AddRow(new string[] {
+            table501.AddRow(new string[] {
                         "MaxAge",
                         "[[TableCopy().MaxAge]]"});
-#line 3104
-    testRunner.And("Outputs are as follows", ((string)(null)), table495, "And ");
-#line 3107
+#line 3139
+    testRunner.And("Outputs are as follows", ((string)(null)), table501, "And ");
+#line 3142
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table496 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table502 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table496.AddRow(new string[] {
+            table502.AddRow(new string[] {
                         "TableCopy(1).MaxAge",
                         "31"});
-#line 3108
-    testRunner.Then("recordset \"[[TableCopy(*).MaxAge]]\"  will be", ((string)(null)), table496, "Then ");
-#line 3111
+#line 3143
+    testRunner.Then("recordset \"[[TableCopy(*).MaxAge]]\"  will be", ((string)(null)), table502, "Then ");
+#line 3146
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table497 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table503 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table497.AddRow(new string[] {
+            table503.AddRow(new string[] {
                         "[[TableCopy(1).MaxAge]] = 31"});
-#line 3112
-    testRunner.And("the debug output as", ((string)(null)), table497, "And ");
+#line 3147
+    testRunner.And("the debug output as", ((string)(null)), table503, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9228,84 +9323,84 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AggregateFunctionsSelectWithMAXWithMaxInWhereClause()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aggregate functions Select With MAX with Max in where clause", ((string[])(null)));
-#line 3116
+#line 3151
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table498 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table504 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table498.AddRow(new string[] {
+            table504.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table498.AddRow(new string[] {
+            table504.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table498.AddRow(new string[] {
+            table504.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table498.AddRow(new string[] {
+            table504.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table498.AddRow(new string[] {
+            table504.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table498.AddRow(new string[] {
+            table504.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3117
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table498, "Given ");
-#line 3126
+#line 3152
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table504, "Given ");
+#line 3161
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3127
+#line 3162
     testRunner.And("I have the following sql statement \"SELECT * from person where age  =(select MAX(" +
                     "age) from person);\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3128
+#line 3163
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table499 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table505 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table499.AddRow(new string[] {
+            table505.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-            table499.AddRow(new string[] {
+            table505.AddRow(new string[] {
                         "age",
                         "[[TableCopy().age]]"});
-#line 3129
-    testRunner.Then("Outputs are as follows", ((string)(null)), table499, "Then ");
-#line 3133
+#line 3164
+    testRunner.Then("Outputs are as follows", ((string)(null)), table505, "Then ");
+#line 3168
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3134
+#line 3169
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table500 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table506 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table500.AddRow(new string[] {
+            table506.AddRow(new string[] {
                         "TableCopy(2).name",
                         "Alice"});
-#line 3135
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table500, "Then ");
+#line 3170
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table506, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table501 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table507 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table501.AddRow(new string[] {
+            table507.AddRow(new string[] {
                         "TableCopy(2).age",
                         "31"});
-#line 3138
-        testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table501, "Then ");
-#line 3141
+#line 3173
+        testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table507, "Then ");
+#line 3176
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table502 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table508 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table502.AddRow(new string[] {
+            table508.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Alice"});
-            table502.AddRow(new string[] {
+            table508.AddRow(new string[] {
                         "[[TableCopy(1).age]] = 31"});
-#line 3142
-    testRunner.And("the debug output as", ((string)(null)), table502, "And ");
+#line 3177
+    testRunner.And("the debug output as", ((string)(null)), table508, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9316,88 +9411,88 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AggregateFunctionsSelectWithROUND()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aggregate functions Select With ROUND", ((string[])(null)));
-#line 3147
+#line 3182
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table503 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table509 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[avg_tests]]",
                         ""});
-            table503.AddRow(new string[] {
+            table509.AddRow(new string[] {
                         "avg_tests().val",
                         "1"});
-            table503.AddRow(new string[] {
+            table509.AddRow(new string[] {
                         "avg_tests().val",
                         "2"});
-            table503.AddRow(new string[] {
+            table509.AddRow(new string[] {
                         "avg_tests().val",
                         "10.1"});
-            table503.AddRow(new string[] {
+            table509.AddRow(new string[] {
                         "avg_tests().val",
                         "20.5"});
-            table503.AddRow(new string[] {
+            table509.AddRow(new string[] {
                         "avg_tests().val",
                         "8"});
-            table503.AddRow(new string[] {
+            table509.AddRow(new string[] {
                         "avg_variable",
                         "2"});
-#line 3148
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table503, "Given ");
-#line 3156
+#line 3183
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table509, "Given ");
+#line 3191
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table504 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table510 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table504.AddRow(new string[] {
+            table510.AddRow(new string[] {
                         "newName",
                         "[[avg_variable]]"});
-#line 3157
-    testRunner.And("Declare variables as", ((string)(null)), table504, "And ");
-#line 3160
+#line 3192
+    testRunner.And("Declare variables as", ((string)(null)), table510, "And ");
+#line 3195
     testRunner.And("I have the following sql statement \"SELECT round(avg(val),2)  as val FROM avg_tes" +
                     "ts where val > @newName ;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3161
+#line 3196
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table505 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table511 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table505.AddRow(new string[] {
+            table511.AddRow(new string[] {
                         "val",
                         "[[TableCopy().val]]"});
-#line 3162
-    testRunner.Then("Outputs are as follows", ((string)(null)), table505, "Then ");
-#line 3165
+#line 3197
+    testRunner.Then("Outputs are as follows", ((string)(null)), table511, "Then ");
+#line 3200
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3166
+#line 3201
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table506 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table512 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table506.AddRow(new string[] {
+            table512.AddRow(new string[] {
                         "TableCopy().val",
                         "12.87"});
-#line 3167
-    testRunner.Then("recordset \"[[TableCopy(*).val]]\"  will be", ((string)(null)), table506, "Then ");
-#line 3170
+#line 3202
+    testRunner.Then("recordset \"[[TableCopy(*).val]]\"  will be", ((string)(null)), table512, "Then ");
+#line 3205
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table507 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table513 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query",
                         "newName"});
-            table507.AddRow(new string[] {
+            table513.AddRow(new string[] {
                         "String",
                         "[[avg_variable]] = 2"});
-#line 3171
-    testRunner.And("the debug inputs as", ((string)(null)), table507, "And ");
+#line 3206
+    testRunner.And("the debug inputs as", ((string)(null)), table513, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table508 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table514 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table508.AddRow(new string[] {
+            table514.AddRow(new string[] {
                         "[[TableCopy(1).val]] = 12.87"});
-#line 3174
-    testRunner.And("the debug output as", ((string)(null)), table508, "And ");
+#line 3209
+    testRunner.And("the debug output as", ((string)(null)), table514, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9408,78 +9503,78 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AggregateFunctionsSelectWithMIN()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aggregate functions Select With MIN", ((string[])(null)));
-#line 3178
+#line 3213
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table509 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table515 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table509.AddRow(new string[] {
+            table515.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table509.AddRow(new string[] {
+            table515.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table509.AddRow(new string[] {
+            table515.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table509.AddRow(new string[] {
+            table515.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table509.AddRow(new string[] {
+            table515.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table509.AddRow(new string[] {
+            table515.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3179
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table509, "Given ");
-#line 3187
+#line 3214
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table515, "Given ");
+#line 3222
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3188
+#line 3223
     testRunner.And("I have the following sql statement \"SELECT MIN(age) as MinAge from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3189
+#line 3224
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table510 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table516 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table510.AddRow(new string[] {
+            table516.AddRow(new string[] {
                         "MinAge",
                         "[[TableCopy().MinAge]]"});
-#line 3190
-    testRunner.Then("Outputs are as follows", ((string)(null)), table510, "Then ");
-#line 3193
+#line 3225
+    testRunner.Then("Outputs are as follows", ((string)(null)), table516, "Then ");
+#line 3228
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table511 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table517 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table511.AddRow(new string[] {
+            table517.AddRow(new string[] {
                         "MinAge",
                         "[[TableCopy().MinAge]]"});
-#line 3194
-    testRunner.And("Outputs are as follows", ((string)(null)), table511, "And ");
-#line 3197
+#line 3229
+    testRunner.And("Outputs are as follows", ((string)(null)), table517, "And ");
+#line 3232
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table512 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table518 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table512.AddRow(new string[] {
+            table518.AddRow(new string[] {
                         "TableCopy(1).MinAge",
                         "19"});
-#line 3198
-    testRunner.Then("recordset \"[[TableCopy(*).MinAge]]\"  will be", ((string)(null)), table512, "Then ");
-#line 3201
+#line 3233
+    testRunner.Then("recordset \"[[TableCopy(*).MinAge]]\"  will be", ((string)(null)), table518, "Then ");
+#line 3236
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table513 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table519 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table513.AddRow(new string[] {
+            table519.AddRow(new string[] {
                         "[[TableCopy(1).MinAge]] = 19"});
-#line 3202
-    testRunner.And("the debug output as", ((string)(null)), table513, "And ");
+#line 3237
+    testRunner.And("the debug output as", ((string)(null)), table519, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9490,84 +9585,84 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AggregateFunctionsSelectWithMINWithMinInWhereClause()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Aggregate functions Select With MIN with min in where clause", ((string[])(null)));
-#line 3206
+#line 3241
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table514 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table520 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table514.AddRow(new string[] {
+            table520.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table514.AddRow(new string[] {
+            table520.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table514.AddRow(new string[] {
+            table520.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table514.AddRow(new string[] {
+            table520.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table514.AddRow(new string[] {
+            table520.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table514.AddRow(new string[] {
+            table520.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3207
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table514, "Given ");
-#line 3216
+#line 3242
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table520, "Given ");
+#line 3251
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3217
+#line 3252
     testRunner.And("I have the following sql statement \"SELECT * from person where age  =(select MIN(" +
                     "age) from person);\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3218
+#line 3253
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table515 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table521 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table515.AddRow(new string[] {
+            table521.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-            table515.AddRow(new string[] {
+            table521.AddRow(new string[] {
                         "age",
                         "[[TableCopy().age]]"});
-#line 3219
-    testRunner.Then("Outputs are as follows", ((string)(null)), table515, "Then ");
-#line 3223
+#line 3254
+    testRunner.Then("Outputs are as follows", ((string)(null)), table521, "Then ");
+#line 3258
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3224
+#line 3259
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table516 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table522 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table516.AddRow(new string[] {
+            table522.AddRow(new string[] {
                         "TableCopy(2).name",
                         "Hatter"});
-#line 3225
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table516, "Then ");
+#line 3260
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table522, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table517 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table523 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table517.AddRow(new string[] {
+            table523.AddRow(new string[] {
                         "TableCopy(2).age",
                         "19"});
-#line 3228
-        testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table517, "Then ");
-#line 3231
+#line 3263
+        testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table523, "Then ");
+#line 3266
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table518 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table524 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table518.AddRow(new string[] {
+            table524.AddRow(new string[] {
                         "[[TableCopy(1).name]] = Hatter"});
-            table518.AddRow(new string[] {
+            table524.AddRow(new string[] {
                         "[[TableCopy(1).age]] = 19"});
-#line 3232
-    testRunner.And("the debug output as", ((string)(null)), table518, "And ");
+#line 3267
+    testRunner.And("the debug output as", ((string)(null)), table524, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9578,69 +9673,69 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AggregateFunctionsSelectWithSUM()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("aggregate functions Select With SUM", ((string[])(null)));
-#line 3237
+#line 3272
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table519 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table525 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table519.AddRow(new string[] {
+            table525.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table519.AddRow(new string[] {
+            table525.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table519.AddRow(new string[] {
+            table525.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table519.AddRow(new string[] {
+            table525.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table519.AddRow(new string[] {
+            table525.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table519.AddRow(new string[] {
+            table525.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3238
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table519, "Given ");
-#line 3247
+#line 3273
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table525, "Given ");
+#line 3282
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3248
+#line 3283
     testRunner.And("I have the following sql statement \"SELECT SUM(age)  as ages from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3249
+#line 3284
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table520 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table526 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table520.AddRow(new string[] {
+            table526.AddRow(new string[] {
                         "ages",
                         "[[TableCopy().ages]]"});
-#line 3250
-    testRunner.Then("Outputs are as follows", ((string)(null)), table520, "Then ");
-#line 3253
+#line 3285
+    testRunner.Then("Outputs are as follows", ((string)(null)), table526, "Then ");
+#line 3288
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3254
+#line 3289
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table521 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table527 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table521.AddRow(new string[] {
+            table527.AddRow(new string[] {
                         "TableCopy(2).ages",
                         "75"});
-#line 3255
-    testRunner.Then("recordset \"[[TableCopy(*).ages]]\"  will be", ((string)(null)), table521, "Then ");
-#line 3258
+#line 3290
+    testRunner.Then("recordset \"[[TableCopy(*).ages]]\"  will be", ((string)(null)), table527, "Then ");
+#line 3293
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table522 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table528 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table522.AddRow(new string[] {
+            table528.AddRow(new string[] {
                         "[[TableCopy(1).ages]] = 75"});
-#line 3259
-    testRunner.And("the debug output as", ((string)(null)), table522, "And ");
+#line 3294
+    testRunner.And("the debug output as", ((string)(null)), table528, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9651,67 +9746,67 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithSubstr()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String Function Select With Substr", ((string[])(null)));
-#line 3263
+#line 3298
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table523 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table529 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table523.AddRow(new string[] {
+            table529.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table523.AddRow(new string[] {
+            table529.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table523.AddRow(new string[] {
+            table529.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-#line 3264
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table523, "Given ");
-#line 3270
+#line 3299
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table529, "Given ");
+#line 3305
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3271
+#line 3306
     testRunner.And("I have the following sql statement \"SELECT substr(name, 0, 4) as name from person" +
                     ";\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3272
+#line 3307
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table524 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table530 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table524.AddRow(new string[] {
+            table530.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3273
-    testRunner.Then("Outputs are as follows", ((string)(null)), table524, "Then ");
-#line 3276
+#line 3308
+    testRunner.Then("Outputs are as follows", ((string)(null)), table530, "Then ");
+#line 3311
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3277
+#line 3312
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table525 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table531 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table525.AddRow(new string[] {
+            table531.AddRow(new string[] {
                         "TableCopy(1).name",
                         "Bob"});
-            table525.AddRow(new string[] {
+            table531.AddRow(new string[] {
                         "TableCopy(2).name",
                         "Ali"});
-            table525.AddRow(new string[] {
+            table531.AddRow(new string[] {
                         "TableCopy(3).name",
                         "Hat"});
-#line 3278
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table525, "Then ");
-#line 3283
+#line 3313
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table531, "Then ");
+#line 3318
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table526 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table532 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table526.AddRow(new string[] {
+            table532.AddRow(new string[] {
                         "[[TableCopy(3).name]] = Hat"});
-#line 3284
-    testRunner.And("the debug output as", ((string)(null)), table526, "And ");
+#line 3319
+    testRunner.And("the debug output as", ((string)(null)), table532, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9722,66 +9817,66 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithTrim()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String Function Select With Trim", ((string[])(null)));
-#line 3288
+#line 3323
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table527 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table533 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table527.AddRow(new string[] {
+            table533.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table527.AddRow(new string[] {
+            table533.AddRow(new string[] {
                         "person(2).name",
                         "Alice^^"});
-            table527.AddRow(new string[] {
+            table533.AddRow(new string[] {
                         "person(3).name",
                         "Hatter^"});
-#line 3289
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table527, "Given ");
-#line 3295
+#line 3324
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table533, "Given ");
+#line 3330
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3296
+#line 3331
     testRunner.And("I have the following sql statement \"SELECT trim(name, \'^\') as name from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3297
+#line 3332
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table528 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table534 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table528.AddRow(new string[] {
+            table534.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3298
-    testRunner.Then("Outputs are as follows", ((string)(null)), table528, "Then ");
-#line 3301
+#line 3333
+    testRunner.Then("Outputs are as follows", ((string)(null)), table534, "Then ");
+#line 3336
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3302
+#line 3337
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table529 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table535 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table529.AddRow(new string[] {
+            table535.AddRow(new string[] {
                         "[[TableCopy(1).name",
                         "Bob"});
-            table529.AddRow(new string[] {
+            table535.AddRow(new string[] {
                         "[[TableCopy(2).name]]",
                         "Alice"});
-            table529.AddRow(new string[] {
+            table535.AddRow(new string[] {
                         "[[TableCopy(3).name]]",
                         "Hatter"});
-#line 3303
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table529, "Then ");
-#line 3308
+#line 3338
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table535, "Then ");
+#line 3343
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table530 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table536 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table530.AddRow(new string[] {
+            table536.AddRow(new string[] {
                         "[[TableCopy(3).name]] = Hatter"});
-#line 3309
-    testRunner.And("the debug output as", ((string)(null)), table530, "And ");
+#line 3344
+    testRunner.And("the debug output as", ((string)(null)), table536, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9792,67 +9887,67 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithLTrim()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String  Function Select With LTrim", ((string[])(null)));
-#line 3313
+#line 3348
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table531 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table537 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table531.AddRow(new string[] {
+            table537.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table531.AddRow(new string[] {
+            table537.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table531.AddRow(new string[] {
+            table537.AddRow(new string[] {
                         "person(3).name",
                         "^^^Hatter"});
-#line 3314
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table531, "Given ");
-#line 3320
+#line 3349
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table537, "Given ");
+#line 3355
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3321
+#line 3356
     testRunner.And("I have the following sql statement \"SELECT ltrim(name, \'^\') as name from person;\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3322
+#line 3357
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table532 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table538 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table532.AddRow(new string[] {
+            table538.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3323
-    testRunner.Then("Outputs are as follows", ((string)(null)), table532, "Then ");
-#line 3326
+#line 3358
+    testRunner.Then("Outputs are as follows", ((string)(null)), table538, "Then ");
+#line 3361
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3327
+#line 3362
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table533 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table539 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table533.AddRow(new string[] {
+            table539.AddRow(new string[] {
                         "[[TableCopy(1).name",
                         "Bob"});
-            table533.AddRow(new string[] {
+            table539.AddRow(new string[] {
                         "[[TableCopy(2).name]]",
                         "Alice"});
-            table533.AddRow(new string[] {
+            table539.AddRow(new string[] {
                         "[[TableCopy(3).name]]",
                         "Hatter"});
-#line 3328
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table533, "Then ");
-#line 3333
+#line 3363
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table539, "Then ");
+#line 3368
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table534 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table540 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table534.AddRow(new string[] {
+            table540.AddRow(new string[] {
                         "[[TableCopy(3).name]] = Hatter"});
-#line 3334
-    testRunner.And("the debug output as", ((string)(null)), table534, "And ");
+#line 3369
+    testRunner.And("the debug output as", ((string)(null)), table540, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9863,67 +9958,67 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithRTrim()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String  Function Select With RTrim", ((string[])(null)));
-#line 3338
+#line 3373
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table535 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table541 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table535.AddRow(new string[] {
+            table541.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table535.AddRow(new string[] {
+            table541.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table535.AddRow(new string[] {
+            table541.AddRow(new string[] {
                         "person(3).name",
                         "Hatter^^^"});
-#line 3339
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table535, "Given ");
-#line 3345
+#line 3374
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table541, "Given ");
+#line 3380
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3346
+#line 3381
     testRunner.And("I have the following sql statement \"SELECT rtrim(name, \'^\') as name from person;\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3347
+#line 3382
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table536 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table542 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table536.AddRow(new string[] {
+            table542.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3348
-    testRunner.Then("Outputs are as follows", ((string)(null)), table536, "Then ");
-#line 3351
+#line 3383
+    testRunner.Then("Outputs are as follows", ((string)(null)), table542, "Then ");
+#line 3386
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3352
+#line 3387
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table537 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table543 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table537.AddRow(new string[] {
+            table543.AddRow(new string[] {
                         "[[TableCopy(1).name",
                         "Bob"});
-            table537.AddRow(new string[] {
+            table543.AddRow(new string[] {
                         "[[TableCopy(2).name]]",
                         "Alice"});
-            table537.AddRow(new string[] {
+            table543.AddRow(new string[] {
                         "[[TableCopy(3).name]]",
                         "Hatter"});
-#line 3353
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table537, "Then ");
-#line 3358
+#line 3388
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table543, "Then ");
+#line 3393
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table538 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table544 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table538.AddRow(new string[] {
+            table544.AddRow(new string[] {
                         "[[TableCopy(3).name]] = Hatter"});
-#line 3359
-    testRunner.And("the debug output as", ((string)(null)), table538, "And ");
+#line 3394
+    testRunner.And("the debug output as", ((string)(null)), table544, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -9934,66 +10029,66 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithLength()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String  Function Select With Length", ((string[])(null)));
-#line 3363
+#line 3398
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table539 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table545 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table539.AddRow(new string[] {
+            table545.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table539.AddRow(new string[] {
+            table545.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table539.AddRow(new string[] {
+            table545.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-#line 3364
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table539, "Given ");
-#line 3370
+#line 3399
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table545, "Given ");
+#line 3405
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3371
+#line 3406
     testRunner.And("I have the following sql statement \"SELECT length(name) as name from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3372
+#line 3407
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table540 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table546 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table540.AddRow(new string[] {
+            table546.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3373
-    testRunner.Then("Outputs are as follows", ((string)(null)), table540, "Then ");
-#line 3376
+#line 3408
+    testRunner.Then("Outputs are as follows", ((string)(null)), table546, "Then ");
+#line 3411
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3377
+#line 3412
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table541 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table547 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table541.AddRow(new string[] {
+            table547.AddRow(new string[] {
                         "TableCopy(1).name",
                         "3"});
-            table541.AddRow(new string[] {
+            table547.AddRow(new string[] {
                         "TableCopy(2).name",
                         "5"});
-            table541.AddRow(new string[] {
+            table547.AddRow(new string[] {
                         "TableCopy(3).name",
                         "6"});
-#line 3378
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table541, "Then ");
-#line 3383
+#line 3413
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table547, "Then ");
+#line 3418
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table542 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table548 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table542.AddRow(new string[] {
+            table548.AddRow(new string[] {
                         "[[TableCopy(3).name]] = 6"});
-#line 3384
-    testRunner.And("the debug output as", ((string)(null)), table542, "And ");
+#line 3419
+    testRunner.And("the debug output as", ((string)(null)), table548, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10004,87 +10099,87 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithComplexLength()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String  Function Select With Complex Length", ((string[])(null)));
-#line 3388
+#line 3423
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table543 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table549 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table543.AddRow(new string[] {
+            table549.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table543.AddRow(new string[] {
+            table549.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table543.AddRow(new string[] {
+            table549.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-#line 3389
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table543, "Given ");
-#line 3395
+#line 3424
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table549, "Given ");
+#line 3430
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3396
+#line 3431
     testRunner.And("I have the following sql statement \"SELECT name, length(name) as name2 FROM perso" +
                     "n ORDER BY length(name) DESC\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3397
+#line 3432
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table544 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table550 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table544.AddRow(new string[] {
+            table550.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-            table544.AddRow(new string[] {
+            table550.AddRow(new string[] {
                         "name2",
                         "[[TableCopy().name2]]"});
-#line 3398
-    testRunner.Then("Outputs are as follows", ((string)(null)), table544, "Then ");
-#line 3402
+#line 3433
+    testRunner.Then("Outputs are as follows", ((string)(null)), table550, "Then ");
+#line 3437
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3403
+#line 3438
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table545 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table551 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table545.AddRow(new string[] {
+            table551.AddRow(new string[] {
                         "TableCopy(1).name",
                         "Hatter"});
-            table545.AddRow(new string[] {
+            table551.AddRow(new string[] {
                         "TableCopy(2).name",
                         "Alice"});
-            table545.AddRow(new string[] {
+            table551.AddRow(new string[] {
                         "TableCopy(3).name",
                         "Bob"});
-#line 3404
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table545, "Then ");
+#line 3439
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table551, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table546 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table552 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table546.AddRow(new string[] {
+            table552.AddRow(new string[] {
                         "TableCopy(1).name2",
                         "6"});
-            table546.AddRow(new string[] {
+            table552.AddRow(new string[] {
                         "TableCopy(2).name2",
                         "5"});
-            table546.AddRow(new string[] {
+            table552.AddRow(new string[] {
                         "TableCopy(3).name2",
                         "3"});
-#line 3409
-    testRunner.Then("recordset \"[[TableCopy(*).name2]]\"  will be", ((string)(null)), table546, "Then ");
-#line 3414
+#line 3444
+    testRunner.Then("recordset \"[[TableCopy(*).name2]]\"  will be", ((string)(null)), table552, "Then ");
+#line 3449
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table547 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table553 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table547.AddRow(new string[] {
+            table553.AddRow(new string[] {
                         "[[TableCopy(3).name]] = Bob"});
-            table547.AddRow(new string[] {
+            table553.AddRow(new string[] {
                         "[[TableCopy(3).name2]] = 3"});
-#line 3415
-    testRunner.And("the debug output as", ((string)(null)), table547, "And ");
+#line 3450
+    testRunner.And("the debug output as", ((string)(null)), table553, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10095,99 +10190,99 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithReplaceThenSelect()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String  Function Select With Replace Then Select", ((string[])(null)));
-#line 3420
+#line 3455
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table548 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table554 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table548.AddRow(new string[] {
+            table554.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table548.AddRow(new string[] {
+            table554.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table548.AddRow(new string[] {
+            table554.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table548.AddRow(new string[] {
+            table554.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table548.AddRow(new string[] {
+            table554.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table548.AddRow(new string[] {
+            table554.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3421
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table548, "Given ");
-#line 3430
+#line 3456
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table554, "Given ");
+#line 3465
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3431
+#line 3466
     testRunner.And("I have the following sql statement \"REPLACE INTO person (name, age) VALUES (\'Robo" +
                     "cop\', 1000) ;select * from person\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3432
+#line 3467
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table549 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table555 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table549.AddRow(new string[] {
+            table555.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3433
-    testRunner.Then("Outputs are as follows", ((string)(null)), table549, "Then ");
-#line 3436
+#line 3468
+    testRunner.Then("Outputs are as follows", ((string)(null)), table555, "Then ");
+#line 3471
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3437
+#line 3472
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table550 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table556 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table550.AddRow(new string[] {
+            table556.AddRow(new string[] {
                         "TableCopy(1).name",
                         "Bob"});
-            table550.AddRow(new string[] {
+            table556.AddRow(new string[] {
                         "TableCopy(2).name",
                         "Alice"});
-            table550.AddRow(new string[] {
+            table556.AddRow(new string[] {
                         "TableCopy(3).name",
                         "Hatter"});
-            table550.AddRow(new string[] {
+            table556.AddRow(new string[] {
                         "TableCopy(4).name",
                         "Robocop"});
-#line 3438
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table550, "Then ");
+#line 3473
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table556, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table551 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table557 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table551.AddRow(new string[] {
+            table557.AddRow(new string[] {
                         "TableCopy(1).age",
                         "25"});
-            table551.AddRow(new string[] {
+            table557.AddRow(new string[] {
                         "TableCopy(2).age",
                         "31"});
-            table551.AddRow(new string[] {
+            table557.AddRow(new string[] {
                         "TableCopy(3).age",
                         "19"});
-            table551.AddRow(new string[] {
+            table557.AddRow(new string[] {
                         "TableCopy(4).age",
                         "1000"});
-#line 3444
-    testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table551, "Then ");
-#line 3450
+#line 3479
+    testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table557, "Then ");
+#line 3485
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table552 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table558 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table552.AddRow(new string[] {
+            table558.AddRow(new string[] {
                         "[[TableCopy(4).name]] = Robocop"});
-            table552.AddRow(new string[] {
+            table558.AddRow(new string[] {
                         "[[TableCopy(4).age]] = 1000"});
-#line 3451
-    testRunner.And("the debug output as", ((string)(null)), table552, "And ");
+#line 3486
+    testRunner.And("the debug output as", ((string)(null)), table558, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10198,83 +10293,83 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithReplace()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String  Function Select With Replace", ((string[])(null)));
-#line 3456
+#line 3491
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table553 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table559 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table553.AddRow(new string[] {
+            table559.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table553.AddRow(new string[] {
+            table559.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table553.AddRow(new string[] {
+            table559.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table553.AddRow(new string[] {
+            table559.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table553.AddRow(new string[] {
+            table559.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table553.AddRow(new string[] {
+            table559.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3457
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table553, "Given ");
-#line 3466
+#line 3492
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table559, "Given ");
+#line 3501
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3467
+#line 3502
     testRunner.And("I have the following sql statement \"REPLACE INTO person (name, age) VALUES (\'Robo" +
                     "cop\', 1000)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3468
+#line 3503
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table554 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table560 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table554.AddRow(new string[] {
+            table560.AddRow(new string[] {
                         "records_affected",
                         "[[Table1Copy().records_affected]]"});
-#line 3469
-    testRunner.Then("Outputs are as follows", ((string)(null)), table554, "Then ");
-#line 3472
+#line 3504
+    testRunner.Then("Outputs are as follows", ((string)(null)), table560, "Then ");
+#line 3507
     testRunner.And("Recordset is \"Table1Copy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3473
+#line 3508
     testRunner.When("I update Recordset to \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3474
+#line 3509
     testRunner.Then("Recordset is \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table555 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table561 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table555.AddRow(new string[] {
+            table561.AddRow(new string[] {
                         "records_affected",
                         "[[newPerson().records_affected]]"});
-#line 3475
-    testRunner.And("Outputs are as follows", ((string)(null)), table555, "And ");
-#line 3478
+#line 3510
+    testRunner.And("Outputs are as follows", ((string)(null)), table561, "And ");
+#line 3513
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table556 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table562 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table556.AddRow(new string[] {
+            table562.AddRow(new string[] {
                         "newPerson().records_affected",
                         "1"});
-#line 3479
-    testRunner.Then("recordset \"[[newPerson(*).records_affected]]\"  will be", ((string)(null)), table556, "Then ");
-#line 3482
+#line 3514
+    testRunner.Then("recordset \"[[newPerson(*).records_affected]]\"  will be", ((string)(null)), table562, "Then ");
+#line 3517
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table557 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table563 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table557.AddRow(new string[] {
+            table563.AddRow(new string[] {
                         "[[newPerson(1).records_affected]] = 1"});
-#line 3483
-    testRunner.And("the debug output as", ((string)(null)), table557, "And ");
+#line 3518
+    testRunner.And("the debug output as", ((string)(null)), table563, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10285,99 +10380,99 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithINSERTThenSelect()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String  Function Select With INSERT Then Select", ((string[])(null)));
-#line 3487
+#line 3522
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table558 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table564 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table558.AddRow(new string[] {
+            table564.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table558.AddRow(new string[] {
+            table564.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table558.AddRow(new string[] {
+            table564.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table558.AddRow(new string[] {
+            table564.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table558.AddRow(new string[] {
+            table564.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table558.AddRow(new string[] {
+            table564.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3488
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table558, "Given ");
-#line 3497
+#line 3523
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table564, "Given ");
+#line 3532
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3498
+#line 3533
     testRunner.And("I have the following sql statement \"INSERT INTO person (name, age) VALUES (\'Roboc" +
                     "op\', 1000) ;select * from person\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3499
+#line 3534
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table559 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table565 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table559.AddRow(new string[] {
+            table565.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3500
-    testRunner.Then("Outputs are as follows", ((string)(null)), table559, "Then ");
-#line 3503
+#line 3535
+    testRunner.Then("Outputs are as follows", ((string)(null)), table565, "Then ");
+#line 3538
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3504
+#line 3539
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table560 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table566 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table560.AddRow(new string[] {
+            table566.AddRow(new string[] {
                         "TableCopy(1).name",
                         "Bob"});
-            table560.AddRow(new string[] {
+            table566.AddRow(new string[] {
                         "TableCopy(2).name",
                         "Alice"});
-            table560.AddRow(new string[] {
+            table566.AddRow(new string[] {
                         "TableCopy(3).name",
                         "Hatter"});
-            table560.AddRow(new string[] {
+            table566.AddRow(new string[] {
                         "TableCopy(4).name",
                         "Robocop"});
-#line 3505
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table560, "Then ");
+#line 3540
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table566, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table561 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table567 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table561.AddRow(new string[] {
+            table567.AddRow(new string[] {
                         "TableCopy(1).age",
                         "25"});
-            table561.AddRow(new string[] {
+            table567.AddRow(new string[] {
                         "TableCopy(2).age",
                         "31"});
-            table561.AddRow(new string[] {
+            table567.AddRow(new string[] {
                         "TableCopy(3).age",
                         "19"});
-            table561.AddRow(new string[] {
+            table567.AddRow(new string[] {
                         "TableCopy(4).age",
                         "1000"});
-#line 3511
-    testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table561, "Then ");
-#line 3517
+#line 3546
+    testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table567, "Then ");
+#line 3552
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table562 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table568 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table562.AddRow(new string[] {
+            table568.AddRow(new string[] {
                         "[[TableCopy(4).name]] = Robocop"});
-            table562.AddRow(new string[] {
+            table568.AddRow(new string[] {
                         "[[TableCopy(4).age]] = 1000"});
-#line 3518
-    testRunner.And("the debug output as", ((string)(null)), table562, "And ");
+#line 3553
+    testRunner.And("the debug output as", ((string)(null)), table568, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10388,83 +10483,83 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithInsert()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String  Function Select With Insert", ((string[])(null)));
-#line 3523
+#line 3558
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table563 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table569 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table563.AddRow(new string[] {
+            table569.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table563.AddRow(new string[] {
+            table569.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table563.AddRow(new string[] {
+            table569.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table563.AddRow(new string[] {
+            table569.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table563.AddRow(new string[] {
+            table569.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table563.AddRow(new string[] {
+            table569.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3524
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table563, "Given ");
-#line 3533
+#line 3559
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table569, "Given ");
+#line 3568
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3534
+#line 3569
     testRunner.And("I have the following sql statement \"INSERT INTO person (name, age) VALUES (\'Roboc" +
                     "op\', 1000)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3535
+#line 3570
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table564 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table570 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table564.AddRow(new string[] {
+            table570.AddRow(new string[] {
                         "records_affected",
                         "[[Table1Copy().records_affected]]"});
-#line 3536
-    testRunner.Then("Outputs are as follows", ((string)(null)), table564, "Then ");
-#line 3539
+#line 3571
+    testRunner.Then("Outputs are as follows", ((string)(null)), table570, "Then ");
+#line 3574
     testRunner.And("Recordset is \"Table1Copy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3540
+#line 3575
     testRunner.When("I update Recordset to \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3541
+#line 3576
     testRunner.Then("Recordset is \"newPerson\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table565 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table571 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table565.AddRow(new string[] {
+            table571.AddRow(new string[] {
                         "records_affected",
                         "[[newPerson().records_affected]]"});
-#line 3542
-    testRunner.And("Outputs are as follows", ((string)(null)), table565, "And ");
-#line 3545
+#line 3577
+    testRunner.And("Outputs are as follows", ((string)(null)), table571, "And ");
+#line 3580
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table566 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table572 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table566.AddRow(new string[] {
+            table572.AddRow(new string[] {
                         "newPerson().records_affected",
                         "1"});
-#line 3546
-    testRunner.Then("recordset \"[[newPerson(*).records_affected]]\"  will be", ((string)(null)), table566, "Then ");
-#line 3549
+#line 3581
+    testRunner.Then("recordset \"[[newPerson(*).records_affected]]\"  will be", ((string)(null)), table572, "Then ");
+#line 3584
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table567 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table573 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table567.AddRow(new string[] {
+            table573.AddRow(new string[] {
                         "[[newPerson(1).records_affected]] = 1"});
-#line 3550
-    testRunner.And("the debug output as", ((string)(null)), table567, "And ");
+#line 3585
+    testRunner.And("the debug output as", ((string)(null)), table573, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10475,67 +10570,67 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithINSTR()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String Function Select With INSTR", ((string[])(null)));
-#line 3554
+#line 3589
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table568 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table574 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table568.AddRow(new string[] {
+            table574.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table568.AddRow(new string[] {
+            table574.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table568.AddRow(new string[] {
+            table574.AddRow(new string[] {
                         "person(3).name",
                         "Mad Hatter"});
-#line 3555
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table568, "Given ");
-#line 3561
+#line 3590
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table574, "Given ");
+#line 3596
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3562
+#line 3597
     testRunner.And("I have the following sql statement \"SELECT INSTR(name,\'Hatter\') as position from " +
                     "person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3563
+#line 3598
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table569 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table575 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table569.AddRow(new string[] {
+            table575.AddRow(new string[] {
                         "position",
                         "[[TableCopy().position]]"});
-#line 3564
-    testRunner.Then("Outputs are as follows", ((string)(null)), table569, "Then ");
-#line 3567
+#line 3599
+    testRunner.Then("Outputs are as follows", ((string)(null)), table575, "Then ");
+#line 3602
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3568
+#line 3603
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table570 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table576 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table570.AddRow(new string[] {
+            table576.AddRow(new string[] {
                         "TableCopy(1).position",
                         "0"});
-            table570.AddRow(new string[] {
+            table576.AddRow(new string[] {
                         "TableCopy(2).position",
                         "0"});
-            table570.AddRow(new string[] {
+            table576.AddRow(new string[] {
                         "TableCopy(3).position",
                         "5"});
-#line 3569
-    testRunner.Then("recordset \"[[TableCopy(*).position]]\"  will be", ((string)(null)), table570, "Then ");
-#line 3574
+#line 3604
+    testRunner.Then("recordset \"[[TableCopy(*).position]]\"  will be", ((string)(null)), table576, "Then ");
+#line 3609
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table571 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table577 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table571.AddRow(new string[] {
+            table577.AddRow(new string[] {
                         "[[TableCopy(3).position]] = 5"});
-#line 3575
-    testRunner.And("the debug output as", ((string)(null)), table571, "And ");
+#line 3610
+    testRunner.And("the debug output as", ((string)(null)), table577, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10546,66 +10641,66 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithUpper()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String Function Select With Upper", ((string[])(null)));
-#line 3579
+#line 3614
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table572 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table578 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table572.AddRow(new string[] {
+            table578.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table572.AddRow(new string[] {
+            table578.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table572.AddRow(new string[] {
+            table578.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-#line 3580
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table572, "Given ");
-#line 3586
+#line 3615
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table578, "Given ");
+#line 3621
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3587
+#line 3622
     testRunner.And("I have the following sql statement \"SELECT upper(name) as name from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3588
+#line 3623
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table573 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table579 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table573.AddRow(new string[] {
+            table579.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3589
-    testRunner.Then("Outputs are as follows", ((string)(null)), table573, "Then ");
-#line 3592
+#line 3624
+    testRunner.Then("Outputs are as follows", ((string)(null)), table579, "Then ");
+#line 3627
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3593
+#line 3628
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table574 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table580 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table574.AddRow(new string[] {
+            table580.AddRow(new string[] {
                         "TableCopy(1).name",
                         "BOB"});
-            table574.AddRow(new string[] {
+            table580.AddRow(new string[] {
                         "TableCopy(2).name",
                         "ALICE"});
-            table574.AddRow(new string[] {
+            table580.AddRow(new string[] {
                         "TableCopy(3).name",
                         "HATTER"});
-#line 3594
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table574, "Then ");
-#line 3599
+#line 3629
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table580, "Then ");
+#line 3634
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table575 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table581 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table575.AddRow(new string[] {
+            table581.AddRow(new string[] {
                         "[[TableCopy(3).name]] = HATTER"});
-#line 3600
-    testRunner.And("the debug output as", ((string)(null)), table575, "And ");
+#line 3635
+    testRunner.And("the debug output as", ((string)(null)), table581, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10616,66 +10711,66 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StringFunctionSelectWithLower()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("String Function Select With Lower", ((string[])(null)));
-#line 3604
+#line 3639
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table576 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table582 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table576.AddRow(new string[] {
+            table582.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table576.AddRow(new string[] {
+            table582.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table576.AddRow(new string[] {
+            table582.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-#line 3605
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table576, "Given ");
-#line 3611
+#line 3640
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table582, "Given ");
+#line 3646
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3612
+#line 3647
     testRunner.And("I have the following sql statement \"SELECT lower(name) as name from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3613
+#line 3648
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table577 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table583 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table577.AddRow(new string[] {
+            table583.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3614
-    testRunner.Then("Outputs are as follows", ((string)(null)), table577, "Then ");
-#line 3617
+#line 3649
+    testRunner.Then("Outputs are as follows", ((string)(null)), table583, "Then ");
+#line 3652
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3618
+#line 3653
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table578 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table584 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table578.AddRow(new string[] {
+            table584.AddRow(new string[] {
                         "TableCopy(1).name",
                         "bob"});
-            table578.AddRow(new string[] {
+            table584.AddRow(new string[] {
                         "TableCopy(2).name",
                         "alice"});
-            table578.AddRow(new string[] {
+            table584.AddRow(new string[] {
                         "TableCopy(3).name",
                         "hatter"});
-#line 3619
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table578, "Then ");
-#line 3624
+#line 3654
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table584, "Then ");
+#line 3659
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table579 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table585 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table579.AddRow(new string[] {
+            table585.AddRow(new string[] {
                         "[[TableCopy(3).name]] = hatter"});
-#line 3625
-    testRunner.And("the debug output as", ((string)(null)), table579, "And ");
+#line 3660
+    testRunner.And("the debug output as", ((string)(null)), table585, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10686,96 +10781,96 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SelectAllUNIONALLClauseWhichDOESRemoveDuplicates_()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Select All UNION ALL clause which DOES remove duplicates.", ((string[])(null)));
-#line 3629
+#line 3664
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table580 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table586 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table580.AddRow(new string[] {
+            table586.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table580.AddRow(new string[] {
+            table586.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table580.AddRow(new string[] {
+            table586.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table580.AddRow(new string[] {
+            table586.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table580.AddRow(new string[] {
+            table586.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table580.AddRow(new string[] {
+            table586.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3630
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table580, "Given ");
-#line 3639
+#line 3665
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table586, "Given ");
+#line 3674
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3640
+#line 3675
     testRunner.And("I have the following sql statement \"SELECT * from person UNION  SELECT * from per" +
                     "son;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3641
+#line 3676
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table581 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table587 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table581.AddRow(new string[] {
+            table587.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-            table581.AddRow(new string[] {
+            table587.AddRow(new string[] {
                         "age",
                         "[[TableCopy().age]]"});
-#line 3642
-    testRunner.Then("Outputs are as follows", ((string)(null)), table581, "Then ");
-#line 3646
+#line 3677
+    testRunner.Then("Outputs are as follows", ((string)(null)), table587, "Then ");
+#line 3681
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3647
+#line 3682
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table582 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table588 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table582.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "TableCopy(1).name",
                         "Bob"});
-            table582.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "TableCopy(2).name",
                         "Alice"});
-            table582.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "TableCopy(3).name",
                         "Hatter"});
-#line 3648
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table582, "Then ");
+#line 3683
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table588, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table583 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table589 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table583.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "TableCopy(1).age",
                         "25"});
-            table583.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "TableCopy(2).age",
                         "31"});
-            table583.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "TableCopy(3).age",
                         "19"});
-#line 3653
-    testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table583, "Then ");
-#line 3658
+#line 3688
+    testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table589, "Then ");
+#line 3693
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table584 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table590 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table584.AddRow(new string[] {
+            table590.AddRow(new string[] {
                         "[[TableCopy(3).name]] = Hatter"});
-            table584.AddRow(new string[] {
+            table590.AddRow(new string[] {
                         "[[TableCopy(3).age]] = 19"});
-#line 3659
-    testRunner.And("the debug output as", ((string)(null)), table584, "And ");
+#line 3694
+    testRunner.And("the debug output as", ((string)(null)), table590, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10786,114 +10881,114 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SelectAllUNIONClauseWhichDOESNOTRemoveDuplicates_()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Select All UNION  clause which DOES NOT remove duplicates.", ((string[])(null)));
-#line 3664
+#line 3699
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table585 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table591 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table585.AddRow(new string[] {
+            table591.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table585.AddRow(new string[] {
+            table591.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table585.AddRow(new string[] {
+            table591.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table585.AddRow(new string[] {
+            table591.AddRow(new string[] {
                         "person(1).age",
                         "25"});
-            table585.AddRow(new string[] {
+            table591.AddRow(new string[] {
                         "person(2).age",
                         "31"});
-            table585.AddRow(new string[] {
+            table591.AddRow(new string[] {
                         "person(3).age",
                         "19"});
-#line 3665
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table585, "Given ");
-#line 3674
+#line 3700
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table591, "Given ");
+#line 3709
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3675
+#line 3710
     testRunner.And("I have the following sql statement \"SELECT * from person UNION ALL  SELECT * from" +
                     " person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3676
+#line 3711
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table586 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table592 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table586.AddRow(new string[] {
+            table592.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-            table586.AddRow(new string[] {
+            table592.AddRow(new string[] {
                         "age",
                         "[[TableCopy().age]]"});
-#line 3677
-    testRunner.Then("Outputs are as follows", ((string)(null)), table586, "Then ");
-#line 3681
+#line 3712
+    testRunner.Then("Outputs are as follows", ((string)(null)), table592, "Then ");
+#line 3716
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3682
+#line 3717
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table587 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table593 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table587.AddRow(new string[] {
+            table593.AddRow(new string[] {
                         "TableCopy(1).name",
                         "Bob"});
-            table587.AddRow(new string[] {
+            table593.AddRow(new string[] {
                         "TableCopy(2).name",
                         "Alice"});
-            table587.AddRow(new string[] {
+            table593.AddRow(new string[] {
                         "TableCopy(3).name",
                         "Hatter"});
-            table587.AddRow(new string[] {
+            table593.AddRow(new string[] {
                         "TableCopy(4).name",
                         "Bob"});
-            table587.AddRow(new string[] {
+            table593.AddRow(new string[] {
                         "TableCopy(5).name",
                         "Alice"});
-            table587.AddRow(new string[] {
+            table593.AddRow(new string[] {
                         "TableCopy(6).name",
                         "Hatter"});
-#line 3683
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table587, "Then ");
+#line 3718
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table593, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table588 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table594 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table588.AddRow(new string[] {
+            table594.AddRow(new string[] {
                         "TableCopy(1).age",
                         "25"});
-            table588.AddRow(new string[] {
+            table594.AddRow(new string[] {
                         "TableCopy(2).age",
                         "31"});
-            table588.AddRow(new string[] {
+            table594.AddRow(new string[] {
                         "TableCopy(3).age",
                         "19"});
-            table588.AddRow(new string[] {
+            table594.AddRow(new string[] {
                         "TableCopy(4).age",
                         "25"});
-            table588.AddRow(new string[] {
+            table594.AddRow(new string[] {
                         "TableCopy(5).age",
                         "31"});
-            table588.AddRow(new string[] {
+            table594.AddRow(new string[] {
                         "TableCopy(6).age",
                         "19"});
-#line 3691
-    testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table588, "Then ");
-#line 3699
+#line 3726
+    testRunner.Then("recordset \"[[TableCopy(*).age]]\"  will be", ((string)(null)), table594, "Then ");
+#line 3734
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table589 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table595 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table589.AddRow(new string[] {
+            table595.AddRow(new string[] {
                         "[[TableCopy(6).name]] = Hatter"});
-            table589.AddRow(new string[] {
+            table595.AddRow(new string[] {
                         "[[TableCopy(6).age]] = 19"});
-#line 3700
-    testRunner.And("the debug output as", ((string)(null)), table589, "And ");
+#line 3735
+    testRunner.And("the debug output as", ((string)(null)), table595, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10904,61 +10999,61 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void MathFunctionsSelectWithABS()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("math functions Select With ABS", ((string[])(null)));
-#line 3705
+#line 3740
 this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table590 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table596 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[avg_tests]]",
                         ""});
-            table590.AddRow(new string[] {
+            table596.AddRow(new string[] {
                         "avg_tests().val",
                         "-1000"});
-#line 3706
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table590, "Given ");
-#line 3709
+#line 3741
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table596, "Given ");
+#line 3744
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3710
+#line 3745
     testRunner.And("I have the following sql statement \"SELECT ABS(val) absValue from avg_tests;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3711
+#line 3746
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table591 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table597 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table591.AddRow(new string[] {
+            table597.AddRow(new string[] {
                         "absValue",
                         "[[TableCopy().absValue]]"});
-#line 3712
-    testRunner.Then("Outputs are as follows", ((string)(null)), table591, "Then ");
-#line 3715
+#line 3747
+    testRunner.Then("Outputs are as follows", ((string)(null)), table597, "Then ");
+#line 3750
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3716
+#line 3751
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table592 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table598 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table592.AddRow(new string[] {
+            table598.AddRow(new string[] {
                         "TableCopy().absValue",
                         "1000"});
-#line 3717
-    testRunner.Then("recordset \"[[TableCopy(*).absValue]]\"  will be", ((string)(null)), table592, "Then ");
-#line 3720
+#line 3752
+    testRunner.Then("recordset \"[[TableCopy(*).absValue]]\"  will be", ((string)(null)), table598, "Then ");
+#line 3755
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table593 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table599 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query"});
-            table593.AddRow(new string[] {
+            table599.AddRow(new string[] {
                         "String"});
-#line 3721
-    testRunner.And("the debug inputs as", ((string)(null)), table593, "And ");
+#line 3756
+    testRunner.And("the debug inputs as", ((string)(null)), table599, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table594 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table600 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table594.AddRow(new string[] {
+            table600.AddRow(new string[] {
                         "[[TableCopy(1).absValue]] = 1000"});
-#line 3724
-    testRunner.And("the debug output as", ((string)(null)), table594, "And ");
+#line 3759
+    testRunner.And("the debug output as", ((string)(null)), table600, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10969,120 +11064,120 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SelectWithSelfJoin()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Select With Self Join", ((string[])(null)));
-#line 3728
+#line 3763
     this.ScenarioSetup(scenarioInfo);
 #line hidden
-            TechTalk.SpecFlow.Table table595 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table601 = new TechTalk.SpecFlow.Table(new string[] {
                         "[[person]]",
                         ""});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(1).name",
                         "Bob"});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(2).name",
                         "Alice"});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(3).name",
                         "Hatter"});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(4).name",
                         "Rabbit"});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(5).name",
                         "Puff"});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(1).reportsto",
                         "Puff"});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(2).reportsto",
                         "Bob"});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(3).reportsto",
                         "Bob"});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(4).reportsto",
                         "Bob"});
-            table595.AddRow(new string[] {
+            table601.AddRow(new string[] {
                         "person(5).reportsto",
                         "Puff"});
-#line 3729
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table595, "Given ");
-#line 3741
+#line 3764
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table601, "Given ");
+#line 3776
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3742
+#line 3777
     testRunner.And("I have the following sql statement \"SELECT e.name as Manager,f.name as DirectRepo" +
                     "rt from person e inner join person f on e.reportsto = f.name;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3743
+#line 3778
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table596 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table602 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table596.AddRow(new string[] {
+            table602.AddRow(new string[] {
                         "Manager",
                         "[[TableCopy().Manager]]"});
-            table596.AddRow(new string[] {
+            table602.AddRow(new string[] {
                         "DirectReport",
                         "[[TableCopy().DirectReport]]"});
-#line 3744
-    testRunner.Then("Outputs are as follows", ((string)(null)), table596, "Then ");
-#line 3748
+#line 3779
+    testRunner.Then("Outputs are as follows", ((string)(null)), table602, "Then ");
+#line 3783
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3749
+#line 3784
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-            TechTalk.SpecFlow.Table table597 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table603 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table597.AddRow(new string[] {
+            table603.AddRow(new string[] {
                         "TableCopy(1).Manager",
                         "Bob"});
-            table597.AddRow(new string[] {
+            table603.AddRow(new string[] {
                         "TableCopy(2).Manager",
                         "Alice"});
-            table597.AddRow(new string[] {
+            table603.AddRow(new string[] {
                         "TableCopy(3).Manager",
                         "Hatter"});
-            table597.AddRow(new string[] {
+            table603.AddRow(new string[] {
                         "TableCopy(4).Manager",
                         "Rabbit"});
-            table597.AddRow(new string[] {
+            table603.AddRow(new string[] {
                         "TableCopy(5).Manager",
                         "Puff"});
-#line 3750
-    testRunner.Then("recordset \"[[TableCopy(*).Manager]]\"  will be", ((string)(null)), table597, "Then ");
+#line 3785
+    testRunner.Then("recordset \"[[TableCopy(*).Manager]]\"  will be", ((string)(null)), table603, "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table598 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table604 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
-            table598.AddRow(new string[] {
+            table604.AddRow(new string[] {
                         "TableCopy(1).DirectReport",
                         "Puff"});
-            table598.AddRow(new string[] {
+            table604.AddRow(new string[] {
                         "TableCopy(2).DirectReport",
                         "Bob"});
-            table598.AddRow(new string[] {
+            table604.AddRow(new string[] {
                         "TableCopy(3).DirectReport",
                         "Bob"});
-            table598.AddRow(new string[] {
+            table604.AddRow(new string[] {
                         "TableCopy(4).DirectReport",
                         "Bob"});
-            table598.AddRow(new string[] {
+            table604.AddRow(new string[] {
                         "TableCopy(5).DirectReport",
                         "Puff"});
-#line 3757
-    testRunner.Then("recordset \"[[TableCopy(*).DirectReport]]\"  will be", ((string)(null)), table598, "Then ");
-#line 3764
+#line 3792
+    testRunner.Then("recordset \"[[TableCopy(*).DirectReport]]\"  will be", ((string)(null)), table604, "Then ");
+#line 3799
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table599 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table605 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table599.AddRow(new string[] {
+            table605.AddRow(new string[] {
                         "[[TableCopy(5).Manager]] = Puff"});
-            table599.AddRow(new string[] {
+            table605.AddRow(new string[] {
                         "[[TableCopy(5).DirectReport]] = Puff"});
-#line 3765
-    testRunner.And("the debug output as", ((string)(null)), table599, "And ");
+#line 3800
+    testRunner.And("the debug output as", ((string)(null)), table605, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -11093,114 +11188,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void StrftimeSelectTheNumberOfSecondsSinceAParticularMoment()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("strftime Select the number of seconds since a particular moment:", ((string[])(null)));
-#line 3770
-    this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table600 = new TechTalk.SpecFlow.Table(new string[] {
-                        "[[person]]",
-                        ""});
-            table600.AddRow(new string[] {
-                        "person(1).name",
-                        "Bob"});
-            table600.AddRow(new string[] {
-                        "person(2).name",
-                        "Alice"});
-            table600.AddRow(new string[] {
-                        "person(3).name",
-                        "Hatter"});
-            table600.AddRow(new string[] {
-                        "person(1).dob",
-                        "1978-01-01 02:34:56"});
-            table600.AddRow(new string[] {
-                        "person(2).dob",
-                        "1979-01-01 02:34:56"});
-            table600.AddRow(new string[] {
-                        "person(3).dob",
-                        "1980-01-01 02:34:56"});
-#line 3771
-    testRunner.Given("I have a recordset with this shape", ((string)(null)), table600, "Given ");
-#line 3779
-    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3780
-    testRunner.And("I have the following sql statement \"SELECT name, strftime(\'%s\',date(\'1981-01-01 0" +
-                    "2:34:56\')) - strftime(\'%s\',dob) as numberofseconds from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3781
-    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table601 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Mapped From",
-                        "Mapped To"});
-            table601.AddRow(new string[] {
-                        "numberofseconds",
-                        "[[TableCopy().numberofseconds]]"});
-            table601.AddRow(new string[] {
-                        "name",
-                        "[[TableCopy().name]]"});
-#line 3782
-    testRunner.Then("Outputs are as follows", ((string)(null)), table601, "Then ");
-#line 3786
-    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3787
-    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-            TechTalk.SpecFlow.Table table602 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table602.AddRow(new string[] {
-                        "TableCopy(1).name",
-                        "Bob"});
-            table602.AddRow(new string[] {
-                        "TableCopy(2).name",
-                        "Alice"});
-            table602.AddRow(new string[] {
-                        "TableCopy(3).name",
-                        "Hatter"});
-#line 3788
-    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table602, "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table603 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "value"});
-            table603.AddRow(new string[] {
-                        "TableCopy(1).numberofseconds",
-                        "94685104"});
-            table603.AddRow(new string[] {
-                        "TableCopy(2).numberofseconds",
-                        "63149104"});
-            table603.AddRow(new string[] {
-                        "TableCopy(3).numberofseconds",
-                        "31613104"});
-#line 3793
-    testRunner.Then("recordset \"[[TableCopy(*).numberofseconds]]\"  will be", ((string)(null)), table603, "Then ");
-#line 3798
-    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table604 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Query"});
-            table604.AddRow(new string[] {
-                        "String"});
-#line 3799
-    testRunner.And("the debug inputs as", ((string)(null)), table604, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table605 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table605.AddRow(new string[] {
-                        "[[TableCopy(3).name]] = Hatter"});
-            table605.AddRow(new string[] {
-                        "[[TableCopy(3).numberofseconds]] = 31613104"});
-#line 3802
-    testRunner.And("the debug output as", ((string)(null)), table605, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("datetime Select the date and time given a unix timestamp 1092941466:")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
-        public virtual void DatetimeSelectTheDateAndTimeGivenAUnixTimestamp1092941466()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("datetime Select the date and time given a unix timestamp 1092941466:", ((string[])(null)));
-#line 3807
+#line 3805
     this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table606 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11224,30 +11212,30 @@ this.ScenarioSetup(scenarioInfo);
             table606.AddRow(new string[] {
                         "person(3).dob",
                         "1980-01-01 02:34:56"});
-#line 3808
+#line 3806
     testRunner.Given("I have a recordset with this shape", ((string)(null)), table606, "Given ");
-#line 3816
+#line 3814
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3817
-    testRunner.And("I have the following sql statement \"SELECT datetime(1092941466, \'unixepoch\') as d" +
-                    "ob,name from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3818
+#line 3815
+    testRunner.And("I have the following sql statement \"SELECT name, strftime(\'%s\',date(\'1981-01-01 0" +
+                    "2:34:56\')) - strftime(\'%s\',dob) as numberofseconds from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 3816
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table607 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
             table607.AddRow(new string[] {
-                        "dob",
-                        "[[TableCopy().dob]]"});
+                        "numberofseconds",
+                        "[[TableCopy().numberofseconds]]"});
             table607.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3819
+#line 3817
     testRunner.Then("Outputs are as follows", ((string)(null)), table607, "Then ");
-#line 3823
+#line 3821
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3824
+#line 3822
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table608 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11262,52 +11250,52 @@ this.ScenarioSetup(scenarioInfo);
             table608.AddRow(new string[] {
                         "TableCopy(3).name",
                         "Hatter"});
-#line 3825
+#line 3823
     testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table608, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table609 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
                         "value"});
             table609.AddRow(new string[] {
-                        "TableCopy(1).dob",
-                        "2004-08-19 18:51:06"});
+                        "TableCopy(1).numberofseconds",
+                        "94685104"});
             table609.AddRow(new string[] {
-                        "TableCopy(2).dob",
-                        "2004-08-19 18:51:06"});
+                        "TableCopy(2).numberofseconds",
+                        "63149104"});
             table609.AddRow(new string[] {
-                        "TableCopy(3).dob",
-                        "2004-08-19 18:51:06"});
-#line 3830
-    testRunner.Then("recordset \"[[TableCopy(*).dob]]\"  will be", ((string)(null)), table609, "Then ");
-#line 3835
+                        "TableCopy(3).numberofseconds",
+                        "31613104"});
+#line 3828
+    testRunner.Then("recordset \"[[TableCopy(*).numberofseconds]]\"  will be", ((string)(null)), table609, "Then ");
+#line 3833
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table610 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query"});
             table610.AddRow(new string[] {
                         "String"});
-#line 3836
+#line 3834
     testRunner.And("the debug inputs as", ((string)(null)), table610, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table611 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table611.AddRow(new string[] {
-                        "[[TableCopy(3).dob]] = 2004-08-19 18:51:06"});
-            table611.AddRow(new string[] {
                         "[[TableCopy(3).name]] = Hatter"});
-#line 3839
+            table611.AddRow(new string[] {
+                        "[[TableCopy(3).numberofseconds]] = 31613104"});
+#line 3837
     testRunner.And("the debug output as", ((string)(null)), table611, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("time Select the time given a dob:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("datetime Select the date and time given a unix timestamp 1092941466:")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
-        public virtual void TimeSelectTheTimeGivenADob()
+        public virtual void DatetimeSelectTheDateAndTimeGivenAUnixTimestamp1092941466()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("time Select the time given a dob:", ((string[])(null)));
-#line 3844
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("datetime Select the date and time given a unix timestamp 1092941466:", ((string[])(null)));
+#line 3842
     this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table612 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11327,17 +11315,18 @@ this.ScenarioSetup(scenarioInfo);
                         "1978-01-01 02:34:56"});
             table612.AddRow(new string[] {
                         "person(2).dob",
-                        "1979-01-01 15:34:56"});
+                        "1979-01-01 02:34:56"});
             table612.AddRow(new string[] {
                         "person(3).dob",
-                        "1980-01-01 10:34:56"});
-#line 3845
+                        "1980-01-01 02:34:56"});
+#line 3843
     testRunner.Given("I have a recordset with this shape", ((string)(null)), table612, "Given ");
-#line 3853
+#line 3851
     testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3854
-    testRunner.And("I have the following sql statement \"SELECT time(dob) as dob,name from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3855
+#line 3852
+    testRunner.And("I have the following sql statement \"SELECT datetime(1092941466, \'unixepoch\') as d" +
+                    "ob,name from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 3853
     testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table613 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11349,11 +11338,11 @@ this.ScenarioSetup(scenarioInfo);
             table613.AddRow(new string[] {
                         "name",
                         "[[TableCopy().name]]"});
-#line 3856
+#line 3854
     testRunner.Then("Outputs are as follows", ((string)(null)), table613, "Then ");
-#line 3860
+#line 3858
     testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 3861
+#line 3859
     testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table614 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11368,7 +11357,7 @@ this.ScenarioSetup(scenarioInfo);
             table614.AddRow(new string[] {
                         "TableCopy(3).name",
                         "Hatter"});
-#line 3862
+#line 3860
     testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table614, "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table615 = new TechTalk.SpecFlow.Table(new string[] {
@@ -11376,33 +11365,188 @@ this.ScenarioSetup(scenarioInfo);
                         "value"});
             table615.AddRow(new string[] {
                         "TableCopy(1).dob",
-                        "02:34:56"});
+                        "2004-08-19 18:51:06"});
             table615.AddRow(new string[] {
                         "TableCopy(2).dob",
-                        "15:34:56"});
+                        "2004-08-19 18:51:06"});
             table615.AddRow(new string[] {
                         "TableCopy(3).dob",
-                        "10:34:56"});
-#line 3867
+                        "2004-08-19 18:51:06"});
+#line 3865
     testRunner.Then("recordset \"[[TableCopy(*).dob]]\"  will be", ((string)(null)), table615, "Then ");
-#line 3872
+#line 3870
     testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table616 = new TechTalk.SpecFlow.Table(new string[] {
                         "Query"});
             table616.AddRow(new string[] {
                         "String"});
-#line 3873
+#line 3871
     testRunner.And("the debug inputs as", ((string)(null)), table616, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table617 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table617.AddRow(new string[] {
-                        "[[TableCopy(3).dob]] = 10:34:56"});
+                        "[[TableCopy(3).dob]] = 2004-08-19 18:51:06"});
             table617.AddRow(new string[] {
                         "[[TableCopy(3).name]] = Hatter"});
-#line 3876
+#line 3874
     testRunner.And("the debug output as", ((string)(null)), table617, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("time Select the time given a dob:")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
+        public virtual void TimeSelectTheTimeGivenADob()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("time Select the time given a dob:", ((string[])(null)));
+#line 3879
+    this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table618 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[person]]",
+                        ""});
+            table618.AddRow(new string[] {
+                        "person(1).name",
+                        "Bob"});
+            table618.AddRow(new string[] {
+                        "person(2).name",
+                        "Alice"});
+            table618.AddRow(new string[] {
+                        "person(3).name",
+                        "Hatter"});
+            table618.AddRow(new string[] {
+                        "person(1).dob",
+                        "1978-01-01 02:34:56"});
+            table618.AddRow(new string[] {
+                        "person(2).dob",
+                        "1979-01-01 15:34:56"});
+            table618.AddRow(new string[] {
+                        "person(3).dob",
+                        "1980-01-01 10:34:56"});
+#line 3880
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table618, "Given ");
+#line 3888
+    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 3889
+    testRunner.And("I have the following sql statement \"SELECT time(dob) as dob,name from person;\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 3890
+    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table619 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table619.AddRow(new string[] {
+                        "dob",
+                        "[[TableCopy().dob]]"});
+            table619.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+#line 3891
+    testRunner.Then("Outputs are as follows", ((string)(null)), table619, "Then ");
+#line 3895
+    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 3896
+    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table620 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table620.AddRow(new string[] {
+                        "TableCopy(1).name",
+                        "Bob"});
+            table620.AddRow(new string[] {
+                        "TableCopy(2).name",
+                        "Alice"});
+            table620.AddRow(new string[] {
+                        "TableCopy(3).name",
+                        "Hatter"});
+#line 3897
+    testRunner.Then("recordset \"[[TableCopy(*).name]]\"  will be", ((string)(null)), table620, "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table621 = new TechTalk.SpecFlow.Table(new string[] {
+                        "rs",
+                        "value"});
+            table621.AddRow(new string[] {
+                        "TableCopy(1).dob",
+                        "02:34:56"});
+            table621.AddRow(new string[] {
+                        "TableCopy(2).dob",
+                        "15:34:56"});
+            table621.AddRow(new string[] {
+                        "TableCopy(3).dob",
+                        "10:34:56"});
+#line 3902
+    testRunner.Then("recordset \"[[TableCopy(*).dob]]\"  will be", ((string)(null)), table621, "Then ");
+#line 3907
+    testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table622 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Query"});
+            table622.AddRow(new string[] {
+                        "String"});
+#line 3908
+    testRunner.And("the debug inputs as", ((string)(null)), table622, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table623 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table623.AddRow(new string[] {
+                        "[[TableCopy(3).dob]] = 10:34:56"});
+            table623.AddRow(new string[] {
+                        "[[TableCopy(3).name]] = Hatter"});
+#line 3911
+    testRunner.And("the debug output as", ((string)(null)), table623, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Use an undeclare variable on the query returns error")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "AdvancedRecordset")]
+        public virtual void UseAnUndeclareVariableOnTheQueryReturnsError()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Use an undeclare variable on the query returns error", ((string[])(null)));
+#line 3916
+this.ScenarioSetup(scenarioInfo);
+#line hidden
+            TechTalk.SpecFlow.Table table624 = new TechTalk.SpecFlow.Table(new string[] {
+                        "[[person]]",
+                        ""});
+            table624.AddRow(new string[] {
+                        "person().name",
+                        "Bob"});
+            table624.AddRow(new string[] {
+                        "person().name",
+                        "Mandy"});
+            table624.AddRow(new string[] {
+                        "person().name",
+                        "Hatter"});
+#line 3917
+    testRunner.Given("I have a recordset with this shape", ((string)(null)), table624, "Given ");
+#line 3922
+    testRunner.And("I drag on an Advanced Recordset tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 3923
+    testRunner.And("I have the following sql statement \"SELECT * from person  where name = @undeclare" +
+                    "dVariable\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 3924
+    testRunner.When("I click Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+            TechTalk.SpecFlow.Table table625 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Mapped From",
+                        "Mapped To"});
+            table625.AddRow(new string[] {
+                        "name",
+                        "[[TableCopy().name]]"});
+#line 3925
+    testRunner.Then("Outputs are as follows", ((string)(null)), table625, "Then ");
+#line 3928
+    testRunner.And("Recordset is \"TableCopy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 3929
+    testRunner.When("Advanced Recordset tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 3930
+    testRunner.And("the advancerecodset execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
