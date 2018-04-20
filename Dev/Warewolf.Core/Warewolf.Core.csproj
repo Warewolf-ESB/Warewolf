@@ -47,7 +47,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="SqliteService.cs" />
     <Compile Include="WebServiceDefinition.cs" />
     <None Include="packages.config" />

@@ -117,7 +117,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Helper\FileSystemQuery.cs" />
     <Compile Include="Helper\IFileSystemQuery.cs" />
     <Compile Include="Helper\IShareCollectionFactory.cs" />

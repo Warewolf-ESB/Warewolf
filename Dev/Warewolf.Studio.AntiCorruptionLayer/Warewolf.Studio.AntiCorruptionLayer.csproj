@@ -96,7 +96,7 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
     <Compile Include="Utils.cs" />
     <None Include="app.config" />
     <None Include="Warewolf.Studio.AntiCorruptionLayer.ruleset" />
