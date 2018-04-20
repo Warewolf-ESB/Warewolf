@@ -90,7 +90,9 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
     <Compile Include="ComponentModel\DataListVariable.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptor.cs" />
     <Compile Include="CustomControls\AutoCompleteBox.cs" />

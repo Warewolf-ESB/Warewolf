@@ -102,7 +102,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
     <Compile Include="BinaryDataList\IndexListTest.cs" />
     <Compile Include="BinaryDataList\DataListUtilTest.cs" />

@@ -69,7 +69,9 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
     <EmbeddedResource Include="Errors\ErrorResource.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>ErrorResource.Designer.cs</LastGenOutput>
