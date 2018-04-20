@@ -111,9 +111,9 @@ namespace Dev2.Activities
             var started = false;
             var itemsToIterateOver = new Dictionary<string, IWarewolfIterator>();
             var allTables = new List<string>();
-            if (DeclareVariables == null || DeclareVariables.All(d=>String.IsNullOrEmpty(d.Value)))
+            if (DeclareVariables == null || DeclareVariables.All(d => String.IsNullOrEmpty(d.Value)))
             {
-                ExecuteSql(update, allTables,ref started);
+                ExecuteSql(update, allTables, ref started);
             }
             else
             {
@@ -127,14 +127,14 @@ namespace Dev2.Activities
                     iter.AddVariableToIterateOn(res);
                     itemsToIterateOver.Add(declare.Name, res);
                 }
-                
+
                 while (iter.HasMoreData())
                 {
                     foreach (var item in itemsToIterateOver)
                     {
                         AddDeclarations(item.Key, iter.FetchNextValue(item.Value));
                     }
-                    ExecuteSql(update, allTables,ref started);
+                    ExecuteSql(update, allTables, ref started);
                     started = true;
                 }
             }
@@ -145,7 +145,7 @@ namespace Dev2.Activities
 
         }
 
-        private void ExecuteSql(int update, List<string> allTables,ref bool started)
+        private void ExecuteSql(int update, List<string> allTables, ref bool started)
         {
             var queryText = AddSqlForVariables(SqlQuery);
             var statements = TSQLStatementReader.ParseStatements(queryText);
@@ -161,7 +161,7 @@ namespace Dev2.Activities
                 var results = AdvancedRecordset.ExecuteQuery(queryText);
                 foreach (DataTable dt in results.Tables)
                 {
-                    AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update,ref started);
+                    AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
                 }
             }
             else
@@ -170,7 +170,7 @@ namespace Dev2.Activities
             }
         }
 
-        private void ExecuteAllSqlStatements(int update, List<string> allTables, List<TSQLStatement> statements,ref bool started)
+        private void ExecuteAllSqlStatements(int update, List<string> allTables, List<TSQLStatement> statements, ref bool started)
         {
             foreach (var statement in statements)
             {
@@ -183,7 +183,7 @@ namespace Dev2.Activities
                 if (statement.Type == TSQLStatementType.Select)
                 {
                     var selectStatement = statement as TSQLSelectStatement;
-                    ProcessSelectStatement(selectStatement, update,ref started);
+                    ProcessSelectStatement(selectStatement, update, ref started);
                 }
                 else
                 {
@@ -193,16 +193,16 @@ namespace Dev2.Activities
             }
         }
 
-        void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update,ref bool started)
+        void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update, ref bool started)
         {
             var results = AdvancedRecordset.ExecuteQuery(AdvancedRecordset.ReturnSql(selectStatement.Tokens));
             foreach (DataTable dt in results.Tables)
             {
-                AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update,ref started);
+                AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update, ref started);
             }
 
         }
-        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update,ref bool started)
+        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
         {
             var tokens = complexStatement.Tokens;
             for (int i = 0; i < complexStatement.Tokens.Count; i++)
@@ -213,7 +213,7 @@ namespace Dev2.Activities
                 }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "UPDATE"))
                 {
-                    ProcessUpdateStatement(complexStatement, update,ref started);
+                    ProcessUpdateStatement(complexStatement, update, ref started);
                 }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
                 {
@@ -237,7 +237,7 @@ namespace Dev2.Activities
             var outputName = Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected").MappedTo;
             AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, recordset.Rows.Cast<DataRow>().ToList());
         }
-        void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update,ref bool started)
+        void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
         {
             var tokens = complexStatement.Tokens;
             var outputRecordsetName = "";
@@ -271,7 +271,7 @@ namespace Dev2.Activities
             var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + outputRecordsetName);
             foreach (DataTable dt in results.Tables)
             {
-                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update,ref started);
+                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
             }
         }
 
@@ -280,8 +280,8 @@ namespace Dev2.Activities
 
             AdvancedRecordset.LoadRecordsetAsTable(tableName);
         }
-       
-        void AddDeclarations(string varName,string varValue)
+
+        void AddDeclarations(string varName, string varValue)
         {
             try
             {
@@ -294,6 +294,9 @@ namespace Dev2.Activities
             }
         }
         string AddSqlForVariables(string queryText) => Regex.Replace(queryText, @"\@\w+\b", match => AdvancedRecordset.GetVariableValue(match.Value));
+            
+            
+        
         void InsertIntoVariableTable(string varName, string value)
         {
             try

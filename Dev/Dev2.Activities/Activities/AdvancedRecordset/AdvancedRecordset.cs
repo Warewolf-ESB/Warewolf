@@ -21,6 +21,7 @@ using Warewolf.Core;
 using TSQL.Statements;
 using TSQL.Tokens;
 using System.Text;
+using Dev2.Common;
 
 namespace Dev2.Activities
 {
@@ -147,28 +148,35 @@ namespace Dev2.Activities
         }
         public string GetVariableValue(string variableName)
         {
-            var command = _dbManager.CreateCommand();
-            var sql = "SELECT Value FROM Variables WHERE Name = '" + variableName.Replace("@", "").Trim() + "'";
-            command.CommandText = sql;
-            command.CommandType = CommandType.Text;
-            var dt = _dbManager.FetchDataTable(command);
-            var value = dt.Rows[0]["Value"].ToString();
-            var isNumber = int.TryParse(value, out int Num);
+            try
+            {
+                var command = _dbManager.CreateCommand();
+                var sql = "SELECT Value FROM Variables WHERE Name = '" + variableName.Replace("@", "").Trim() + "'";
+                command.CommandText = sql;
+                command.CommandType = CommandType.Text;
+                var dt = _dbManager.FetchDataTable(command);
+                var value = dt.Rows[0]["Value"].ToString();
+                var isNumber = int.TryParse(value, out int Num);
 
-            if (isNumber)
-            {
-                return value;
-            }
-            else
-            {
-                var newVariableValue = new StringBuilder();
-                var arrayString = value.Split(',');
-                foreach (var str in arrayString)
+                if (isNumber)
                 {
-                    var s = newVariableValue.Length > 0 ? ",'{0}'" : "'{0}'";
-                    newVariableValue.AppendFormat(s, str);
+                    return value;
                 }
-                return newVariableValue.ToString();
+                else
+                {
+                    var newVariableValue = new StringBuilder();
+                    var arrayString = value.Split(',');
+                    foreach (var str in arrayString)
+                    {
+                        var s = newVariableValue.Length > 0 ? ",'{0}'" : "'{0}'";
+                        newVariableValue.AppendFormat(s, str);
+                    }
+                    return newVariableValue.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception(variableName + " is not declared.");
             }
         }
         public void DeleteTableInSqlite(string recordsetName)
