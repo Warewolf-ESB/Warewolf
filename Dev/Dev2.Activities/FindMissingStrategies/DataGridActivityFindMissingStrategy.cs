@@ -64,6 +64,10 @@ namespace Dev2.FindMissingStrategies
             {
                 return GetDsfSqlServerDatabaseActivityFields(activity);
             }
+            else if (activityType == typeof(AdvancedRecordsetActivity))
+            {
+                return GetDsfAdvancedRecordsetActivity(activity);
+            }
             else if (activityType == typeof(DsfMySqlDatabaseActivity))
             {
                 return GetDsfMySqlDatabaseActivityFields(activity);
@@ -556,6 +560,37 @@ namespace Dev2.FindMissingStrategies
                     results.Add(maAct.OnErrorVariable);
                 }
 
+                if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
+                {
+                    results.Add(maAct.OnErrorWorkflow);
+                }
+            }
+            return results;
+        }
+
+        List<string> GetDsfAdvancedRecordsetActivity(object activity) {
+            var results = new List<string>();
+            if (activity is AdvancedRecordsetActivity maAct)
+            {
+                if (maAct.Inputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Inputs));
+                }
+                if (maAct.Outputs != null)
+                {
+                    results.AddRange(InternalFindMissing(maAct.Outputs));
+                }
+                if (!string.IsNullOrEmpty(maAct.OnErrorVariable))
+                {
+                    results.Add(maAct.OnErrorVariable);
+                }
+                if(maAct.DeclareVariables != null)
+                {
+                    foreach(var item in maAct.DeclareVariables)
+                    {
+                        results.Add(item.Value);
+                    }
+                }
                 if (!string.IsNullOrEmpty(maAct.OnErrorWorkflow))
                 {
                     results.Add(maAct.OnErrorWorkflow);

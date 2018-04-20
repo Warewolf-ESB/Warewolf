@@ -10,7 +10,6 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ViewPropertyBuilder : IViewPropertyBuilder
     {
-
         public List<KeyValuePair<string, string>> BuildProperties(IDbActionToolRegion<IDbAction> actionToolRegion, ISourceToolRegion<IDbSource> sourceToolRegion, string type)
         {
             var properties = new List<KeyValuePair<string, string>>();
@@ -20,14 +19,14 @@ namespace Dev2.Activities.Designers2.Core
             {
                 properties.Add(new KeyValuePair<string, string>("Source :", sourceName));
             }
-            
+
             if (!string.IsNullOrEmpty(type))
             {
                 properties.Add(new KeyValuePair<string, string>("Type :", type));
             }
             if (string.IsNullOrEmpty(procedureName))
             {
-                var dbActionRegion = (DbActionRegion) actionToolRegion;
+                var dbActionRegion = (DbActionRegion)actionToolRegion;
                 if (dbActionRegion != null)
                 {
                     try
@@ -37,11 +36,9 @@ namespace Dev2.Activities.Designers2.Core
                     }
                     catch (Exception)
                     {
-                       //
+                        //
                     }
-                   
                 }
-               
             }
             else
             {
@@ -50,6 +47,22 @@ namespace Dev2.Activities.Designers2.Core
 
             return properties;
 
+        }
+
+        public List<KeyValuePair<string, string>> BuildProperties(string commandText, string type)
+        {
+            var properties = new List<KeyValuePair<string, string>>();
+
+            if (!string.IsNullOrEmpty(type))
+            {
+                properties.Add(new KeyValuePair<string, string>("Type :", type));
+            }
+            if (!string.IsNullOrEmpty(commandText))
+            {
+                properties.Add(new KeyValuePair<string, string>("CommandText :", commandText));
+            }
+
+            return properties;
         }
     }
 }
