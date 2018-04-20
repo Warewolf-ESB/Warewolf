@@ -236,8 +236,8 @@ namespace Dev2.Activities
         }
         public void ApplyResultToEnvironment(string returnRecordsetName, ICollection<IServiceOutputMapping> outputs, List<DataRow> rows, bool updated, int update)
         {
-            var started = true;
             var rowIdx = 1;
+            var started = true;
             if (updated)
             {
                 var recSet = DataListUtil.ReplaceRecordBlankWithStar(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(returnRecordsetName)));
