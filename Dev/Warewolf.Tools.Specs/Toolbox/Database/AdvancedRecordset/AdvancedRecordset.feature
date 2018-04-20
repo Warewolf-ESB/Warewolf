@@ -2315,6 +2315,41 @@ Scenario: Using a recordset for IN values
 	|                             |
 	| [[TableCopy(2).name]] = Bob |
 
+
+
+
+Scenario: Using multiple recordset for IN value
+	Given I have a recordset with this shape
+	| [[person]]     |        |
+	| person(1).name | Bob    |
+	| person(2).name | Alice  |
+	| person(3).name | Hatter |
+	| other(1).value | Hatter |
+	| other(2).value | Bob    |
+	And I drag on an Advanced Recordset tool	
+	And Declare variables as
+	| Name   | Value             |
+	| names  | [[other().value]] |
+	| people | [[person().name]] |
+	And I have the following sql statement "SELECT * from person where name IN (@names) or name in (@people);"
+	When I click Generate Outputs
+	Then Outputs are as follows
+	| Mapped From | Mapped To                |
+	| name        | [[TableCopy().name]]     |
+	And Recordset is "TableCopy"	
+	When Advanced Recordset tool is executed	
+	Then recordset "[[TableCopy(*).name]]"  will be 
+	| rs                | value  |
+	| TableCopy(1).name | Bob    |
+	| TableCopy(2).name | Hatter |
+	And the debug inputs as  
+	| Query  | names                    | people                      |
+	| String | [[other(2).value]] = Bob | [[person(3).name]] = Hatter |
+	And the debug output as
+	|                                |
+	| [[TableCopy(2).name]] = Hatter |
+	
+
 Scenario: Using a recordset for IN value
 	Given I have a recordset with this shape
 	| [[person]]     |        |
