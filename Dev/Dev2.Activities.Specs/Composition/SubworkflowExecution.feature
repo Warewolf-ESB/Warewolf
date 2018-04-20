@@ -8,7 +8,15 @@ Background: Setup for subworkflow execution
 			Given Debug events are reset
 			And Debug states are cleared
 
-
+Scenario: Executing mySql For Xml testing workflow base
+	  Given I have a workflow "Testing - mySql For Xml"
+	  And "Testing - mySql For Xml" contains "TestmySqlReturningXml" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - mySql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "TestmySqlReturningXml" in Workflow "TestmySqlReturningXml" debug outputs as
+	  |                     |
+	  | [[Result]] = Passed |
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteWF"
 	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
