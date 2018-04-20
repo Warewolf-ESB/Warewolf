@@ -535,11 +535,19 @@ namespace Dev2.Services.Execution
                     if (parameters != null)
                     {
 
-                        using (var dataSet = server.FetchDataTable())
-
+                        var xmlData = server.FetchXmlData();
+                        if (xmlData.Rows[0]["ReadForXml"].ToString() != "Error")
                         {
-                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
+                            TranslateDataTableToEnvironment(xmlData, DataObj.Environment, update);
                             return true;
+                        }
+                        else
+                        {
+                            using (var dataSet = server.FetchDataTable())
+                            {
+                                TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
+                                return true;
+                            }
                         }
                     }
                 }
