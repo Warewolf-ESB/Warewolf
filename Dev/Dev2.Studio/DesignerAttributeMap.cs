@@ -93,6 +93,7 @@ using Dev2.Activities.Designers2.Switch;
 using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Designers2.ExchangeNewEmail;
 using Dev2.Activities.Designers2.ReadFolderNew;
+using Dev2.Activities.Designers2.AdvancedRecordset;
 
 namespace Dev2
 {
@@ -190,7 +191,8 @@ namespace Dev2
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesignerViewModel) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesignerViewModel) },
                 { typeof(DsfDecision), typeof(DecisionDesignerViewModel) },
-                { typeof(DsfSwitch), typeof(SwitchDesignerViewModel) }
+                { typeof(DsfSwitch), typeof(SwitchDesignerViewModel) },
+                { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesignerViewModel) },
             };
     }
 }

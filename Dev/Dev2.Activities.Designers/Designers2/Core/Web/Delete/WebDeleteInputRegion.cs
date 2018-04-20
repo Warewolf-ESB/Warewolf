@@ -67,11 +67,15 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
         {
             var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
             var nameValues = existing ?? new List<INameValue>();
-            var headerCollection = new ObservableCollection<INameValue>();
-            headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
-            headerCollection.AddRange(nameValues);
-            Headers = headerCollection;
+            Headers = new ObservableCollection<INameValue>(nameValues.Where(name => !string.IsNullOrEmpty(name.Name)));
 
+            Headers.Add(new ObservableAwareNameValue(Headers, s =>
+            {
+                _modelItem.SetProperty("Headers",
+                    _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+            }));
+
+            Headers.CollectionChanged += HeaderCollectionOnCollectionChanged;
             if (Headers.Count == 0)
             {
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>

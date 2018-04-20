@@ -2383,11 +2383,11 @@ this.InsertForJsonFilterTypeAndDefaultProvider("30", "[[@Person]],[[@Person.name
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[@Person.Child.Name]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", ". [[@Person.Child.Name]] [[")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "24")]
         public virtual void InsertForJsonFilterTypeAndDefaultProvider_35()
         {
 #line 164
-this.InsertForJsonFilterTypeAndDefaultProvider("35", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", ". P [[", "3", "[[@Person.Age]],[[@Person.name]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", ". [[@Person.Child.Name]] [[", "Default", "25", ((string[])(null)));
+this.InsertForJsonFilterTypeAndDefaultProvider("35", "[[@Person]],[[@Person.name]],[[@Person.Age]],[[@Person.Child.Name]]", "JsonObject", ". P [[", "3", "[[@Person.Age]],[[@Person.name]],[[@Person.Child.Name]]", "[[@Person.Child.Name]]", ". [[@Person.Child.Name]] [[", "Default", "24", ((string[])(null)));
 #line hidden
         }
         
@@ -2779,11 +2779,11 @@ this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("10", "[[rec()]],[[rec
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:option", "[[rec().z]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "[[rec().z]] [[rec().a]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:provider", "Default")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:caretposition", "11")]
         public virtual void InsertForRecordsetFieldsFilterTypeAndDefaultProvider_11()
         {
 #line 212
-this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("11", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]", "RecordsetFields", "[[rec [[rec().a]]", "5", "[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]] [[rec().a]]", "Default", "12", ((string[])(null)));
+this.InsertForRecordsetFieldsFilterTypeAndDefaultProvider("11", "[[rec()]],[[rec().a]],[[a]],[[rec().z]],[[rec(*)]],[[rec(*).a]],[[rec(*).z]]", "RecordsetFields", "[[rec [[rec().a]]", "5", "[[rec().a]],[[rec(*).a]],[[rec().z]],[[rec(*).z]]", "[[rec().z]]", "[[rec().z]] [[rec().a]]", "Default", "11", ((string[])(null)));
 #line hidden
         }
         
