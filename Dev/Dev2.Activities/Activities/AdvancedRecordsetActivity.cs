@@ -108,54 +108,69 @@ namespace Dev2.Activities
             var env = dataObject.Environment;
             AdvancedRecordset = new AdvancedRecordset(env);
             var iter = new WarewolfListIterator();
+            var started = false;
             var itemsToIterateOver = new Dictionary<string, IWarewolfIterator>();
-            foreach (var declare in DeclareVariables)
-            {
-                if (string.IsNullOrEmpty(declare.Value))
-                {
-                    continue;
-                }
-                var res = new WarewolfIterator(env.Eval(declare.Value, update));
-                iter.AddVariableToIterateOn(res);
-                itemsToIterateOver.Add(declare.Name, res);
-            }
             var allTables = new List<string>();
-            while (iter.HasMoreData())
+            if (DeclareVariables == null || DeclareVariables.All(d=>String.IsNullOrEmpty(d.Value)))
             {
-                foreach (var item in itemsToIterateOver)
+                ExecuteSql(update, allTables,ref started);
+            }
+            else
+            {
+                foreach (var declare in DeclareVariables)
                 {
-                    AddDeclarations(item.Key, iter.FetchNextValue(item.Value));
+                    if (string.IsNullOrEmpty(declare.Value))
+                    {
+                        continue;
+                    }
+                    var res = new WarewolfIterator(env.Eval(declare.Value, update));
+                    iter.AddVariableToIterateOn(res);
+                    itemsToIterateOver.Add(declare.Name, res);
                 }
-
-                var queryText = AddSqlForVariables(SqlQuery);
-                var statements = TSQLStatementReader.ParseStatements(queryText);
                 
-                if (queryText.Contains("UNION") && statements.Count == 2)
+                while (iter.HasMoreData())
                 {
-                    var tables = statements[0].GetAllTables();
-                    foreach (var table in tables)
+                    foreach (var item in itemsToIterateOver)
                     {
-                        LoadRecordset(table.TableName);
-                        allTables.Add(table.TableName);
+                        AddDeclarations(item.Key, iter.FetchNextValue(item.Value));
                     }
-                    var results = AdvancedRecordset.ExecuteQuery(queryText);
-                    foreach (DataTable dt in results.Tables)
-                    {
-                        AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update);
-                    }
-                }
-                else
-                {
-                    ExecuteAllSqlStatements(update, allTables, statements);
+                    ExecuteSql(update, allTables,ref started);
+                    started = true;
                 }
             }
             foreach (var table in allTables)
             {
                 AdvancedRecordset.DeleteTableInSqlite(table);
             }
+
         }
 
-        private void ExecuteAllSqlStatements(int update, List<string> allTables, List<TSQLStatement> statements)
+        private void ExecuteSql(int update, List<string> allTables,ref bool started)
+        {
+            var queryText = AddSqlForVariables(SqlQuery);
+            var statements = TSQLStatementReader.ParseStatements(queryText);
+
+            if (queryText.Contains("UNION") && statements.Count == 2)
+            {
+                var tables = statements[0].GetAllTables();
+                foreach (var table in tables)
+                {
+                    LoadRecordset(table.TableName);
+                    allTables.Add(table.TableName);
+                }
+                var results = AdvancedRecordset.ExecuteQuery(queryText);
+                foreach (DataTable dt in results.Tables)
+                {
+                    AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update,ref started);
+                }
+            }
+            else
+            {
+                ExecuteAllSqlStatements(update, allTables, statements, ref started);
+            }
+        }
+
+        private void ExecuteAllSqlStatements(int update, List<string> allTables, List<TSQLStatement> statements,ref bool started)
         {
             foreach (var statement in statements)
             {
@@ -168,26 +183,26 @@ namespace Dev2.Activities
                 if (statement.Type == TSQLStatementType.Select)
                 {
                     var selectStatement = statement as TSQLSelectStatement;
-                    ProcessSelectStatement(selectStatement, update);
+                    ProcessSelectStatement(selectStatement, update,ref started);
                 }
                 else
                 {
                     var unknownStatement = statement as TSQLUnknownStatement;
-                    ProcessComplexStatement(unknownStatement, update);
+                    ProcessComplexStatement(unknownStatement, update, ref started);
                 }
             }
         }
 
-        void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update)
+        void ProcessSelectStatement(TSQLSelectStatement selectStatement, int update,ref bool started)
         {
             var results = AdvancedRecordset.ExecuteQuery(AdvancedRecordset.ReturnSql(selectStatement.Tokens));
             foreach (DataTable dt in results.Tables)
             {
-                AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update);
+                AdvancedRecordset.ApplyResultToEnvironment(dt.TableName, Outputs, dt.Rows.Cast<DataRow>().ToList(), false, update,ref started);
             }
 
         }
-        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update)
+        void ProcessComplexStatement(TSQLUnknownStatement complexStatement, int update,ref bool started)
         {
             var tokens = complexStatement.Tokens;
             for (int i = 0; i < complexStatement.Tokens.Count; i++)
@@ -198,19 +213,19 @@ namespace Dev2.Activities
                 }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "UPDATE"))
                 {
-                    ProcessUpdateStatement(complexStatement, update);
+                    ProcessUpdateStatement(complexStatement, update,ref started);
                 }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "DELETE"))
                 {
-                    ProcessUpdateStatement(complexStatement, update);
+                    ProcessUpdateStatement(complexStatement, update, ref started);
                 }
                 if (tokens[i].Type.ToString() == "Keyword" && (tokens[i].Text.ToUpper() == "INSERT"))
                 {
-                    ProcessUpdateStatement(complexStatement, update);
+                    ProcessUpdateStatement(complexStatement, update, ref started);
                 }
                 if (tokens[i].Type.ToString() == "Identifier" && (tokens[i].Text.ToUpper() == "REPLACE"))
                 {
-                    ProcessUpdateStatement(complexStatement, update);
+                    ProcessUpdateStatement(complexStatement, update, ref started);
                 }
             }
         }
@@ -222,7 +237,7 @@ namespace Dev2.Activities
             var outputName = Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected").MappedTo;
             AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, recordset.Rows.Cast<DataRow>().ToList());
         }
-        void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update)
+        void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update,ref bool started)
         {
             var tokens = complexStatement.Tokens;
             var outputRecordsetName = "";
@@ -256,7 +271,7 @@ namespace Dev2.Activities
             var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + outputRecordsetName);
             foreach (DataTable dt in results.Tables)
             {
-                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update);
+                AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update,ref started);
             }
         }
 
