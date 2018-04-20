@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public static SqliteDBService Create()
         {
             var result = new SqliteDBService
-			{
+            {
                 ResourceID = Guid.Empty,
                 Source = { ResourceID = Guid.Empty },
             };
