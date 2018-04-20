@@ -182,11 +182,10 @@ namespace Dev2.Data.Parsers
                     var rootItems = MakeParts(payload, addCompleteParts);
                     IParseTO magicRegion = null;
                     IList<IParseTO> evalParts = new List<IParseTO>();
-
-                    magicRegion = ProcessRootItems(rootItems, magicRegion, evalParts);
+                    magicRegion = GetMagicRegion(rootItems, magicRegion, evalParts);
                     if (magicRegion != null)
                     {
-                        result = isFromIntellisense ? ExtractActualIntellisenseOptions(magicRegion, parts, false) : ExtractIntellisenseOptions(magicRegion, parts, false);
+                        result = isFromIntellisense ? TryExtractActualIntellisenseOptions(magicRegion, parts, false) : ExtractIntellisenseOptions(magicRegion, parts, false);
                     }
                     evalParts
                         .ToList()
@@ -208,26 +207,26 @@ namespace Dev2.Data.Parsers
             return result;
         }
 
-        private static IParseTO ProcessRootItems(IList<IParseTO> rootItems, IParseTO magicRegion, IList<IParseTO> evalParts)
+        private static IParseTO GetMagicRegion(IList<IParseTO> rootItems, IParseTO magicRegion, IList<IParseTO> evalParts)
         {
             rootItems
-                .ToList()
-                .ForEach(rootItem =>
-                {
-                    var eval = rootItem;
-                    while (eval != null)
-                    {
-                        if (eval.HangingOpen)
-                        {
-                            magicRegion = eval;
-                        }
-                        if (!eval.HangingOpen && eval != magicRegion)
-                        {
-                            evalParts.Add(eval);
-                        }
-                        eval = eval.Child;
-                    }
-                });
+                                    .ToList()
+                                    .ForEach(rootItem =>
+                                    {
+                                        var eval = rootItem;
+                                        while (eval != null)
+                                        {
+                                            if (eval.HangingOpen)
+                                            {
+                                                magicRegion = eval;
+                                            }
+                                            if (!eval.HangingOpen && eval != magicRegion)
+                                            {
+                                                evalParts.Add(eval);
+                                            }
+                                            eval = eval.Child;
+                                        }
+                                    });
             return magicRegion;
         }
 
@@ -311,7 +310,7 @@ namespace Dev2.Data.Parsers
 
         static bool ShouldAddToRegion(string payload, char cur, char prev, int i, bool shouldAddToRegion, char charToCheck) => _parserHelper.ShouldAddToRegion(payload, cur, prev, i, shouldAddToRegion, charToCheck);
 
-        IList<IIntellisenseResult> ExtractActualIntellisenseOptions(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts)
+        IList<IIntellisenseResult> TryExtractActualIntellisenseOptions(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts)
         {
             var tmp = new StringBuilder(payload.Payload);
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
@@ -330,7 +329,14 @@ namespace Dev2.Data.Parsers
                     search = search.Substring(0, search.Length - (search.Length - pos));
                 }
 
-                TryExtractActualResults(payload, refParts, addCompleteParts, result, parts, search, isRs);
+                try
+                {
+                    ExtractActualIntellisenseOptions(payload, refParts, addCompleteParts, result, parts, search);
+                }
+                catch (Dev2DataLanguageParseError e)
+                {
+                    result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
+                }
             }
 
             IList<IIntellisenseResult> realResults = new List<IIntellisenseResult>();
@@ -363,37 +369,25 @@ namespace Dev2.Data.Parsers
             return result;
         }
 
-        private void TryExtractActualResults(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, string search, bool isRs)
+        private void ExtractActualIntellisenseOptions(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IIntellisenseResult> result, string[] parts, string search)
         {
-            try
-            {
-                var results = CreateResultsGeneric(refParts, payload, parts.Length == 1 ? search : parts[1], addCompleteParts);
+            var results = CreateResultsGeneric(refParts, payload, parts.Length == 1 ? search : parts[1], addCompleteParts);
 
-                if (parts.Length == 2)
+            if (parts.Length == 2)
+            {
+                var cmp = parts[1].ToLower();
+
+                foreach (IIntellisenseResult res in results)
                 {
-                    CheckForFieldOptions(result, parts, results);
-                }
-                else
-                {
-                    foreach (IIntellisenseResult res in results)
+                    if (res.Option.Field.ToLower().IndexOf(cmp, StringComparison.Ordinal) >= 0)
                     {
                         result.Add(res);
                     }
                 }
             }
-            catch (Dev2DataLanguageParseError e)
+            else
             {
-                result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
-            }
-        }
-
-        private static void CheckForFieldOptions(IList<IIntellisenseResult> result, string[] parts, IEnumerable<IIntellisenseResult> results)
-        {
-            var cmp = parts[1].ToLower();
-
-            foreach (IIntellisenseResult res in results)
-            {
-                if (res.Option.Field.ToLower().IndexOf(cmp, StringComparison.Ordinal) >= 0)
+                foreach (IIntellisenseResult res in results)
                 {
                     result.Add(res);
                 }
@@ -420,14 +414,14 @@ namespace Dev2.Data.Parsers
                 }
                 else
                 {
-                    AddItems(refParts, payload, search, addCompleteParts, result);
+                    AddFoundItems(refParts, payload, search, addCompleteParts, result);
                 }
             }
 
             return result;
         }
 
-        private static void AddItems(IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IParseTO payload, string search, bool addCompleteParts, IList<IIntellisenseResult> result)
+        static void AddFoundItems(IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IParseTO payload, string search, bool addCompleteParts, IList<IIntellisenseResult> result)
         {
             foreach (IDev2DataLanguageIntellisensePart t in refParts)
             {
@@ -670,16 +664,13 @@ namespace Dev2.Data.Parsers
             try
             {
                 var isRecName = isRs && rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.EndsWith(DataListUtil.RecordsetIndexClosingBracket);
-                if (!payload.HangingOpen)
+                if (!isRecName && !payload.HangingOpen && ScalarMatch(result, isRs, rawSearch))
                 {
-                    if (!isRecName && ScalarMatch(result, isRs, rawSearch))
-                    {
-                        return;
-                    }
-                    if (RecordsetMatch(result, rawSearch, search))
-                    {
-                        return;
-                    }                    
+                    return;
+                }
+                if (isRecName && !payload.HangingOpen && RecordsetMatch(result, rawSearch, search))
+                {
+                    return;
                 }
                 if ((rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && IsValidIndex(payload)) || !rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket))
                 {
