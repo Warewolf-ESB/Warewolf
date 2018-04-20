@@ -131,13 +131,13 @@ namespace Dev2.Services.Sql
 
             return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
-		public DataSet FetchDataSet(IDbCommand command)
-		{
-			VerifyArgument.IsNotNull("command", command);
+        public DataSet FetchDataSet(IDbCommand command)
+        {
+            VerifyArgument.IsNotNull("command", command);
 
-			return _factory.FetchDataSet(command);
-		}
-		public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
+            return _factory.FetchDataSet(command);
+        }
+        public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
         {
             VerifyConnection();
             AddParameters(_command, parameters);
@@ -147,34 +147,34 @@ namespace Dev2.Services.Sql
             }
             return FetchDataTable(_command);
         }
-		public int ExecuteNonQuery(IDbCommand command)
-		{
-			if (!(command is MySqlCommand SqlCommand))
-			{
-				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
-			}
+        public int ExecuteNonQuery(IDbCommand command)
+        {
+            if (!(command is MySqlCommand SqlCommand))
+            {
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+            }
 
-			int retValue = 0;
-			retValue = command.ExecuteNonQuery();
-			return retValue;
-		}
+            int retValue = 0;
+            retValue = command.ExecuteNonQuery();
+            return retValue;
+        }
 
-		public int ExecuteScalar(IDbCommand command)
-		{
-			if (!(command is MySqlCommand))
-			{
-				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
-			}
+        public int ExecuteScalar(IDbCommand command)
+        {
+            if (!(command is MySqlCommand))
+            {
+                throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+            }
 
-			int retValue = 0;
-			retValue = Convert.ToInt32(command.ExecuteScalar());
-			return retValue;
-		}
-		#endregion
+            int retValue = 0;
+            retValue = Convert.ToInt32(command.ExecuteScalar());
+            return retValue;
+        }
+        #endregion
 
-		#region FetchStoredProcedures
+        #region FetchStoredProcedures
 
-		public void FetchStoredProcedures(
+        public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
 
