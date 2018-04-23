@@ -289,6 +289,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Resources\Web\WebGet.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>WebGet.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Toolbox\Resources\Web\WebGetSteps.cs" />
     <Compile Include="Toolbox\Utility\DateandTime\DateandTime.feature.cs">
       <DependentUpon>DateandTime.feature</DependentUpon>
       <DesignTime>True</DesignTime>
@@ -651,6 +657,10 @@
     <None Include="Toolbox\LoopConstructs\Select And Apply\SelectAndApply.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SelectAndApply.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Toolbox\Resources\Web\WebGet.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>WebGet.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Utility\DateandTime\DateandTime.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
