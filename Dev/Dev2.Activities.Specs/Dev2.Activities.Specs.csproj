@@ -62,6 +62,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BrowserDebug.feature</DependentUpon>
     </Compile>
+    <Compile Include="Composition\CompositionLoadTests.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompositionLoadTests.feature</DependentUpon>
+    </Compile>
     <Compile Include="Composition\ExampleWorkflowExecution.feature.cs">
       <DependentUpon>ExampleWorkflowExecution.feature</DependentUpon>
       <AutoGen>True</AutoGen>
