@@ -1471,11 +1471,18 @@ namespace System.Windows.Controls
             var items = _items;
             foreach (object item in items)
             {
-                var inResults = !(stringFiltering || objectFiltering);
-                if (!inResults)
-                {
-                    inResults = stringFiltering ? TextFilter?.Invoke(text, FormatValue(item)) ?? default(bool) : ItemFilter?.Invoke(text, item) ?? default(bool);
-                }
+                RefreshItem(text, stringFiltering, objectFiltering, item, ref viewIndex, ref viewCount);
+            }
+            _valueBindingEvaluator?.ClearDataContext();
+        }
+
+        void RefreshItem(string text, bool stringFiltering, bool objectFiltering, object item, ref int viewIndex, ref int viewCount)
+        {
+            var inResults = !(stringFiltering || objectFiltering);
+            if (!inResults)
+            {
+                inResults = stringFiltering ? TextFilter?.Invoke(text, FormatValue(item)) ?? default(bool) : ItemFilter?.Invoke(text, item) ?? default(bool);
+            }
 
                 if (viewCount > viewIndex && inResults && _view[viewIndex] == item)
                 {
