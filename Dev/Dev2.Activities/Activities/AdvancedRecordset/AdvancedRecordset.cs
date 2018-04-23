@@ -69,7 +69,14 @@ namespace Dev2.Activities
             var tokenString = "";
             foreach (TSQLToken token in tokens)
             {
-                tokenString = string.Concat(tokenString, " ", token.Text);
+                if (token.Text.ToUpper() != "RANDOM")
+                {
+                    tokenString = string.Concat(tokenString, " ", token.Text);
+                }
+                else{
+                    tokenString = string.Concat(tokenString, " ", "RANDOM()");
+                }
+
             }
             return tokenString.Replace(" ( ", "(").Replace(" ) ", ") ").Replace(" )", ")").Replace(" . ", ".").Trim();
         }
@@ -195,7 +202,11 @@ namespace Dev2.Activities
 
             if (!key.Contains("_Primary_Id"))
             {
-                if (colType == "Int")
+                if(value.Equals(DataStorage.WarewolfAtom.Nothing))
+                {
+                    _insertSql =  "'',";
+                }
+                else if (colType == "Int")
                 {
                     _insertSql = value + ",";
                 }
@@ -206,6 +217,10 @@ namespace Dev2.Activities
                 else if (colType == "Float")
                 {
                     _insertSql = value + ",";
+                }
+                else if (colType == "WarewolfAtom")
+                {
+                    _insertSql = "'',";
                 }
                 else
                 {

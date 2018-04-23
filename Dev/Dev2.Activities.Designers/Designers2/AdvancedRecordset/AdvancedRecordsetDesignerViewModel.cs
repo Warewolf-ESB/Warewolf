@@ -280,6 +280,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             {
                 var statement = statements[i];
                 var sql = advancedRecordset.ReturnSql(statement.Tokens);
+                
                 sql = Regex.Replace(sql, @"\@\w+\b", match => "''");
                 var result = advancedRecordset.ExecuteStatement(statement, sql);
                 if (i == countOfStatements - 1)
