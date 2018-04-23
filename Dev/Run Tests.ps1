@@ -835,7 +835,11 @@ function Start-Studio {
     }
     if (Test-Path $StudioLogFile) {
 	    Write-Host Studio has started.
-        Sleep 30
+	    if (!$ApplyDotCover) {
+            Sleep 30
+        } else {
+            sleep 120
+        }
     } else {
 		Write-Error -Message "Warewolf studio failed to start within 10 minutes."
 		exit 1
