@@ -3759,6 +3759,52 @@ Scenario:  math functions Select With ABS
     And the debug output as
     |                                  |
     | [[TableCopy(1).absValue]] = 1000 |
+	
+Scenario:  math functions Select With ABS TextLastNumber
+    Given I have a recordset with this shape
+    | [[avg_tests]]   |       |
+    | avg_tests().val | 3000abs |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "SELECT ABS('3000abs') as absValue;"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To                |
+    | absValue    | [[TableCopy().absValue]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).absValue]]"  will be
+    | rs                   | value |
+    | TableCopy().absValue | 3000  |
+    And the execution has "NO" error
+    And the debug inputs as
+    | Query  |
+    | String |
+    And the debug output as
+    |                                  |
+    | [[TableCopy(1).absValue]] = 3000 |
+
+Scenario:  math functions Select With ABS Text Returns0
+    Given I have a recordset with this shape
+    | [[avg_tests]]   |       |
+    | avg_tests().val | 3000abs |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "SELECT ABS('aba3000') as absValue;"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To                |
+    | absValue    | [[TableCopy().absValue]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).absValue]]"  will be
+    | rs                   | value |
+    | TableCopy().absValue | 0  |
+    And the execution has "NO" error
+    And the debug inputs as
+    | Query  |
+    | String |
+    And the debug output as
+    |                               |
+    | [[TableCopy(1).absValue]] = 0 |
 
     Scenario:   Select With Self Join
     Given I have a recordset with this shape
@@ -3928,3 +3974,112 @@ Scenario:  Use an undeclare variable on the query returns error
     And Recordset is "TableCopy"
     When Advanced Recordset tool is executed
     And the advancerecodset execution has "AN" error
+
+	Scenario:  Select Random
+    Given I have a recordset with this shape
+    | [[person]]    |        |
+    | person().name | Bob    |
+    | person().name | Alice  |
+    | person().name | Hatter |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "SELECT name from person ORDER BY RANDOM() LIMIT 1;"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    And Recordset is "TableCopy"
+    And Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    When Advanced Recordset tool is executed
+   
+Scenario: Select Group By Having statement
+    Given I have a recordset with this shape
+    | [[person]]         |              |
+    | person(1).name     | Bob          |
+    | person(2).name     | Alice        |
+    | person(3).name     | Hatter       |
+    | person(1).surname  | Bob          |
+    | person(2).surname  | Alice        |
+    | person(3).surname  | Hatter       |
+    | person(1).city     | Durban       |
+    | person(2).city     | Durban       |
+    | person(3).city     | CPT          |
+    | person(1).province | KZN          |
+    | person(2).province | KZN          |
+    | person(3).province | Western Cape |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "select province,city,count(*) as people from person group by province,city having city = 'Durban'; "
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To                |
+    | province    | [[TableCopy().province]] |
+    | city        | [[TableCopy().city]]     |
+    | people      | [[TableCopy().people]]   |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).province]]"  will be
+    | rs               | value  |
+    | TableCopy().province | KZN |
+	Then recordset "[[TableCopy(*).city]]"  will be
+    | rs               | value  |
+    | TableCopy().city | Durban |
+	Then recordset "[[TableCopy(*).people]]"  will be
+    | rs                 | value |
+    | TableCopy().people | 2     |
+    And the execution has "NO" error
+    And the debug inputs as
+    | Query  |
+    | String |
+    And the debug output as
+    |                                 |
+    | [[TableCopy(1).province]] = KZN |
+    | [[TableCopy(1).city]] = Durban  |
+    | [[TableCopy(1).people]] = 2     |
+
+Scenario: Handle Nulls set to Nothing
+    Given I have a recordset with this shape
+    | [[person]]         |              |
+    | person(1).name     | Bob          |
+    | person(2).name     | Alice        |
+    | person(3).name     | Hatter       |
+    | person(1).city     |              |
+    | person(2).city     | Durban       |
+    | person(3).city     |              |
+    | person(1).province |              |
+    | person(2).province |              |
+    | person(3).province | Western Cape |
+    And I drag on an Advanced Recordset tool
+    And I have the following sql statement "select * from person"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To                |
+    | name        | [[TableCopy().name]]     |
+    | city        | [[TableCopy().city]]     |
+    | province    | [[TableCopy().province]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).province]]"  will be
+    | rs                   | value        |
+    | TableCopy().province |              |
+    | TableCopy().province |              |
+    | TableCopy().province | Western Cape |
+	Then recordset "[[TableCopy(*).city]]"  will be
+    | rs               | value  |
+    | TableCopy().city |        |
+    | TableCopy().city | Durban |
+    | TableCopy().city |        |
+	Then recordset "[[TableCopy(*).name]]"  will be
+    | rs               | value  |
+    | TableCopy().name | Bob    |
+    | TableCopy().name | Alice  |
+    | TableCopy().name | Hatter |
+    And the execution has "NO" error
+    And the debug inputs as
+    | Query  |
+    | String |
+    And the debug output as
+    |                                          |
+    | [[TableCopy(3).name]] = Hatter           |
+    | [[TableCopy(3).city]] =                  |
+    | [[TableCopy(3).province]] = Western Cape |
