@@ -179,45 +179,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.ExecutingUser = ExecutingUser;
             if (!dataObject.Environment.HasErrors())
             {
-                if (ExecutingUser == null)
-                {
-                    throw new Exception(ErrorResource.NullExecutingUser);
-                }
-                try
-                {
-                    var t = new Thread(() =>
-                    {
-                        Thread.CurrentPrincipal = ExecutingUser;
-                        if (isManagementResource)
-                        {
-                            Thread.CurrentPrincipal = Common.Utilities.ServerUser;
-                            ExecutingUser = Common.Utilities.ServerUser;
-                            dataObject.ExecutingUser = Common.Utilities.ServerUser;
-                        }
-                        else
-                        {
-                            IsAuthorizedForServiceTestRun(dataObject);
-                        }
-
-                        channel.ExecuteRequest(dataObject, request, workspaceId, out ErrorResultTO errors);
-                    });
-
-                    t.Start();
-
-                    t.Join();
-                }
-                catch (Exception e)
-                {
-                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                }
-
-
-                if (request.ExecuteResult.Length > 0)
-                {
-                    return request.ExecuteResult;
-                }
-
-                return new StringBuilder();
+                return ProcessRequest(request, workspaceId, channel, dataObject, isManagementResource);
             }
 
             var msg = new ExecuteMessage { HasError = true };
@@ -226,7 +188,55 @@ namespace Dev2.Runtime.WebServer.Handlers
             return serializer.SerializeToBuilder(msg);
         }
 
-        private void IsAuthorizedForServiceTestRun(IDSFDataObject dataObject)
+        private StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, EsbServicesEndpoint channel, IDSFDataObject dataObject, bool isManagementResource)
+        {
+            if (ExecutingUser == null)
+            {
+                throw new Exception(ErrorResource.NullExecutingUser);
+            }
+            try
+            {
+                var t = new Thread(() =>
+                {
+                    TryExecuteRequest(request, workspaceId, channel, dataObject, isManagementResource);
+                });
+
+                t.Start();
+
+                t.Join();
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
+            }
+
+
+            if (request.ExecuteResult.Length > 0)
+            {
+                return request.ExecuteResult;
+            }
+
+            return new StringBuilder();
+        }
+
+        private void TryExecuteRequest(EsbExecuteRequest request, Guid workspaceId, EsbServicesEndpoint channel, IDSFDataObject dataObject, bool isManagementResource)
+        {
+            Thread.CurrentPrincipal = ExecutingUser;
+            if (isManagementResource)
+            {
+                Thread.CurrentPrincipal = Common.Utilities.ServerUser;
+                ExecutingUser = Common.Utilities.ServerUser;
+                dataObject.ExecutingUser = Common.Utilities.ServerUser;
+            }
+            else
+            {
+                IsAuthorizedForServiceTestRun(dataObject);
+            }
+
+            channel.ExecuteRequest(dataObject, request, workspaceId, out ErrorResultTO errors);
+        }
+
+        void IsAuthorizedForServiceTestRun(IDSFDataObject dataObject)
         {
             if (dataObject.IsServiceTestExecution && _authorizationService != null)
             {
