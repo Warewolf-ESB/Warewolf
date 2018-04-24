@@ -417,7 +417,7 @@ namespace Dev2.Activities.Designers2.Core
                     if (Outputs != null && Outputs.Count > 0 && !IsObject)
                     {
                         var serviceOutputMappings = Outputs.Where(a => !string.IsNullOrEmpty(a.MappedTo) && (FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression));
-                        errors = serviceOutputMappings.Select(a => "Invalid Output Mapping" + a.MappedTo).ToList();
+                        errors = serviceOutputMappings.Select(a => "Invalid Output Mapping: " + a.MappedTo).ToList();
                     }
                 }
                 catch(Exception e)
