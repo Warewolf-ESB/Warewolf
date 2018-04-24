@@ -99,7 +99,7 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
 
             //------------Setup for test--------------------------
             var act = new AdvancedRecordsetActivity();
-            var expectedFormat = "SELECT *" + Environment.NewLine + "FROM selectPerson";
+            var expectedFormat = "SELECT * " + Environment.NewLine + "FROM selectPerson ";
 
             using (var advancedRecordset = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
             {
