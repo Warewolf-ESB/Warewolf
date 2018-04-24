@@ -69,14 +69,10 @@ namespace Dev2.Activities
             var tokenString = "";
             foreach (TSQLToken token in tokens)
             {
-                if (token.Text.ToUpper() != "RANDOM")
-                {
+                
                     tokenString = string.Concat(tokenString, " ", token.Text);
-                }
-                else
-                {
-                    tokenString = string.Concat(tokenString, " ", "RANDOM()");
-                }
+                
+                
             }
             return tokenString.Replace(" ( ", "(").Replace(" ) ", ") ").Replace(" )", ")").Replace(" . ", ".").Trim();
         }

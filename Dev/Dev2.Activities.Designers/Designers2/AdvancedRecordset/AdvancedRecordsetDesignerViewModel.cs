@@ -374,7 +374,7 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                         }
                         return uppedText + " ";
                     }
-                    return s.Text;
+                    return s.Text + " ";
                 });
                 var correctedString = string.Join("", correctedItems);
                 allStatementsCorrected.Add(correctedString);
