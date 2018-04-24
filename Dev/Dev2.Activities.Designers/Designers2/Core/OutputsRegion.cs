@@ -111,7 +111,10 @@ namespace Dev2.Activities.Designers2.Core
 
         void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _modelItem.SetProperty("Outputs", _outputs.ToList());
+            if (!Outputs.Equals(_outputs))
+            {
+                _modelItem.SetProperty("Outputs", _outputs.ToList());
+            }
         }
 
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)

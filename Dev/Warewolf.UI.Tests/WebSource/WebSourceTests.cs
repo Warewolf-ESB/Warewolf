@@ -89,7 +89,7 @@ namespace Warewolf.UI.Tests.WebSource
             Keyboard.SendKeys("\t");
             Assert.AreEqual(httpAddress, WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text);
         }
-
+        
 
         #region Additional test attributes
 
