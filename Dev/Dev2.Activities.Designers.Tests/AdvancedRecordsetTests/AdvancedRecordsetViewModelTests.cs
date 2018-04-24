@@ -4,14 +4,12 @@ using System.Data;
 using Dev2.Activities.Designers2.AdvancedRecordset;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase.Database;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
-using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
@@ -62,6 +60,106 @@ namespace Dev2.Activities.Designers.Tests.AdvancedRecordset
                 //------------Assert Results-------------------------
                 Assert.IsNull(advancedRecordset.Errors);
                 Assert.AreEqual(advancedRecordset.DesignValidationErrors.Count, 1);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("AdvancedRecordset_MethodName")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void ValidateSql_ReturnCorrectFormat()
+        {
+            CustomContainer.LoadedTypes = new List<Type>
+            {
+                typeof(ManageSqliteServiceInputViewModel)
+            };
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            var server = new Mock<IServer>();
+            var updatemanager = new Mock<IStudioUpdateManager>();
+            var queryManager = new Mock<IQueryManager>();
+            server.Setup(server1 => server1.UpdateRepository).Returns(updatemanager.Object);
+            server.Setup(server1 => server1.QueryProxy).Returns(queryManager.Object);
+            mockMainViewModel.Setup(model => model.ActiveServer).Returns(server.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
+            var recordSetItemModel = new RecordSetItemModel("selectPerson", enDev2ColumnArgumentDirection.Input);
+            var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel>
+            {
+                new RecordSetFieldItemModel("name", recordSetItemModel),
+                new RecordSetFieldItemModel("age", recordSetItemModel),
+                new RecordSetFieldItemModel("address_id", recordSetItemModel)
+            };
+            recordSetItemModel.Children = recordSetFieldItemModels;
+            dataListViewModel.RecsetCollection.Add(recordSetItemModel);
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            //------------Setup for test--------------------------
+            var act = new AdvancedRecordsetActivity();
+            var expectedFormat = "SELECT *" + Environment.NewLine + "FROM selectPerson";
+
+            using (var advancedRecordset = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
+            {
+                advancedRecordset.SqlQuery = "select * from [[selectPerson(*)]]";
+
+                //------------Execute Test---------------------------
+                advancedRecordset.ValidateSql();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(expectedFormat, advancedRecordset.SqlQuery);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("AdvancedRecordset_MethodName")]
+        [DeploymentItem(@"x86\SQLite.Interop.dll")]
+        public void ValidateSql_ShowsCorrectErrorFormat()
+        {
+            CustomContainer.LoadedTypes = new List<Type>
+            {
+                typeof(ManageSqliteServiceInputViewModel)
+            };
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            var server = new Mock<IServer>();
+            var updatemanager = new Mock<IStudioUpdateManager>();
+            var queryManager = new Mock<IQueryManager>();
+            server.Setup(server1 => server1.UpdateRepository).Returns(updatemanager.Object);
+            server.Setup(server1 => server1.QueryProxy).Returns(queryManager.Object);
+            mockMainViewModel.Setup(model => model.ActiveServer).Returns(server.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(new Mock<IResourceModel>().Object);
+            var recordSetItemModel = new RecordSetItemModel("selectPerson", enDev2ColumnArgumentDirection.Input);
+            var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel>
+            {
+                new RecordSetFieldItemModel("name", recordSetItemModel),
+                new RecordSetFieldItemModel("age", recordSetItemModel),
+                new RecordSetFieldItemModel("address_id", recordSetItemModel)
+            };
+            recordSetItemModel.Children = recordSetFieldItemModels;
+            dataListViewModel.RecsetCollection.Add(recordSetItemModel);
+            DataListSingleton.SetDataList(dataListViewModel);
+
+            //------------Setup for test--------------------------
+            var act = new AdvancedRecordsetActivity();
+            const string expectedFormat = "Invalid Output Mapping: count(*)";
+
+            using (var advancedRecordset = new AdvancedRecordsetDesignerViewModel(ModelItemUtils.CreateModelItem(act), new ViewPropertyBuilder()))
+            {
+                advancedRecordset.SqlQuery = "select count(*) from [[selectPerson(*)]]";
+
+                //------------Execute Test---------------------------
+                advancedRecordset.ValidateSql();
+                advancedRecordset.Validate();
+                //------------Assert Results-------------------------
+                Assert.AreEqual(1, advancedRecordset.Errors.Count);
+                Assert.AreEqual(expectedFormat, advancedRecordset.Errors[0].Message);
             }
         }
 

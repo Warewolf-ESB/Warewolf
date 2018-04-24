@@ -35,6 +35,9 @@ using System.ComponentModel;
 using System.Data;
 using Dev2.Studio.Core;
 using System.Text.RegularExpressions;
+using Dev2.Data.Util;
+using static LanguageAST.LanguageExpression;
+using System.Text;
 
 namespace Dev2.Activities.Designers2.AdvancedRecordset
 {
@@ -203,11 +206,12 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
                     OutputsRegion.RecordsetName = string.Empty;
                     return;
                 }
-                Validate();
+                
                 var service = ToModel();
                 ManageServiceModel.Model = service;
                 ValidateDeclareVariables();
                 ValidateSql();
+                Validate();
                 _modelItem.SetProperty("SqlQuery", SqlQuery);
                 ManageServiceModel.SqlQuery = SqlQuery;
 
@@ -225,15 +229,47 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
             var sqliteService = new SqliteService();
             return sqliteService;
         }
+
+        public StringBuilder CleanUpSql()
+        {
+            var sqlString = new StringBuilder();
+            if (EvaluationFunctions.parseLanguageExpressionWithoutUpdate(SqlQuery) is ComplexExpression res)
+            {
+                foreach (var i in res.Item)
+                {
+                    switch (i)
+                    {
+                        case RecordSetExpression rec:
+                            sqlString.Append(rec.Item.Name + "." + rec.Item.Column);
+                            break;
+                        case RecordSetNameExpression recSet:
+                            sqlString.Append(recSet.Item.Name);
+                            break;
+                        case ScalarExpression scalar:
+                            sqlString.Append(scalar.Item);
+                            break;
+                        default:
+                            var atomExpression = i as WarewolfAtomExpression;
+                            sqlString.Append(atomExpression.Item.ToString());
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                sqlString.Append(SqlQuery);
+            }
+            return sqlString;
+        }
         public void ValidateSql()
         {
             try
-            {
-                var parsedString = SqlQuery.Replace("(*).", ".").Replace("()", string.Empty).Replace("[[", string.Empty).Replace("]]", string.Empty);
-                var statements = TSQLStatementReader.ParseStatements(@parsedString);
+            {                
+                SqlQuery = CleanUpSql().ToString();
+                var statements = TSQLStatementReader.ParseStatements(SqlQuery);
                 if (statements.Count > 0)
                 {
-                    LoadRecordsets(parsedString);
+                    LoadRecordsets(SqlQuery);
                     FormatSql();                
                 }
             }
@@ -317,31 +353,33 @@ namespace Dev2.Activities.Designers2.AdvancedRecordset
         void FormatSql()
         {
             var replacement = Regex.Replace(SqlQuery, @"\t|\n|\r", " ");
+            var statements = TSQLStatementReader.ParseStatements(replacement);
 
-            replacement = replacement.Replace("select", "SELECT");
-            replacement = replacement.Replace("delete", "DELETE");
-            replacement = replacement.Replace("update", "UPDATE");
-            replacement = replacement.Replace("from", "FROM");
-            replacement = replacement.Replace("join", "JOIN");
-            replacement = replacement.Replace("inner", "INNER");
-            replacement = replacement.Replace("left", "LEFT");
-            replacement = replacement.Replace("union", "UNION");
-            replacement = replacement.Replace("right", "RIGHT");
-            replacement = replacement.Replace("where", "WHERE");
-            replacement = replacement.Replace("order by", "ORDER BY");
-            replacement = replacement.Replace("having", "HAVING");
-            replacement = replacement.Replace("group by", "GROUP BY");
-            replacement = replacement.Replace("distinct", "DISTINCT");
-            replacement = replacement.Replace(" as ", " AS ");
-            replacement = replacement.Replace(" set ", " SET ");
-
-            replacement = replacement.Replace("WHERE", Environment.NewLine + "WHERE");
-            replacement = replacement.Replace("ORDER BY", Environment.NewLine + "ORDER BY");
-            replacement = replacement.Replace("HAVING", Environment.NewLine + "HAVING");
-            replacement = replacement.Replace("GROUP BY", Environment.NewLine + "GROUP BY");
-            replacement = replacement.Replace("JOIN", Environment.NewLine + "JOIN");
-            replacement = replacement.Replace("FROM", Environment.NewLine + "FROM");
-            SqlQuery = replacement;
+            var allStatementsCorrected = new List<string>();
+            var newLineKeywords = new List<string> { "WHERE", "ORDER BY", "HAVING", "GROUP BY", "JOIN", "FROM" };
+            foreach (var statement in statements)
+            {
+                var correctedItems = statement.Tokens.Select(s =>
+                {
+                    if (s.Type == TSQL.Tokens.TSQLTokenType.Keyword)
+                    {
+                        var uppedText = s.Text.ToUpperInvariant();
+                        if (newLineKeywords.Contains(uppedText))
+                        {
+                            uppedText = Environment.NewLine + uppedText;
+                        }
+                        if (uppedText == "AS" || uppedText == "SET")
+                        {
+                            uppedText = " " + uppedText;
+                        }
+                        return uppedText + " ";
+                    }
+                    return s.Text;
+                });
+                var correctedString = string.Join("", correctedItems);
+                allStatementsCorrected.Add(correctedString);
+            }
+            SqlQuery = string.Join(Environment.NewLine, allStatementsCorrected);
         }
         
         void AddToRegionOutputs(List<string> fieldNames, string recorsetName)
