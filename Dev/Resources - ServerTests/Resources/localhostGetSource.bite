@@ -1,5 +1,5 @@
 
-<Source ID="f9f193e6-d8fc-4cdc-aa99-f45cc7899723" Name="localhostGetSource" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAt8kIyrz19ES/tVga9FB7uAQAAAACAAAAAAADZgAAwAAAABAAAACyFkGrF4Z4/FltChpASVKLAAAAAASAAACgAAAAEAAAAImL6WpDuYBGGytjbHa15UZIAQAABvq8A/kIU6S5n0Dkndk0pSnIoyizQ5gbMDZ2vWrUkYHfIay6XgqtEV6V9u6XLVeJksqy7VBnncdgdGcbQfuWlY9AHQzHHrACyBFP55ibRi59D8bdIreNgR0ZqQWn6aOeggishlnkySQsL7N1IOYOs6D4Lqyi2sJTJsQEyPG7lJMbSX/6vpUvJZn9HsTs6rW9atP2Nd5bEzXK2C2AvPaPQkiAhbGogLxsWVbNU8NLUMog+hhR7ScVSPteTyysEqQDc/hh/m+J3g7z1kT4ualT3kAFh9Xbi7m32FvnSqEhlv6thHbW+uDfe2/UQ9BWdyQCHilpplGqg21adamuun+wD9La3joqxVSuradtF+REYK0smeMQTNFgonag5ibokl/MunQX82oUTHD8K2PnCknGxdPhKs7vSkzdstT5V4SO55Okw6D3I5y0ShQAAAAp4L0xSA2fMaZIVyxVDc2upF8n+Q==" Type="WebSource" ServerVersion="0.0.6688.21117" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="f9f193e6-d8fc-4cdc-aa99-f45cc7899723" Name="localhostGetSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://localhost:3142/secure/GetFalse.xml?%3CDataList%3E%3C/DataList%3E;DefaultQuery=;AuthenticationType=User;UserName=integrationTester;Password=I73573r0" Type="WebSource" ServerVersion="0.0.6688.21117" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>localhostGetSource</DisplayName>
   <AuthorRoles>
   </AuthorRoles>

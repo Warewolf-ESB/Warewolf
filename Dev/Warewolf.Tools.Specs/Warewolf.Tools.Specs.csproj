@@ -237,9 +237,9 @@
     <Compile Include="Toolbox\FileAndFolder\DomainResolution.cs" />
     <Compile Include="Toolbox\FileAndFolder\FileAndFolderSpecsCleanup.cs" />
     <Compile Include="Toolbox\FileAndFolder\Move\Move.feature.cs">
-      <DependentUpon>Move.feature</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
+      <DependentUpon>Move.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Move\MoveSteps.cs" />
     <Compile Include="Toolbox\FileAndFolder\Read File\Read File1.feature.cs">
