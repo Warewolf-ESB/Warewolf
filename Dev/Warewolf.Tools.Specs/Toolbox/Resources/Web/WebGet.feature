@@ -126,29 +126,3 @@ Scenario: Change Recordset Name to newRecordset
 	| Name        | [[newRecordset().Name]]     |
 	| Category    | [[newRecordset().Category]] |
 	| Price       | [[newRecordset().Price]]    |
-
-Scenario: Change Recordset Name to Nothing
-	Given I drag Web Get Request Connector Tool onto the design surface
-    And New Source is Enabled
-	When I Select "SurceRetuningFalse" as a Get web Source
-	And New Source is Enabled
-	And Get Edit is Enabled
-	Then I click Get Generate Outputs
-	Then Get the Generate Outputs window is shown
-	When Get Test Inputs is Successful
-	Then Get Response contains Data
-	When I click Get Done
-	Then Get Mapping is Enabled
-	And Get mapped outputs are
-	| Mapped From | Mapped To                       |
-	| Id          | [[UnnamedArrayData().Id]]       |
-	| Name        | [[UnnamedArrayData().Name]]     |
-	| Category    | [[UnnamedArrayData().Category]] |
-	| Price       | [[UnnamedArrayData().Price]]    |
-	When I change Recordset Name to ""
-	And Get mapped outputs are
-	| Mapped From | Mapped To    |
-	| Id          | [[Id]]       |
-	| Name        | [[Name]]     |
-	| Category    | [[Category]] |
-	| Price       | [[Price]]    |
