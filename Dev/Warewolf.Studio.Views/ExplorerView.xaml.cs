@@ -19,6 +19,8 @@ namespace Warewolf.Studio.Views
         public ExplorerView()
         {
             InitializeComponent();
+            Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Arrange(new Rect(new Size(ActualWidth, ActualHeight)));
         }
 
         Point _startPoint;
