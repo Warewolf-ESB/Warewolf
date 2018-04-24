@@ -1,0 +1,9 @@
+
+<Source ID="f9f193e6-d8fc-4cdc-aa99-f45cc7899723" Name="localhostGetSource" ResourceType="WebSource" IsValid="false" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAt8kIyrz19ES/tVga9FB7uAQAAAACAAAAAAADZgAAwAAAABAAAAAkD8uC3bk9qv8G1me+gCwgAAAAAASAAACgAAAAEAAAANCFva18n/cb5LzKO99CIuNIAQAAruWy15VCmRh3F48SfpULXVLmKdnrfqyPrb654w6p0/BCqQlQvk6HWYR7pIuyuF3RHbQGblSYEBlwHEqSYAX2lcdIOvXTPxZkPToYGzPTv6zLqCGcBfo/2wwmTDe9LWM2Y6RZFeIKwkEATW7FrEoxaUW1kqAUqgE5tdTeTBBMc9zZ9ywwjLAb058Xjc5rZZl21ym1j4tMvmUs7EHZd5coLpRam7lTQVhF7QjrDoh9efmCGbi23HZNK5jOGYYeDX747svqslUDDxxEx8Q2q8gY5HOooQKS18Fhj6N3NiHjjuOUtgSxB/CjQ/0OWvRqWN3RgxkNlHAZqpfqg0q24nDzNywndG5HMn+zJZIqD+V6zaBSr6fak+TIroLFBFJsK34Nqut6IVewrOpBMXX7rAdSGPjoj5ymxbIpLM4uCWWNMNjT0mIFFHPlfBQAAADC07MyAU/0OgPgHvhzhgj63JulUQ==" Type="WebSource" ServerVersion="0.0.6687.26475" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>localhostGetSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2018-04-23T14:55:39.4460924+02:00" Reason="" User="DEV2\Sanele.Mthembu" VersionNumber="2" ResourceId="f9f193e6-d8fc-4cdc-aa99-f45cc7899723" VersionId="5db3d8b6-c30f-4d87-bc97-79b994b062bd" />
+</Source>
