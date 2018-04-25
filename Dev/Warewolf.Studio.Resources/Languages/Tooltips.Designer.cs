@@ -5629,7 +5629,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web delete.
         /// </summary>
         public static string Tool_WebMethod_Delete {
             get {
@@ -5638,7 +5638,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web get.
         /// </summary>
         public static string Tool_WebMethod_Get {
             get {
@@ -5647,7 +5647,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web post.
         /// </summary>
         public static string Tool_WebMethod_Post {
             get {
@@ -5656,7 +5656,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web put.
         /// </summary>
         public static string Tool_WebMethod_Put {
             get {
