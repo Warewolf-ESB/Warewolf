@@ -51,7 +51,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
             if (propertyStack.Count == 0 && data.IsPrimitive())
             {
-                paths.Add(new JsonPath(JsonPath.SeperatorSymbol, JsonPath.SeperatorSymbol, data.ToString()));
+                var value = data as JValue;
+                var type = value.Value.GetType().Name;
+                paths.Add(new JsonPath(type, type, data.ToString()));
             }
             else
             {
