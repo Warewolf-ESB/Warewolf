@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Core.Tests.Merge.Utils;
+using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
@@ -436,6 +437,11 @@ namespace Dev2.Activities.Specs.Merge
             Assert.AreEqual(countOfAllTools, currentDesignerTools, "Count mismatch between the assembly activities and the mapped activities in DesignerAttributeMap class");
             var allActivitiesAreMapped = allActivityTypes.All(t => DesignerAttributeMap.DesignerAttributes.ContainsKey(t));
             Assert.IsTrue(allActivitiesAreMapped, "Not all activities are mapped in the DesignerAttributeMap class");
+
+            var currentActivtyDesignerTools = ActivityDesignerHelper.DesignerAttributes.Count;
+            Assert.AreEqual(countOfAllTools, currentActivtyDesignerTools, "Count mismatch between the assembly activities and the mapped activities in ActivityDesignerHelper class");
+            var allActivitiesDesignersAreMapped = allActivityTypes.All(t => ActivityDesignerHelper.DesignerAttributes.ContainsKey(t));
+            Assert.IsTrue(allActivitiesDesignersAreMapped, "Not all activities are mapped in the ActivityDesignerHelper class");
         }
 
         [AfterScenario]
