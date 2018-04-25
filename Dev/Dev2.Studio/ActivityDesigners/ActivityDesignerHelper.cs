@@ -123,6 +123,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDotNetDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesigner) },
                 { typeof(DsfDateTimeActivity),typeof(Activities.Designers2.DateTime.DateTimeDesigner) },
                 { typeof(DsfDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifference.DateTimeDifferenceDesigner) },
+                { typeof(DsfGatherSystemInformationActivity), typeof(GatherSystemInformationDesigner) },
                 { typeof(DsfDotNetGatherSystemInformationActivity),typeof(GatherSystemInformationDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
