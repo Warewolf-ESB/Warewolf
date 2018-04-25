@@ -13,7 +13,9 @@ using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Xml;
-
+using System.Xml;
+using System.Xml.Linq;
+using Dev2.Data.Util;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
@@ -55,6 +57,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
     </OuterNestedRecordSet>
 </Company>";
         }
+
+
 
         internal string GivenSingleNode()
         {
@@ -405,7 +409,30 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             Assert.AreEqual(expected, actual);
         }
+        /// <summary>
+        /// Select enumerable values as related using enumerable path from XML where paths contain a single path 
+        /// which is enumerable expected flattened data with values from enumerable path.
+        /// </summary>
+        [TestMethod]
+        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXmlFromFailingTest()
+        {
+            var xmlDocument = new XmlDocument();
+            xmlDocument.Load(@"c:\xmlTest.xml");
 
+            var testData = Scrubber.Scrub(xmlDocument.InnerXml);
+            var xmlMapper = new XmlMapper();
+            var paths = xmlMapper.Map(testData).ToList();
+            var path = paths.FirstOrDefault();
+
+            var xmlNavigator = new XmlNavigator(testData);
+
+            var data2 = xmlNavigator.SelectEnumerablesAsRelated(paths);
+            const string expected = "Electronic|Electronic|Electronic|Electronic|Electronic|Gift Items";
+            var actual = string.Join("|", data2[path].Select(s => s.ToString().Trim()));
+
+            Assert.AreEqual(expected, actual);
+
+        }
         /// <summary>
         /// Select enumerable values as related using enumerable path from XML where paths contain a single 
         /// path which is scalar expected flattened data with value from scalar path.
