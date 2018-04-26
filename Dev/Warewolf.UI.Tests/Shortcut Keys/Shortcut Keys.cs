@@ -52,11 +52,9 @@ namespace Warewolf.UI.Tests.Workflow
             WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
             WorkflowTabUIMap.Save_Workflow_Using_Shift_Control_Shortcut();
-            DialogsUIMap.Click_MessageBox_Yes();
-            DialogsUIMap.Click_MessageBox_Yes();
             Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
-            Assert.IsTrue(UIMap.ControlExistsNow(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.UIUI_TabManager_AutoIDTabList.ResourceForSaveAllTabs1));
-            Assert.IsTrue(UIMap.ControlExistsNow(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.UIUI_TabManager_AutoIDTabList.ResourceForSaveAllTabs2));
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.UIUI_TabManager_AutoIDTabList.ResourceForSaveAllTabs1.Exists);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.UIUI_TabManager_AutoIDTabList.ResourceForSaveAllTabs2.Exists);
         }
         [TestMethod]
         [TestCategory("Shortcut Keys")]

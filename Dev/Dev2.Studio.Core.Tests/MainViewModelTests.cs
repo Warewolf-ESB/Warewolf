@@ -3987,11 +3987,11 @@ namespace Dev2.Core.Tests
             ShellViewModel.Items.Add(surfaceContext.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(ShellViewModel);
-            Assert.IsNotNull(ShellViewModel.SaveAllCommand);
+            Assert.IsNotNull(ShellViewModel.SaveAllAndCloseCommand);
             Assert.IsNotNull(ShellViewModel.Items);
 
             //---------------Execute Test ----------------------
-            ShellViewModel.SaveAllCommand.Execute(null);
+            ShellViewModel.SaveAllAndCloseCommand.Execute(null);
             //---------------Test Result -----------------------
             surfaceContext.VerifyAll();
         }
