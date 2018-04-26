@@ -40,7 +40,24 @@ namespace Warewolf.UI.Tests.Workflow
             WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
             Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
         }
-
+        [TestMethod]
+        [TestCategory("Shortcut Keys")]
+        public void Shortcut_Control_Shift_S_Saves_All_Workflows_Without_Closing()
+        {
+            ExplorerUIMap.Filter_Explorer("ResourceForSaveAllTabs1");
+            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
+            WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
+            ExplorerUIMap.Filter_Explorer("ResourceForSaveAllTabs2");
+            ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
+            WorkflowTabUIMap.Make_Workflow_Savable_By_Dragging_Start();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+            WorkflowTabUIMap.Save_Workflow_Using_Shift_Control_Shortcut();
+            DialogsUIMap.Click_MessageBox_Yes();
+            DialogsUIMap.Click_MessageBox_Yes();
+            Assert.IsFalse(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
+            Assert.IsTrue(UIMap.ControlExistsNow(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.UIUI_TabManager_AutoIDTabList.ResourceForSaveAllTabs1));
+            Assert.IsTrue(UIMap.ControlExistsNow(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.UIUI_TabManager_AutoIDTabList.ResourceForSaveAllTabs2));
+        }
         [TestMethod]
         [TestCategory("Shortcut Keys")]
         public void Shortcut_Control_D_Opens_DeployTabWith_Resource_Selected()
@@ -53,6 +70,7 @@ namespace Warewolf.UI.Tests.Workflow
             UIMap.WaitForSpinner(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             DeployUIMap.Filter_Deploy_Source_Explorer(HelloWorld);
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Item1.CheckBox.Checked);
+
         }
 
         [TestMethod]
