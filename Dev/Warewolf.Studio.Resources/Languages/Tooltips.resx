@@ -1977,16 +1977,16 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Tags: javascript script JSON JS</value>
   </data>
   <data name="Tool_WebMethod_Put" xml:space="preserve">
-    <value>Tags: source connector</value>
+    <value>Tags: source connector web put</value>
   </data>
   <data name="Tool_WebMethod_Post" xml:space="preserve">
-    <value>Tags: source connector</value>
+    <value>Tags: source connector web post</value>
   </data>
   <data name="Tool_WebMethod_Get" xml:space="preserve">
-    <value>Tags: source connector</value>
+    <value>Tags: source connector web get</value>
   </data>
   <data name="Tool_WebMethod_Delete" xml:space="preserve">
-    <value>Tags: source connector</value>
+    <value>Tags: source connector web delete</value>
   </data>
   <data name="Tool_Utility_Xpath" xml:space="preserve">
     <value>Tags: xml</value>
