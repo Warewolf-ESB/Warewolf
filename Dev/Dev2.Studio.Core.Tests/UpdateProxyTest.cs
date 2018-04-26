@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
 
-namespace Warewolf.Studio.ServerProxyLayer.Test
+namespace Dev2.Core.Tests
 {
     [TestClass]
     public class UpdateProxyTest
@@ -23,17 +23,15 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var comms = new Mock<ICommunicationControllerFactory>();
             var env = new Mock<IEnvironmentConnection>();
             env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
-            var updateProxyTest = new UpdateProxy(comms.Object,env.Object);
+            var updateProxyTest = new UpdateProxy(comms.Object, env.Object);
             var controller = new Mock<ICommunicationController>();
             comms.Setup(a => a.CreateController("SaveRabbitMQServiceSource")).Returns(controller.Object);
-            controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage() { HasError = false });
+            controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
             //------------Execute Test---------------------------
 
-            updateProxyTest.SaveRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Object,Guid.NewGuid() );
+            updateProxyTest.SaveRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
-
-           controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
-
+            controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
         }
 
         [TestMethod]
@@ -49,14 +47,12 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var updateProxyTest = new UpdateProxy(comms.Object, env.Object);
             var controller = new Mock<ICommunicationController>();
             comms.Setup(a => a.CreateController("SaveRabbitMQServiceSource")).Returns(controller.Object);
-            controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage() { HasError = true, Message = new StringBuilder( "bob")});
+            controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
             //------------Execute Test---------------------------
 
             updateProxyTest.SaveRabbitMQServiceSource(new Mock<IRabbitMQServiceSourceDefinition>().Object, Guid.NewGuid());
             //------------Assert Results-------------------------
-
             controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
-
         }
     }
 }
