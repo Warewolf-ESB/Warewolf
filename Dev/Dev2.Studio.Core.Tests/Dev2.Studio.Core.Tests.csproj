@@ -303,6 +303,8 @@
     <Compile Include="StudioTestViewModelTest.cs" />
     <Compile Include="MergeWorkflowViewModelTests.cs" />
     <Compile Include="MergeViewModelTest.cs" />
+    <Compile Include="QueryManagerProxyTest.cs" />
+    <Compile Include="UpdateProxyTest.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="UtilsTests\DataListConversionUtilTest.cs" />
     <Compile Include="UtilsTests\WebServerTests.cs" />
