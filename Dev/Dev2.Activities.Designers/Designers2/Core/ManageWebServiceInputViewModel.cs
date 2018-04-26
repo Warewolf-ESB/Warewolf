@@ -121,7 +121,7 @@ namespace Dev2.Activities.Designers2.Core
                     TestResults = responseService.RequestResponse;
                     BuidHeaders(TestResults);
                     _recordsetList = responseService.Recordsets;
-                    if (_recordsetList.Count > 0 && _recordsetList.Any(recordset => recordset.HasErrors))
+                    if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
                         var errorMessage = string.Join(Environment.NewLine, _recordsetList.Select(recordset => recordset.ErrorMessage));
                         throw new Exception(errorMessage);
