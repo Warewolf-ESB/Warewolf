@@ -21,7 +21,6 @@ using Warewolf.Core;
 using TSQL.Statements;
 using TSQL.Tokens;
 using System.Text;
-using Dev2.Common;
 
 namespace Dev2.Activities
 {
@@ -38,7 +37,7 @@ namespace Dev2.Activities
         public AdvancedRecordset()
         {
         }
-        public void AddRecordsetAsTable((string recordsetName,List<string> fields) recordSet)
+        public void AddRecordsetAsTable((string recordsetName, List<string> fields) recordSet)
         {
             ExecuteQuery("CREATE TABLE IF NOT EXISTS " + recordSet.recordsetName + "([" + recordSet.recordsetName + "_Primary_Id] INTEGER NOT NULL, CONSTRAINT[PK_" + recordSet.recordsetName + "] PRIMARY KEY([" + recordSet.recordsetName + "_Primary_Id]))");
             foreach (var field in recordSet.fields)
@@ -50,9 +49,9 @@ namespace Dev2.Activities
             }
         }
 
-        public DataSet ExecuteStatement(TSQLStatement sqlStatement,string query)
+        public DataSet ExecuteStatement(TSQLStatement sqlStatement, string query)
         {
-            if(sqlStatement.Type == TSQLStatementType.Select)
+            if (sqlStatement.Type == TSQLStatementType.Select)
             {
                 return ExecuteQuery(query);
             }
@@ -64,12 +63,16 @@ namespace Dev2.Activities
             ds.Tables.Add(recordset);
             return ds;
         }
+
         public string ReturnSql(List<TSQLToken> tokens)
         {
             var tokenString = "";
             foreach (TSQLToken token in tokens)
             {
-                tokenString = string.Concat(tokenString, " ", token.Text);
+                
+                    tokenString = string.Concat(tokenString, " ", token.Text);
+                
+                
             }
             return tokenString.Replace(" ( ", "(").Replace(" ) ", ") ").Replace(" )", ")").Replace(" . ", ".").Trim();
         }
@@ -195,7 +198,11 @@ namespace Dev2.Activities
 
             if (!key.Contains("_Primary_Id"))
             {
-                if (colType == "Int")
+                if (value.Equals(DataStorage.WarewolfAtom.Nothing))
+                {
+                    _insertSql = "'',";
+                }
+                else if (colType == "Int")
                 {
                     _insertSql = value + ",";
                 }
@@ -206,6 +213,10 @@ namespace Dev2.Activities
                 else if (colType == "Float")
                 {
                     _insertSql = value + ",";
+                }
+                else if (colType == "WarewolfAtom")
+                {
+                    _insertSql = "'',";
                 }
                 else
                 {
@@ -242,9 +253,9 @@ namespace Dev2.Activities
                 } while (enumerator.MoveNext());
             }
         }
-        public void ApplyResultToEnvironment(string returnRecordsetName, ICollection<IServiceOutputMapping> outputs, List<DataRow> rows, bool updated, int update,ref bool started)
+        public void ApplyResultToEnvironment(string returnRecordsetName, ICollection<IServiceOutputMapping> outputs, List<DataRow> rows, bool updated, int update, ref bool started)
         {
-            var rowIdx = 1;            
+            var rowIdx = 1;
             if (updated)
             {
                 var recSet = DataListUtil.ReplaceRecordBlankWithStar(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(returnRecordsetName)));
@@ -260,7 +271,7 @@ namespace Dev2.Activities
                 foreach (DataRow row in rows)
                 {
                     foreach (var serviceOutputMapping in outputs)
-                    {                        
+                    {
                         ExecutionEnvironmentUtils.ProcessOutputMapping(Environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
                     }
                     started = true;

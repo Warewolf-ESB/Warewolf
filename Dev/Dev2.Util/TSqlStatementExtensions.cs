@@ -71,6 +71,8 @@ namespace Dev2.Util
                     case "DELETE":
                     case "SELECT":
 					case "ORDER":
+                    case "GROUP":
+                    case "HAVING":
                         if (tokens[i].Type == TSQLTokenType.Keyword)
                         {
                             canProcess = false;
