@@ -166,23 +166,26 @@ namespace Dev2.Activities
                     value = Encoding.UTF8.GetString(value as byte[]);
                 }
                 var retValue = value.ToString();
-                var isNumber = int.TryParse(retValue, out int Num);
-
-                if (isNumber)
+                if (int.TryParse(retValue, out int num))
                 {
                     return retValue;
                 }
-                else
+                var newVariableValue = new StringBuilder();
+                var arrayString = retValue.Split(',');
+                foreach (var str in arrayString)
                 {
-                    var newVariableValue = new StringBuilder();
-                    var arrayString = retValue.Split(',');
-                    foreach (var str in arrayString)
+                    var s = newVariableValue.Length > 0 ? ",{0}" : "{0}";
+                    if (int.TryParse(str, out int intValue))
                     {
-                        var s = newVariableValue.Length > 0 ? ",'{0}'" : "'{0}'";
+                        newVariableValue.AppendFormat(s, intValue);
+                    }
+                    else
+                    {
                         newVariableValue.AppendFormat(s, str);
                     }
-                    return newVariableValue.ToString();
                 }
+                return newVariableValue.ToString();
+
             }
             catch (Exception e)
             {
