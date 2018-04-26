@@ -1514,7 +1514,7 @@ namespace Dev2.Studio.ViewModels
                         serviceTestViewModel.WorkflowDesignerViewModel.IsTestView = true;
                     }
                 }
-                NotifyOfPropertyChange(() => SaveCommand);
+                NotifyOfPropertyChange(() => SaveCommand);                
                 NotifyOfPropertyChange(() => DebugCommand);
                 NotifyOfPropertyChange(() => QuickDebugCommand);
                 NotifyOfPropertyChange(() => QuickViewInBrowserCommand);
@@ -1528,9 +1528,24 @@ namespace Dev2.Studio.ViewModels
             base.OnActivationProcessed(item, success);
         }
 
+        public ICommand SaveAllAndCloseCommand => new DelegateCommand(SaveAllAndClose);
+        
         public ICommand SaveAllCommand => new DelegateCommand(SaveAll);
-
         void SaveAll(object obj)
+        {
+            for (int index = Items.Count - 1; index >= 0; index--)
+            {
+                var workSurfaceContextViewModel = Items[index];
+                var workSurfaceContext = workSurfaceContextViewModel.WorkSurfaceKey.WorkSurfaceContext;
+                if (workSurfaceContext != WorkSurfaceContext.Help && workSurfaceContextViewModel.CanSave())
+                {
+                    workSurfaceContextViewModel.Save();
+                }
+            }
+        }
+
+        
+        void SaveAllAndClose(object obj)
         {
             _continueShutDown = true;
             for (int index = Items.Count - 1; index >= 0; index--)
@@ -1813,7 +1828,7 @@ namespace Dev2.Studio.ViewModels
                 if (result == MessageBoxResult.Yes)
                 {
                     closeStudio = true;
-                    SaveAllCommand.Execute(null);
+                    SaveAllAndCloseCommand.Execute(null);
                     if (!_continueShutDown)
                     {
                         closeStudio = false;
