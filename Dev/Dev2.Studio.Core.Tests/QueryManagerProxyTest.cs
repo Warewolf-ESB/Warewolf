@@ -422,7 +422,7 @@ namespace Dev2.Core.Tests
         {
             var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IExchangeSource>());
-            RunTest("FetchExchangeSources", new ExecuteMessage { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new ComPluginSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchExchangeSources());
+            RunTest("FetchExchangeSources", new ExecuteMessage { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(0, a.Count()), a => a.FetchExchangeSources());
         }
 
         [TestMethod]
@@ -433,7 +433,7 @@ namespace Dev2.Core.Tests
         {
             var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IExchangeSource>());
-            RunTest("FetchExchangeSources", new ExecuteMessage { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new ComPluginSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchExchangeSources());
+            RunTest("FetchExchangeSources", new ExecuteMessage { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(0, a.Count()), a => a.FetchExchangeSources());
         }
 
         [TestMethod]
