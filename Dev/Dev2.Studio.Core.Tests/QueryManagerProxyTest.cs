@@ -21,6 +21,8 @@ using System.Windows;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Explorer;
 using System.Threading;
+using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 
 namespace Dev2.Core.Tests
 {
@@ -380,6 +382,58 @@ namespace Dev2.Core.Tests
             var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchRabbitMQServiceSources", new ExecuteMessage { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(0, a.Count()), a => a.FetchRabbitMQServiceSources());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QueryManagerProxy_FetchTools")]
+        public void QueryManagerProxy_FetchTools()
+        {
+            var ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IToolDescriptor>());
+            RunTest("FetchToolsService", new ExecuteMessage { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(0, a.Count()), a => a.FetchTools());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QueryManagerProxy_FetchNamespaces")]
+        public void QueryManagerProxy_FetchComNamespaces()
+        {
+            var ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IComPluginSource>());
+            RunTest("FetchComPluginNameSpaces", new ExecuteMessage { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new ComPluginSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchNamespaces(new ComPluginSourceDefinition()));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QueryManagerProxy_FetchNamespaces")]
+        [ExpectedException(typeof(WarewolfSupportServiceException))]
+        public void QueryManagerProxy_FetchComNamespaces_error()
+        {
+            var ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IComPluginSource>());
+            RunTest("FetchComPluginNameSpaces", new ExecuteMessage { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new ComPluginSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchNamespaces(new ComPluginSourceDefinition()));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QueryManagerProxy_FetchExchangeSources")]
+        public void QueryManagerProxy_FetchExchangeSources()
+        {
+            var ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IExchangeSource>());
+            RunTest("FetchExchangeSources", new ExecuteMessage { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new ComPluginSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchExchangeSources());
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("QueryManagerProxy_FetchExchangeSources")]
+        [ExpectedException(typeof(WarewolfSupportServiceException))]
+        public void QueryManagerProxy_FetchExchangeSources_error()
+        {
+            var ser = new Dev2JsonSerializer();
+            var res = ser.SerializeToBuilder(new List<IExchangeSource>());
+            RunTest("FetchExchangeSources", new ExecuteMessage { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new ComPluginSourceDefinition()) }, a => Assert.AreEqual(0, a.Count), a => a.FetchExchangeSources());
         }
 
         [TestMethod]
