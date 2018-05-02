@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Hosting;
@@ -14,12 +13,11 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Warewolf.Studio.ViewModels.Tests
+namespace Dev2.Core.Tests
 {
     [TestClass]
     public class ExplorerDeleteProviderTests
     {
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Delete_WhenResource_ShouldDeleteResource()
@@ -27,7 +25,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
             mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
-               .Returns(() => new DeletedFileMetadata()
+               .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = true,
                    DeleteAnyway = true
@@ -43,7 +41,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             updateManagerProxy.Setup(manager => manager.DeleteResource(It.IsAny<Guid>()));
             mock.SetupGet(repository => repository.UpdateManagerProxy).Returns(updateManagerProxy.Object);
             mock.Setup(repository => repository.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
-                .Returns(new DeletedFileMetadata() { IsDeleted = true, DeleteAnyway = true });
+                .Returns(new DeletedFileMetadata { IsDeleted = true, DeleteAnyway = true });
             var mockExplorerItemModel = new Mock<IExplorerItemViewModel>();
             var child = new Mock<IExplorerItemViewModel>();
 
@@ -51,7 +49,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockExplorerItemModel.Setup(model => model.ResourceType).Returns("resource");
             mockExplorerItemModel.Setup(model => model.ResourcePath).Returns("path");
             mockExplorerItemModel.Setup(model => model.AsList())
-                                 .Returns(new List<IExplorerItemViewModel>()
+                                 .Returns(new List<IExplorerItemViewModel>
                                  {
                                      child.Object
                                  });
@@ -71,7 +69,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
             mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
-               .Returns(() => new DeletedFileMetadata()
+               .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = true,
                    DeleteAnyway = true
@@ -86,7 +84,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var updateManagerProxy = new Mock<IExplorerUpdateManager>();
             mock.SetupGet(repository => repository.UpdateManagerProxy).Returns(updateManagerProxy.Object);
             mock.Setup(repository => repository.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
-                .Returns(new DeletedFileMetadata() { IsDeleted = true, DeleteAnyway = true });
+                .Returns(new DeletedFileMetadata { IsDeleted = true, DeleteAnyway = true });
 
             var mockExplorerItemModelParent = new Mock<IExplorerItemViewModel>();
             mockExplorerItemModelParent.Setup(model => model.ResourceType).Returns("Folder");
@@ -100,7 +98,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockExplorerItemModel.Setup(model => model.ResourcePath).Returns("path");
             mockExplorerItemModel.Setup(model => model.Parent).Returns(mockExplorerItemModelParent.Object);
             mockExplorerItemModel.Setup(model => model.AsList())
-                                 .Returns(new List<IExplorerItemViewModel>()
+                                 .Returns(new List<IExplorerItemViewModel>
                                  {
                                      child.Object
                                  });
@@ -121,7 +119,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
             mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
-               .Returns(() => new DeletedFileMetadata()
+               .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = true,
                    DeleteAnyway = true
@@ -144,7 +142,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockExplorerItemModel.Setup(model => model.ResourceType).Returns("Folder");
             mockExplorerItemModel.Setup(model => model.ResourcePath).Returns("path");
             mockExplorerItemModel.Setup(model => model.AsList())
-                                 .Returns(new List<IExplorerItemViewModel>()
+                                 .Returns(new List<IExplorerItemViewModel>
                                  {
                                      child.Object
                                  });
@@ -161,7 +159,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Guid.Empty, item.ResourceId);
         }
 
-        
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -170,7 +168,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
             mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
-               .Returns(() => new DeletedFileMetadata()
+               .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = false,
                    DeleteAnyway = true,
@@ -195,7 +193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockExplorerItemModel.Setup(model => model.ResourceType).Returns("Folder");
             mockExplorerItemModel.Setup(model => model.ResourcePath).Returns("path");
             mockExplorerItemModel.Setup(model => model.AsList())
-                                 .Returns(new List<IExplorerItemViewModel>()
+                                 .Returns(new List<IExplorerItemViewModel>
                                  {
                                      child.Object
                                  });
@@ -220,7 +218,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Set up test pack-------------------
             var mock = new Mock<IExplorerRepository>();
             mock.Setup(proxy => proxy.HasDependencies(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IDependencyGraphGenerator>(), It.IsAny<IExecuteMessage>()))
-               .Returns(() => new DeletedFileMetadata()
+               .Returns(() => new DeletedFileMetadata
                {
                    ApplyToAll = false,
                    DeleteAnyway = true,
@@ -247,7 +245,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockExplorerItemModel.Setup(model => model.ResourceType).Returns("Folder");
             mockExplorerItemModel.Setup(model => model.ResourcePath).Returns("path");
             mockExplorerItemModel.Setup(model => model.AsList())
-                                 .Returns(new List<IExplorerItemViewModel>()
+                                 .Returns(new List<IExplorerItemViewModel>
                                  {
                                      child.Object, child1.Object
                                  });
