@@ -3555,6 +3555,56 @@ Scenario: String  Function Select With INSERT Then Select
     | [[TableCopy(4).name]] = Robocop |
     | [[TableCopy(4).age]] = 1000     |
 
+
+Scenario: Insert with looped execution through recordset s a variable
+    Given I have a recordset with this shape
+    | [[person]]      |        |
+    | person(1).name  | Bob    |
+    | person(2).name  | Alice  |
+    | person(3).name  | Hatter |
+    | person(1).age   | 25     |
+    | person(2).age   | 31     |
+    | person(3).age   | 19     |
+    | insertNew(1).val | Jack   |
+    | insertNew(2).val | Harry  |
+    And I drag on an Advanced Recordset tool
+	And Declare variables as
+    | Name    | Value         |
+    | InsertStatement | [[insertNew(*).val]] |
+    And I have the following sql statement "INSERT INTO person (name, age) VALUES (@InsertStatement,90)"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From      | Mapped To                         |
+    | records_affected | [[Table1Copy().records_affected]] |
+   When Advanced Recordset tool is executed
+    And the execution has "NO" error
+    And the debug output as
+    |                                        |
+    | [[Table1Copy(2).records_affected]] = 2 |
+
+Scenario: Insert with looped execution through recordset with one field
+    Given I have a recordset with this shape
+    | [[person]]      |        |
+    | person(1).name  | Bob    |
+    | person(2).name  | Alice  |
+    | person(3).name  | Hatter |
+    | insertNew(1).val | Jack   |
+    | insertNew(2).val | Harry  |
+    And I drag on an Advanced Recordset tool
+	And Declare variables as
+    | Name    | Value         |
+    | InsertStatement | [[insertNew(*).val]] |
+    And I have the following sql statement "INSERT INTO person (name) VALUES (@InsertStatement)"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From      | Mapped To                         |
+    | records_affected | [[Table1Copy().records_affected]] |
+   When Advanced Recordset tool is executed
+    And the execution has "NO" error
+    And the debug output as
+    |                                        |
+    | [[Table1Copy(2).records_affected]] = 2 |
+
 Scenario: String  Function Select With Insert
     Given I have a recordset with this shape
     | [[person]]     |        |
