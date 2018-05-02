@@ -605,6 +605,11 @@ namespace Dev2
                 return;
             }
             var value = row[serviceOutputMapping.MappedFrom];
+            var colDataType = row.Table.Columns[serviceOutputMapping.MappedFrom].DataType;
+            if (colDataType.Name == "Byte[]")
+            {                
+                value = Encoding.UTF8.GetString(value as byte[]);
+            }
             if (update != 0)
             {
                 rowIdx = update;

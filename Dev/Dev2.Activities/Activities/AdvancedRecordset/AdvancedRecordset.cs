@@ -134,7 +134,7 @@ namespace Dev2.Activities
         {
             using (var cmd = _dbManager.CreateCommand())
             {
-                cmd.CommandText = "CREATE TABLE IF NOT EXISTS Variables (Name TEXT PRIMARY KEY, Value TEXT)";
+                cmd.CommandText = "CREATE TABLE IF NOT EXISTS Variables (Name TEXT PRIMARY KEY, Value BLOB)";
                 cmd.CommandType = CommandType.Text;
                 _dbManager.ExecuteNonQuery(cmd);
             }
@@ -158,24 +158,34 @@ namespace Dev2.Activities
                 command.CommandText = sql;
                 command.CommandType = CommandType.Text;
                 var dt = _dbManager.FetchDataTable(command);
-                var value = dt.Rows[0]["Value"].ToString();
-                var isNumber = int.TryParse(value, out int Num);
-
-                if (isNumber)
+                var row = dt.Rows[0];
+                var value = row["Value"];
+                var colDataType = row.Table.Columns["Value"].DataType;
+                if (colDataType.Name == "Byte[]")
                 {
-                    return value;
+                    value = Encoding.UTF8.GetString(value as byte[]);
                 }
-                else
+                var retValue = value.ToString();
+                if (int.TryParse(retValue, out int num))
                 {
-                    var newVariableValue = new StringBuilder();
-                    var arrayString = value.Split(',');
-                    foreach (var str in arrayString)
+                    return retValue;
+                }
+                var newVariableValue = new StringBuilder();
+                var arrayString = retValue.Split(',');
+                foreach (var str in arrayString)
+                {
+                    var s = newVariableValue.Length > 0 ? ",{0}" : "{0}";
+                    if (int.TryParse(str, out int intValue))
                     {
-                        var s = newVariableValue.Length > 0 ? ",'{0}'" : "'{0}'";
+                        newVariableValue.AppendFormat(s, intValue);
+                    }
+                    else
+                    {
                         newVariableValue.AppendFormat(s, str);
                     }
-                    return newVariableValue.ToString();
                 }
+                return newVariableValue.ToString();
+
             }
             catch (Exception e)
             {
@@ -245,7 +255,7 @@ namespace Dev2.Activities
                         insertSql += BuildInsertStatement(key, value);
                         if (i == 0 && !key.Contains("_Primary_Id"))
                         {
-                            ExecuteNonQuery("ALTER TABLE  " + recordsetName + " ADD COLUMN " + key + " " + value.GetType().Name + ";");
+                            ExecuteNonQuery("ALTER TABLE  " + recordsetName + " ADD COLUMN " + key + " BLOB;");
                         }
                     }
                     ExecuteNonQuery(insertSql.Remove(insertSql.Length - 1));
