@@ -15,14 +15,13 @@ using System.Text;
 
 namespace Dev2.Common
 {
-    class Dev2Tokenizer : IDev2Tokenizer, IDisposable
+    class Dev2Tokenizer : IDev2Tokenizer
     {
         readonly bool _isReversed;
         readonly int _masterLen;
         private StringBuilder _sourceString;
         readonly IList<IDev2SplitOp> _ops;
-
-        bool _disposing;
+        
         bool _hasMoreOps;
         int _opPointer;
         int _startIdx;
@@ -79,23 +78,6 @@ namespace Dev2.Common
             _hasMoreOps = !_ops[_opPointer].IsFinalOp() && HasMoreData();
             
             return result;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposing)
-            {
-                if (disposing)
-                {
-                    _sourceString = null;
-                }
-                _disposing = true;
-            }
         }
     }
 }
