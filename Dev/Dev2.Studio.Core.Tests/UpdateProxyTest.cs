@@ -596,47 +596,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("UpdateProxyTest_Test")]
-        public void UpdateProxyTest_Test_SqliteDBSource_ExpectSuccess()
-        {
-            //------------Setup for test--------------------------
-            var comms = new Mock<ICommunicationControllerFactory>();
-            var env = new Mock<IEnvironmentConnection>();
-            env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
-            var updateProxyTest = new UpdateProxy(comms.Object, env.Object);
-            var controller = new Mock<ICommunicationController>();
-            comms.Setup(a => a.CreateController("TestSqliteService")).Returns(controller.Object);
-            controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = false });
-            //------------Execute Test---------------------------
-
-            updateProxyTest.TestSqliteConnection(new Mock<ISqliteDBSource>().Object);
-            //------------Assert Results-------------------------
-            controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("UpdateProxyTest_Test")]
-        [ExpectedException(typeof(WarewolfTestException))]
-        public void UpdateProxyTest_Test_SqliteDBSource_ExpectException()
-        {
-            //------------Setup for test--------------------------
-            var comms = new Mock<ICommunicationControllerFactory>();
-            var env = new Mock<IEnvironmentConnection>();
-            env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
-            var updateProxyTest = new UpdateProxy(comms.Object, env.Object);
-            var controller = new Mock<ICommunicationController>();
-            comms.Setup(a => a.CreateController("TestSqliteService")).Returns(controller.Object);
-            controller.Setup(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(new ExecuteMessage { HasError = true, Message = new StringBuilder("bob") });
-            //------------Execute Test---------------------------
-
-            updateProxyTest.TestSqliteConnection(new Mock<ISqliteDBSource>().Object);
-            //------------Assert Results-------------------------
-            controller.Verify(a => a.ExecuteCommand<IExecuteMessage>(env.Object, It.IsAny<Guid>()));
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("UpdateProxyTest_Test")]
         public void UpdateProxyTest_Test_DbSource_ExpectSuccess()
         {
             //------------Setup for test--------------------------
