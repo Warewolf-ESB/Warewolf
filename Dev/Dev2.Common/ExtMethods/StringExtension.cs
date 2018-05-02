@@ -28,11 +28,6 @@ namespace Dev2.Common.ExtMethods
         static readonly Regex IsHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
         static readonly Regex IsHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
-        public static Regex IsValidCategoryname { get => isValidCategoryname; set => isValidCategoryname = value; }
-        static Regex isValidCategoryname = new Regex(@"[\\/?%*:|""<>\.]+$");
-        public static Regex IsValidResourcename { get => isValidResourcename; set => isValidResourcename = value; }
-        static Regex isValidResourcename = new Regex(@"[^a-zA-Z0-9._\s-]+");
-
         public static bool ContainsUnicodeCharacter(this string input)
         {
             if (string.IsNullOrEmpty(input))
