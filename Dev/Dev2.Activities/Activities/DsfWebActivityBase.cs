@@ -15,6 +15,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using System.Net;
+using System.IO;
 
 namespace Dev2.Activities
 {
@@ -95,8 +97,7 @@ namespace Dev2.Activities
             }
             catch (UriFormatException e)
             {
-                //CurrentDataObject.Environment.AddError(e.Message);// To investigate this
-                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError); // Error must be added on the environment
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 return httpClient;
             }
 
@@ -111,44 +112,74 @@ namespace Dev2.Activities
             var httpClient = CreateClient(headerValues, query, source);
             if (httpClient != null)
             {
-                var address = source.Address;
-                if (query != null)
+                try
                 {
-                    address = address + query;
+                    var address = BuildQuery(query, source);
+                    string resultAsString;
+                    switch (_method)
+                    {
+                        case WebRequestMethod.Get:
+                            var taskOfString = httpClient.GetStringAsync(new Uri(address));
+                            resultAsString = taskOfString.Result;
+                            break;
+                        case WebRequestMethod.Post:
+                            var taskOfResponseMessage = httpClient.PostAsync(new Uri(address), new StringContent(putData));
+                            resultAsString = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
+                            break;
+                        case WebRequestMethod.Delete:
+                            taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
+                            var ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
+                            resultAsString = ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
+                            break;
+                        case WebRequestMethod.Put:
+                            resultAsString = PerformPut(putData, headerValues, httpClient, address);
+                            break;
+                        default:
+                            resultAsString = $"Invalid Request Method: {_method}";
+                            break;
+                    }                    
+                    return resultAsString;
                 }
-                if (_method == WebRequestMethod.Get)
+                catch (WebException webEx)
                 {
-                    var taskOfString = httpClient.GetStringAsync(new Uri(address));
-                    return taskOfString.Result;
+                    if (webEx.Response is HttpWebResponse httpResponse)
+                    {
+                        using (var responseStream = httpResponse.GetResponseStream())
+                        {
+                            var reader = new StreamReader(responseStream);
+                            return reader.ReadToEnd();
+                        }
+                    }
                 }
-                Task<HttpResponseMessage> taskOfResponseMessage;
-                if (_method == WebRequestMethod.Delete)
-                {
-                    taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
-                    var ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
-                    return ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
-                }
-                if (_method == WebRequestMethod.Post)
-                {
-                    taskOfResponseMessage = httpClient.PostAsync(new Uri(address), new StringContent(putData));
-                    var message = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
-                    return message;
-                }
-                HttpContent httpContent = new StringContent(putData, Encoding.UTF8);
-                var contentType = headerValues.FirstOrDefault(value => value.Name.ToLower() == "Content-Type".ToLower());
-                if (contentType != null)
-                {
-                    httpContent.Headers.ContentType = new MediaTypeHeaderValue(contentType.Value);
-                }
-                var httpRequest = new HttpRequestMessage(HttpMethod.Put, new Uri(address))
-                {
-                    Content = httpContent
-                };
-                taskOfResponseMessage = httpClient.SendAsync(httpRequest);
-                var resultAsString = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
-                return resultAsString;
             }
             return null;
+        }
+
+        private static string PerformPut(string putData, NameValue[] headerValues, HttpClient httpClient, string address)
+        {
+            HttpContent httpContent = new StringContent(putData, Encoding.UTF8);
+            var contentType = headerValues.FirstOrDefault(value => value.Name.ToLowerInvariant() == "Content-Type".ToLowerInvariant());
+            if (contentType != null)
+            {
+                httpContent.Headers.ContentType = new MediaTypeHeaderValue(contentType.Value);
+            }
+            var httpRequest = new HttpRequestMessage(HttpMethod.Put, new Uri(address))
+            {
+                Content = httpContent
+            };
+            var taskOfResponseMessage = httpClient.SendAsync(httpRequest);
+            return taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
+        }
+
+        private static string BuildQuery(string query, WebSource source)
+        {
+            var address = source.Address;
+            if (query != null)
+            {
+                address = address + query;
+            }
+
+            return address;
         }
 
         public bool Equals(DsfWebActivityBase other)
@@ -164,11 +195,12 @@ namespace Dev2.Activities
             }
 
             var headersEqual = CommonEqualityOps.CollectionEquals(Headers, other.Headers, new NameValueComparer());
-            return base.Equals(other) 
-                && _method == other._method 
-                && headersEqual
-                && string.Equals(QueryString, other.QueryString) 
-                && Equals(OutputDescription, other.OutputDescription);
+            var equals = base.Equals(other);
+            equals &= _method == other._method;
+            equals &= headersEqual;
+            equals &= string.Equals(QueryString, other.QueryString);
+            equals &= Equals(OutputDescription, other.OutputDescription);
+            return equals;
         }
 
         public override bool Equals(object obj)
@@ -183,7 +215,7 @@ namespace Dev2.Activities
                 return true;
             }
 
-            if (obj.GetType() != this.GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
