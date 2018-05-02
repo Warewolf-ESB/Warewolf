@@ -48,14 +48,12 @@ namespace Dev2.Activities
                 }
             }
         }
-
         public DataSet ExecuteStatement(TSQLStatement sqlStatement, string query)
         {
             if (sqlStatement.Type == TSQLStatementType.Select)
             {
                 return ExecuteQuery(query);
             }
-
             var recordset = new DataTable();
             recordset.Columns.Add("records_affected", typeof(int));
             recordset.Rows.Add(ExecuteNonQuery(query));
@@ -63,20 +61,15 @@ namespace Dev2.Activities
             ds.Tables.Add(recordset);
             return ds;
         }
-
         public string ReturnSql(List<TSQLToken> tokens)
         {
             var tokenString = "";
             foreach (TSQLToken token in tokens)
-            {
-                
+            {                
                     tokenString = string.Concat(tokenString, " ", token.Text);
-                
-                
             }
             return tokenString.Replace(" ( ", "(").Replace(" ) ", ") ").Replace(" )", ")").Replace(" . ", ".").Trim();
         }
-
         public DataSet ExecuteQuery(string sqlQuery)
         {
             try
@@ -102,7 +95,6 @@ namespace Dev2.Activities
                     cmd.CommandType = CommandType.Text;
                     return _dbManager.ExecuteScalar(cmd);
                 }
-
             }
             catch (Exception e)
             {
@@ -181,11 +173,10 @@ namespace Dev2.Activities
                     }
                     else
                     {
-                        newVariableValue.AppendFormat(s, str);
+                        newVariableValue.AppendFormat(s, "'" + str + "'");
                     }
                 }
                 return newVariableValue.ToString();
-
             }
             catch (Exception e)
             {
