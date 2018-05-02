@@ -128,8 +128,7 @@ namespace Dev2.Activities
                             break;
                         case WebRequestMethod.Delete:
                             taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
-                            var ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
-                            resultAsString = ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
+                            resultAsString = taskOfResponseMessage.Result.Content.ReadAsStringAsync().Result;
                             break;
                         case WebRequestMethod.Put:
                             resultAsString = PerformPut(putData, headerValues, httpClient, address);

@@ -7,6 +7,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -386,6 +387,39 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //------------Assert Results-------------------------
             Assert.AreEqual("PMB", dsfWebDeleteActivity.Head.ToList()[0].Value);
             Assert.AreEqual("http://www.testing.com/South Africa", dsfWebDeleteActivity.QueryRes);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebDeleteActivity_Execute")]
+        public void DsfWebDeleteActivity_Execute_ErrorResponse_ShouldSetVariables()
+        {
+            //------------Setup for test--------------------------
+            const string response = "{\"Message\":\"Error\"}";
+            var dsfWebDeleteActivity = new DsfWebDeleteActivity();
+            dsfWebDeleteActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var webSource = new WebSource();
+            webSource.Address = "http://rsaklfsvrtfsbld:9910/api/";
+            webSource.AuthenticationType = AuthenticationType.Anonymous;
+            mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webSource);
+            dsfWebDeleteActivity.ResourceCatalog = mockResourceCatalog.Object;
+            var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Message", "[[Message]]", "") };
+            dsfWebDeleteActivity.Outputs = serviceOutputs;
+            var serviceXml = XmlResource.Fetch("WebService");
+            var service = new WebService(serviceXml) { RequestResponse = response };
+            dsfWebDeleteActivity.OutputDescription = service.GetOutputDescription();
+
+            dsfWebDeleteActivity.QueryString = "Error";
+
+            dsfWebDeleteActivity.SourceId = Guid.Empty;
+            dsfWebDeleteActivity.Headers = new List<INameValue>();
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.EsbChannel = new MockEsb();
+            //------------Execute Test---------------------------
+            dsfWebDeleteActivity.Execute(dataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Error", ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval("[[Message]]", 0)));
         }
 
     }

@@ -22,6 +22,9 @@ namespace ApiTesting.Controllers
         }
 
         [HttpGet]
+        [HttpPost]
+        [HttpPut]
+        [HttpDelete]
         [Route("api/Error")]
         public HttpResponseMessage Error()
         {
