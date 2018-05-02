@@ -117,6 +117,7 @@ namespace Dev2.Activities
             }
             else
             {
+                _recordsAffected = 0;
                 foreach (var declare in DeclareVariables)
                 {
                     if (string.IsNullOrEmpty(declare.Value))
@@ -235,7 +236,7 @@ namespace Dev2.Activities
             recordset.Columns.Add("records_affected", typeof(int));
             recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(AdvancedRecordset.ReturnSql(complexStatement.Tokens)));
             var outputName = Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected").MappedTo;
-            AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, recordset.Rows.Cast<DataRow>().ToList());
+            AdvancedRecordset.ApplyScalarResultToEnvironment(outputName, int.Parse(recordset.Rows[0].ItemArray[0].ToString()));
         }
         void ProcessUpdateStatement(TSQLUnknownStatement complexStatement, int update, ref bool started)
         {
@@ -261,12 +262,19 @@ namespace Dev2.Activities
                 }
             }
             var recordset = new DataTable();
+
             recordset.Columns.Add("records_affected", typeof(int));
             recordset.Rows.Add(AdvancedRecordset.ExecuteNonQuery(AdvancedRecordset.ReturnSql(complexStatement.Tokens)));
+            object sumObject;
+            sumObject = recordset.Compute("Sum(records_affected)", "");
+            _recordsAffected += Convert.ToInt16(sumObject.ToString());
             var mapping = Outputs.FirstOrDefault(e => e.MappedFrom == "records_affected");
+            
+
             if (mapping != null)
             {
-                AdvancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, recordset.Rows.Cast<DataRow>().ToList());
+                AdvancedRecordset.ApplyScalarResultToEnvironment(mapping.MappedTo, _recordsAffected);
+
             }
             var results = AdvancedRecordset.ExecuteQuery("SELECT * FROM " + outputRecordsetName);
             foreach (DataTable dt in results.Tables)
@@ -274,7 +282,7 @@ namespace Dev2.Activities
                 AdvancedRecordset.ApplyResultToEnvironment(outputRecordsetName, Outputs, dt.Rows.Cast<DataRow>().ToList(), true, update, ref started);
             }
         }
-
+        int _recordsAffected = 0;
         void LoadRecordset(string tableName)
         {
 
@@ -294,9 +302,9 @@ namespace Dev2.Activities
             }
         }
         string AddSqlForVariables(string queryText) => Regex.Replace(queryText, @"\@\w+\b", match => AdvancedRecordset.GetVariableValue(match.Value));
-            
-            
-        
+
+
+
         void InsertIntoVariableTable(string varName, string value)
         {
             try

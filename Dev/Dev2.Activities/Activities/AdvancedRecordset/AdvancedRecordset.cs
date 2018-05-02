@@ -293,12 +293,12 @@ namespace Dev2.Activities
             }
         }
 
-        public void ApplyScalarResultToEnvironment(string returnRecordsetName, List<DataRow> recordset)
+        public void ApplyScalarResultToEnvironment(string returnRecordsetName,int recordsAffected)
         {
             var l = new List<AssignValue>();
             if (DataListUtil.IsEvaluated(returnRecordsetName))
             {
-                l.Add(new AssignValue(returnRecordsetName, recordset[0].ItemArray[0].ToString()));
+                l.Add(new AssignValue(returnRecordsetName, recordsAffected.ToString()));
             }
             Environment.AssignWithFrame(l, 0);
             Environment.CommitAssign();
