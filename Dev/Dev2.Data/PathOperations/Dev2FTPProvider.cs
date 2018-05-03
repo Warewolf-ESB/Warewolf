@@ -563,7 +563,7 @@ namespace Dev2.Data.PathOperations
             {
                 var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src),
                                                  src.IsNotCertVerifiable, src.PrivateKeyFile);
-                dirs = ExtractList(src.Path, tmpDirData, IsDirectory);
+                dirs = ExtractList(tmpDirData, IsDirectory);
 
                 dirs.Remove(@".");
                 dirs.Remove(@"..");
@@ -583,7 +583,7 @@ namespace Dev2.Data.PathOperations
             try
             {
                 var tmpDirData = ExtendedDirList(src.Path, src.Username, src.Password, EnableSsl(src), src.IsNotCertVerifiable, src.PrivateKeyFile);
-                dirs = ExtractList(src.Path, tmpDirData, IsFile);
+                dirs = ExtractList(tmpDirData, IsFile);
             }
             catch (Exception ex)
             {
@@ -731,7 +731,7 @@ namespace Dev2.Data.PathOperations
             }
         }
 
-        List<string> ExtractList(string basePath, string payload, Func<string, bool> matchFunc)
+        static List<string> ExtractList(string payload, Func<string, bool> matchFunc)
         {
             var result = new List<string>();
 
@@ -744,10 +744,6 @@ namespace Dev2.Data.PathOperations
                     var part = p.Substring(idx + 1).Trim();
                     if (matchFunc?.Invoke(p) ?? default(bool))
                     {
-                        if (!basePath.EndsWith(@"/"))
-                        {
-                            basePath += @"/";
-                        }
                         result.Add(part);
                     }
                 }
@@ -762,15 +758,9 @@ namespace Dev2.Data.PathOperations
             return result;
         }
 
-        static bool IsDirectory(string part)
-        {
-            return Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower(CultureInfo.InvariantCulture).Contains(@"<dir>");
-        }
+        static bool IsDirectory(string part) => Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower(CultureInfo.InvariantCulture).Contains(@"<dir>");
 
-        static bool IsFile(string part)
-        {
-            return !IsDirectory(part);
-        }
+        static bool IsFile(string part) => !IsDirectory(part);
 
         static string[] GetParts(string payload)
         {

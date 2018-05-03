@@ -35,7 +35,7 @@ namespace Dev2.Common
         }
 
         public bool IsFinalOp() => false;
-      
+
         public string ExecuteOperation(ref StringBuilder sourceString, int startIdx, int len, bool isReversed)
         {
             var result = isReversed ? ReverseSearch(sourceString, startIdx) : ForwardSearch(sourceString, startIdx);
@@ -43,8 +43,8 @@ namespace Dev2.Common
         }
 
         private StringBuilder ForwardSearch(StringBuilder sourceString, int startIdx)
-        {            
-            int pos = sourceString.IndexOf(_seperator,_escapeChar, startIdx, false);
+        {
+            int pos = sourceString.IndexOf(_seperator, _escapeChar, startIdx, false);
             var result = new StringBuilder();
             if (pos > -1)
             {
@@ -64,18 +64,18 @@ namespace Dev2.Common
                 {
                     result.Append(sourceString[i]);
                 }
-            }            
+            }
             return result;
         }
 
         private StringBuilder ReverseSearch(StringBuilder sourceString, int startIdx)
         {
-            int pos = sourceString.LastIndexOf(_seperator,startIdx, false);
+            int pos = sourceString.LastIndexOf(_seperator, startIdx, false);
             var result = new StringBuilder();
             if (pos > -1)
             {
 
-                for (int i = pos+_seperator.Length; i <= startIdx; i++)
+                for (int i = pos + _seperator.Length; i <= startIdx; i++)
                 {
                     result.Append(sourceString[i]);
                 }
@@ -90,7 +90,7 @@ namespace Dev2.Common
                 {
                     result.Append(sourceString[i]);
                 }
-            }            
+            }
             return result;
         }
 
@@ -104,6 +104,6 @@ namespace Dev2.Common
             }
 
             return result;
-        }       
+        }
     }
 }

@@ -82,70 +82,7 @@ namespace Dev2.Activities.Sharepoint
             var allErrors = new ErrorResultTO();
             try
             {
-                var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
-                if (sharepointReadListTos.Any())
-                {
-                    var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
-                    if (sharepointSource == null)
-                    {
-                        var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
-                        sharepointSource = new SharepointSource(contents.ToXElement());
-                    }
-                    var env = dataObject.Environment;
-                    if (dataObject.IsDebugMode())
-                    {
-                        AddInputDebug(env, update);
-                    }
-                    var sharepointHelper = sharepointSource.CreateSharepointHelper();
-                    var fields = sharepointHelper.LoadFieldsForList(SharepointList, false);
-                    using (var ctx = sharepointHelper.GetContext())
-                    {
-                        var camlQuery = SharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update);
-                        var list = ctx.Web.Lists.GetByTitle(SharepointList);
-                        var listItems = list.GetItems(camlQuery);
-                        ctx.Load(listItems);
-                        ctx.ExecuteQuery();
-                        var index = 1;
-                        foreach (var listItem in listItems)
-                        {
-
-                            foreach (var sharepointReadListTo in sharepointReadListTos)
-                            {
-                                var variableName = sharepointReadListTo.VariableName;
-                                var fieldToName = sharepointReadListTo.FieldName;
-                                var fieldName = fields.FirstOrDefault(field => field.Name == fieldToName);
-                                if (fieldName != null)
-                                {
-                                    var listItemValue = "";
-                                    try
-                                    {
-                                        var sharepointValue = listItem[fieldName.InternalName];
-
-                                        if (sharepointValue != null)
-                                        {
-                                            var sharepointVal = GetSharepointValue(sharepointValue);
-                                            listItemValue = sharepointVal.ToString();
-                                        }
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                                        //Ignore sharepoint exception on retrieval not all fields can be retrieved.
-                                    }
-                                    var correctedVariable = variableName;
-                                    if (DataListUtil.IsValueRecordset(variableName) && DataListUtil.IsStarIndex(variableName))
-                                    {
-                                        correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variableName, index);
-                                    }
-                                    env.AssignWithFrame(new AssignValue(correctedVariable, listItemValue), update);
-                                }
-                            }
-                            index++;
-                        }
-                    }
-                    env.CommitAssign();
-                    AddOutputDebug(dataObject, env, update);
-                }
+                ExecuteConcreteAction(dataObject, update);
             }
             catch (Exception e)
             {
@@ -167,6 +104,83 @@ namespace Dev2.Activities.Sharepoint
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+        }
+
+        private void ExecuteConcreteAction(IDSFDataObject dataObject, int update)
+        {
+            var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+            if (sharepointReadListTos.Any())
+            {
+                var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+                if (sharepointSource == null)
+                {
+                    var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
+                    sharepointSource = new SharepointSource(contents.ToXElement());
+                }
+                var env = dataObject.Environment;
+                if (dataObject.IsDebugMode())
+                {
+                    AddInputDebug(env, update);
+                }
+                var sharepointHelper = sharepointSource.CreateSharepointHelper();
+                var fields = sharepointHelper.LoadFieldsForList(SharepointList, false);
+                using (var ctx = sharepointHelper.GetContext())
+                {
+                    var camlQuery = SharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update);
+                    var list = ctx.Web.Lists.GetByTitle(SharepointList);
+                    var listItems = list.GetItems(camlQuery);
+                    ctx.Load(listItems);
+                    ctx.ExecuteQuery();
+                    AddItemList(update, sharepointReadListTos, env, fields, listItems);
+                }
+                env.CommitAssign();
+                AddOutputDebug(dataObject, env, update);
+            }
+        }
+
+        private void AddItemList(int update, List<SharepointReadListTo> sharepointReadListTos, IExecutionEnvironment env, List<Common.Interfaces.Infrastructure.SharedModels.ISharepointFieldTo> fields, ListItemCollection listItems)
+        {
+            var index = 1;
+            foreach (var listItem in listItems)
+            {
+                foreach (var sharepointReadListTo in sharepointReadListTos)
+                {
+                    var variableName = sharepointReadListTo.VariableName;
+                    var fieldToName = sharepointReadListTo.FieldName;
+                    var fieldName = fields.FirstOrDefault(field => field.Name == fieldToName);
+                    if (fieldName != null)
+                    {
+                        TryAddField(update, env, index, listItem, variableName, fieldName);
+                    }
+                }
+                index++;
+            }
+        }
+
+        private void TryAddField(int update, IExecutionEnvironment env, int index, ListItem listItem, string variableName, Common.Interfaces.Infrastructure.SharedModels.ISharepointFieldTo fieldName)
+        {
+            var listItemValue = "";
+            try
+            {
+                var sharepointValue = listItem[fieldName.InternalName];
+
+                if (sharepointValue != null)
+                {
+                    var sharepointVal = GetSharepointValue(sharepointValue);
+                    listItemValue = sharepointVal.ToString();
+                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                //Ignore sharepoint exception on retrieval not all fields can be retrieved.
+            }
+            var correctedVariable = variableName;
+            if (DataListUtil.IsValueRecordset(variableName) && DataListUtil.IsStarIndex(variableName))
+            {
+                correctedVariable = DataListUtil.ReplaceStarWithFixedIndex(variableName, index);
+            }
+            env.AssignWithFrame(new AssignValue(correctedVariable, listItemValue), update);
         }
 
         object GetSharepointValue(object sharepointValue)
@@ -211,14 +225,12 @@ namespace Dev2.Activities.Sharepoint
             }
             else
             {
-                if (type == typeof(FieldUserValue[]))
+                if (type == typeof(FieldUserValue[]) && sharepointValue is FieldLookupValue[] fieldValue)
                 {
-                    if (sharepointValue is FieldLookupValue[] fieldValue)
-                    {
-                        var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
-                        return returnString;
-                    }
+                    var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
+                    return returnString;
                 }
+
             }
             return val;
         }

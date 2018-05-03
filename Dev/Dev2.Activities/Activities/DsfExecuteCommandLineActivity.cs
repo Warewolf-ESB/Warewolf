@@ -130,42 +130,40 @@ namespace Dev2.Activities
                     AddDebugInputItem(new DebugEvalResult(CommandFileName, "Command", dataObject.Environment, update));
                 }
                 var itr = new WarewolfIterator(dataObject.Environment.Eval(CommandFileName, update));
-                if(!allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
-                    var counter = 1;
-                    while (itr.HasMoreData())
+                    return;
+                }
+                var counter = 1;
+                while (itr.HasMoreData())
+                {
+                    var val = itr.GetNextValue();
                     {
-                        var val = itr.GetNextValue();
+                        if(string.IsNullOrEmpty(val))
                         {
-                            if(string.IsNullOrEmpty(val))
-                            {
-                                throw new Exception(ErrorResource.EmptyScript);
-                            }
-                            if (!ExecuteProcess(val, exeToken, out StreamReader errorReader, out StringBuilder outputReader))
-                            {
-                                return;
-                            }
-
-                            allErrors.AddError(errorReader.ReadToEnd());
-                            var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
-                            var readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
-
-                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
-                            {
-                                dataObject.Environment?.Assign(region, readValue, update == 0 ? counter : update);
-                            }
-                            counter++;
-                            errorReader.Close();
+                            throw new Exception(ErrorResource.EmptyScript);
                         }
-                    }
-
-                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                    {
-                        if(!string.IsNullOrEmpty(CommandResult))
+                        if (!ExecuteProcess(val, exeToken, out StreamReader errorReader, out StringBuilder outputReader))
                         {
-                            AddDebugOutputItem(new DebugEvalResult(CommandResult, "", dataObject.Environment, update));
+                            return;
                         }
+
+                        allErrors.AddError(errorReader.ReadToEnd());
+                        var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
+                        var readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
+
+                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
+                        {
+                            dataObject.Environment?.Assign(region, readValue, update == 0 ? counter : update);
+                        }
+                        counter++;
+                        errorReader.Close();
                     }
+                }
+
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(CommandResult))
+                {
+                    AddDebugOutputItem(new DebugEvalResult(CommandResult, "", dataObject.Environment, update));
                 }
             }
             catch(Exception e)
@@ -206,7 +204,6 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
-
             }
         }
 
@@ -236,13 +233,11 @@ namespace Dev2.Activities
                 while (!_process.HasExited && !executionToken.IsUserCanceled)
                 {
                     reader.Append(_process.StandardOutput.ReadToEnd());
-                    if (!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
+                    if (!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest) && !_process.HasExited)
                     {
-                        if (!_process.HasExited)
-                        {
-                            _process.Kill();
-                        }
+                        _process.Kill();
                     }
+
                     if (ModalChecker.IsWaitingForUserInput(_process))
                     {
                         _process.Kill();
@@ -319,44 +314,7 @@ namespace Dev2.Activities
             ProcessStartInfo psi;
             if(val.StartsWith("\""))
             {
-                // we have a quoted string for the cmd portion
-                var idx = val.IndexOf("\" \"", StringComparison.Ordinal);
-                if(idx < 0)
-                {
-                    // account for "xxx" arg
-                    idx = val.IndexOf("\" ", StringComparison.Ordinal);
-                    if(idx < 0)
-                    {
-                        val += Environment.NewLine + "exit";
-                        psi = new ProcessStartInfo("cmd.exe", "/Q /C " + val);
-                    }
-                    else
-                    {
-                        var cmd = val.Substring(0, idx + 1);// keep trailing "
-                        if(File.Exists(cmd))
-                        {
-                            var args = val.Substring(idx + 2);
-                            psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
-                        }
-                        else
-                        {
-                            psi = ExecuteSystemCommand(val);
-                        }
-                    }
-                }
-                else
-                {
-                    var cmd = val.Substring(0, idx + 1);// keep trailing "
-                    if(File.Exists(cmd))
-                    {
-                        var args = val.Substring(idx + 2);
-                        psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
-                    }
-                    else
-                    {
-                        psi = ExecuteSystemCommand(val);
-                    }
-                }
+                psi = ExecuteQuotedExpression(ref val);
             }
             else
             {
@@ -390,6 +348,51 @@ namespace Dev2.Activities
                 psi.RedirectStandardOutput = true;
                 psi.CreateNoWindow = true;
                 psi.Verb = "runas";
+            }
+
+            return psi;
+        }
+
+        private static ProcessStartInfo ExecuteQuotedExpression(ref string val)
+        {
+            ProcessStartInfo psi;
+            // we have a quoted string for the cmd portion
+            var idx = val.IndexOf("\" \"", StringComparison.Ordinal);
+            if (idx < 0)
+            {
+                // account for "xxx" arg
+                idx = val.IndexOf("\" ", StringComparison.Ordinal);
+                if (idx < 0)
+                {
+                    val += Environment.NewLine + "exit";
+                    psi = new ProcessStartInfo("cmd.exe", "/Q /C " + val);
+                }
+                else
+                {
+                    var cmd = val.Substring(0, idx + 1);// keep trailing "
+                    if (File.Exists(cmd))
+                    {
+                        var args = val.Substring(idx + 2);
+                        psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
+                    }
+                    else
+                    {
+                        psi = ExecuteSystemCommand(val);
+                    }
+                }
+            }
+            else
+            {
+                var cmd = val.Substring(0, idx + 1);// keep trailing "
+                if (File.Exists(cmd))
+                {
+                    var args = val.Substring(idx + 2);
+                    psi = new ProcessStartInfo("cmd.exe", "/Q /C " + cmd + " " + args);
+                }
+                else
+                {
+                    psi = ExecuteSystemCommand(val);
+                }
             }
 
             return psi;

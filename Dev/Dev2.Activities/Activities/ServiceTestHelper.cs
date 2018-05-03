@@ -111,22 +111,26 @@ namespace Dev2.Activities
                     var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg, hasError);
                     var itemToAdd = new DebugItem();
                     itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
-
-                    if (debugState.AssertResultList != null)
-                    {
-                        var addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
-
-                        if (addItem)
-                        {
-                            debugState.AssertResultList.Add(itemToAdd);
-                        }
-                    }
+                    AddAssertResultList(debugState, itemToAdd);
                 }
                 output.Result = testResult;
                 ret.Add(testResult);
             }
             return ret;
 
+        }
+
+        static void AddAssertResultList(IDebugState debugState, DebugItem itemToAdd)
+        {
+            if (debugState.AssertResultList != null)
+            {
+                var addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
+
+                if (addItem)
+                {
+                    debugState.AssertResultList.Add(itemToAdd);
+                }
+            }
         }
 
         public static void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps,string childUniqueID)

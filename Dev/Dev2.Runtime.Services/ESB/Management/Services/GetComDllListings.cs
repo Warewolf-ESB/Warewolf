@@ -27,9 +27,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 using (Isolated<ComDllLoaderHandler> isolated = new Isolated<ComDllLoaderHandler>())
                 {
                     var openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry32);
-                    dllListings = isolated.Value.GetListings(openBaseKey);
+                    dllListings = ComDllLoaderHandler.TryGetListings(openBaseKey);
                     openBaseKey = RegistryKey.OpenBaseKey(RegistryHive.ClassesRoot, RegistryView.Registry64);
-                    dllListings.AddRange(isolated.Value.GetListings(openBaseKey));
+                    dllListings.AddRange(ComDllLoaderHandler.TryGetListings(openBaseKey));
                 }
                 msg.Message = serializer.SerializeToBuilder(dllListings);
             }

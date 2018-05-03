@@ -58,21 +58,15 @@ namespace Dev2.Activities.Scripting
         public string IncludeFile { get; set; }
 
         readonly IStringScriptSources _sources;
-
-
+        
         #region Overrides of DsfNativeActivity<string>
 
-        /// <summary>
-        /// When overridden runs the activity's execution logic 
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
-
-
+        
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             AddScriptSourcePathsToList();
@@ -83,42 +77,7 @@ namespace Dev2.Activities.Scripting
             InitializeDebug(dataObject);
             try
             {
-                if (!errors.HasErrors())
-                {
-                    if (dataObject.IsDebugMode())
-                    {
-                        var language = ScriptType.GetDescription();
-                        AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
-                        AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
-                    }
-
-                    allErrors.MergeErrors(errors);
-
-                    if (allErrors.HasErrors())
-                    {
-                        return;
-                    }
-
-                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
-                    while (scriptItr.HasMoreData())
-                    {
-                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
-                        var value = engine.Execute(scriptItr.GetNextValue());
-
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                        {
-
-                            env.Assign(region, value, update);
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                            {
-                                if (!string.IsNullOrEmpty(region))
-                                {
-                                    AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
-                                }
-                            }
-                        }
-                    }
-                }
+                TryExecute(dataObject, update, allErrors, env);
             }
             catch (Exception e) when (e is NullReferenceException || e is RuntimeBinderException)
             {
@@ -145,6 +104,34 @@ namespace Dev2.Activities.Scripting
                 }
             }
         }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, IExecutionEnvironment env)
+        {
+            if (dataObject.IsDebugMode())
+            {
+                var language = ScriptType.GetDescription();
+                AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
+                AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
+            }
+
+            var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
+            while (scriptItr.HasMoreData())
+            {
+                var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
+                var value = engine.Execute(scriptItr.GetNextValue());
+
+                foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                {
+
+                    env.Assign(region, value, update);
+                    if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(region))
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
+                    }
+                }
+            }
+        }
+
         void AddScriptSourcePathsToList()
         {
             if (!string.IsNullOrEmpty(IncludeFile))

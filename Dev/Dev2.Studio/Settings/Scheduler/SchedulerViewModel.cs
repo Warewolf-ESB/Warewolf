@@ -569,7 +569,7 @@ namespace Dev2.Settings.Scheduler
             }
 
             SelectedTask = taskToBeDeleted;
-            SchedulerTaskManager.DeleteTask();
+            SchedulerTaskManager.TryDeleteTask();
         }
 
         public ICommand EditTriggerCommand => _editTriggerCommand ??

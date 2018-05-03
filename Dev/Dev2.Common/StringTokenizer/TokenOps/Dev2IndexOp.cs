@@ -23,7 +23,7 @@ namespace Dev2.Common
         public int ToIndex { get; private set; }
 
         public bool IsFinalOp() => false;
-     
+
         public string ExecuteOperation(ref StringBuilder sourceString, int startIdx, int len, bool isReversed)
         {
             var result = new StringBuilder();
@@ -53,7 +53,7 @@ namespace Dev2.Common
 
             return result.ToString();
         }
-        
+
         public int OpLength() => 0;
     }
 }

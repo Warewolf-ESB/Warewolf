@@ -94,7 +94,7 @@ namespace Dev2.Intellisense.Helper
             InnerList.AddRange(shares.ToArray());
         }
 
-        static void EnumerateSharesNT(string server, ShareCollection shares)
+        static void TryEnumerateSharesNT(string server, ShareCollection shares)
         {
             var level = 2;
             var hResume = 0;
@@ -102,34 +102,7 @@ namespace Dev2.Intellisense.Helper
 
             try
             {
-                var nRet = NetShareEnum(server, level, out pBuffer, -1, out int entriesRead, out int totalEntries, ref hResume);
-
-                if (ErrorAccessDenied == nRet)
-                {
-                    level = 1;
-                    nRet = NetShareEnum(server, level, out pBuffer, -1, out entriesRead, out totalEntries, ref hResume);
-                }
-
-                if (NoError == nRet && entriesRead > 0)
-                {
-                    var t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
-                    var offset = Marshal.SizeOf(t);
-
-                    for (int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
-                    {
-                        var pItem = new IntPtr(lpItem);
-                        if (1 == level)
-                        {
-                            var si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
-                            shares.Add(si.NetName, si.ShareType);
-                        }
-                        else
-                        {
-                            var si = (ShareInfo2)Marshal.PtrToStructure(pItem, t);
-                            shares.Add(si.NetName, si.ShareType);
-                        }
-                    }
-                }
+                pBuffer = EnumerateSharesNT(server, shares, ref level, ref hResume);
             }
             finally
             {
@@ -140,7 +113,41 @@ namespace Dev2.Intellisense.Helper
             }
         }
 
-        protected static void EnumerateShares(string server, ShareCollection shares) => EnumerateSharesNT(server, shares);
+        private static IntPtr EnumerateSharesNT(string server, ShareCollection shares, ref int level, ref int hResume)
+        {
+            var nRet = NetShareEnum(server, level, out IntPtr pBuffer, -1, out int entriesRead, out int totalEntries, ref hResume);
+
+            if (ErrorAccessDenied == nRet)
+            {
+                level = 1;
+                nRet = NetShareEnum(server, level, out pBuffer, -1, out entriesRead, out totalEntries, ref hResume);
+            }
+
+            if (NoError == nRet && entriesRead > 0)
+            {
+                var t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
+                var offset = Marshal.SizeOf(t);
+
+                for (int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
+                {
+                    var pItem = new IntPtr(lpItem);
+                    if (1 == level)
+                    {
+                        var si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
+                        shares.Add(si.NetName, si.ShareType);
+                    }
+                    else
+                    {
+                        var si = (ShareInfo2)Marshal.PtrToStructure(pItem, t);
+                        shares.Add(si.NetName, si.ShareType);
+                    }
+                }
+            }
+
+            return pBuffer;
+        }
+
+        protected static void EnumerateShares(string server, ShareCollection shares) => TryEnumerateSharesNT(server, shares);
 
         [DllImport("netapi32", CharSet = CharSet.Unicode)]
         protected static extern int NetShareEnum(string lpServerName, int dwLevel,
