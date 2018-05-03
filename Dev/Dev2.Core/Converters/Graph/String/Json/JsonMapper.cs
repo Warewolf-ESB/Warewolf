@@ -101,12 +101,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                         {
                             if (property.IsEnumerable())
                             {
-
-
-
-
                                 if (propertyData is IEnumerable enumerableData)
-
                                 {
                                     var enumerator = enumerableData.GetEnumerator();
                                     enumerator.Reset();
