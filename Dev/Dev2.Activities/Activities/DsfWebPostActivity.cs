@@ -114,7 +114,7 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
         {
-            return WebSources.Execute(source, WebRequestMethod.Get, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
+            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
 
         public WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
