@@ -1464,6 +1464,7 @@ namespace System.Windows.Controls
             var viewIndex = 0;
             var viewCount = _view.Count;
             var items = _items;
+            
             foreach (object item in items)
             {
                 var inResults = !(stringFiltering || objectFiltering);
@@ -1486,14 +1487,8 @@ namespace System.Windows.Controls
                     }
                     else
                     {
-                        if (viewIndex == viewCount)
-                        {
-                            _view.Add(item);
-                        }
-                        else
-                        {
-                            _view.Insert(viewIndex, item);
-                        }
+
+                        _view.Insert(viewIndex, item);
                         viewIndex++;
                         viewCount++;
                     }
