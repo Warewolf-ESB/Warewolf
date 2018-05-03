@@ -106,7 +106,7 @@ namespace Dev2.Activities
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
-        protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
+        protected virtual string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
         {
             var headerValues = head as NameValue[] ?? head.ToArray();
             var httpClient = CreateClient(headerValues, query, source);
