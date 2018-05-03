@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
@@ -169,6 +170,17 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 return method == WebRequestMethod.Get ? client.DownloadString(address) : client.UploadString(address, method.ToString().ToUpperInvariant(), data);
+            }            
+            catch(WebException webex)
+            {
+                if(webex.Response is HttpWebResponse httpResponse)
+                {
+                    using (var responseStream = httpResponse.GetResponseStream())
+                    {
+                        var reader = new StreamReader(responseStream);
+                        return reader.ReadToEnd();
+                    }
+                }
             }
             catch (Exception e)
             {
