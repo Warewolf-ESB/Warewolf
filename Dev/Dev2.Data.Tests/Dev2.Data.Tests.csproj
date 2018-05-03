@@ -106,6 +106,7 @@
     <Compile Include="BinaryDataList\IndexIteratorTest.cs" />
     <Compile Include="BinaryDataList\IndexListTest.cs" />
     <Compile Include="BinaryDataList\DataListUtilTest.cs" />
+    <Compile Include="Builders\DataListIntellisenseBuilderTests.cs" />
     <Compile Include="Builders\RecordSetCollectionBuilderTest.cs" />
     <Compile Include="DataListFactoryTests.cs" />
     <Compile Include="DecisionsTests\DecisionDisplayHelperTests.cs" />
