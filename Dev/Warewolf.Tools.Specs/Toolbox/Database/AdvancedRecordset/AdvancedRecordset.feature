@@ -188,6 +188,140 @@ Scenario:  Select all with Where condition as a Scalar
     |                               |
     | [[TableCopy(1).name]] = Alice |
 
+Scenario:  Select all with Where condition contains floating point
+    Given I have a recordset with this shape
+    | [[person]]        |        |
+    | person(1).name    | Bob    |
+    | person(2).name    | Alice  |
+    | person(3).name    | Hatter |
+    | person(1).balance | 10     |
+    | person(2).balance | 10.23  |
+    | person(3).balance | 50.21  |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name    | Value         |
+    | bal | 10.23 |
+    And I have the following sql statement "SELECT * from person where balance = @bal"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To               |
+    | name        | [[TableCopy().name]]    |
+    | balance     | [[TableCopy().balance]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy().name]]"  will be
+    | rs                | value |
+    | TableCopy(1).name | Alice |
+	 Then recordset "[[TableCopy().balance]]"  will be
+    | rs                   | value |
+    | TableCopy(1).balance | 10.23 |
+    And the execution has "NO" error
+    And the debug output as
+    |                                   |
+    | [[TableCopy(1).name]] = Alice     |
+    | [[TableCopy(1).balance]] =  10.23 |
+
+Scenario:  Select all with Where condition contains greater than floating point
+    Given I have a recordset with this shape
+    | [[person]]        |        |
+    | person(1).name    | Bob    |
+    | person(2).name    | Alice  |
+    | person(3).name    | Hatter |
+    | person(1).balance | 10     |
+    | person(2).balance | 10.23  |
+    | person(3).balance | 50.21  |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name    | Value         |
+    | bal | 40 |
+    And I have the following sql statement "SELECT * from person where balance > @bal"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To               |
+    | name        | [[TableCopy().name]]    |
+    | balance     | [[TableCopy().balance]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy().name]]"  will be
+    | rs                | value  |
+    | TableCopy(1).name | Hatter |
+	 Then recordset "[[TableCopy().balance]]"  will be
+    | rs                   | value |
+    | TableCopy(1).balance | 50.21 |
+    And the execution has "NO" error
+    And the debug output as
+    |                                   |
+    | [[TableCopy(1).name]] = Hatter    |
+    | [[TableCopy(1).balance]] =  50.21 |
+
+Scenario:  Select all with Where condition contains equal floating point
+    Given I have a recordset with this shape
+    | [[person]]        |        |
+    | person(1).name    | Bob    |
+    | person(2).name    | Alice  |
+    | person(3).name    | Hatter |
+    | person(1).balance | 10     |
+    | person(2).balance | 10.23  |
+    | person(3).balance | 50.21  |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name | Value |
+    | bal  | 10    |
+    And I have the following sql statement "SELECT * from person where balance = @bal"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To               |
+    | name        | [[TableCopy().name]]    |
+    | balance     | [[TableCopy().balance]] |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy().name]]"  will be
+    | rs                | value |
+    | TableCopy(1).name | Bob   |
+	 Then recordset "[[TableCopy().balance]]"  will be
+    | rs                   | value |
+    | TableCopy(1).balance | 10    |
+    And the execution has "NO" error
+    And the debug output as
+    |                                |
+    | [[TableCopy(1).name]] = Bob    |
+    | [[TableCopy(1).balance]] =  10 |
+
+Scenario:  Select all with Where condition contains date comparison
+    Given I have a recordset with this shape
+    | [[person]]     |            |
+    | person(1).name | Bob        |
+    | person(2).name | Alice      |
+    | person(3).name | Hatter     |
+    | person(1).dob  | 2010-12-30 |
+    | person(2).dob  | 2012-09-15 |
+    | person(3).dob  | 2013-01-03 |
+    And I drag on an Advanced Recordset tool
+    And Declare variables as
+    | Name        | Value      |
+    | dateofbirth | 2012-01-03 |
+    And I have the following sql statement "SELECT * from person where dob >= @dateofbirth"
+    When I click Generate Outputs
+    Then Outputs are as follows
+    | Mapped From | Mapped To            |
+    | name        | [[TableCopy().name]] |
+    | dob         | [[TableCopy().dob]]  |
+    And Recordset is "TableCopy"
+    When Advanced Recordset tool is executed
+    Then recordset "[[TableCopy(*).name]]"  will be
+    | rs                | value  |
+    | TableCopy(1).name | Alice  |
+    | TableCopy(2).name | Hatter |
+	 Then recordset "[[TableCopy(*).dob]]"  will be
+    | rs               | value      |
+    | TableCopy(1).dob | 2012-09-15 |
+	| TableCopy(2).dob | 2013-01-03 |
+    And the execution has "NO" error
+    And the debug output as
+    |                                    |
+    | [[TableCopy(2).name]] = Hatter     |
+    | [[TableCopy(2).dob]] =  2013-01-03 |
+
 Scenario:  Select specific field With Where condition
     Given I have a recordset with this shape
     | [[person]]       |        |

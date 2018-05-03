@@ -162,6 +162,10 @@ namespace Dev2.Activities
                 {
                     return retValue;
                 }
+                if (double.TryParse(retValue, out double dounum))
+                {
+                    return retValue;
+                }
                 var newVariableValue = new StringBuilder();
                 var arrayString = retValue.Split(',');
                 foreach (var str in arrayString)
