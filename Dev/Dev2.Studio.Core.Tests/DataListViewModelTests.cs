@@ -257,6 +257,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
         public void ConvertDataListStringToCollections_DataListWithAddScalarWithSearchText_ShouldPopulateScalarSetNameWithBrackets()
         {
             Setup();
@@ -290,6 +291,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
         public void ConvertDataListStringToCollections_DataListWithAddScalarWithNullAttributeAndSearchText_ShouldPopulateScalarSetNameWithBrackets()
         {
             Setup();
@@ -322,8 +324,29 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(messageScalar.IsVisible);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddRecordSetNamesIfMissing_FixNamingIfContainsDot_Expected_Change()
+        {
+            Setup();
+
+            const string recsetName = "recset";
+            const string firstFieldName = "f1.";
+            var recSetDataModel = CreateRecsetDataListModelWithTwoFields(recsetName, firstFieldName, "f2");
+            _dataListViewModel.Add(recSetDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateRecsetPart(recsetName, firstFieldName);
+            dataListParts.Add(part.Object);
+            _dataListViewModel.RecsetCollection[1].Children[0].DisplayName = ".f1";
+            _dataListViewModel.AddRecordsetNamesIfMissing();
+
+            Assert.AreEqual(2, _dataListViewModel.RecsetCollectionCount);
+            Assert.AreEqual("f1", _dataListViewModel.RecsetCollection[1].Children[0].DisplayName);
+        }
+
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
         public void ConvertDataListStringToCollections_DataListWithAddScalarWithNullAttribute_ShouldPopulateScalarSetNameWithBrackets()
         {
             Setup();
