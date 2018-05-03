@@ -173,35 +173,18 @@ namespace Dev2.Services.Execution
 
             try
             {
-                ErrorResultTO invokeErrors;
-
                 var itrs = new List<IWarewolfIterator>(5);
                 IWarewolfListIterator itrCollection = new WarewolfListIterator();
                 if (string.IsNullOrEmpty(InstanceInputDefinitions) && string.IsNullOrEmpty(InstanceOutputDefintions))
                 {
-                    if (Inputs != null && Inputs.Count == 0)
-                    {
-                        ExecuteService(out invokeErrors, update, outputFormatter);
-                        errors.MergeErrors(invokeErrors);
-                        return;
-                    }
-                    else
-                    {
-                        BuildParameterIterators(update, null, itrCollection, itrs);
-
-                        while (itrCollection.HasMoreData())
-                        {
-                            ExecuteService(itrCollection, itrs, out invokeErrors, update, outputFormatter);
-                            errors.MergeErrors(invokeErrors);
-                        }
-                        return;
-                    }
+                    MergeErrors(errors, update, outputFormatter, itrs, itrCollection);
+                    return;
                 }
                 var method = Service.Method;
                 var inputs = method.Parameters;
                 if (inputs.Count == 0)
                 {
-                    ExecuteService(out invokeErrors, update, outputFormatter);
+                    ExecuteService(out ErrorResultTO invokeErrors, update, outputFormatter);
                     errors.MergeErrors(invokeErrors);
                 }
                 else
@@ -210,7 +193,7 @@ namespace Dev2.Services.Execution
 
                     while (itrCollection.HasMoreData())
                     {
-                        ExecuteService(itrCollection, itrs, out invokeErrors, update, outputFormatter);
+                        ExecuteService(itrCollection, itrs, out ErrorResultTO invokeErrors, update, outputFormatter);
                         errors.MergeErrors(invokeErrors);
                     }
                 }
@@ -225,6 +208,26 @@ namespace Dev2.Services.Execution
             }
         }
 
+        void MergeErrors(ErrorResultTO errors, int update, IOutputFormatter outputFormatter, List<IWarewolfIterator> itrs, IWarewolfListIterator itrCollection)
+        {
+            ErrorResultTO invokeErrors;
+            if (Inputs != null && Inputs.Count == 0)
+            {
+                ExecuteService(out invokeErrors, update, outputFormatter);
+                errors.MergeErrors(invokeErrors);
+            }
+            else
+            {
+                BuildParameterIterators(update, null, itrCollection, itrs);
+
+                while (itrCollection.HasMoreData())
+                {
+                    ExecuteService(itrCollection, itrs, out invokeErrors, update, outputFormatter);
+                    errors.MergeErrors(invokeErrors);
+                }
+            }
+        }
+
         void BuildParameterIterators(int update, IEnumerable<MethodParameter> inputs, IWarewolfListIterator itrCollection, ICollection<IWarewolfIterator> itrs)
         {
             if (string.IsNullOrEmpty(InstanceInputDefinitions))
@@ -233,23 +236,7 @@ namespace Dev2.Services.Execution
                 {
                     foreach (var sai in Inputs)
                     {
-                        var val = sai.Name;
-                        string toInject = null;
-
-                        if (val != null)
-                        {
-                            toInject = sai.Value;
-                        }
-                        else
-                        {
-                            if (!sai.EmptyIsNull)
-                            {
-                                toInject = "";
-                            }
-                        }
-                        var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
-                        itrCollection.AddVariableToIterateOn(paramIterator);
-                        itrs.Add(paramIterator);
+                        AddInput(update, itrCollection, itrs, sai);
                     }
                 }
                 return;
@@ -281,6 +268,27 @@ namespace Dev2.Services.Execution
                 itrCollection.AddVariableToIterateOn(paramIterator);
                 itrs.Add(paramIterator);
             }
+        }
+
+        void AddInput(int update, IWarewolfListIterator itrCollection, ICollection<IWarewolfIterator> itrs, IServiceInput sai)
+        {
+            var val = sai.Name;
+            string toInject = null;
+
+            if (val != null)
+            {
+                toInject = sai.Value;
+            }
+            else
+            {
+                if (!sai.EmptyIsNull)
+                {
+                    toInject = "";
+                }
+            }
+            var paramIterator = new WarewolfIterator(DataObj.Environment.Eval(toInject, update));
+            itrCollection.AddVariableToIterateOn(paramIterator);
+            itrs.Add(paramIterator);
         }
 
         #endregion
@@ -421,55 +429,70 @@ namespace Dev2.Services.Execution
             {
                 if (c.Name != GlobalConstants.NaughtyTextNode)
                 {
-                    // scalars and recordset fetch
-                    if (level > 0)
-                    {
-                        var c1 = c;
-                        var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
-                        var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
-                        if (dev2Definitions.Length != 0)
-                        {
-                            // fetch recordset index
-                            int fetchIdx;
-                            var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
-                            // process recordset
-                            var nl = c.ChildNodes;
-                            foreach (XmlNode subc in nl)
-                            {
-                                // Extract column being mapped to ;)
-                                foreach (var definition in dev2Definitions)
-                                {
-                                    if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
-                                    {
-                                        DataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml), update);
-                                    }
-                                }
-
-                            }
-                            // update this recordset index
-                            DataObj.Environment.CommitAssign();
-                            indexCache[c.Name] = ++idx;
-                        }
-                        else
-                        {
-                            var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
-                            if (scalarName != null)
-                            {
-                                DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml(c1.InnerXml), update);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (level == 0)
-                        {
-                            // Only recurse if we're at the first level!!
-                            TryConvert(c.ChildNodes, outputDefs, indexCache, update, ++level);
-                        }
-                    }
+                    Convert(outputDefs, indexCache, update, c, level);
                 }
             }
         }
+
+        void Convert(IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, XmlNode c, int level)
+        {
+            // scalars and recordset fetch
+            if (level > 0)
+            {
+                Convert(outputDefs, indexCache, update, c);
+            }
+            else
+            {
+                if (level == 0)
+                {
+                    // Only recurse if we're at the first level!!
+                    TryConvert(c.ChildNodes, outputDefs, indexCache, update, ++level);
+                }
+            }
+        }
+
+        void Convert(IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, XmlNode c)
+        {
+            var c1 = c;
+            var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
+            var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
+            if (dev2Definitions.Length != 0)
+            {
+                // fetch recordset index
+                var idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1;
+                // process recordset
+                var nl = c.ChildNodes;
+                foreach (XmlNode subc in nl)
+                {
+                    // Extract column being mapped to ;)
+                    foreach (var definition in dev2Definitions)
+                    {
+                        AssignWithFrame(update, subc, definition);
+                    }
+
+                }
+                // update this recordset index
+                DataObj.Environment.CommitAssign();
+                indexCache[c.Name] = ++idx;
+            }
+            else
+            {
+                var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
+                if (scalarName != null)
+                {
+                    DataObj.Environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(scalarName.RawValue), UnescapeRawXml(c1.InnerXml), update);
+                }
+            }
+        }
+
+        private void AssignWithFrame(int update, XmlNode subc, IDev2Definition definition)
+        {
+            if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
+            {
+                DataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, subc.InnerXml), update);
+            }
+        }
+
         internal string ODBCParameterIterators(int update, string command)
         {
             var itrs = new List<IWarewolfIterator>(5);

@@ -170,18 +170,14 @@ namespace Dev2.Runtime.Security
             {
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var section = config.GetSection(SectionName);
-                if(section != null)
+                if (section != null && !section.SectionInformation.IsProtected && !section.ElementInformation.IsLocked)
                 {
-                    if(!section.SectionInformation.IsProtected)
-                    {
-                        if(!section.ElementInformation.IsLocked)
-                        {
-                            section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
-                            section.SectionInformation.ForceSave = true;
-                            config.Save(ConfigurationSaveMode.Full);
-                        }
-                    }
+                    section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
+                    section.SectionInformation.ForceSave = true;
+                    config.Save(ConfigurationSaveMode.Full);
                 }
+
+
             }
             catch(Exception e)
             {

@@ -196,18 +196,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         }
                         else
                         {
-                            if (dataObject.IsServiceTestExecution && _authorizationService != null)
-                            {
-                                var authorizationService = _authorizationService;
-                                var hasContribute =
-                                    authorizationService.IsAuthorized(AuthorizationContext.Contribute,
-                                        Guid.Empty.ToString());
-                                if (!hasContribute)
-                                {
-                                    throw new UnauthorizedAccessException(
-                                        "The user does not have permission to execute tests.");
-                                }
-                            }
+                            IsAuthorizedForServiceTestRun(dataObject);
                         }
 
                         channel.ExecuteRequest(dataObject, request, workspaceId, out ErrorResultTO errors);
@@ -235,6 +224,22 @@ namespace Dev2.Runtime.WebServer.Handlers
             msg.SetMessage(string.Join(Environment.NewLine, dataObject.Environment.Errors));
 
             return serializer.SerializeToBuilder(msg);
+        }
+
+        private void IsAuthorizedForServiceTestRun(IDSFDataObject dataObject)
+        {
+            if (dataObject.IsServiceTestExecution && _authorizationService != null)
+            {
+                var authorizationService = _authorizationService;
+                var hasContribute =
+                    authorizationService.IsAuthorized(AuthorizationContext.Contribute,
+                        Guid.Empty.ToString());
+                if (!hasContribute)
+                {
+                    throw new UnauthorizedAccessException(
+                        "The user does not have permission to execute tests.");
+                }
+            }
         }
     }
 }

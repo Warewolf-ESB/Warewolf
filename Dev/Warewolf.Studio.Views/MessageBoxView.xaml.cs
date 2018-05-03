@@ -73,20 +73,18 @@ namespace Warewolf.Studio.Views
 
         void MessageBoxView_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
+            if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4) && Application.Current != null)
             {
-                if (Application.Current != null)
+                var windowCollection = Application.Current.Windows;
+                foreach (var window in windowCollection)
                 {
-                    var windowCollection = Application.Current.Windows;
-                    foreach (var window in windowCollection)
+                    if (window is Window window1 && window1.Name != "MainViewWindow")
                     {
-                        if (window is Window window1 && window1.Name != "MainViewWindow")
-                        {
-                            window1.Close();
-                        }
+                        window1.Close();
                     }
                 }
             }
+
             if (e.Key == Key.Escape)
             {
                 var messageBoxViewModel = DataContext as MessageBoxViewModel;

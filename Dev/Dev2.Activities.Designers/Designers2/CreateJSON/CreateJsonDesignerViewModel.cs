@@ -45,17 +45,15 @@ namespace Dev2.Activities.Designers2.CreateJSON
 
         protected override void DoCustomAction(string propertyName)
         {
-            if (propertyName == "SourceName")
+            if (propertyName == "SourceName" && CurrentModelItem?.GetCurrentValue() is JsonMappingTo dto)
             {
-                if (CurrentModelItem?.GetCurrentValue() is JsonMappingTo dto)
+                var destinationWithName = dto.GetDestinationWithName(dto.SourceName);
+                if (String.IsNullOrEmpty(dto.DestinationName))
                 {
-                    var destinationWithName = dto.GetDestinationWithName(dto.SourceName);
-                    if (String.IsNullOrEmpty(dto.DestinationName))
-                    {
-                        CurrentModelItem.SetProperty("DestinationName", destinationWithName);
-                    }
+                    CurrentModelItem.SetProperty("DestinationName", destinationWithName);
                 }
             }
+
         }
 
         public override void UpdateHelpDescriptor(string helpText)

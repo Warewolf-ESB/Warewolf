@@ -242,13 +242,11 @@ namespace Warewolf.Sharepoint
                 localPath = Path.GetDirectoryName(localPath);
             }
 
-            if (!overwrite && !string.IsNullOrEmpty(localPath) && !string.IsNullOrEmpty(fileName))
+            if (!overwrite && !string.IsNullOrEmpty(localPath) && !string.IsNullOrEmpty(fileName) && CheckIfFileExist(Path.Combine(localPath, fileName)))
             {
-                if (CheckIfFileExist(Path.Combine(localPath, fileName)))
-                {
-                    return "Success";
-                }
+                return "Success";
             }
+
 
             CreateFolderIfNotExist(localPath);
 

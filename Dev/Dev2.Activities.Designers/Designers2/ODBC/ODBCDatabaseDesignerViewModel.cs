@@ -456,7 +456,7 @@ namespace Dev2.Activities.Designers2.ODBC
         {
             if (!string.IsNullOrEmpty(CommandText))
             {
-                var command = new DbAction { Name = CommandText };
+                var command = new DbAction { Name = CommandText, ExecuteAction = CommandText, SourceId = SourceRegion.SelectedSource.Id };
                 ActionRegion.SelectedAction = command;
             }
             var databaseService = new DatabaseService
