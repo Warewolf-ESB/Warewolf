@@ -291,8 +291,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrieNet", "TrieNet\TrieNet.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.TestingDotnetDllCascading", "Warewolf.TestingDotnetDllCascading\Warewolf.TestingDotnetDllCascading.csproj", "{7925B0C6-88DC-49A4-BBE1-C0550987F63A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Launcher", "Warewolf.Launcher\Warewolf.Launcher.csproj", "{9B669D51-14CE-44A3-9407-8251BA3BAD19}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.ResourceManagement.Tests", "Warewolf.ResourceManagement.Tests\Warewolf.ResourceManagement.Tests.csproj", "{54724E72-4953-4CED-B4EA-532F9596A88D}"
 EndProject
 Global
