@@ -17,6 +17,7 @@ using System.Data;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.DB;
+using System.Text;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -164,15 +165,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             string query = "SELECT * FROM person JOIN address on person.address_id = address.id";
             var Worker = CreatePersonAddressWorkers();
-
             var results = Worker.ExecuteQuery(query);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(results.Tables[0].Rows[0]["Name"], "bob");
-            Assert.AreEqual(results.Tables[0].Rows[0]["Age"], (Int32)21);
-            Assert.AreEqual(results.Tables[0].Rows[0]["address_id"], (Int32)1);
-            Assert.AreEqual(results.Tables[0].Rows[0]["Addr"], "11 test lane");
-            Assert.AreEqual(results.Tables[0].Rows[0]["Postcode"], (Int32)3421);
+            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Name"] as byte[]), "bob");
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Age"] as byte[])), (Int32)21);
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["address_id"] as byte[])), (Int32)1);
+            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Addr"] as byte[]), "11 test lane");
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["Postcode"] as byte[])), (Int32)3421);
         }
         [TestMethod]
         [Owner("Candice Daniel")]
@@ -182,20 +182,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             string query = "select * from person p join address a on p.address_id=a.id where a.addr=\"11 test lane\" order by Name";
             var Worker = CreatePersonAddressWorkers();
-
             var results = Worker.ExecuteQuery(query);
-
-
-            Assert.AreEqual(results.Tables[0].Rows[0]["name"], "bob");
-            Assert.AreEqual(results.Tables[0].Rows[0]["age"], (Int32)21);
-            Assert.AreEqual(results.Tables[0].Rows[0]["address_id"], (Int32)1);
-            Assert.AreEqual(results.Tables[0].Rows[0]["addr"], "11 test lane");
-            Assert.AreEqual(results.Tables[0].Rows[0]["postcode"], (Int32)3421);
-
-            Assert.AreEqual(results.Tables[0].Rows[1]["name"], "jef");
-            Assert.AreEqual(results.Tables[0].Rows[1]["age"], (Int32)24);
-            Assert.IsTrue(results.Tables[0].Rows[0]["addr"].ToString() == results.Tables[0].Rows[1]["addr"].ToString()); // Case insensitive should work
-            Assert.IsTrue(results.Tables[0].Rows[1]["postcode"].ToString() == results.Tables[0].Rows[0]["Postcode"].ToString());
+            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["name"] as byte[]), "bob");
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["age"] as byte[])), (Int32)21);
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["address_id"] as byte[])), (Int32)1);
+            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["addr"] as byte[]), "11 test lane");
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[0]["postcode"] as byte[])), (Int32)3421);
+            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[0].Rows[1]["name"] as byte[]), "jef");
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[0].Rows[1]["age"] as byte[])), (Int32)24);
         }
 
         [TestMethod]
@@ -223,16 +217,16 @@ namespace Dev2.Tests.Activities.ActivityTests
             var Worker = CreatePersonAddressWorkers();
 
             var results = Worker.ExecuteQuery(query);
-            Assert.AreEqual(results.Tables[2].Rows[0]["Name"], "bob");
-            Assert.AreEqual(results.Tables[2].Rows[0]["Age"], (Int32)21);
-            Assert.AreEqual(results.Tables[2].Rows[0]["address_id"], (Int32)1);
-            Assert.AreEqual(results.Tables[1].Rows[0]["Addr"], "11 test lane");
-            Assert.AreEqual(results.Tables[1].Rows[0]["Postcode"], (Int32)3421);
+           
+            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[2].Rows[0]["Name"] as byte[]), "bob");
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[2].Rows[0]["Age"] as byte[])), (Int32)21);
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[2].Rows[0]["address_id"] as byte[])), (Int32)1);
+            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[1].Rows[0]["Addr"] as byte[]), "11 test lane");
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[1].Rows[0]["Postcode"] as byte[])), (Int32)3421);
 
-            Assert.AreEqual(results.Tables[2].Rows[1]["Name"], "jef");
-            Assert.AreEqual(results.Tables[2].Rows[1]["Age"], (Int32)24);
-            Assert.IsTrue(results.Tables[2].Rows[0]["Addr"].ToString() == results.Tables[2].Rows[1]["addr"].ToString()); // Case insensitive should work
-            Assert.IsTrue(results.Tables[2].Rows[1]["Postcode"].ToString() == results.Tables[2].Rows[0]["Postcode"].ToString());
+            Assert.AreEqual(Encoding.UTF8.GetString(results.Tables[2].Rows[1]["Name"] as byte[]), "jef");
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(results.Tables[2].Rows[1]["Age"] as byte[])), (Int32)24);
+           
         }
 
         [TestMethod]
@@ -243,17 +237,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var Worker = CreatePersonAddressWorkers();
             string query = "update person set Age=65 where Name=\"zak\";";
-
             var results = Worker.ExecuteNonQuery(query);
-
             Assert.AreEqual(1, results);
-
             query = "select * from person where Name=\"zak\";";
-
             var result = Worker.ExecuteQuery(query);
-
-            Assert.AreEqual(result.Tables[0].Rows[0]["Name"], "zak");
-            Assert.AreEqual(result.Tables[0].Rows[0]["Age"], (Int32)65);
+            Assert.AreEqual(Encoding.UTF8.GetString(result.Tables[0].Rows[0]["Name"] as byte[]), "zak");
+            Assert.AreEqual(int.Parse(Encoding.UTF8.GetString(result.Tables[0].Rows[0]["Age"] as byte[])), (Int32)65);
         }
 
         [TestMethod]
