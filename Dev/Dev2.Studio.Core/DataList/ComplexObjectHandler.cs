@@ -37,7 +37,7 @@ namespace Dev2.Studio.Core.DataList
 
             for (var i = objectItemModels.Count; i > 0; i--)
             {
-                _vm.ComplexObjectCollection.Remove(objectItemModels[i - 1]);
+                _vm.Remove(objectItemModels[i - 1]);
             }
         }
 
@@ -73,7 +73,8 @@ namespace Dev2.Studio.Core.DataList
                     }
 
                     itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
-                    _vm.ComplexObjectCollection.Add(itemModel);
+                    itemModel.IsVisible = _vm.IsItemVisible(itemModel.Name);
+                    _vm.Add(itemModel);
                 }
                 else
                 {
@@ -144,7 +145,7 @@ namespace Dev2.Studio.Core.DataList
             if (parentObj == null)
             {
                 parentObj = new ComplexObjectItemModel(parentObjectName);
-                _vm.ComplexObjectCollection.Add(parentObj);
+                _vm.Add(parentObj);
             }
 
             if (json.IsXml())
@@ -233,7 +234,7 @@ namespace Dev2.Studio.Core.DataList
             }
             else
             {
-                _vm.ComplexObjectCollection.Add(complexObjectItemModel);
+                _vm.Add(complexObjectItemModel);
             }
             if (xmlNode.HasChildNodes)
             {

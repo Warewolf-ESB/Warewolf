@@ -84,7 +84,7 @@ namespace Dev2.Core.Tests.Workflows
 
             DataListSingleton.SetDataList(dataListViewModel);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -117,7 +117,7 @@ namespace Dev2.Core.Tests.Workflows
 
             DataListSingleton.SetDataList(dataListViewModel);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             var dataListItem3 = new ScalarItemModel("scalar8", enDev2ColumnArgumentDirection.Input);
@@ -149,7 +149,7 @@ namespace Dev2.Core.Tests.Workflows
 
             DataListSingleton.SetDataList(dataListViewModel);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
 
@@ -178,7 +178,7 @@ namespace Dev2.Core.Tests.Workflows
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
             DataListSingleton.SetDataList(dataListViewModel);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             var workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, evtAg.Object);
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -222,7 +222,7 @@ namespace Dev2.Core.Tests.Workflows
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
 
             var recsetModel = new RecordSetItemModel("RecSet");
-            dataListViewModel.RecsetCollection.Add(recsetModel);
+            dataListViewModel.Add(recsetModel);
             dataListViewModel.RecsetCollection[2].Children.Add(new RecordSetFieldItemModel("f1", parent: recsetModel));
             const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[RecSet().f1]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
             var actual = WorkflowDesignerViewModel.GetDecisionElements(expression, dataListViewModel);
@@ -248,7 +248,7 @@ namespace Dev2.Core.Tests.Workflows
 
 
             var recsetModel = new RecordSetItemModel("RecSet");
-            dataListViewModel.RecsetCollection.Add(recsetModel);
+            dataListViewModel.Add(recsetModel);
             dataListViewModel.RecsetCollection[2].Children.Add(new RecordSetFieldItemModel("a", parent: recsetModel));
             const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[a]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
             var actual = WorkflowDesignerViewModel.GetDecisionElements(expression, dataListViewModel);
@@ -281,7 +281,7 @@ namespace Dev2.Core.Tests.Workflows
 
 
             var recsetModel = new RecordSetItemModel("RecSet");
-            dataListViewModel.RecsetCollection.Add(recsetModel);
+            dataListViewModel.Add(recsetModel);
             dataListViewModel.RecsetCollection[2].Children.Add(new RecordSetFieldItemModel("aasszzz", parent: recsetModel));
             const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[a]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
             var actual = WorkflowDesignerViewModel.GetDecisionElements(expression, dataListViewModel);
@@ -315,7 +315,7 @@ namespace Dev2.Core.Tests.Workflows
             DataListSingleton.SetDataList(dataListViewModel);
             var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
             workflowDesigner.PopUp = mockPopUp.Object;
