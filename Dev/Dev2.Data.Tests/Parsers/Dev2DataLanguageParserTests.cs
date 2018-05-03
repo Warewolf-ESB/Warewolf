@@ -13,7 +13,6 @@ using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Data.Util;
-using System.Xml;
 
 namespace Dev2.Data.Tests.Parsers
 {
@@ -90,34 +89,17 @@ namespace Dev2.Data.Tests.Parsers
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void ParseDataLanguageForIntellisense_GivenInValidArgs_ThrowsException()
-        {
-            //---------------Set up test pack-------------------
-            var parser = new Dev2DataLanguageParser();
-            const string trueString = "True";
-            const string noneString = "None";            
-            var datalist = string.Format("<DataList><Person Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><Name Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><Person></DataList>", trueString, noneString);
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[Person()]]", datalist);
-            //---------------Test Result -----------------------            
-            Assert.IsNull(expressionIntoParts);
-            Assert.AreEqual(expressionIntoParts[0].ErrorCode, enIntellisenseErrorCode.RecordsetNotFound);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void ParseDataLanguageForIntellisense_GivenValidArgsWithRecordset_ShouldExecutesCorreclty()
+        public void ParseDataLanguageForIntellisense_GivenValidArgs_ShouldExecutesCorreclty()
         {
             //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
             const string trueString = "True";
             const string noneString = "None";
-            var datalist = string.Format("<DataList><Person Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><Name Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></Person></DataList>", trueString, noneString);
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[Person().Name]]", datalist);
+            var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, expressionIntoParts.Count);
         }
@@ -556,7 +538,7 @@ namespace Dev2.Data.Tests.Parsers
             {
                 privateObject.Invoke("RecordsetMatch", intellisenseResults, "rawSearch", "seach");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Assert.Fail(e.Message);
             }

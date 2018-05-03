@@ -8,10 +8,10 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Data.Builders;
 using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Dev2.Data.Tests.Builders
 {
@@ -43,7 +43,7 @@ namespace Dev2.Data.Tests.Builders
                 DataList = string.Format("<DataList><Person Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><Name Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></Person></DataList>", trueString, noneString),
                 FilterTO = new IntellisenseFilterOpsTO
                 {
-                    FilterType = Common.Interfaces.enIntellisensePartType.RecordsetsOnly                    
+                    FilterType = Common.Interfaces.enIntellisensePartType.RecordsetsOnly
                 }
             };
             var result = intellisenseBuilder.Generate();
