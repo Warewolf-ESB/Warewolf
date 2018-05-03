@@ -82,7 +82,7 @@ namespace Warewolf.UIBindingTests.Variables
                         if (existingRecordSet != null)
                         {
                             existingRecordSet.DisplayName = recSetName;
-                            variableListViewModel.RecsetCollection.Add(existingRecordSet);
+                            variableListViewModel.Add(existingRecordSet);
                         }
                     }
                     if (!string.IsNullOrEmpty(columnName))
@@ -106,7 +106,7 @@ namespace Warewolf.UIBindingTests.Variables
                         item.DisplayName = variableName;
                         item.IsUsed = isUsed;
                         item.ColumnIODirection = ioDirection;
-                        variableListViewModel.ScalarCollection.Add(item);
+                        variableListViewModel.Add(item);
                     }
                 }
             }

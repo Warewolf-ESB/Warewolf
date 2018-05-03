@@ -23,15 +23,25 @@ namespace Dev2.Studio.Interfaces.DataList
         IRelayCommand FindUnusedAndMissingCommand { get; }
 
         ObservableCollection<IScalarItemModel> ScalarCollection { get; }
+        void Add(IScalarItemModel item);
+        void Remove(IScalarItemModel item);
+        int ScalarCollectionCount { get; }
 
         ObservableCollection<IRecordSetItemModel> RecsetCollection { get; }
+        void Add(IRecordSetItemModel item);
+        void Remove(IRecordSetItemModel item);
+        int RecsetCollectionCount { get; }
+
+        ObservableCollection<IComplexObjectItemModel> ComplexObjectCollection { get; }
+        void Add(IComplexObjectItemModel item);
+        void Remove(IComplexObjectItemModel item);
+        int ComplexObjectCollectionCount { get; }
 
         ObservableCollection<IDataListItemModel> DataList { get; }
         bool HasErrors { get; }
         string DataListErrorMessage { get; }
         bool IsSorting { get; set; }
         ISuggestionProvider Provider { get; set; }
-        ObservableCollection<IComplexObjectItemModel> ComplexObjectCollection { get; }
         bool ViewSortDelete { get; set; }
 
         /// <summary>

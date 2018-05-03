@@ -63,15 +63,15 @@ namespace Dev2.ViewModels.Merge
 
             DataListViewModel.ViewSortDelete = false;
 
-            if (DataListViewModel.ScalarCollection?.Count <= 1)
+            if (DataListViewModel.ScalarCollection.Count <= 1)
             {
                 UpdateScalarVisibility();
             }
-            if (DataListViewModel.RecsetCollection?.Count <= 1)
+            if (DataListViewModel.RecsetCollection.Count <= 1)
             {
                 UpdateRecordSetVisibility();
             }
-            if (DataListViewModel.ComplexObjectCollection?.Count < 1)
+            if (DataListViewModel.ComplexObjectCollection.Count < 1)
             {
                 UpdateComplexObjectVisibility();
             }
