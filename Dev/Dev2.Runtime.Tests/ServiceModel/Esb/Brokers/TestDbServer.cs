@@ -52,13 +52,27 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             var dataTable = new DataTable();
             return dataTable;
         }
-
-        public virtual List<string> FetchDatabases()
+		public virtual DataSet FetchDataSet(IDbCommand command)
+		{
+			var dataSet = new DataSet();
+			return dataSet;
+		}
+		public virtual List<string> FetchDatabases()
         {
             return new List<string>();
         }
+		public int ExecuteNonQuery(IDbCommand command)
+		{
 
-        public virtual void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor)
+
+			return  0;
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			return 0;
+		}
+		public virtual void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor)
         {
         }
 

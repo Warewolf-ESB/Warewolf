@@ -76,8 +76,9 @@ namespace Dev2.Studio.Core
         public void TestConnection(ISharepointServerSource sharePointServiceSource) => UpdateManagerProxy.TestConnection(sharePointServiceSource);
 
         public IList<string> TestDbConnection(IDbSource serverSource) => UpdateManagerProxy.TestDbConnection(serverSource);
+		public IList<string> TestSqliteConnection(ISqliteDBSource serverSource) => UpdateManagerProxy.TestSqliteConnection(serverSource);
 
-        public void Save(IDbSource toDbSource) => UpdateManagerProxy.SaveDbSource(toDbSource, GlobalConstants.ServerWorkspaceID);
+		public void Save(IDbSource toDbSource) => UpdateManagerProxy.SaveDbSource(toDbSource, GlobalConstants.ServerWorkspaceID);
 
         public void Save(IWebService model) => UpdateManagerProxy.SaveWebservice(model, GlobalConstants.ServerWorkspaceID);
 

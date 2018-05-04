@@ -22,21 +22,21 @@ namespace Dev2.Integration.Tests.Server_Refresh
         {
             SetupPermissions();
             var url1 = $"http://localhost:3142/secure/RefreshWorkflow1.json";
-            var passRequest1 = ExececuteRequest(new Uri(url1));
+            var passRequest1 = ExecuteRequest(new Uri(url1));
             //Delete this workflow and continue making requests
             FileIsDeleted(PassResult);
-            var passRequest2 = ExececuteRequest(new Uri(url1));
-            var passRequest3 = ExececuteRequest(new Uri(url1));
-            var passRequest4 = ExececuteRequest(new Uri(url1));
+            var passRequest2 = ExecuteRequest(new Uri(url1));
+            var passRequest3 = ExecuteRequest(new Uri(url1));
+            var passRequest4 = ExecuteRequest(new Uri(url1));
             //wait for all requests to finish running they should all pass 
             Task.WaitAll(passRequest1, passRequest2, passRequest3, passRequest4);
             //refresh the server and wait fot it to finish
-            var explorerRefresh = ExececuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
+            var explorerRefresh = ExecuteRequest(new Uri("http://localhost:3142/services/FetchExplorerItemsService.json?ReloadResourceCatalogue=true"));
             explorerRefresh.Wait();
             //execute this workflow after the refresh, we should get failures based on the fact that the refresh has finish executing
-            var failRequest1 = ExececuteRequest(new Uri(url1));
-            var failRequest2 = ExececuteRequest(new Uri(url1));
-            var failRequest3 = ExececuteRequest(new Uri(url1));
+            var failRequest1 = ExecuteRequest(new Uri(url1));
+            var failRequest2 = ExecuteRequest(new Uri(url1));
+            var failRequest3 = ExecuteRequest(new Uri(url1));
             Task.WaitAll(failRequest1, failRequest2, failRequest3);
             var failRequest1Result = failRequest1.Result;
             var failRequest2Result = failRequest2.Result;
@@ -59,7 +59,6 @@ namespace Dev2.Integration.Tests.Server_Refresh
             protected override WebRequest GetWebRequest(Uri uri)
             {
                 var w = base.GetWebRequest(uri);
-                // ReSharper disable once PossibleNullReferenceException
                 w.Timeout = 20 * 60 * 1000;
                 return w;
             }
@@ -77,15 +76,14 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        public Task<string> ExececuteRequest(Uri url)
+        public Task<string> ExecuteRequest(Uri url)
         {
             try
             {
                 var client = new PatientWebClient { Credentials = CredentialCache.DefaultNetworkCredentials };
                 using (client)
                 {
-                    var task = Task.Run(() => client.DownloadString(url));
-                    return task;
+                    return Task.Run(() => client.DownloadString(url));
                 }
 
             }

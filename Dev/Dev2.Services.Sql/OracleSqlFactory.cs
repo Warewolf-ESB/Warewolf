@@ -62,7 +62,29 @@ namespace Dev2.Services.Sql
             }
             return dataSet;
         }
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			if (!(command is OracleCommand SqlCommand))
+			{
+				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+			}
 
-        #endregion
-    }
+			int retValue = 0;
+			retValue = command.ExecuteNonQuery();
+			return retValue;
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			if (!(command is OracleCommand))
+			{
+				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+			}
+
+			int retValue = 0;
+			retValue = Convert.ToInt32(command.ExecuteScalar());
+			return retValue;
+		}
+		#endregion
+	}
 }

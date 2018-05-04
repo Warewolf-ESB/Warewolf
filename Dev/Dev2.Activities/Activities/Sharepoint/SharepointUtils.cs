@@ -72,40 +72,11 @@ namespace Dev2.Activities.Sharepoint
                 startSearchTerm += "<Values>";
                 if (warewolfEvalResult.IsWarewolfAtomListresult)
                 {
-                    if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult listResult)
-                    {
-                        foreach (var warewolfAtom in listResult.Item)
-                        {
-                            var valueString = warewolfAtom.ToString();
-                            if (valueString.Contains(","))
-                            {
-                                var listOfValues = valueString.Split(',');
-                                startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + $"<Value Type=\"{fieldType}\">{value}</Value>");
-                            }
-                            else
-                            {
-                                var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
-                                startSearchTerm += string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value);
-                            }
-                        }
-                    }
+                    startSearchTerm = AddAtomListResult(sharepointFieldTo, warewolfEvalResult, fieldType, startSearchTerm);
                 }
                 else
                 {
-                    if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
-                    {
-                        var valueString = scalarResult.Item.ToString();
-                        if (valueString.Contains(","))
-                        {
-                            var listOfValues = valueString.Split(',');
-                            startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + $"<Value Type=\"{fieldType}\">{value}</Value>");
-                        }
-                        else
-                        {
-                            var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
-                            startSearchTerm += $"<Value Type=\"{fieldType}\">{value}</Value>";
-                        }
-                    }
+                    startSearchTerm = AddAtomResult(sharepointFieldTo, warewolfEvalResult, fieldType, startSearchTerm);
                 }
                 startSearchTerm += "</Values>";
                 startSearchTerm += SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType);
@@ -119,6 +90,49 @@ namespace Dev2.Activities.Sharepoint
                     yield return $"{SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType)}<FieldRef Name=\"{sharepointSearchTo.InternalName}\"></FieldRef><Value Type=\"{fieldType}\">{CastWarewolfValueToCorrectType(iterator.GetNextValue(), sharepointFieldTo.Type)}</Value>{SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType)}";
                 }
             }
+        }
+
+        private static string AddAtomResult(ISharepointFieldTo sharepointFieldTo, CommonFunctions.WarewolfEvalResult warewolfEvalResult, string fieldType, string startSearchTerm)
+        {
+            if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
+            {
+                var valueString = scalarResult.Item.ToString();
+                if (valueString.Contains(","))
+                {
+                    var listOfValues = valueString.Split(',');
+                    startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + $"<Value Type=\"{fieldType}\">{value}</Value>");
+                }
+                else
+                {
+                    var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
+                    startSearchTerm += $"<Value Type=\"{fieldType}\">{value}</Value>";
+                }
+            }
+
+            return startSearchTerm;
+        }
+
+        private static string AddAtomListResult(ISharepointFieldTo sharepointFieldTo, CommonFunctions.WarewolfEvalResult warewolfEvalResult, string fieldType, string startSearchTerm)
+        {
+            if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult listResult)
+            {
+                foreach (var warewolfAtom in listResult.Item)
+                {
+                    var valueString = warewolfAtom.ToString();
+                    if (valueString.Contains(","))
+                    {
+                        var listOfValues = valueString.Split(',');
+                        startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + $"<Value Type=\"{fieldType}\">{value}</Value>");
+                    }
+                    else
+                    {
+                        var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
+                        startSearchTerm += string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value);
+                    }
+                }
+            }
+
+            return startSearchTerm;
         }
 
         public static object CastWarewolfValueToCorrectType(object value, SharepointFieldType type)

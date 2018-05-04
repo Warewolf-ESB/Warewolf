@@ -39,30 +39,35 @@ namespace Warewolf.Studio.ViewModels.ToolBox
                     {
                         if (exportedType.AssemblyQualifiedName != null)
                         {
-                            if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowDecisionActivity"))
-                            {
-                                var decisionType = typeof(FlowDecision);
-                                if (decisionType.AssemblyQualifiedName != null)
-                                {
-                                    _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, decisionType.AssemblyQualifiedName);
-                                }
-                            }
-                            else if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowSwitchActivity"))
-                            {
-                                var switchType = typeof(FlowSwitch<string>);
-                                if (switchType.AssemblyQualifiedName != null)
-                                {
-                                    _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, switchType.AssemblyQualifiedName);
-                                }
-                            }
-                            else
-                            {
-                                _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, exportedType.AssemblyQualifiedName);
-                            }
+                            UpdateToolActualType(exportedType);
                         }
                         return;
                     }
                 }
+            }
+        }
+
+        private void UpdateToolActualType(Type exportedType)
+        {
+            if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowDecisionActivity"))
+            {
+                var decisionType = typeof(FlowDecision);
+                if (decisionType.AssemblyQualifiedName != null)
+                {
+                    _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, decisionType.AssemblyQualifiedName);
+                }
+            }
+            else if (exportedType.FullName != null && exportedType.FullName.Contains("DsfFlowSwitchActivity"))
+            {
+                var switchType = typeof(FlowSwitch<string>);
+                if (switchType.AssemblyQualifiedName != null)
+                {
+                    _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, switchType.AssemblyQualifiedName);
+                }
+            }
+            else
+            {
+                _activityType = new DataObject(DragDropHelper.WorkflowItemTypeNameFormat, exportedType.AssemblyQualifiedName);
             }
         }
 

@@ -238,29 +238,35 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                     var exploreritem = env?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == Guid.Parse(node.ID));
                     if (exploreritem != null)
                     {
-                        var item = new ExplorerItemNodeViewModel(_server, parent, _popupController)
-                        {
-                            ResourceName = exploreritem.ResourceName,
-                            TextVisibility = true,
-                            ResourceType = exploreritem.ResourceType,
-                            IsMainNode = exploreritem.ResourceName.Equals(ResourceModel.ResourceName),
-                            ResourceId = Guid.Parse(node.ID)
-                        };
-                        if (node.NodeDependencies != null && node.NodeDependencies.Count > 0)
-                        {
-                            seenResource.Add(Guid.Parse(node.ID));
-                            item.Children = new ObservableCollection<IExplorerItemViewModel>(GetItems(node.NodeDependencies, item, acc, seenResource).Select(a => a as IExplorerItemViewModel));
-                        }
-                        else
-                        {
-                            seenResource.Add(Guid.Parse(node.ID));
-                            item.Children = new ObservableCollection<IExplorerItemViewModel>();
-                        }
-                        items.Add(item);
-                        acc.Add(item);
+                        items = GetItems(items, node, parent, ref acc, seenResource, exploreritem);
                     }
                 }
             }
+            return items;
+        }
+
+        List<ExplorerItemNodeViewModel> GetItems(List<ExplorerItemNodeViewModel> items, IDependencyVisualizationNode node, IExplorerItemNodeViewModel parent, ref List<ExplorerItemNodeViewModel> acc, List<Guid> seenResource, IExplorerItemViewModel exploreritem)
+        {
+            var item = new ExplorerItemNodeViewModel(_server, parent, _popupController)
+            {
+                ResourceName = exploreritem.ResourceName,
+                TextVisibility = true,
+                ResourceType = exploreritem.ResourceType,
+                IsMainNode = exploreritem.ResourceName.Equals(ResourceModel.ResourceName),
+                ResourceId = Guid.Parse(node.ID)
+            };
+            if (node.NodeDependencies != null && node.NodeDependencies.Count > 0)
+            {
+                seenResource.Add(Guid.Parse(node.ID));
+                item.Children = new ObservableCollection<IExplorerItemViewModel>(GetItems(node.NodeDependencies, item, acc, seenResource).Select(a => a as IExplorerItemViewModel));
+            }
+            else
+            {
+                seenResource.Add(Guid.Parse(node.ID));
+                item.Children = new ObservableCollection<IExplorerItemViewModel>();
+            }
+            items.Add(item);
+            acc.Add(item);
             return items;
         }
 

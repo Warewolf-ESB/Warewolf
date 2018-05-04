@@ -584,11 +584,13 @@ namespace Warewolf.Storage.Tests
 
         [TestMethod]
         [Owner("Sanele Mthembu")]
-        public void ExecutionEnvironmentEvalDelete_Should()
+        public void ExecutionEnvironmentEvalDelete_Should_Clear_RecordSet()
         {
             Assert.IsNotNull(_environment);
             _environment.Assign("[[rec().a]]", "Some Value", 0);
             _environment.EvalDelete("[[rec()]]", 0);
+            var result = _environment.Eval("[[rec().a]]", 0);
+            Assert.IsTrue(WarewolfDataEvaluationCommon.isNothing(result));
         }
 
         [TestMethod]
