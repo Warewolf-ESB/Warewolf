@@ -148,6 +148,7 @@
     <Compile Include="EnumTests\enTypeOfSystemInformationTests.cs" />
     <Compile Include="IndexListIndexIteratorTests.cs" />
     <Compile Include="MethodOutputTests.cs" />
+    <Compile Include="PathOperations\Dev2ActivityIOPathUtilsTests.cs" />
     <Compile Include="PulseTrackerTests.cs" />
     <Compile Include="ServiceModel\SharePointSourceTests.cs" />
     <Compile Include="ServiceModel\RabbitMQSourceTests.cs" />
