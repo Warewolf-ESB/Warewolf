@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -201,49 +202,11 @@ namespace Dev2.Runtime.ServiceModel
             }
             var broker = new PluginBroker();
             var outputDescription = broker.TestPlugin(pluginService);
-            var dataSourceShape = outputDescription.DataSourceShapes[0];
-            var recSet = outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
-            if (recSet != null)
-            {
-                foreach (var recordset in recSet)
-                {
-                    foreach (var field in recordset.Fields)
-                    {
-                        if (string.IsNullOrEmpty(field.Name))
-                        {
-                            continue;
-                        }
-                        var path = field.Path;
-                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
-
-                        var value = string.Empty;
-                        if (!string.IsNullOrEmpty(field.Alias))
-                        {
-                            value = string.IsNullOrEmpty(rsAlias)
-                                        ? $"[[{field.Alias}]]"
-                                : $"[[{rsAlias}().{field.Alias}]]";
-                        }
-
-                        if (path != null)
-                        {
-                            path.OutputExpression = value;
-                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
-                            if (foundPath == null)
-                            {
-                                dataSourceShape.Paths.Add(path);
-                            }
-                            else
-                            {
-                                foundPath.OutputExpression = path.OutputExpression;
-                            }
-
-                        }
-                    }
-                }
-            }
+            var recSet = MapOutputDescriptionToRecordSetList(outputDescription, pluginService.Recordsets);
             return recSet;
         }
 
+        [ExcludeFromCodeCoverage] //This requires a common Com DLL on all machines
         protected virtual RecordsetList FetchRecordset(ComPluginService pluginService, bool addFields)
         {
             if (pluginService == null)
@@ -252,46 +215,7 @@ namespace Dev2.Runtime.ServiceModel
             }
             var broker = new ComPluginBroker();
             var outputDescription = broker.TestPlugin(pluginService);
-            var dataSourceShape = outputDescription.DataSourceShapes[0];
-            var recSet = outputDescription.ToRecordsetList(pluginService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
-            if (recSet != null)
-            {
-                foreach (var recordset in recSet)
-                {
-                    foreach (var field in recordset.Fields)
-                    {
-                        if (string.IsNullOrEmpty(field.Name))
-                        {
-                            continue;
-                        }
-                        var path = field.Path;
-                        var rsAlias = string.IsNullOrEmpty(field.RecordsetAlias) ? "" : field.RecordsetAlias.Replace("()", "");
-
-                        var value = string.Empty;
-                        if (!string.IsNullOrEmpty(field.Alias))
-                        {
-                            value = string.IsNullOrEmpty(rsAlias)
-                                        ? $"[[{field.Alias}]]"
-                                : $"[[{rsAlias}().{field.Alias}]]";
-                        }
-
-                        if (path != null)
-                        {
-                            path.OutputExpression = value;
-                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
-                            if (foundPath == null)
-                            {
-                                dataSourceShape.Paths.Add(path);
-                            }
-                            else
-                            {
-                                foundPath.OutputExpression = path.OutputExpression;
-                            }
-
-                        }
-                    }
-                }
-            }
+            var recSet = MapOutputDescriptionToRecordSetList(outputDescription, pluginService.Recordsets);
             return recSet;
         }
 
@@ -314,8 +238,15 @@ namespace Dev2.Runtime.ServiceModel
             }
             var broker = new WcfSource();
             var outputDescription = broker.ExecuteMethod(wcfService);
+            var recordSetList = wcfService.Recordsets;
+            var recSet = MapOutputDescriptionToRecordSetList(outputDescription, recordSetList);
+            return recSet;
+        }
+
+        private static RecordsetList MapOutputDescriptionToRecordSetList(Common.Interfaces.Core.Graph.IOutputDescription outputDescription, RecordsetList recordSetList)
+        {
             var dataSourceShape = outputDescription.DataSourceShapes[0];
-            var recSet = outputDescription.ToRecordsetList(wcfService.Recordsets, GlobalConstants.PrimitiveReturnValueTag);
+            var recSet = outputDescription.ToRecordsetList(recordSetList, GlobalConstants.PrimitiveReturnValueTag);
             if (recSet != null)
             {
                 foreach (var recordset in recSet)
@@ -345,6 +276,7 @@ namespace Dev2.Runtime.ServiceModel
                     }
                 }
             }
+
             return recSet;
         }
 
