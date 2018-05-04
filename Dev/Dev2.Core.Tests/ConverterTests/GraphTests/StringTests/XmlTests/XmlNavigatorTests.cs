@@ -183,11 +183,71 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             Assert.AreEqual(expected, actual);
         }
-        
+
         #endregion SelectScalar Tests
-        
+
         #region SelectEnumerable Tests
-        
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SelectEnumerableValueUsingNull_Expected_ArgumentNullException()
+        {
+            var xmlNavigator = new XmlNavigator(testData);
+            xmlNavigator.SelectEnumerable(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void SelectEnumerableValue_WithoutXmlPath_Expected_Exception()
+        {
+            var xmlNavigator = new XmlNavigator(testData);
+            xmlNavigator.SelectEnumerable(new JsonPath());
+        }
+
+        [TestMethod]
+        public void SelectEnumerableValueUsingPathSeperator_Expected_ScalarValue()
+        {
+            IPath namePath = new XmlPath(".", ".");
+
+            var xmlNavigator = new XmlNavigator(testData);
+
+            var actual = xmlNavigator.SelectEnumerable(namePath);
+            var expected = new List<object> { @"<Company Name=""Dev2"">
+  <Motto>Eat lots of cake</Motto>
+  <PreviousMotto />
+  <Departments TestAttrib=""testing"">
+    <Department Name=""Dev"">
+      <Employees>
+        <Person Name=""Brendon"" Surename=""Page"" />
+        <Person Name=""Jayd"" Surename=""Page"" />
+      </Employees>
+    </Department>
+    <Department Name=""Accounts"">
+      <Employees>
+        <Person Name=""Bob"" Surename=""Soap"" />
+        <Person Name=""Joe"" Surename=""Pants"" />
+      </Employees>
+    </Department>
+  </Departments>
+  <InlineRecordSet>
+        RandomData
+    </InlineRecordSet>
+  <InlineRecordSet>
+        RandomData1
+    </InlineRecordSet>
+  <OuterNestedRecordSet>
+    <InnerNestedRecordSet ItemValue=""val1"" />
+    <InnerNestedRecordSet ItemValue=""val2"" />
+  </OuterNestedRecordSet>
+  <OuterNestedRecordSet>
+    <InnerNestedRecordSet ItemValue=""val3"" />
+    <InnerNestedRecordSet ItemValue=""val4"" />
+  </OuterNestedRecordSet>
+</Company>" };
+
+            Assert.AreEqual(expected.FirstOrDefault().ToString(), actual.FirstOrDefault().ToString());
+        }
+
         [TestMethod]
         public void SelectEnumerableValueUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
         {
