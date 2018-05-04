@@ -50,7 +50,7 @@ namespace Dev2.Studio.Core.DataList
                 if (scalar != null)
                 {
                     scalar.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
-                    UpdateScalar(scalar);
+                    _vm.Add(scalar);
                 }
             }
             else
@@ -59,7 +59,7 @@ namespace Dev2.Studio.Core.DataList
                 if (scalar != null)
                 {
                     scalar.IsEditable = Common.ParseIsEditable(null);
-                    UpdateScalar(scalar);
+                    _vm.Add(scalar);
                 }
             }
         }
@@ -104,7 +104,7 @@ namespace Dev2.Studio.Core.DataList
             }
 
             var scalar = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
-            _vm. Add(scalar);
+            _vm.Add(scalar);
         }
 
         public void RemoveBlankScalars()
@@ -148,6 +148,5 @@ namespace Dev2.Studio.Core.DataList
                 recset.DisplayName = recset.DisplayName.Replace("[", "").Replace("]", "");
             }
         }
-
     }
 }
