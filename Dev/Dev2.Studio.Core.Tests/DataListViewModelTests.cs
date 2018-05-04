@@ -2602,7 +2602,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DataListViewModel_UpdateDataListItems")]
-        public void DataListViewModel_UpdateDataListItems_WithNoMissingRecsetFieldWorkflowItems_ShouldMarkRecsetFieldValueIsUsedTrue()
+        public void DataListViewModel_UpdateDataListItems_WithNoMissingRecsetFieldWorkflowItemsIsUsedFalse_ShouldMarkRecsetFieldValueIsUsedTrue()
         {
             //------------Setup for test--------------------------
             var resourceModel = new Mock<IResourceModel>().Object;
@@ -2625,6 +2625,55 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsUsed);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_UpdateDataListItems")]
+        public void DataListViewModel_UpdateDataListItems_WithNoChildrenRecsetFieldWorkflowItemsIsUsedFalse_ShouldMarkRecsetFieldValueIsUsedTrue()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = new Mock<IResourceModel>().Object;
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            const string recsetName = "recset";
+            const string firstFieldName = "f1";
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
+            recSetDataModel.IsUsed = false;
+            firstFieldDataListItemModel.IsUsed = false;
+            dataListViewModel.Add(recSetDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateRecsetPart(recsetName, firstFieldName);
+            dataListParts.Add(part.Object);
+            //------------Execute Test---------------------------
+            dataListViewModel.UpdateDataListItems(resourceModel, dataListParts);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsUsed);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DataListViewModel_UpdateDataListItems")]
+        public void DataListViewModel_UpdateDataListItems_WithNoChildrenRecsetFieldWorkflowItemsIsUsedTrue_ShouldMarkRecsetFieldValueIsUsedTrue()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = new Mock<IResourceModel>().Object;
+            var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            const string recsetName = "recset";
+            const string firstFieldName = "f1";
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var firstFieldDataListItemModel = CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel);
+            recSetDataModel.IsUsed = true;
+            firstFieldDataListItemModel.IsUsed = true;
+            dataListViewModel.Add(recSetDataModel);
+            var dataListParts = new List<IDataListVerifyPart>();
+            var part = CreateRecsetPart(recsetName, firstFieldName);
+            dataListParts.Add(part.Object);
+            //------------Execute Test---------------------------
+            dataListViewModel.UpdateDataListItems(resourceModel, dataListParts);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(dataListViewModel.RecsetCollection[0].Children[0].IsUsed);
+        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

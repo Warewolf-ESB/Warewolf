@@ -72,8 +72,6 @@ namespace Dev2.Studio.Interfaces.DataList
 
         List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify);
 
-        List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems);
-
         List<IDataListVerifyPart> MissingDataListParts(IList<IDataListVerifyPart> partsToVerify);
 
         List<IDataListVerifyPart> UpdateDataListItems(IResourceModel contextualResourceModel, IList<IDataListVerifyPart> workflowFields);
