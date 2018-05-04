@@ -56,6 +56,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
     </OuterNestedRecordSet>
 </Company>";
 
+        string GivenSingleNode => @"<Message>Dummy Data</Message>";
+        
         #region SelectScalar Tests
 
         [TestMethod]
@@ -191,7 +193,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         {
             IPath namePath = new XmlPath("Message", "Message");
 
-            var xmlNavigator = new XmlNavigator(testData);
+            var xmlNavigator = new XmlNavigator(GivenSingleNode);
 
             var actual = xmlNavigator.SelectEnumerable(namePath);
             const string expected = "Dummy Data";
@@ -285,7 +287,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             paths.Add(namePath);
 
 
-            var xmlNavigator = new XmlNavigator(testData);
+            var xmlNavigator = new XmlNavigator(GivenSingleNode);
             var actual = xmlNavigator.SelectEnumerablesAsRelated(paths);
             const string expected = "Dummy Data";
 
