@@ -117,7 +117,22 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("http://pieter:3142/secure/hello world.xml?<datalist><name></name></datalist>", value);
 
         }
-
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("GetLogDataService_Execute")]
+        public void GetLogDataService_Execute_WithLogDataContainingURL_shouldReturnLogDataObjectWithUrlERROR()
+        {
+            //------------Setup for test--------------------------
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormatWithError.txt";
+            var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
+            //------------Execute Test---------------------------
+            var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(logEntriesJson);
+            var logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
+            Assert.IsNotNull(logEntriesObject);
+            Assert.AreEqual("ERROR", logEntriesObject[0].Status);
+        }
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("GetLogDataService_Execute")]
@@ -135,8 +150,8 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             var stringBuilders = new Dictionary<string, StringBuilder>();
-            var longDateString = DateTime.ParseExact("2017-05-25 08:14:22,519", GlobalConstants.LogFileDateFormat,  System.Globalization.CultureInfo.InvariantCulture);
-            stringBuilders.Add("StartDateTime",longDateString.ToString(GlobalConstants.LogFileDateFormat).ToStringBuilder());
+            var longDateString = DateTime.ParseExact("2017-05-25 08:14:22,519", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
+            stringBuilders.Add("StartDateTime", longDateString.ToString(GlobalConstants.LogFileDateFormat).ToStringBuilder());
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
@@ -161,7 +176,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             var stringBuilders = new Dictionary<string, StringBuilder>();
-            var longDateString = DateTime.ParseExact("2017-05-25 08:14:12,420", GlobalConstants.LogFileDateFormat,  System.Globalization.CultureInfo.InvariantCulture);
+            var longDateString = DateTime.ParseExact("2017-05-25 08:14:12,420", GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture);
             stringBuilders.Add("CompletedDateTime", longDateString.ToString(GlobalConstants.LogFileDateFormat).ToStringBuilder());
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
@@ -186,7 +201,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
-            var stringBuilders = new Dictionary<string, StringBuilder> {{"Status", "Failed".ToStringBuilder()}};
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "Status", "Failed".ToStringBuilder() } };
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
@@ -210,7 +225,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
-            var stringBuilders = new Dictionary<string, StringBuilder> {{ "User", "DEV2\\pieter.terblanche".ToStringBuilder()}};
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "User", "DEV2\\pieter.terblanche".ToStringBuilder() } };
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
@@ -233,7 +248,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
-            var stringBuilders = new Dictionary<string, StringBuilder> {{ "ExecutionId", "06385e0f-ac27-4cf0-af55-7642c3c08ba3".ToStringBuilder()}};
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "ExecutionId", "06385e0f-ac27-4cf0-af55-7642c3c08ba3".ToStringBuilder() } };
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
@@ -256,7 +271,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(1, logEntriesObject.Count);
             //------------Execute Test---------------------------
 
-            var stringBuilders = new Dictionary<string, StringBuilder> {{ "User", "BadUser".ToStringBuilder()}};
+            var stringBuilders = new Dictionary<string, StringBuilder> { { "User", "BadUser".ToStringBuilder() } };
             logEntriesJson = getLogDataService.Execute(stringBuilders, null);
             //------------Assert Results-------------------------
             logEntriesObject = JsonConvert.DeserializeObject<List<LogEntry>>(logEntriesJson.ToString());
