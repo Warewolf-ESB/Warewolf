@@ -101,7 +101,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         }
 
         [TestMethod]
-        public void SelectScalarValueUsingEnumerableSymbolAndSeperatorSymbol_Expected_PrimitiveRecordset()
+        public void SelectScalarValue_WithEnumerableSymbolAndSeperatorSymbol_Expected_PrimitiveRecordset()
         {
             var testData = Given();
 
@@ -246,6 +246,68 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         {
             var JsonNavigator = new JsonNavigator(Given());
             JsonNavigator.SelectEnumerable(new XmlPath());
+        }
+
+        [TestMethod]
+        public void SelectEnumerable_WithEnumerableSymbolAndSeperatorSymbol_Expected_PipeDelimited()
+        {
+            var testData = Given();
+
+            IPath namePath = new JsonPath("().", "().");
+
+            var JsonNavigator = new JsonNavigator(testData);
+
+            var actual = string.Join("|", JsonNavigator.SelectEnumerable(namePath).Select(o => o.ToString().Trim()));
+            const string expected = @"""Name"": ""Dev2""|""Motto"": ""Eat lots of cake""|""Departments"": [
+  {
+    ""Name"": ""Dev"",
+    ""Employees"": [
+      {
+        ""Name"": ""Brendon"",
+        ""Surename"": ""Page""
+      },
+      {
+        ""Name"": ""Jayd"",
+        ""Surename"": ""Page""
+      }
+    ]
+  },
+  {
+    ""Name"": ""Accounts"",
+    ""Employees"": [
+      {
+        ""Name"": ""Bob"",
+        ""Surename"": ""Soap""
+      },
+      {
+        ""Name"": ""Joe"",
+        ""Surename"": ""Pants""
+      }
+    ]
+  }
+]|""Contractors"": [
+  {
+    ""Name"": ""Roofs Inc."",
+    ""PhoneNumber"": ""123""
+  },
+  {
+    ""Name"": ""Glass Inc."",
+    ""PhoneNumber"": ""1234""
+  },
+  {
+    ""Name"": ""Doors Inc."",
+    ""PhoneNumber"": ""1235""
+  },
+  {
+    ""Name"": ""Cakes Inc."",
+    ""PhoneNumber"": ""1236""
+  }
+]|""PrimitiveRecordset"": [
+  ""\r\n        RandomData\r\n    "",
+  ""\r\n        RandomData1\r\n    ""
+]";
+
+            Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
