@@ -271,7 +271,11 @@ namespace Dev2.Runtime.ServiceModel
                         if (path != null)
                         {
                             path.OutputExpression = value;
-                            dataSourceShape.Paths.Add(path);
+                            var foundPath = dataSourceShape.Paths.FirstOrDefault(path1 => path1.OutputExpression == path.OutputExpression);
+                            if (foundPath != null)
+                            {
+                                foundPath.OutputExpression = path.OutputExpression;
+                            }
                         }
                     }
                 }
