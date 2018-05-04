@@ -29,7 +29,10 @@ namespace Dev2.Diagnostics.Test
                     PerformanceCounterCategory.Delete("Warewolf");
                 }
                 
-                catch { }
+                catch
+                {
+                    //Do Nothing
+                }
 
                 var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {
