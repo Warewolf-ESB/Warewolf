@@ -10,6 +10,7 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
+using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
@@ -113,17 +114,7 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string postData)
         {
-            var webclient = CreateClient(head, query, source);
-            if (webclient != null)
-            {
-                var address = source.Address;
-                if (query != null)
-                {
-                    address = address + query;
-                }
-                return webclient.UploadString(address, postData);
-            }
-            return null;
+            return WebSources.Execute(source, WebRequestMethod.Post, query, postData, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
 
         public WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
