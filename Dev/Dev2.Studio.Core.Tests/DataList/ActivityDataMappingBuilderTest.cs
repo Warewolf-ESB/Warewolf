@@ -807,7 +807,6 @@ namespace Dev2.Core.Tests.DataList
 
             //------------Assert Results-------------------------
 
-            Assert.Fail();
             // check counts first
             Assert.AreEqual(2, result.Outputs.Count);
 
