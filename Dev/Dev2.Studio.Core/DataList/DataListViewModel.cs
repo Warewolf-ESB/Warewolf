@@ -985,16 +985,14 @@ namespace Dev2.Studio.ViewModels.DataList
             _recordsetHandler.SetRecordSetItemsAsUsed();
         }
 
-        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify) => MissingWorkflowItems(partsToVerify, false);
-
-        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
+        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify)
         {
             var missingWorkflowParts = new List<IDataListVerifyPart>();
 
             if (DataList != null)
             {                
-                missingWorkflowParts.AddRange(_missingDataList.MissingScalars(partsToVerify, excludeUnusedItems));
-                missingWorkflowParts.AddRange(_missingDataList.MissingRecordsets(partsToVerify, excludeUnusedItems));
+                missingWorkflowParts.AddRange(_missingDataList.MissingScalars(partsToVerify));
+                missingWorkflowParts.AddRange(_missingDataList.MissingRecordsets(partsToVerify));
             }
             _complexObjectHandler.DetectUnusedComplexObjects(partsToVerify);
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();
