@@ -159,9 +159,12 @@ namespace Warewolf.Core
                 {
                     _recordSetName = string.Empty;
                 }
-                else if (DataListUtil.IsValueRecordset(newMappedTo) && string.IsNullOrEmpty(RecordSetName))
+                else
                 {
-                    _recordSetName = DataListUtil.ExtractRecordsetNameFromValue(newMappedTo);
+                    if (DataListUtil.IsValueRecordset(newMappedTo) && string.IsNullOrEmpty(RecordSetName))
+                    {
+                        _recordSetName = DataListUtil.ExtractRecordsetNameFromValue(newMappedTo);
+                    }
                 }
                 OnPropertyChanged("RecordSetName");
             }

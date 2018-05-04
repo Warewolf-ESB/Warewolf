@@ -61,17 +61,7 @@ namespace Dev2.Validation
                 {
                     if(v != null)
                     {
-                        string s;
-                        if(inputs != null)
-                        {
-                            var input = inputs.FirstOrDefault(p => p.Key == v);
-                            s = input == null ? string.Empty : input.Value;
-                        }
-                        else
-                        {
-                            s = variableValue; // random text to replace variable
-                        }
-                        outputValue = outputValue.Replace(v, s);
+                        outputValue = ParseVariables(outputValue, variableValue, inputs, v);
                     }
                     else
                     {
@@ -90,6 +80,21 @@ namespace Dev2.Validation
                 }
             }
             return null;
+        }
+
+        static string ParseVariables(string outputValue, string variableValue, ObservableCollection<ObservablePair<string, string>> inputs, string v)
+        {
+            string s;
+            if (inputs != null)
+            {
+                var input = inputs.FirstOrDefault(p => p.Key == v);
+                s = input == null ? string.Empty : input.Value;
+            }
+            else
+            {
+                s = variableValue; // random text to replace variable
+            }
+            return outputValue.Replace(v, s);
         }
 
         public IIntellisenseResult ValidateName(string name, string displayName)

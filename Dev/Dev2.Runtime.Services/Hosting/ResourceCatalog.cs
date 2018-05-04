@@ -289,7 +289,7 @@ namespace Dev2.Runtime.Hosting
         public IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, bool getDuplicates, params string[] folders)
         {
             Builder = new ResourceCatalogBuilder();
-            Builder.BuildCatalogFromWorkspace(workspacePath, folders);
+            Builder.TryBuildCatalogFromWorkspace(workspacePath, folders);
             var resources = Builder.ResourceList;
             if (getDuplicates)
             {
@@ -378,13 +378,11 @@ namespace Dev2.Runtime.Hosting
 
         public void RemoveFromResourceActivityCache(Guid workspaceID, IResource resource)
         {
-            if (_parsers != null && _parsers.TryGetValue(workspaceID, out IResourceActivityCache parser))
+            if (_parsers != null && _parsers.TryGetValue(workspaceID, out IResourceActivityCache parser) && resource != null)
             {
-                if (resource != null)
-                {
-                    parser.RemoveFromCache(resource.ResourceID);
-                }
+                parser.RemoveFromCache(resource.ResourceID);
             }
+
         }
 
         public void Dispose()

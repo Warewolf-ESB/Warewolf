@@ -67,7 +67,9 @@ namespace Dev2.Studio.ViewModels
         void EditOracleResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditOdbcResource(IDbSource selectedSource, IView view);
         void EditOdbcResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
-        void EditResource(IPluginSource selectedSource, IView view);
+		void EditSqliteResource(IDbSource selectedSource, IView view);
+		void EditSqliteResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
+		void EditResource(IPluginSource selectedSource, IView view);
         void EditResource(IPluginSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditResource(IComPluginSource selectedSource, IView view);
         void EditResource(IComPluginSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
@@ -87,7 +89,8 @@ namespace Dev2.Studio.ViewModels
         void NewPostgreSqlSource(string resourcePath);
         void NewOracleSource(string resourcePath);
         void NewOdbcSource(string resourcePath);
-        bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
+		void NewSqliteSource(string resourcePath);
+		bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
         void NewWebSource(string resourcePath);
         void NewPluginSource(string resourcePath);
         void NewComPluginSource(string resourcePath);
@@ -109,7 +112,8 @@ namespace Dev2.Studio.ViewModels
         void EditPostgreSqlSource(IContextualResourceModel resourceModel, IView view);
         void EditOracleSource(IContextualResourceModel resourceModel, IView view);
         void EditOdbcSource(IContextualResourceModel resourceModel, IView view);
-        void EditPluginSource(IContextualResourceModel resourceModel, IView view);
+		void EditSqliteSource(IContextualResourceModel resourceModel, IView view);
+		void EditPluginSource(IContextualResourceModel resourceModel, IView view);
         void EditComPluginSource(IContextualResourceModel resourceModel, IView view);
         void EditWebSource(IContextualResourceModel resourceModel, IView view);
         void EditSharePointSource(IContextualResourceModel resourceModel, IView view);
@@ -125,10 +129,10 @@ namespace Dev2.Studio.ViewModels
         void EditResource(ISharepointServerSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header);
         Task<IRequestServiceNameViewModel> GetSaveViewModel(string resourcePath, string header, IExplorerItemViewModel explorerItemViewModel);
-        void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource);
+        void TryShowDependencies(IContextualResourceModel resource);
         void AddSettingsWorkSurface();
         void AddSchedulerWorkSurface();
-        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
+        void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel);
 
         void AddWorkspaceItem(IContextualResourceModel model);
         void DeleteContext(IContextualResourceModel model);
@@ -327,8 +331,21 @@ namespace Dev2.Studio.ViewModels
             OpeningWorkflowsHelper.AddWorkflow(key);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
+		public void EditSqliteResource(IDbSource selectedSource, IView view) => EditSqliteResource(selectedSource, view, null);
+		public void EditSqliteResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
+		{
+			var dbSourceViewModel = new ManageSqliteSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
+			var vm = new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, dbSourceViewModel, _shellViewModel.PopupProvider, view, ActiveServer);
 
-        public IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID)
+			workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OdbcSource, selectedSource.Id);
+
+			var key = workSurfaceKey as WorkSurfaceKey;
+			var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+			OpeningWorkflowsHelper.AddWorkflow(key);
+			AddAndActivateWorkSurface(workSurfaceContextViewModel);
+		}
+
+		public IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID)
         {
             if (workSurfaceKey == null)
             {
@@ -582,7 +599,20 @@ namespace Dev2.Studio.ViewModels
             { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageDatabaseSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-        public bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
+		public void NewSqliteSource(string resourcePath)
+		{
+			var saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.OdbcSourceNewHeaderLabel);
+			var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SqliteSource);
+			key.ServerID = ActiveServer.ServerID;
+
+			var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManageSqliteSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name)
+				, saveViewModel
+				, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
+				, _shellViewModel.AsyncWorker)
+			{ SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageDatabaseSourceControl(), ActiveServer));
+			AddAndActivateWorkSurface(workSurfaceContextViewModel);
+		}
+		public bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
         {
             var saveViewModel = GetSaveViewModel(string.Empty, explorerItemViewModel.ResourceName, explorerItemViewModel);
             var messageBoxResult = saveViewModel.Result.ShowSaveDialog();
@@ -846,7 +876,6 @@ namespace Dev2.Studio.ViewModels
             _editHandler.TryAdd("Server", EditServer);
             _editHandler.TryAdd("Dev2Server", EditServer);
             _editHandler.TryAdd("ServerSource", EditServer);
-
             _editHandler.TryAdd("RabbitMQSource", EditRabbitMQSource);
             _editHandler.TryAdd("OauthSource", EditDropBoxSource);
             _editHandler.TryAdd("SharepointServerSource", EditSharePointSource);
@@ -862,11 +891,32 @@ namespace Dev2.Studio.ViewModels
             _editHandler.TryAdd("Oracle", EditOracleSource);
             _editHandler.TryAdd("ODBC", EditOdbcSource);
             _editHandler.TryAdd("SqlDatabase", EditSqlServerSource);
+			_editHandler.TryAdd("SqliteDatabase", EditSqliteSource);
 
-        }
+		}
 
-
-        public void EditSqlServerSource(IContextualResourceModel resourceModel, IView view)
+		public void EditSqliteSource(IContextualResourceModel resourceModel, IView view)
+		{
+			var db = new DbSource(resourceModel.WorkflowXaml.ToXElement());
+			var def = new DbSourceDefinition
+			{
+				AuthenticationType = db.AuthenticationType,
+				DbName = db.DatabaseName,
+				Id = db.ResourceID,
+				Path = resourceModel.GetSavePath(),
+				Name = db.ResourceName,
+				Password = db.Password,
+				ServerName = db.Server,
+				Type = db.ServerType,
+				UserName = db.UserID
+			};
+			var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MySqlSource);
+			workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
+			workSurfaceKey.ResourceID = resourceModel.ID;
+			workSurfaceKey.ServerID = resourceModel.ServerID;
+			EditSqliteResource(def, view, workSurfaceKey);
+		}
+		public void EditSqlServerSource(IContextualResourceModel resourceModel, IView view)
         {
             var def = new DbSourceDefinition
             {
@@ -1221,16 +1271,6 @@ namespace Dev2.Studio.ViewModels
             return await RequestServiceNameViewModel.CreateAsync(environmentViewModel, resourcePath, header, explorerItemViewModel);
         }
 
-        public void AddReverseDependencyVisualizerWorkSurface(IContextualResourceModel resource)
-        {
-            if (resource == null)
-            {
-                return;
-            }
-
-            ShowDependencies(true, resource, ActiveServer);
-        }
-
         public void AddSettingsWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
@@ -1241,40 +1281,53 @@ namespace Dev2.Studio.ViewModels
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
-        public void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
+        public void TryShowDependencies(IContextualResourceModel resource)
+        {
+            if (resource != null)
+            {
+                ShowDependencies(true, resource, ActiveServer);
+            }
+        }
+
+        public void TryCreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
         {
             if (resourceModel != null)
             {
-                var key = WorkSurfaceKeyFactory.CreateEnvKey(WorkSurfaceContext.Scheduler, ActiveServer.EnvironmentID) as WorkSurfaceKey;
-                var workSurfaceContextViewModel = FindWorkSurfaceContextViewModel(key);
-                if (workSurfaceContextViewModel != null)
-                {
-                    var workSurfaceViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel;
-                    if (workSurfaceViewModel != null)
-                    {
-                        var findWorkSurfaceContextViewModel = (SchedulerViewModel)workSurfaceViewModel;
+                CreateNewScheduleWorkSurface(resourceModel);
+            }
+        }
 
-                        if (findWorkSurfaceContextViewModel.IsDirty)
-                        {
-                            _shellViewModel.PopupProvider.Show(Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskMessage,
-                                Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskHeader,
-                                MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
-                            ActivateAndReturnWorkSurfaceIfPresent(key);
-                        }
-                        else
-                        {
-                            ActivateAndReturnWorkSurfaceIfPresent(key);
-                            findWorkSurfaceContextViewModel.CreateNewTask();
-                            findWorkSurfaceContextViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
-                        }
+        void CreateNewScheduleWorkSurface(IContextualResourceModel resourceModel)
+        {
+            var key = WorkSurfaceKeyFactory.CreateEnvKey(WorkSurfaceContext.Scheduler, ActiveServer.EnvironmentID) as WorkSurfaceKey;
+            var workSurfaceContextViewModel = FindWorkSurfaceContextViewModel(key);
+            if (workSurfaceContextViewModel != null)
+            {
+                var workSurfaceViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel;
+                if (workSurfaceViewModel != null)
+                {
+                    var findWorkSurfaceContextViewModel = (SchedulerViewModel)workSurfaceViewModel;
+
+                    if (findWorkSurfaceContextViewModel.IsDirty)
+                    {
+                        _shellViewModel.PopupProvider.Show(Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskMessage,
+                            Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskHeader,
+                            MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
+                        ActivateAndReturnWorkSurfaceIfPresent(key);
+                    }
+                    else
+                    {
+                        ActivateAndReturnWorkSurfaceIfPresent(key);
+                        findWorkSurfaceContextViewModel.CreateNewTask();
+                        findWorkSurfaceContextViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
                     }
                 }
-                else
-                {
-                    var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
-                    schedulerViewModel.CreateNewTask();
-                    schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
-                }
+            }
+            else
+            {
+                var schedulerViewModel = ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
+                schedulerViewModel.CreateNewTask();
+                schedulerViewModel.UpdateScheduleWithResourceDetails(resourceModel.Category, resourceModel.ID, resourceModel.ResourceName);
             }
         }
 
@@ -1432,37 +1485,35 @@ namespace Dev2.Studio.ViewModels
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt)
         {
             var remove = true;
-            if (context != null)
+            if (context != null && !context.DeleteRequested)
             {
-                if (!context.DeleteRequested)
+                var vm = context.WorkSurfaceViewModel;
+                if (vm != null)
                 {
-                    var vm = context.WorkSurfaceViewModel;
-                    if (vm != null)
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
                     {
-                        if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
-                        {
-                            return CloseWorkflow(context, e, dontPrompt, vm, ref remove) && remove;
-                        }
-                        if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
-                        {
-                            return CloseSettings(vm, true);
-                        }
-                        if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
-                        {
-                            return RemoveScheduler(vm, true);
-                        }
+                        return CloseWorkflow(context, e, dontPrompt, vm, ref remove) && remove;
                     }
-                    if (vm is IStudioTab tab)
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
                     {
-                        remove = tab.DoDeactivate(true);
-                        if (remove)
-                        {
-                            tab.Dispose();
-                            tab.CloseView();
-                        }
+                        return CloseSettings(vm, true);
+                    }
+                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                    {
+                        return RemoveScheduler(vm, true);
+                    }
+                }
+                if (vm is IStudioTab tab)
+                {
+                    remove = tab.DoDeactivate(true);
+                    if (remove)
+                    {
+                        tab.Dispose();
+                        tab.CloseView();
                     }
                 }
             }
+
 
             return remove;
         }

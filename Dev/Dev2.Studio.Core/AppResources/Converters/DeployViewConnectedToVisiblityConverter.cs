@@ -31,13 +31,11 @@ namespace Dev2.Studio.Core.AppResources.Converters
         /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is IServer env)
+            if (value is IServer env && env.IsConnected)
             {
-                if (env.IsConnected)
-                {
-                    return Visibility.Visible;
-                }
+                return Visibility.Visible;
             }
+
             return Visibility.Collapsed;
         }
 

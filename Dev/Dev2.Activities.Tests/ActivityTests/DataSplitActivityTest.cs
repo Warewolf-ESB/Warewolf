@@ -26,7 +26,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DataSplitActivityTest
     /// </summary>
     [TestClass]
-    
+
     public class DataSplitActivityTest : BaseActivityUnitTest
     {
         IList<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();
@@ -43,7 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            if(_resultsCollection == null)
+            if (_resultsCollection == null)
             {
                 _resultsCollection = new List<DataSplitDTO>();
             }
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var col1Expected = new List<string> { "RSA ID" };
             var col2Expected = new List<string> { "FirstName" };
-            var col3Expected = new List<string> { "LastName"};
+            var col3Expected = new List<string> { "LastName" };
             var dataExpected = new List<string> { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
 
             var comparer = new ActivityUnitTests.Utils.StringComparer();
@@ -215,7 +215,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
             var result = ExecuteProcess();
-            var expected = new List<string> { @"" 
+            var expected = new List<string> { @""
                                                      , @"Branson|0812457"
                                                      };
 
@@ -387,17 +387,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>();
             resultsCollection.Add(new DataSplitDTO("[[rec().data]]", "New Line", "", 1));
             var sourceString = File.ReadAllText("LargeRowsDataSplit.txt");
-            var act = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultsCollection,SkipBlankRows = true };            
-            var dataObject = new DsfDataObject("",Guid.Empty)
+            var act = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultsCollection, SkipBlankRows = true };
+            var dataObject = new DsfDataObject("", Guid.Empty)
             {
                 IsDebug = false,
             };
             act.Execute(dataObject, 0);
 
             var totalCount = dataObject.Environment.GetCount("rec");
-            var res = dataObject.Environment.Eval("[[rec().data]]",0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            Assert.AreEqual("0827373254", res.Item.First().ToString());            
-            Assert.AreEqual(8300000, totalCount,CurrentDl);
+            var res = dataObject.Environment.Eval("[[rec().data]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            Assert.AreEqual("0827373254", res.Item.First().ToString());
+            Assert.AreEqual(8300000, totalCount, CurrentDl);
         }
 
         //2012.09.28: massimo.guerrera - Add tab functionality
@@ -508,7 +508,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         @"Ms|Kerrin|deSil",
                                                         @"5.Sir|Richard|",
                                                         @"896"
-                                                        
+
                                                         };
             var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out string error);
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));

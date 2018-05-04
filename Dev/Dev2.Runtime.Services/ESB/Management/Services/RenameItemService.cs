@@ -30,13 +30,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("itemToRename", out StringBuilder tmp);
-            if (tmp != null)
+            if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
             {
-                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
-                {
-                    return resourceId;
-                }
+                return resourceId;
             }
+
 
             return Guid.Empty;
         }
@@ -55,14 +53,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentNullException(nameof(values));
                 }
                 StringBuilder folderToBeRenamed = null;
-                if (!values.TryGetValue("itemToRename", out StringBuilder itemToBeRenamed))
+                if (!values.TryGetValue("itemToRename", out StringBuilder itemToBeRenamed) && !values.TryGetValue("folderToRename", out folderToBeRenamed))
                 {
-                    if (!values.TryGetValue("folderToRename", out folderToBeRenamed))
-                    {
-                        throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "itemToRename"));
-                    }
+                    throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "itemToRename"));
                 }
-                if(!values.TryGetValue("newName", out StringBuilder newName))
+
+                if (!values.TryGetValue("newName", out StringBuilder newName))
                 {
                     throw new ArgumentException(string.Format(ErrorResource.ValueNotSupplied, "newName"));
                 }

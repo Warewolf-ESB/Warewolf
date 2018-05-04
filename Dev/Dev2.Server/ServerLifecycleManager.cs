@@ -646,25 +646,11 @@ namespace Dev2
             {
                 try
                 {
-                    try
-                    {
-                        _owinServer = WebServerStartup.Start(_endpoints);
-                        EnvironmentVariables.IsServerOnline = true;
-                        WriteLine("\r\nWeb Server Started");
-                        foreach (var endpoint in _endpoints)
-                        {
-                            WriteLine($"Web server listening at {endpoint.Url}");
-                        }                        
-                    }
-                    catch (Exception e)
-                    {
-                        LogException(e);
-                        Fail("Webserver failed to start", e);
-                        Console.ReadLine();
-                    }
+                    LogEndpoints();
                 }
                 catch (Exception e)
                 {
+                    LogException(e);
                     EnvironmentVariables.IsServerOnline = false;
                     Fail("Webserver failed to start", e);
                     Console.ReadLine();
@@ -673,7 +659,17 @@ namespace Dev2
             SetAsStarted();
         }
 
-        
+        void LogEndpoints()
+        {
+            _owinServer = WebServerStartup.Start(_endpoints);
+            EnvironmentVariables.IsServerOnline = true;
+            WriteLine("\r\nWeb Server Started");
+            foreach (var endpoint in _endpoints)
+            {
+                WriteLine($"Web server listening at {endpoint.Url}");
+            }
+        }
+
         internal static void WriteLine(string message)
         {
             if (Environment.UserInteractive)
