@@ -1,0 +1,139 @@
+﻿[Header]
+2017-08-17 08:42:02,096 INFO  - [Warewolf Info] - Loading settings provider...  
+2017-08-17 08:42:02,101 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:02,103 INFO  - [Warewolf Info] - Configure logging...  
+2017-08-17 08:42:02,117 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:02,162 INFO  - [Warewolf Info] - Loading resource catalog...  
+2017-08-17 08:42:03,090 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:03,651 INFO  - [Warewolf Info] - SecurityServiceRead
+2017-08-17 08:42:03,654 DEBUG - [Warewolf Debug] - Start Security Read
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsModified
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsModified
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsChanged
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRaisePermissionsChanged
+2017-08-17 08:42:03,927 INFO  - [Warewolf Info] - SecurityServiceRead
+2017-08-17 08:42:03,931 ERROR - [Warewolf Error] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Dev2.Runtime.Security.ServerAuthorizationService..ctor(ISecurityService securityService) in D:\Source\Repos\Warewolf-ESB\Dev\Dev2.Runtime.Services\Security\ServerAuthorizationService.cs:line 49
+2017-08-17 08:42:04,030 INFO  - [Warewolf Info] - 
+Web Server Started
+2017-08-17 08:42:04,030 INFO  - [Warewolf Info] - Web server listening at http://*:3142/
+2017-08-17 08:42:04,030 INFO  - [Warewolf Info] - Web server listening at https://*:3143/
+2017-08-17 08:42:05,866 INFO  - [Warewolf Info] - Loading server workspace...  
+2017-08-17 08:42:05,888 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:05,891 INFO  - [Warewolf Info] - Preloading assemblies...  
+2017-08-17 08:42:06,023 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:06,023 INFO  - [Warewolf Info] - Loading resource activity cache...  
+2017-08-17 08:42:06,404 ERROR - [Warewolf Error] - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'WorkflowWithNoStartNodeConnected' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in D:\Source\Repos\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 23
+2017-08-17 08:42:06,406 ERROR - [Warewolf Error] - System.Activities.InvalidWorkflowException: The following errors were encountered while processing the workflow tree:
+'DynamicActivity': The private implementation of activity '1: DynamicActivity' has the following validation error:   Flowchart 'WorkflowWithNoStartNodeConnected' does not have a StartNode.
+   at System.Activities.Validation.ActivityValidationServices.ThrowIfViolationsExist(IList`1 validationErrors, ExceptionReason reason)
+   at System.Activities.WorkflowInspectionServices.<GetActivities>d__3.MoveNext()
+   at System.Linq.Enumerable.FirstOrDefault[TSource](IEnumerable`1 source)
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity, List`1 seenActivities) in D:\Source\Repos\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 51
+   at Dev2.Activities.ActivityParser.Parse(DynamicActivity dynamicActivity) in D:\Source\Repos\Warewolf-ESB\Dev\Dev2.Activities\Activities\ActivityParser.cs:line 171
+   at Warewolf.ResourceManagement.ResourceActivityCache.Parse(DynamicActivity activity, Guid resourceIdGuid, Boolean failOnException) in D:\Source\Repos\Warewolf-ESB\Dev\Warewolf.ResourceManagement\ResourceActivityCache.cs:line 35
+2017-08-17 08:42:08,820 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:08,825 INFO  - [Warewolf Info] - Loading Test catalog...  
+2017-08-17 08:42:08,927 INFO  - [Warewolf Info] - done.
+2017-08-17 08:42:11,699 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ SecurityReadService ]
+2017-08-17 08:42:11,739 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FetchToolsService ]
+2017-08-17 08:42:11,744 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Remote Invoke
+2017-08-17 08:42:11,744 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Mapping Inputs from Environment
+2017-08-17 08:42:11,757 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Remote Invoke
+2017-08-17 08:42:11,757 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Mapping Inputs from Environment
+2017-08-17 08:42:11,789 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Creating Invoker
+2017-08-17 08:42:11,789 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Creating Invoker
+2017-08-17 08:42:11,794 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Finding service
+2017-08-17 08:42:11,794 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Finding service
+2017-08-17 08:42:11,795 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Mapping Action Dependencies
+2017-08-17 08:42:11,795 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Mapping Action Dependencies
+2017-08-17 08:42:11,795 DEBUG - [400112d0-3323-4d85-875c-e9f28b34d15b] - Getting container
+2017-08-17 08:42:11,795 DEBUG - [c0ba9268-dcf6-4a5c-84b7-db87d653090b] - Getting container
+2017-08-17 08:42:11,923 DEBUG - [Warewolf Debug] - Start Security Read
+2017-08-17 08:42:12,391 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ GetServerVersion ]
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Remote Invoke
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Mapping Inputs from Environment
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Creating Invoker
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Finding service
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Mapping Action Dependencies
+2017-08-17 08:42:12,393 DEBUG - [790ba9d2-41b1-43f0-b6ff-5e680cdaa221] - Getting container
+2017-08-17 08:42:12,469 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FindSourcesByType ]
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Remote Invoke
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Mapping Inputs from Environment
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Creating Invoker
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Finding service
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Mapping Action Dependencies
+2017-08-17 08:42:12,472 DEBUG - [c3639e2d-d400-40af-a721-2e555670c6d7] - Getting container
+2017-08-17 08:42:12,483 INFO  - [Warewolf Info] - Find Sources By Type. Dev2Server
+2017-08-17 08:42:12,595 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FetchExplorerItemsService ]
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Remote Invoke
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Mapping Inputs from Environment
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Creating Invoker
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Finding service
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Mapping Action Dependencies
+2017-08-17 08:42:12,597 DEBUG - [ea4ad998-8b6a-4e61-b7b5-be6ec6e7577e] - Getting container
+2017-08-17 08:42:12,610 INFO  - [Warewolf Info] - Fetch Explorer Items
+2017-08-17 08:42:12,611 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FindResourcesByID ]
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Remote Invoke
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Mapping Inputs from Environment
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Creating Invoker
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Finding service
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Mapping Action Dependencies
+2017-08-17 08:42:12,616 DEBUG - [417a3319-ff13-4853-a28b-45a0c9e255a4] - Getting container
+2017-08-17 08:42:16,898 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FetchResourceDuplicates ]
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Remote Invoke
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Mapping Inputs from Environment
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Creating Invoker
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Finding service
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Mapping Action Dependencies
+2017-08-17 08:42:16,900 DEBUG - [0e517a04-188d-4757-a0c9-b492bf26bb35] - Getting container
+2017-08-17 08:42:17,013 INFO  - [Warewolf Info] - Fetch Duplicate ResourcesError
+2017-08-17 08:42:59,617 INFO  - [Warewolf System Data] - 
+    Process Memory Usage(mb): 11
+    Number of Requests: 7 
+    Time Taken(Ms): 1189   
+    Uptime: 00:01:00.0775736
+2017-08-17 08:43:20,718 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FindResourcesByID ]
+2017-08-17 08:43:20,720 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Remote Invoke
+2017-08-17 08:43:20,720 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Mapping Inputs from Environment
+2017-08-17 08:43:20,721 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Creating Invoker
+2017-08-17 08:43:20,721 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Finding service
+2017-08-17 08:43:20,721 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Mapping Action Dependencies
+2017-08-17 08:43:20,721 DEBUG - [4a186503-6889-439d-8aac-157068ea95d2] - Getting container
+2017-08-17 08:43:20,875 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ FetchResourceDefinitionService ]
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Remote Invoke
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Mapping Inputs from Environment
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Creating Invoker
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Finding service
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Mapping Action Dependencies
+2017-08-17 08:43:20,877 DEBUG - [e69d4487-f400-4a2a-a3b2-f3a8bcdca298] - Getting container
+2017-08-17 08:43:20,884 INFO  - [Warewolf Info] - Fetch Resource definition. ResourceId: acb75027-ddeb-47d7-814e-a54c37247ec1
+2017-08-17 08:43:24,089 DEBUG - [Warewolf Debug] - Execute Command Invoked For [ DEV2\Pieter.Terblanche : NTLM : True ] For Service [ Hello World ]
+2017-08-17 08:43:24,092 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Remote Invoke
+2017-08-17 08:43:24,092 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Mapping Inputs from Environment
+2017-08-17 08:43:24,123 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Creating Invoker
+2017-08-17 08:43:24,123 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Finding service
+2017-08-17 08:43:24,123 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Mapping Action Dependencies
+2017-08-17 08:43:24,123 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Getting container
+2017-08-17 08:43:24,130 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - About to execute web request [ Hello World ] for User [ DEV2\Pieter.Terblanche : NTLM : True ] with DataObject Payload [  ]
+2017-08-17 08:43:24,130 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Request URL [ http://pieter:3142/secure/hello world.xml?<datalist><name></name></datalist> ]
+2017-08-17 08:43:24,130 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Entered Wf Container
+2017-08-17 08:43:24,130 INFO  - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Started Execution for Service Name:Hello World Resource Id:acb75027-ddeb-47d7-814e-a54c37247ec1 Mode:Debug
+2017-08-17 08:43:24,165 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Hello World
+2017-08-17 08:43:24,173 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Getting Resource to Execute
+2017-08-17 08:43:24,174 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Fetching Execution Plan for acb75027-ddeb-47d7-814e-a54c37247ec1 for workspace dd444373-9e40-41ef-bc1d-7bd3a167dc33
+2017-08-17 08:43:24,219 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Got Resource to Execute
+2017-08-17 08:43:24,243 INFO  - [Warewolf Info] - Debug Already Started
+2017-08-17 08:43:24,267 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Decision
+2017-08-17 08:43:24,275 INFO  - [Warewolf Info] - Debug Already Started
+2017-08-17 08:43:24,276 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Assign a value to Name if blank (1)
+2017-08-17 08:43:24,325 INFO  - [Warewolf Info] - Debug Already Started
+2017-08-17 08:43:24,325 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Set the output variable (1)
+2017-08-17 08:43:24,326 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Hello World
+2017-08-17 08:43:24,397 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Execution Result [ {  "Message": "Hello World."} ]
+2017-08-17 08:43:24,397 INFO  - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Completed Execution for Service Name:Hello World Resource Id: acb75027-ddeb-47d7-814e-a54c37247ec1 Mode:Debug
