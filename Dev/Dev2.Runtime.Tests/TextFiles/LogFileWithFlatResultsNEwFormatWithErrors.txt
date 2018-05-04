@@ -135,5 +135,5 @@ Web Server Started
 2017-08-17 08:43:24,325 INFO  - [Warewolf Info] - Debug Already Started
 2017-08-17 08:43:24,325 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Set the output variable (1)
 2017-08-17 08:43:24,326 DEBUG - [Warewolf Debug] - EnvironmentID: 00000000-0000-0000-0000-000000000000 Debug:Hello World
-2017-08-17 08:43:24,397 DEBUG - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Execution Result [ {  "Message": "Hello World."} ]
-2017-08-17 08:43:24,397 INFO  - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Completed Execution for Service Name:Hello World Resource Id: acb75027-ddeb-47d7-814e-a54c37247ec1 Mode:Debug
+2017-08-17 08:43:24,397 ERROR - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Execution Result [ {  "Message": "Hello World."} ]
+2017-08-17 08:43:24,397 ERROR  - [06385e0f-ac27-4cf0-af55-7642c3c08ba3] - Completed Execution for Service Name:Hello World Resource Id: acb75027-ddeb-47d7-814e-a54c37247ec1 Mode:Debug
