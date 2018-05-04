@@ -373,16 +373,13 @@ namespace Dev2.Data.Util
                             for (int q = 0; q < childNl.Count; q++)
                             {
                                 var xmlNode = childNl[q];
-                                if (xmlNode == null)
+                                if (xmlNode != null)
                                 {
-                                    continue;
-                                }
-
-                                var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
-                                if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, includeNoneDirection))
-                                {
-                                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                                false, "", false));
+                                    var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
+                                    if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, includeNoneDirection))
+                                    {
+                                        result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "", false, "", false));
+                                    }
                                 }
                             }
                         }
@@ -463,8 +460,7 @@ namespace Dev2.Data.Util
                             var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
                             if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection, false))
                             {
-                                result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
-                                                                            false, "", false));
+                                result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "", false, "", false));
                             }
                         }
                     }
