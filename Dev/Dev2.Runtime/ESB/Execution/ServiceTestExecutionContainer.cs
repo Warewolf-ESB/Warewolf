@@ -147,7 +147,7 @@ namespace Dev2.Runtime.ESB.Execution
             var userPrinciple = Thread.CurrentPrincipal;
             Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () =>
             {
-                result = ExecuteWf(to, serviceTestModelTo);
+                result = TryExecuteWf(to, serviceTestModelTo);
             });
             if (DataObject.Environment.Errors != null)
             {
@@ -183,32 +183,37 @@ namespace Dev2.Runtime.ESB.Execution
                     var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
                     foreach (var dataListItem in dataListItems)
                     {
-                        var recSetsToAssign = new List<IServiceTestInput>();
-                        var empty = true;
-                        foreach (var listItem in dataListItem)
-                        {
-                            if (!string.IsNullOrEmpty(listItem.Value))
-                            {
-                                empty = false;
-                            }
-                            recSetsToAssign.Add(listItem);
-                        }
-                        if (!empty)
-                        {
-                            foreach (var serviceTestInput in recSetsToAssign)
-                            {
-                                if (!serviceTestInput.EmptyIsNull || !string.IsNullOrEmpty(serviceTestInput.Value))
-                                {
-                                    environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
-                                }
-                            }
-                        }
+                        AddRecordsetInput(environment, dataListItem);
                     }
                 }
             }
         }
 
-        Guid ExecuteWf(ErrorResultTO to, IServiceTestModelTO test)
+        static void AddRecordsetInput(IExecutionEnvironment environment, IGrouping<string, IServiceTestInput> dataListItem)
+        {
+            var recSetsToAssign = new List<IServiceTestInput>();
+            var empty = true;
+            foreach (var listItem in dataListItem)
+            {
+                if (!string.IsNullOrEmpty(listItem.Value))
+                {
+                    empty = false;
+                }
+                recSetsToAssign.Add(listItem);
+            }
+            if (!empty)
+            {
+                foreach (var serviceTestInput in recSetsToAssign)
+                {
+                    if (!serviceTestInput.EmptyIsNull || !string.IsNullOrEmpty(serviceTestInput.Value))
+                    {
+                        environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(serviceTestInput.Variable), serviceTestInput.Value, 0);
+                    }
+                }
+            }
+        }
+
+        Guid TryExecuteWf(ErrorResultTO to, IServiceTestModelTO test)
         {
             var result = new Guid();
             var wfappUtils = new WfApplicationUtils();
@@ -228,116 +233,14 @@ namespace Dev2.Runtime.ESB.Execution
                     }
                     else
                     {
-                        if (!DataListUtil.IsValueRecordset(input.Variable))
-                        {
-                            if (ExecutionEnvironment.IsValidVariableExpression(input.Value, out string errorMessage, 0))
-                            {
-                                DataObject.Environment.AllErrors.Add("Cannot use variables as input value.");
-                            }
-                            else
-                            {
-                                if (!input.EmptyIsNull || !string.IsNullOrEmpty(value))
-                                {
-                                    DataObject.Environment.Assign(variable, value, 0);
-                                }
-                            }
-                        }
+                        AddToRecordsetObjects(input, variable, value);
                     }
                 }
             }
             var serializer = new Dev2JsonSerializer();
             try
             {
-                IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
-                DataObject.ExecutionToken = exeToken;
-
-                if (DataObject.IsDebugMode())
-                {
-                    var debugState = wfappUtils.GetDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DateTime.Now, true, false, false);
-                    wfappUtils.WriteDebug(DataObject, debugState);
-                }
-
-                var testRunResult = Eval(resourceId, DataObject, test);
-
-                if (DataObject.IsDebugMode())
-                {
-                    if (!DataObject.StopExecution)
-                    {
-                        var debugState = wfappUtils.GetDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DataObject.StartTime, false, true, true);
-                        var outputDebugItem = new DebugItem();
-                        if (test != null)
-                        {
-                            var msg = test.FailureMessage;
-                            if (test.TestPassed)
-                            {
-                                msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
-                            }
-                            outputDebugItem.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
-                        }
-                        debugState.AssertResultList.Add(outputDebugItem);
-                        wfappUtils.WriteDebug(DataObject, debugState);
-                    }
-                    DebugState testAggregateDebugState;
-                    if (DataObject.StopExecution && DataObject.Environment.HasErrors())
-                    {
-                        var existingErrors = DataObject.Environment.FetchErrors();
-                        DataObject.Environment.AllErrors.Clear();
-                        testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, DataObject.Environment.HasErrors(), string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
-
-                        SetTestFailureBasedOnExpectedError(test, existingErrors);
-
-                    }
-                    else
-                    {
-                        testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, false, string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
-                        AggregateTestResult(resourceId, test);
-                    }
-
-
-                    var itemToAdd = new DebugItem();
-                    if (test != null)
-                    {
-                        var msg = test.FailureMessage;
-                        if (test.TestPassed)
-                        {
-                            msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
-                        }
-                        itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
-                    }
-                    testAggregateDebugState.AssertResultList.Add(itemToAdd);
-                    wfappUtils.WriteDebug(DataObject, testAggregateDebugState);
-
-                    if (testRunResult != null)
-                    {
-                        if (test?.Result != null)
-                        {
-                            test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
-                        }
-
-                        _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
-                    }
-                }
-                else
-                {
-                    if (DataObject.StopExecution && DataObject.Environment.HasErrors())
-                    {
-                        var existingErrors = DataObject.Environment.FetchErrors();
-                        DataObject.Environment.AllErrors.Clear();
-                        SetTestFailureBasedOnExpectedError(test, existingErrors);
-                        _request.ExecuteResult = serializer.SerializeToBuilder(test);
-
-                    }
-                    else
-                    {
-                        AggregateTestResult(resourceId, test);
-                        if (test != null)
-                        {
-                            _request.ExecuteResult = serializer.SerializeToBuilder(test);
-                        }
-                    }
-
-                }
-                result = DataObject.DataListID;
+                result = ExecuteWf(test, wfappUtils, invokeErrors, resourceId, serializer);
             }
             catch (InvalidWorkflowException iwe)
             {
@@ -401,6 +304,113 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
+        Guid ExecuteWf(IServiceTestModelTO test, WfApplicationUtils wfappUtils, ErrorResultTO invokeErrors, Guid resourceId, Dev2JsonSerializer serializer)
+        {
+            Guid result;
+            IExecutionToken exeToken = new ExecutionToken { IsUserCanceled = false };
+            DataObject.ExecutionToken = exeToken;
+
+            if (DataObject.IsDebugMode())
+            {
+                var debugState = wfappUtils.GetDebugState(DataObject, StateType.Start, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DateTime.Now, true, false, false);
+                wfappUtils.TryWriteDebug(DataObject, debugState);
+            }
+
+            var testRunResult = Eval(resourceId, DataObject, test);
+
+            if (DataObject.IsDebugMode())
+            {
+                if (!DataObject.StopExecution)
+                {
+                    var debugState = wfappUtils.GetDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), invokeErrors, DataObject.StartTime, false, true, true);
+                    var outputDebugItem = new DebugItem();
+                    if (test != null)
+                    {
+                        var msg = test.TestPassed ? Warewolf.Resource.Messages.Messages.Test_PassedResult : test.FailureMessage;
+                        outputDebugItem.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
+                    }
+                    debugState.AssertResultList.Add(outputDebugItem);
+                    wfappUtils.TryWriteDebug(DataObject, debugState);
+                }
+                DebugState testAggregateDebugState;
+                if (DataObject.StopExecution && DataObject.Environment.HasErrors())
+                {
+                    var existingErrors = DataObject.Environment.FetchErrors();
+                    DataObject.Environment.AllErrors.Clear();
+                    testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, DataObject.Environment.HasErrors(), string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
+                    SetTestFailureBasedOnExpectedError(test, existingErrors);
+                }
+                else
+                {
+                    testAggregateDebugState = wfappUtils.GetDebugState(DataObject, StateType.TestAggregate, false, string.Empty, new ErrorResultTO(), DataObject.StartTime, false, false, false);
+                    AggregateTestResult(resourceId, test);
+                }
+
+                var itemToAdd = new DebugItem();
+                if (test != null)
+                {
+                    var msg = test.FailureMessage;
+                    if (test.TestPassed)
+                    {
+                        msg = Warewolf.Resource.Messages.Messages.Test_PassedResult;
+                    }
+                    itemToAdd.AddRange(new DebugItemServiceTestStaticDataParams(msg, test.TestFailing).GetDebugItemResult());
+                }
+                testAggregateDebugState.AssertResultList.Add(itemToAdd);
+                wfappUtils.TryWriteDebug(DataObject, testAggregateDebugState);
+
+                if (testRunResult != null)
+                {
+                    if (test?.Result != null)
+                    {
+                        test.Result.DebugForTest = TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
+                    }
+
+                    _request.ExecuteResult = serializer.SerializeToBuilder(testRunResult);
+                }
+            }
+            else
+            {
+                if (DataObject.StopExecution && DataObject.Environment.HasErrors())
+                {
+                    var existingErrors = DataObject.Environment.FetchErrors();
+                    DataObject.Environment.AllErrors.Clear();
+                    SetTestFailureBasedOnExpectedError(test, existingErrors);
+                    _request.ExecuteResult = serializer.SerializeToBuilder(test);
+
+                }
+                else
+                {
+                    AggregateTestResult(resourceId, test);
+                    if (test != null)
+                    {
+                        _request.ExecuteResult = serializer.SerializeToBuilder(test);
+                    }
+                }
+
+            }
+            result = DataObject.DataListID;
+            return result;
+        }
+
+        private void AddToRecordsetObjects(IServiceTestInput input, string variable, string value)
+        {
+            if (!DataListUtil.IsValueRecordset(input.Variable))
+            {
+                if (ExecutionEnvironment.IsValidVariableExpression(input.Value, out string errorMessage, 0))
+                {
+                    DataObject.Environment.AllErrors.Add("Cannot use variables as input value.");
+                }
+                else
+                {
+                    if (!input.EmptyIsNull || !string.IsNullOrEmpty(value))
+                    {
+                        DataObject.Environment.Assign(variable, value, 0);
+                    }
+                }
+            }
+        }
+
         static void SetTestFailureBasedOnExpectedError(IServiceTestModelTO test, string existingErrors)
         {
             if (test != null)
@@ -449,22 +459,27 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var serviceTestStep in testSteps)
                 {
-                    if (serviceTestStep != null)
-                    {
-                        if (serviceTestStep.Result != null)
-                        {
-                            serviceTestStep.Result.RunTestResult = RunResult.TestPending;
-                        }
-                        else
-                        {
-                            serviceTestStep.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
-                        }
-                        UpdateToPending(serviceTestStep.StepOutputs);
-                        if (serviceTestStep.Children != null && serviceTestStep.Children.Count > 0)
-                        {
-                            UpdateToPending(serviceTestStep.Children);
-                        }
-                    }
+                    UpdateToPending(serviceTestStep);
+                }
+            }
+        }
+
+        void UpdateToPending(IServiceTestStep serviceTestStep)
+        {
+            if (serviceTestStep != null)
+            {
+                if (serviceTestStep.Result != null)
+                {
+                    serviceTestStep.Result.RunTestResult = RunResult.TestPending;
+                }
+                else
+                {
+                    serviceTestStep.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
+                }
+                UpdateToPending(serviceTestStep.StepOutputs);
+                if (serviceTestStep.Children != null && serviceTestStep.Children.Count > 0)
+                {
+                    UpdateToPending(serviceTestStep.Children);
                 }
             }
         }
@@ -476,22 +491,25 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 foreach (var serviceTestOutput in serviceTestOutputs)
                 {
-                    if (serviceTestOutput?.Result != null)
-                    {
-                        serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
-                    }
-                    else
-                    {
-                        if (serviceTestOutput != null)
-                        {
-                            serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
-                        }
-                    }
+                    UpdateToPending(serviceTestOutput);
                 }
             }
         }
 
-
+        private static void UpdateToPending(IServiceTestOutput serviceTestOutput)
+        {
+            if (serviceTestOutput?.Result != null)
+            {
+                serviceTestOutput.Result.RunTestResult = RunResult.TestPending;
+            }
+            else
+            {
+                if (serviceTestOutput != null)
+                {
+                    serviceTestOutput.Result = new TestRunResult { RunTestResult = RunResult.TestPending };
+                }
+            }
+        }
 
         IServiceTestModelTO Eval(Guid resourceId, IDSFDataObject dataObject, IServiceTestModelTO test)
         {
@@ -526,16 +544,7 @@ namespace Dev2.Runtime.ESB.Execution
                         dataObject.ServiceTest = test;
                         UpdateToPending(test.TestSteps);
                         EvalInner(dataObject, clonedExecPlan, dataObject.ForEachUpdateValue, test.TestSteps);
-                        if (test.Outputs != null)
-                        {
-                            var dev2DecisionFactory = Dev2DecisionFactory.Instance();
-                            var testRunResults = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory)).ToList();
-                            testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
-                            if (!testPassed)
-                            {
-                                failureMessage = failureMessage.Append(string.Join("", testRunResults.Select(result => result.Message).Where(s => !string.IsNullOrEmpty(s)).ToList()));
-                            }
-                        }
+                        GetTestResults(dataObject, test, ref testPassed, ref failureMessage);
                     }
 
 
@@ -545,6 +554,20 @@ namespace Dev2.Runtime.ESB.Execution
                 return test;
             }
             throw new Exception($"Test {dataObject.TestName} for Resource {dataObject.ServiceName} ID {resourceId}");
+        }
+
+        void GetTestResults(IDSFDataObject dataObject, IServiceTestModelTO test, ref bool testPassed, ref StringBuilder failureMessage)
+        {
+            if (test.Outputs != null)
+            {
+                var dev2DecisionFactory = Dev2DecisionFactory.Instance();
+                var testRunResults = test.Outputs.SelectMany(output => GetTestRunResults(dataObject, output, dev2DecisionFactory)).ToList();
+                testPassed = testRunResults.All(result => result.RunTestResult == RunResult.TestPassed);
+                if (!testPassed)
+                {
+                    failureMessage = failureMessage.Append(string.Join("", testRunResults.Select(result => result.Message).Where(s => !string.IsNullOrEmpty(s)).ToList()));
+                }
+            }
         }
 
         static void AggregateTestResult(Guid resourceId, IServiceTestModelTO test)
@@ -833,13 +856,9 @@ namespace Dev2.Runtime.ESB.Execution
                 {
                     next = NextActivity(next, testSteps);
                     next = next.Execute(dsfDataObject, update);
-                    if (dsfDataObject.Environment.Errors.Count > 0)
+                    foreach(var error in dsfDataObject.Environment.Errors)
                     {
-                        foreach (var e in dsfDataObject.Environment.Errors)
-                        {
-                            dsfDataObject.Environment.AllErrors.Add(e);
-                        }
-
+                        dsfDataObject.Environment.AllErrors.Add(error);
                     }
                 }
                 else
@@ -875,38 +894,26 @@ namespace Dev2.Runtime.ESB.Execution
                     if (resource is DsfSequenceActivity sequenceActivity)
                     {
                         var acts = sequenceActivity.Activities;
-                        for (int index = 0; index < acts.Count; index++)
-                        {
-                            var activity = acts[index];
-                            if (foundTestStep.Children != null)
-                            {
-                                var replacement = NextActivity(activity as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                                acts[index] = replacement;
-                            }
-                        }
+                        NextInSequence(foundTestStep, acts);
                     }
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfForEachActivity).Name)
                 {
-                    if (resource is DsfForEachActivity forEach)
+                    if (resource is DsfForEachActivity forEach && foundTestStep.Children != null)
                     {
-                        if (foundTestStep.Children != null)
-                        {
-                            var replacement = NextActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                            forEach.DataFunc.Handler = replacement;
-                        }
+                        var replacement = NextActivity(forEach.DataFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                        forEach.DataFunc.Handler = replacement;
                     }
+
                 }
                 else if (foundTestStep.ActivityType == typeof(DsfSelectAndApplyActivity).Name)
                 {
-                    if (resource is DsfSelectAndApplyActivity forEach)
+                    if (resource is DsfSelectAndApplyActivity forEach && foundTestStep.Children != null)
                     {
-                        if (foundTestStep.Children != null)
-                        {
-                            var replacement = NextActivity(forEach.ApplyActivityFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
-                            forEach.ApplyActivityFunc.Handler = replacement;
-                        }
+                        var replacement = NextActivity(forEach.ApplyActivityFunc.Handler as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                        forEach.ApplyActivityFunc.Handler = replacement;
                     }
+
                 }
                 else
                 {
@@ -919,5 +926,17 @@ namespace Dev2.Runtime.ESB.Execution
             return resource;
         }
 
+        private static void NextInSequence(IServiceTestStep foundTestStep, System.Collections.ObjectModel.Collection<Activity> acts)
+        {
+            for (int index = 0; index < acts.Count; index++)
+            {
+                var activity = acts[index];
+                if (foundTestStep.Children != null)
+                {
+                    var replacement = NextActivity(activity as IDev2Activity, foundTestStep.Children.ToList()) as Activity;
+                    acts[index] = replacement;
+                }
+            }
+        }
     }
 }

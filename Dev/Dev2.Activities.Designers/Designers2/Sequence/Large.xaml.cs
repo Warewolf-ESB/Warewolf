@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers2.Sequence
                     e.Handled = true;
                 }
             }
-            if (ViewModel.SetModelItemForServiceTypes(e.Data))
+            if (ViewModel.TrySetModelItemForServiceTypes(e.Data))
             {
                 e.Handled = true;
             }

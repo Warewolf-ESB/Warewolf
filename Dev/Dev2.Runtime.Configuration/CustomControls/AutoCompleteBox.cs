@@ -1023,13 +1023,11 @@ namespace System.Windows.Controls
                 }
                 
                 var parent = VisualTreeHelper.GetParent(focused);
-                if (parent == null)
+                if (parent == null && focused is FrameworkElement element)
                 {
-                    if (focused is FrameworkElement element)
-                    {
-                        parent = element.Parent;
-                    }
+                    parent = element.Parent;
                 }
+
                 focused = parent;
             }
             return false;
@@ -1387,24 +1385,7 @@ namespace System.Windows.Controls
                 {
                     var currentLength = TextBox.Text.Length;
                     var selectionStart = TextBox.SelectionStart;
-                    if (selectionStart == text.Length && selectionStart > _textSelectionStart)
-                    {
-                        var top = FilterMode == AutoCompleteFilterMode.StartsWith || FilterMode == AutoCompleteFilterMode.StartsWithCaseSensitive
-                            ? _view[0]
-                            : TryGetMatch(text, _view, AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith));
-                        if (top != null)
-                        {
-                            newSelectedItem = top;
-                            var topString = FormatValue(top, true);
-                            var minLength = Math.Min(topString.Length, Text.Length);
-                            if (AutoCompleteSearch.Equals(Text.Substring(0, minLength), topString.Substring(0, minLength)))
-                            {
-                                UpdateTextValue(topString);
-                                TextBox.SelectionStart = currentLength;
-                                TextBox.SelectionLength = topString.Length - currentLength;
-                            }
-                        }
-                    }
+                    newSelectedItem = UpdateSelection(newSelectedItem, text, currentLength, selectionStart);
                 }
                 else
                 {
@@ -1424,6 +1405,30 @@ namespace System.Windows.Controls
                     _textSelectionStart = TextBox.SelectionStart;
                 }
             }
+        }
+
+        private object UpdateSelection(object newSelectedItem, string text, int currentLength, int selectionStart)
+        {
+            if (selectionStart == text.Length && selectionStart > _textSelectionStart)
+            {
+                var top = FilterMode == AutoCompleteFilterMode.StartsWith || FilterMode == AutoCompleteFilterMode.StartsWithCaseSensitive
+                    ? _view[0]
+                    : TryGetMatch(text, _view, AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith));
+                if (top != null)
+                {
+                    newSelectedItem = top;
+                    var topString = FormatValue(top, true);
+                    var minLength = Math.Min(topString.Length, Text.Length);
+                    if (AutoCompleteSearch.Equals(Text.Substring(0, minLength), topString.Substring(0, minLength)))
+                    {
+                        UpdateTextValue(topString);
+                        TextBox.SelectionStart = currentLength;
+                        TextBox.SelectionLength = topString.Length - currentLength;
+                    }
+                }
+            }
+
+            return newSelectedItem;
         }
 
         object TryGetMatch(string searchText, ObservableCollection<object> view, AutoCompleteFilterPredicate<string> predicate)
@@ -1464,7 +1469,6 @@ namespace System.Windows.Controls
             var viewIndex = 0;
             var viewCount = _view.Count;
             var items = _items;
-            
             foreach (object item in items)
             {
                 var inResults = !(stringFiltering || objectFiltering);
@@ -1487,19 +1491,33 @@ namespace System.Windows.Controls
                     }
                     else
                     {
-
-                        _view.Insert(viewIndex, item);
+                        AddOrInsertItem(viewIndex, viewCount, item);
                         viewIndex++;
                         viewCount++;
                     }
                 }
-                else if (viewCount > viewIndex && _view[viewIndex] == item)
+                else
                 {
-                    _view.RemoveAt(viewIndex);
-                    viewCount--;
+                    if (viewCount > viewIndex && _view[viewIndex] == item)
+                    {
+                        _view.RemoveAt(viewIndex);
+                        viewCount--;
+                    }
                 }
             }
             _valueBindingEvaluator?.ClearDataContext();
+        }
+
+        private void AddOrInsertItem(int viewIndex, int viewCount, object item)
+        {
+            if (viewIndex == viewCount)
+            {
+                _view.Add(item);
+            }
+            else
+            {
+                _view.Insert(viewIndex, item);
+            }
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "oldValue", Justification = "This makes it easy to add validation or other changes in the future.")]
@@ -1542,16 +1560,14 @@ namespace System.Windows.Controls
                     _items[e.NewStartingIndex] = t;
                 }
             }
-            if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
+            if ((e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace) && e.OldItems != null)
             {
-                if (e.OldItems != null)
+                foreach (object t in e.OldItems)
                 {
-                    foreach (object t in e.OldItems)
-                    {
-                        _view.Remove(t);
-                    }
+                    _view.Remove(t);
                 }
             }
+
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 ClearView();

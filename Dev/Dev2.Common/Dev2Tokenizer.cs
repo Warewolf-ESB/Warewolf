@@ -73,11 +73,11 @@ namespace Dev2.Common
 
         public string NextToken()
         {
-            var result =_ops[_opPointer].ExecuteOperation(ref _sourceString, _startIdx, _masterLen, _isReversed);
+            var result = _ops[_opPointer].ExecuteOperation(ref _sourceString, _startIdx, _masterLen, _isReversed);
             MoveStartIndex(result.Length + _ops[_opPointer].OpLength());
             MoveOpPointer();
             _hasMoreOps = !_ops[_opPointer].IsFinalOp() && HasMoreData();
-            
+
             return result;
         }
 

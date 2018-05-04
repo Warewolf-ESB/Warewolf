@@ -65,6 +65,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core;
 using Dev2.Factory;
 using System.Text;
+using System.Collections.Generic;
 
 namespace Dev2.Studio
 {
@@ -78,7 +79,7 @@ namespace Dev2.Studio
         private bool _hasShutdownStarted;
         public App(IMergeFactory mergeFactory)
         {
-            this.mergeFactory = mergeFactory;
+            this._mergeFactory = mergeFactory;
         }
         public App() : this(new MergeFactory())
         {
@@ -138,7 +139,7 @@ namespace Dev2.Studio
         ManualResetEvent _resetSplashCreated;
         Thread _splashThread;
         private bool _hasDotNetFramweworkError;
-        private readonly IMergeFactory mergeFactory;
+        private readonly IMergeFactory _mergeFactory;
         protected void InitializeShell(System.Windows.StartupEventArgs e)
         {
             _resetSplashCreated = new ManualResetEvent(false);
@@ -164,7 +165,7 @@ namespace Dev2.Studio
             {
                 CreateDummyWorkflowDesignerForCaching();
                 SplashView.CloseSplash(false);
-               
+
                 if (e.Args.Length > 0)
                 {
                     OpenBasedOnArguments(new WarwolfStartupEventArgs(e));
@@ -174,15 +175,7 @@ namespace Dev2.Studio
                     _shellViewModel.ShowStartPageAsync();
                 }
                 CheckForDuplicateResources();
-                var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-                if (!File.Exists(settingsConfigFile))
-                {
-                    File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
-                }
-                Dev2Logger.AddEventLogging(settingsConfigFile, GlobalConstants.WarewolfStudio);
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 _appExceptionHandler = new AppExceptionHandler(this, _shellViewModel);
-
                 CustomContainer.Register<IApplicationAdaptor>(new ApplicationAdaptor(Current));
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
@@ -193,7 +186,7 @@ namespace Dev2.Studio
         {
             if (e.Args.Any(p => p.Contains("-merge")))
             {
-                mergeFactory.OpenMergeWindow(_shellViewModel, e);
+                _mergeFactory.OpenMergeWindow(_shellViewModel, e);
             }
             else
             {
@@ -297,7 +290,7 @@ namespace Dev2.Studio
             SplashView.Show(false);
 
             _resetSplashCreated?.Set();
-            splashViewModel.ShowServerVersion();
+            splashViewModel.ShowServerStudioVersion();
             Dispatcher.Run();
         }
 

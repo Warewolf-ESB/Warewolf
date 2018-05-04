@@ -57,4 +57,15 @@ namespace Dev2.Common.Interfaces
         bool InputCountExpandAllowed { get; set; }
         bool IsGenerateInputsEmptyRows { get; set; }
     }
+	public interface IManageSqliteInputViewModel : IToolRegion, IManageServiceInputViewModel<ISqliteService>
+	{
+		ICollection<IServiceInput> Inputs { get; set; }
+		IGenerateOutputArea OutputArea { get; }
+		IOutputDescription Description { get; set; }
+		IGenerateInputArea InputArea { get; }
+		string SqlQuery { get; set; }
+		bool OutputCountExpandAllowed { get; set; }
+		bool InputCountExpandAllowed { get; set; }
+		bool IsGenerateInputsEmptyRows { get; set; }
+	}
 }

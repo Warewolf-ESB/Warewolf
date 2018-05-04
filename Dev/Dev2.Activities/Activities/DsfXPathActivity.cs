@@ -193,40 +193,52 @@ namespace Dev2.Activities
         {
             if (!string.IsNullOrEmpty(SourceString))
             {
-
                 var itr = new WarewolfListIterator();
                 var sourceIterator = new WarewolfIterator(dataObject.Environment.Eval(SourceString, update));
                 itr.AddVariableToIterateOn(sourceIterator);
                 while (itr.HasMoreData())
                 {
                     var c = itr.FetchNextValue(sourceIterator);
-                    for (i = 0; i < ResultsCollection.Count; i++)
-                    {
-                        if (!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
-                        {
-                            var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
-                            var xpathIterator = new WarewolfIterator(xpathEntry);
-                            while (xpathIterator.HasMoreData())
-                            {
-                                var xpathCol = xpathIterator.GetNextValue();
-                                try
-                                {
-                                    var eval = parser.ExecuteXPath(c, xpathCol).ToList();
-                                    var variable = ResultsCollection[i].OutputVariable;
-                                    AssignResult(variable, dataObject, eval, update);
-                                }
-                                catch (Exception e)
-                                {
-                                    allErrors.AddError(e.Message);
-                                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
-                                }
-                            }
-                        }
-                    }
+                    i = ProcessResultsCollection(dataObject, update, parser, allErrors, c);
                     allErrors.MergeErrors(errors);
                 }
             }
             return i;
+        }
+
+        int ProcessResultsCollection(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO allErrors, string c)
+        {
+            int i;
+            for (i = 0; i < ResultsCollection.Count; i++)
+            {
+                if (!string.IsNullOrEmpty(ResultsCollection[i].OutputVariable))
+                {
+                    IterateOverXPath(dataObject, update, parser, allErrors, c, i);
+                }
+            }
+
+            return i;
+        }
+
+        void IterateOverXPath(IDSFDataObject dataObject, int update, XPathParser parser, ErrorResultTO allErrors, string c, int i)
+        {
+            var xpathEntry = dataObject.Environment.Eval(ResultsCollection[i].XPath, update);
+            var xpathIterator = new WarewolfIterator(xpathEntry);
+            while (xpathIterator.HasMoreData())
+            {
+                var xpathCol = xpathIterator.GetNextValue();
+                try
+                {
+                    var eval = parser.ExecuteXPath(c, xpathCol).ToList();
+                    var variable = ResultsCollection[i].OutputVariable;
+                    AssignResult(variable, dataObject, eval, update);
+                }
+                catch (Exception e)
+                {
+                    allErrors.AddError(e.Message);
+                    dataObject.Environment.Assign(ResultsCollection[i].OutputVariable, null, update);
+                }
+            }
         }
 
         void AssignResult(string variable, IDSFDataObject dataObject, IEnumerable<string> eval, int update)
@@ -259,17 +271,15 @@ namespace Dev2.Activities
             var i = 1;
             foreach(var xPathDto in resultsCollection)
             {
-                if(!String.IsNullOrEmpty(xPathDto.OutputVariable))
+                if (!String.IsNullOrEmpty(xPathDto.OutputVariable) && _isDebugMode)
                 {
-                    if(_isDebugMode)
-                    {
-                        var itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", i.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugItemWarewolfAtomResult(xPathDto.XPath,xPathDto.OutputVariable, ""), itemToAdd);
-                        _debugInputs.Add(itemToAdd);
-                        i++;
-                    }
+                    var itemToAdd = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", i.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                    AddDebugItem(new DebugItemWarewolfAtomResult(xPathDto.XPath, xPathDto.OutputVariable, ""), itemToAdd);
+                    _debugInputs.Add(itemToAdd);
+                    i++;
                 }
+
             }
         }
 

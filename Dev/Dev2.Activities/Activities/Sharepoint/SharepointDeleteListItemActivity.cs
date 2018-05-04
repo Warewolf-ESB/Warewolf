@@ -23,8 +23,6 @@ using Warewolf.Storage.Interfaces;
 
 
 
-
-
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Delete List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Delete_List_Item")]
@@ -40,10 +38,7 @@ namespace Dev2.Activities.Sharepoint
             _sharepointUtils = new SharepointUtils();
             _indexCounter = 1;
         }
-
-        /// <summary>
-        ///     Gets or sets the number of successful deletes.
-        /// </summary>
+        
         [Outputs("DeleteCount")]
         [FindMissing]
         public string DeleteCount { get; set; }
@@ -52,11 +47,7 @@ namespace Dev2.Activities.Sharepoint
         public string SharepointList { get; set; }
         public List<SharepointSearchTo> FilterCriteria { get; set; }
         public bool RequireAllCriteriaToMatch { get; set; }
-
-        /// <summary>
-        /// When overridden runs the activity's execution logic 
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();

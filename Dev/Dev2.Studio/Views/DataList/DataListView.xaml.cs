@@ -73,15 +73,13 @@ namespace Dev2.Studio.Views.DataList
 
         void DoDataListValidation(object sender)
         {
-            if (DataContext is IDataListViewModel vm)
+            if (DataContext is IDataListViewModel vm && sender is TextBox txtbox)
             {
-                if (sender is TextBox txtbox)
-                {
-                    var itemThatChanged = txtbox.DataContext as IDataListItemModel;
-                    vm.RemoveBlankRows(itemThatChanged);
-                    vm.ValidateNames(itemThatChanged);
-                }
+                var itemThatChanged = txtbox.DataContext as IDataListItemModel;
+                vm.RemoveBlankRows(itemThatChanged);
+                vm.ValidateNames(itemThatChanged);
             }
+
         }
 
         void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
