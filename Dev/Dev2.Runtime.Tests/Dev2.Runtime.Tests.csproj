@@ -723,7 +723,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="TextFiles\LogFileWithFlatResultsNEwFormatWithErrors.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="TextFiles\SubFolderB\SubFolderBTextFile1.txt" />
     <Content Include="TextFiles\SubFolderA\SubFolderATextFile1.txt" />
