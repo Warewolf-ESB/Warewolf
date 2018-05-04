@@ -120,6 +120,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_Execute")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormatWithError.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithLogDataContainingURL_shouldReturnLogDataObjectWithUrlERROR()
         {
             //------------Setup for test--------------------------
