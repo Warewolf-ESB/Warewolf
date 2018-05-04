@@ -35,20 +35,19 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 if (pid != null)
                                 {
                                     var typeFromProgID = Type.GetTypeFromCLSID(Guid.Parse(clsid));
-                                    if (typeFromProgID == null)
+                                    if (typeFromProgID != null)
                                     {
-                                        continue;
+                                        var fullName = typeFromProgID.FullName;
+                                        dllListings.Add(new DllListing
+                                        {
+                                            ClsId = clsid,
+                                            Is32Bit = fullName.Equals("System.__ComObject"),
+                                            Name = pid.ToString(),
+                                            IsDirectory = false,
+                                            FullName = pid.ToString(),
+                                            Children = new IFileListing[0]
+                                        });
                                     }
-                                    var fullName = typeFromProgID.FullName;
-                                    dllListings.Add(new DllListing
-                                    {
-                                        ClsId = clsid,
-                                        Is32Bit = fullName.Equals("System.__ComObject"),
-                                        Name = pid.ToString(),
-                                        IsDirectory = false,
-                                        FullName = pid.ToString(),
-                                        Children = new IFileListing[0]
-                                    });
                                 }
                             }
                             catch (Exception e)
