@@ -16,7 +16,7 @@ let openSquare   = ['[']
 let openLang = openSquare openSquare
 let closeSquare   = [']']
 let closeLang = closeSquare closeSquare
-let char        = ['a'-'z''A'-'Z'' ''\t' ',' '!' '-' '=' '+' '/' '*' '$' '#' '<' '>' '\\' '~']
+let char        = ['a'-'z''A'-'Z' ',' '!' '-' '=' '+' '/' '*' '$' '#' '<' '>' '\\' '~']
 let tilde        = ['~']
 let varStart = ['a'-'z''A'-'Z']
 let varEnd = ['a'-'z''A'-'Z''0'-'9''_''-']
@@ -30,6 +30,8 @@ let closedParen = [')']
 let int         = '-'?digit+   
 let float       = '-'?digit+ '.' digit+   
 rule tokenstream = parse
+// --------------------------
+| whitespace { STRING (LexBuffer<char>.LexemeString(lexbuf) ) }
 // --------------------------
 | openLang 		{ OPENLANGUAGE }
 | closeLang 		{ CLOSELANGAUGE }

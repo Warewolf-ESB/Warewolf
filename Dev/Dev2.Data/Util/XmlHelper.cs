@@ -20,12 +20,12 @@ namespace Dev2.Data.Util
         static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
         static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
         static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>",
-                                                         "<Dev2XMLResult>", "</Dev2XMLResult>",
-                                                         "<WebXMLConfiguration>", "</WebXMLConfiguration>",
-                                                         "<ActivityInput>", "</ActivityInput>",
-                                                         "<ADL>","</ADL>",
-                                                         "<DL>","</DL>"
-                                                       };
+                                                 "<Dev2XMLResult>", "</Dev2XMLResult>",
+                                                 "<WebXMLConfiguration>", "</WebXMLConfiguration>",
+                                                 "<ActivityInput>", "</ActivityInput>",
+                                                 "<ADL>","</ADL>",
+                                                 "<DL>","</DL>"
+                                               };
         const string AdlRoot = "ADL";
 
         public static bool IsXml(string data, out bool isFragment, out bool isHtml)
@@ -42,41 +42,49 @@ namespace Dev2.Data.Util
                 {
                     using (XmlReader reader = XmlReader.Create(tr, IsXmlReaderSettings))
                     {
-
-                        try
-                        {
-                            long nodeCount = 0;
-                            while (reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
-                            {
-                                nodeCount++;
-
-                                if (reader.NodeType != XmlNodeType.CDATA)
-                                {
-                                    if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
-                                    {
-                                        isHtml = true;
-                                        result = false;
-                                    }
-
-                                    if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
-                                    {
-                                        isFragment = true;
-                                    }
-                                }
-                            }
-                        }
-                        catch (Exception)
-                        {
-                            tr.Close();
-                            reader.Close();
-                            isFragment = false;
-                            result = false;
-                        }
+                        TryProcessAllNodes(ref isFragment, ref isHtml, ref result, tr, reader);
                     }
                 }
             }
 
             return result;
+        }
+
+        private static void TryProcessAllNodes(ref bool isFragment, ref bool isHtml, ref bool result, TextReader tr, XmlReader reader)
+        {
+            try
+            {
+                long nodeCount = 0;
+                while (reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
+                {
+                    nodeCount++;
+                    IsHtmlOrFragment(ref isFragment, ref isHtml, ref result, reader, nodeCount);
+                }
+            }
+            catch (Exception)
+            {
+                tr.Close();
+                reader.Close();
+                isFragment = false;
+                result = false;
+            }
+        }
+
+        private static void IsHtmlOrFragment(ref bool isFragment, ref bool isHtml, ref bool result, XmlReader reader, long nodeCount)
+        {
+            if (reader.NodeType != XmlNodeType.CDATA)
+            {
+                if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
+                {
+                    isHtml = true;
+                    result = false;
+                }
+
+                if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                {
+                    isFragment = true;
+                }
+            }
         }
 
         public static string ToCleanXml(this string payload)
@@ -94,7 +102,7 @@ namespace Dev2.Data.Util
 
                 if (veryNaughtyTags != null)
                 {
-                    result = CleanupNaughtyTags(veryNaughtyTags, result);
+                    result = TryCleanupNaughtyTags(veryNaughtyTags, result);
                 }
                 var start = result.IndexOf("<", StringComparison.Ordinal);
                 if (start >= 0)
@@ -120,7 +128,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        static string CleanupNaughtyTags(string[] toRemove, string payload)
+        static string TryCleanupNaughtyTags(string[] toRemove, string payload)
         {
             var foundOpen = false;
             var result = payload;
@@ -136,25 +144,7 @@ namespace Dev2.Data.Util
                 {
                     if (myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
                     {
-                        if (foundOpen)
-                        {
-                            var loc = i - 1;
-                            if (loc >= 0)
-                            {
-                                var start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
-                                var end = result.IndexOf(myTag, StringComparison.Ordinal);
-                                if (start < end && start >= 0)
-                                {
-                                    var canidate = result.Substring(start, end - start + myTag.Length);
-                                    var tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                                    result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            result = result.Replace(myTag, "");
-                        }
+                        result = CloseOpenTag(toRemove, foundOpen, result, i, myTag);
 
                         foundOpen = false;
                     }
@@ -163,6 +153,31 @@ namespace Dev2.Data.Util
 
             return result.Trim();
 
+        }
+
+        private static string CloseOpenTag(string[] toRemove, bool foundOpen, string result, int i, string myTag)
+        {
+            if (foundOpen)
+            {
+                var loc = i - 1;
+                if (loc >= 0)
+                {
+                    var start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
+                    var end = result.IndexOf(myTag, StringComparison.Ordinal);
+                    if (start < end && start >= 0)
+                    {
+                        var canidate = result.Substring(start, end - start + myTag.Length);
+                        var tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
+                        result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
+                    }
+                }
+            }
+            else
+            {
+                result = result.Replace(myTag, "");
+            }
+
+            return result;
         }
     }
 }

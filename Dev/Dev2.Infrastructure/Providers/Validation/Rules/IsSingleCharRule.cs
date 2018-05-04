@@ -25,13 +25,11 @@ namespace Dev2.Providers.Validation.Rules
         public override IActionableErrorInfo Check()
         {
             var value = GetValue();
-            if(!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value) && value.Length > 1)
             {
-                if(value.Length > 1)
-                {
-                    return CreatError();
-                }
+                return CreatError();
             }
+
             return null;
         }
     }

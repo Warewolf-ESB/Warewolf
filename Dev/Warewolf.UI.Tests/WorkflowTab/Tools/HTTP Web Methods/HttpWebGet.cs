@@ -62,6 +62,22 @@ namespace Warewolf.UI.Tests.Tools
             Mouse.Click(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.RecordSetTextBox);
             Assert.AreEqual("[[Output]]", HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.OutputsGridTable.UIItemRow.UIItemWarewolfCoreServCell.UIThedefaultvaluetobeuComboBox.UITextEdit.Text);
         }
+
+        [TestMethod]
+        [TestCategory("HTTP Tools")]
+        public void HTTPWebGETTool_Test_WebServiceSource_Remove_Recordset_UITestsellisense_UITest()
+        {
+            HTTPToolsUIMap.Select_GETWebTool_Source_From_SourceCombobox();
+            Assert.IsTrue(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.GenerateOutputsButton.Enabled, "Web GET tool large view generate outputs button is not enabled after selecting a source.");
+            HTTPToolsUIMap.Click_GETWebTool_GenerateOutputsButton();
+            Assert.IsTrue(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.TestButton.Exists, "Web GET large view generate outputs test button does not exist.");
+            HTTPToolsUIMap.Click_GETWebTool_TestInputsButton();
+            HTTPToolsUIMap.Click_GETWebTool_Outputs_DoneButton();
+            Assert.IsTrue(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.OutputsGridTable.UIItemRow.UIItemWarewolfCoreServCell.UIThedefaultvaluetobeuComboBox.Enabled, "Web GET large view MappedTo is not enabled.");
+            HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.RecordSetTextBox.Text = "";            
+            Mouse.Click(HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.RecordSetTextBox);
+            Assert.AreEqual("[[Id]]", HTTPToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebGet.LargeView.OutputsGridTable.UIItemRow.UIItemWarewolfCoreServCell.UIThedefaultvaluetobeuComboBox.UITextEdit.Text);
+        }
         #region Additional test attributes
 
         [TestInitialize]

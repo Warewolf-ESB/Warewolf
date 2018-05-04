@@ -13,7 +13,9 @@ using System.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Xml;
-
+using System.Xml;
+using System.Xml.Linq;
+using Dev2.Data.Util;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
@@ -55,6 +57,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
     </OuterNestedRecordSet>
 </Company>";
         }
+
+
 
         internal string GivenSingleNode()
         {
@@ -405,7 +409,47 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             Assert.AreEqual(expected, actual);
         }
+        /// <summary>
+        /// Select enumerable values as related using enumerable path from XML where paths contain a single path 
+        /// which is enumerable expected flattened data with values from enumerable path.
+        /// </summary>
+        [TestMethod]
+        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXmlFromFailingTest()
+        {
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml("<ArrayOfProduct xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns=\"http://schemas.datacontract.org/2004/07/WebApplication1.Controllers\"><Product><Category>Electronic</Category><Id>1</Id><Name>Television</Name><Price>82000</Price></Product><Product><Category>Electronic</Category><Id>2</Id><Name>Refrigerator</Name><Price>23000</Price></Product><Product><Category>Electronic</Category><Id>3</Id><Name>Mobiles</Name><Price>20000</Price></Product><Product><Category>Electronic</Category><Id>4</Id><Name>Laptops</Name><Price>45000</Price></Product><Product><Category>Electronic</Category><Id>5</Id><Name>iPads</Name><Price>67000</Price></Product><Product><Category>Gift Items</Category><Id>6</Id><Name>Toys</Name><Price>15000</Price></Product></ArrayOfProduct>");
 
+            var testData = Scrubber.Scrub(xmlDocument.InnerXml);
+            var xmlMapper = new XmlMapper();
+            var paths = xmlMapper.Map(testData).ToList();
+            var path = paths.FirstOrDefault();
+
+            var xmlNavigator = new XmlNavigator(testData);
+
+            var data2 = xmlNavigator.SelectEnumerablesAsRelated(paths);
+            const string expected = "Electronic|Electronic|Electronic|Electronic|Electronic|Gift Items";
+            var actual = string.Join("|", data2[path].Select(s => s.ToString().Trim()));
+
+            Assert.AreEqual(expected, actual);
+
+        }
+        /// <summary>
+        /// Select enumerable values as related using enumerable path from XML where paths contain a single path 
+        /// which is enumerable expected flattened data with values from enumerable path.
+        /// </summary>
+        [TestMethod]
+        public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromXmlFromFoPrimitiveType()
+        {
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml("<boolean xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">false</boolean>");
+            var testData = Scrubber.Scrub(xmlDocument.InnerXml);
+            var xmlMapper = new XmlMapper();
+            var paths = xmlMapper.Map(testData).ToList();
+            var path = paths.FirstOrDefault();
+            var xmlNavigator = new XmlNavigator(testData);
+            var dat2 = xmlNavigator.SelectScalar(path);
+            Assert.AreEqual("false", dat2);
+        }
         /// <summary>
         /// Select enumerable values as related using enumerable path from XML where paths contain a single 
         /// path which is scalar expected flattened data with value from scalar path.

@@ -254,7 +254,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         $SolutionFileName = $GetSolutionFileInfo.Name
         $SolutionFileExtension = $GetSolutionFileInfo.Extension
         $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension).TrimEnd("2")
-        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
+        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
+            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
+        } else {
+            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent
+        }
+        if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
             if ($SolutionWideOutputs.IsPresent) {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             } else {

@@ -31,13 +31,11 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         static int GetInt(object value)
         {
-            if(value != null)
+            if (value != null && int.TryParse(value.ToString(), out int intVal))
             {
-                if (int.TryParse(value.ToString(), out int intVal))
-                {
-                    return intVal;
-                }
+                return intVal;
             }
+
             return 0;
         }
     }

@@ -150,7 +150,7 @@ namespace Dev2.Scheduler
             {
                 var folder = TaskService.GetFolder(WarewolfFolderPath);
                 var allTasks = folder.ValidTasks; // we have the tasks with at least one action
-                return allTasks.Where(a => a.IsValidDev2Task()).Select(CreateScheduledResource).ToObservableCollection();
+                return allTasks.Where(a => a.IsValidDev2Task()).Select(TryCreateScheduledResource).ToObservableCollection();
             }
             catch (FileNotFoundException)
             {
@@ -163,7 +163,7 @@ namespace Dev2.Scheduler
         IExecAction BuildAction(IScheduledResource resource) => ConvertorFactory.CreateExecAction(WarewolfAgentPath,
                 $"\"Workflow:{resource.WorkflowName.Trim()}\" \"TaskName:{resource.Name.Trim()}\" \"ResourceId:{resource.ResourceId}\"");
 
-        IScheduledResource CreateScheduledResource(IDev2Task arg)
+        IScheduledResource TryCreateScheduledResource(IDev2Task arg)
         {
             ITrigger trigger;
             DateTime nextDate;
@@ -176,45 +176,10 @@ namespace Dev2.Scheduler
             }
             if (output.Count == ArgCount && output.All(a => a.Contains(NameSeperator)))
             {
-
                 var split = output.SelectMany(a => a.Split(NameSeperator)).ToList();
                 try
                 {
-                    var id = split[5];
-                    Guid.TryParse(id, out Guid resourceId);
-
-                    var res = new ScheduledResource(arg.Definition.Data,
-                                                 arg.Definition.Settings.Enabled ? SchedulerStatus.Enabled : SchedulerStatus.Disabled,
-                                                 nextDate,
-                                                 new ScheduleTrigger(arg.State, _factory.SanitiseTrigger(trigger),
-                                                                     _taskService, _factory), split[1], split[5])
-                    {
-                        Status = arg.Definition.Settings.Enabled ? SchedulerStatus.Enabled : SchedulerStatus.Disabled,
-                        RunAsapIfScheduleMissed = arg.Definition.Settings.StartWhenAvailable,
-                        UserName = arg.Definition.UserName,
-
-                    };
-
-                    string resWorkflowName;
-                    if (resourceId == Guid.Empty)
-                    {
-                        resWorkflowName = split[1];
-                    }
-                    else
-                    {
-                        try
-                        {
-                            resWorkflowName = _pathResolve(res);
-                        }
-                        catch (NullReferenceException)
-                        {
-                            resWorkflowName = split[1];
-                            res.Errors.AddError($"Workflow: {resWorkflowName} not found. Task is invalid.");
-                        }
-                    }
-                    res.WorkflowName = resWorkflowName;
-
-                    return res;
+                    return CreateScheduledResource(arg, trigger, nextDate, split);
                 }
                 finally
                 {
@@ -244,6 +209,45 @@ namespace Dev2.Scheduler
             }
 
             throw new Exception($"Invalid resource found:{arg.Definition.Data}"); // this should not be reachable because isvaliddev2task checks same conditions
+        }
+
+        private IScheduledResource CreateScheduledResource(IDev2Task arg, ITrigger trigger, DateTime nextDate, List<string> split)
+        {
+            var id = split[5];
+            Guid.TryParse(id, out Guid resourceId);
+
+            var res = new ScheduledResource(arg.Definition.Data,
+                                         arg.Definition.Settings.Enabled ? SchedulerStatus.Enabled : SchedulerStatus.Disabled,
+                                         nextDate,
+                                         new ScheduleTrigger(arg.State, _factory.SanitiseTrigger(trigger),
+                                                             _taskService, _factory), split[1], split[5])
+            {
+                Status = arg.Definition.Settings.Enabled ? SchedulerStatus.Enabled : SchedulerStatus.Disabled,
+                RunAsapIfScheduleMissed = arg.Definition.Settings.StartWhenAvailable,
+                UserName = arg.Definition.UserName,
+
+            };
+
+            string resWorkflowName;
+            if (resourceId == Guid.Empty)
+            {
+                resWorkflowName = split[1];
+            }
+            else
+            {
+                try
+                {
+                    resWorkflowName = _pathResolve(res);
+                }
+                catch (NullReferenceException)
+                {
+                    resWorkflowName = split[1];
+                    res.Errors.AddError($"Workflow: {resWorkflowName} not found. Task is invalid.");
+                }
+            }
+            res.WorkflowName = resWorkflowName;
+
+            return res;
         }
 
         public int ArgCount => 3;

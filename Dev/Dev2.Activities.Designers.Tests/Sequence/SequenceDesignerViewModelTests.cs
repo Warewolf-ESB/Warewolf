@@ -388,7 +388,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
             //------------Execute Test---------------------------
-            var modelItemForServiceTypes = sequenceDesignerViewModel.SetModelItemForServiceTypes(null);
+            var modelItemForServiceTypes = sequenceDesignerViewModel.TrySetModelItemForServiceTypes(null);
             //------------Assert Results-------------------------
             Assert.IsFalse(modelItemForServiceTypes);
         }
@@ -406,7 +406,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
             var dataObject = new DataObject("Some Wrong Format", new object());
             //------------Execute Test---------------------------
-            sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
+            sequenceDesignerViewModel.TrySetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
             var dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
@@ -424,7 +424,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
             var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new TestData());
             //------------Execute Test---------------------------
-            sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
+            sequenceDesignerViewModel.TrySetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
             var dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
@@ -442,7 +442,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
             var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new TestDataWithContext());
             //------------Execute Test---------------------------
-            sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
+            sequenceDesignerViewModel.TrySetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
             var dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
