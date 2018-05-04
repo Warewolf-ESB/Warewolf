@@ -120,11 +120,11 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Candice Daniel")]
         [TestCategory("GetLogDataService_Execute")]
-        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormatWithError.txt", "TextFiles")]
+        [DeploymentItem(@"TextFiles\LogFileWithFlatResultsNEwFormatWithErrors.txt", "TextFiles")]
         public void GetLogDataService_Execute_WithLogDataContainingURL_shouldReturnLogDataObjectWithUrlERROR()
         {
             //------------Setup for test--------------------------
-            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormatWithError.txt";
+            const string logFilePath = @"TextFiles\LogFileWithFlatResultsNEwFormatWithErrors.txt";
             var getLogDataService = new GetLogDataService { ServerLogFilePath = logFilePath };
             //------------Execute Test---------------------------
             var logEntriesJson = getLogDataService.Execute(new Dictionary<string, StringBuilder>(), null);
