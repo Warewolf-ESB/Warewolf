@@ -50,6 +50,7 @@ namespace Dev2.Studio.Core.DataList
                 if (scalar != null)
                 {
                     scalar.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
+                    scalar.IsVisible = _vm.IsItemVisible(scalar.Name);
                     _vm.Add(scalar);
                 }
             }
@@ -59,6 +60,7 @@ namespace Dev2.Studio.Core.DataList
                 if (scalar != null)
                 {
                     scalar.IsEditable = Common.ParseIsEditable(null);
+                    scalar.IsVisible = _vm.IsItemVisible(scalar.Name);
                     _vm.Add(scalar);
                 }
             }
