@@ -303,13 +303,11 @@ namespace Dev2.Runtime.WebServer.Hubs
                         };
 
                         var value = processRequest?.ToString();
-                        if (!string.IsNullOrEmpty(value))
+                        if (!string.IsNullOrEmpty(value) && !ResultsCache.Instance.AddResult(future, value))
                         {
-                            if (!ResultsCache.Instance.AddResult(future, value))
-                            {
-                                Dev2Logger.Error(new Exception(string.Format(ErrorResource.FailedToBuildFutureReceipt, Context.ConnectionId, value)), GlobalConstants.WarewolfError);
-                            }
+                            Dev2Logger.Error(new Exception(string.Format(ErrorResource.FailedToBuildFutureReceipt, Context.ConnectionId, value)), GlobalConstants.WarewolfError);
                         }
+
                         return new Receipt { PartID = envelope.PartID, ResultParts = 1 };
 
                     }

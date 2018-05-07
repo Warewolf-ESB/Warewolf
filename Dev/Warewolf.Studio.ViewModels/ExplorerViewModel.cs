@@ -361,17 +361,23 @@ namespace Warewolf.Studio.ViewModels
                     }
                     else
                     {
-                        var environmentModel = CreateEnvironmentFromServer(selectedConnection, _shellViewModel);
-                        _environments.Add(environmentModel);
-                        if (shouldLoad)
-                        {
-                            await environmentModel.LoadAsync(false, true).ConfigureAwait(true);
-                        }
-                        environmentViewModel = environmentModel;
+                        environmentViewModel = await CreateEnvironmentViewModelAsync(selectedConnection, shouldLoad).ConfigureAwait(true);
                     }
                 }
             }
             return environmentViewModel;
+        }
+
+        async Task<IEnvironmentViewModel> CreateEnvironmentViewModelAsync(IServer selectedConnection, bool shouldLoad)
+        {
+            var environmentModel = CreateEnvironmentFromServer(selectedConnection, _shellViewModel);
+            _environments.Add(environmentModel);
+            if (shouldLoad)
+            {
+                await environmentModel.LoadAsync(false, true).ConfigureAwait(true);
+            }
+
+            return environmentModel;
         }
 
         async void ServerConnected(object _, IServer server)

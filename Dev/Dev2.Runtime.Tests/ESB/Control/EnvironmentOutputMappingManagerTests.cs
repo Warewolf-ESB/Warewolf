@@ -70,7 +70,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EvalAssignRecordSets_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorreclty()
+        public void EvalAssignRecordSets_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorrectly()
         {
             //---------------Set up test pack-------------------
             var innerEnvironment = new Mock<IExecutionEnvironment>();
@@ -90,10 +90,9 @@ namespace Dev2.Tests.Runtime.ESB.Control
             };
             builder.SetParsedOutput(new List<IDev2Definition>(outputs));
             var outputRecSets = builder.Generate();
-
-            //---------------Assert Precondition----------------
+            
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(EnvironmentOutputMappingManager).GetMethod("EvalAssignRecordSets", BindingFlags.NonPublic | BindingFlags.Static);
+            var methodInfo = typeof(EnvironmentOutputMappingManager).GetMethod("TryEvalAssignRecordSets", BindingFlags.NonPublic | BindingFlags.Static);
             //---------------Test Result -----------------------
             methodInfo.Invoke(null, new object[] { innerEnvironment.Object, environment.Object, 1, outputRecSets, outputs });
             environment.Verify(executionEnvironment => executionEnvironment.EvalAssignFromNestedStar(It.IsAny<string>(), It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), It.IsAny<int>()));
@@ -103,7 +102,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EvalAssignScalars_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorreclty()
+        public void EvalAssignScalars_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorrectly()
         {
             //---------------Set up test pack-------------------
             var innerEnvironment = new Mock<IExecutionEnvironment>();
@@ -119,11 +118,10 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 new Dev2Definition("LastName","LastName","[[LastName]]", "", false, "[[LastName]]", true, "[[LastName]]"),
                 new Dev2Definition("LastName","LastName","[[LastName]]", "", false, "[[LastName]]", true, "[[LastName]]"),
             };
-
-
-            //---------------Assert Precondition----------------
+            
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(EnvironmentOutputMappingManager).GetMethod("EvalAssignScalars", BindingFlags.NonPublic | BindingFlags.Static);
+            var methodInfo = typeof(EnvironmentOutputMappingManager).GetMethod("TryEvalAssignScalars", BindingFlags.NonPublic | BindingFlags.Static);
+
             //---------------Test Result -----------------------
             methodInfo.Invoke(null, new object[] { innerEnvironment.Object, environment.Object, 1, scalars });
             environment.Verify(executionEnvironment => executionEnvironment.Assign(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<int>()), Times.Exactly(3));
@@ -132,10 +130,9 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void EvalAssignComplexObjects_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorreclty()
+        public void EvalAssignComplexObjects_GivenValidArgs_ShouldEvaluateCorrectlyAndAssignCorrectly()
         {
             //---------------Set up test pack-------------------
-            //EvalAssignScalars(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IEnumerable<IDev2Definition> outputScalarList)
             var innerEnvironment = new Mock<IExecutionEnvironment>();
             var valueFunction = JToken.Parse("{}") as JContainer;
             innerEnvironment.Setup(executionEnvironment => executionEnvironment.EvalJContainer(It.IsAny<string>()))
@@ -150,25 +147,14 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 new Dev2Definition("@obj.LastName","@obj.LastName","[[@obj.LastName]]", "", false, "[[@obj.LastName]]", true, "[[@obj.LastName]]"){IsObject = true},
                 new Dev2Definition("@obj.LastName","@obj.LastName","[[@obj.LastName]]", "", false, "[[@obj.LastName]]", true, "[[@obj.LastName]]"){IsObject = true},
             };
-
-
-            //---------------Assert Precondition----------------
+            
             //---------------Execute Test ----------------------
-            var methodInfo = typeof(EnvironmentOutputMappingManager).GetMethod("EvalAssignComplexObjects", BindingFlags.NonPublic | BindingFlags.Static);
-            try
-            {
-                //---------------Test Result -----------------------
-                methodInfo.Invoke(null, new object[] { innerEnvironment.Object, environment.Object, scalars });
-                environment.Verify(executionEnvironment => executionEnvironment.AddToJsonObjects(It.IsAny<string>(), It.IsAny<JContainer>()), Times.Exactly(3));
-                innerEnvironment.Verify(executionEnvironment => executionEnvironment.EvalJContainer(It.IsAny<string>()), Times.Exactly(3));
-            }
-            catch (Exception ex)
-            {
-                Assert.Fail(ex.Message);
-
-            }
+            var methodInfo = typeof(EnvironmentOutputMappingManager).GetMethod("TryEvalAssignComplexObjects", BindingFlags.NonPublic | BindingFlags.Static);
+            
+            //---------------Test Result -----------------------
+            methodInfo.Invoke(null, new object[] { innerEnvironment.Object, environment.Object, scalars });
+            environment.Verify(executionEnvironment => executionEnvironment.AddToJsonObjects(It.IsAny<string>(), It.IsAny<JContainer>()), Times.Exactly(3));
+            innerEnvironment.Verify(executionEnvironment => executionEnvironment.EvalJContainer(It.IsAny<string>()), Times.Exactly(3));
         }
-
-
     }
 }

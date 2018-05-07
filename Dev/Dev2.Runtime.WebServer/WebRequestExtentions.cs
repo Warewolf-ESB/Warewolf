@@ -16,13 +16,11 @@ namespace Dev2.Runtime.WebServer
                     dataObject.CurrentBookmarkName = request.Bookmark;
                 }
 
-                if (!string.IsNullOrEmpty(request.InstanceID))
+                if (!string.IsNullOrEmpty(request.InstanceID) && Guid.TryParse(request.InstanceID, out Guid tmpId))
                 {
-                    if (Guid.TryParse(request.InstanceID, out Guid tmpId))
-                    {
-                        dataObject.WorkflowInstanceId = tmpId;
-                    }
+                    dataObject.WorkflowInstanceId = tmpId;
                 }
+
 
                 if (!string.IsNullOrEmpty(request.ServiceName) && string.IsNullOrEmpty(dataObject.ServiceName))
                 {

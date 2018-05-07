@@ -40,16 +40,7 @@ namespace Dev2.Common.Common
                     var fileList = Directory.GetFileSystemEntries(dirRoot, pattern, SearchOption.TopDirectoryOnly);
                     foreach (string file in fileList)
                     {
-                        if (IsDirectory(file))
-                        {
-                            //it's a directory
-                            Directory.Delete(file, true);
-                        }
-                        else
-                        {
-                            // we can before, we want to avoid deleting an already deleted file in sub-directory
-                            File.Delete(file);
-                        }
+                        DeletePath(file);
                     }
                 }
             }
@@ -60,6 +51,18 @@ namespace Dev2.Common.Common
             }
 
             return true;
+        }
+
+        static void DeletePath(string path)
+        {
+            if (IsDirectory(path))
+            {
+                Directory.Delete(path, true);
+            }
+            else
+            {
+                File.Delete(path);
+            }
         }
 
         static bool IsDirectory(string path)

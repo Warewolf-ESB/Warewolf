@@ -52,30 +52,7 @@ namespace Dev2.Studio.Views.Workflow
                     }
                     if (node.GetType().Name.Contains("StartSymbol"))
                     {
-                        var grid = e.OriginalSource as Grid;
-                        var rect = e.OriginalSource as System.Windows.Shapes.Rectangle;
-                        if (grid != null)
-                        {
-                            grid.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
-                            if (grid.ContextMenu != null)
-                            {
-                                grid.ContextMenu.IsOpen = true;
-                                grid.ContextMenu.DataContext = DataContext;
-
-                            }
-                        }
-                        else
-                        {
-                            if (rect != null)
-                            {
-                                rect.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
-                                if (rect.ContextMenu != null)
-                                {
-                                    rect.ContextMenu.IsOpen = true;
-                                    rect.ContextMenu.DataContext = DataContext;
-                                }
-                            }
-                        }
+                        RightClickStartNode(e);
                         break;
                     }
                     node = VisualTreeHelper.GetParent(node);
@@ -83,6 +60,34 @@ namespace Dev2.Studio.Views.Workflow
             }
             OnPreviewMouseDown(e);
         }
+
+        private void RightClickStartNode(MouseButtonEventArgs e)
+        {
+            var rect = e.OriginalSource as System.Windows.Shapes.Rectangle;
+            if (e.OriginalSource is Grid grid)
+            {
+                grid.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
+                if (grid.ContextMenu != null)
+                {
+                    grid.ContextMenu.IsOpen = true;
+                    grid.ContextMenu.DataContext = DataContext;
+
+                }
+            }
+            else
+            {
+                if (rect != null)
+                {
+                    rect.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
+                    if (rect.ContextMenu != null)
+                    {
+                        rect.ContextMenu.IsOpen = true;
+                        rect.ContextMenu.DataContext = DataContext;
+                    }
+                }
+            }
+        }
+
         //a return from here without settings handled to true and DragDropEffects.None implies that the item drop is allowed
         void DropPointOnDragEnter(object sender, DragEventArgs e)
         {

@@ -197,30 +197,20 @@ namespace Dev2.Activities
                     allErrors.MergeErrors(errorResultTo);
                     FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
                     // oh no, we have an issue, bubble it out ;)
-                    if(allErrors.HasErrors())
+                    if (allErrors.HasErrors())
                     {
                         addExceptionToErrorList = false;
-                        throw new Exception(string.Format(ErrorResource.ProblemsWithIterators,"SQLBulkInsert"));
+                        throw new Exception(string.Format(ErrorResource.ProblemsWithIterators, "SQLBulkInsert"));
                     }
 
                     // emit options to debug as per acceptance test ;)
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         AddBatchSizeAndTimeOutToDebug(dataObject.Environment, update);
                         AddOptionsDebugItems();
                     }
-                    
-                  
-                    if(InputMappings != null)
-                    {
-                        foreach(var dataColumnMapping in InputMappings)
-                        {
-                            if(!string.IsNullOrEmpty(dataColumnMapping.InputColumn))
-                            {
-                                sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
-                            }
-                        }
-                    }
+
+                    sqlBulkCopy = AddInputMappings(sqlBulkCopy);
                     var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
                     SqlBulkInserter.Insert(wrapper, dataTableToInsert);
                     dataObject.Environment.Assign(Result, "Success", update);
@@ -231,6 +221,21 @@ namespace Dev2.Activities
                 }
                 dataTableToInsert?.Dispose();
             }
+        }
+
+        SqlBulkCopy AddInputMappings(SqlBulkCopy sqlBulkCopy)
+        {
+            if (InputMappings != null)
+            {
+                foreach (var dataColumnMapping in InputMappings)
+                {
+                    if (!string.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                    {
+                        sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
+                    }
+                }
+            }
+            return sqlBulkCopy;
         }
 
         void DoInsertForMySql(DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator batchItr, IWarewolfIterator timeoutItr, IDSFDataObject dataObject, ErrorResultTO errorResultTo, ErrorResultTO allErrors, ref bool addExceptionToErrorList, int update)
@@ -278,14 +283,7 @@ namespace Dev2.Activities
                     }
 
                     FillDataTableWithDataFromDataList(iteratorCollection, dataTableToInsert, listOfIterators);
-
-                    foreach (var dataColumnMapping in InputMappings)
-                    {
-                        if (!string.IsNullOrEmpty(dataColumnMapping.InputColumn))
-                        {
-                            sqlBulkCopy.Columns.Add(  dataColumnMapping.OutputColumn.ColumnName);
-                        }
-                    }
+                    sqlBulkCopy = AddInputMappings(sqlBulkCopy);
                 }
 
                 // Pass in wrapper now ;)
@@ -301,6 +299,18 @@ namespace Dev2.Activities
                 allErrors.MergeErrors(errorResultTo);
                 dataTableToInsert?.Dispose();
             }
+        }
+
+        MySqlBulkLoader AddInputMappings(MySqlBulkLoader sqlBulkCopy)
+        {
+            foreach (var dataColumnMapping in InputMappings)
+            {
+                if (!string.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                {
+                    sqlBulkCopy.Columns.Add(dataColumnMapping.OutputColumn.ColumnName);
+                }
+            }
+            return sqlBulkCopy;
         }
 
         void AddOptionsDebugItems()
@@ -376,13 +386,11 @@ namespace Dev2.Activities
             if(timeoutItr != null)
             {
                 var timeoutString = parametersIteratorCollection.FetchNextValue(timeoutItr);
-                if(!string.IsNullOrEmpty(timeoutString))
+                if (!string.IsNullOrEmpty(timeoutString) && int.TryParse(timeoutString, out int parsedValue))
                 {
-                    if (int.TryParse(timeoutString, out int parsedValue))
-                    {
-                        timeout = parsedValue;
-                    }
+                    timeout = parsedValue;
                 }
+
             }
             else
             {
@@ -395,13 +403,11 @@ namespace Dev2.Activities
             if(batchItr != null)
             {
                 var batchSizeString = parametersIteratorCollection.FetchNextValue(batchItr);
-                if(!string.IsNullOrEmpty(batchSizeString))
+                if (!string.IsNullOrEmpty(batchSizeString) && int.TryParse(batchSizeString, out int parsedValue))
                 {
-                    if (int.TryParse(batchSizeString, out int parsedValue))
-                    {
-                        batchSize = parsedValue;
-                    }
+                    batchSize = parsedValue;
                 }
+
             }
             else
             {
@@ -561,12 +567,7 @@ namespace Dev2.Activities
                     // Check identity flag ;)
                     if(dataColumnMapping.OutputColumn.IsAutoIncrement)
                     {
-                        // check keep identity value ;)
-                        if(KeepIdentity)
-                        {
-                            // no mapping, identity and keep on, this is an issue ;)
-                            throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsTrue, dataColumnMapping.OutputColumn.ColumnName));
-                        }
+                        CheckIdentityKeepValue(dataColumnMapping);
 
                         // null, identity and no keep flag active ;)
                         continue;
@@ -577,14 +578,12 @@ namespace Dev2.Activities
                 }
 
                 // more identity checks - this time it has data ;)
-                if(dataColumnMapping.OutputColumn.IsAutoIncrement)
+                if (dataColumnMapping.OutputColumn.IsAutoIncrement && !KeepIdentity)
                 {
-                    if(!KeepIdentity)
-                    {
-                        // we have data in an identity column and the keep identity option is disabled - oh no!
-                        throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsFalse, dataColumnMapping.OutputColumn.ColumnName));
-                    }
+                    // we have data in an identity column and the keep identity option is disabled - oh no!
+                    throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsFalse, dataColumnMapping.OutputColumn.ColumnName));
                 }
+
 
                 var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = dataColumnMapping.OutputColumn.DataType };
                 if(dataColumn.DataType == typeof(string))
@@ -594,6 +593,16 @@ namespace Dev2.Activities
                 dataTableToInsert.Columns.Add(dataColumn);
             }
             return dataTableToInsert;
+        }
+
+        private void CheckIdentityKeepValue(DataColumnMapping dataColumnMapping)
+        {
+            // check keep identity value ;)
+            if (KeepIdentity)
+            {
+                // no mapping, identity and keep on, this is an issue ;)
+                throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsTrue, dataColumnMapping.OutputColumn.ColumnName));
+            }
         }
 
         List<Type> GETTypesFromMappingTypes() => InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
@@ -621,12 +630,7 @@ namespace Dev2.Activities
                     // Check identity flag ;)
                     if (dataColumnMapping.OutputColumn.IsAutoIncrement)
                     {
-                        // check keep identity value ;)
-                        if (KeepIdentity)
-                        {
-                            // no mapping, identity and keep on, this is an issue ;)
-                            throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsTrue, dataColumnMapping.OutputColumn.ColumnName));
-                        }
+                        CheckIdentityKeepValue(dataColumnMapping);
 
                         // null, identity and no keep flag active ;)
                         continue;
@@ -637,14 +641,12 @@ namespace Dev2.Activities
                 }
 
                 // more identity checks - this time it has data ;)
-                if (dataColumnMapping.OutputColumn.IsAutoIncrement)
+                if (dataColumnMapping.OutputColumn.IsAutoIncrement && !KeepIdentity)
                 {
-                    if (!KeepIdentity)
-                    {
-                        // we have data in an identity column and the keep identity option is disabled - oh no!
-                        throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsFalse, dataColumnMapping.OutputColumn.ColumnName));
-                    }
+                    // we have data in an identity column and the keep identity option is disabled - oh no!
+                    throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsFalse, dataColumnMapping.OutputColumn.ColumnName));
                 }
+
 
                 var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = typeof(string) };
                 if (dataColumn.DataType == typeof(string))

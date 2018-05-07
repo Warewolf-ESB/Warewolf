@@ -344,35 +344,45 @@ namespace Dev2.Settings.Security
 
                 if (permission.IsNew)
                 {
-                    if (permission.IsValid)
-                    {
-                        permission.IsNew = false;
-                        var newPermission = CreateNewPermission(permission.IsServer);
-
-                        if (permission.IsServer)
-                        {
-                            ServerPermissions.Add(newPermission);
-                        }
-                        else
-                        {
-                            ResourcePermissions.Add(newPermission);
-                        }
-                    }
+                    AddPermission(permission);
                 }
                 else
                 {
-                    var isEmpty = string.IsNullOrEmpty(permission.WindowsGroup);
-                    if (isEmpty)
-                    {
-                        if (permission.IsServer)
-                        {
-                            ServerPermissions.Remove(permission);
-                        }
-                        else
-                        {
-                            ResourcePermissions.Remove(permission);
-                        }
-                    }
+                    RemovePermission(permission);
+                }
+            }
+        }
+
+        private void RemovePermission(WindowsGroupPermission permission)
+        {
+            var isEmpty = string.IsNullOrEmpty(permission.WindowsGroup);
+            if (isEmpty)
+            {
+                if (permission.IsServer)
+                {
+                    ServerPermissions.Remove(permission);
+                }
+                else
+                {
+                    ResourcePermissions.Remove(permission);
+                }
+            }
+        }
+
+        private void AddPermission(WindowsGroupPermission permission)
+        {
+            if (permission.IsValid)
+            {
+                permission.IsNew = false;
+                var newPermission = CreateNewPermission(permission.IsServer);
+
+                if (permission.IsServer)
+                {
+                    ServerPermissions.Add(newPermission);
+                }
+                else
+                {
+                    ResourcePermissions.Add(newPermission);
                 }
             }
         }

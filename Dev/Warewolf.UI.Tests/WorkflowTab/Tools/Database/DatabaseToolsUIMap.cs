@@ -37,6 +37,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlBulkInsert.QVIToggleButton.Pressed = true;
         }
 
+        [When(@"I Double Click AdvancedRecordset Tool to Change View")]
+        public void AdvancedRecordsetTool_ChangeView_With_DoubleClick()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.AdvancedRecordset, new Point(238, 15));
+        }
+
         [When(@"I Double Click MySqlDatabase Tool to Change View")]
         public void MySqlDatabaseTool_ChangeView_With_DoubleClick()
         {

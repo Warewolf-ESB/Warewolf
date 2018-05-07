@@ -34,47 +34,51 @@ namespace Dev2.Activities
 
             try
             {
+                if (!IsObject && (Outputs == null || Outputs.Count == 0))
+                {
+                    return;
+                }
+                if (!IsObject && OutputDescription != null && OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
+                {
+                    var serviceOutputMapping = Outputs.First();
+                    if (serviceOutputMapping != null)
+                    {
+                        dataObj.Environment.Assign(serviceOutputMapping.MappedTo, input, update);
+                    }
+                    return;
+                }
                 if (IsObject)
                 {
                     AssignObject(input, update, dataObj);
                 }
                 else
                 {
-                    if (Outputs == null || Outputs.Count == 0)
-                    {
-                        return;
-                    }
-                    IOutputFormatter formater = null;
-                    if (OutputDescription != null)
-                    {
-
-                        var i = 0;
-                        foreach (var serviceOutputMapping in Outputs)
-                        {
-                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = !string.IsNullOrEmpty(DataListUtil.RemoveLanguageBrackets(serviceOutputMapping.MappedTo)) ? DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo) : string.Empty;
-                            i++;
-                        }
-                        if (OutputDescription.DataSourceShapes.Count == 1 && OutputDescription.DataSourceShapes[0].Paths.All(a => a is StringPath))
-                        {
-                            var serviceOutputMapping = Outputs.First();
-                            if (serviceOutputMapping != null)
-                            {
-                                dataObj.Environment.Assign(serviceOutputMapping.MappedTo, input, update);
-                            }
-                            return;
-                        }
-                        formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
-                    }
-                    if (!string.IsNullOrEmpty(input))
-                    {
-                        FormatForOutput(input, update, dataObj, formatResult, formater);
-                    }
+                    TryFormatOutput(input, update, dataObj, formatResult);
                 }
             }
             catch (Exception e)
             {
                 dataObj.Environment.AddError(e.Message);
                 Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
+            }
+        }
+
+        void TryFormatOutput(string input, int update, IDSFDataObject dataObj, bool formatResult)
+        {
+            IOutputFormatter formater = null;
+            if (OutputDescription != null)
+            {
+                var i = 0;
+                foreach (var serviceOutputMapping in Outputs)
+                {
+                    OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = !string.IsNullOrEmpty(DataListUtil.RemoveLanguageBrackets(serviceOutputMapping.MappedTo)) ? DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo) : string.Empty;
+                    i++;
+                }
+                formater = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
+            }
+            if (!string.IsNullOrEmpty(input))
+            {
+                FormatForOutput(input, update, dataObj, formatResult, formater);
             }
         }
 
@@ -132,45 +136,70 @@ namespace Dev2.Activities
         {
             foreach (XmlNode c in children)
             {
-                if (level > 0)
+                TryConvertXmlNode(outputDefs, indexCache, ref update, dataObj, ref level, c);
+            }
+        }
+
+        private void TryConvertXmlNode(IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, ref int update, IDSFDataObject dataObj, ref int level, XmlNode c)
+        {
+            if (level > 0)
+            {
+                update = TryConvertXmlNodeForLevel(outputDefs, indexCache, update, dataObj, c);
+            }
+            else
+            {
+                if (level == 0)
                 {
-                    var c1 = c;
-                    var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
-                    var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
-                    if (dev2Definitions.Length != 0)
-                    {
-                        var idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1;
-                        var nl = c.ChildNodes;
-                        foreach (XmlNode subc in nl)
-                        {
-                            foreach (var definition in dev2Definitions)
-                            {
-                                if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
-                                {
-                                    if (update == 0)
-                                    {
-                                        update = fetchIdx;
-                                    }
-                                    dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, UnescapeRawXml(subc.InnerXml)), update);
-                                }
-                            }
-                        }
-                        dataObj.Environment.CommitAssign();
-                        indexCache[c.Name] = ++idx;
-                    }
-                    else
-                    {
-                        MapScalarValue(outputDefs, update, dataObj, c1);
-                    }
-                }
-                else
-                {
-                    if (level == 0)
-                    {
-                        TryConvert(c.ChildNodes, outputDefs, indexCache, update, dataObj, ++level);
-                    }
+                    TryConvert(c.ChildNodes, outputDefs, indexCache, update, dataObj, ++level);
                 }
             }
+        }
+
+        private int TryConvertXmlNodeForLevel(IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, XmlNode c)
+        {
+            var c1 = c;
+            var recSetName = outputDefs.Where(definition => definition.RecordSetName == c1.Name);
+            var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
+            if (dev2Definitions.Length != 0)
+            {
+                update = TryConvertXmlNodeForDev2Definition(indexCache, update, dataObj, c, dev2Definitions);
+            }
+            else
+            {
+                MapScalarValue(outputDefs, update, dataObj, c1);
+            }
+
+            return update;
+        }
+
+        private int TryConvertXmlNodeForDev2Definition(IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, XmlNode c, IDev2Definition[] dev2Definitions)
+        {
+            var idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1;
+            var nl = c.ChildNodes;
+            foreach (XmlNode subc in nl)
+            {
+                update = TryConvertSubXmlNode(update, dataObj, dev2Definitions, fetchIdx, subc);
+            }
+            dataObj.Environment.CommitAssign();
+            indexCache[c.Name] = ++idx;
+            return update;
+        }
+
+        private int TryConvertSubXmlNode(int update, IDSFDataObject dataObj, IDev2Definition[] dev2Definitions, int fetchIdx, XmlNode subc)
+        {
+            foreach (var definition in dev2Definitions)
+            {
+                if (definition.MapsTo == subc.Name || definition.Name == subc.Name)
+                {
+                    if (update == 0)
+                    {
+                        update = fetchIdx;
+                    }
+                    dataObj.Environment.AssignWithFrame(new AssignValue(definition.RawValue, UnescapeRawXml(subc.InnerXml)), update);
+                }
+            }
+
+            return update;
         }
 
         void MapScalarValue(IList<IDev2Definition> outputDefs, int update, IDSFDataObject dataObj, XmlNode c1)
