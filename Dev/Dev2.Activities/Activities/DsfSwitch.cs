@@ -133,34 +133,7 @@ namespace Dev2.Activities
                 }
                 if (firstOrDefault != null)
                 {
-                    var a = firstOrDefault;
-                    if (Switches.ContainsKey(a))
-                    {
-                        Result = a;
-                        if (dataObject.IsDebugMode())
-                        {
-                            DebugOutput(dataObject);
-                        }
-
-                        NextNodes = new List<IDev2Activity> { Switches[a] };
-                    }
-                    else
-                    {
-                        if (Default == null)
-                        {
-                            dataObject.Environment.Errors.Add(Warewolf.Resource.Errors.ErrorResource.SwitchNoDefaultError);
-                        }
-                        else
-                        {
-                            Result = "Default";
-                            var activity = Default.FirstOrDefault();
-                            if (dataObject.IsDebugMode())
-                            {
-                                DebugOutput(dataObject);
-                            }
-                            NextNodes = new List<IDev2Activity> { activity };
-                        }
-                    }
+                    NewNextNodes(dataObject, firstOrDefault);
                 }
             }
             catch (Exception err)
@@ -173,6 +146,38 @@ namespace Dev2.Activities
                 {
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
+                }
+            }
+        }
+
+        private void NewNextNodes(IDSFDataObject dataObject, string firstOrDefault)
+        {
+            var a = firstOrDefault;
+            if (Switches.ContainsKey(a))
+            {
+                Result = a;
+                if (dataObject.IsDebugMode())
+                {
+                    DebugOutput(dataObject);
+                }
+
+                NextNodes = new List<IDev2Activity> { Switches[a] };
+            }
+            else
+            {
+                if (Default == null)
+                {
+                    dataObject.Environment.Errors.Add(Warewolf.Resource.Errors.ErrorResource.SwitchNoDefaultError);
+                }
+                else
+                {
+                    Result = "Default";
+                    var activity = Default.FirstOrDefault();
+                    if (dataObject.IsDebugMode())
+                    {
+                        DebugOutput(dataObject);
+                    }
+                    NextNodes = new List<IDev2Activity> { activity };
                 }
             }
         }

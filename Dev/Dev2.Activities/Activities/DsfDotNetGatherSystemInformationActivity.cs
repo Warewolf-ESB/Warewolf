@@ -88,51 +88,10 @@ namespace Dev2.Activities
             {
                 _currentIdentity = dataObject.ExecutingUser.Identity;
             }
-            var indexCounter = 0;
             InitializeDebug(dataObject);
             try
             {
-                CleanArgs();
-
-                foreach (GatherSystemInformationTO item in SystemInformationCollection)
-                {
-                    try
-                    {
-                        indexCounter++;
-
-                        if (dataObject.IsDebugMode())
-                        {
-                            var inputToAdd = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
-                            AddDebugItem(new DebugItemStaticDataParams("", dataObject.Environment.EvalToExpression(item.Result, update), "", "="), inputToAdd);
-                            AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
-                            _debugInputs.Add(inputToAdd);
-                        }
-
-                        if (!allErrors.HasErrors())
-                        {
-                            HandleNoErrorsFound(dataObject, update, allErrors, item);
-                        }
-                    }
-                    catch (Exception err)
-                    {
-                        dataObject.Environment.Assign(item.Result, null, update);
-                        allErrors.AddError(err.Message);
-                    }
-                }
-                dataObject.Environment.CommitAssign();
-                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                {
-                    var innerCount = 1;
-                    foreach (GatherSystemInformationTO item in SystemInformationCollection)
-                    {
-                        var itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", "", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment, update), itemToAdd);
-                        _debugOutputs.Add(itemToAdd);
-                        innerCount++;
-                    }
-                }
+                TryExecute(dataObject, update, allErrors);
             }
             catch (Exception e)
             {
@@ -142,6 +101,52 @@ namespace Dev2.Activities
             finally
             {
                 HandleErrors(dataObject, update, allErrors);
+            }
+        }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            CleanArgs();
+
+            var indexCounter = 0;
+            foreach (GatherSystemInformationTO item in SystemInformationCollection)
+            {
+                try
+                {
+                    indexCounter++;
+
+                    if (dataObject.IsDebugMode())
+                    {
+                        var inputToAdd = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams("", dataObject.Environment.EvalToExpression(item.Result, update), "", "="), inputToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
+                        _debugInputs.Add(inputToAdd);
+                    }
+
+                    if (!allErrors.HasErrors())
+                    {
+                        HandleNoErrorsFound(dataObject, update, allErrors, item);
+                    }
+                }
+                catch (Exception err)
+                {
+                    dataObject.Environment.Assign(item.Result, null, update);
+                    allErrors.AddError(err.Message);
+                }
+            }
+            dataObject.Environment.CommitAssign();
+            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+            {
+                var innerCount = 1;
+                foreach (GatherSystemInformationTO item in SystemInformationCollection)
+                {
+                    var itemToAdd = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", "", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                    AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment, update), itemToAdd);
+                    _debugOutputs.Add(itemToAdd);
+                    innerCount++;
+                }
             }
         }
 

@@ -92,47 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                        var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-                        if (CountNumber == string.Empty)
-                        {
-                            allErrors.AddError(ErrorResource.BlankResultVariable);
-                        }
-                        if (dataObject.IsDebugMode())
-                        {
-                            AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment, update));
-                        }
-                        var rule = new IsSingleValueRule(() => CountNumber);
-                        var single = rule.Check();
-                        if (single != null)
-                        {
-                            allErrors.AddError(single.Message);
-                        }
-                        else
-                        {
-                            var hasRecordSet = dataObject.Environment.HasRecordSet(RecordsetName);
-                            if (hasRecordSet)//null check happens here
-                            {
-                                var count = dataObject.Environment.GetCount(rs);
-                                var value = count.ToString();
-                                dataObject.Environment.Assign(CountNumber, value, update);
-                                AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
-
-                            }
-                            else
-                            {
-                                if (TreatNullAsZero)
-                                {
-                                    dataObject.Environment.Assign(CountNumber, 0.ToString(), update);
-                                    AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
-
-                                }
-                                else
-                                {
-                                    allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
-                                }
-
-                            }
-                        }
+                        TryExecute(dataObject, update, allErrors);
                     }
                     catch (Exception e)
                     {
@@ -157,6 +117,51 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+            if (CountNumber == string.Empty)
+            {
+                allErrors.AddError(ErrorResource.BlankResultVariable);
+            }
+            if (dataObject.IsDebugMode())
+            {
+                AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment, update));
+            }
+            var rule = new IsSingleValueRule(() => CountNumber);
+            var single = rule.Check();
+            if (single != null)
+            {
+                allErrors.AddError(single.Message);
+            }
+            else
+            {
+                var hasRecordSet = dataObject.Environment.HasRecordSet(RecordsetName);
+                if (hasRecordSet)//null check happens here
+                {
+                    var count = dataObject.Environment.GetCount(rs);
+                    var value = count.ToString();
+                    dataObject.Environment.Assign(CountNumber, value, update);
+                    AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
+
+                }
+                else
+                {
+                    if (TreatNullAsZero)
+                    {
+                        dataObject.Environment.Assign(CountNumber, 0.ToString(), update);
+                        AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
+
+                    }
+                    else
+                    {
+                        allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
+                    }
+
                 }
             }
         }

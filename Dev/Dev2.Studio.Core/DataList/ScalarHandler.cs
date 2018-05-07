@@ -49,18 +49,7 @@ namespace Dev2.Studio.Core.DataList
                 var scalar = DataListItemModelFactory.CreateScalarItemModel(xmlNode.Name, Common.ParseDescription(xmlNode.Attributes[Common.Description]), Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]));
                 if (scalar != null)
                 {
-                    scalar.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
-                    if (string.IsNullOrEmpty(_vm.SearchText))
-                    {
-                        _vm.ScalarCollection.Add(scalar);
-                    }
-                    else
-                    {
-                        if (scalar.DisplayName.ToUpper().StartsWith(_vm.SearchText.ToUpper()))
-                        {
-                            _vm.ScalarCollection.Add(scalar);
-                        }
-                    }
+                    AddScalars(xmlNode, scalar);
                 }
             }
             else
@@ -68,18 +57,23 @@ namespace Dev2.Studio.Core.DataList
                 var scalar = DataListItemModelFactory.CreateScalarItemModel(xmlNode.Name, Common.ParseDescription(null), Common.ParseColumnIODirection(null));
                 if (scalar != null)
                 {
-                    scalar.IsEditable = Common.ParseIsEditable(null);
-                    if (string.IsNullOrEmpty(_vm.SearchText))
-                    {
-                        _vm.ScalarCollection.Add(scalar);
-                    }
-                    else
-                    {
-                        if (scalar.DisplayName.ToUpper().StartsWith(_vm.SearchText.ToUpper()))
-                        {
-                            _vm.ScalarCollection.Add(scalar);
-                        }
-                    }
+                    AddScalars(xmlNode, scalar);
+                }
+            }
+        }
+
+        void AddScalars(XmlNode xmlNode, IScalarItemModel scalar)
+        {
+            scalar.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
+            if (string.IsNullOrEmpty(_vm.SearchText))
+            {
+                _vm.ScalarCollection.Add(scalar);
+            }
+            else
+            {
+                if (scalar.DisplayName.ToUpper().StartsWith(_vm.SearchText.ToUpper()))
+                {
+                    _vm.ScalarCollection.Add(scalar);
                 }
             }
         }

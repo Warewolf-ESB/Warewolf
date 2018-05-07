@@ -53,47 +53,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Debug("Security Data Read", GlobalConstants.WarewolfDebug);
                 try
                 {
-                    var decryptData = SecurityEncryption.Decrypt(encryptedData);
-                    Dev2Logger.Debug(decryptData, GlobalConstants.WarewolfDebug);
-                    var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
-                    if(currentSecuritySettingsTo.WindowsGroupPermissions.Any(a=>a.ResourceID!= Guid.Empty))
-                    {
-                        foreach (var perm in currentSecuritySettingsTo.WindowsGroupPermissions.Where(a => a.ResourceID != Guid.Empty))
-                        {
-                            perm.ResourceName = Catalog.GetResourcePath(GlobalConstants.ServerWorkspaceID, perm.ResourceID);
-                        }
-                    }
-                    decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
-                    var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
-
-                    // We need to change BuiltIn\Administrators to -> Warewolf Administrators ;)
-                    if(permissionGroup.Count > 0)
-                    {
-                        var adminGrp = permissionGroup[0].WindowsGroup;
-                        if(adminGrp == "BuiltIn\\Administrators")
-                        {
-                            permissionGroup[0].WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText;
-                            decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
-                        }
-                    }
-
-                    var hasGuestPermission = permissionGroup.Any(permission => permission.IsBuiltInGuests);
-                    var hasAdminPermission = permissionGroup.Any(permission => permission.IsBuiltInAdministrators);
-                    if(!hasAdminPermission)
-                    {
-                        permissionGroup.Add(WindowsGroupPermission.CreateAdministrators());
-                        permissionGroup.Sort(QuickSortForPermissions);
-                        decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
-                    }
-                    if(!hasGuestPermission)
-                    {
-                        permissionGroup.Add(WindowsGroupPermission.CreateGuests());
-                        permissionGroup.Sort(QuickSortForPermissions);
-                        decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
-                    }
-                    return new StringBuilder(decryptData);
+                    return Execute(encryptedData);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Error("SecurityRead", e, GlobalConstants.WarewolfError);
                 }
@@ -102,6 +64,49 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             var securitySettingsTo = new SecuritySettingsTO(DefaultPermissions) { CacheTimeout = _cacheTimeout };
             return serializer.SerializeToBuilder(securitySettingsTo);
+        }
+
+        StringBuilder Execute(string encryptedData)
+        {
+            var decryptData = SecurityEncryption.Decrypt(encryptedData);
+            Dev2Logger.Debug(decryptData, GlobalConstants.WarewolfDebug);
+            var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
+            if (currentSecuritySettingsTo.WindowsGroupPermissions.Any(a => a.ResourceID != Guid.Empty))
+            {
+                foreach (var perm in currentSecuritySettingsTo.WindowsGroupPermissions.Where(a => a.ResourceID != Guid.Empty))
+                {
+                    perm.ResourceName = Catalog.GetResourcePath(GlobalConstants.ServerWorkspaceID, perm.ResourceID);
+                }
+            }
+            decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
+            var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
+
+            // We need to change BuiltIn\Administrators to -> Warewolf Administrators ;)
+            if (permissionGroup.Count > 0)
+            {
+                var adminGrp = permissionGroup[0].WindowsGroup;
+                if (adminGrp == "BuiltIn\\Administrators")
+                {
+                    permissionGroup[0].WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText;
+                    decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
+                }
+            }
+
+            var hasGuestPermission = permissionGroup.Any(permission => permission.IsBuiltInGuests);
+            var hasAdminPermission = permissionGroup.Any(permission => permission.IsBuiltInAdministrators);
+            if (!hasAdminPermission)
+            {
+                permissionGroup.Add(WindowsGroupPermission.CreateAdministrators());
+                permissionGroup.Sort(QuickSortForPermissions);
+                decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
+            }
+            if (!hasGuestPermission)
+            {
+                permissionGroup.Add(WindowsGroupPermission.CreateGuests());
+                permissionGroup.Sort(QuickSortForPermissions);
+                decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
+            }
+            return new StringBuilder(decryptData);
         }
 
         int QuickSortForPermissions(WindowsGroupPermission x, WindowsGroupPermission y)
