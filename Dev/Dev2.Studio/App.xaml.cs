@@ -180,6 +180,23 @@ namespace Dev2.Studio
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
+            SetAsStarted();
+        }
+
+        static void SetAsStarted()
+        {
+            try
+            {
+                if (File.Exists(".\\StudioStarted"))
+                {
+                    File.Delete(".\\StudioStarted");
+                }
+                File.WriteAllText(".\\StudioStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+            }
         }
 
         public void OpenBasedOnArguments(WarwolfStartupEventArgs e)
