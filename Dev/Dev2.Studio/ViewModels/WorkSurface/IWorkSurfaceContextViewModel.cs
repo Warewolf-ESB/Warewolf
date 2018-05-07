@@ -68,6 +68,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager);
 
+        bool Save();
         bool Save(bool isLocalSave, bool isStudioShutdown);
 
         bool IsEnvironmentConnected();
