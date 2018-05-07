@@ -67,6 +67,7 @@ using Dev2.Factory;
 using System.Text;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Reflection;
 
 namespace Dev2.Studio
 {
@@ -188,11 +189,13 @@ namespace Dev2.Studio
         {
             try
             {
-                if (File.Exists(".\\StudioStarted"))
+                var studioFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var studioStartedFile = Path.Combine(studioFolder, "StudioStarted");
+                if (File.Exists(studioStartedFile))
                 {
-                    File.Delete(".\\StudioStarted");
+                    File.Delete(studioStartedFile);
                 }
-                File.WriteAllText(".\\StudioStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+                File.WriteAllText(studioStartedFile, DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
             }
             catch (Exception err)
             {
