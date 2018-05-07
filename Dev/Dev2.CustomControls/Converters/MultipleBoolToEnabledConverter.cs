@@ -45,13 +45,11 @@ namespace Dev2.CustomControls.Converters
             foreach (object value in values)
             {
                 var tmpval = value as bool?;
-                if (tmpval != null)
+                if (tmpval != null && !tmpval.GetValueOrDefault())
                 {
-                    if (!tmpval.GetValueOrDefault())
-                    {
-                        return false;
-                    }
+                    return false;
                 }
+
             }
             return true;
         }

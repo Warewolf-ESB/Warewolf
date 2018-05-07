@@ -21,7 +21,6 @@ using Warewolf.Resource.Errors;
 
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
-
 {
     [Serializable]
     public class JsonMapper : IMapper
@@ -52,84 +51,100 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
             if (propertyStack.Count == 0 && data.IsPrimitive())
             {
-                paths.Add(new JsonPath(JsonPath.SeperatorSymbol, JsonPath.SeperatorSymbol, data.ToString()));
+                var value = data as JValue;
+                var type = value.Value.GetType().Name;
+                paths.Add(new JsonPath(type, type, data.ToString()));
             }
             else
             {
                 if (data.IsObject())
                 {
-                    var dataAsJObject = data as JObject;
-                    if (dataAsJObject == null)
-                    {
-                        throw new Exception(string.Format(ErrorResource.DataTypeMismatch, typeof(JObject), data.GetType()));
-                    }
-                    IList<JProperty> dataProperties = dataAsJObject.Properties().ToList();
-                    foreach (JProperty property in dataProperties.Where(p => p.IsPrimitive() || p.IsEnumerableOfPrimitives()))
-                    {
-                        JToken propertyData;
-                        try
-                        {
-                            propertyData = property.Value;
-                        }
-                        catch (Exception ex)
-                        {
-                            Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                            propertyData = null;
-                        }
-                        if (propertyData != null)
-                        {
-                            paths.Add(BuildPath(propertyStack, property, root));
-                        }
-                    }
-
-                    foreach (JProperty property in dataProperties.Where(p => !p.IsPrimitive() && !p.IsEnumerableOfPrimitives()))
-                    {
-                        JContainer propertyData;
-
-                        try
-                        {
-                            propertyData = property.Value as JContainer;
-                        }
-                        catch (Exception ex)
-                        {
-                            Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                            propertyData = null;
-                            //TODO When an exception is encountered stop discovery for this path and write to log
-                        }
-
-                        if (propertyData != null)
-                        {
-                            if (property.IsEnumerable())
-                            {
-                                if (propertyData is IEnumerable enumerableData)
-                                {
-                                    var enumerator = enumerableData.GetEnumerator();
-                                    enumerator.Reset();
-                                    if (enumerator.MoveNext())
-                                    {
-                                        propertyData = enumerator.Current as JContainer;
-
-                                        if (propertyData != null)
-                                        {
-                                            propertyStack.Push(new Tuple<JProperty, bool>(property, true));
-                                            paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                                            propertyStack.Pop();
-                                        }
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                propertyStack.Push(new Tuple<JProperty, bool>(property, true));
-                                paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                                propertyStack.Pop();
-                            }
-                        }
-                    }
+                    AddObjectPaths(data, propertyStack, root, paths);
                 }
             }
 
             return paths;
+        }
+
+        void AddObjectPaths(JToken data, Stack<Tuple<JProperty, bool>> propertyStack, JToken root, List<IPath> paths)
+        {
+            var dataAsJObject = data as JObject;
+            if (dataAsJObject == null)
+            {
+                throw new Exception(string.Format(ErrorResource.DataTypeMismatch, typeof(JObject), data.GetType()));
+            }
+            IList<JProperty> dataProperties = dataAsJObject.Properties().ToList();
+            foreach (JProperty property in dataProperties.Where(p => p.IsPrimitive() || p.IsEnumerableOfPrimitives()))
+            {
+                JToken propertyData;
+                try
+                {
+                    propertyData = property.Value;
+                }
+                catch (Exception ex)
+                {
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                    propertyData = null;
+                }
+                if (propertyData != null)
+                {
+                    paths.Add(BuildPath(propertyStack, property, root));
+                }
+            }
+
+            foreach (JProperty property in dataProperties.Where(p => !p.IsPrimitive() && !p.IsEnumerableOfPrimitives()))
+            {
+                TryAddPropertyAsJContainer(propertyStack, root, paths, property);
+            }
+        }
+
+        private void TryAddPropertyAsJContainer(Stack<Tuple<JProperty, bool>> propertyStack, JToken root, List<IPath> paths, JProperty property)
+        {
+            JContainer propertyData;
+            try
+            {
+                propertyData = property.Value as JContainer;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+                propertyData = null;
+                //TODO When an exception is encountered stop discovery for this path and write to log
+            }
+
+            if (propertyData != null)
+            {
+                if (property.IsEnumerable())
+                {
+                    AddPropertyStack(propertyStack, root, paths, property, propertyData);
+                }
+                else
+                {
+                    propertyStack.Push(new Tuple<JProperty, bool>(property, true));
+                    paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                    propertyStack.Pop();
+                }
+            }
+        }
+
+        void AddPropertyStack(Stack<Tuple<JProperty, bool>> propertyStack, JToken root, List<IPath> paths, JProperty property, JContainer propertyData)
+        {
+            if (propertyData is IEnumerable enumerableData)
+            {
+                var enumerator = enumerableData.GetEnumerator();
+                enumerator.Reset();
+                if (enumerator.MoveNext())
+                {
+                    propertyData = enumerator.Current as JContainer;
+
+                    if (propertyData != null)
+                    {
+                        propertyStack.Push(new Tuple<JProperty, bool>(property, true));
+                        paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                        propertyStack.Pop();
+                    }
+                }
+            }
         }
 
         IPath BuildPath(Stack<Tuple<JProperty, bool>> propertyStack, JProperty jProperty, JToken root)
@@ -172,8 +187,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                 path.DisplayPath += JsonPath.SeperatorSymbol;
             }
 
-            path.ActualPath += path.CreatePathSegment(jProperty).ToString();
-            path.DisplayPath += path.CreatePathSegment(jProperty).ToString();
+            path.ActualPath += path.CreatePathSegment(jProperty);
+            path.DisplayPath += path.CreatePathSegment(jProperty);
             path.SampleData += GetSampleData(root, path);
 
             return path;

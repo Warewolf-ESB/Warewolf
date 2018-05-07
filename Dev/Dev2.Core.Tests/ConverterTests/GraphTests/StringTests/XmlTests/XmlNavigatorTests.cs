@@ -16,7 +16,9 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
-
+using System.Xml;
+using System.Xml.Linq;
+using Dev2.Data.Util;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
@@ -68,9 +70,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             xmlNavigator.SelectScalar(null);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void SelectScalarValue_WithoutXmlPath_Expected_Exception()
+
+
+        internal string GivenSingleNode()
         {
             var xmlNavigator = new XmlNavigator(testData);
             xmlNavigator.SelectScalar(new JsonPath());

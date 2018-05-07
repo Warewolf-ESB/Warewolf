@@ -10,13 +10,11 @@ namespace Dev2.Data.Util
         {
             var result = false;
 
-            if (!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value) && value.StartsWith(DataListUtil.OpeningSquareBrackets) && value.EndsWith(DataListUtil.ClosingSquareBrackets) && !DataListUtil.IsValueRecordset(value) && !value.Contains("."))
             {
-                if (value.StartsWith(DataListUtil.OpeningSquareBrackets) && value.EndsWith(DataListUtil.ClosingSquareBrackets) && !DataListUtil.IsValueRecordset(value) && !value.Contains("."))
-                {
-                    result = true;
-                }
+                result = true;
             }
+
 
             return result;
         }

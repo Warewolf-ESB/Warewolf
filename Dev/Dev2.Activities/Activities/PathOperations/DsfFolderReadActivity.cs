@@ -40,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InputPath = string.Empty;
         }
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
+        protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             IsNotCertVerifiable = true;
 
@@ -86,49 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     try
                     {
-                        var listOfDir = broker.ListDirectory(endPoint, GetReadType());
-                        if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
-                        {
-                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                            {
-                                var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                                var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
-
-                                var indexToUpsertTo = 1;
-                                if (listOfDir != null)
-                                {
-                                    foreach (IActivityIOPath pa in listOfDir)
-                                    {
-                                        var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                            indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                        outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), pa.Path));
-                                        indexToUpsertTo++;
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
-                                {
-                                    if (listOfDir != null)
-                                    {
-                                        foreach (IActivityIOPath pa in listOfDir)
-                                        {
-                                            outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (listOfDir != null)
-                            {
-                                var xmlList = string.Join(",", listOfDir.Select(c => c.Path));
-                                outputs.Add(DataListFactory.CreateOutputTO(Result));
-                                outputs.Last().OutputStrings.Add(xmlList);
-                            }
-                        }
+                        ExecuteConcreteAction(outputs, broker, endPoint);
                     }
                     catch (Exception e)
                     {
@@ -141,6 +99,60 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return outputs;
             }
 
+        }
+
+        void ExecuteConcreteAction(IList<OutputTO> outputs, IActivityOperationsBroker broker, IActivityIOOperationsEndPoint endPoint)
+        {
+            var listOfDir = broker.ListDirectory(endPoint, GetReadType());
+            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
+            {
+                if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                {
+                    ExecuteForListOfDir(listOfDir, outputs);
+                }
+                else
+                {
+                    AddOutputsForListOfDir(listOfDir, outputs);
+                }
+            }
+            else
+            {
+                if (listOfDir != null)
+                {
+                    var xmlList = string.Join(",", listOfDir.Select(c => c.Path));
+                    outputs.Add(DataListFactory.CreateOutputTO(Result));
+                    outputs.Last().OutputStrings.Add(xmlList);
+                }
+            }
+        }
+
+        void AddOutputsForListOfDir(IList<IActivityIOPath> listOfDir, IList<OutputTO> outputs)
+        {
+            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank && listOfDir != null)
+            {
+                foreach (IActivityIOPath pa in listOfDir)
+                {
+                    outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
+                }
+            }
+        }
+
+        void ExecuteForListOfDir(IList<IActivityIOPath> listOfDir, IList<OutputTO> outputs)
+        {
+            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+
+            var indexToUpsertTo = 1;
+            if (listOfDir != null)
+            {
+                foreach (IActivityIOPath pa in listOfDir)
+                {
+                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                        indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                    outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), pa.Path));
+                    indexToUpsertTo++;
+                }
+            }
         }
 
         protected override bool AssignEmptyOutputsToRecordSet => false;

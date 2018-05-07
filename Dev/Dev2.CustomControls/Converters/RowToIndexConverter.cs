@@ -24,13 +24,11 @@ namespace Dev2.CustomControls.Converters
         {
             var row = value as ModelItem;
             var collection = row?.Parent as ModelItemCollection;
-            if (row != null)
+            if (row != null && collection != null)
             {
-                if (collection != null)
-                {
-                    return collection.IndexOf(row) + 1;
-                }
+                return collection.IndexOf(row) + 1;
             }
+
             return -1;
         }
 

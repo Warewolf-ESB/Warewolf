@@ -164,13 +164,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
-                if (!Equals(value, _selectedAction) && _selectedAction != null)
+                if (!Equals(value, _selectedAction) && _selectedAction != null && !string.IsNullOrEmpty(_selectedAction.Method))
                 {
-                    if (!string.IsNullOrEmpty(_selectedAction.Method))
-                    {
-                        StorePreviousValues(_selectedAction.GetIdentifier());
-                    }
+                    StorePreviousValues(_selectedAction.GetIdentifier());
                 }
+
                 if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);

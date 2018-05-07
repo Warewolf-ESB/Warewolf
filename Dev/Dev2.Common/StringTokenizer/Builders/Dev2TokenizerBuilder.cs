@@ -41,7 +41,7 @@ namespace Dev2.Common
 
         public IDev2Tokenizer Generate()
         {
-            if (ToTokenize.Length==0)
+            if (ToTokenize.Length == 0)
             {
                 throw new TokenizeError(ErrorResource.NullTokenzeString);
             }

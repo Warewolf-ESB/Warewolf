@@ -32,47 +32,53 @@ namespace Dev2.Studio.Core.DataList
             var missingWorkflowParts = new List<IDataListVerifyPart>();
             foreach (var dataListItem in _recsetCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName)))
             {
-                if (dataListItem.Children.Count > 0)
+                var excludeUnused = excludeUnusedItems && !dataListItem.IsUsed;
+                if (dataListItem.Children.Count > 0 && !partsToVerify.Any(part => part.Recordset == dataListItem.DisplayName) && dataListItem.IsEditable && excludeUnused)
                 {
-                    if (partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0 &&
-                        dataListItem.IsEditable)
-                    {
-                        if (excludeUnusedItems && !dataListItem.IsUsed)
-                        {
-                            continue;
-                        }
+                    continue;
+                }
 
-                        AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem);
-                        foreach (var child in dataListItem.Children.Where(p => !string.IsNullOrEmpty(p.DisplayName)))
-                        {
-                            AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem, child);
-                        }
-                    }
-                    else
-                    {
-                        missingWorkflowParts.AddRange(
-                            from child in dataListItem.Children
-                            where partsToVerify.Count(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) == 0 && child.IsEditable
-                            where !excludeUnusedItems || dataListItem.IsUsed
-                            select IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
-                    }
+                if (!partsToVerify.Any(part => part.Recordset == dataListItem.DisplayName) && dataListItem.IsEditable)
+                {
+                    MissingRecordsets(partsToVerify, excludeUnusedItems, missingWorkflowParts, dataListItem);
                 }
                 else
                 {
-                    if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0 && dataListItem.IsEditable)
+                    var hasNoPartsToVerifyAndEditable = !partsToVerify.Any(part => part.Field == dataListItem.DisplayName && part.IsScalar) && dataListItem.IsEditable;
+                    if (hasNoPartsToVerifyAndEditable && excludeUnused)
                     {
-                        if (excludeUnusedItems && !dataListItem.IsUsed)
-                        {
-                            continue;
-                        }
+                        continue;
+                    }
 
+                    if (hasNoPartsToVerifyAndEditable)
+                    {
                         missingWorkflowParts.Add(
-                            IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
-                                dataListItem.Description));
+                        IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description));
                     }
                 }
             }
             return missingWorkflowParts;
+        }
+
+        static void MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems, List<IDataListVerifyPart> missingWorkflowParts, IRecordSetItemModel dataListItem)
+        {
+            if (excludeUnusedItems && !dataListItem.IsUsed)
+            {
+
+                AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem);
+                foreach (var child in dataListItem.Children.Where(p => !string.IsNullOrEmpty(p.DisplayName)))
+                {
+                    AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem, child);
+                }
+            }
+            else
+            {
+                missingWorkflowParts.AddRange(
+                    from child in dataListItem.Children
+                    where !partsToVerify.Any(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) && child.IsEditable
+                    where !excludeUnusedItems || dataListItem.IsUsed
+                    select IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
+            }
         }
 
         public IEnumerable<IDataListVerifyPart> MissingScalars(IEnumerable<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems) => (from dataListItem in _scalarCollection
