@@ -58,7 +58,7 @@ namespace Dev2.Tests
 
             while (dt.HasMoreOps())
             {
-                result += " "+ dt.NextToken();
+                result += " " + dt.NextToken();
             }
 
             Assert.AreEqual("  -CD- -CD", result);
@@ -105,7 +105,8 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
-        public void Index_Op_Fwd() {
+        public void Index_Op_Fwd()
+        {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
 
 
@@ -117,14 +118,15 @@ namespace Dev2.Tests
 
             while (dt.HasMoreOps())
             {
-                result += " "+dt.NextToken();
+                result += " " + dt.NextToken();
             }
 
             Assert.AreEqual(" AB -C D- DE -F G- HI", result);
         }
 
         [TestMethod]
-        public void Eof_Op_Fwd() {
+        public void Eof_Op_Fwd()
+        {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
 
 
@@ -137,7 +139,7 @@ namespace Dev2.Tests
             var cnt = 0;
             while (dt.HasMoreOps())
             {
-                result +=  dt.NextToken();
+                result += dt.NextToken();
                 cnt++;
             }
 
@@ -171,7 +173,8 @@ namespace Dev2.Tests
 
 
         [TestMethod]
-        public void Token_And_Index_Op_Fwd() {
+        public void Token_And_Index_Op_Fwd()
+        {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
 
 
@@ -195,11 +198,12 @@ namespace Dev2.Tests
         #region Backward Test
 
         [TestMethod]
-        public void Single_Token_Op_Bwd() {
+        public void Single_Token_Op_Bwd()
+        {
             var dtb = new Dev2TokenizerBuilder
-                                       {
-                                           ReverseOrder = true,
-                                           ToTokenize = Search.ToStringBuilder()
+            {
+                ReverseOrder = true,
+                ToTokenize = Search.ToStringBuilder()
             };
 
 
@@ -209,20 +213,22 @@ namespace Dev2.Tests
 
             var result = string.Empty;
 
-            while (dt.HasMoreOps()) {
-                result += "."+ dt.NextToken();
+            while (dt.HasMoreOps())
+            {
+                result += "." + dt.NextToken();
             }
 
             Assert.AreEqual(".HI.FG.DE.CD.AB", result);
         }
 
         [TestMethod]
-        public void Two_Token_Op_Bwd() {
+        public void Two_Token_Op_Bwd()
+        {
             var dtb = new Dev2TokenizerBuilder
-                                       {
-                                           ToTokenize = Search2.ToStringBuilder(),
-                                           ReverseOrder = true
-                                       };
+            {
+                ToTokenize = Search2.ToStringBuilder(),
+                ReverseOrder = true
+            };
 
 
             dtb.AddTokenOp("B-", false);
@@ -231,7 +237,8 @@ namespace Dev2.Tests
 
             var result = string.Empty;
 
-            while (dt.HasMoreOps()) {
+            while (dt.HasMoreOps())
+            {
                 result += "." + dt.NextToken();
             }
 
@@ -239,12 +246,13 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
-        public void Three_Token_Op_Bwd() {
+        public void Three_Token_Op_Bwd()
+        {
             var dtb = new Dev2TokenizerBuilder
-                                       {
-                                           ToTokenize = Search2.ToStringBuilder(),
-                                           ReverseOrder = true
-                                       };
+            {
+                ToTokenize = Search2.ToStringBuilder(),
+                ReverseOrder = true
+            };
 
 
             dtb.AddTokenOp("AB-", false);
@@ -253,7 +261,8 @@ namespace Dev2.Tests
 
             var result = string.Empty;
 
-            while (dt.HasMoreOps()) {
+            while (dt.HasMoreOps())
+            {
                 result += "." + dt.NextToken();
             }
 
@@ -261,12 +270,13 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
-        public void Token_Op_With_Token_Bwd() {
+        public void Token_Op_With_Token_Bwd()
+        {
             var dtb = new Dev2TokenizerBuilder
-                                       {
-                                           ToTokenize = Search.ToStringBuilder(),
-                                           ReverseOrder = true
-                                       };
+            {
+                ToTokenize = Search.ToStringBuilder(),
+                ReverseOrder = true
+            };
 
 
             dtb.AddTokenOp("-", true);
@@ -275,20 +285,22 @@ namespace Dev2.Tests
 
             var result = string.Empty;
 
-            while (dt.HasMoreOps()) {
-                result += "."+dt.NextToken();
+            while (dt.HasMoreOps())
+            {
+                result += "." + dt.NextToken();
             }
 
             Assert.AreEqual(".-HI.-FG.-DE.-CD.AB", result);
         }
 
         [TestMethod]
-        public void Index_Op_Bwd() {
+        public void Index_Op_Bwd()
+        {
             var dtb = new Dev2TokenizerBuilder
-                                       {
-                                           ToTokenize = Search.ToStringBuilder(),
-                                           ReverseOrder = true
-                                       };
+            {
+                ToTokenize = Search.ToStringBuilder(),
+                ReverseOrder = true
+            };
 
 
             dtb.AddIndexOp(2);
@@ -297,7 +309,8 @@ namespace Dev2.Tests
 
             var result = string.Empty;
 
-            while (dt.HasMoreOps()) {
+            while (dt.HasMoreOps())
+            {
                 result += "." + dt.NextToken();
             }
 
@@ -305,12 +318,13 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
-        public void Eof_Op_Bwd() {
+        public void Eof_Op_Bwd()
+        {
             var dtb = new Dev2TokenizerBuilder
-                                       {
-                                           ToTokenize = Search.ToStringBuilder(),
-                                           ReverseOrder = true
-                                       };
+            {
+                ToTokenize = Search.ToStringBuilder(),
+                ReverseOrder = true
+            };
 
 
             dtb.AddEoFOp();
@@ -320,7 +334,8 @@ namespace Dev2.Tests
             var result = string.Empty;
 
             var cnt = 0;
-            while (dt.HasMoreOps()) {
+            while (dt.HasMoreOps())
+            {
                 result += dt.NextToken();
                 cnt++;
             }
@@ -330,12 +345,13 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
-        public void Token_And_Index_Op_Bwd() {
+        public void Token_And_Index_Op_Bwd()
+        {
             var dtb = new Dev2TokenizerBuilder
-                                       {
-                                           ToTokenize = Search.ToStringBuilder(),
-                                           ReverseOrder = true
-                                       };
+            {
+                ToTokenize = Search.ToStringBuilder(),
+                ReverseOrder = true
+            };
 
 
             dtb.AddTokenOp("-", false);
@@ -345,7 +361,8 @@ namespace Dev2.Tests
 
             var result = string.Empty;
 
-            while (dt.HasMoreOps()) {
+            while (dt.HasMoreOps())
+            {
                 result += "." + dt.NextToken();
             }
 
@@ -356,7 +373,8 @@ namespace Dev2.Tests
 
         #region Negative Test
         [TestMethod]
-        public void Empty_String_Error() {
+        public void Empty_String_Error()
+        {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = string.Empty.ToStringBuilder() };
 
 
@@ -368,7 +386,8 @@ namespace Dev2.Tests
 
                 Assert.Fail();
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 Assert.IsTrue(true);
             }
         }

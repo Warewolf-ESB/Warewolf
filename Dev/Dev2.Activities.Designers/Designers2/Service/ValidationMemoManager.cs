@@ -224,13 +224,11 @@ namespace Dev2.Activities.Designers2.Service
                     {
                         var model = inputOutputViewModel;
                         var actualViewModel = _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
-                        if (actualViewModel != null)
+                        if (actualViewModel != null && actualViewModel.Value == string.Empty)
                         {
-                            if (actualViewModel.Value == string.Empty)
-                            {
-                                actualViewModel.RequiredMissing = true;
-                            }
+                            actualViewModel.RequiredMissing = true;
                         }
+
                     }
 
                     break;

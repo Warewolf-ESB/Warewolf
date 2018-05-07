@@ -169,12 +169,9 @@ namespace System.Windows.Controls
 
             OutsidePopupCanvas.RenderTransform = mt;
 #endif
-            PopupChild.MinWidth = myControlWidth;
-            PopupChild.MaxWidth = rootWidth;
             PopupChild.MinHeight = 0;
             PopupChild.MaxHeight = Math.Max(0, popupMaxHeight);
 
-            PopupChild.Width = popupContentWidth;
             PopupChild.HorizontalAlignment = HorizontalAlignment.Left;
             PopupChild.VerticalAlignment = VerticalAlignment.Top;
             

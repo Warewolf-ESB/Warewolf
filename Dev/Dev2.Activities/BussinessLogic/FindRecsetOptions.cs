@@ -39,13 +39,11 @@ namespace Dev2.DataList
 
             foreach (Type t in types)
             {
-                if (!t.IsAbstract && !t.IsInterface)
+                if (!t.IsAbstract && !t.IsInterface && Activator.CreateInstance(t, true) is IFindRecsetOptions item)
                 {
-                    if (Activator.CreateInstance(t, true) is IFindRecsetOptions item)
-                    {
-                        _options.Add(item.HandlesType(), item);
-                    }
+                    _options.Add(item.HandlesType(), item);
                 }
+
             }
             SortRecordsetOptions();
         }

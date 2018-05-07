@@ -93,104 +93,14 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             var allErrors = new ErrorResultTO();
-            var errors = new ErrorResultTO();
-            allErrors.MergeErrors(errors);
 
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
 
             try
             {
-                if (!errors.HasErrors())
-                {
-                    if (dataObject.IsDebugMode())
-                    {
-                        AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType, update);
-                    }
-
-                    var lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
-                    var fromItr = !String.IsNullOrEmpty(From) ? new WarewolfIterator(env.EvalStrict(From, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
-                    var toItr = !String.IsNullOrEmpty(To) ? new WarewolfIterator(env.EvalStrict(To, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
-                    var colItr = new WarewolfListIterator();
-                    colItr.AddVariableToIterateOn(lengthItr);
-                    colItr.AddVariableToIterateOn(fromItr);
-                    colItr.AddVariableToIterateOn(toItr);
-
-                    var dev2Random = new Dev2Random();
-                    var counter = 1;
-                    while (colItr.HasMoreData())
-                    {
-                        var lengthNum = -1;
-                        var fromNum = -1.0;
-                        var toNum = -1.0;
-
-                        var fromValue = colItr.FetchNextValue(fromItr);
-                        var toValue = colItr.FetchNextValue(toItr);
-                        var lengthValue = colItr.FetchNextValue(lengthItr);
-
-                        if (RandomType != enRandomType.Guid)
-                        {
-                            if (RandomType == enRandomType.Numbers)
-                            {
-                                #region Getting the From
-
-                                fromNum = GetFromValue(fromValue, out errors);
-                                if (errors.HasErrors())
-                                {
-                                    allErrors.MergeErrors(errors);
-                                    continue;
-                                }
-
-                                #endregion
-
-                                #region Getting the To
-
-                                toNum = GetToValue(toValue, out errors);
-                                if (errors.HasErrors())
-                                {
-                                    allErrors.MergeErrors(errors);
-                                    continue;
-                                }
-
-                                #endregion
-                            }
-                            else
-                            {
-                                #region Getting the Length
-
-                                lengthNum = GetLengthValue(lengthValue, out errors);
-                                if (errors.HasErrors())
-                                {
-                                    allErrors.MergeErrors(errors);
-                                    continue;
-                                }
-
-                                #endregion
-                            }
-                        }
-                        var value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
-
-                        var rule = new IsSingleValueRule(() => Result);
-                        var single = rule.Check();
-                        if (single != null)
-                        {
-                            allErrors.AddError(single.Message);
-                        }
-                        else
-                        {
-                            env.Assign(Result, value, update == 0 ? counter : update);
-                        }
-                        counter++;
-                    }
-                }
-                allErrors.MergeErrors(errors);
-                if (!allErrors.HasErrors())
-                {
-                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                }
+                TryExecute(dataObject, update, allErrors, env);
             }
             catch (Exception e)
             {
@@ -217,6 +127,102 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+        }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, IExecutionEnvironment env)
+        {
+            var errors = new ErrorResultTO();
+            if (!errors.HasErrors())
+            {
+                errors = UpdateEnvironment(dataObject, update, allErrors, env, errors);
+            }
+            allErrors.MergeErrors(errors);
+            if (!allErrors.HasErrors())
+            {
+                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+            }
+        }
+
+        private ErrorResultTO UpdateEnvironment(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, IExecutionEnvironment env, ErrorResultTO errors)
+        {
+            if (dataObject.IsDebugMode())
+            {
+                AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType, update);
+            }
+
+            var lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
+            var fromItr = !String.IsNullOrEmpty(From) ? new WarewolfIterator(env.EvalStrict(From, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
+            var toItr = !String.IsNullOrEmpty(To) ? new WarewolfIterator(env.EvalStrict(To, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
+            var colItr = new WarewolfListIterator();
+            colItr.AddVariableToIterateOn(lengthItr);
+            colItr.AddVariableToIterateOn(fromItr);
+            colItr.AddVariableToIterateOn(toItr);
+
+            var dev2Random = new Dev2Random();
+            var counter = 1;
+            while (colItr.HasMoreData())
+            {
+                var lengthNum = -1;
+                var fromNum = -1.0;
+                var toNum = -1.0;
+
+                var fromValue = colItr.FetchNextValue(fromItr);
+                var toValue = colItr.FetchNextValue(toItr);
+                var lengthValue = colItr.FetchNextValue(lengthItr);
+
+                if (RandomType == enRandomType.Numbers)
+                {
+                    #region Getting the From
+
+                    fromNum = GetFromValue(fromValue, out errors);
+                    if (errors.HasErrors())
+                    {
+                        allErrors.MergeErrors(errors);
+                        continue;
+                    }
+
+                    #endregion
+
+                    #region Getting the To
+
+                    toNum = GetToValue(toValue, out errors);
+                    if (errors.HasErrors())
+                    {
+                        allErrors.MergeErrors(errors);
+                        continue;
+                    }
+
+                    #endregion
+                }
+                if (RandomType != enRandomType.Numbers && RandomType != enRandomType.Guid)
+                {
+                    #region Getting the Length
+
+                    lengthNum = GetLengthValue(lengthValue, out errors);
+                    if (errors.HasErrors())
+                    {
+                        allErrors.MergeErrors(errors);
+                        continue;
+                    }
+
+                    #endregion
+                }
+                var value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
+
+                var rule = new IsSingleValueRule(() => Result);
+                var single = rule.Check();
+                if (single != null)
+                {
+                    allErrors.AddError(single.Message);
+                }
+                else
+                {
+                    env.Assign(Result, value, update == 0 ? counter : update);
+                }
+                counter++;
+            }
+
+            return errors;
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)

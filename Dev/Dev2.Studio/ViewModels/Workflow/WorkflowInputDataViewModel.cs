@@ -347,36 +347,41 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
                 if (recordset != null)
                 {
-                    var recsetCols = new List<IScalar>();
-                    foreach (var column in recordset.Columns)
-                    {
-                        var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
-                        recsetCols.AddRange(cols);
-                    }
-
-                    var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
-                    IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
-                    var lastItem = dataListItems.Last();
-                    var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
-                    var indexString = lastItem.Index;
-                    var indexNum = Convert.ToInt32(indexString) + 1;
-                    var lastRow = dataListItems.Where(c => c.Index == indexString);
-                    var addRow = false;
-                    foreach (var item in lastRow)
-                    {
-                        if (item.Value != string.Empty)
-                        {
-                            addRow = true;
-                        }
-                    }
-                    if (addRow)
-                    {
-                        AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
-                    }
+                    AddRow(itemToAdd, recordset);
                 }
             }
         }
-        
+
+        void AddRow(IDataListItem itemToAdd, IRecordSet recordset)
+        {
+            var recsetCols = new List<IScalar>();
+            foreach (var column in recordset.Columns)
+            {
+                var cols = column.Value.Where(scalar => scalar.IODirection == enDev2ColumnArgumentDirection.Input || scalar.IODirection == enDev2ColumnArgumentDirection.Both);
+                recsetCols.AddRange(cols);
+            }
+
+            var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
+            IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
+            var lastItem = dataListItems.Last();
+            var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
+            var indexString = lastItem.Index;
+            var indexNum = Convert.ToInt32(indexString) + 1;
+            var lastRow = dataListItems.Where(c => c.Index == indexString);
+            var addRow = false;
+            foreach (var item in lastRow)
+            {
+                if (item.Value != string.Empty)
+                {
+                    addRow = true;
+                }
+            }
+            if (addRow)
+            {
+                AddBlankRowToRecordset(itemToAdd, recsetCols, indexToInsertAt, indexNum);
+            }
+        }
+
         public bool RemoveRow(IDataListItem itemToRemove, out int indexToSelect)
         {
             indexToSelect = 1;
@@ -388,44 +393,54 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 if (numberOfRows == 2)
                 {
-                    var firstRow = WorkflowInputs.Where(c => c.Index == @"1" && c.Recordset == itemToRemove.Recordset);
-                    var removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
-
-                    if (removeRow)
-                    {
-                        var listToChange = WorkflowInputs.Where(c => c.Index == @"2" && c.Recordset == itemToRemove.Recordset);
-
-                        foreach (IDataListItem item in listToChange)
-                        {
-                            item.Value = string.Empty;
-                        }
-                        foreach (IDataListItem item in listToRemove)
-                        {
-                            WorkflowInputs.Remove(item);
-                            indexToSelect = UpdateIndexToSelect(itemToRemove, item);
-                            itemsRemoved = true;
-                        }
-                    }
+                    RemoveRow(itemToRemove, ref indexToSelect, ref itemsRemoved, listToRemove);
                 }
                 else
                 {
-                    if (numberOfRows > 2)
-                    {
-                        var listToChange = WorkflowInputs.Where(c => c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
-                        foreach (IDataListItem item in listToChange)
-                        {
-                            item.Value = string.Empty;
-                        }
-                        foreach (IDataListItem item in listToRemove)
-                        {
-                            WorkflowInputs.Remove(item);
-                            indexToSelect = UpdateIndexToSelect(itemToRemove, item);
-                            itemsRemoved = true;
-                        }
-                    }
+                    RemoveRows(itemToRemove, ref indexToSelect, ref itemsRemoved, listToRemove, numberOfRows);
                 }
             }
             return itemsRemoved;
+        }
+
+        void RemoveRows(IDataListItem itemToRemove, ref int indexToSelect, ref bool itemsRemoved, List<IDataListItem> listToRemove, int numberOfRows)
+        {
+            if (numberOfRows > 2)
+            {
+                var listToChange = WorkflowInputs.Where(c => c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
+                foreach (IDataListItem item in listToChange)
+                {
+                    item.Value = string.Empty;
+                }
+                foreach (IDataListItem item in listToRemove)
+                {
+                    WorkflowInputs.Remove(item);
+                    indexToSelect = UpdateIndexToSelect(itemToRemove, item);
+                    itemsRemoved = true;
+                }
+            }
+        }
+
+        void RemoveRow(IDataListItem itemToRemove, ref int indexToSelect, ref bool itemsRemoved, List<IDataListItem> listToRemove)
+        {
+            var firstRow = WorkflowInputs.Where(c => c.Index == @"1" && c.Recordset == itemToRemove.Recordset);
+            var removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
+
+            if (removeRow)
+            {
+                var listToChange = WorkflowInputs.Where(c => c.Index == @"2" && c.Recordset == itemToRemove.Recordset);
+
+                foreach (IDataListItem item in listToChange)
+                {
+                    item.Value = string.Empty;
+                }
+                foreach (IDataListItem item in listToRemove)
+                {
+                    WorkflowInputs.Remove(item);
+                    indexToSelect = UpdateIndexToSelect(itemToRemove, item);
+                    itemsRemoved = true;
+                }
+            }
         }
 
         int UpdateIndexToSelect(IDataListItem itemToRemove, IDataListItem item)
@@ -473,20 +488,25 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             foreach (var o in objects)
             {
-                var json = string.Empty;
-                if (DataListSingleton.ActiveDataList != null)
-                {
-                    if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
-                    {
-                        var complexObjectItemModel = DataListSingleton.ActiveDataList.ComplexObjectCollection.SingleOrDefault(model => model.Name == o.DisplayValue);
+                AddObjectToObject(dataListObject, o);
+            }
+        }
 
-                        if (complexObjectItemModel != null)
-                        {
-                            json = complexObjectItemModel.GetJson();
-                        }
+        private void AddObjectToObject(JObject dataListObject, IDataListItem o)
+        {
+            var json = string.Empty;
+            if (DataListSingleton.ActiveDataList != null)
+            {
+                if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+                {
+                    var complexObjectItemModel = DataListSingleton.ActiveDataList.ComplexObjectCollection.SingleOrDefault(model => model.Name == o.DisplayValue);
+
+                    if (complexObjectItemModel != null)
+                    {
+                        json = complexObjectItemModel.GetJson();
                     }
-                    AddToDataListObject(dataListObject, o, json);
                 }
+                AddToDataListObject(dataListObject, o, json);
             }
         }
 
@@ -519,22 +539,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var dataListItems = groupedRecset.GroupBy(item => item.Index);
                 foreach (var dataListItem in dataListItems)
                 {
-                    var jObjForArray = new JObject();
-                    var empty = true;
-                    foreach (var listItem in dataListItem)
-                    {
-                        if (!string.IsNullOrEmpty(listItem.Value))
-                        {
-                            empty = false;
-                        }
-                        jObjForArray.Add(new JProperty(listItem.Field, listItem.Value ?? string.Empty));
-                    }
-                    if (!empty || includeBlank)
-                    {
-                        newArray.Add(jObjForArray);
-                    }
+                    AddRecordsetToObject(newArray, dataListItem, includeBlank);
                 }
                 dataListObject.Add(arrayName, newArray);
+            }
+        }
+
+        private static void AddRecordsetToObject(JArray newArray, IGrouping<string, IDataListItem> dataListItem, bool includeBlank = false)
+        {
+            var jObjForArray = new JObject();
+            var empty = true;
+            foreach (var listItem in dataListItem)
+            {
+                if (!string.IsNullOrEmpty(listItem.Value))
+                {
+                    empty = false;
+                }
+                jObjForArray.Add(new JProperty(listItem.Field, listItem.Value ?? string.Empty));
+            }
+            if (!empty || includeBlank)
+            {
+                newArray.Add(jObjForArray);
             }
         }
 

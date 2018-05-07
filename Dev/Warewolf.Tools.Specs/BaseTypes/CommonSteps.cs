@@ -25,7 +25,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -39,6 +38,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using System.Reflection;
+using Dev2.Activities.Designers2.AdvancedRecordset;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -66,6 +66,40 @@ namespace Dev2.Activities.Specs.BaseTypes
         public const string SourcePasswordHolder = "sourcePassword";
         public const string ValidationErrors = "validationErrors";
         public const string ValidationMessage = "validationMessage";
+
+
+        [When(@"the advancerecodset execution has ""(.*)"" error")]
+        public void WhenTheAdvancerecodsetExecutionHasError(string anError)
+        {
+
+            var expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
+            var result = _scenarioContext.Get<IDSFDataObject>("result");
+
+            var fetchErrors = result.Environment.FetchErrors();
+            var actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
+            var message = string.Format("expected {0} error but it {1}", anError.ToLower(),
+                                           actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
+
+            var allErrors = new List<string>();
+            allErrors.AddRange(result.Environment.Errors.ToList());
+            allErrors.AddRange(result.Environment.AllErrors.ToList());
+
+            if (expectedError)
+            {
+                var validateFromModelView = ValidateFromAdvancedRecordsetDesignerViewModel();
+                if (validateFromModelView != null)
+                {
+                    foreach (var errorInfo in validateFromModelView)
+                    {
+                        allErrors.Add(errorInfo.Message);
+                    }
+                }
+
+                var errorThrown = allErrors.Contains(fetchErrors);
+                Assert.IsTrue(allErrors.Count > 0, "Expected " + anError + " error but the environment did not contain any.");
+            }
+        } 
+
 
         [Then(@"the execution has ""(.*)"" error")]
         [When(@"the execution has ""(.*)"" error")]
@@ -99,6 +133,8 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
+        [Given(@"the debug inputs as")]
+        [When(@"the debug inputs as")]
         [Then(@"the debug inputs as")]
         public void ThenTheDebugInputsAs(Table table)
         {
@@ -120,6 +156,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 _scenarioContext.TryGetValue("activity", out object baseAct);
                 var stringAct = baseAct as DsfFlowNodeActivity<string>;
                 var boolAct = baseAct as DsfFlowNodeActivity<bool>;
+                var baseBoolAct = baseAct as DsfActivityAbstract<bool>;
                 var multipleFilesActivity = baseAct as DsfAbstractMultipleFilesActivity;
                 if (stringAct != null)
                 {
@@ -131,7 +168,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         ThenTheDebugInputsAs(table, inputDebugItems);
                     }
                 }
-                else if (boolAct != null)
+                else if (boolAct != null || baseBoolAct != null)
                 {
                     var dsfActivityAbstract = containsKey ? _scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
                     var result = _scenarioContext.Get<IDSFDataObject>("result");
@@ -154,7 +191,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
-        public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems, bool isDataMerge = false)
+        public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems)
         {
             var expectedDebugItems = BuildExpectedDebugItems(table);
             CollectionsAssert(expectedDebugItems, inputDebugItems);
@@ -172,7 +209,11 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
-        public void ThenTheDebugOutputAs(Table table, List<IDebugItemResult> outputDebugItems, bool isDataMerge = false)
+        public void ThenTheDebugOutputAs(Table table, List<IDebugItemResult> outputDebugItems)
+        {
+            ThenTheDebugOutputAs(table, outputDebugItems, false);
+        }
+        public void ThenTheDebugOutputAs(Table table, List<IDebugItemResult> outputDebugItems, bool isDataMerge)
         {
             var expectedDebugItems = BuildExpectedDebugItems(table);
 
@@ -425,26 +466,18 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 retryCount++;
                 //Call the service and get the result
-                var webClient = new WebClient
+                using (var webClient = new WebClient())
                 {
-                    UseDefaultCredentials = true,
-                    Credentials = CredentialCache.DefaultCredentials
+                    webClient.UseDefaultCredentials = true;
+                    webClient.Credentials = CredentialCache.DefaultCredentials;
+                    webCallResult = webClient.DownloadString(webservice);
                 };
-                webCallResult = webClient.DownloadString(webservice);
             }
             while (webCallResult.Contains("<FatalError>") && retryCount < 10);
             StringAssert.Contains(webCallResult, errorValue);
         }
-        static WebSource CreateTestWebSource()
-        {
-            return new WebSource
-            {
-                Password = "PasJun1",
-                UserName = "User1",
-                AuthenticationType = AuthenticationType.User,
-                //Address = Tests.TestUtils.ExampleURL
-            };
-        }
+
+
         [Then(@"the result variable ""(.*)"" will be ""(.*)""")]
         public void ThenTheResultVariableWillBe(string variable, string expectedValue)
         {
@@ -498,7 +531,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     if (string.IsNullOrEmpty(type))
                     {
-                        Assert.AreEqual(expectedValue, actualValue, (error==string.Empty?string.Empty:"There was an error getting the result from the datalist: " + error + "\n") + (result.Environment.AllErrors.FirstOrDefault()==null?string.Empty:"The execution environment contains at least one error: " + result.Environment.AllErrors.FirstOrDefault() + ""));
+                        Assert.AreEqual(expectedValue, actualValue, (error == string.Empty ? string.Empty : "There was an error getting the result from the datalist: " + error + "\n") + (result.Environment.AllErrors.FirstOrDefault() == null ? string.Empty : "The execution environment contains at least one error: " + result.Environment.AllErrors.FirstOrDefault() + ""));
                     }
                     else
                     {
@@ -800,7 +833,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         }
                         else
                         {
-                            debugItemResult.Value = rowValue;
+                            debugItemResult.Value = rowValue.Replace("\\r", "").Replace("\n", Environment.NewLine);
                             debugItemResult.Type = DebugItemResultType.Value;
                         }
                     }
@@ -917,7 +950,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             if (!string.IsNullOrEmpty(variable) && variable.Contains("@"))
             {
-                var actualCleanJson = actualValue.Replace("\\r\\n", "").Replace(Environment.NewLine, "").Replace(" ","");
+                var actualCleanJson = actualValue.Replace("\\r\\n", "").Replace(Environment.NewLine, "").Replace(" ", "");
                 var expetedCleanJson = expectedValue.Replace("\\r\\n", "").Replace(Environment.NewLine, "").Replace(" ", "");
                 StringAssert.Contains(actualCleanJson, expetedCleanJson);
             }
@@ -1000,6 +1033,18 @@ namespace Dev2.Activities.Specs.BaseTypes
             if (_scenarioContext.ContainsKey("viewModel"))
             {
                 var viewModel = _scenarioContext.Get<FileActivityDesignerViewModel>("viewModel");
+                var currentViewModel = viewModel;
+                currentViewModel.Validate();
+                return currentViewModel.Errors;
+            }
+            return null;
+        }
+
+        public List<IActionableErrorInfo> ValidateFromAdvancedRecordsetDesignerViewModel()
+        {
+            if (_scenarioContext.ContainsKey("viewModel"))
+            {
+                var viewModel = _scenarioContext.Get<AdvancedRecordsetDesignerViewModel>("viewModel");
                 var currentViewModel = viewModel;
                 currentViewModel.Validate();
                 return currentViewModel.Errors;

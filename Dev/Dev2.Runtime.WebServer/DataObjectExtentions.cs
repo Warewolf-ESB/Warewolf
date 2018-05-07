@@ -24,49 +24,16 @@ namespace Dev2.Runtime.WebServer
     {
         public static string SetEmitionType(this IDSFDataObject dataObject, WebRequestTO webRequest, string serviceName, NameValueCollection headers)
         {
-            int loc;
+            int extensionStartLocation;
             var originalServiceName = serviceName;
-            if (!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
+            if (!string.IsNullOrEmpty(serviceName) && (extensionStartLocation = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
             {
                 dataObject.ReturnType = EmitionTypes.XML;
 
-                if (loc > 0)
+                if (extensionStartLocation > 0)
                 {
-                    var typeOf = serviceName.Substring(loc + 1);
-                    if (Enum.TryParse(typeOf.ToUpper(), out EmitionTypes myType))
-                    {
-                        dataObject.ReturnType = myType;
-                    }
-
-                    serviceName = !typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase) ? serviceName.Substring(0, loc) : serviceName.Substring(0, serviceName.Substring(0, loc).LastIndexOf(".", StringComparison.Ordinal));
-                    if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase) || typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        dataObject.IsServiceTestExecution = true;
-                        var idx = originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
-                        if (idx > loc)
-                        {
-                            var testName = originalServiceName.Substring(idx + 1).ToUpper();
-                            dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
-                        }
-                        else
-                        {
-                            dataObject.TestName = "*";
-                        }
-                        if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            dataObject.ReturnType = EmitionTypes.TEST;
-                        }
-                        if (typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            dataObject.ReturnType = EmitionTypes.TRX;
-                        }
-                    }
-
-                    if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
-                    {
-                        dataObject.ReturnType = EmitionTypes.SWAGGER;
-                    }
-                    dataObject.ServiceName = serviceName;
+                    var extension = serviceName.Substring(extensionStartLocation + 1);
+                    serviceName = SetReturnTypeForExtension(dataObject, extensionStartLocation, originalServiceName, extension);
                 }
             }
             else
@@ -81,6 +48,44 @@ namespace Dev2.Runtime.WebServer
                 }
                 dataObject.SetContentType(headers);
             }
+            return serviceName;
+        }
+
+        private static string SetReturnTypeForExtension(IDSFDataObject dataObject, int loc, string originalServiceName, string typeOf)
+        {
+            if (Enum.TryParse(typeOf.ToUpper(), out EmitionTypes myType))
+            {
+                dataObject.ReturnType = myType;
+            }
+
+            var serviceName = !typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase) ? originalServiceName.Substring(0, loc) : originalServiceName.Substring(0, originalServiceName.Substring(0, loc).LastIndexOf(".", StringComparison.Ordinal));
+            if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase) || typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
+            {
+                dataObject.IsServiceTestExecution = true;
+                var idx = originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
+                if (idx > loc)
+                {
+                    var testName = originalServiceName.Substring(idx + 1).ToUpper();
+                    dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
+                }
+                else
+                {
+                    dataObject.TestName = "*";
+                }
+                if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    dataObject.ReturnType = EmitionTypes.TEST;
+                }
+                if (typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    dataObject.ReturnType = EmitionTypes.TRX;
+                }
+            }
+            if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
+            {
+                dataObject.ReturnType = EmitionTypes.SWAGGER;
+            }
+            dataObject.ServiceName = serviceName;
             return serviceName;
         }
 

@@ -27,7 +27,13 @@ namespace Dev2.Common.Interfaces.Services.Sql
 
         DataTable FetchDataTable(IDbCommand command);
 
-        List<string> FetchDatabases();
+		DataSet FetchDataSet(IDbCommand command);
+
+		int ExecuteNonQuery(IDbCommand command);
+
+		int ExecuteScalar(IDbCommand command);
+
+		List<string> FetchDatabases();
 
         void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor);

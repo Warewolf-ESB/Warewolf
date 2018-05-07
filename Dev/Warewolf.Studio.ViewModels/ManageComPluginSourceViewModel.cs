@@ -60,13 +60,11 @@ namespace Warewolf.Studio.ViewModels
             RefreshCommand = new DelegateCommand(() => PerformLoadAll());
 
             _warewolfserverName = updateManager.ServerName;
-            if (Application.Current != null)
+            if (Application.Current != null && Application.Current.Dispatcher != null)
             {
-                if (Application.Current.Dispatcher != null)
-                {
-                    DispatcherAction = Application.Current.Dispatcher.Invoke;
-                }
+                DispatcherAction = Application.Current.Dispatcher.Invoke;
             }
+
         }
 
         public IAsyncWorker AsyncWorker { get; set; }

@@ -105,7 +105,7 @@ namespace Warewolf.Studio.ViewModels
         {
             RaiseCanExecuteDependencies();
             var items = !DestinationConnectControlViewModel.IsConnected ? _source?.SourceLoadedItems?.ToList() : GetItemsToUpdateStats();
-            _stats.Calculate(items);
+            _stats.TryCalculate(items);
         }
 
         List<IExplorerTreeItem> GetItemsToUpdateStats()
@@ -167,7 +167,7 @@ namespace Warewolf.Studio.ViewModels
                 _destination.SelectedEnvironment = environmentViewModel;
             }
             ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
-            _stats.Calculate(Source?.SourceLoadedItems?.ToList());
+            _stats.TryCalculate(Source?.SourceLoadedItems?.ToList());
             OnPropertyChanged(() => CanDeploy);
         }
 
