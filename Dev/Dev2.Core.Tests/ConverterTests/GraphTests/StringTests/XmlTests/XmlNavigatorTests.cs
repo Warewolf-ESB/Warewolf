@@ -70,14 +70,6 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             xmlNavigator.SelectScalar(null);
         }
 
-
-
-        internal string GivenSingleNode()
-        {
-            var xmlNavigator = new XmlNavigator(testData);
-            xmlNavigator.SelectScalar(new JsonPath());
-        }
-
         [TestMethod]
         public void SelectScalarValueUsingPathSeperator_Expected_ScalarValue()
         {
