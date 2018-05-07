@@ -22,8 +22,6 @@ using Moq;
 namespace Dev2.Core.Tests.ConnectionHelpers
 {
     [TestClass]
-    
-    
     public class ConnectControlSingletonTests
     {
 
@@ -76,7 +74,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             //------------Execute Test---------------------------
@@ -96,7 +94,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -131,7 +129,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -159,7 +157,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -194,7 +192,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -229,7 +227,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -263,8 +261,8 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(true).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(true).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             var environmentRepository = new Mock<IServerRepository>();
             environmentRepository.Setup(e => e.All()).Returns(environmentModels);
@@ -291,14 +289,14 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var server2 = Guid.NewGuid();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, server1, CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, server2, CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, server1, CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, server2, CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             var environmentRepository = new Mock<IServerRepository>();
             var environments = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, server1, CreateConnection(false, new Uri("http://azureprivatecloud/machine1:3142")).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, server2, CreateConnection(false, new Uri("http://azureprivatecloud/machine2:3142")).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, server1, CommonSetupHelper.CreateConnection(false, new Uri("http://azureprivatecloud/machine1:3142")).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, server2, CommonSetupHelper.CreateConnection(false, new Uri("http://azureprivatecloud/machine2:3142")).Object, new Mock<IResourceRepository>().Object, false)
                 };
             environmentRepository.Setup(e => e.All()).Returns(environments);
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
@@ -336,14 +334,14 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var server2 = Guid.NewGuid();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, server1, CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, server2, CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, server1, CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, server2, CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             var environmentRepository = new Mock<IServerRepository>();
             var environments = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, server1, CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Anonymous).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, server2, CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, server1, CommonSetupHelper.CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Anonymous).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, server2, CommonSetupHelper.CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false)
                 };
             environmentRepository.Setup(e => e.All()).Returns(environments);
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
@@ -381,14 +379,14 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var server2 = Guid.NewGuid();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, server1, CreateConnection(false,new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, server2, CreateConnection(false,new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, server1, CommonSetupHelper.CreateConnection(false,new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, server2, CommonSetupHelper.CreateConnection(false,new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false)
                 };
             var environmentRepository = new Mock<IServerRepository>();
             var environments = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, server1, CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, server2, CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, server1, CommonSetupHelper.CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, server2, CommonSetupHelper.CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false)
                 };
             environmentRepository.Setup(e => e.All()).Returns(environments);
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
@@ -413,14 +411,14 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var server2 = Guid.NewGuid();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, server1, CreateConnection(true).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, server2, CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, server1, CommonSetupHelper.CreateConnection(true).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, server2, CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             var environmentRepository = new Mock<IServerRepository>();
             var environments = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, server1, CreateConnection(false, new Uri("http://azureprivatecloud/machine1:3142")).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, server2, CreateConnection(false, new Uri("http://azureprivatecloud/machine2:3142")).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, server1, CommonSetupHelper.CreateConnection(false, new Uri("http://azureprivatecloud/machine1:3142")).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, server2, CommonSetupHelper.CreateConnection(false, new Uri("http://azureprivatecloud/machine2:3142")).Object, new Mock<IResourceRepository>().Object, false)
                 };
             environmentRepository.Setup(e => e.All()).Returns(environments);
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
@@ -445,8 +443,8 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(true).Object, new Mock<IResourceRepository>().Object, false),
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(true).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -474,7 +472,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -509,7 +507,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -544,7 +542,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -576,7 +574,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var environmentRepository = new Mock<IServerRepository>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -607,7 +605,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentModels = new List<IServer>
                 {
-                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                    new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CommonSetupHelper.CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             var environmentRepository = new Mock<IServerRepository>();
@@ -626,29 +624,6 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedServerId, actualId);
             Assert.AreEqual(expectedConnectedState, actualConnectedState);
-        }
-        
-        static Mock<IEnvironmentConnection> CreateConnection(bool isConnected)
-        {
-            var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            conn.Setup(connection => connection.WebServerUri).Returns(new Uri("http://localhost:3142"));
-            conn.Setup(connection => connection.AppServerUri).Returns(new Uri("http://localhost:3142/dsf"));
-            conn.Setup(c => c.IsConnected).Returns(isConnected);
-            conn.Setup(connection => connection.DisplayName).Returns("localhost");
-            return conn;
-        }
-
-        static Mock<IEnvironmentConnection> CreateConnection(bool isConnected, Uri uri,AuthenticationType auth = AuthenticationType.Windows)
-        {
-            var conn = new Mock<IEnvironmentConnection>();
-            conn.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            conn.Setup(connection => connection.WebServerUri).Returns(uri);
-            conn.Setup(connection => connection.AppServerUri).Returns(uri);
-            conn.Setup(c => c.IsConnected).Returns(isConnected);
-            conn.Setup(connection => connection.DisplayName).Returns("localhost");
-            conn.Setup(a => a.AuthenticationType).Returns(auth);
-            return conn;
         }
     }
 }
