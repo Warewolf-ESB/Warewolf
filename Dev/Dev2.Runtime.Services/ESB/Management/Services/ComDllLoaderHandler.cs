@@ -9,7 +9,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class ComDllLoaderHandler: MarshalByRefObject
     {
-        public List<DllListing> GetListings(RegistryKey registry)
+        public static List<DllListing> TryGetListings(RegistryKey registry)
         {
             var dllListings = new List<DllListing>();
             var regClis = registry.OpenSubKey("CLSID");
@@ -19,43 +19,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                 foreach (var clsid in regClis.GetSubKeyNames())
                 {
                     var regClsidKey = regClis.OpenSubKey(clsid);
-                    if (regClsidKey != null)
+                    RegistryKey progID = null;
+                    Type typeFromProgID = null;
+                    GetTypeFromCLSID(clsid, regClsidKey, ref progID, ref typeFromProgID);
+                    if (typeFromProgID == null)
                     {
-                        var progID = regClsidKey.OpenSubKey("ProgID");
-                        var regPath = regClsidKey.OpenSubKey("InprocServer32" +
-                                                             "") ?? regClsidKey.OpenSubKey("LocalServer");
-
-                        if (regPath != null && progID != null)
+                        continue;
+                    }
+                    if (typeFromProgID != null)
+                    {
+                        var fullName = typeFromProgID.FullName;
+                        dllListings.Add(new DllListing
                         {
-                            var pid = progID.GetValue("");
-                            regPath.Close();
-
-                            try
-                            {
-                                if (pid != null)
-                                {
-                                    var typeFromProgID = Type.GetTypeFromCLSID(Guid.Parse(clsid));
-                                    if (typeFromProgID == null)
-                                    {
-                                        continue;
-                                    }
-                                    var fullName = typeFromProgID.FullName;
-                                    dllListings.Add(new DllListing
-                                    {
-                                        ClsId = clsid,
-                                        Is32Bit = fullName.Equals("System.__ComObject"),
-                                        Name = pid.ToString(),
-                                        IsDirectory = false,
-                                        FullName = pid.ToString(),
-                                        Children = new IFileListing[0]
-                                    });
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Dev2Logger.Error("GetComDllListingsService-Execute", e, GlobalConstants.WarewolfError);
-                            }
-                        }
+                            ClsId = clsid,
+                            Is32Bit = fullName.Equals("System.__ComObject"),
+                            Name = progID.GetValue("").ToString(),
+                            IsDirectory = false,
+                            FullName = progID.GetValue("").ToString(),
+                            Children = new IFileListing[0]
+                        });
                     }
                     regClsidKey?.Close();
                 }
@@ -65,6 +47,29 @@ namespace Dev2.Runtime.ESB.Management.Services
             dllListings = dllListings.OrderBy(listing => listing.FullName).ToList();
 
             return dllListings;
+        }
+
+        static void GetTypeFromCLSID(string clsid, RegistryKey regClsidKey, ref RegistryKey progID, ref Type typeFromProgID)
+        {
+            if (regClsidKey != null)
+            {
+                progID = regClsidKey.OpenSubKey("ProgID");
+                var regPath = regClsidKey.OpenSubKey("InprocServer32" +
+                                                     "") ?? regClsidKey.OpenSubKey("LocalServer");
+
+                if (regPath != null && progID != null && progID.GetValue("") != null)
+                {
+                    regPath.Close();
+                    try
+                    {
+                        typeFromProgID = Type.GetTypeFromCLSID(Guid.Parse(clsid));
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Error("GetComDllListingsService-Execute", e, GlobalConstants.WarewolfError);
+                    }
+                }
+            }
         }
     }
 }

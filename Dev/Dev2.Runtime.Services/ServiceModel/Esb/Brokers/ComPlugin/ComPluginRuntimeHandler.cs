@@ -117,7 +117,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                     return null;
                 }
                 var typeList = BuildTypeList(setupInfo.Parameters);
-                var valuedTypeList = BuildValuedTypeParams(setupInfo);
+                var valuedTypeList = TryBuildValuedTypeParams(setupInfo);
                 var type = GetType(setupInfo.ClsId, setupInfo.Is32Bit);
                 var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray()) ??
                                   type.GetMethod(setupInfo.Method);
@@ -148,7 +148,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             return null;
         }
 
-        static IEnumerable<object> BuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
+        static IEnumerable<object> TryBuildValuedTypeParams(ComPluginInvokeArgs setupInfo)
         {
             var valuedTypeList = new object[setupInfo.Parameters.Count];
 
@@ -157,40 +157,50 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 var methodParameter = setupInfo.Parameters[index];
                 try
                 {
-                    var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
-                    if (anonymousType != null)
-                    {
-                        valuedTypeList[index] = anonymousType;
-                    }
+                    BuildValuedTypeParams(ref valuedTypeList, index, methodParameter);
                 }
                 catch (Exception)
                 {
-                    var argType = Type.GetType(methodParameter.TypeName);
-                    try
-                    {
-                        if (argType != null)
-                        {
-                            var provider = TypeDescriptor.GetConverter(argType);
-                            var convertFrom = provider.ConvertFrom(methodParameter.Value);
-                            valuedTypeList[index] = convertFrom;
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        try
-                        {
-                            var typeConverter = TypeDescriptor.GetConverter(methodParameter.Value);
-                            var convertFrom = typeConverter.ConvertFrom(methodParameter.Value);
-                            valuedTypeList[index] = convertFrom;
-                        }
-                        catch (Exception k)
-                        {
-                            Dev2Logger.Error($"Failed to convert {argType?.FullName}", k, GlobalConstants.WarewolfError);
-                        }
-                    }
+                    TryBuildValuedTypeParamsAgain(ref valuedTypeList, index, methodParameter);
                 }
             }
             return valuedTypeList;
+        }
+
+        static void BuildValuedTypeParams(ref object[] valuedTypeList, int index, MethodParameter methodParameter)
+        {
+            var anonymousType = JsonConvert.DeserializeObject(methodParameter.Value, Type.GetType(methodParameter.TypeName));
+            if (anonymousType != null)
+            {
+                valuedTypeList[index] = anonymousType;
+            }
+        }
+
+        static void TryBuildValuedTypeParamsAgain(ref object[] valuedTypeList, int index, MethodParameter methodParameter)
+        {
+            var argType = Type.GetType(methodParameter.TypeName);
+            try
+            {
+                if (argType != null)
+                {
+                    var provider = TypeDescriptor.GetConverter(argType);
+                    var convertFrom = provider.ConvertFrom(methodParameter.Value);
+                    valuedTypeList[index] = convertFrom;
+                }
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    var typeConverter = TypeDescriptor.GetConverter(methodParameter.Value);
+                    var convertFrom = typeConverter.ConvertFrom(methodParameter.Value);
+                    valuedTypeList[index] = convertFrom;
+                }
+                catch (Exception k)
+                {
+                    Dev2Logger.Error($"Failed to convert {argType?.FullName}", k, GlobalConstants.WarewolfError);
+                }
+            }
         }
 
         /// <summary>
@@ -257,6 +267,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
             return string.IsNullOrEmpty(classId) ? null : type;
         }
+
         public ServiceMethodList ListMethods(string classId, bool is32Bit)
         {
             var serviceMethodList = new List<ServiceMethod>();
@@ -264,34 +275,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             classId = classId.Replace("{", "").Replace("}", "");
             if (is32Bit)
             {
-                
-
-                    var execute = IpcClient.GetIPCExecutor(_clientStreamWrapper).Invoke(classId.ToGuid(), "", Execute.GetMethods, new ParameterInfoTO[] { });
+                var execute = IpcClient.GetIPCExecutor(_clientStreamWrapper).Invoke(classId.ToGuid(), "", Execute.GetMethods, new ParameterInfoTO[] { });
                 if (execute is List<MethodInfoTO> ipcMethods)
                 {
-
-                    foreach (MethodInfoTO ipcMethod in ipcMethods)
-                    {
-                        var parameterInfos = ipcMethod.Parameters;
-                        var serviceMethod = new ServiceMethod { Name = ipcMethod.Name };
-                        foreach (var parameterInfo in parameterInfos)
-                        {
-                            serviceMethod.Parameters.Add(new MethodParameter
-                            {
-                                DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
-                                EmptyToNull = false,
-                                IsRequired = true,
-                                Name = parameterInfo.Name,
-                                TypeName = parameterInfo.TypeName
-                            });
-
-                        }
-                        serviceMethodList.Add(serviceMethod);
-                    }
-
-
-
-                    orderMethodsList.AddRange(serviceMethodList.OrderBy(method => method.Name));
+                    ServiceMethodList(ref serviceMethodList, orderMethodsList, ipcMethods);
                     return orderMethodsList;
                 }
             }
@@ -319,6 +306,30 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
                 orderMethodsList.Add(serviceMethod);
             });
             return orderMethodsList;
+        }
+
+        static void ServiceMethodList(ref List<ServiceMethod> serviceMethodList, ServiceMethodList orderMethodsList, List<MethodInfoTO> ipcMethods)
+        {
+            foreach (MethodInfoTO ipcMethod in ipcMethods)
+            {
+                var parameterInfos = ipcMethod.Parameters;
+                var serviceMethod = new ServiceMethod { Name = ipcMethod.Name };
+                foreach (var parameterInfo in parameterInfos)
+                {
+                    serviceMethod.Parameters.Add(new MethodParameter
+                    {
+                        DefaultValue = parameterInfo.DefaultValue?.ToString() ?? string.Empty,
+                        EmptyToNull = false,
+                        IsRequired = true,
+                        Name = parameterInfo.Name,
+                        TypeName = parameterInfo.TypeName
+                    });
+
+                }
+                serviceMethodList.Add(serviceMethod);
+            }
+
+            orderMethodsList.AddRange(serviceMethodList.OrderBy(method => method.Name));
         }
 
         /// <summary>

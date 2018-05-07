@@ -124,13 +124,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             get => _selectedAction;
             set
             {
-                if (!Equals(value, _selectedAction) && _selectedAction != null)
+                if (!Equals(value, _selectedAction) && _selectedAction != null && !String.IsNullOrEmpty(_selectedAction.Method))
                 {
-                    if (!String.IsNullOrEmpty(_selectedAction.Method))
-                    {
-                        StorePreviousValues(_selectedAction.GetHashCodeBySource());
-                    }
+                    StorePreviousValues(_selectedAction.GetHashCodeBySource());
                 }
+
                 var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
                 if (outputs is OutputsRegion region)
                 {

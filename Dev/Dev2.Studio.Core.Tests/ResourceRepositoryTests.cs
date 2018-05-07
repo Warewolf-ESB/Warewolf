@@ -769,8 +769,6 @@ namespace BusinessDesignStudio.Unit.Tests
                 Inputs = new List<IServiceTestInput> { new ServiceTestInput("var", "val") },
                 Outputs = new List<IServiceTestOutput> { new ServiceTestOutput("var", "val", "", "") },
                 ResourceId = Guid.NewGuid()
-
-
             };
             var retVal = new StringBuilder();
             var mockEnvironmentModel = new Mock<IServer>();

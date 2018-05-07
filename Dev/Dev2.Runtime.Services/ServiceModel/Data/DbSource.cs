@@ -60,8 +60,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                     break;
                 case "postgresql":
                     ServerType = enSourceType.PostgreSQL;
-                    
-                    break;
+					break;
+				case "sqlite":
+					ServerType = enSourceType.SQLiteDatabase;
+					break;
                 default:
                     ResourceType = "DbSource";
                     ServerType = enSourceType.Unknown;
@@ -123,13 +125,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                 {
                     case enSourceType.SqlDatabase:
                         var isNamedInstance = Server != null && Server.Contains('\\');
-                        if (isNamedInstance)
+                        if (isNamedInstance && Port == 1433)
                         {
-                            if (Port == 1433)
-                            {
-                                Port = 0;
-                            }
+                            Port = 0;
                         }
+
                         return string.Format("Data Source={0}{2};Initial Catalog={1};{3}", Server, DatabaseName,
                             Port > 0 ? "," + Port : string.Empty,
                             AuthenticationType == AuthenticationType.Windows
@@ -149,8 +149,10 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     case enSourceType.ODBC:
                         return string.Format("DSN={0};", DatabaseName);
+					case enSourceType.SQLiteDatabase:
+						return ":memory:";
 
-                    case enSourceType.PostgreSQL:
+					case enSourceType.PostgreSQL:
 
                         if (string.IsNullOrEmpty(DatabaseName))
                         {
@@ -212,14 +214,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                         case "data source":
                             var arr = prm[1].Split(','); // may include port number after comma
                             Server = arr[0];
-                            if (arr.Length > 1)
+                            if (arr.Length > 1 && Int32.TryParse(arr[1], out port))
                             {
-                                if (Int32.TryParse(arr[1], out port))
-                                {
-                                    Port = port;
-                                }
-
+                                Port = port;
                             }
+
                             break;
                         case "port":
                             if (Int32.TryParse(prm[1], out port))

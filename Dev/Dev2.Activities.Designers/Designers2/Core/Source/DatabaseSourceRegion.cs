@@ -58,7 +58,8 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SelectedSource = Sources.FirstOrDefault(source => source.Id == SourceId);
             }
         }
-        public string NewSourceHelpText
+		
+		public string NewSourceHelpText
         {
             get
             {

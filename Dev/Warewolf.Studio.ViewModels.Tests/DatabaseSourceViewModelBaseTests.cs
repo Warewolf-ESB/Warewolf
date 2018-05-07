@@ -96,8 +96,22 @@ namespace Warewolf.Studio.ViewModels.Tests
            _updateRepositoryMock.Verify(it=>it.TestDbConnection(dbResourceMock.Object));
             Assert.AreSame(expectedValue, value);
         }
+		[TestMethod]
+		public void TestSqliteConnection()
+		{
+			//arrange
+			var dbResourceMock = new Mock<ISqliteDBSource>();
+			var expectedValue = new List<string>();
+			_updateRepositoryMock.Setup(it => it.TestSqliteConnection(dbResourceMock.Object)).Returns(expectedValue);
 
-        [TestMethod]
+			//act
+			var value = _target.TestSqliteConnection(dbResourceMock.Object);
+
+			//assert
+			_updateRepositoryMock.Verify(it => it.TestSqliteConnection(dbResourceMock.Object));
+			Assert.AreSame(expectedValue, value);
+		}
+		[TestMethod]
         public void TestSave()
         {
             //arrange
