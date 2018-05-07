@@ -76,13 +76,11 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 foreach (IIntellisenseResult currentResult in oldResults)
                 {
-                    if (currentResult.ErrorCode != enIntellisenseErrorCode.None)
+                    if (currentResult.ErrorCode != enIntellisenseErrorCode.None && currentResult.Type == enIntellisenseResultType.Error && currentResult.IsClosedRegion)
                     {
-                        if (currentResult.Type == enIntellisenseResultType.Error && currentResult.IsClosedRegion)
-                        {
-                            results.Add(new IntellisenseProviderResult(this, currentResult.Option.DisplayValue, currentResult.Message, currentResult.Message, true));
-                        }
+                        results.Add(new IntellisenseProviderResult(this, currentResult.Option.DisplayValue, currentResult.Message, currentResult.Message, true));
                     }
+
 
                     if (currentResult.Type == enIntellisenseResultType.Selectable)
                     {

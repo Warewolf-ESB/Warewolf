@@ -21,5 +21,19 @@ namespace Dev2.Activities.Designers2.Core
             }
 
         }
-    }
+		internal static void SetGenerateOutputsVisible( IGenerateOutputArea outputArea, Action<bool> action, bool value)
+		{
+			if (value)
+			{
+				outputArea.IsEnabled = false;
+				action?.Invoke(false);
+			}
+			else
+			{
+				outputArea.IsEnabled = false;
+				action?.Invoke(true);
+			}
+
+		}
+	}
 }

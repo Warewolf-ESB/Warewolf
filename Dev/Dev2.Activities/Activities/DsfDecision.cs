@@ -343,9 +343,12 @@ namespace Dev2.Activities
             {
                 resultString = dds.TrueArmText;
             }
-            else if (theResult == "False")
+            else
             {
-                resultString = dds.FalseArmText;
+                if (theResult == "False")
+                {
+                    resultString = dds.FalseArmText;
+                }
             }
             return resultString;
         }

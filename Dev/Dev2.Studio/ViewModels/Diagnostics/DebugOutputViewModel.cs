@@ -137,13 +137,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             var canAddNewTest = RootItems != null && RootItems.Count > 0;
 
-            if (canAddNewTest && !IsTestView)
+            if (canAddNewTest && !IsTestView && _contextualResourceModel != null)
             {
-                if (_contextualResourceModel != null)
-                {
-                    canAddNewTest = !_contextualResourceModel.IsNewWorkflow && _contextualResourceModel.IsWorkflowSaved;
-                }
+                canAddNewTest = !_contextualResourceModel.IsNewWorkflow && _contextualResourceModel.IsWorkflowSaved;
             }
+
             AddNewTestTooltip = canAddNewTest ? Warewolf.Studio.Resources.Languages.Tooltips.DebugOutputViewAddNewTestToolTip : Warewolf.Studio.Resources.Languages.Tooltips.DebugOutputViewAddNewTestUnsavedToolTip;
 
             return canAddNewTest;
@@ -605,27 +603,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     var remoteEnvironmentModel = _serverRepository.FindSingle(model => model.EnvironmentID == environmentId);
                     if (remoteEnvironmentModel != null)
                     {
-                        if (content.Server == "localhost")
-                        {
-                            content.Server = remoteEnvironmentModel.Name;
-                        }
-
-                        if (!remoteEnvironmentModel.IsConnected)
-                        {
-                            remoteEnvironmentModel.Connect();
-                        }
-                        var parentID = content.ParentID.GetValueOrDefault();
-                        if (parentID != Guid.Empty)
-                        {
-                            if (remoteEnvironmentModel.AuthorizationService != null)
-                            {
-                                var remoteResourcePermissions = remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID);
-                                if (!remoteResourcePermissions.HasFlag(Permissions.View))
-                                {
-                                    return;
-                                }
-                            }
-                        }
+                        ConnectRemoteServer(content, remoteEnvironmentModel);
+                    }
+                    if (remoteEnvironmentModel != null && content.ParentID.GetValueOrDefault() != Guid.Empty && remoteEnvironmentModel.AuthorizationService != null && !remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID).HasFlag(Permissions.View))
+                    {
+                        return;
                     }
                 }
                 var debugState = _contentItems.FirstOrDefault(state => state.DisconnectedID == content.DisconnectedID);
@@ -659,6 +641,18 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 {
                     AddItemToTreeImpl(content);
                 }
+            }
+        }
+
+        private static void ConnectRemoteServer(IDebugState content, IServer remoteEnvironmentModel)
+        {
+            if (content.Server == "localhost")
+            {
+                content.Server = remoteEnvironmentModel.Name;
+            }
+            if (!remoteEnvironmentModel.IsConnected)
+            {
+                remoteEnvironmentModel.Connect();
             }
         }
 
@@ -748,20 +742,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 foreach (var listItem in childState.AssertResultList)
                 {
-                    var lineItem = listItem as DebugLine;
-                    if (lineItem?.LineItems != null)
-                    {
-                        foreach (var lineItemLineItem in lineItem.LineItems)
-                        {
-                            if (lineItemLineItem is DebugLineItem line && line.TestStepHasError)
-                            {
-                                theParent.AppendError(line.Value);
-                            }
-                        }
-                    }
+                    AddErrorToAssertResultListParent(theParent, listItem);
                 }
             }
             return false;
+        }
+
+        static void AddErrorToAssertResultListParent(DebugStateTreeViewItemViewModel theParent, object listItem)
+        {
+            var lineItem = listItem as DebugLine;
+            if (lineItem?.LineItems != null)
+            {
+                foreach (var lineItemLineItem in lineItem.LineItems)
+                {
+                    if (lineItemLineItem is DebugLineItem line && line.TestStepHasError)
+                    {
+                        theParent.AppendError(line.Value);
+                    }
+                }
+            }
         }
 
         IDebugTreeViewItemViewModel CreateParentTreeViewItem(IDebugState content, IDebugTreeViewItemViewModel child)

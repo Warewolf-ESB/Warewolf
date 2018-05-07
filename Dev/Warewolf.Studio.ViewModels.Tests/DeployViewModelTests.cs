@@ -202,7 +202,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(deployDestinationViewModel.SelectedEnvironment.AsList().Count > 0);
             //------------Execute Test---------------------------
             Assert.IsNotNull(stat);
-            stat.Calculate(items);
+            stat.TryCalculate(items);
             //------------Assert Results-------------------------
             Assert.IsFalse(items.First().CanDeploy);
         }
@@ -265,7 +265,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(deployDestinationViewModel.SelectedEnvironment.AsList().Count > 0);
             //------------Execute Test---------------------------
             Assert.IsNotNull(stat);
-            stat.Calculate(sourceExplorerItem);
+            stat.TryCalculate(sourceExplorerItem);
             //------------Assert Results-------------------------
             Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
             Assert.AreEqual(stat.NewResources, 1);
@@ -316,7 +316,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(deployDestinationViewModel.SelectedEnvironment.AsList().Count > 0);
             //------------Execute Test---------------------------
             Assert.IsNotNull(stat);
-            stat.Calculate(sourceExplorerItem);
+            stat.TryCalculate(sourceExplorerItem);
             //------------Assert Results-------------------------
             Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
         }

@@ -112,15 +112,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<string> GetOutputs() => new List<string> { Result };
 
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
-        
+        protected override void CacheMetadata(NativeActivityMetadata metadata) => base.CacheMetadata(metadata);
 
-        /// <summary>
-        /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
-        /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -137,80 +130,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                var outerIteratorCollection = new WarewolfListIterator();
-                var innerIteratorCollection = new WarewolfListIterator();
-
-                allErrors.MergeErrors(errors);
-
-                #region Iterate and Find Index
-
-                if(dataObject.IsDebugMode())
-                {
-                    AddDebugInputItem(new DebugEvalResult(InField, "In Field", dataObject.Environment, update));
-                    AddDebugInputItem(new DebugItemStaticDataParams(Index, "Index"));
-                    AddDebugInputItem(new DebugEvalResult(Characters, "Characters", dataObject.Environment, update));
-                    AddDebugInputItem(new DebugItemStaticDataParams(Direction, "Direction"));
-                }
-
-                var itrChar = new WarewolfIterator(dataObject.Environment.Eval(Characters, update));
-                outerIteratorCollection.AddVariableToIterateOn(itrChar);
-
-                var completeResultList = new List<string>();
-                if (String.IsNullOrEmpty(InField))
-                {
-                    allErrors.AddError(string.Format(ErrorResource.IsBlank, "'In Field'"));
-                }
-                else if (String.IsNullOrEmpty(Characters))
-                {
-                    allErrors.AddError(string.Format(ErrorResource.IsBlank, "'Characters'"));
-                }
-                else
-                {
-
-
-                    while (outerIteratorCollection.HasMoreData())
-                    {
-                        allErrors.MergeErrors(errors);
-                        errors.ClearErrors();
-                        var itrInField = new WarewolfIterator(dataObject.Environment.Eval(InField, update));
-                        innerIteratorCollection.AddVariableToIterateOn(itrInField);
-
-                        var chars = outerIteratorCollection.FetchNextValue(itrChar);
-                        while (innerIteratorCollection.HasMoreData())
-                        {
-                            if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
-                            {
-                                var val = innerIteratorCollection.FetchNextValue(itrInField);
-                                if (val != null)
-                                {
-                                    var returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
-                                    completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
-                                    var rule = new IsSingleValueRule(() => Result);
-                                    var single = rule.Check();
-                                    if (single != null)
-                                    {
-                                        allErrors.AddError(single.Message);
-                                    }
-                                    else
-                                    {
-                                        dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
-                                        allErrors.MergeErrors(errors);
-                                    }
-                                }
-                            }
-                            completeResultList = new List<string>();
-                        }
-                    }
-                    if (!allErrors.HasErrors() && dataObject.IsDebugMode())
-                    {
-                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                    }
-
-                }
-
-                #endregion
+                TryExecute(dataObject, update, indexFinder, allErrors, errors);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFFindActivity", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
@@ -237,6 +159,85 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        void TryExecute(IDSFDataObject dataObject, int update, IDev2IndexFinder indexFinder, ErrorResultTO allErrors, ErrorResultTO errors)
+        {
+            var outerIteratorCollection = new WarewolfListIterator();
+            var innerIteratorCollection = new WarewolfListIterator();
+
+            allErrors.MergeErrors(errors);
+
+            #region Iterate and Find Index
+
+            if (dataObject.IsDebugMode())
+            {
+                AddDebugInputItem(new DebugEvalResult(InField, "In Field", dataObject.Environment, update));
+                AddDebugInputItem(new DebugItemStaticDataParams(Index, "Index"));
+                AddDebugInputItem(new DebugEvalResult(Characters, "Characters", dataObject.Environment, update));
+                AddDebugInputItem(new DebugItemStaticDataParams(Direction, "Direction"));
+            }
+
+            var itrChar = new WarewolfIterator(dataObject.Environment.Eval(Characters, update));
+            outerIteratorCollection.AddVariableToIterateOn(itrChar);
+
+            var completeResultList = new List<string>();
+            if (String.IsNullOrEmpty(InField))
+            {
+                allErrors.AddError(string.Format(ErrorResource.IsBlank, "'In Field'"));
+            }
+            else if (String.IsNullOrEmpty(Characters))
+            {
+                allErrors.AddError(string.Format(ErrorResource.IsBlank, "'Characters'"));
+            }
+            else
+            {
+                while (outerIteratorCollection.HasMoreData())
+                {
+                    allErrors.MergeErrors(errors);
+                    errors.ClearErrors();
+                    var itrInField = new WarewolfIterator(dataObject.Environment.Eval(InField, update));
+                    innerIteratorCollection.AddVariableToIterateOn(itrInField);
+
+                    var chars = outerIteratorCollection.FetchNextValue(itrChar);
+                    while (innerIteratorCollection.HasMoreData())
+                    {
+                        CheckForErrors(dataObject, update, indexFinder, allErrors, errors, innerIteratorCollection, completeResultList, itrInField, chars);
+                        completeResultList = new List<string>();
+                    }
+                }
+                if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                {
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                }
+
+            }
+
+            #endregion
+        }
+
+        private void CheckForErrors(IDSFDataObject dataObject, int update, IDev2IndexFinder indexFinder, ErrorResultTO allErrors, ErrorResultTO errors, WarewolfListIterator innerIteratorCollection, List<string> completeResultList, WarewolfIterator itrInField, string chars)
+        {
+            if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
+            {
+                var val = innerIteratorCollection.FetchNextValue(itrInField);
+                if (val != null)
+                {
+                    var returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
+                    completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
+                    var rule = new IsSingleValueRule(() => Result);
+                    var single = rule.Check();
+                    if (single != null)
+                    {
+                        allErrors.AddError(single.Message);
+                    }
+                    else
+                    {
+                        dataObject.Environment.Assign(Result, string.Join(",", completeResultList), update);
+                        allErrors.MergeErrors(errors);
+                    }
                 }
             }
         }
