@@ -471,10 +471,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         bool _waitingforDialog;
         bool _workspaceSaved;
 
-        public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
-        {
-            SaveDialogHelper.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
-        }
+        public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager) => SaveDialogHelper.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
 
         public bool Save() => Save(false, false);
         public bool Save(bool isLocalSave, bool isStudioShutdown)
