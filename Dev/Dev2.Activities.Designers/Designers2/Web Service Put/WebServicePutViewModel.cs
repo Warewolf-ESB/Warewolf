@@ -326,13 +326,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
                 InputArea = new WebPutInputRegion(ModelItem, SourceRegion);
                 InputArea.PropertyChanged += (sender, args) =>
                  {
-                     if (args.PropertyName == "PutData")
+                     if (args.PropertyName == "PutData" && InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
                      {
-                         if (InputArea.Headers.All(value => string.IsNullOrEmpty(value.Name)))
-                         {
-                             ((ManageWebServiceInputViewModel)ManageServiceInputViewModel).BuidHeaders(InputArea.PutData);
-                         }
+                         ((ManageWebServiceInputViewModel)ManageServiceInputViewModel).BuidHeaders(InputArea.PutData);
                      }
+
                  };
                 regions.Add(InputArea);
                 OutputsRegion = new OutputsRegion(ModelItem, true);

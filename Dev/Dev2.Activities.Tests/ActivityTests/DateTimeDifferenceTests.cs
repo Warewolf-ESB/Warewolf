@@ -12,26 +12,15 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Globalization;
-using Dev2.Interfaces;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Common;
 
 namespace ActivityUnitTests.ActivityTests
-
 {
-    /// <summary>
-    /// Summary description for DateTimeDifferenceTests
-    /// </summary>
     [TestClass]
-
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
 
         #region Positive Test Cases

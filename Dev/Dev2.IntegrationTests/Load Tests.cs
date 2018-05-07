@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Tests.Runtime.Util;
-using System.Diagnostics;                
+using System.Diagnostics;
 using System.Threading;
 using Dev2.Core.Tests;
 using Dev2.Studio.Core.Factories;

@@ -26,13 +26,11 @@ namespace Dev2.Providers.Validation.Rules
         {
             var isValid = false;
             var value = GetValue();
-            if (int.TryParse(value, out int x))
+            if (int.TryParse(value, out int x) && x >= 0)
             {
-                if(x >= 0)
-                {
-                    isValid = true;
-                }
+                isValid = true;
             }
+
             return isValid ? null : CreatError();
         }
     }

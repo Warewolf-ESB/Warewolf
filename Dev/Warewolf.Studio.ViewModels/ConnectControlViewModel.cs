@@ -245,7 +245,7 @@ namespace Warewolf.Studio.ViewModels
                 IsConnecting = true;
                 IsConnected = false;
                 IsLoading = true;
-                isConnected = await ConnectAsync(_selectedConnection).ConfigureAwait(true);
+                isConnected = await TryConnectAsync(_selectedConnection).ConfigureAwait(true);
                 IsConnected = _selectedConnection.IsConnected;
                 IsConnecting = false;
                 SetActiveEnvironment();
@@ -263,14 +263,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Version.TryParse(_selectedConnection.GetServerVersion(), out Version sourceVersionNumber);
                     Version.TryParse(Resources.Languages.Core.CompareCurrentServerVersion, out Version destVersionNumber);
-                    if (sourceVersionNumber != null && destVersionNumber != null)
+                    if (sourceVersionNumber != null && destVersionNumber != null && sourceVersionNumber < destVersionNumber)
                     {
-                        if (sourceVersionNumber < destVersionNumber)
-                        {
-                            PopupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(),
-                                destVersionNumber.ToString());
-                        }
+                        PopupController.ShowConnectServerVersionConflict(sourceVersionNumber.ToString(),
+                            destVersionNumber.ToString());
                     }
+
                 }
             }
             catch
@@ -365,41 +363,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async Task<bool> ConnectAsync(IServer connection)
+        public async Task<bool> TryConnectAsync(IServer connection)
         {
             if (connection != null)
             {
                 try
                 {
-                    var connected = await connection.ConnectAsync().ConfigureAwait(true);
-                    if (connected && connection.IsConnected)
-                    {
-                        if (ShouldUpdateActiveEnvironment)
-                        {
-                            SetActiveServer(connection);
-                        }
-                    }
-                    else
-                    {
-                        var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            await ConnectAsync(connection).ConfigureAwait(true);
-                        }
-                        else
-                        {
-                            ServerDisconnected?.Invoke(this, connection);
-                        }
-                    }
-                    OnPropertyChanged(() => connection.IsConnected);
-                    if (ServerConnected != null && connected && connection.IsConnected)
-                    {
-                        ServerConnected?.Invoke(this, connection);
-                        if (ShouldUpdateActiveEnvironment)
-                        {
-                            SetActiveServer(connection);
-                        }
-                    }
+                    await ConnectAsync(connection).ConfigureAwait(true);
                 }
                 catch (Exception)
                 {
@@ -408,6 +378,39 @@ namespace Warewolf.Studio.ViewModels
                 return true;
             }
             return false;
+        }
+
+        async Task ConnectAsync(IServer connection)
+        {
+            var connected = await connection.ConnectAsync().ConfigureAwait(true);
+            if (connected && connection.IsConnected)
+            {
+                if (ShouldUpdateActiveEnvironment)
+                {
+                    SetActiveServer(connection);
+                }
+            }
+            else
+            {
+                var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
+                if (result == MessageBoxResult.Yes)
+                {
+                    await TryConnectAsync(connection).ConfigureAwait(true);
+                }
+                else
+                {
+                    ServerDisconnected?.Invoke(this, connection);
+                }
+            }
+            OnPropertyChanged(() => connection.IsConnected);
+            if (ServerConnected != null && connected && connection.IsConnected)
+            {
+                ServerConnected?.Invoke(this, connection);
+                if (ShouldUpdateActiveEnvironment)
+                {
+                    SetActiveServer(connection);
+                }
+            }
         }
 
         static void SetActiveServer(IServer connection)

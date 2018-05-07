@@ -70,61 +70,31 @@
                                    LastChildFill="False" 
                                    AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
                                    DataContext="{Binding ModelFactoryCurrent}">
-                            <Grid Width="{Binding ElementName=CurrentDockPanel, Path=ActualWidth}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel x:Name="CurrentWorkflowHeaderSp" 
-                                            Grid.Row="0"
-                                            Grid.Column="0"
-                                            Background="{StaticResource WareWolfMenuBrush}" 
-                                            HorizontalAlignment="Stretch" 
-                                            Orientation="Horizontal"
-                                            DockPanel.Dock="Left" 
-                                            Margin="4,0,0,0"
-                                            AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderSP_AutoID">
-                                    <Image Width="18" Height="18" Source="{StaticResource System-Logo}" />
-                                    <TextBlock x:Name="CurrentWorkflowHeaderText" 
-                                               Text="{Binding ServerName}" 
-                                               Margin="0,1,0,0"
-                                               Style="{StaticResource SourceHeader}" 
-                                               AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
-                                </StackPanel>
-                                <TextBlock x:Name="CurrentHeaderVersionText" 
-                                           Grid.Row="0"
-                                           Grid.Column="1"
-                                           HorizontalAlignment="Right"
-                                           Text="{Binding HeaderVersion}" 
+                            <StackPanel x:Name="CurrentWorkflowHeaderSp" 
+                                        Background="{StaticResource WareWolfMenuBrush}" 
+                                        HorizontalAlignment="Stretch" 
+                                        Orientation="Horizontal"
+                                        DockPanel.Dock="Left" 
+                                        AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderSP_AutoID">
+                                <TextBlock x:Name="CurrentWorkflowHeaderText" 
+                                           Margin="5" 
+                                           Text="{Binding ServerName}" 
                                            Style="{StaticResource SourceHeader}" 
-                                           AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderVersionText_AutoID"/>
-                                
-                                <StackPanel x:Name="CurrentHeaderSp" 
-                                            Background="{StaticResource WareWolfMenuBrush}" 
-                                            Grid.Row="1"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="2"
-                                            HorizontalAlignment="Stretch" 
-                                            Orientation="Horizontal"
-                                            DockPanel.Dock="Right" 
-                                            Margin="0,-4,0,0"
-                                            AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderSP_AutoID">
-                                    <Image Width="18" Height="18" Margin="4,0,0,0" Source="{StaticResource Resources-Service-MergeIcon}" />
-                                    <TextBlock x:Name="CurrentHeaderText" 
-                                               HorizontalAlignment="Right"
-                                               Text="{Binding Header}" 
-                                               TextWrapping="Wrap"
-                                               ToolTip="{Binding Header}"
-                                               Style="{StaticResource SourceHeader}" 
-                                               MaxWidth="{Binding ElementName=CurrentWorkflowHeaderBorder, Path=ActualWidth}"
-                                               AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
-                                    
-                                </StackPanel>
-                            </Grid>
+                                           AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
+                            </StackPanel>
+                            <StackPanel x:Name="CurrentHeaderSp" 
+                                        Background="{StaticResource WareWolfMenuBrush}" 
+                                        HorizontalAlignment="Stretch" 
+                                        Orientation="Horizontal"
+                                        DockPanel.Dock="Right" 
+                                        AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderSP_AutoID">
+                                <TextBlock x:Name="CurrentHeaderText" 
+                                           Margin="5"
+                                           HorizontalAlignment="Right"
+                                           Text="{Binding Header}" 
+                                           Style="{StaticResource SourceHeader}" 
+                                           AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
+                            </StackPanel>
                         </DockPanel>
                     </Border>
                     <Border x:Name="DifferenceWorkflowHeaderBorder" 
@@ -138,59 +108,31 @@
                                    LastChildFill="False" 
                                    AutomationProperties.AutomationId="UI_CurrentWorkflowDockPanel_AutoID"
                                    DataContext="{Binding ModelFactoryDifferent}">
-                            <Grid Width="{Binding ElementName=DifferenceDockPanel, Path=ActualWidth}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <StackPanel x:Name="DifferenceWorkflowHeaderSp" 
-                                            Background="{StaticResource WareWolfMenuBrush}" 
-                                            DockPanel.Dock="Left" 
-                                            HorizontalAlignment="Stretch" 
-                                            Orientation="Horizontal"
-                                            Margin="4,0,0,0"
-                                            AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderSP_AutoID">
-                                    <Image Width="18" Height="18" Source="{StaticResource System-Logo}" />
-                                    <TextBlock x:Name="DifferenceWorkflowHeaderText" 
-                                               Text="{Binding ServerName}" 
-                                               Margin="0,1,0,0"
-                                               Style="{StaticResource SourceHeader}" 
-                                               AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderText_AutoID"/>
-                                    
-                                </StackPanel>
-                                <TextBlock x:Name="DifferenceHeaderVersionText" 
-                                           Grid.Row="0"
-                                           Grid.Column="1"
-                                           HorizontalAlignment="Right"
-                                           Text="{Binding HeaderVersion}" 
+                            <StackPanel x:Name="DifferenceWorkflowHeaderSp" 
+                                        Background="{StaticResource WareWolfMenuBrush}" 
+                                        DockPanel.Dock="Left" 
+                                        HorizontalAlignment="Stretch" 
+                                        Orientation="Horizontal"
+                                        AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderSP_AutoID">
+                                <TextBlock x:Name="DifferenceWorkflowHeaderText" 
+                                           Margin="5" 
+                                           Text="{Binding ServerName}" 
                                            Style="{StaticResource SourceHeader}" 
-                                           AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderVersionText_AutoID"/>
-
-                                <StackPanel x:Name="DifferenceHeaderSp" 
-                                            Background="{StaticResource WareWolfMenuBrush}" 
-                                            Grid.Row="1"
-                                            Grid.Column="0"
-                                            Grid.ColumnSpan="2"
-                                            HorizontalAlignment="Stretch" 
-                                            DockPanel.Dock="Right" 
-                                            Margin="0,-4,0,0"
-                                            Orientation="Horizontal"
-                                            AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderSP_AutoID">
-                                    <Image Width="18" Height="18" Margin="4,0,0,0" Source="{StaticResource Resources-Service-MergeIcon}" />
-                                    <TextBlock x:Name="DifferenceHeaderText" 
-                                               HorizontalAlignment="Right"
-                                               Text="{Binding Header}" 
-                                               TextWrapping="Wrap"
-                                               ToolTip="{Binding Header}"
-                                               Style="{StaticResource SourceHeader}" 
-                                               MaxWidth="{Binding ElementName=CurrentWorkflowHeaderBorder, Path=ActualWidth}"
-                                               AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
-                                </StackPanel>
-                            </Grid>
+                                           AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderText_AutoID"/>
+                            </StackPanel>
+                            <StackPanel x:Name="DifferenceHeaderSp" 
+                                        Background="{StaticResource WareWolfMenuBrush}" 
+                                        HorizontalAlignment="Stretch" 
+                                        DockPanel.Dock="Right" 
+                                        Orientation="Horizontal"
+                                        AutomationProperties.AutomationId="UI_DifferenceWorkflowHeaderSP_AutoID">
+                                <TextBlock x:Name="DifferenceHeaderText" 
+                                           Margin="5"
+                                           HorizontalAlignment="Right"
+                                           Text="{Binding Header}" 
+                                           Style="{StaticResource SourceHeader}" 
+                                           AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderText_AutoID"/>
+                            </StackPanel>
                         </DockPanel>
                     </Border>
 
