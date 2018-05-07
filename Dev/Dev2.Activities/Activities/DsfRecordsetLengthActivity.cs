@@ -87,52 +87,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                        var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-                        if (RecordsLength == string.Empty)
-                        {
-                            allErrors.AddError(ErrorResource.BlankResultVariable);
-                        }
-                        if(dataObject.IsDebugMode())
-                        {
-                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()", "(*)"), update);
-                            if(warewolfEvalResult.IsWarewolfRecordSetResult)
-                            {
-                                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recsetResult)
-                                {
-                                    AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
-                                }
-                            }
-                            if(warewolfEvalResult.IsWarewolfAtomListresult)
-                            {
-                                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
-                                {
-                                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment, update));
-                                }
-                            }
-                        }
-                        var rule = new IsSingleValueRule(() => RecordsLength);
-                        var single = rule.Check();
-                        if(single != null)
-                        {
-                            allErrors.AddError(single.Message);
-                        }
-                        else
-                        {
-                            var count = 0;
-                            if(dataObject.Environment.HasRecordSet(RecordsetName))
-                            {
-                                count = dataObject.Environment.GetLength(rs);
-                            }
-                            else
-                            {
-                                allErrors.AddError("Recordset: "+RecordsetName+" does not exist.");
-                            }
-                            var value = count.ToString();
-                            dataObject.Environment.Assign(RecordsLength, value, update);
-                            AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
-                        }
+                        allErrors = TryExecute(dataObject, update, allErrors);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         allErrors.AddError(e.StackTrace);
                         dataObject.Environment.Assign(RecordsLength, "0", update);
@@ -156,6 +113,51 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+        }
+
+        ErrorResultTO TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+            if (RecordsLength == string.Empty)
+            {
+                allErrors.AddError(ErrorResource.BlankResultVariable);
+            }
+            if (dataObject.IsDebugMode())
+            {
+                var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()", "(*)"), update);
+                if (warewolfEvalResult.IsWarewolfRecordSetResult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recsetResult)
+                {
+                    AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
+                }
+
+                if (warewolfEvalResult.IsWarewolfAtomListresult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult atomListResult)
+                {
+                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment, update));
+                }
+
+            }
+            var rule = new IsSingleValueRule(() => RecordsLength);
+            var single = rule.Check();
+            if (single != null)
+            {
+                allErrors.AddError(single.Message);
+            }
+            else
+            {
+                var count = 0;
+                if (dataObject.Environment.HasRecordSet(RecordsetName))
+                {
+                    count = dataObject.Environment.GetLength(rs);
+                }
+                else
+                {
+                    allErrors.AddError("Recordset: " + RecordsetName + " does not exist.");
+                }
+                var value = count.ToString();
+                dataObject.Environment.Assign(RecordsLength, value, update);
+                AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
+            }
+            return allErrors;
         }
 
         #region Get Debug Inputs/Outputs

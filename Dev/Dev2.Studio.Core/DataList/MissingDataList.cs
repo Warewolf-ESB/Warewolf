@@ -32,7 +32,13 @@ namespace Dev2.Studio.Core.DataList
             var missingWorkflowParts = new List<IDataListVerifyPart>();
             foreach (var dataListItem in _recsetCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName)))
             {
-                if (dataListItem.Children.Count > 0)
+                var excludeUnused = excludeUnusedItems && !dataListItem.IsUsed;
+                if (dataListItem.Children.Count > 0 && !partsToVerify.Any(part => part.Recordset == dataListItem.DisplayName) && dataListItem.IsEditable && excludeUnused)
+                {
+                    continue;
+                }
+
+                if (!partsToVerify.Any(part => part.Recordset == dataListItem.DisplayName) && dataListItem.IsEditable)
                 {
                     if (partsToVerify.Count(part => part.Recordset == dataListItem.DisplayName) == 0 &&
                         dataListItem.IsEditable)

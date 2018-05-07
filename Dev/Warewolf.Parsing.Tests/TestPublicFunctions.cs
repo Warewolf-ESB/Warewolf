@@ -19,8 +19,8 @@ namespace WarewolfParsingTest
         public void PublicFunctions_AddRecsetToEnvironment_NonExistent_ExpectAdded()
         {
             //------------Setup for test--------------------------
-            var env =CreateEnvironmentWithData();
-            
+            var env = CreateEnvironmentWithData();
+
             //------------Execute Test---------------------------
             env = PublicFunctions.AddRecsetToEnv("bob", env);
             //------------Assert Results-------------------------
@@ -51,7 +51,7 @@ namespace WarewolfParsingTest
             var env = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-           Assert.IsNotNull(  PublicFunctions.EvalWithPositions("[[Rec(*).a]]", 0, env));
+            Assert.IsNotNull(PublicFunctions.EvalWithPositions("[[Rec(*).a]]", 0, env));
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace WarewolfParsingTest
             var env = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            Assert.AreEqual(CommonFunctions.evalResultToString( PublicFunctions.EvalRecordSetIndexes("[[Rec(*).a]]", 0, env)),"1,2,3,2");
+            Assert.AreEqual(CommonFunctions.evalResultToString(PublicFunctions.EvalRecordSetIndexes("[[Rec(*).a]]", 0, env)), "1,2,3,2");
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace WarewolfParsingTest
             var env = CreateEnvironmentWithData();
 
             //------------Execute Test---------------------------
-            Assert.IsTrue(PublicFunctions.RecordsetExpressionExists("[[Rec(*).a]]",  env));
+            Assert.IsTrue(PublicFunctions.RecordsetExpressionExists("[[Rec(*).a]]", env));
             Assert.IsFalse(PublicFunctions.RecordsetExpressionExists("[[Rec(*)]]", env));
             Assert.IsFalse(PublicFunctions.RecordsetExpressionExists("[[Rec]]", env));
             Assert.IsFalse(PublicFunctions.RecordsetExpressionExists("", env));
@@ -117,11 +117,11 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
 
-            var lst = new List<DataStorage.WarewolfAtom>(){DataStorage.WarewolfAtom.Nothing,DataStorage.WarewolfAtom.NewPositionedValue( new Tuple<int,DataStorage.WarewolfAtom>( 2,DataStorage.WarewolfAtom.NewDataString("a"))),DataStorage.WarewolfAtom.NewDataString("A")};
+            var lst = new List<DataStorage.WarewolfAtom>() { DataStorage.WarewolfAtom.Nothing, DataStorage.WarewolfAtom.NewPositionedValue(new Tuple<int, DataStorage.WarewolfAtom>(2, DataStorage.WarewolfAtom.NewDataString("a"))), DataStorage.WarewolfAtom.NewDataString("A") };
             //------------Execute Test---------------------------
             var res = PublicFunctions.AtomListToSearchTo(lst);
             var recordSetSearchPayloads = res as RecordSetSearchPayload[] ?? res.ToArray();
-            Assert.AreEqual(recordSetSearchPayloads.First().Index,0);
+            Assert.AreEqual(recordSetSearchPayloads.First().Index, 0);
             Assert.AreEqual(recordSetSearchPayloads.First().Payload, null);
             Assert.AreEqual(recordSetSearchPayloads.Last().Index, 2);
             Assert.AreEqual(recordSetSearchPayloads.Last().Payload, "A");
@@ -183,7 +183,6 @@ namespace WarewolfParsingTest
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
 
-
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory("PublicFunctions")]
@@ -208,6 +207,63 @@ namespace WarewolfParsingTest
             Assert.AreEqual(expected, actual);
             var jsonOb = JsonConvert.DeserializeObject(actual);
             Assert.IsNotNull(jsonOb);
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("PublicFunctions_Eval")]
+        public void PublicFunctionsEvalEnvExpressionToTable()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+            var lst = new List<DataStorage.WarewolfAtom>
+            {
+                DataStorage.WarewolfAtom.Nothing,
+                DataStorage.WarewolfAtom.NewPositionedValue(new Tuple<int, DataStorage.WarewolfAtom>(2, DataStorage.WarewolfAtom.NewDataString("a"))),
+                DataStorage.WarewolfAtom.NewDataString("A")
+            };
+            //------------Execute Test---------------------------
+            var res = PublicFunctions.EvalEnvExpressionToTable("[[Rec(*)]]", 0, env, true);
+
+            Assert.IsNotNull(res);
+
+            var allTestData = new string[][][] {
+                new string[][] {
+                    new string [] {"a", "1" },
+                    new string [] {"b", "a" },
+                },
+                new string[][]
+                {
+                    new string [] {"a", "2" },
+                    new string [] {"b", "b" },
+                },
+                new string[][]
+                {
+                    new string [] {"a", "3" },
+                    new string [] {"b", "c" },
+                },
+                new string[][]
+                {
+                    new string [] {"a", "2" },
+                    new string [] {"b", "c" },
+                },
+
+            };
+
+            Assert.AreEqual(4, res.Count());
+
+            var combined = allTestData.Zip(res, (test, result) => (test, result));
+
+            foreach (var (testdata, rowTuple) in combined)
+            {
+                var index = 0;
+                foreach (var (field, value) in rowTuple)
+                {
+                    Assert.IsTrue(field == testdata[index][0]);
+                    Assert.IsTrue(value.Equals(testdata[index][1]));
+                    index++;
+                }
+            }
         }
 
 
@@ -237,6 +293,66 @@ namespace WarewolfParsingTest
             Assert.AreEqual(expected, actual);
             var jsonOb = JsonConvert.DeserializeObject(actual);
             Assert.IsNotNull(jsonOb);
+        }
+
+        [TestCategory("PublicFunctions_Eval")]
+        public void PublicFunctionsEvalEnvExpressionToArrayTable()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+            var lst = new List<DataStorage.WarewolfAtom>
+            {
+                DataStorage.WarewolfAtom.Nothing,
+                DataStorage.WarewolfAtom.NewPositionedValue(new Tuple<int, DataStorage.WarewolfAtom>(2, DataStorage.WarewolfAtom.NewDataString("a"))),
+                DataStorage.WarewolfAtom.NewDataString("A")
+            };
+            //------------Execute Test---------------------------
+            var enumerator = PublicFunctions.EvalEnvExpressionToArrayTable("[[Rec(*)]]", 0, env, true);
+            var res = enumerator.ToArray();
+
+            Assert.IsNotNull(res);
+
+            Assert.AreEqual(5, res.Length);
+
+            Assert.AreEqual(2, res[0].Length);
+            Assert.AreEqual(2, res[1].Length);
+            Assert.AreEqual(2, res[2].Length);
+            Assert.AreEqual(2, res[3].Length);
+
+            // column names in first row
+            Assert.IsTrue(res[0][0].Equals("a"));
+            Assert.IsTrue(res[0][1].Equals("b"));
+
+            // data
+            Assert.IsTrue(res[1][0].Equals("1"));
+            Assert.IsTrue(res[1][1].Equals("a"));
+            Assert.IsTrue(res[2][0].Equals("2"));
+            Assert.IsTrue(res[2][1].Equals("b"));
+            Assert.IsTrue(res[3][0].Equals("3"));
+            Assert.IsTrue(res[3][1].Equals("c"));
+            Assert.IsTrue(res[4][0].Equals("2"));
+            Assert.IsTrue(res[4][1].Equals("c"));
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("PublicFunctions_Eval")]
+        public void PublicFunctionsEvalEnvExpressionToArrayTable_Throws()
+        {
+            //------------Setup for test--------------------------
+            var env = CreateEnvironmentWithData();
+            var lst = new List<DataStorage.WarewolfAtom>
+            {
+                DataStorage.WarewolfAtom.Nothing,
+                DataStorage.WarewolfAtom.NewPositionedValue(new Tuple<int, DataStorage.WarewolfAtom>(2, DataStorage.WarewolfAtom.NewDataString("a"))),
+                DataStorage.WarewolfAtom.NewDataString("A")
+            };
+            //------------Execute Test---------------------------
+            Assert.ThrowsException<Dev2.Common.Common.NullValueInVariableException>(() =>
+            {
+                var enumerator = PublicFunctions.EvalEnvExpressionToArrayTable("[[NotExistingRec(*)]]", 0, env, true);
+                var res = enumerator.ToArray();
+            });
         }
     }
 }

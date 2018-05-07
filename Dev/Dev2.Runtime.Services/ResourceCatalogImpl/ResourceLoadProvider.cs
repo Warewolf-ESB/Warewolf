@@ -141,13 +141,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 throw;
             }
         }
-
-        /// <summary>
-        /// Gets the contents of the resources with the given source type.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID to be queried.</param>
-        /// <param name="sourceType">The type of the source to be queried.</param>
-        /// <returns>The resource's contents or <code>string.Empty</code> if not found.</returns>
+        
         public IEnumerable GetModels(Guid workspaceID, enSourceType sourceType)
         {
             var workspaceResources = GetResources(workspaceID);
@@ -264,13 +258,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var dependants = new List<Guid>();
             resources.ForEach(resource =>
             {
-                if (resource.Dependencies == null)
+                if (resource.Dependencies == null && (resource.IsSource || resource.IsServer))
                 {
-                    if(resource.IsSource || resource.IsServer)
-                    {
-                        resource = new Resource(resource.ToXml());
-                    }
+                    resource = new Resource(resource.ToXml());
                 }
+
                 if (resource.Dependencies == null)
                 {
                     return;
@@ -397,13 +389,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
                 }
 
-                if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID && _workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
                 {
-                    if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
-                    {
-                        foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
-                    }
+                    foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
                 }
+
             }
             catch (Exception e)
             {
@@ -424,13 +414,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
             }
 
-            if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+            if (foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID && _workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
             {
-                if(_workspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out resources))
-                {
-                    foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
-                }
+                foundResource = resources.AsParallel().FirstOrDefault(resource => resource.ResourceID == resourceID);
             }
+
             return GetResourceContents(foundResource);
         }
 
@@ -603,7 +591,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         {
             var builder = new ResourceCatalogBuilder();
 
-            builder.BuildCatalogFromWorkspace(workspacePath, folders);
+            builder.TryBuildCatalogFromWorkspace(workspacePath, folders);
             if (getDuplicates)
             {
                 DuplicateResources = builder.DuplicateResources;

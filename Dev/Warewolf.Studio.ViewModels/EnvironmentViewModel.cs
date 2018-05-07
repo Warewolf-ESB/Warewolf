@@ -223,17 +223,17 @@ namespace Warewolf.Studio.ViewModels
             IsConnected = server.IsConnected;
 
             server.NetworkStateChanged += (args, server1) =>
-             {
-                 IsConnected = server1.IsConnected;
-                 if (args.State == ConnectionNetworkState.Connected)
-                 {
-                     Application.Current.Dispatcher.Invoke(async () =>
-                     {
-                         await RefreshAsync().ConfigureAwait(true);
-                     }, DispatcherPriority.Background);
+            {
+                IsConnected = server1.IsConnected;
+                if (args.State == ConnectionNetworkState.Connected)
+                {
+                    Application.Current.Dispatcher.Invoke(async () =>
+                    {
+                        await RefreshAsync().ConfigureAwait(true);
+                    }, DispatcherPriority.Background);
 
-                 }
-             };
+                }
+            };
 
             AllowEdit = server.AllowEdit;
             ShowServerVersionCommand = new DelegateCommand(ShowServerVersionAbout);
@@ -287,17 +287,12 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach (var explorerItemModel in Children)
                 {
+                    var increaseBy = 0;
                     if (!explorerItemModel.IsResourceVersion && explorerItemModel.ResourceType != "Message")
                     {
-                        if (explorerItemModel.IsFolder)
-                        {
-                            total += explorerItemModel.ChildrenCount;
-                        }
-                        else
-                        {
-                            total++;
-                        }
+                        increaseBy = explorerItemModel.IsFolder ? explorerItemModel.ChildrenCount : 1;
                     }
+                    total = total + increaseBy;
                 }
             }
 
@@ -893,54 +888,73 @@ namespace Warewolf.Studio.ViewModels
             }
             return false;
         }
-        public void ReloadConnectControl() => ReloadConnectControl(false);
 
         public void ReloadConnectControl(bool isDeploy)
         {
             if (!isDeploy)
             {
-                var explorerViewModel = ShellViewModel?.ExplorerViewModel;
-                if (explorerViewModel?.Environments != null)
+                ReloadConnectControl();
+            }
+        }
+
+        private void ReloadConnectControl()
+        {
+            var explorerViewModel = ShellViewModel?.ExplorerViewModel;
+            if (explorerViewModel?.Environments != null)
+            {
+                ReloadConnectControl(explorerViewModel);
+            }
+        }
+
+        private void ReloadConnectControl(IExplorerViewModel explorerViewModel)
+        {
+            var environmentViewModel = explorerViewModel?.Environments[0];
+
+            var explorerServers = environmentViewModel?.Children?
+                                                        .Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>())
+                                                        .Where(y => y != null && y.ResourceType == "Dev2Server")
+                                                        .ToList();
+            var connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
+            if (explorerServers != null && (connectControlViewModel != null && explorerServers.Any()))
+            {
+                var connectControlServers = connectControlViewModel.Servers?.Where(o => !o.IsLocalHost).ToObservableCollection();
+
+                if (connectControlServers?.Count > explorerServers?.Count())
                 {
-                    var environmentViewModel = explorerViewModel?.Environments[0];
-
-                    var explorerServers = environmentViewModel?.Children?
-                                                                .Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>())
-                                                                .Where(y => y != null && y.ResourceType == "Dev2Server")
-                                                                .ToList();
-                    var connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
-                    if (explorerServers != null && (connectControlViewModel != null && explorerServers.Any()))
+                    foreach (var serv in connectControlServers)
                     {
-                        var connectControlServers = connectControlViewModel.Servers?.Where(o => !o.IsLocalHost).ToObservableCollection();
-
-                        if (connectControlServers?.Count > explorerServers?.Count())
-                        {
-                            foreach (var serv in connectControlServers)
-                            {
-                                var found = explorerServers.FirstOrDefault(a => a.ResourceId == serv.EnvironmentID);
-                                if (found == null)
-                                {
-                                    _connectControlSingleton.ReloadServer();
-                                    ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(serv.EnvironmentID);
-                                    connectControlViewModel.LoadServers();
-                                }
-                            }
-                        }
-                        else
-                        {
-                            foreach (var server in explorerServers)
-                            {
-                                var serverExists = connectControlServers?.FirstOrDefault(o => o.EnvironmentID == server.ResourceId);
-                                if (serverExists == null)
-                                {
-                                    _connectControlSingleton.ReloadServer();
-                                    ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(server.ResourceId);
-                                    connectControlViewModel.LoadServers();
-                                }
-                            }
-                        }
+                        ReloadConnectControl(explorerServers, connectControlViewModel, serv.EnvironmentID);
                     }
                 }
+                else
+                {
+                    foreach (var server in explorerServers)
+                    {
+                        ReloadConnectControl(connectControlViewModel, connectControlServers, server.ResourceId);
+                    }
+                }
+            }
+        }
+
+        void ReloadConnectControl(IConnectControlViewModel connectControlViewModel, ObservableCollection<IServer> connectControlServers, Guid resourceId)
+        {
+            var serverExists = connectControlServers?.FirstOrDefault(o => o.EnvironmentID == resourceId);
+            if (serverExists == null)
+            {
+                _connectControlSingleton.ReloadServer();
+                ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(resourceId);
+                connectControlViewModel.LoadServers();
+            }
+        }
+
+        void ReloadConnectControl(List<IExplorerItemViewModel> explorerServers, IConnectControlViewModel connectControlViewModel, Guid environmentID)
+        {
+            var found = explorerServers.FirstOrDefault(a => a.ResourceId == environmentID);
+            if (found == null)
+            {
+                _connectControlSingleton.ReloadServer();
+                ShellViewModel?.LocalhostServer?.UpdateRepository?.FireServerSaved(environmentID);
+                connectControlViewModel.LoadServers();
             }
         }
 
@@ -1061,10 +1075,7 @@ namespace Warewolf.Studio.ViewModels
         public IExplorerTooltips ExplorerTooltips { get; set; }
         public bool IsMergeVisible
         {
-            get
-            {
-                return _isMergeVisible;
-            }
+            get => _isMergeVisible;
             set
             {
                 _isMergeVisible = value;

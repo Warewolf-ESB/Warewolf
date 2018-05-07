@@ -25,13 +25,11 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var minHeight = 180;
-            if (DataContext is DotNetDllEnhancedViewModel dotNetDllEnhancedViewModel)
+            if (DataContext is DotNetDllEnhancedViewModel dotNetDllEnhancedViewModel && (dotNetDllEnhancedViewModel.IsConstructorVisible || dotNetDllEnhancedViewModel.IsActionsVisible))
             {
-                if (dotNetDllEnhancedViewModel.IsConstructorVisible || dotNetDllEnhancedViewModel.IsActionsVisible)
-                {
-                    minHeight = 250;
-                }
+                minHeight = 250;
             }
+
             MinHeight = minHeight;
             Height = double.NaN;
         }
