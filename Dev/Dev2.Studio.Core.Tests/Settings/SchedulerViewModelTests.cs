@@ -649,7 +649,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_Constructor_SetupServer_Validate()
         {
             //------------Setup for test--------------------------
-
+            CommonSetupHelper.RegisterServerRepository();
             //------------Execute Test---------------------------
             var resources = new ObservableCollection<IScheduledResource>();
             var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };

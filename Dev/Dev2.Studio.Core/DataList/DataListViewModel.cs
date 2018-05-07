@@ -380,24 +380,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                     else
                     {
-                        var recsetToAddTo = RecsetCollection.FirstOrDefault(c => c.DisplayName == part.Recordset);
-                        
-                        var tmpRecset = tmpRecsetList.FirstOrDefault(c => c.DisplayName == part.Recordset);
-
-                        if (recsetToAddTo != null)
-                        {
-                            _recordsetHandler.AddMissingRecordSetPart(recsetToAddTo, part);
-                            recsetToAddTo.IsVisible = recsetToAddTo.Children.Any(a => a.IsVisible);
-                        }
-                        else if (tmpRecset != null)
-                        {
-                            _recordsetHandler.AddMissingTempRecordSet(part, tmpRecset);
-                        }
-                        else
-                        {
-                            var recset = DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description);
-                            tmpRecsetList.Add(recset);
-                        }
+                        AddMissingRecordSetDataList(tmpRecsetList, part);
                     }
                 }
             }
@@ -412,6 +395,28 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             UpdateIntellisenseList();
             WriteToResourceModel();
+        }
+
+        private void AddMissingRecordSetDataList(List<IRecordSetItemModel> tmpRecsetList, IDataListVerifyPart part)
+        {
+            var recsetToAddTo = RecsetCollection.FirstOrDefault(c => c.DisplayName == part.Recordset);
+
+            var tmpRecset = tmpRecsetList.FirstOrDefault(c => c.DisplayName == part.Recordset);
+
+            if (recsetToAddTo != null)
+            {
+                _recordsetHandler.AddMissingRecordSetPart(recsetToAddTo, part);
+                recsetToAddTo.IsVisible = recsetToAddTo.Children.Any(a => a.IsVisible);
+            }
+            else if (tmpRecset != null)
+            {
+                _recordsetHandler.AddMissingTempRecordSet(part, tmpRecset);
+            }
+            else
+            {
+                var recset = DataListItemModelFactory.CreateRecordSetItemModel(part.Recordset, part.Description);
+                tmpRecsetList.Add(recset);
+            }
         }
 
         void UpdateIntellisenseList()

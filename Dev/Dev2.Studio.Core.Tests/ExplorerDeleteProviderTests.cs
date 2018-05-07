@@ -253,7 +253,7 @@ namespace Dev2.Core.Tests
             //---------------Assert Precondition----------------
             Assert.IsNotNull(explorerDeleteProvider);
             //---------------Execute Test ----------------------
-            var item = explorerDeleteProvider.Delete(mockExplorerItemModel.Object);
+            var item = explorerDeleteProvider.TryDelete(mockExplorerItemModel.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(item);
             mockQueryManager.Verify(manager => manager.FetchDependants(It.IsAny<Guid>()), Times.Once);
