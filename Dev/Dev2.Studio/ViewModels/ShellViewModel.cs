@@ -1288,6 +1288,8 @@ namespace Dev2.Studio.ViewModels
 
         public void NewOdbcSource(string resourcePath) => _worksurfaceContextManager.NewOdbcSource(resourcePath);
 
+        public void NewSqliteSource(string resourcePath) => _worksurfaceContextManager.NewSqliteSource(resourcePath);
+
         public void NewWebSource(string resourcePath) => _worksurfaceContextManager.NewWebSource(resourcePath);
 
         public void NewPluginSource(string resourcePath) => _worksurfaceContextManager.NewPluginSource(resourcePath);
