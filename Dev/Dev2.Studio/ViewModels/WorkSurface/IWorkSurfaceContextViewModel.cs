@@ -81,6 +81,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         
         void RequestClose(ViewModelDialogResults dialogResult);
 
+        bool CanSave();
         void CanClose(Action<bool> callback);
 
         void TryClose();

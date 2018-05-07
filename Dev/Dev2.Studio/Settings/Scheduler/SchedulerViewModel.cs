@@ -832,6 +832,7 @@ namespace Dev2.Settings.Scheduler
         public void QuickDebug() => throw new NotImplementedException();
         public void BindToModel() => throw new NotImplementedException();
         public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager) => throw new NotImplementedException();
+        public bool CanSave() => throw new NotImplementedException();
         public bool Save() => throw new NotImplementedException();
         public bool Save(bool isLocalSave, bool isStudioShutdown) => throw new NotImplementedException();
         public bool IsEnvironmentConnected() => throw new NotImplementedException();
