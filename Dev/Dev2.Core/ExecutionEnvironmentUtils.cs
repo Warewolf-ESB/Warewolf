@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
@@ -570,6 +572,69 @@ namespace Dev2
 
 
         static Dictionary<string, Schema> BuildPropertyDefinition(IGrouping<string, string> groupedRecSet) => groupedRecSet.ToDictionary(DataListUtil.ExtractFieldNameOnlyFromValue, name => new Schema { Type = "string" });
+
+
+        public static void ProcessOutputMapping(IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row, IServiceOutputMapping serviceOutputMapping)
+        {
+            var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
+            var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
+            var rs = serviceOutputMapping.RecordSetName;
+
+            if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.MakeValueIntoHighLevelRecordset(rs,rsType==enRecordsetIndexType.Star))))
+            {
+                if (started)
+                {
+                    rowIdx = environment.GetLength(rs) + 1;
+                    started = false;
+                }
+            }
+            else
+            {
+                try
+                {
+                    environment.AssignDataShape(serviceOutputMapping.MappedTo);
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                }
+            }
+            GetRowIndex(ref started, ref rowIdx, rsType, rowIndex);
+            if (!row.Table.Columns.Contains(serviceOutputMapping.MappedFrom))
+            {
+                return;
+            }
+            var value = row[serviceOutputMapping.MappedFrom];
+            var colDataType = row.Table.Columns[serviceOutputMapping.MappedFrom].DataType;
+            if (colDataType.Name == "Byte[]")
+            {                
+                value = Encoding.UTF8.GetString(value as byte[]);
+            }
+            if (update != 0)
+            {
+                rowIdx = update;
+            }
+            var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
+            if (rsType == enRecordsetIndexType.Star)
+            {
+                displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
+            }
+            environment.Assign(displayExpression, value.ToString(), update);
+        }
+
+        static void GetRowIndex(ref bool started, ref int rowIdx, enRecordsetIndexType rsType, string rowIndex)
+        {
+            if (rsType == enRecordsetIndexType.Star && started)
+            {
+                rowIdx = 1;
+                started = false;
+            }
+            if (rsType == enRecordsetIndexType.Numeric)
+            {
+                rowIdx = int.Parse(rowIndex);
+            }
+        }
+
     }
 
     public class Schema

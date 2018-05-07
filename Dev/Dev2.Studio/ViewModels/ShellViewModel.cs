@@ -95,7 +95,8 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newPostgreSqlSourceCommand;
         private AuthorizeCommand<string> _newOracleSourceCommand;
         private AuthorizeCommand<string> _newOdbcSourceCommand;
-        private AuthorizeCommand<string> _newWebSourceCommand;
+		private AuthorizeCommand<string> _newSqliteSourceCommand;
+		private AuthorizeCommand<string> _newWebSourceCommand;
         private AuthorizeCommand<string> _newServerSourceCommand;
         private AuthorizeCommand<string> _newEmailSourceCommand;
         private AuthorizeCommand<string> _newExchangeSourceCommand;
@@ -218,7 +219,8 @@ namespace Dev2.Studio.ViewModels
             NewPostgreSqlSourceCommand.UpdateContext(ActiveServer);
             NewOracleSourceCommand.UpdateContext(ActiveServer);
             NewOdbcSourceCommand.UpdateContext(ActiveServer);
-            NewServiceCommand.UpdateContext(ActiveServer);
+			NewSqliteSourceCommand.UpdateContext(ActiveServer);
+			NewServiceCommand.UpdateContext(ActiveServer);
             NewPluginSourceCommand.UpdateContext(ActiveServer);
             NewWebSourceCommand.UpdateContext(ActiveServer);
             NewWcfSourceCommand.UpdateContext(ActiveServer);
@@ -323,7 +325,11 @@ namespace Dev2.Studio.ViewModels
         {
             get => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveServerConnected()));
         }
-        public IAuthorizeCommand<string> NewWebSourceCommand
+		public IAuthorizeCommand<string> NewSqliteSourceCommand
+		{
+			get => _newSqliteSourceCommand ?? (_newSqliteSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqliteSource(@""), param => IsActiveServerConnected()));
+		}
+		public IAuthorizeCommand<string> NewWebSourceCommand
         {
             get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
         }
@@ -524,7 +530,7 @@ namespace Dev2.Studio.ViewModels
             var splashViewModel = new SplashViewModel(ActiveServer, new ExternalProcessExecutor());
             var splashPage = new SplashPage { DataContext = splashViewModel };
             ISplashView splashView = splashPage;
-            splashViewModel.ShowServerVersion();
+            splashViewModel.ShowServerStudioVersion();
             splashView.Show(true);
         }
 
@@ -724,7 +730,11 @@ namespace Dev2.Studio.ViewModels
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.OracleSource;
                         ProcessDBSource(ProcessOracleDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.OracleSource)), workSurfaceKey);
                         break;
-                    case "PostgreSQL":
+					case "SqliteDatabase":
+						workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.SqliteSource;
+						ProcessDBSource(ProcessSqliteSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.SqliteSource)), workSurfaceKey);
+						break;
+					case "PostgreSQL":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.PostgreSqlSource;
                         ProcessDBSource(ProcessPostgreSQLDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.PostgreSqlSource)), workSurfaceKey);
                         break;
@@ -927,8 +937,10 @@ namespace Dev2.Studio.ViewModels
         ManageOdbcSourceViewModel ProcessODBCDBSource(IDbSource def) => new ManageOdbcSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
-
-        ManageSqlServerSourceViewModel ProcessSQLDBSource(IDbSource def) => new ManageSqlServerSourceViewModel(
+		ManageSqliteSourceViewModel ProcessSqliteSource(IDbSource def) => new ManageSqliteSourceViewModel(
+			   new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+			   new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
+		ManageSqlServerSourceViewModel ProcessSQLDBSource(IDbSource def) => new ManageSqlServerSourceViewModel(
                 new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
                 new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
 
@@ -964,7 +976,9 @@ namespace Dev2.Studio.ViewModels
                     return enSourceType.Oracle;
                 case WorkSurfaceContext.OdbcSource:
                     return enSourceType.ODBC;
-                default:
+				case WorkSurfaceContext.SqliteSource:
+					return enSourceType.SQLiteDatabase;
+				default:
                     return enSourceType.Unknown;
             }
         }
@@ -1186,8 +1200,14 @@ namespace Dev2.Studio.ViewModels
             key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.OdbcSource, selectedSource.Id);
             ProcessDBSource(ProcessODBCDBSource(selectedSource), key);
         }
+		public void EditSqliteResource(IDbSource selectedSource) => EditSqliteResource(selectedSource, null);
 
-        public void EditResource(IPluginSource selectedSource) => EditResource(selectedSource, null);
+		public void EditSqliteResource(IDbSource selectedSource, IWorkSurfaceKey key)
+		{
+			key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.SqliteSource, selectedSource.Id);
+			ProcessDBSource(ProcessSqliteSource(selectedSource), key as WorkSurfaceKey);
+		}
+		public void EditResource(IPluginSource selectedSource) => EditResource(selectedSource, null);
 
         public void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key)
         {
@@ -1434,7 +1454,7 @@ namespace Dev2.Studio.ViewModels
                         serviceTestViewModel.WorkflowDesignerViewModel.IsTestView = true;
                     }
                 }
-                NotifyOfPropertyChange(() => SaveCommand);
+                NotifyOfPropertyChange(() => SaveCommand);                
                 NotifyOfPropertyChange(() => DebugCommand);
                 NotifyOfPropertyChange(() => QuickDebugCommand);
                 NotifyOfPropertyChange(() => QuickViewInBrowserCommand);
@@ -1448,9 +1468,24 @@ namespace Dev2.Studio.ViewModels
             base.OnActivationProcessed(item, success);
         }
 
+        public ICommand SaveAllAndCloseCommand => new DelegateCommand(SaveAllAndClose);
+        
         public ICommand SaveAllCommand => new DelegateCommand(SaveAll);
-
         void SaveAll(object obj)
+        {
+            for (int index = Items.Count - 1; index >= 0; index--)
+            {
+                var workSurfaceContextViewModel = Items[index];
+                var workSurfaceContext = workSurfaceContextViewModel.WorkSurfaceKey.WorkSurfaceContext;
+                if (workSurfaceContext != WorkSurfaceContext.Help && workSurfaceContextViewModel.CanSave())
+                {
+                    workSurfaceContextViewModel.Save();
+                }
+            }
+        }
+
+        
+        void SaveAllAndClose(object obj)
         {
             _continueShutDown = true;
             for (int index = Items.Count - 1; index >= 0; index--)
@@ -1733,7 +1768,7 @@ namespace Dev2.Studio.ViewModels
                 if (result == MessageBoxResult.Yes)
                 {
                     closeStudio = true;
-                    SaveAllCommand.Execute(null);
+                    SaveAllAndCloseCommand.Execute(null);
                     if (!_continueShutDown)
                     {
                         closeStudio = false;

@@ -13,4 +13,9 @@ namespace Dev2.Common.Interfaces
         string UserID { get; set; }
         string Password { get; set; }
     }
+	public interface ISqliteDB : IResource
+	{
+		enSourceType ServerType { get; set; }
+		
+	}
 }

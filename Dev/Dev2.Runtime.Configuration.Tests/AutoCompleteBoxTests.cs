@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -229,6 +230,73 @@ namespace Dev2.Runtime.Configuration.Tests
             var filteredList = autoCompleteBox.View;
             Assert.IsNotNull(filteredList);
             Assert.AreEqual(0, filteredList.Count);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AutoCompleteBox_PopulateComplete")]
+        public void AutoCompleteBox_WhenPopulateComplete_ShouldUpdateTextCompletion()
+        {
+            //------------Setup for test--------------------------
+            var autoCompleteBox = new AutoCompleteBox();
+            autoCompleteBox.ItemsSource = new List<string> { "item1", "myValues", "anotherThing" };
+            autoCompleteBox.FilterMode = AutoCompleteFilterMode.StartsWith;
+            autoCompleteBox.IsTextCompletionEnabled = true;
+            autoCompleteBox.TextBox = new TextBox();            
+            autoCompleteBox.ItemFilter = (search, item) =>
+            {
+                if (search == "item1")
+                {
+                    return true;
+                }
+                return false;
+            };
+            autoCompleteBox.Text = "item1";
+            autoCompleteBox.TextBox.SelectionStart = 5;
+            var userCalledPopulateField = autoCompleteBox.GetType().GetField("_userCalledPopulate", System.Reflection.BindingFlags.NonPublic
+                                                                                   | System.Reflection.BindingFlags.Instance);
+            userCalledPopulateField.SetValue(autoCompleteBox, true);
+            var textSelectionStartField = autoCompleteBox.GetType().GetField("_textSelectionStart", System.Reflection.BindingFlags.NonPublic
+                                                                                   | System.Reflection.BindingFlags.Instance);
+            textSelectionStartField.SetValue(autoCompleteBox, 0);
+            //------------Execute Test---------------------------
+            autoCompleteBox.PopulateComplete();
+            //------------Assert Results-------------------------
+            var filteredList = autoCompleteBox.View;
+            Assert.IsNotNull(filteredList);
+            Assert.AreEqual(3, filteredList.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("AutoCompleteBox_PopulateComplete")]
+        public void AutoCompleteBox_WhenRefreshView_ShouldInsertResults()
+        {
+            //------------Setup for test--------------------------
+            var autoCompleteBox = new AutoCompleteBox();
+            autoCompleteBox.ItemsSource = new List<string> { "item1", "myValues", "anotherThing" };
+            autoCompleteBox.FilterMode = AutoCompleteFilterMode.Contains;
+            autoCompleteBox.TextFilter = null;
+            autoCompleteBox.ItemFilter = (search, item) =>
+            {
+                if (search == "item1")
+                {
+                    return true;
+                }
+                return false;
+            };
+            
+            var viewField = autoCompleteBox.GetType().GetField("_view", System.Reflection.BindingFlags.NonPublic
+                                                                                  | System.Reflection.BindingFlags.Instance);
+            viewField.SetValue(autoCompleteBox, new ObservableCollection<object> { "item2", "bob" });
+
+            //------------Execute Test---------------------------
+            autoCompleteBox.Text = "item1";
+            //------------Assert Results-------------------------
+            var filteredList = autoCompleteBox.View;
+            Assert.IsNotNull(filteredList);
+            Assert.AreEqual(3, filteredList.Count);
         }
     }
 }

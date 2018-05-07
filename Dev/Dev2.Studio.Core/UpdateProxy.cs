@@ -84,8 +84,26 @@ namespace Dev2.Studio.Core
 
             return serialiser.Deserialize<List<string>>(output.Message);
         }
-        
-        public void SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID)
+		public IList<string> TestSqliteConnection(ISqliteDBSource resource)
+		{
+			var con = Connection;
+			var comsController = CommunicationControllerFactory.CreateController("TestSqliteService");
+			var serialiser = new Dev2JsonSerializer();
+			comsController.AddPayloadArgument("SqliteSource", serialiser.SerializeToBuilder(resource));
+			var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+			if (output == null)
+			{
+				throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+			}
+
+			if (output.HasError)
+			{
+				throw new WarewolfTestException(output.Message.ToString(), null);
+			}
+
+			return serialiser.Deserialize<List<string>>(output.Message);
+		}
+		public void SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveDbSourceService");

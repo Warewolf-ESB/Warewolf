@@ -8,7 +8,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Communication;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -19,12 +18,12 @@ using Dev2.Controller;
 using Dev2.Explorer;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Studio.Core
 {
     public class QueryManagerProxy : ProxyBase, IQueryManager
     {
-
         public QueryManagerProxy(ICommunicationControllerFactory communicationControllerFactory, IEnvironmentConnection connection) : base(communicationControllerFactory, connection)
         {
 
@@ -389,7 +388,6 @@ namespace Dev2.Studio.Core
             return fileListings;
         }
 
-
         public IList<IFileListing> FetchFiles(IFileListing file)
         {
             var serializer = new Dev2JsonSerializer();
@@ -489,6 +487,7 @@ namespace Dev2.Studio.Core
             return serializer.Deserialize<List<IComPluginSource>>(result.Message.ToString());
         }
 
+        [ExcludeFromCodeCoverage]
         public IList<IPluginAction> PluginActions(IPluginSource source, INamespaceItem ns)
         {
             var serializer = new Dev2JsonSerializer();
@@ -498,6 +497,7 @@ namespace Dev2.Studio.Core
             return pluginActions;
         }
 
+        [ExcludeFromCodeCoverage]
         IList<IPluginAction> GetPluginActions(IPluginSource source, INamespaceItem ns, ICommunicationController comsController, Dev2JsonSerializer serializer)
         {
             comsController.AddPayloadArgument(nameof(source), serializer.SerializeToBuilder(source));
@@ -521,6 +521,7 @@ namespace Dev2.Studio.Core
             return serializer.Deserialize<List<IPluginAction>>(result.Message.ToString());
         }
 
+        [ExcludeFromCodeCoverage]
         public IList<IPluginAction> PluginActionsWithReturns(IPluginSource source, INamespaceItem ns)
         {
             var serializer = new Dev2JsonSerializer();
@@ -529,6 +530,7 @@ namespace Dev2.Studio.Core
             return pluginActions;
         }
 
+        [ExcludeFromCodeCoverage]
         public IList<IPluginConstructor> PluginConstructors(IPluginSource source, INamespaceItem ns)
         {
             var serializer = new Dev2JsonSerializer();
@@ -567,6 +569,7 @@ namespace Dev2.Studio.Core
             return pluginConstructors;
         }
 
+        [ExcludeFromCodeCoverage]
         public IList<IPluginAction> PluginActions(IComPluginSource source, INamespaceItem ns)
         {
             var serializer = new Dev2JsonSerializer();
