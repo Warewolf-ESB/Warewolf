@@ -24,12 +24,8 @@ namespace Dev2.Webs
 {
     public static class SaveDialogHelper
     {
-
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel) => ShowNewWorkflowSaveDialog(resourceModel, null, true);
-        public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId, bool addToTabManager)
-        {
-            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, resourceModel, addToTabManager));
-        }
+        public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId, bool addToTabManager) => ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, resourceModel, addToTabManager));
         internal static void ShowNewWorkflowSaveDialog(IContextualResourceModel contextualResourceModel, bool loadingFromServer, string originalPath)
             => ShowSaveDialog(contextualResourceModel
                , new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, contextualResourceModel, true)
