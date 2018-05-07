@@ -177,6 +177,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="SharedResourceDictionary.cs" />
+    <None Include="app.config" />
     <None Include="Warewolf.Studio.Themes.Luna.ruleset" />
     <Resource Include="Images\Filter.png" />
     <Resource Include="Images\FilterClearButton.png" />
@@ -447,6 +448,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Images\Exchange.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Images\AdvancedRecordset.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

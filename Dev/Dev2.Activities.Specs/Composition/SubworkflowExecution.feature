@@ -8,7 +8,15 @@ Background: Setup for subworkflow execution
 			Given Debug events are reset
 			And Debug states are cleared
 
-
+Scenario: Executing mySql For Xml testing workflow base
+	  Given I have a workflow "Testing - mySql For Xml"
+	  And "Testing - mySql For Xml" contains "TestmySqlReturningXml" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - mySql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "TestmySqlReturningXml" in Workflow "TestmySqlReturningXml" debug outputs as
+	  |                     |
+	  | [[Result]] = Passed |
 Scenario: Workflow with an assign and remote workflow
 	Given I have a workflow "TestAssignWithRemoteWF"
 	 And "TestAssignWithRemoteWF" contains an Assign "AssignData" as
@@ -124,6 +132,26 @@ Examples:
 | RecToBlank                 | [[rec().in]]   | hello       | [[rec().in]]   | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 | ScalToBlank                | [[var]]        | hello       | [[var]]        | InnerInput | InnerOutput |                | [[InnerInput]] = hello |                        |
 
+ Scenario: Executing Postgres For Xml testing workflow base
+	  Given I have a workflow "Testing - Sql For Xml"
+	  And "Testing - Sql For Xml" contains "TestPostgresReturningXml" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Sql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "TestPostgresReturningXml" in Workflow "TestPostgresReturningXml" debug outputs as
+	  |                     |
+	  | [[Result]] = Passed |
+
+ Scenario: Executing Oracle For Xml testing workflow base
+	  Given I have a workflow "Testing - Sql For Xml"
+	  And "Testing - Sql For Xml" contains "TestOracleReturningXml" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Sql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "TestOracleReturningXml" in Workflow "TestOracleReturningXml" debug outputs as
+	  |                     |
+	  | [[Result]] = Passed |
+
  Scenario: Executing Sql For Xml testing workflow base
 	  Given I have a workflow "Testing - Sql For Xml"
 	  And "Testing - Sql For Xml" contains "TestSqlReturningXml" from server "localhost" with mapping as
@@ -132,6 +160,27 @@ Examples:
 	  Then the workflow execution has "NO" error
 	  And the "TestSqlReturningXml" in Workflow "TestSqlReturningXml" debug outputs as
 	  |                     |
+	  | [[Result]] = Passed |
+	  
+
+ Scenario: Executing Advanced Recordset testing workflow Extended
+	  Given I have a workflow "Testing - Advanced Recordset"
+	  And "Testing - Advanced Recordset" contains "AdvancedRecordsetAcceptanceTest2" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Sql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "AdvancedRecordsetAcceptanceTest2" in Workflow "AdvancedRecordsetAcceptanceTest2" debug outputs as
+	  |                      |
+	  | [[Result]] = Passed |
+
+ Scenario: Executing Advanced Recordset testing workflow
+	  Given I have a workflow "Testing - Advanced Recordset"
+	  And "Testing - Advanced Recordset" contains "AdvancedRecordsetAcceptanceTest" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - Sql For Xml" is executed
+	  Then the workflow execution has "NO" error
+	  And the "AdvancedRecordsetAcceptanceTest" in Workflow "AdvancedRecordsetAcceptanceTest" debug outputs as
+	  |                      |
 	  | [[Result]] = Passed |
 	  
  Scenario: Executing Sql Store Procedure Executese once
@@ -317,3 +366,14 @@ Scenario: Rabbit MQ Test
 	  And the "RabbitMQTest" in Workflow "RabbitMQ Tester WF" debug outputs as
 	  |                   |
 	  | [[result]] = Pass |
+
+	  
+Scenario: Executing WebGet Returning False
+	  Given I have a workflow "Testing - WebGet"
+	  And "Testing - WebGet" contains "GetWebResult" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Testing - WebGet" is executed
+	  Then the workflow execution has "NO" error
+	  And the "GetWebResult" in Workflow "GetWebResult" debug outputs as
+	  |                     |
+	  | [[Result]] = False |

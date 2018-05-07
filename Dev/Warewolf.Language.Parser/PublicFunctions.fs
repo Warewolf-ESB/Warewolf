@@ -29,9 +29,10 @@ let AddRecsetToEnv (name : string) (env : WarewolfEnvironment) =
         let b = CreateDataSet ""
         let a = { env with RecordSets = (Map.add name b env.RecordSets) }
         a
-///Evalutae an expression
+///Evaluate an expression
 let EvalEnvExpression (exp : string) (update : int) (shouldEscape:bool) (env : WarewolfEnvironment) = 
     EvaluationFunctions.eval env update shouldEscape exp
+
 ///eval and return positions
 let EvalWithPositions (exp : string) (update : int) (env : WarewolfEnvironment) = 
     EvaluationFunctions.evalWithPositions env update exp
@@ -212,4 +213,62 @@ let EvalEnv (env : WarewolfEnvironment) =
                 yield ","
             i <- i + 1
         yield "}}"
+    }
+
+let EvalEnvExpressionToRecordSet (name : string) (update : int) (env : WarewolfEnvironment) =
+    let buffer = EvaluationFunctions.parseLanguageExpression name update
+    match buffer with
+    | RecordSetNameExpression a when env.RecordSets.ContainsKey a.Name -> EvaluationFunctions.evalDataSetExpression env update a
+    | _ -> raise (new Dev2.Common.Common.NullValueInVariableException("recordset not found",EvaluationFunctions.languageExpressionToString buffer))
+
+let EvalEnvExpressionToArrayTable (name : string) (update : int) (env : WarewolfEnvironment) (throwsifnotexists : bool) =
+    let buildRow (list : list<WarewolfAtom list>) =
+        match list with
+        | [] -> [| |]
+        | _ :: tail -> list |> List.map (fun x -> x.[0])
+                            |> List.toArray
+
+    let rec buildRows (fieldNamesRow : WarewolfAtom[]) (data : list<WarewolfAtom list>) =
+        seq {
+            if data.[0].Length > 0 then
+                yield buildRow data
+                yield! (buildRows fieldNamesRow (data |> List.map (fun x -> x |> List.tail)))
+        }
+
+    let buildRows (data : Map<WarewolfColumnHeader, WarewolfColumnData>) =
+        let dataWithoutHeader = data
+                                  |> Map.filter (fun columnHeader _ -> columnHeader.ToString() <> "WarewolfPositionColumn")
+                                  |> Map.fold (fun state key value -> List.append state [value]) []
+                                  |> List.map<WarewolfColumnData, WarewolfAtom list> (fun x -> [for y in x do yield y;])
+        let fieldNamesRow = data
+                                |> Map.filter (fun name _ -> name <> "WarewolfPositionColumn")
+                                |> Map.fold (fun state key value -> List.append state [key]) []
+                                |> List.map (fun header -> WarewolfAtom.DataString(string header))
+                                |> List.toArray
+
+        seq {
+            yield fieldNamesRow
+            yield! (buildRows fieldNamesRow dataWithoutHeader)
+        }
+
+    let recordset = EvalEnvExpressionToRecordSet name update env;
+    try
+        match recordset with
+        | WarewolfRecordSetResult recordsetResult ->
+            buildRows recordsetResult.Data
+        | _ -> raise (new Dev2.Common.Common.NullValueInVariableException("recordset not found","recordset"))
+    with
+    | ex when throwsifnotexists -> raise ex
+    | _ when not throwsifnotexists -> null
+
+///Evaluate an expression to a Table
+let EvalEnvExpressionToTable (name : string) (update : int) (env : WarewolfEnvironment) (throwsifnotexists : bool) =
+    seq {
+        let table = EvalEnvExpressionToArrayTable name update env throwsifnotexists;
+
+        let fieldNames = Seq.take 1 table |> Seq.exactlyOne |> Array.map (fun x -> string x)
+
+        for row in (table |> Seq.skip 1) do
+            let assocRow = Array.zip fieldNames row
+            yield assocRow
     }

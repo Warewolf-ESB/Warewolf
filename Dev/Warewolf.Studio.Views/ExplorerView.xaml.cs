@@ -19,6 +19,8 @@ namespace Warewolf.Studio.Views
         public ExplorerView()
         {
             InitializeComponent();
+            Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Arrange(new Rect(new Size(ActualWidth, ActualHeight)));
         }
 
         Point _startPoint;
@@ -239,15 +241,13 @@ namespace Warewolf.Studio.Views
                     return;
                 }
 
-                var explorerItemViewModel = ExplorerTree.SelectedItem as ExplorerItemViewModel;
-                var environmentViewModel = ExplorerTree.SelectedItem as EnvironmentViewModel;
-                if (explorerItemViewModel != null && explorerItemViewModel.IsSelected)
+                if (ExplorerTree.SelectedItem is ExplorerItemViewModel explorerItemViewModel && explorerItemViewModel.IsSelected)
                 {
                     explorerItemViewModel.IsSelected = false;
                 }
                 else
                 {
-                    if (environmentViewModel != null && environmentViewModel.IsSelected)
+                    if (ExplorerTree.SelectedItem is EnvironmentViewModel environmentViewModel && environmentViewModel.IsSelected)
                     {
                         environmentViewModel.IsSelected = false;
                     }

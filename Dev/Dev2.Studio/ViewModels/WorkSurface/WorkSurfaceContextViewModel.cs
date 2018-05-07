@@ -60,7 +60,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         AuthorizeCommand _viewInBrowserCommand;
         AuthorizeCommand _debugCommand;
         AuthorizeCommand _runCommand;
-        AuthorizeCommand _saveCommand;
+        AuthorizeCommand _saveCommand;        
         AuthorizeCommand _quickDebugCommand;
         AuthorizeCommand _quickViewInBrowserCommand;
 
@@ -278,7 +278,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         }
 
         #region commands
-
+        
         public AuthorizeCommand SaveCommand => _saveCommand ??
                        (_saveCommand = new AuthorizeCommand(AuthorizationContext.Contribute, param => Save(), param => CanSave()));
 

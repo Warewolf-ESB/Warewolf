@@ -36,11 +36,6 @@ namespace Dev2.Services.Sql
             
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                var type = row["proretset"];
-                if (type.ToString().ToUpperInvariant() == "FALSE")
-                {
-                    continue;
-                }
                 var fullProcedureName = row["Name"].ToString();
 
                 if (row["Db"].ToString() == dbName)
@@ -140,8 +135,26 @@ namespace Dev2.Services.Sql
 
             return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
+		public DataSet FetchDataSet(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
 
-        public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
+			return _factory.FetchDataSet(command);
+		}
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteNonQuery(command);
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteScalar(command);
+		}
+		public DataTable FetchDataTable(IDbDataParameter[] parameters, IEnumerable<IDbDataParameter> outparameters)
         {
             VerifyConnection();
             AddParameters(_command, parameters);

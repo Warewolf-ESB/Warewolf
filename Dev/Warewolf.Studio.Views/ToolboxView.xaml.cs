@@ -18,6 +18,9 @@ namespace Warewolf.Studio.Views
         public ToolboxView()
         {
             InitializeComponent();
+            Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Arrange(new Rect(new Size(ActualWidth, ActualHeight)));
+
             PreviewDragOver += DropPointOnDragEnter;
         }
 

@@ -79,7 +79,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                         returnData = null;
                     }
                     else if (segmentIndex == 0 && pathSegments.Count == 1 &&
-                             currentElement.Name == pathSegments[segmentIndex].ActualSegment)
+                             currentElement.Name.LocalName == pathSegments[segmentIndex].ActualSegment)
                     {
                         returnData = currentElement.Value;
                     }

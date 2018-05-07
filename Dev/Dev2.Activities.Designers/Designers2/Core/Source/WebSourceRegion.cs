@@ -237,6 +237,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                         region.ObjectResult = string.Empty;
                         region.IsObject = false;
                         region.ObjectName = string.Empty;
+                        
                     }
                 }
                 RestoreIfPrevious(value);
