@@ -327,10 +327,9 @@ namespace Dev2.Studio.ViewModels
 			var vm = new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, dbSourceViewModel, _shellViewModel.PopupProvider, view, ActiveServer);
 
 			workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OdbcSource, selectedSource.Id);
-
-			var key = workSurfaceKey as WorkSurfaceKey;
-			var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
-			OpeningWorkflowsHelper.AddWorkflow(key);
+            
+			var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
+			OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
 			AddAndActivateWorkSurface(workSurfaceContextViewModel);
 		}
 
