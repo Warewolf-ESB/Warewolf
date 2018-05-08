@@ -13,6 +13,7 @@ using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Data.Util;
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Tests.Parsers
 {
@@ -70,7 +71,7 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
             var concurrentDictionary = new ConcurrentDictionary<string, IList<IIntellisenseResult>>();
-            var tryAdd = concurrentDictionary.TryAdd("[[a]]", new List<IIntellisenseResult>() { IntellisenseFactory.CreateErrorResult(1, 2, null, "", enIntellisenseErrorCode.FieldNotFound, false) });
+            var tryAdd = concurrentDictionary.TryAdd("[[a]]", new List<IIntellisenseResult> { IntellisenseFactory.CreateErrorResult(1, 2, null, "", enIntellisenseErrorCode.FieldNotFound, false) });
 
             Assert.IsTrue(tryAdd);
             var fieldInfo = typeof(Dev2DataLanguageParser).GetField("_expressionCache", BindingFlags.Static | BindingFlags.NonPublic);
@@ -132,7 +133,7 @@ namespace Dev2.Data.Tests.Parsers
             var obj = new object();
             lock (obj)
             {
-                var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist, false, new IntellisenseFilterOpsTO() { FilterType = enIntellisensePartType.RecordsetsOnly });
+                var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist, false, new IntellisenseFilterOpsTO { FilterType = enIntellisensePartType.RecordsetsOnly });
             }
 
         }
@@ -207,7 +208,7 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new ParserHelperUtil();
             try
             {
-                parser.CheckValidIndex(new ParseTO() { }, "a", 1, 2);
+                parser.CheckValidIndex(new ParseTO(), "a", 1, 2);
             }
             catch (Exception ex)
             {
@@ -222,7 +223,7 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new ParserHelperUtil();
             try
             {
-                parser.CheckValidIndex(new ParseTO() { }, "-1", 1, 2);
+                parser.CheckValidIndex(new ParseTO(), "-1", 1, 2);
             }
             catch (Exception ex)
             {
@@ -235,7 +236,7 @@ namespace Dev2.Data.Tests.Parsers
         public void CheckValidIndex_ValidIndex_ShouldMarkAsValid()
         {
             var parser = new ParserHelperUtil();
-            var valid = parser.CheckValidIndex(new ParseTO() { }, "1", 1, 2);
+            var valid = parser.CheckValidIndex(new ParseTO(), "1", 1, 2);
             Assert.IsTrue(valid, "Valid recordset index marked as invalid.");
         }
 
@@ -246,7 +247,7 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new ParserHelperUtil();
             try
             {
-                parser.CheckCurrentIndex(new ParseTO() { }, 0, "rec(a).name", "a".Length);
+                parser.CheckCurrentIndex(new ParseTO(), 0, "rec(a).name", "a".Length);
             }
             catch (Exception ex)
             {
@@ -261,7 +262,7 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new ParserHelperUtil();
             try
             {
-                parser.CheckCurrentIndex(new ParseTO() { }, 3, "rec(-1)", "rec(-1)".Length);
+                parser.CheckCurrentIndex(new ParseTO(), 3, "rec(-1)", "rec(-1)".Length);
             }
             catch (Exception ex)
             {
@@ -274,7 +275,7 @@ namespace Dev2.Data.Tests.Parsers
         public void CheckCurrentIndex_GivenPositiveIndex_ShouldMarkAsValid()
         {
             var parser = new ParserHelperUtil();
-            var invoke = parser.CheckCurrentIndex(new ParseTO() { }, 3, "rec(1)", "rec(1)".Length);
+            var invoke = parser.CheckCurrentIndex(new ParseTO(), 3, "rec(1)", "rec(1)".Length);
             Assert.IsTrue(invoke, "Positive recordset index marked as invalid.");
         }
 
@@ -285,7 +286,7 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
             var privateObject = new PrivateObject(parser);
-            var parseTO = new ParseTO() { Payload = "rec(-1)", EndIndex = "rec(-1)".Length, StartIndex = 3 };
+            var parseTO = new ParseTO { Payload = "rec(-1)", EndIndex = "rec(-1)".Length, StartIndex = 3 };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             try
@@ -298,7 +299,7 @@ namespace Dev2.Data.Tests.Parsers
                 Assert.AreEqual("Recordset index -1 is not greater than zero", ex.InnerException.Message);
                 try
                 {
-                    parseTO = new ParseTO() { Payload = "rec(-1", EndIndex = "rec(-1".Length, StartIndex = 3 };
+                    parseTO = new ParseTO { Payload = "rec(-1", EndIndex = "rec(-1".Length, StartIndex = 3 };
                     //---------------Test Result -----------------------
                     privateObject.Invoke("IsValidIndex", parseTO);
                 }
@@ -307,7 +308,7 @@ namespace Dev2.Data.Tests.Parsers
                     Assert.AreEqual("Recordset index [ -1 ] is not greater than zero", ex1.InnerException.Message);
                     try
                     {
-                        parseTO = new ParseTO() { Payload = "rec(1", EndIndex = "rec(1".Length, StartIndex = 3 };
+                        parseTO = new ParseTO { Payload = "rec(1", EndIndex = "rec(1".Length, StartIndex = 3 };
                         //---------------Test Result -----------------------
                         privateObject.Invoke("IsValidIndex", parseTO);
                     }
@@ -378,9 +379,9 @@ namespace Dev2.Data.Tests.Parsers
             var privateObject = new PrivateObject(parser);
             var refParts = new List<IDev2DataLanguageIntellisensePart> { new Dev2DataLanguageIntellisensePart("Rec().Name", "rec", null) };
             var result = new List<IIntellisenseResult>();
-            var parseTO = new ParseTO()
+            var parseTO = new ParseTO
             {
-                Parent = new ParseTO() { Payload = "rec().Name" }
+                Parent = new ParseTO { Payload = "rec().Name" }
             };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -409,9 +410,9 @@ namespace Dev2.Data.Tests.Parsers
             var children = new List<IDev2DataLanguageIntellisensePart> { new Dev2DataLanguageIntellisensePart("name", "name", new List<IDev2DataLanguageIntellisensePart>()) };
             refParts.Add(new Dev2DataLanguageIntellisensePart("Rec().Name", "rec", children));
             var result = new List<IIntellisenseResult>();
-            var parseTO = new ParseTO()
+            var parseTO = new ParseTO
             {
-                Parent = new ParseTO() { Payload = "Name" },
+                Parent = new ParseTO { Payload = "Name" },
 
             };
             //---------------Assert Precondition----------------
@@ -437,9 +438,9 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Set up test pack-------------------
             //ProcessRecordSetFields(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
             var parser = new Dev2DataLanguageParser();
-            var parseTO = new ParseTO()
+            var parseTO = new ParseTO
             {
-                Parent = new ParseTO() { Payload = "Name" },
+                Parent = new ParseTO { Payload = "Name" },
 
             };
             var languageIntellisensePart = new Dev2DataLanguageIntellisensePart("Name", "Desc", new List<IDev2DataLanguageIntellisensePart>());
@@ -466,9 +467,9 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Set up test pack-------------------
             //ProcessRecordSetFields(ParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
             var parser = new Dev2DataLanguageParser();
-            var parseTO = new ParseTO()
+            var parseTO = new ParseTO
             {
-                Parent = new ParseTO() { Payload = "Name" },
+                Parent = new ParseTO { Payload = "Name" },
 
             };
             var languageIntellisensePart = new Dev2DataLanguageIntellisensePart("Name", "Desc", new List<IDev2DataLanguageIntellisensePart>());
@@ -494,15 +495,15 @@ namespace Dev2.Data.Tests.Parsers
         {
             //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
-            var parseTO = new ParseTO()
+            var parseTO = new ParseTO
             {
-                Parent = new ParseTO() { Payload = "Name" },
+                Parent = new ParseTO { Payload = "Name" },
 
             };
 
-            var parseTORecSet = new ParseTO()
+            var parseTORecSet = new ParseTO
             {
-                Parent = new ParseTO() { Payload = "rec().Name" },
+                Parent = new ParseTO { Payload = "rec().Name" },
                 Payload = "rec().Name"
             };
             var intellisenseParts = new List<IDev2DataLanguageIntellisensePart>();
@@ -545,5 +546,229 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Test Result -----------------------
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseWithCData()
+        {
+            //---------------Set up test pack-------------------
+            //RecordsetMatch(IList<IIntellisenseResult> result, string rawSearch, string search)
+            var parser = new Dev2DataLanguageParser();
+            const string text = @"<![CDATA[[[]]]]>";
+            var parts = parser.ParseExpressionIntoParts(text, new List<IDev2DataLanguageIntellisensePart>());
+            Assert.AreEqual(parts.Count, 1);
+            Assert.AreEqual(parts[0].Type, enIntellisenseResultType.Error);
+            Assert.AreEqual(parts[0].ErrorCode, enIntellisenseErrorCode.SyntaxError);
+            Assert.AreEqual(parts[0].Message, ErrorResource.VariableIsMissing);
+
+            const string textNoBrackets = @"Some text[[";
+            parts = parser.ParseExpressionIntoParts(textNoBrackets, new List<IDev2DataLanguageIntellisensePart>());
+            Assert.AreEqual(parts.Count, 1);
+            Assert.AreEqual(parts[0].Type, enIntellisenseResultType.Error);
+            Assert.AreEqual(parts[0].ErrorCode, enIntellisenseErrorCode.SyntaxError);
+            Assert.AreEqual(parts[0].Message, ErrorResource.InvalidCloseRegion);
+
+            const string textWithAuto = @"[[varName]]";
+            parts = parser.ParseExpressionIntoParts(textWithAuto, new List<IDev2DataLanguageIntellisensePart>());
+            Assert.AreEqual(parts.Count, 1);
+            Assert.AreEqual(enIntellisenseResultType.Error, parts[0].Type);
+            Assert.AreEqual(enIntellisenseErrorCode.ScalarNotFound, parts[0].ErrorCode);
+            Assert.AreEqual(" [[varName]] does not exist in your variable list", parts[0].Message);
+
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_ErrorOnUnclosed()
+        {
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName([[varName)]]", null, true, null, true);
+            Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Error, result[0].Type);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_EmptyHangingOpen()
+        {
+            const string dataList = @"<doc><recName Description=""RecName Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[", dataList, false, null, false);
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual("RecName Description / Select this variable", result[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_EmptyClosed()
+        {
+            const string dataList = @"<doc><recName Description=""RecName Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[[[]]]]", dataList, false, null, false);
+            Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Error, result[0].Type);
+            Assert.AreEqual("Variable [[]] is missing a name", result[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_OneMatch()
+        {
+            const string dataList = @"<doc><recName Description=""RecName Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recNam]]", dataList, false, null, true);
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual("RecName Description", result[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_NoFieldMatchInValidRecordset()
+        {
+            const string dataList = @"<doc><recName Description=""RecName Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName().field]]", dataList, false, null, true);
+
+            // Note: studio does not allow recordsets with no fields
+            Assert.AreEqual(enIntellisenseErrorCode.NeitherRecordsetNorFieldFound, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Error, result[0].Type);
+            Assert.AreEqual("[[recName()]] does not exist in your variable list", result[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_OneMatchWithParent()
+        {
+            const string dataList = @"<doc><recName Description=""RecName Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName([[recName([[index).field]]", dataList, false, null, true);
+
+            // TODO: surely this should show an error indicating that the field was not found in the recordset?
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual("RecName Description", result[0].Message);
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_OneMatchNoParent()
+        {
+            const string dataList = @"<doc><recName Description=""RecName Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName([[index).field]]", dataList, false, null, true);
+
+            // TODO: surely this should show an error indicating that the field was not found in the recordset?
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual("RecName Description", result[0].Message);
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_OneMatchNoParent2()
+        {
+            const string dataList = @"<doc><recName Description=""RecName Description""></recName></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName([[recName).field]]", dataList, false, null, true);
+
+            // TODO: surely this should show an error indicating that the field was not found in the recordset?
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual("RecName Description", result[0].Message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_TwoMatchingFields()
+        {
+            const string dataList = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName1", dataList, false, null, true);
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual("RecName1 Description", result[0].Message);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[1].Type);
+            Assert.AreEqual("field1 Desc", result[1].Message);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[2].Type);
+            Assert.AreEqual("field1 Desc", result[2].Message);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[3].Type);
+            Assert.AreEqual("field2 Desc", result[3].Message);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[4].Type);
+            Assert.AreEqual("field2 Desc", result[4].Message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_TwoMatches()
+        {
+            const string dataList = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName1.field", dataList, false, null, true);
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual("field1 Desc", result[0].Message);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[2].Type);
+            Assert.AreEqual("field2 Desc", result[2].Message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_NoFieldMatches()
+        {
+            const string dataList = @"<doc><recName1 Description=""RecName1 Description""><field1 Description=""field1 Desc"" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName1.Name", dataList, false, null, true);
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseDataLanguageForIntellisense_BlankDescriptions()
+        {
+            const string dataList = @"<doc><recName1 Description=""""><field1 Description="""" /><field2 Description=""field2 Desc"" /></recName1><recName2 Description=""RecName2 Description"" /></doc>";
+
+            var parser = new Dev2DataLanguageParser();
+            var result = parser.ParseDataLanguageForIntellisense("[[recName1.field", dataList, false, null, true);
+            Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
+            Assert.AreEqual(" Input: Use last row, Result: Append new record", result[0].Message);
+            Assert.AreEqual(enIntellisenseResultType.Selectable, result[2].Type);
+            Assert.AreEqual("field2 Desc", result[2].Message);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Dev2DataLanguageParser_ParseExpressionIntoParts()
+        {
+            //---------------Set up test pack-------------------
+            //RecordsetMatch(IList<IIntellisenseResult> result, string rawSearch, string search)
+            var parser = new Dev2DataLanguageParser();
+            const string nullText = null;
+
+            var emptyList = parser.MakeParts(nullText, true);
+            Assert.AreEqual(emptyList.Count, 0);
+
+            var parts = parser.ParseForActivityDataItems(nullText);
+            Assert.AreEqual(parts.Count, 0);
+
+            const string unclosed = "[[varName";
+            parts = parser.ParseForActivityDataItems(unclosed);
+            Assert.AreEqual(parts[0], "varName");
+
+            Assert.ThrowsException<Dev2DataLanguageParseError>(() => parser.MakeParts(unclosed, true));
+        }
     }
 }
