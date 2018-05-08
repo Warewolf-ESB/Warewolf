@@ -25,7 +25,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
             var json = @"""Name""";
             var paths = jsonMapper.Map(json);
             
-            Assert.AreEqual(JsonPath.SeperatorSymbol, paths.FirstOrDefault().ToString(), "JSON mapper cannot parse JSON primitives.");
+            Assert.AreEqual("String", paths.FirstOrDefault().ToString(), "JSON mapper cannot parse JSON primitives.");
         }
 
         [TestMethod]
