@@ -75,14 +75,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public IWorkSurfaceKey WorkSurfaceKey { get; }
 
-        public IServer Environment
-        {
-            get
-            {
-                var environmentModel = ContextualResourceModel?.Environment;
-                return environmentModel;
-            }
-        }
+        public IServer Environment => ContextualResourceModel?.Environment;
 
         public DebugOutputViewModel DebugOutputViewModel
         {
