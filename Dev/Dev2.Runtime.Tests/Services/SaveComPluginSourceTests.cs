@@ -180,6 +180,32 @@ namespace Dev2.Tests.Runtime.Services
             catalog.Verify(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName));
             catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), comPluginSource, It.IsAny<string>()));
         }
-       
+
+        [TestMethod]
+        public void DllListing_GetHashCode_CorrectlyHashedObject()
+        {
+            var dllListing = new DllListing
+            {
+                Name = "Development",
+                ClsId = "DevClsid"
+            };
+            Assert.AreEqual(-1908201757, dllListing.GetHashCode(), "Cannot get correct hash code for this object.");
+        }
+
+        [TestMethod]
+        public void DllListing_EqualsOperator_WithEqualObjects_AreEqual()
+        {
+            var firstDllListing = new DllListing { Name = "bravo" };
+            var secondDllListing = new DllListing { Name = "bravo" };
+            Assert.IsTrue(firstDllListing == secondDllListing, "Equals operator doesnt work.");
+        }
+
+        [TestMethod]
+        public void DllListing_NotEqualsOperator_WithNotEqualObjects_AreNotEqual()
+        {
+            var firstDllListing = new DllListing { Name = "bravo" };
+            var secondDllListing = new DllListing { Name = "charlie" };
+            Assert.IsTrue(firstDllListing != secondDllListing, "Not equals operator doesnt work.");
+        }
     }
 }
