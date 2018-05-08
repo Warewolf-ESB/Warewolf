@@ -99,30 +99,7 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource url)
         {
-            var client = CreateClient(head, query, url);
-            var result = client.DownloadString(url.Address + query);
-            return result;
-        }
-
-        WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
-        {
-            var webclient = new WebClient();
-            foreach (var nameValue in head)
-            {
-                if (!String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
-                {
-                    webclient.Headers.Add(nameValue.Name, nameValue.Value);
-                }
-            }
-
-            if (source.AuthenticationType == AuthenticationType.User)
-            {
-                webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
-            }
-
-            webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
-            webclient.BaseAddress = source.Address + query;
-            return webclient;
+            return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
         }
 
         #endregion
