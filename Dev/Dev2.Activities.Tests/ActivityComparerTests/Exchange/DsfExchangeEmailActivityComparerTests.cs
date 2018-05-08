@@ -1,7 +1,6 @@
 ﻿using System;
 using Dev2.Activities.Exchange;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
