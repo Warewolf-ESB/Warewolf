@@ -67,5 +67,6 @@ namespace Dev2.Studio.Interfaces
         IExplorerTreeItem FindByPath(string path);
 
         ObservableCollection<IExplorerItemViewModel> CreateExplorerItemModels(IEnumerable<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy);
+        IExplorerItemViewModel CreateExplorerItemFromResource(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IContextualResourceModel explorerItem);
     }
 }

@@ -2712,8 +2712,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (environmentViewModel != null)
             {
                 var item = environmentViewModel.FindByPath(resourceModel.GetSavePath());
-                var viewModel = environmentViewModel as EnvironmentViewModel;
-                var savedItem = viewModel?.CreateExplorerItemFromResource(environmentViewModel.Server, item, false, false, resourceModel);
+                var savedItem = environmentViewModel?.CreateExplorerItemFromResource(environmentViewModel.Server, item, false, false, resourceModel);
                 item.AddChild(savedItem);
             }
             resourceModel.IsWorkflowSaved = true;
