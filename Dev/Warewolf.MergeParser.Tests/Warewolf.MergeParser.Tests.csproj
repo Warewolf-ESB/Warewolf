@@ -73,6 +73,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ParserTestHelper.cs" />
     <Compile Include="ParseServiceForDifferencesTests.cs" />
     <Compile Include="XML Parser\XmlResource.cs" />
   </ItemGroup>
