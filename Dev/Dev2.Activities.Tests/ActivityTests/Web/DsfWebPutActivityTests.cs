@@ -6,6 +6,7 @@ using Dev2.Activities;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -26,10 +27,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     [TestClass]
     public class DsfWebPuttActivityTests
     {
-        const string userAgent = "user-agent";
-        const string contentType = "Content-Type";
-        const string userAgent1 = "Mozilla/4.0";
-        const string userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+        const string _userAgent = "user-agent";
+        const string _contentType = "Content-Type";
+        const string _userAgent1 = "Mozilla/4.0";
+        const string _userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -558,6 +559,40 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual("text/json", allContentValues.ToList()[0]);
         }
 
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebPutActivity_Execute")]
+        public void DsfWebPutActivity_Execute_ErrorResponse_ShouldSetVariables()
+        {
+            //------------Setup for test--------------------------
+            const string response = "{\"Message\":\"Error\"}";
+            var dsfWebPutActivity = new DsfWebPutActivity();
+            dsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var webSource = new WebSource();
+            webSource.Address = "http://rsaklfsvrtfsbld:9910/api/";
+            webSource.AuthenticationType = AuthenticationType.Anonymous;
+            mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webSource);
+            dsfWebPutActivity.ResourceCatalog = mockResourceCatalog.Object;
+            var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Message", "[[Message]]", "") };
+            dsfWebPutActivity.Outputs = serviceOutputs;
+            var serviceXml = XmlResource.Fetch("WebService");
+            var service = new WebService(serviceXml) { RequestResponse = response };
+            dsfWebPutActivity.OutputDescription = service.GetOutputDescription();
+
+            dsfWebPutActivity.QueryString = "Error";
+
+            dsfWebPutActivity.SourceId = Guid.Empty;
+            dsfWebPutActivity.Headers = new List<INameValue>();
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.EsbChannel = new MockEsb();
+            //------------Execute Test---------------------------
+            dsfWebPutActivity.Execute(dataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Error", ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval("[[Message]]", 0)));
+        }
+
         /* [TestMethod]
          [Owner("Nkosinathi Sangweni")]
          public void PerfomWebRequest_GivenLiveUrl_ShouldReturnResponse()
@@ -600,7 +635,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
         public string ResponseFromWeb { private get; set; }
 
-        protected override string PerformWebPostRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
+        protected override string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource source, string putData)
         {
             Head = head;
             QueryRes = query;
