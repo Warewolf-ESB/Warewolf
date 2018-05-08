@@ -79,6 +79,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set a local variable to be used in the SQL Query..
+        /// </summary>
+        public static string AdvancedRecordsetLocalVariable {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetLocalVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SQL query.
+        /// </summary>
+        public static string AdvancedRecordsetSqlQuery {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetSqlQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the output of the execution if any. Varies depending on what was executed..
+        /// </summary>
+        public static string AdvancedRecordsetSqlQueryExecuteCommand {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetSqlQueryExecuteCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value of the local variable to be used in SQL Query. Scalar variables can be used as a value..
+        /// </summary>
+        public static string AdvancedRecordsetVariable {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect using anonymous security credentials.
         /// </summary>
         public static string AnonymousAuthenticationToolTip {
@@ -5593,7 +5629,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web delete.
         /// </summary>
         public static string Tool_WebMethod_Delete {
             get {
@@ -5602,7 +5638,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web get.
         /// </summary>
         public static string Tool_WebMethod_Get {
             get {
@@ -5611,7 +5647,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web post.
         /// </summary>
         public static string Tool_WebMethod_Post {
             get {
@@ -5620,7 +5656,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web put.
         /// </summary>
         public static string Tool_WebMethod_Put {
             get {

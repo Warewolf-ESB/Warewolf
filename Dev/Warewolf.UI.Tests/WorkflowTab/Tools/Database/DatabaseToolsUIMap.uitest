@@ -2604,6 +2604,435 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
+                                                            <UIObject ControlType="Custom" Id="AdvancedRecordset" FriendlyName="AdvancedRecordsetActivity" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.AdvancedRecordsetDesigner</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">Advanced Recordset(AdvancedRecordsetDesigner)</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="Custom" Id="LargeView" FriendlyName="LargeViewContent" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                    <PropertyCondition Name="ClassName">Uia.Large</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">LargeViewContent</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Table" Id="DeclareVariablesDataTable" FriendlyName="DeclareVariablesDataGrid" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">DeclareVariablesDataGrid</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Row" Id="ActivityGridRow" FriendlyName="UI_ActivityGridRow__AutoID" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <SearchConfigurations>
+                                                                            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                                          </SearchConfigurations>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">UI_ActivityGridRow__AutoID</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants>
+                                                                            <UIObject ControlType="Cell" Id="ColumnDisplayCell" FriendlyName="Item: , Column Display Index: 0" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_CellColumn0</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants>
+                                                                                <UIObject ControlType="Text" Id="DeclareText" FriendlyName="Declare @ " SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                                                    <PropertyCondition Name="Name">Declare @ </PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants />
+                                                                                </UIObject>
+                                                                              </Descendants>
+                                                                            </UIObject>
+                                                                            <UIObject ControlType="Cell" Id="ItemColumnDisplayIndCell" FriendlyName="Item: , Column Display Index: 1" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                                <PropertyCondition Name="ColumnIndex">1</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants>
+                                                                                <UIObject ControlType="ComboBox" Id="LocalVariable" FriendlyName="UI_TextBox_AutoID" SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                                    <PropertyCondition Name="AutomationId">UI_TextBox_AutoID</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants>
+                                                                                    <UIObject ControlType="Edit" Id="TextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                                      <WindowTitles>
+                                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                      </WindowTitles>
+                                                                                      <AndCondition>
+                                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                                      </AndCondition>
+                                                                                      <SupportLevel>0</SupportLevel>
+                                                                                      <Descendants />
+                                                                                    </UIObject>
+                                                                                  </Descendants>
+                                                                                </UIObject>
+                                                                              </Descendants>
+                                                                            </UIObject>
+                                                                            <UIObject ControlType="Cell" Id="ItemColumnDisplayCell1" FriendlyName="Item: , Column Display Index: 3" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                                <PropertyCondition Name="ColumnIndex">3</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_CellColumn3</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants>
+                                                                                <UIObject ControlType="ComboBox" Id="Variable" FriendlyName="AdvancedRecordsetVariable" SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                                    <PropertyCondition Name="HelpText">AdvancedRecordsetVariable</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants>
+                                                                                    <UIObject ControlType="Edit" Id="TextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                                      <WindowTitles>
+                                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                      </WindowTitles>
+                                                                                      <AndCondition>
+                                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                                      </AndCondition>
+                                                                                      <SupportLevel>0</SupportLevel>
+                                                                                      <Descendants />
+                                                                                    </UIObject>
+                                                                                  </Descendants>
+                                                                                </UIObject>
+                                                                              </Descendants>
+                                                                            </UIObject>
+                                                                          </Descendants>
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="Button" Id="GenerateOutputsButton" FriendlyName="Generate Outputs" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">SqlQueryExecuteButton</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="ComboBox" Id="QueryComboBox" FriendlyName="UI__sqlquerytxt_AutoID" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">UI__sqlquerytxt_AutoID</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Edit" Id="TextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="Table" Id="OutputsMappingDataGrTable" FriendlyName="OutputsMappingDataGrid" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">OutputsMappingDataGrid</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Row" Id="ItemRow" FriendlyName="" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <SearchConfigurations>
+                                                                            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                                          </SearchConfigurations>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants>
+                                                                            <UIObject ControlType="Cell" Id="Row1Cell" FriendlyName="Item: Warewolf.Core.ServiceOutputMapping, Column D..." SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="ColumnHeader">Mapped To</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants>
+                                                                                <UIObject ControlType="ComboBox" Id="Row1Combobox" FriendlyName="The default value to be used when mapping this fie..." SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                                    <PropertyCondition Name="HelpText">The default value to be used when mapping this field.</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants>
+                                                                                    <UIObject ControlType="Edit" Id="TextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                                      <WindowTitles>
+                                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                      </WindowTitles>
+                                                                                      <AndCondition>
+                                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                                      </AndCondition>
+                                                                                      <SupportLevel>0</SupportLevel>
+                                                                                      <Descendants />
+                                                                                    </UIObject>
+                                                                                  </Descendants>
+                                                                                </UIObject>
+                                                                              </Descendants>
+                                                                            </UIObject>
+                                                                          </Descendants>
+                                                                        </UIObject>
+                                                                        <UIObject ControlType="Row" Id="ItemRow2" FriendlyName="" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <SearchConfigurations>
+                                                                            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                                          </SearchConfigurations>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">2</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants>
+                                                                            <UIObject ControlType="Cell" Id="Row2Cell" FriendlyName="Item: Warewolf.Core.ServiceOutputMapping, Column D..." SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="ColumnHeader">Mapped To</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants>
+                                                                                <UIObject ControlType="ComboBox" Id="Row2ComboBox" FriendlyName="The default value to be used when mapping this fie..." SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                                    <PropertyCondition Name="HelpText">The default value to be used when mapping this field.</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants>
+                                                                                    <UIObject ControlType="Edit" Id="TextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                                      <WindowTitles>
+                                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                      </WindowTitles>
+                                                                                      <AndCondition>
+                                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                                      </AndCondition>
+                                                                                      <SupportLevel>0</SupportLevel>
+                                                                                      <Descendants />
+                                                                                    </UIObject>
+                                                                                  </Descendants>
+                                                                                </UIObject>
+                                                                              </Descendants>
+                                                                            </UIObject>
+                                                                          </Descendants>
+                                                                        </UIObject>
+                                                                        <UIObject ControlType="Row" Id="ItemRow3" FriendlyName="" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <SearchConfigurations>
+                                                                            <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                                          </SearchConfigurations>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="Instance">3</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants>
+                                                                            <UIObject ControlType="Cell" Id="Row3Cell" FriendlyName="Item: Warewolf.Core.ServiceOutputMapping, Column D..." SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="ColumnHeader">Mapped To</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_CellColumn1</PropertyCondition>
+                                                                                <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants>
+                                                                                <UIObject ControlType="ComboBox" Id="Row3ComboBox" FriendlyName="The default value to be used when mapping this fie..." SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                    <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                                    <PropertyCondition Name="HelpText">The default value to be used when mapping this field.</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants>
+                                                                                    <UIObject ControlType="Edit" Id="TextEdit" FriendlyName="Text" SpecialControlType="None">
+                                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                                      <WindowTitles>
+                                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                      </WindowTitles>
+                                                                                      <AndCondition>
+                                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                                        <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                                      </AndCondition>
+                                                                                      <SupportLevel>0</SupportLevel>
+                                                                                      <Descendants />
+                                                                                    </UIObject>
+                                                                                  </Descendants>
+                                                                                </UIObject>
+                                                                              </Descendants>
+                                                                            </UIObject>
+                                                                          </Descendants>
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="Edit" Id="RecordSetTextBoxEdit" FriendlyName="RecordSetTextBox" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">RecordSetTextBox</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                                <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                    <PropertyCondition Name="ClassName">Uia.Small</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">SmallViewContent</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
                                                           </Descendants>
                                                         </UIObject>
                                                       </Descendants>

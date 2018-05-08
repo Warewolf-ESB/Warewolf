@@ -129,19 +129,7 @@ namespace Dev2.Common.DependencyVisualization
                 var current = stack.Peek().GetNextDependency();
                 if (current != null)
                 {
-                    if (current.Node == this)
-                    {
-                        var nodes = stack.Select(info => info.Node);
-                        circularDependencies.Add(new CircularDependency(nodes));
-                    }
-                    else
-                    {
-                        var visited = stack.Any(info => info.Node == current.Node);
-                        if (!visited)
-                        {
-                            stack.Push(current);
-                        }
-                    }
+                    PushNodeToStack(circularDependencies, stack, current);
                 }
                 else
                 {
@@ -150,6 +138,23 @@ namespace Dev2.Common.DependencyVisualization
             }
 
             return circularDependencies;
+        }
+
+        private void PushNodeToStack(List<ICircularDependency> circularDependencies, Stack<NodeInfo> stack, NodeInfo current)
+        {
+            if (current.Node == this)
+            {
+                var nodes = stack.Select(info => info.Node);
+                circularDependencies.Add(new CircularDependency(nodes));
+            }
+            else
+            {
+                var visited = stack.Any(info => info.Node == current.Node);
+                if (!visited)
+                {
+                    stack.Push(current);
+                }
+            }
         }
 
         class NodeInfo

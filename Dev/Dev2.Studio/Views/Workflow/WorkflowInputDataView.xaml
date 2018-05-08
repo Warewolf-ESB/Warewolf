@@ -44,7 +44,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TabControl x:Name="TabItems" SelectionChanged="TabControlSelectionChanged" Style="{StaticResource TabControlStyle}">
+        <TabControl x:Name="TabItems" SelectionChanged="TryChangeTab" Style="{StaticResource TabControlStyle}">
             <TabItem Style="{StaticResource TabItemStyle}" AutomationProperties.AutomationId="UI_InputDataTab_AutoID" Header="Input Data" IsSelected="True">
                 <Grid>
                     <TextBlock HorizontalAlignment="Center" Text="Mark the Input checkbox in the variable window to set workflow inputs." />

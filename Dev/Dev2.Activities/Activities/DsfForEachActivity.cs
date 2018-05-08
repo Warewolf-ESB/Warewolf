@@ -385,20 +385,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                if (itr != null)
+                if (itr != null && ForEachType != enForEachType.NumOfExecution)
                 {
-                    if (ForEachType != enForEachType.NumOfExecution)
-                    {
-                        RestoreHandlerFn();
-                    }
+                    RestoreHandlerFn();
                 }
-                if (dataObject.IsServiceTestExecution)
+
+                if (dataObject.IsServiceTestExecution && _originalUniqueID == Guid.Empty)
                 {
-                    if (_originalUniqueID == Guid.Empty)
-                    {
-                        _originalUniqueID = Guid.Parse(UniqueID);
-                    }
+                    _originalUniqueID = Guid.Parse(UniqueID);
                 }
+
                 var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
                 if (dataObject.IsServiceTestExecution)
                 {
@@ -430,23 +426,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     DispatchDebugState(dataObject, StateType.Duration, 0);
                 }
+                HandleErrors(dataObject, allErrors);
+            }
+        }
+
+        private void HandleErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
+        {
+            if (allErrors.HasErrors())
+            {
+                dataObject.ParentInstanceID = _previousParentId;
+                dataObject.ForEachNestingLevel--;
+                dataObject.IsDebugNested = false;
                 // Handle Errors
                 if (allErrors.HasErrors())
                 {
-                    dataObject.ParentInstanceID = _previousParentId;
-                    dataObject.ForEachNestingLevel--;
-                    dataObject.IsDebugNested = false;
-                    // Handle Errors
-                    if (allErrors.HasErrors())
+                    DisplayAndWriteError("DsfForEachActivity", allErrors);
+                    foreach (var fetchError in allErrors.FetchErrors())
                     {
-                        DisplayAndWriteError("DsfForEachActivity", allErrors);
-                        foreach (var fetchError in allErrors.FetchErrors())
-                        {
-                            dataObject.Environment.AddError(fetchError);
-                        }
-
-                        dataObject.ParentInstanceID = _previousParentId;
+                        dataObject.Environment.AddError(fetchError);
                     }
+
+                    dataObject.ParentInstanceID = _previousParentId;
                 }
             }
         }

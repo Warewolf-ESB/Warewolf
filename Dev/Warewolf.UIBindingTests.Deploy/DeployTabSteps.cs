@@ -617,7 +617,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             var viewModel = GetViewModel();
             var deployStatsViewerViewModel = ScenarioContext.Current.Get<DeployStatsViewerViewModel>(statsString);
-            deployStatsViewerViewModel.Calculate(new List<IExplorerTreeItem>(viewModel.Source.SelectedItems));
+            deployStatsViewerViewModel.TryCalculate(new List<IExplorerTreeItem>(viewModel.Source.SelectedItems));
         }
 
         [Then(@"New Resource is ""(.*)""")]

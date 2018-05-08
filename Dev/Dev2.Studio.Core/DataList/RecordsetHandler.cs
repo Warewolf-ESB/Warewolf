@@ -42,30 +42,35 @@ namespace Dev2.Studio.Core.DataList
 
                     while (childrenCount < childrenNum)
                     {
-                        var child = recset.Children[childrenCount];
-                        if (child.Parent == null)
-                        {
-                            child.Parent = recset;
-                        }
-
-                        if (!string.IsNullOrWhiteSpace(child?.DisplayName))
-                        {
-                            var indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
-                            if (indexOfDot > -1)
-                            {
-                                var recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
-                                child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
-                            }
-                            else
-                            {
-                                child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
-                            }
-                            FixCommonNamingProblems(child);
-                        }
+                        FixCommonNamingProblems(recset, childrenCount);
                         childrenCount++;
                     }
                 }
                 recsetCount++;
+            }
+        }
+
+        static void FixCommonNamingProblems(IRecordSetItemModel recset, int childrenCount)
+        {
+            var child = recset.Children[childrenCount];
+            if (child.Parent == null)
+            {
+                child.Parent = recset;
+            }
+
+            if (!string.IsNullOrWhiteSpace(child?.DisplayName))
+            {
+                var indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
+                if (indexOfDot > -1)
+                {
+                    var recsetName = child.DisplayName.Substring(0, indexOfDot + 1);
+                    child.DisplayName = child.DisplayName.Replace(recsetName, child.Parent.DisplayName + ".");
+                }
+                else
+                {
+                    child.DisplayName = string.Concat(child.Parent.DisplayName, ".", child.DisplayName);
+                }
+                FixCommonNamingProblems(child);
             }
         }
 
