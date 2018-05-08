@@ -220,8 +220,8 @@ Scenario: Run Selected Test passed with assign teststep Passes
     And test name starts with "Test 1"
 	And I Add "testWebDelete" as TestStep
 	And I add StepOutputs as  
-	  	 | Variable Name | Condition | Value                                            |
-	  	 | [[Response]]  | =         | The task completed due to an unhandled exception |
+	  	 | Variable Name | Condition | Value |
+	  	 | [[Response]]  | =         |       |
 	When I save
 	And I run the test
 	Then test result is Passed
