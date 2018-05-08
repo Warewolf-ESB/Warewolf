@@ -23,6 +23,27 @@ namespace Warewolf.UI.Tests.Tabs
     {
         [TestMethod]
         [TestCategory("Tabs and Panes")]
+        public void Unpin2TabsByDraggingOnly()
+        {
+            Mouse.MouseDragSpeed = 1000;
+            Mouse.MouseMoveSpeed= 1000;
+            UIMap.Click_NewWorkflow_RibbonButton();
+            UIMap.Unpin_Tab_With_Drag(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            Mouse.Click(new Point(5, 5));
+            UIMap.Click_NewWorkflow_RibbonButton();            
+            UIMap.Unpin_Tab2_With_Drag(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
+            Mouse.Click(new Point(5, 5));
+            Mouse.Click(UIMap.MainStudioWindow.MinimizeStudioButton);
+            UIMap.Pin_Unpinned_Pane_To_Another_UnpinnedTab();
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.UnpinnedUnsaved2.Exists);
+            Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.UnpinnedUsaved1.Exists);
+            Mouse.MouseDragSpeed = 2500;
+            Mouse.MouseMoveSpeed = 2500;
+        }
+
+        [TestMethod]
+        [TestCategory("Tabs and Panes")]
         public void UnpinAndRepinNewWorkflowWizardTabByDraggingOnly()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
