@@ -5,11 +5,10 @@ using ICSharpCode.SharpZipLib.Tar;
 using System.Net.Http;
 using System.Text;
 using System.Management;
-using System.Threading;
 
-namespace Dev2.Activities.Specs.Deploy
+namespace Warewolf.Launcher
 {
-    class ContainerOps
+    public class ContainerOps
     {
         readonly string _remoteDockerApi;
         string _remoteContainerID = null;
@@ -34,8 +33,8 @@ namespace Dev2.Activities.Specs.Deploy
         {
             if (_remoteContainerID != null)
             {
-                RecoverServerLogFile();
                 StopContainer();
+                RecoverServerLogFile();
                 DeleteContainer();
             }
             if (_remoteImageID != null)
@@ -85,7 +84,6 @@ namespace Dev2.Activities.Specs.Deploy
                     }
                     else
                     {
-                        Thread.Sleep(300000);
                         Console.Write("Started Remote Warewolf Server. " + reader.ReadToEnd());
                     }
                 }
@@ -238,7 +236,7 @@ namespace Dev2.Activities.Specs.Deploy
                     if (!response.IsSuccessStatusCode)
                     {
                         Console.Write("Starting remote server container: " + reader.ReadToEnd());
-                    }                    
+                    }
                 }
             }
         }

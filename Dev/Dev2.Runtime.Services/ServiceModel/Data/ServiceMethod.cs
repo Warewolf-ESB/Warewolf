@@ -51,8 +51,20 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Outputs.AddRange(outputs);
             }
         }
-
-        [DataMember]
+		public ServiceMethod(string name, string sourceCode, string queryString, IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs)
+		{
+			Name = name;
+			SourceCode = sourceCode;
+			QueryString = queryString;
+			OutputDescription = outputDescription;
+			OutParameters = new List<MethodParameter>();
+			Outputs = new List<MethodOutput>();
+			if (outputs != null)
+			{
+				Outputs.AddRange(outputs);
+			}
+		}
+		[DataMember]
         public List<MethodParameter> OutParameters { get; set; }
 
         #endregion
@@ -70,8 +82,8 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         [DataMember]
         public string SourceCode { get; set; }
-
-        [DataMember]
+		public string QueryString { get; }
+		[DataMember]
         public string FullName { get; set; }
 
         [DataMember]

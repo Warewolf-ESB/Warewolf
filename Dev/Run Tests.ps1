@@ -791,7 +791,6 @@ function Start-Studio {
     }
 	if ($StudioPath -eq "") {
 		Write-Error -Message "Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath"
-        sleep 30
 		exit 1
 	}
     $StudioLogFile = "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log"
@@ -828,18 +827,18 @@ function Start-Studio {
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
 		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
     }
-    $i = 0
-    while (!(Test-Path $StudioLogFile) -and $i++ -lt 200){
+    Write-Host "Waiting for Studio at $StudioPath to start..."
+    $TimeoutCounter = 0
+    $StudioStartedFilePath = (Get-Item $StudioPath).Directory.FullName + "\StudioStarted"
+    while (!(Test-Path $StudioStartedFilePath) -and $TimeoutCounter++ -lt 200) {
         Write-Warning "Waiting for Studio to start..."
-        Sleep 3
+        sleep 3
     }
-    if (Test-Path $StudioLogFile) {
-	    Write-Host Studio has started.
-    } else {
+    if (!(Test-Path $StudioStartedFilePath)) {
 		Write-Error -Message "Warewolf studio failed to start within 10 minutes."
-        sleep 30
-		exit 1
+        exit 1
     }
+    Write-Host Studio has started.
 }
 
 function Start-ServerContainer {

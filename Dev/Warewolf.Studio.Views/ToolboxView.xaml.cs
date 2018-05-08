@@ -18,6 +18,9 @@ namespace Warewolf.Studio.Views
         public ToolboxView()
         {
             InitializeComponent();
+            Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            Arrange(new Rect(new Size(ActualWidth, ActualHeight)));
+
             PreviewDragOver += DropPointOnDragEnter;
         }
 
@@ -43,17 +46,13 @@ namespace Warewolf.Studio.Views
         {
             var imageSource = e.OriginalSource as FontAwesome.WPF.ImageAwesome;
             var rectSource = e.OriginalSource as Rectangle;
-            if (imageSource == null && rectSource == null)
+            if (imageSource == null && rectSource == null && sender is TextBox tb && !tb.IsKeyboardFocusWithin)
             {
-                if (sender is TextBox tb)
-                {
-                    if (!tb.IsKeyboardFocusWithin)
-                    {
-                        e.Handled = true;
-                        tb.Focus();
-                    }
-                }
+                e.Handled = true;
+                tb.Focus();
             }
+
+
         }
 
         void ToolGrid_OnMouseEnter(object sender, MouseEventArgs e)

@@ -43,26 +43,22 @@ namespace Dev2.Runtime.ESB.Management.Services
                     reloadResourceCatalogueString = tmp.ToString();
                 }
                 var reloadResourceCatalogue = false;
-                if (!string.IsNullOrEmpty(reloadResourceCatalogueString))
-                {
 
-                    if (!bool.TryParse(reloadResourceCatalogueString, out reloadResourceCatalogue))
-                    {
-                        reloadResourceCatalogue = false;
-                    }
+                if (!string.IsNullOrEmpty(reloadResourceCatalogueString) && !bool.TryParse(reloadResourceCatalogueString, out reloadResourceCatalogue))
+                {
+                    reloadResourceCatalogue = false;
                 }
+
                 if (reloadResourceCatalogue)
                 {
                     var exeManager = CustomContainer.Get<IExecutionManager>();
-                    if (exeManager != null)
+                    if (exeManager != null && !exeManager.IsRefreshing)
                     {
-                        if (!exeManager.IsRefreshing)
-                        {
-                            exeManager.StartRefresh();
-                            ResourceCatalog.Instance.Reload();
-                            exeManager.StopRefresh();                            
-                        }                        
+                        exeManager.StartRefresh();
+                        ResourceCatalog.Instance.Reload();
+                        exeManager.StopRefresh();
                     }
+
                 }
                 return serializer.SerializeToBuilder(GetExplorerItems(serializer, reloadResourceCatalogue));
             }

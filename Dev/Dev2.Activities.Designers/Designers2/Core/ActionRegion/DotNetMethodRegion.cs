@@ -266,7 +266,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public string ObjectName
         {
-            get { return _selectedMethod?.OutputVariable; }
+            get => _selectedMethod?.OutputVariable;
             set
             {
                 if (IsObject && !string.IsNullOrEmpty(ObjectResult))
@@ -277,11 +277,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                         {
                             _selectedMethod.OutputVariable = value;
                             OnPropertyChanged();
-                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
-                            if (language.IsJsonIdentifierExpression)
-                            {
-                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
-                            }
+                            _shellViewModel.UpdateCurrentDataListWithObjectFromJson(value, ObjectResult);
                         }
                         else
                         {

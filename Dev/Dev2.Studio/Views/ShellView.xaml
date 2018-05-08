@@ -200,7 +200,7 @@
                                             FloatingWindowDoubleClickAction="ToggleDockedState"
                                             FlyoutAnimation="Resize"
                                             LayoutMode="FillContainer" ShowFloatingWindowsInTaskbar="True"
-                                            ToolWindowLoaded="DockManager_OnToolWindowLoaded"
+                                            ToolWindowLoaded="TryDockManager_OnToolWindowLoaded"
                                             UnpinnedTabHoverAction="Flyout">
                         <igDock:XamDockManager.Panes>
 
@@ -308,7 +308,7 @@
                                        LayoutMode="FillContainer"
                                        UseOwnedFloatingWindows="False"
                                        ShowFloatingWindowsInTaskbar="True"
-                                       ToolWindowLoaded="DockManager_OnToolWindowLoaded" PaneDragEnded="ContentDockManager_OnPaneDragEnded"
+                                       ToolWindowLoaded="TryDockManager_OnToolWindowLoaded" PaneDragEnded="ContentDockManager_OnPaneDragEnded"
                                        UnpinnedTabHoverAction="Flyout">
                     <igDock:XamDockManager.Panes>
                         <igDock:SplitPane Width="300"
