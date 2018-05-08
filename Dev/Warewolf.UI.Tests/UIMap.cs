@@ -42,7 +42,6 @@ namespace Warewolf.UI.Tests
             Playback.PlaybackSettings.WaitForReadyTimeout = 60000;
             Mouse.MouseMoveSpeed = 2500;
             Mouse.MouseDragSpeed = 2500;
-
             Playback.PlaybackError -= OnPlaybackError;
             Playback.PlaybackError += OnPlaybackError;
         }
@@ -335,6 +334,11 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
         }
 
+        public void Pin_Unpinned_Pane_To_Another_UnpinnedTab()
+        {
+            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5,5));
+            Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
+        }
         public void Pin_Unpinned_Pane_To_Default_Position()
         {
             Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
@@ -343,7 +347,13 @@ namespace Warewolf.UI.Tests
         public void Unpin_Tab_With_Drag(UITestControl Tab)
         {
             Mouse.StartDragging(Tab);
-            Mouse.StopDragging(0, 21);
+            Mouse.StopDragging(0, 50);
+            Playback.Wait(2000);
+        }
+        public void Unpin_Tab2_With_Drag(UITestControl Tab)
+        {                        
+            Mouse.StartDragging(Tab);
+            Mouse.StopDragging(0, 100);
             Playback.Wait(2000);
         }
 
