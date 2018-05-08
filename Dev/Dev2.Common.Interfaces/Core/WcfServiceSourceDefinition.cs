@@ -52,9 +52,9 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => Equals(left, right);
+        public static bool operator ==(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => left.Equals(right);
 
-        public static bool operator !=(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => !Equals(left, right);
+        public static bool operator !=(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => !left.Equals(right);
 
         #endregion Equality members
     }
