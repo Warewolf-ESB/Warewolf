@@ -64,37 +64,42 @@ namespace Dev2.Activities
 
             try
             {
-                if (Inputs == null || Inputs.Count == 0)
-                {
-                    PerfromExecution(update, dataObject, args);
-                }
-                else
-                {
-                    while (itrCollection.HasMoreData())
-                    {
-                        var pos = 0;
-                        foreach (var itr in itrs)
-                        {
-                            var injectVal = itrCollection.FetchNextValue(itr);
-                            var param = methodParameters.ToList()[pos];
-
-
-                            param.Value = param.EmptyToNull &&
-                                          (injectVal == null ||
-                                           string.Compare(injectVal, string.Empty,
-                                               StringComparison.InvariantCultureIgnoreCase) == 0)
-                                ? null
-                                : injectVal;
-
-                            pos++;
-                        }
-                        PerfromExecution(update, dataObject, args);
-                    }
-                }
+                TryExecute(update, dataObject, itrs, itrCollection, methodParameters, args);
             }
             catch (Exception e)
             {
                 errors.AddError(e.Message);
+            }
+        }
+
+        private void TryExecute(int update, IDSFDataObject dataObject, List<IWarewolfIterator> itrs, IWarewolfListIterator itrCollection, List<MethodParameter> methodParameters, ComPluginInvokeArgs args)
+        {
+            if (Inputs == null || Inputs.Count == 0)
+            {
+                PerfromExecution(update, dataObject, args);
+            }
+            else
+            {
+                while (itrCollection.HasMoreData())
+                {
+                    var pos = 0;
+                    foreach (var itr in itrs)
+                    {
+                        var injectVal = itrCollection.FetchNextValue(itr);
+                        var param = methodParameters.ToList()[pos];
+
+
+                        param.Value = param.EmptyToNull &&
+                                      (injectVal == null ||
+                                       string.Compare(injectVal, string.Empty,
+                                           StringComparison.InvariantCultureIgnoreCase) == 0)
+                            ? null
+                            : injectVal;
+
+                        pos++;
+                    }
+                    PerfromExecution(update, dataObject, args);
+                }
             }
         }
 

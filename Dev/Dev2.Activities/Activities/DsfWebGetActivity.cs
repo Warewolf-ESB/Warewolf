@@ -17,6 +17,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using Dev2.Data.Util;
 
 namespace Dev2.Activities
 {
@@ -89,6 +90,7 @@ namespace Dev2.Activities
                 IsObject = IsObject,
                 ObjectName = ObjectName
             };
+            webRequestResult = Scrubber.Scrub(webRequestResult);
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
 

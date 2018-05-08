@@ -59,59 +59,7 @@ namespace Dev2.Activities
             // Process if no errors
             try
             {
-                IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
-
-                var colItr = new WarewolfListIterator();
-                var iteratorPropertyDictionary = new Dictionary<string, IWarewolfIterator>();
-                foreach (var propertyInfo in GetType().GetProperties().Where(info => info.IsDefined(typeof(Inputs))))
-                {
-                    var attributes = (Inputs[])propertyInfo.GetCustomAttributes(typeof(Inputs), false);
-                    var variableValue = propertyInfo.GetValue(this) as string;
-                    if (!string.IsNullOrEmpty(variableValue))
-                    {
-                        if (dataObject.IsDebugMode())
-                        {
-                            AddDebugInputItem(new DebugEvalResult(variableValue, attributes[0].UserVisibleName, dataObject.Environment, update));
-                        }
-
-                        var dtItr = CreateDataListEvaluateIterator(variableValue, dataObject.Environment, update);
-                        colItr.AddVariableToIterateOn(dtItr);
-                        iteratorPropertyDictionary.Add(propertyInfo.Name, dtItr);
-                    }
-                }
-                if (colItr.FieldCount <= 0)
-                {
-                    var evaluatedValues = new Dictionary<string, string>();
-                    _executionResult = PerformExecution(evaluatedValues);
-                    AssignResult(dataObject, update);
-                }
-                else
-                {
-                    while (colItr.HasMoreData())
-                    {
-                        var evaluatedValues = new Dictionary<string, string>();
-                        foreach (var dev2DataListEvaluateIterator in iteratorPropertyDictionary)
-                        {
-                            var binaryDataListItem = colItr.FetchNextValue(dev2DataListEvaluateIterator.Value);
-                            evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
-                        }
-                        _executionResult = PerformExecution(evaluatedValues);
-                        AssignResult(dataObject, update);
-                    }
-                }
-
-                if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrWhiteSpace(Result))
-                {
-                    if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                    {
-                        if (!string.IsNullOrEmpty(Result))
-                        {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                        }
-                    }
-                }
-
-                allErrors.MergeErrors(errors);
+                TryExecute(dataObject, update, allErrors, errors);
             }
             catch (Exception ex)
             {
@@ -135,6 +83,58 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+        }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, ErrorResultTO errors)
+        {
+            IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
+
+            var colItr = new WarewolfListIterator();
+            var iteratorPropertyDictionary = new Dictionary<string, IWarewolfIterator>();
+            foreach (var propertyInfo in GetType().GetProperties().Where(info => info.IsDefined(typeof(Inputs))))
+            {
+                var attributes = (Inputs[])propertyInfo.GetCustomAttributes(typeof(Inputs), false);
+                var variableValue = propertyInfo.GetValue(this) as string;
+                if (!string.IsNullOrEmpty(variableValue))
+                {
+                    if (dataObject.IsDebugMode())
+                    {
+                        AddDebugInputItem(new DebugEvalResult(variableValue, attributes[0].UserVisibleName, dataObject.Environment, update));
+                    }
+
+                    var dtItr = CreateDataListEvaluateIterator(variableValue, dataObject.Environment, update);
+                    colItr.AddVariableToIterateOn(dtItr);
+                    iteratorPropertyDictionary.Add(propertyInfo.Name, dtItr);
+                }
+            }
+            if (colItr.FieldCount <= 0)
+            {
+                var evaluatedValues = new Dictionary<string, string>();
+                _executionResult = PerformExecution(evaluatedValues);
+                AssignResult(dataObject, update);
+            }
+            else
+            {
+                while (colItr.HasMoreData())
+                {
+                    var evaluatedValues = new Dictionary<string, string>();
+                    foreach (var dev2DataListEvaluateIterator in iteratorPropertyDictionary)
+                    {
+                        var binaryDataListItem = colItr.FetchNextValue(dev2DataListEvaluateIterator.Value);
+                        evaluatedValues.Add(dev2DataListEvaluateIterator.Key, binaryDataListItem);
+                    }
+                    _executionResult = PerformExecution(evaluatedValues);
+                    AssignResult(dataObject, update);
+                }
+            }
+
+            if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrWhiteSpace(Result) && dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(Result))
+            {
+                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+            }
+
+
+            allErrors.MergeErrors(errors);
         }
 
         protected virtual void AssignResult(IDSFDataObject dataObject, int update)

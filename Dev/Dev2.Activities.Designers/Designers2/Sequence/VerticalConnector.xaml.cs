@@ -85,14 +85,12 @@ namespace System.Activities.Core.Presentation
                 return;
             }
 
-            if (Context != null && !Context.Items.GetValue<ReadOnlyState>().IsReadOnly)
+            if (Context != null && !Context.Items.GetValue<ReadOnlyState>().IsReadOnly && DragDropHelper.AllowDrop(e.Data, Context, AllowedItemType))
             {
-                if (DragDropHelper.AllowDrop(e.Data, Context, AllowedItemType))
-                {
-                    BeginStoryboard((Storyboard)Resources[storyboardResourceName]);
-                    return;
-                }
+                BeginStoryboard((Storyboard)Resources[storyboardResourceName]);
+                return;
             }
+
             e.Effects = DragDropEffects.None;
             e.Handled = true;
         }

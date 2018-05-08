@@ -62,7 +62,7 @@ namespace Dev2.Tests.Activities.TOTests
                 {
                     //((object[])((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)jsonMappingEvaluatedLocal.EvalResult).Item.GetValue(0))[0].Should().Be(((object[])((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)dataObject.Environment.EvalForJson(scalarsSn[i])).Item.GetValue(0))[0]);
                     jsonMappingEvaluatedLocal.EvalResult.Should().Be(dataObject.Environment.EvalForJson(scalarsSn[i]));
-                    jsonMappingEvaluatedLocal.EvalResultAsObject.Should().Be(scalarsV[i]);
+                    jsonMappingEvaluatedLocal.GetEvalResultAsObject().Should().Be(scalarsV[i]);
                 }
                 jsonMappingEvaluatedLocal.Count.Should().Be(1);
             }

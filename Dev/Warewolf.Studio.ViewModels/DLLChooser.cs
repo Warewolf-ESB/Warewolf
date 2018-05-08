@@ -272,13 +272,11 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
 
-            if (!_assemblyName.StartsWith("GAC"))
+            if (!_assemblyName.StartsWith("GAC") && !File.Exists(_assemblyName))
             {
-                if (!File.Exists(_assemblyName))
-                {
-                    return;
-                }
+                return;
             }
+
 
             var dll = new FileInfo(_assemblyName);
             if (dll.Extension != ".dll")
