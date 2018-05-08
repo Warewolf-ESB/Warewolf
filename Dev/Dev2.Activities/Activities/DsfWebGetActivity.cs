@@ -18,6 +18,7 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
 using Dev2.Data.Util;
+using Dev2.Runtime.ServiceModel;
 
 namespace Dev2.Activities
 {
