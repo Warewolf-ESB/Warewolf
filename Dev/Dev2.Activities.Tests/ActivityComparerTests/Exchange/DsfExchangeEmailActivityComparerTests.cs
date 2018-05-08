@@ -457,10 +457,36 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
             Assert.IsTrue(exchangeEmailActivity.Equals(exchangeEmailActivity1));
             //---------------Execute Test ----------------------
             exchangeEmailActivity.SavedSource = new ExchangeSourceDefinition();
-            exchangeEmailActivity1.SavedSource = new ExchangeSourceDefinition();;
+            exchangeEmailActivity1.SavedSource = new ExchangeSourceDefinition();
             var @equals = exchangeEmailActivity.Equals(exchangeEmailActivity1);
             //---------------Test Result -----------------------
             Assert.IsTrue(equals);
+        }
+
+        [TestMethod]
+        public void SavedSource_Null_Object_Is_NotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var exchangeEmailActivity = new ExchangeSourceDefinition
+            {
+                ResourceID = Guid.NewGuid(),
+                Path = "A"
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(exchangeEmailActivity.Equals(null), "Equals operator can't compare to null.");
+        }
+
+        [TestMethod]
+        public void SavedSource_Itself_Is_Equal()
+        {
+            //---------------Set up test pack-------------------
+            var exchangeEmailActivity = new ExchangeSourceDefinition
+            {
+                ResourceID = Guid.NewGuid(),
+                Path = "A"
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(exchangeEmailActivity.Equals(exchangeEmailActivity), "Equals operator can't compare to itself.");
         }
     }
 }
