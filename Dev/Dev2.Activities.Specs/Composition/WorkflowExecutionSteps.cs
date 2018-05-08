@@ -2070,8 +2070,8 @@ namespace Dev2.Activities.Specs.Composition
                   , mock.Object
                   , environmentModel);
 
-            var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
-            var a = pluginSources.Single(source => source.Id == "ab4d5ab5-ad44-421d-8125-adfcc3aa655b".ToGuid());
+            var webSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
+            var a = webSources.Single(source => source.Id == "ab4d5ab5-ad44-421d-8125-adfcc3aa655b".ToGuid());
             var webServiceDefinition = new WebServiceDefinition()
             {
                 Name = "Post",
