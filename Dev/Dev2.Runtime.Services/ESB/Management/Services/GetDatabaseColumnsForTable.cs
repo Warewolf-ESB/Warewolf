@@ -23,6 +23,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
+using System.Data.SQLite;
 using MySql.Data.MySqlClient;
 using Warewolf.Resource.Errors;
 
@@ -99,7 +100,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                             }
                             break;
                         }
-                    case enSourceType.Oracle:
+					case enSourceType.SQLiteDatabase:
+						{
+							using (var connection = new SQLiteConnection(runtTimedbSource.ConnectionString))
+							{
+								// Connect to the database then retrieve the schema information.
+								connection.Open();
+								var sql = @"select  * from  " + tableName.Trim('"').Replace("[", "").Replace("]", "") + " Limit 1 ";
+
+								using (var sqlcmd = new SQLiteCommand(sql, connection))
+								{
+									// force it closed so we just get the proper schema ;)
+									using (var sdr = sqlcmd.ExecuteReader(CommandBehavior.CloseConnection))
+									{
+										columnInfo = sdr.GetSchemaTable();
+									}
+								}
+							}
+							break;
+						}
+					case enSourceType.Oracle:
                         {
                             using (var connection = new OracleConnection(runtTimedbSource.ConnectionString))
                             {
@@ -171,20 +191,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     foreach (DataRow row in columnInfo.Rows)
                     {
-                        var columnName = row["ColumnName"] as string;
-                        var isNullable = row["AllowDBNull"] is bool && (bool)row["AllowDBNull"];
-                        var isIdentity = row["IsIdentity"] is bool && (bool)row["IsIdentity"];
-                        var dbColumn = new DbColumn { ColumnName = columnName, IsNullable = isNullable, IsAutoIncrement = isIdentity };
-
-                        var typeValue = dbSource.ServerType == enSourceType.SqlDatabase ? row["DataTypeName"] as string : ((Type)row["DataType"]).Name;
-                        if (Enum.TryParse(typeValue, true, out SqlDbType sqlDataType))
-                        {
-                            dbColumn.SqlDataType = sqlDataType;
-                        }
-
-                        var columnLength = row["ColumnSize"] as int? ?? -1;
-                        dbColumn.MaxLength = columnLength;
-                        dbColumns.Items.Add(dbColumn);
+                        AddDbColumn(dbSource, dbColumns, row);
                     }
                 }
                 return serializer.SerializeToBuilder(dbColumns);
@@ -195,6 +202,24 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var res = new DbColumnList(ex);
                 return serializer.SerializeToBuilder(res);
             }
+        }
+
+        static void AddDbColumn(DbSource dbSource, DbColumnList dbColumns, DataRow row)
+        {
+            var columnName = row["ColumnName"] as string;
+            var isNullable = row["AllowDBNull"] is bool && (bool)row["AllowDBNull"];
+            var isIdentity = row["IsIdentity"] is bool && (bool)row["IsIdentity"];
+            var dbColumn = new DbColumn { ColumnName = columnName, IsNullable = isNullable, IsAutoIncrement = isIdentity };
+
+            var typeValue = dbSource.ServerType == enSourceType.SqlDatabase ? row["DataTypeName"] as string : ((Type)row["DataType"]).Name;
+            if (Enum.TryParse(typeValue, true, out SqlDbType sqlDataType))
+            {
+                dbColumn.SqlDataType = sqlDataType;
+            }
+
+            var columnLength = row["ColumnSize"] as int? ?? -1;
+            dbColumn.MaxLength = columnLength;
+            dbColumns.Items.Add(dbColumn);
         }
 
         #endregion

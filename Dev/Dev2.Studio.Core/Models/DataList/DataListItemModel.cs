@@ -300,9 +300,12 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Both;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                else
                 {
-                    _columnIODir = enDev2ColumnArgumentDirection.Input;
+                    if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                    {
+                        _columnIODir = enDev2ColumnArgumentDirection.Input;
+                    }
                 }
             }
             NotifyIOPropertyChanged();

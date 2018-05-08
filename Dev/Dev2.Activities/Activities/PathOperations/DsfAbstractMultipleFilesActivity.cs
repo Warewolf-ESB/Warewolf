@@ -47,7 +47,7 @@ namespace Dev2.Activities.PathOperations
 
         protected IWarewolfListIterator ColItr;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
+        protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
   

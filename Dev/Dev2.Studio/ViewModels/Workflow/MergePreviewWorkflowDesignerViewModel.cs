@@ -243,22 +243,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var parentNodeProperty = decisionItem.Properties[key];
                 if (parentNodeProperty != null)
                 {
-                    if (next != null)
-                    {
-                        if (delink)
-                        {
-                            parentNodeProperty.SetValue(null);
-                        }
-                        else
-                        {
-                            parentNodeProperty.SetValue(next);
-                            Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
-                        }
-                    }
+                    SetNextForDecision(next, parentNodeProperty, delink);
                     return true;
                 }
             }
             return false;
+        }
+
+        void SetNextForDecision(ModelItem next, ModelProperty parentNodeProperty, bool delink = false)
+        {
+            if (next != null)
+            {
+                if (delink)
+                {
+                    parentNodeProperty.SetValue(null);
+                }
+                else
+                {
+                    parentNodeProperty.SetValue(next);
+                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                }
+            }
         }
 
         bool SetNextForSwitch(Guid sourceUniqueId, Guid destinationUniqueId, string key, bool delink = false)
@@ -290,19 +295,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var nextStep = next.GetCurrentValue<FlowNode>();
                 if (nextStep != null)
                 {
-                    if (delink)
-                    {
-                        var currentlyLinkedItem = GetNextItem(source);
-                        if (currentlyLinkedItem != null && currentlyLinkedItem == next)
-                        {
-                            SetNextProperty(source, null);
-                        }
-                    }
-                    else
-                    {
-                        SetNextProperty(source, nextStep);
-                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
-                    }
+                    SetNextFlowNode(next, source, nextStep, delink);
                 }
             }
             else
@@ -312,6 +305,23 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     SetNextProperty(source, null);
                 }
+            }
+        }
+
+        void SetNextFlowNode(ModelItem next, ModelItem source, FlowNode nextStep, bool delink = false)
+        {
+            if (delink)
+            {
+                var currentlyLinkedItem = GetNextItem(source);
+                if (currentlyLinkedItem != null && currentlyLinkedItem == next)
+                {
+                    SetNextProperty(source, null);
+                }
+            }
+            else
+            {
+                SetNextProperty(source, nextStep);
+                Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
             }
         }
 

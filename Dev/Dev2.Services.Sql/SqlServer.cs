@@ -184,38 +184,42 @@ namespace Dev2.Services.Sql
 
                 using (sqlCommand)
                 {
-                    try
-                    {
-                        var parameters = GetProcedureParameters(sqlCommand);
-                        const string helpText = "";
+                    TryFetch(procedureProcessor, functionProcessor, continueOnProcessorException, procedureTypeColumn, row, fullProcedureName, sqlCommand);
+                }
+            }
+        }
 
-                        if (IsStoredProcedure(row, procedureTypeColumn))
-                        {
-                            procedureProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
-                        }
-                        else if (IsFunction(row, procedureTypeColumn))
-                        {
-                            functionProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
-                        }
-                        else
-                        {
-                            if (IsTableValueFunction(row, procedureTypeColumn))
-                            {
-                                functionProcessor?.Invoke(sqlCommand, parameters, helpText,
-                                    CreateTVFCommand(fullProcedureName, parameters));
-                            }
-                        }
-                    }
-                    catch (Exception e)
+        private void TryFetch(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException, DataColumn procedureTypeColumn, DataRow row, string fullProcedureName, IDbCommand sqlCommand)
+        {
+            try
+            {
+                var parameters = GetProcedureParameters(sqlCommand);
+                const string helpText = "";
+
+                if (IsStoredProcedure(row, procedureTypeColumn))
+                {
+                    procedureProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
+                }
+                else if (IsFunction(row, procedureTypeColumn))
+                {
+                    functionProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
+                }
+                else
+                {
+                    if (IsTableValueFunction(row, procedureTypeColumn))
                     {
-                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                        if (!continueOnProcessorException)
-                        {
-                            throw;
-                        }
+                        functionProcessor?.Invoke(sqlCommand, parameters, helpText,
+                            CreateTVFCommand(fullProcedureName, parameters));
                     }
                 }
-
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                if (!continueOnProcessorException)
+                {
+                    throw;
+                }
             }
         }
 
@@ -400,8 +404,66 @@ namespace Dev2.Services.Sql
 
             return true;
         }
+		public DataSet FetchDataSet(IDbCommand command)
+		{
+			if (_connection == null)
+			{
+				throw new Exception(ErrorResource.PleaseConnectFirst);
+			}
+			_connection.TryOpen();
+			_connection.TryOpen();
+			using (var sqlCommand = _connection.CreateCommand())
+			{
+				TrySetTransaction(_transaction, sqlCommand);
+				sqlCommand.CommandText = _commantText;
+				sqlCommand.CommandType = _commandType;
+				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
+				
+				return FetchDataSet(sqlCommand);
+			}
+		}
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			if (_connection == null)
+			{
+				throw new Exception(ErrorResource.PleaseConnectFirst);
+			}
+			_connection.TryOpen();
+			_connection.TryOpen();
+			int retValue = 0;
+			using (var sqlCommand = _connection.CreateCommand())
+			{
+				TrySetTransaction(_transaction, sqlCommand);
+				sqlCommand.CommandText = _commantText;
+				sqlCommand.CommandType = _commandType;
+				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
 
-        public DataTable FetchDataTable(params IDbDataParameter[] dbDataParameters)
+				retValue = Convert.ToInt32(sqlCommand.ExecuteNonQuery());
+				return retValue;
+			}
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			if (_connection == null)
+			{
+				throw new Exception(ErrorResource.PleaseConnectFirst);
+			}
+			_connection.TryOpen();
+			_connection.TryOpen();
+			int retValue = 0;
+			using (var sqlCommand = _connection.CreateCommand())
+			{
+				TrySetTransaction(_transaction, sqlCommand);
+				sqlCommand.CommandText = _commantText;
+				sqlCommand.CommandType = _commandType;
+				sqlCommand.CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds;
+
+				retValue = Convert.ToInt32(sqlCommand.ExecuteScalar());
+				return retValue;
+			}		
+		}
+		public DataTable FetchDataTable(params IDbDataParameter[] dbDataParameters)
         {
 
             if (_connection == null)

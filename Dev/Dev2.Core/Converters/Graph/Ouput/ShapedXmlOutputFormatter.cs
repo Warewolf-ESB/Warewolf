@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Warewolf.Resource.Errors;
 
@@ -88,19 +87,13 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         #endregion Methods
 
         #region Private Methods
-
-        /// <summary>
-        ///     Selects a single value
-        /// </summary>
+        
         XElement SelectScalar(IPath path, object data)
         {
             var selectResult = DataBrowser.SelectScalar(path, data);
             return new XElement(GetNodeName(path.OutputExpression), selectResult);
         }
-
-        /// <summary>
-        ///     Selects values
-        /// </summary>
+        
         IEnumerable<XElement> SelectEnumerable(IPath path, object data)
         {
             IList<XElement> returnNodes = new List<XElement>();
@@ -128,12 +121,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
             return returnNodes;
         }
-
-        /// <summary>
-        ///     Selectes values as though there were related, if values are nested they are related by hierarchy, if they are
-        ///     parellel they are related
-        ///     by position in the enumeration.
-        /// </summary>
+        
         IEnumerable<XElement> SelectEnumerableAsRelated(IList<IPath> paths, object data)
         {
             IList<XElement> returnNodes = new List<XElement>();
@@ -161,33 +149,35 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
                     nodeNames.Add(path, GetNodeName(path.OutputExpression));
                 }
 
-                for (int i = 0; i < resultCount; i++)
-                {
-                    XElement recordsetNode;
-                    if (string.IsNullOrEmpty(recordsetNodeName))
-                    {
-                        var path = paths[0];
-                        recordsetNode = new XElement(nodeNames[path], selectResults[path][0]);
-                    }
-                    else
-                    {
-                        recordsetNode = new XElement(recordsetNodeName);
-
-                        foreach (IPath path in paths)
-                        {
-                            recordsetNode.Add(new XElement(nodeNames[path], selectResults[path][i]));
-                        }
-                    }
-                    returnNodes.Add(recordsetNode);
-                }
+                AddRecordsetNodes(paths, returnNodes, selectResults, recordsetNodeName, nodeNames, resultCount);
             }
 
             return returnNodes;
         }
 
-        /// <summary>
-        ///     Groups paths by their output expressions
-        /// </summary>
+        private static void AddRecordsetNodes(IList<IPath> paths, IList<XElement> returnNodes, Dictionary<IPath, IList<object>> selectResults, string recordsetNodeName, Dictionary<IPath, string> nodeNames, long resultCount)
+        {
+            for (int i = 0; i < resultCount; i++)
+            {
+                XElement recordsetNode;
+                if (string.IsNullOrEmpty(recordsetNodeName))
+                {
+                    var path = paths[0];
+                    recordsetNode = new XElement(nodeNames[path], selectResults[path][0]);
+                }
+                else
+                {
+                    recordsetNode = new XElement(recordsetNodeName);
+
+                    foreach (IPath path in paths)
+                    {
+                        recordsetNode.Add(new XElement(nodeNames[path], selectResults[path][i]));
+                    }
+                }
+                returnNodes.Add(recordsetNode);
+            }
+        }
+
         Dictionary<string, IList<IPath>> GroupPaths(IDataSourceShape dataSourceShape)
         {
             var groupedPaths = new Dictionary<string, IList<IPath>>();
@@ -212,10 +202,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
             return groupedPaths;
         }
-
-        /// <summary>
-        ///     Gets the value to use as a key for an ouotput description
-        /// </summary>
+        
         string GetOutputDescriptionKey(string outputDescription)
         {
             var parser = DataListFactory.CreateLanguageParser();
@@ -233,10 +220,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
             return key;
         }
-
-        /// <summary>
-        ///     Gets the name of a node from an output description
-        /// </summary>
+        
         string GetNodeName(string outputDescription)
         {
             var parser = DataListFactory.CreateLanguageParser();
@@ -250,10 +234,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
             return parts.Last().Option.Field;
         }
-
-        /// <summary>
-        ///     Gets the name of a recordset node from an output
-        /// </summary>
+        
         string GetRecordsetNodeName(string outputDescription)
         {
             var parser = DataListFactory.CreateLanguageParser();

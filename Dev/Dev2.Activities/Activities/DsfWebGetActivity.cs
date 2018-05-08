@@ -17,7 +17,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
-using Dev2.Runtime.ServiceModel;
+using Dev2.Data.Util;
 
 namespace Dev2.Activities
 {
@@ -90,6 +90,7 @@ namespace Dev2.Activities
                 IsObject = IsObject,
                 ObjectName = ObjectName
             };
+            webRequestResult = Scrubber.Scrub(webRequestResult);
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
 
@@ -97,8 +98,32 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource url)
         {
-            return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h=>h.Name+":"+h.Value).ToArray());            
-        }        
+            var client = CreateClient(head, query, url);
+            var result = client.DownloadString(url.Address + query);
+            return result;
+        }
+
+        WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+        {
+            var webclient = new WebClient();
+            foreach (var nameValue in head)
+            {
+                if (!String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
+                {
+                    webclient.Headers.Add(nameValue.Name, nameValue.Value);
+                }
+            }
+
+            if (source.AuthenticationType == AuthenticationType.User)
+            {
+                webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
+            }
+
+            webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
+            webclient.BaseAddress = source.Address + query;
+            return webclient;
+        }
+
         #endregion
 
 
