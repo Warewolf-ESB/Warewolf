@@ -563,25 +563,24 @@ namespace Dev2.Data.Tests.Parsers
         public void Dev2DataLanguageParser_ParseWithCData()
         {
             //---------------Set up test pack-------------------
-            //RecordsetMatch(IList<IIntellisenseResult> result, string rawSearch, string search)
             var parser = new Dev2DataLanguageParser();
             const string text = @"<![CDATA[[[]]]]>";
             var parts = parser.ParseExpressionIntoParts(text, new List<IDev2DataLanguageIntellisensePart>());
-            Assert.AreEqual(parts.Count, 1);
+            Assert.AreEqual(1, parts.Count);
             Assert.AreEqual(parts[0].Type, enIntellisenseResultType.Error);
             Assert.AreEqual(parts[0].ErrorCode, enIntellisenseErrorCode.SyntaxError);
             Assert.AreEqual(parts[0].Message, ErrorResource.VariableIsMissing);
 
             const string textNoBrackets = @"Some text[[";
             parts = parser.ParseExpressionIntoParts(textNoBrackets, new List<IDev2DataLanguageIntellisensePart>());
-            Assert.AreEqual(parts.Count, 1);
+            Assert.AreEqual(1, parts.Count);
             Assert.AreEqual(parts[0].Type, enIntellisenseResultType.Error);
             Assert.AreEqual(parts[0].ErrorCode, enIntellisenseErrorCode.SyntaxError);
             Assert.AreEqual(parts[0].Message, ErrorResource.InvalidCloseRegion);
 
             const string textWithAuto = @"[[varName]]";
             parts = parser.ParseExpressionIntoParts(textWithAuto, new List<IDev2DataLanguageIntellisensePart>());
-            Assert.AreEqual(parts.Count, 1);
+            Assert.AreEqual(1, parts.Count);
             Assert.AreEqual(enIntellisenseResultType.Error, parts[0].Type);
             Assert.AreEqual(enIntellisenseErrorCode.ScalarNotFound, parts[0].ErrorCode);
             Assert.AreEqual(" [[varName]] does not exist in your variable list", parts[0].Message);
@@ -661,7 +660,6 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new Dev2DataLanguageParser();
             var result = parser.ParseDataLanguageForIntellisense("[[recName([[recName([[index).field]]", dataList, false, null, true);
 
-            // TODO: surely this should show an error indicating that the field was not found in the recordset?
             Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
             Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
             Assert.AreEqual("RecName Description", result[0].Message);
@@ -677,7 +675,6 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new Dev2DataLanguageParser();
             var result = parser.ParseDataLanguageForIntellisense("[[recName([[index).field]]", dataList, false, null, true);
 
-            // TODO: surely this should show an error indicating that the field was not found in the recordset?
             Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
             Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
             Assert.AreEqual("RecName Description", result[0].Message);
@@ -693,7 +690,6 @@ namespace Dev2.Data.Tests.Parsers
             var parser = new Dev2DataLanguageParser();
             var result = parser.ParseDataLanguageForIntellisense("[[recName([[recName).field]]", dataList, false, null, true);
 
-            // TODO: surely this should show an error indicating that the field was not found in the recordset?
             Assert.AreEqual(enIntellisenseErrorCode.None, result[0].ErrorCode);
             Assert.AreEqual(enIntellisenseResultType.Selectable, result[0].Type);
             Assert.AreEqual("RecName Description", result[0].Message);
@@ -766,19 +762,18 @@ namespace Dev2.Data.Tests.Parsers
         public void Dev2DataLanguageParser_ParseExpressionIntoParts()
         {
             //---------------Set up test pack-------------------
-            //RecordsetMatch(IList<IIntellisenseResult> result, string rawSearch, string search)
             var parser = new Dev2DataLanguageParser();
             const string nullText = null;
 
             var emptyList = parser.MakeParts(nullText, true);
-            Assert.AreEqual(emptyList.Count, 0);
+            Assert.AreEqual(0, emptyList.Count);
 
             var parts = parser.ParseForActivityDataItems(nullText);
-            Assert.AreEqual(parts.Count, 0);
+            Assert.AreEqual(0, parts.Count);
 
             const string unclosed = "[[varName";
             parts = parser.ParseForActivityDataItems(unclosed);
-            Assert.AreEqual(parts[0], "varName");
+            Assert.AreEqual("varName", parts[0]);
 
             Assert.ThrowsException<Dev2DataLanguageParseError>(() => parser.MakeParts(unclosed, true));
         }
