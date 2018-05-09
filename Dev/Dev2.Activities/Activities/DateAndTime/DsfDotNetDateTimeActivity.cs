@@ -356,7 +356,7 @@ namespace Dev2.Activities.DateAndTime
             eq &= this.TimeModifierType.Equals(other.TimeModifierType);
             eq &= this.TimeModifierAmountDisplay.Equals(other.TimeModifierAmountDisplay);
             eq &= this.TimeModifierAmount.Equals(other.TimeModifierAmount);
-
+            eq &= Result.Equals(other.Result);
             return eq;
         }
 

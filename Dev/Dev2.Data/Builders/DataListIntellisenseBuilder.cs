@@ -47,7 +47,7 @@ namespace Dev2.DataList.Contract
                     tmpRootNl = xDoc.ChildNodes;
                 }
                 catch (Exception ex)
-                {
+                {                    
                     Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 }
 

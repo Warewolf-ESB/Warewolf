@@ -31,6 +31,12 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class FetchExplorerItemsTest
     {
+        [TestInitialize]
+        public void Setup()
+        {
+            CustomContainer.Register<IActivityParser>(new Mock<IActivityParser>().Object);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
@@ -137,6 +143,7 @@ namespace Dev2.Tests.Runtime.Services
             var message = serializer.Deserialize<CompressedExecuteMessage>(execute);
             Assert.AreEqual(serializer.Deserialize<IExplorerItem>(message.GetDecompressedMessage()).ResourceId, item.ResourceId);
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("FetchExplorerItems_HandlesType")]
@@ -165,7 +172,30 @@ namespace Dev2.Tests.Runtime.Services
             exeManager.Verify(manager => manager.StopRefresh(),Times.AtLeastOnce());
             CustomContainer.DeRegister<IExecutionManager>();
         }
-        
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("FetchExplorerItems_HandlesType")]
+        public void FetchExplorerItems_Execute_NoRefresh()
+        {
+            //------------Setup for test--------------------------
+            var fetchExplorerItems = new FetchExplorerItems();
+
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            Assert.IsNotNull(item);
+            var repo = new Mock<IExplorerServerResourceRepository>();
+            var ws = new Mock<IWorkspace>();
+            repo.Setup(a => a.Load(GlobalConstants.ServerWorkspaceID, true))
+                .Returns(item).Verifiable();
+            var serializer = new Dev2JsonSerializer();
+            ws.Setup(a => a.ID).Returns(Guid.Empty);
+            fetchExplorerItems.ServerExplorerRepo = repo.Object;
+            //------------Execute Test---------------------------
+            var jsonResult = fetchExplorerItems.Execute(new Dictionary<string, StringBuilder> { { "ReloadResourceCatalogue",new StringBuilder("ddd") } }, ws.Object);
+            var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
+            //------------Assert Results-------------------------
+            //Assert.AreEqual(ExecStatus.Fail, result.Status)
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
