@@ -3355,10 +3355,32 @@ namespace Dev2.Tests.Runtime.Hosting
             File.Delete(expectedFile);
         }
 
-        private ExecuteMessage ConvertToMsg(string payload)
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ResourceCatalog_Load")]
+        public void ResourceCatalog_Load_WhenFileIsReadOnly_ShouldUpdateToNormal()
         {
-            return JsonConvert.DeserializeObject<ExecuteMessage>(payload);
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+
+            var sourcesPath = Path.Combine(workspacePath, "Sources");
+            Directory.CreateDirectory(sourcesPath);
+            SaveResources(sourcesPath, null, false, false, new[] { "EmailSource" }, new[] { Guid.NewGuid() });
+            var allFiles = Directory.GetFiles(sourcesPath);
+            File.SetAttributes(allFiles[0],FileAttributes.ReadOnly);
+
+            var attributes = File.GetAttributes(allFiles[0]);
+            Assert.AreEqual(FileAttributes.ReadOnly, attributes);
+
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            rc.LoadWorkspaceViaBuilder(workspacePath, false, "Sources", "Services");
+
+            attributes = File.GetAttributes(allFiles[0]);
+            Assert.AreNotEqual(FileAttributes.ReadOnly, attributes);
         }
+
 
         class ResourceSaveProviderMock : ResourceSaveProvider
         {
