@@ -84,6 +84,7 @@ namespace Dev2.Studio.Core
 
             return serialiser.Deserialize<List<string>>(output.Message);
         }
+
 		public IList<string> TestSqliteConnection(ISqliteDBSource resource)
 		{
 			var con = Connection;
@@ -103,7 +104,8 @@ namespace Dev2.Studio.Core
 
 			return serialiser.Deserialize<List<string>>(output.Message);
 		}
-		public void SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID)
+
+	public void SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveDbSourceService");
