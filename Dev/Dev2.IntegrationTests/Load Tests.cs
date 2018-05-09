@@ -120,7 +120,7 @@ namespace Dev2.Integration.Tests
             DataListViewModelTests.Setup();
             for (var i = 2500; i > 0; i--)
             {
-                DataListViewModelTests._dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
+                DataListViewModelTests._dataListViewModel.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
             }
             var timeBefore = DateTime.Now;
 

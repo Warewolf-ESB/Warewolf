@@ -65,10 +65,10 @@ namespace Dev2.Core.Tests
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
             carRecordset.Input = true;
             carRecordset.Output = true;
-            dataListViewModel.RecsetCollection.Add(carRecordset);
-            dataListViewModel1.RecsetCollection.Add(carRecordset);
-            dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
-            dataListViewModel1.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
+            dataListViewModel.Add(carRecordset);
+            dataListViewModel1.Add(carRecordset);
+            dataListViewModel.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
+            dataListViewModel1.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dataListViewModel);
             Assert.IsNotNull(dataListViewModel1);
@@ -102,9 +102,9 @@ namespace Dev2.Core.Tests
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
             carRecordset.Input = true;
             carRecordset.Output = true;
-            dataListViewModel.RecsetCollection.Add(carRecordset);
-            dataListViewModel1.RecsetCollection.Add(carRecordset);
-            dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
+            dataListViewModel.Add(carRecordset);
+            dataListViewModel1.Add(carRecordset);
+            dataListViewModel.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country", enDev2ColumnArgumentDirection.Both));
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dataListViewModel);
             Assert.IsNotNull(dataListViewModel1);
