@@ -326,6 +326,175 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("WorkflowInputDataViewModel_RemoveRow")]
+        public void SetWorkflowInputData_RemoveRow_WhenNotAllColumnsInput_ExpectRowRemoved2()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList>
+<rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" >
+<a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+<a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+<b Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+</rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(2, inputs.Count);
+            inputs[0].Value = "";
+            inputs[0].CanHaveMutipleRows = false;
+            inputs[0].Index = "2";
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out int indexToSelect);
+
+            //------------Execute Test---------------------------
+            Assert.IsFalse(workflowInputDataViewModel.RemoveRow(null, out indexToSelect));
+
+            Assert.IsFalse(workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect));
+
+            inputs[0].CanHaveMutipleRows = true;
+            Assert.IsTrue(workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect));
+
+
+
+            //------------Assert Results-------------------------
+            inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            var count = workflowInputDataViewModel.WorkflowInputCount;
+            Assert.AreEqual(1, count);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("WorkflowInputDataViewModel_RemoveRow")]
+        public void SetWorkflowInputData_RemoveRow_WhenNotAllColumnsInput_ExpectRowRemoved4()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList>
+<rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" >
+<a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+<b Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+</rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            inputs[0].Value = "";
+            inputs[0].CanHaveMutipleRows = false;
+            inputs[0].Index = "2";
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out int indexToSelect);
+
+            //------------Execute Test---------------------------
+            Assert.IsFalse(workflowInputDataViewModel.RemoveRow(null, out indexToSelect));
+
+            Assert.IsFalse(workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect));
+
+            inputs[0].CanHaveMutipleRows = true;
+            Assert.IsFalse(workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect));
+
+
+
+            //------------Assert Results-------------------------
+            inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(1, inputs.Count);
+            var count = workflowInputDataViewModel.WorkflowInputCount;
+            Assert.AreEqual(1, count);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("WorkflowInputDataViewModel_RemoveRow")]
+        public void SetWorkflowInputData_RemoveRow_WhenNotAllColumnsInput_ExpectRowRemoved3()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList>
+<rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" >
+<a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+<a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+<a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
+<b Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+</rec></DataList>";
+
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "xxxxx"
+            };
+
+            var debugVM = CreateDebugOutputViewModel();
+
+            var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            var inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(3, inputs.Count);
+            inputs[0].Value = "";
+            inputs[0].CanHaveMutipleRows = false;
+            inputs[0].Index = "3";
+            inputs[1].Index = "2";
+            inputs[1].Value = "not empty";
+            workflowInputDataViewModel.AddBlankRow(inputs[0], out int indexToSelect);
+
+
+            //------------Execute Test---------------------------
+            Assert.IsFalse(workflowInputDataViewModel.RemoveRow(null, out indexToSelect));
+
+            Assert.IsFalse(workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect));
+
+            inputs[0].CanHaveMutipleRows = true;
+            Assert.IsTrue(workflowInputDataViewModel.RemoveRow(inputs[0], out indexToSelect));
+
+            //------------Assert Results-------------------------
+            inputs = workflowInputDataViewModel.WorkflowInputs;
+            Assert.AreEqual(2, inputs.Count);
+            var count = workflowInputDataViewModel.WorkflowInputCount;
+            Assert.AreEqual(2, count);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowInputDataViewModel_GetNexRow")]
         public void SetWorkflowInputData_GetNexRow_WhenNotAllColumnsInput_ExpectRowRemoved()
