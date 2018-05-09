@@ -1173,8 +1173,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var scalarDataListItemWithNoError = DataListItemModelFactory.CreateScalarItemModel("var", "Random Variable", enDev2ColumnArgumentDirection.Both);
             scalarDataListItemWithError.HasError = true;
             scalarDataListItemWithError.ErrorMessage = "This is an Error";
-            dataListViewModel.ScalarCollection.Add(scalarDataListItemWithError);
-            dataListViewModel.ScalarCollection.Add(scalarDataListItemWithNoError);
+            dataListViewModel.Add(scalarDataListItemWithError);
+            dataListViewModel.Add(scalarDataListItemWithNoError);
             dataListViewModel.WriteToResourceModel();
             DataListSingleton.SetDataList(dataListViewModel);
         }

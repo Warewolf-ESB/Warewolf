@@ -302,7 +302,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 var scalarItemModel = new ScalarItemModel(scalarName, ioDirection);
                 if (!scalarItemModel.HasError)
                 {
-                    datalistViewModel.ScalarCollection.Add(scalarItemModel);
+                    datalistViewModel.Add(scalarItemModel);
                 }
             }
             if (DataListUtil.IsValueRecordsetWithFields(variableName))
@@ -313,7 +313,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 if (rs == null)
                 {
                     var recordSetItemModel = new RecordSetItemModel(rsName);
-                    datalistViewModel.RecsetCollection.Add(recordSetItemModel);
+                    datalistViewModel.Add(recordSetItemModel);
                     recordSetItemModel.Children.Add(new RecordSetFieldItemModel(fieldName, recordSetItemModel, ioDirection));
                 }
                 else

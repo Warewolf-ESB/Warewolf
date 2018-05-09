@@ -25,9 +25,11 @@ using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
+using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Workflows;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Messages;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.Messages;
@@ -163,7 +165,6 @@ namespace Dev2.Core.Tests
 
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
 
-
             var resourceModel = ResourceModel ?? new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             var envConn = new Mock<IEnvironmentConnection>();
@@ -172,6 +173,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(isConnected);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel> { resourceModel.Object });
             var xamlBuilder = new StringBuilder("abc");
 
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -247,6 +249,9 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
 
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
@@ -437,6 +442,8 @@ namespace Dev2.Core.Tests
             var environmentModel = mockEnvironmentModel.Object;
             mockWorkSurfaceViewModel.Setup(model => model.Server).Returns(environmentModel);
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
             var viewModel = WorkflowDesignerViewModelMock(true);
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { WorkSurfaceViewModel = new WorkSurfaceViewModelTest() };
             workSurfaceContextViewModel.DebugOutputViewModel = viewModel.DebugOutputViewModel;
@@ -808,6 +815,8 @@ namespace Dev2.Core.Tests
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
+            CommonSetupHelper.RegisterServerRepository();
+
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
 
@@ -877,6 +886,9 @@ namespace Dev2.Core.Tests
 
             var authService = new Mock<IAuthorizationService>();
             authService.Setup(s => s.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
 
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
@@ -1018,6 +1030,8 @@ namespace Dev2.Core.Tests
             var ctx = new Mock<IContextualResourceModel>();
 
             var environmentModel = new Mock<IServer>();
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
 
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);

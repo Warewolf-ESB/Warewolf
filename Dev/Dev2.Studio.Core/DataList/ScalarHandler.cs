@@ -28,7 +28,7 @@ namespace Dev2.Studio.Core.DataList
                 return;
             }
 
-            if (_vm. ScalarCollection.Count(c => c.DisplayName == part.Field) == 0)
+            if (!_vm.ScalarCollection.Any(c => c.DisplayName == part.Field))
             {
                 missingDataParts.Add(part);
             }
@@ -49,7 +49,9 @@ namespace Dev2.Studio.Core.DataList
                 var scalar = DataListItemModelFactory.CreateScalarItemModel(xmlNode.Name, Common.ParseDescription(xmlNode.Attributes[Common.Description]), Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]));
                 if (scalar != null)
                 {
-                    AddScalars(xmlNode, scalar);
+                    scalar.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
+                    scalar.IsVisible = _vm.IsItemVisible(scalar.Name);
+                    _vm.Add(scalar);
                 }
             }
             else
@@ -57,24 +59,23 @@ namespace Dev2.Studio.Core.DataList
                 var scalar = DataListItemModelFactory.CreateScalarItemModel(xmlNode.Name, Common.ParseDescription(null), Common.ParseColumnIODirection(null));
                 if (scalar != null)
                 {
-                    AddScalars(xmlNode, scalar);
+                    scalar.IsEditable = Common.ParseIsEditable(null);
+                    scalar.IsVisible = _vm.IsItemVisible(scalar.Name);
+                    _vm.Add(scalar);
                 }
             }
         }
 
-        void AddScalars(XmlNode xmlNode, IScalarItemModel scalar)
+        private void UpdateScalar(IScalarItemModel scalar)
         {
-            scalar.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
-            if (string.IsNullOrEmpty(_vm.SearchText))
+            scalar.IsVisible = _vm.IsItemVisible(scalar.Name);
+            if (_vm.ScalarCollectionCount > 0)
             {
-                _vm.ScalarCollection.Add(scalar);
+                _vm.ScalarCollection.Insert(_vm.ScalarCollectionCount - 1, scalar);
             }
             else
             {
-                if (scalar.DisplayName.ToUpper().StartsWith(_vm.SearchText.ToUpper()))
-                {
-                    _vm.ScalarCollection.Add(scalar);
-                }
+                _vm.Add(scalar);
             }
         }
 
@@ -105,7 +106,7 @@ namespace Dev2.Studio.Core.DataList
             }
 
             var scalar = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
-            _vm.ScalarCollection.Add(scalar);
+            _vm.Add(scalar);
         }
 
         public void RemoveBlankScalars()
@@ -116,7 +117,7 @@ namespace Dev2.Studio.Core.DataList
                 return;
             }
 
-            _vm.ScalarCollection.Remove(blankList.First());
+            _vm.Remove(blankList.First());
         }
 
         public void RemoveUnusedScalars()
@@ -126,7 +127,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 foreach (var dataListItemModel in unusedScalars)
                 {
-                    _vm.ScalarCollection.Remove(dataListItemModel);
+                    _vm.Remove(dataListItemModel);
                 }
             }
         }
@@ -136,14 +137,7 @@ namespace Dev2.Studio.Core.DataList
             if (_vm.ScalarCollection.FirstOrDefault(c => c.DisplayName == part.Field) == null)
             {
                 var scalar = DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description);
-                if (_vm.ScalarCollection.Count > 0)
-                {
-                    _vm.ScalarCollection.Insert(_vm.ScalarCollection.Count - 1, scalar);
-                }
-                else
-                {
-                    _vm.ScalarCollection.Add(scalar);
-                }
+                UpdateScalar(scalar);
             }
         }
 
@@ -156,6 +150,5 @@ namespace Dev2.Studio.Core.DataList
                 recset.DisplayName = recset.DisplayName.Replace("[", "").Replace("]", "");
             }
         }
-
     }
 }
