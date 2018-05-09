@@ -24,10 +24,7 @@ namespace Dev2.Studio.AppResources.Behaviors
     public class TabGroupPaneBindingBehavior : Behavior<TabGroupPane>
     {
         #region Private Methods
-
-        /// <summary>
-        ///     Gets all tab group panes which are descendents of the DocumentHost
-        /// </summary>
+        
         List<TabGroupPane> GetAllTabGroupPanes()
         {
             _tabGroupPanes = new List<TabGroupPane>();
@@ -56,15 +53,9 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public DocumentContentHost DocumentHost
         {
-            get
-            {
-                return (DocumentContentHost) GetValue(DocumentHostProperty);
-            }
-            set
-            {
-                SetValue(DocumentHostProperty, value);
-            }
-        }        
+            get => (DocumentContentHost)GetValue(DocumentHostProperty);
+            set => SetValue(DocumentHostProperty, value);
+        }
 
         static void DocumentHostChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {

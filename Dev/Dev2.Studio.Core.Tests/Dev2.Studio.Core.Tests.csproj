@@ -305,6 +305,7 @@
     <Compile Include="MergeViewModelTest.cs" />
     <Compile Include="QueryManagerProxyTest.cs" />
     <Compile Include="ExplorerDeleteProviderTests.cs" />
+    <Compile Include="TabGroupPaneBindingBehaviorTests.cs" />
     <Compile Include="UpdateProxyTest.cs" />
     <Compile Include="UtilsTests\ActivityDesignerLanuageNotationConverterTest.cs" />
     <Compile Include="UtilsTests\DataListConversionUtilTest.cs" />
