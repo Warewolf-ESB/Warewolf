@@ -1633,7 +1633,7 @@ if ($Cleanup.IsPresent) {
 			        $JobNames = "Manual Tests"
 		        }
 	        }
-            Move-Artifacts-To-TestResults $ApplyDotCover (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log") $JobNames
+            Move-Artifacts-To-TestResults $true (Test-Path "$env:ProgramData\Warewolf\Server Log\wareWolf-Server.log") (Test-Path "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log") $JobNames
         }
     }
 }
