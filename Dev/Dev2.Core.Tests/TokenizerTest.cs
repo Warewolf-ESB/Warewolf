@@ -18,28 +18,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests
 {
-    /// <summary>
-    /// Summary description for TokenizerTest
-    /// </summary>
     [TestClass]
     public class TokenizerTest
     {
         const string Search = "AB-CD-DE-FG-HI";
         const string Search2 = "AB-CD-AB-CD";
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
+        
         #region Fwd Test
+
         [TestMethod]
         public void Single_Token_Op_Fwd()
         {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = Search.ToStringBuilder() };
-
-
+            
             dtb.AddTokenOp("-", false);
 
             var dt = dtb.Generate();
@@ -48,7 +39,7 @@ namespace Dev2.Tests
 
             while (dt.HasMoreOps())
             {
-                result += dt.NextToken();
+               result += dt.NextToken();
             }
 
             Assert.AreEqual("ABCDDEFGHI", result);
@@ -58,7 +49,6 @@ namespace Dev2.Tests
         public void Two_Token_Op_Fwd()
         {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = Search2.ToStringBuilder() };
-
 
             dtb.AddTokenOp("AB", false);
 
@@ -156,8 +146,7 @@ namespace Dev2.Tests
             Assert.AreEqual("AB-CD-DE-FG-HI", result);
             Assert.IsTrue(cnt == 1);
         }
-
-        //18.09.2012: massimo.guerrera - Added from a bug that wasnt splitting on a end operation after another operation.
+        
         [TestMethod]
         public void More_Then_One_Op_Fwd()
         {

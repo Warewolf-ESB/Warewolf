@@ -5,19 +5,28 @@ namespace Dev2.Services.Sql
 {
     public class SqlConnectionWrapper : ISqlConnection
     {
-        private readonly string _actualConnectionString;
+        private string _actualConnectionString;
         SqlConnection _connection;
-        public SqlConnectionWrapper(string connString)
+        public SqlConnectionWrapper()
+        {
+        }
+
+        public string CreateConnectionString(string connString)
         {
             var conStrBuilder = new SqlConnectionStringBuilder(connString)
             {
-                ConnectTimeout = 20,
+                ConnectTimeout = 30,
                 MaxPoolSize = 100,
-                MultipleActiveResultSets = true,
                 Pooling = true,
                 ApplicationName = "Warewolf Service"
             };
             _actualConnectionString = conStrBuilder.ConnectionString;
+            return _actualConnectionString;
+        }
+
+        public SqlConnectionWrapper(string connString)
+        {
+            CreateConnectionString(connString);
             CreateConnection();
         }
 
@@ -64,6 +73,8 @@ namespace Dev2.Services.Sql
                 return _connection.State;
             }
         }
+
+        public string ActualConnectionString => _actualConnectionString;
 
         public IDbTransaction BeginTransaction()
         {
