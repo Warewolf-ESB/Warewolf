@@ -140,7 +140,7 @@ namespace Dev2.ViewModels.Workflow
             else
             {
                 var indexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
-                if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0) && (indexOfAtSign + 1 >= dataPartFieldData.Length))
+                if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0))
                 {
                     if (!intellisenseResult.Message.Contains("invalid char"))
                     {
