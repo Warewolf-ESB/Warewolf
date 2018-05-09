@@ -1028,7 +1028,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             DataListSingleton.SetDataList(dataListViewModel);
             var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = WorkflowDesignerUnitTest.CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
             workflowDesigner.PopUp = mockPopUp.Object;
