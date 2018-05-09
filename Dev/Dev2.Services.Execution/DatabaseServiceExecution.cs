@@ -265,15 +265,8 @@ namespace Dev2.Services.Execution
         void SqlExecution(ErrorResultTO errors, int update)
         {
 
-            var conStrBuilder = new SqlConnectionStringBuilder(Source.ConnectionString)
-            {
-                ConnectTimeout = 20,
-                MaxPoolSize = 100,
-                MultipleActiveResultSets = true,
-                Pooling = true,
-                ApplicationName = "Warewolf Service"
-            };
-            var connection = new SqlConnection(conStrBuilder.ConnectionString);
+            var connectionBuilder = new ConnectionBuilder();
+            var connection = new SqlConnection(connectionBuilder.ConnectionString(Source.ConnectionString));
             var startTime = Stopwatch.StartNew();
             try
             {

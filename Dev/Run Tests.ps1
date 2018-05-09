@@ -828,29 +828,17 @@ function Start-Studio {
 		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
     }
     Write-Host "Waiting for Studio at $StudioPath to start..."
-    $i = 0
-    while (!(Test-Path $StudioLogFile) -and $i++ -lt 200){
+    $TimeoutCounter = 0
+    $StudioStartedFilePath = (Get-Item $StudioPath).Directory.FullName + "\StudioStarted"
+    while (!(Test-Path $StudioStartedFilePath) -and $TimeoutCounter++ -lt 200) {
         Write-Warning "Waiting for Studio to start..."
-        Sleep 3
+        sleep 3
     }
-    if (Test-Path $StudioLogFile) {
-        $i = 0
-	    if (!$ApplyDotCover) {
-            while ($i++ -lt 10){
-                Write-Warning "Waiting for Studio to start..."
-                Sleep 3
-            }
-        } else {
-            while ($i++ -lt 100){
-                Write-Warning "Waiting for Studio to start..."
-                Sleep 3
-            }
-        }
-	    Write-Host Studio has started.
-    } else {
+    if (!(Test-Path $StudioStartedFilePath)) {
 		Write-Error -Message "Warewolf studio failed to start within 10 minutes."
-		exit 1
+        exit 1
     }
+    Write-Host Studio has started.
 }
 
 function Start-ServerContainer {

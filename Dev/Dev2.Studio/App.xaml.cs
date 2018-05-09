@@ -66,6 +66,8 @@ using Dev2.Studio.Core;
 using Dev2.Factory;
 using System.Text;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
 
 namespace Dev2.Studio
 {
@@ -180,6 +182,25 @@ namespace Dev2.Studio
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
+            SetAsStarted();
+        }
+
+        static void SetAsStarted()
+        {
+            try
+            {
+                var studioFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var studioStartedFile = Path.Combine(studioFolder, "StudioStarted");
+                if (File.Exists(studioStartedFile))
+                {
+                    File.Delete(studioStartedFile);
+                }
+                File.WriteAllText(studioStartedFile, DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+            }
         }
 
         public void OpenBasedOnArguments(WarwolfStartupEventArgs e)
