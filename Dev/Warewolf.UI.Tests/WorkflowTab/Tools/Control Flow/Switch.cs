@@ -43,6 +43,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "1";
             Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
             WorkflowTabUIMap.Double_Click_Connector3();
+            Assert.IsTrue(DialogsUIMap.ActivityDefaultWindow.Exists);
         }
 
         [TestMethod]
