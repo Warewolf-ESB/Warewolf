@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UITesting;
+﻿using System.Drawing;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
@@ -14,8 +15,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragOnWorkflow_UITest()
         {
-            UIMap.InitializeABlankWorkflow();
-            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.VariableComboBox.Exists, "Varaible Combobox does not exist after dragging switch tool in from the toolbox.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.DisplayText.Exists, "Display Text Textbox does not exist after dragging switch tool in from the toolbox.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.OnErrorGroup.Exists, "On Error Pane does not exist after dragging switch tool in from the toolbox.");
@@ -29,10 +28,30 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragDialogWindow_UITest()
         {
-            UIMap.InitializeABlankWorkflow();
-            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
             Mouse.StartDragging(DialogsUIMap.DecisionOrSwitchDialog);
             Mouse.StopDragging(100, 100);
+        }
+
+        [TestMethod]
+        [TestCategory("Control Flow Tools")]
+        public void SwitchTool_EditSwitchCase_UITest()
+        {
+            DialogsUIMap.Click_Switch_Dialog_Done_Button();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_ToDefaultSwitch();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_SwitchFirstArm();
+            Assert.IsTrue(DialogsUIMap.ActivityDefaultWindow.Exists);
+            DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "1";
+            Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
+            WorkflowTabUIMap.Double_Click_Connector3();
+        }
+
+        [TestMethod]
+        [TestCategory("Control Flow Tools")]
+        public void SwitchTool_OpenExistingSwitch_UITest()
+        {
+            DialogsUIMap.Click_Switch_Dialog_Done_Button();
+            Mouse.DoubleClick(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1);
+            Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Switch dialog done button does not exist after dragging switch tool in from the toolbox.");
         }
 
         #region Additional test attributes
@@ -42,6 +61,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
+            UIMap.InitializeABlankWorkflow();
+            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
         }
 
         UIMap UIMap

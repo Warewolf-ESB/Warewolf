@@ -725,7 +725,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(306, 129));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
-        
+
         [Given(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
         [When(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
         [Then(@"I Drag Toolbox MultiAssign Onto DesignSurface")]
@@ -737,6 +737,49 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.Move(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(307, 128));
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
+        }
+
+        public void Drag_Toolbox_MultiAssign_Connect_ToDefaultSwitch()
+        {
+            UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
+            #region Variable Declarations
+            WpfListItem uIWarewolfStudioViewMoListItem = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
+            WpfCustom uIFlowchartCustom1 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion            
+            uIFlowchartCustom1.EnsureClickable(new Point(118, 370));
+            Mouse.StartDragging(uIWarewolfStudioViewMoListItem, new Point(214, 495));
+            Mouse.StopDragging(uIFlowchartCustom1, new Point(118, 370));
+
+            Mouse.Click(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch, new Point(275, 203));
+
+            Mouse.StartDragging(uIFlowchartCustom1, new Point(271, 203));
+            Mouse.StopDragging(uIFlowchartCustom1, -145, 119);
+        }
+
+        public void Drag_Toolbox_MultiAssign_Connect_SwitchFirstArm()
+        {
+            #region Variable Declarations
+            WpfListItem uIWarewolfStudioViewMoListItem = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
+            WpfCustom uIFlowchartCustom11 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            WpfCustom uIFlowchartCustom12 = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+
+            uIFlowchartCustom11.EnsureClickable(new Point(469, 318));
+            Mouse.StartDragging(uIWarewolfStudioViewMoListItem, new Point(218, 411));
+            Mouse.StopDragging(uIFlowchartCustom11, new Point(469, 318));
+
+            Mouse.Click(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch, new Point(275, 203));
+
+            Mouse.StartDragging(uIFlowchartCustom12, new Point(345, 199));
+            Mouse.StopDragging(uIFlowchartCustom12, 119, 66);
+        }
+
+        public void DoubleClickSwitchFirstArm()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3.DrawHighlight();
+            Mouse.Click(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch, new Point(275, 203));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(345, 199));
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3.Item1Text);
         }
 
         [Given(@"I Make Workflow Savable")]
@@ -1727,6 +1770,17 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         }
 
         private WorkflowTabUIMap _WorkflowTabUIMap;
+
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void Double_Click_Connector3()
+        {            
+            WpfCustom uIItem970f65ad1c3d4028Custom = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3;
+            // Click '970f65ad-1c3d-4028-b657-f687a5265c56,317,5;214,5 3...' custom control
+            Mouse.Click(uIItem970f65ad1c3d4028Custom, new Point(339, 274));
+            Mouse.DoubleClick(uIItem970f65ad1c3d4028Custom, new Point(339, 274));
+        }
     }
 
     #endregion
