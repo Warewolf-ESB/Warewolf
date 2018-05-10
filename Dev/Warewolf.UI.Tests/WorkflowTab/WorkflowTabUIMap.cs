@@ -109,6 +109,11 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.MoreLink);
         }
 
+        public void Click_Scheduler_StartNode_Context_Item()
+        {
+            Mouse.Click(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ScheduleMenuItem);
+        }
+
         public void WaitForDebugOutput()
         {
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.StatusBar.Spinner);

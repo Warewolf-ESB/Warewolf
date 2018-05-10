@@ -324,6 +324,20 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
+                                                            <UIObject ControlType="Custom" Id="StartNode2" FriendlyName="StartNode" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.StartSymbol</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">StartSymbol</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
                                                             <UIObject ControlType="Custom" Id="StartNode" FriendlyName="StartNode" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
