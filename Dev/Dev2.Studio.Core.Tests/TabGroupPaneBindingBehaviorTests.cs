@@ -1,6 +1,6 @@
-﻿using System;
-using Dev2.Studio.AppResources.Behaviors;
+﻿using Dev2.Studio.AppResources.Behaviors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Infragistics.Windows.DockManager;
 
 namespace Dev2.Core.Tests
 {
@@ -11,9 +11,11 @@ namespace Dev2.Core.Tests
         public void TabGroupPaneBindingBehavior_SetDocumentHost_CanSetDocumentHost()
         {
             //------------Setup for test-------------------------
-            var myTabGroupPaneBindingBehavior = new TabGroupPaneBindingBehavior();
-            //------------Execute Test---------------------------
-            myTabGroupPaneBindingBehavior.DocumentHost = new Infragistics.Windows.DockManager.DocumentContentHost();
+            var myTabGroupPaneBindingBehavior = new TabGroupPaneBindingBehavior
+            {
+                //------------Execute Test---------------------------
+                DocumentHost = new DocumentContentHost()
+            };
             //------------Assert Results-------------------------
             Assert.IsNotNull(myTabGroupPaneBindingBehavior.DocumentHost);
         }
