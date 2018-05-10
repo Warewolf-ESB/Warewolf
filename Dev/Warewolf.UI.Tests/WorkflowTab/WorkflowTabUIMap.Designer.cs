@@ -881,6 +881,23 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mCreateJson;
             }
         }
+
+        public WpfCustom StartNode2
+        {
+            get
+            {
+                if ((this.mStartNode2 == null))
+                {
+                    this.mStartNode2 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mStartNode2.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.StartSymbol";
+                    this.mStartNode2.SearchProperties[WpfControl.PropertyNames.AutomationId] = "StartSymbol";
+                    this.mStartNode2.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mStartNode2;
+            }
+        }
         
         public WpfCustom StartNode
         {
@@ -1104,6 +1121,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         
         private CreateJson mCreateJson;
         
+        private WpfCustom mStartNode2;
+
         private WpfCustom mStartNode;
         
         private WpfCustom mConnector1;
