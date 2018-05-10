@@ -98,6 +98,17 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DesignerDataListUtils_BuildDataPart")]
+        public void DesignerDataListUtils_BuildDataPart_InvalidJsonObjectVariable_ExpectEmpty()
+        {
+            //------------Setup for test--------------------------
+            var unique = new Dictionary<IDataListVerifyPart, string>();
+            WorkflowDesignerDataPartUtils.BuildDataPart("[[@1]]", unique, true);
+            Assert.AreEqual(0, unique.Count);
+        }
+
+        [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("DesignerDataListUtils_BuildDataPart")]
         public void DesignerDataListUtils_BuildDataPart_ValidJsonObjectVariable_ExpectInserted()
