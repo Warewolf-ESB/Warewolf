@@ -38,12 +38,10 @@ namespace Dev2.Settings.Scheduler
 
         IResourcePickerDialog CreateResourcePickerDialog()
         {
-            var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
-            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source).ContinueWith(a => _currentResourcePicker = a.Result);
-            return res;
+            return _currentResourcePicker = ResourcePickerDialog.Create(enDsfActivityType.Workflow, _source);
         }
+        //Task<IResourcePickerDialog> GetResourcePickerDialog => _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source)
 
-        Task<IResourcePickerDialog> GetResourcePickerDialog => _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
 
         public IResourcePickerDialog CurrentResourcePickerDialog
         {
@@ -297,18 +295,6 @@ namespace Dev2.Settings.Scheduler
         {
             if (_schedulerViewModel.SelectedTask != null && _schedulerViewModel.CurrentEnvironment != null)
             {
-                if (CurrentResourcePickerDialog == null)
-                {
-                    if (GetResourcePickerDialog?.Status == TaskStatus.Running)
-                    {
-                        GetResourcePickerDialog.Wait();
-                        if (!GetResourcePickerDialog.IsFaulted)
-                        {
-                            CurrentResourcePickerDialog = GetResourcePickerDialog.Result;
-                        }
-                    }
-                }
-
                 if (!string.IsNullOrEmpty(_schedulerViewModel.WorkflowName) && _schedulerViewModel.CurrentEnvironment.ResourceRepository != null)
                 {
                     var resourceModel = _schedulerViewModel.CurrentEnvironment.ResourceRepository.FindSingle(c => c.ResourceName == _schedulerViewModel.WorkflowName);
