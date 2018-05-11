@@ -214,7 +214,6 @@ namespace Dev2.Studio.Controller
             return ShowSwitchArmDialog(switchDesignerViewModel);
         }
 
-        [ExcludeFromCodeCoverage]
         static Dev2DecisionCallbackHandler ShowSwitchArmDialog(SwitchDesignerViewModel dataContext)
         {
             var large = new ConfigureSwitchArm { DataContext = dataContext };
@@ -292,7 +291,6 @@ namespace Dev2.Studio.Controller
 
         public static string OldSwitchValue { get; private set; }
 
-        [ExcludeFromCodeCoverage]
         static string SwitchExpressionValue(ModelProperty activityExpression)
         {
             var tmpModelItem = activityExpression.Value;
