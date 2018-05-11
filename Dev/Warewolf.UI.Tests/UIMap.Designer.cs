@@ -11131,8 +11131,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfPane.PropertyNames.ClassName] = "Uia.CellsPanel";
-            this.SearchProperties[WpfPane.PropertyNames.Name] = "0";
-            this.SearchProperties[WpfPane.PropertyNames.Instance] = "2";
+            this.SearchProperties[WpfPane.PropertyNames.Name] = "1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
