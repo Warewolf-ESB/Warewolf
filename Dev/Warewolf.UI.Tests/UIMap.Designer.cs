@@ -30,7 +30,32 @@ namespace Warewolf.UI.Tests
     public partial class UIMap
     {
         
+        /// <summary>
+        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// </summary>
+        public void AssertMethod1()
+        {
+            #region Variable Declarations
+            WpfMenuItem floatingMenuItem = this.MainStudioWindow.PaneContextItem.FloatingMenuItem;
+            #endregion
+
+            // Verify that the 'ControlType' property of 'Floating' menu item equals 'MenuItem'
+            Assert.AreEqual(this.AssertMethod1ExpectedValues.FloatingMenuItemControlType, floatingMenuItem.ControlType.ToString());
+        }
+        
         #region Properties
+        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        {
+            get
+            {
+                if ((this.mAssertMethod1ExpectedValues == null))
+                {
+                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                }
+                return this.mAssertMethod1ExpectedValues;
+            }
+        }
+        
         public MainStudioWindow MainStudioWindow
         {
             get
@@ -54,12 +79,43 @@ namespace Warewolf.UI.Tests
                 return this.mScriptErrorMessagebox;
             }
         }
+        
+        public UIWarewolfDEV2PIETERTEWindow UIWarewolfDEV2PIETERTEWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2PIETERTEWindow == null))
+                {
+                    this.mUIWarewolfDEV2PIETERTEWindow = new UIWarewolfDEV2PIETERTEWindow();
+                }
+                return this.mUIWarewolfDEV2PIETERTEWindow;
+            }
+        }
         #endregion
         
         #region Fields
+        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        
         private MainStudioWindow mMainStudioWindow;
         
         private ScriptErrorMessagebox mScriptErrorMessagebox;
+        
+        private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
+        #endregion
+    }
+    
+    /// <summary>
+    /// Parameters to be passed into 'AssertMethod1'
+    /// </summary>
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class AssertMethod1ExpectedValues
+    {
+        
+        #region Fields
+        /// <summary>
+        /// Verify that the 'ControlType' property of 'Floating' menu item equals 'MenuItem'
+        /// </summary>
+        public string FloatingMenuItemControlType = "MenuItem";
         #endregion
     }
     
@@ -1084,6 +1140,18 @@ namespace Warewolf.UI.Tests
                 return this.mUnpinnedTab2;
             }
         }
+        
+        public PaneContextItem PaneContextItem
+        {
+            get
+            {
+                if ((this.mPaneContextItem == null))
+                {
+                    this.mPaneContextItem = new PaneContextItem(this);
+                }
+                return this.mPaneContextItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1224,6 +1292,8 @@ namespace Warewolf.UI.Tests
         private WpfListItem mComboboxListItemAsSharepointTestServer;
         
         private WpfCustom mUnpinnedTab2;
+        
+        private PaneContextItem mPaneContextItem;
         #endregion
     }
     
@@ -20069,6 +20139,42 @@ namespace Warewolf.UI.Tests
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class PaneContextItem : WpfMenu
+    {
+        
+        public PaneContextItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfMenu.PropertyNames.ClassName] = "Uia.ContextMenu";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfMenuItem FloatingMenuItem
+        {
+            get
+            {
+                if ((this.mFloatingMenuItem == null))
+                {
+                    this.mFloatingMenuItem = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mFloatingMenuItem.SearchProperties[WpfMenuItem.PropertyNames.Name] = "Floating";
+                    this.mFloatingMenuItem.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mFloatingMenuItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfMenuItem mFloatingMenuItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
     public class ScriptErrorMessagebox : BrowserWindow
     {
         
@@ -20150,6 +20256,109 @@ namespace Warewolf.UI.Tests
         
         #region Fields
         private HtmlButton mNOButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2PIETERTEWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2PIETERTEWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\PIETER.TERBLANCHE)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
+        {
+            get
+            {
+                if ((this.mUIDev2StudioViewModelsCustom == null))
+                {
+                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
+                }
+                return this.mUIDev2StudioViewModelsCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIDev2StudioViewModelsCustom : WpfCustom
+    {
+        
+        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIContentDockManagerCustom UIContentDockManagerCustom
+        {
+            get
+            {
+                if ((this.mUIContentDockManagerCustom == null))
+                {
+                    this.mUIContentDockManagerCustom = new UIContentDockManagerCustom(this);
+                }
+                return this.mUIContentDockManagerCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIContentDockManagerCustom mUIContentDockManagerCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIContentDockManagerCustom : WpfCustom
+    {
+        
+        public UIContentDockManagerCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCustom UIOUTPUTCustom
+        {
+            get
+            {
+                if ((this.mUIOUTPUTCustom == null))
+                {
+                    this.mUIOUTPUTCustom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
+                    this.mUIOUTPUTCustom.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mUIOUTPUTCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCustom mUIOUTPUTCustom;
         #endregion
     }
 }

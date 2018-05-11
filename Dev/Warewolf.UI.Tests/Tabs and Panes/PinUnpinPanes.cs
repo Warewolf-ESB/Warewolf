@@ -15,6 +15,7 @@ using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.WebSource.WebSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
 
 namespace Warewolf.UI.Tests.Tabs
 {
@@ -40,6 +41,37 @@ namespace Warewolf.UI.Tests.Tabs
             Assert.IsTrue(UIMap.MainStudioWindow.UnpinnedTab.UnpinnedUsaved1.Exists);
             Mouse.MouseDragSpeed = 2500;
             Mouse.MouseMoveSpeed = 2500;
+        }
+
+        [TestMethod]
+        [TestCategory("Tabs and Panes")]
+        public void UnpinPutput_WorkflowDesignerPane()
+        {
+            UIMap.Click_NewWorkflow_RibbonButton();
+            UIMap.Unpin_Pane_With_Context_Menu(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables);
+        }
+
+        [TestMethod]
+        [TestCategory("Tabs and Panes")]
+        public void UnpinPutput_SchedulerPane()
+        {
+            UIMap.Click_Scheduler_RibbonButton();
+            UIMap.Unpin_Pane_With_Context_Menu(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.OUTPUT);
+        }
+
+        [TestMethod]
+        [TestCategory("Tabs and Panes")]
+        public void UnpinPutput_TestFrameworkPane()
+        {
+            UIMap.Click_NewWorkflow_RibbonButton();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            UIMap.Save_With_Ribbon_Button_And_Dialog("UnpinTestViewOutput");
+            UIMap.Press_F6();
+            UIMap.Click_Create_Test_From_Debug();
+            UIMap.Unpin_Pane_With_Context_Menu(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.OUTPUT);
+            ExplorerUIMap.Filter_Explorer("UnpinTestViewOutput");
+            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
+            DialogsUIMap.Click_MessageBox_Yes();
         }
 
         [TestMethod]
@@ -219,6 +251,21 @@ namespace Warewolf.UI.Tests.Tabs
         }
 
         private WorkflowServiceTestingUIMap _WorkflowServiceTestingUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         ExplorerUIMap ExplorerUIMap
         {

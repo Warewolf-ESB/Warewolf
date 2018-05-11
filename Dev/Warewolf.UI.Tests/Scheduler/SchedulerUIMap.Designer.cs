@@ -284,12 +284,31 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
                 return this.mCloseButton;
             }
         }
+        
+        public WpfCustom OUTPUT
+        {
+            get
+            {
+                if ((this.mOUTPUT == null))
+                {
+                    this.mOUTPUT = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mOUTPUT.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mOUTPUT.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
+                    this.mOUTPUT.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mOUTPUT;
+            }
+        }
         #endregion
         
         #region Fields
         private WorkSurfaceContext mWorkSurfaceContext;
         
         private WpfButton mCloseButton;
+        
+        private WpfCustom mOUTPUT;
         #endregion
     }
     
