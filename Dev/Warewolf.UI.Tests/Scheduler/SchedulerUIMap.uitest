@@ -619,6 +619,20 @@
                                   <SupportLevel>0</SupportLevel>
                                   <Descendants />
                                 </UIObject>
+                                <UIObject ControlType="Custom" Id="OUTPUT" FriendlyName="OUTPUT" SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\PIETER.TERBLANCHE)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                    <PropertyCondition Name="ClassName">Uia.ContentPane</PropertyCondition>
+                                    <PropertyCondition Name="AutomationId">OutputPane</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
                               </Descendants>
                             </UIObject>
                           </Descendants>
