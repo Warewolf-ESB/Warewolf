@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers2.Sequence
     {
         object _smallViewItem;
         bool _addedFromDesignSurface;
+        private IServerRepository _serverRepository;
 
         public SequenceDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -92,6 +93,18 @@ namespace Dev2.Activities.Designers2.Sequence
             }
         }
 
+        public IServerRepository ServerRepository
+        {
+            get
+            {
+                return _serverRepository ?? Dev2.Studio.Core.ServerRepository.Instance;
+            }
+            set
+            {
+                _serverRepository = value;
+            }
+        }
+
         public bool SetModelItemForServiceTypes(IDataObject dataObject)
         {
             if (dataObject != null && (dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat) || dataObject.GetDataPresent(GlobalConstants.UpgradedExplorerItemModelFormat)))
@@ -115,12 +128,12 @@ namespace Dev2.Activities.Designers2.Sequence
 
                 try
                 {
-                    var server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envId);
+                    var server = ServerRepository.FindSingle(c => c.EnvironmentID == envId);
                     var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
-                    if (resource == null)
+                    if (resource != null)
                     {
-                        var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
+                        var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository, true);
                         d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                         if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                         {
@@ -140,7 +153,6 @@ namespace Dev2.Activities.Designers2.Sequence
                             return true;
                         }
                     }                    
-                    return true;
                 }
                 catch (RuntimeBinderException e)
                 {
