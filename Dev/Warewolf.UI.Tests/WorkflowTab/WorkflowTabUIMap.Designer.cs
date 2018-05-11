@@ -91,54 +91,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mMainStudioWindow;
             }
         }
-        
-        public UICodedUITestBuilderWindow UICodedUITestBuilderWindow
-        {
-            get
-            {
-                if ((this.mUICodedUITestBuilderWindow == null))
-                {
-                    this.mUICodedUITestBuilderWindow = new UICodedUITestBuilderWindow();
-                }
-                return this.mUICodedUITestBuilderWindow;
-            }
-        }
-        
-        public UIWpfWindow UIWpfWindow
-        {
-            get
-            {
-                if ((this.mUIWpfWindow == null))
-                {
-                    this.mUIWpfWindow = new UIWpfWindow();
-                }
-                return this.mUIWpfWindow;
-            }
-        }
-        
-        public UIActivityDefaultWindoWindow UIActivityDefaultWindoWindow
-        {
-            get
-            {
-                if ((this.mUIActivityDefaultWindoWindow == null))
-                {
-                    this.mUIActivityDefaultWindoWindow = new UIActivityDefaultWindoWindow();
-                }
-                return this.mUIActivityDefaultWindoWindow;
-            }
-        }
-        
-        public UIWarewolfDEV2CANDICEDWindow UIWarewolfDEV2CANDICEDWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2CANDICEDWindow == null))
-                {
-                    this.mUIWarewolfDEV2CANDICEDWindow = new UIWarewolfDEV2CANDICEDWindow();
-                }
-                return this.mUIWarewolfDEV2CANDICEDWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -147,14 +99,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
-        
-        private UICodedUITestBuilderWindow mUICodedUITestBuilderWindow;
-        
-        private UIWpfWindow mUIWpfWindow;
-        
-        private UIActivityDefaultWindoWindow mUIActivityDefaultWindoWindow;
-        
-        private UIWarewolfDEV2CANDICEDWindow mUIWarewolfDEV2CANDICEDWindow;
         #endregion
     }
     
@@ -881,7 +825,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mCreateJson;
             }
         }
-
+        
         public WpfCustom StartNode2
         {
             get
@@ -1122,7 +1066,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private CreateJson mCreateJson;
         
         private WpfCustom mStartNode2;
-
+        
         private WpfCustom mStartNode;
         
         private WpfCustom mConnector1;
@@ -8266,243 +8210,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         
         #region Fields
         private WpfEdit mOutputsAutoCompleteTextBoxText;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UICodedUITestBuilderWindow : WpfWindow
-    {
-        
-        public UICodedUITestBuilderWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Coded UI Test Builder";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Coded UI Test Builder");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfWindow UIWpfWindow
-        {
-            get
-            {
-                if ((this.mUIWpfWindow == null))
-                {
-                    this.mUIWpfWindow = new WpfWindow(this);
-                    #region Search Criteria
-                    this.mUIWpfWindow.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mUIWpfWindow.WindowTitles.Add("Coded UI Test Builder");
-                    #endregion
-                }
-                return this.mUIWpfWindow;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfWindow mUIWpfWindow;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWpfWindow : WpfWindow
-    {
-        
-        public UIWpfWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            #endregion
-        }
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIActivityDefaultWindoWindow : WpfWindow
-    {
-        
-        public UIActivityDefaultWindoWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "ActivityDefaultWindow";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("ActivityDefaultWindow");
-            #endregion
-        }
-        
-        #region Properties
-        public UIItemCustom UIItemCustom
-        {
-            get
-            {
-                if ((this.mUIItemCustom == null))
-                {
-                    this.mUIItemCustom = new UIItemCustom(this);
-                }
-                return this.mUIItemCustom;
-            }
-        }
-        
-        public WpfButton UIDoneButton
-        {
-            get
-            {
-                if ((this.mUIDoneButton == null))
-                {
-                    this.mUIDoneButton = new WpfButton(this);
-                    #region Search Criteria
-                    this.mUIDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
-                    this.mUIDoneButton.WindowTitles.Add("ActivityDefaultWindow");
-                    #endregion
-                }
-                return this.mUIDoneButton;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIItemCustom mUIItemCustom;
-        
-        private WpfButton mUIDoneButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIItemCustom : WpfCustom
-    {
-        
-        public UIItemCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConfigureSwitchArm";
-            this.WindowTitles.Add("ActivityDefaultWindow");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfComboBox UISwitchArmCaseTextboxComboBox
-        {
-            get
-            {
-                if ((this.mUISwitchArmCaseTextboxComboBox == null))
-                {
-                    this.mUISwitchArmCaseTextboxComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mUISwitchArmCaseTextboxComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SwitchArmCaseTextbox";
-                    this.mUISwitchArmCaseTextboxComboBox.WindowTitles.Add("ActivityDefaultWindow");
-                    #endregion
-                }
-                return this.mUISwitchArmCaseTextboxComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfComboBox mUISwitchArmCaseTextboxComboBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2CANDICEDWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2CANDICEDWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\CANDICE.DANIEL)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIFlowchartCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new UIFlowchartCustom(this);
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIFlowchartCustom mUIFlowchartCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIFlowchartCustom : WpfCustom
-    {
-        
-        public UIFlowchartCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIFlowchartCustom1 UIFlowchartCustom1
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom1 == null))
-                {
-                    this.mUIFlowchartCustom1 = new UIFlowchartCustom1(this);
-                }
-                return this.mUIFlowchartCustom1;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIFlowchartCustom1 mUIFlowchartCustom1;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIFlowchartCustom1 : WpfCustom
-    {
-        
-        public UIFlowchartCustom1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Unsaved 25(FlowchartDesigner)";
-            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIItem970f65ad1c3d4028Custom
-        {
-            get
-            {
-                if ((this.mUIItem970f65ad1c3d4028Custom == null))
-                {
-                    this.mUIItem970f65ad1c3d4028Custom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIItem970f65ad1c3d4028Custom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
-                    this.mUIItem970f65ad1c3d4028Custom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "970f65ad-1c3d-4028-b657-f687a5265c56,317,5;214,5 317,5;272,5 345;272,5";
-                    this.mUIItem970f65ad1c3d4028Custom.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
-                    #endregion
-                }
-                return this.mUIItem970f65ad1c3d4028Custom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIItem970f65ad1c3d4028Custom;
         #endregion
     }
 }
