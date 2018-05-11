@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -164,11 +165,7 @@ namespace Dev2.Activities.Designers2.Core
             try
             {
                 TestResults = _serverModel.TestService(Model);
-                if (Model.Source.Type == enSourceType.ODBC)
-                {
-                    var dbSource = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, Model.Source.Id);
-                    TestResults.TableName = dbSource.DatabaseName.Replace(" ", "");
-                }
+                ProcessOdbc();
                 if (TestResults != null)
                 {
                     if (TestResults.Columns.Count >= 1)
@@ -204,6 +201,15 @@ namespace Dev2.Activities.Designers2.Core
                 TestPassed = false;
                 TestFailed = true;
                 _viewmodel.ErrorMessage(e, true);
+            }
+        }
+        [ExcludeFromCodeCoverage]
+        private void ProcessOdbc()
+        {
+            if (Model.Source.Type == enSourceType.ODBC)
+            {
+                var dbSource = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, Model.Source.Id);
+                TestResults.TableName = dbSource.DatabaseName.Replace(" ", "");
             }
         }
 
