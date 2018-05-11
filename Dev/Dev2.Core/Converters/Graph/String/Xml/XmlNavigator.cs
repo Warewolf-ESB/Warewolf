@@ -358,7 +358,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
         static void ActualXElementSegment(XmlPathSegment pathSegment, IndexedPathSegmentTreeNode<string> newIndexedValueTreeNode, XElement parentCurentElement)
         {
-            var childElements = parentCurentElement.Elements(pathSegment.ActualSegment).ToList();
+            var childElements =
+                                    parentCurentElement.Elements(pathSegment.ActualSegment).ToList();
             newIndexedValueTreeNode.EnumerableValue = childElements;
 
             if (childElements.Count == 0)
@@ -368,9 +369,20 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             }
             else
             {
-                newIndexedValueTreeNode.Enumerator = newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
+                newIndexedValueTreeNode.Enumerator =
+                    newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
+
                 newIndexedValueTreeNode.Enumerator.Reset();
-                newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
+
+                if (!newIndexedValueTreeNode.Enumerator.MoveNext())
+                {
+                    newIndexedValueTreeNode.CurrentValue = string.Empty;
+                    newIndexedValueTreeNode.EnumerationComplete = true;
+                }
+                else
+                {
+                    newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
+                }
             }
         }
 
