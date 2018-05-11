@@ -93,7 +93,9 @@ namespace Dev2.Settings.Scheduler
         public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker)
             : base(eventPublisher)
         {
-            SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
+            SchedulerTaskManager = new SchedulerTaskManager(this,
+                                                            getResourcePicker,
+                                                            new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true));
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
             var directoryObjectPicker1 = directoryObjectPicker;
 
