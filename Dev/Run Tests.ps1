@@ -210,12 +210,14 @@ if (!$StartServerAsConsole.IsPresent) {
 if ($JobNames.Contains(" DotCover")) {
     [bool]$ApplyDotCover = $True
     $JobNames = $JobNames.Replace(" DotCover", "")
-} elif ($DotCoverPath -ne "") {
-    if (!(Test-Path $DotCoverPath)) {
-        Write-Error -Message "Cannot find DotCover.exe. Please provide a path to that file as a commandline parameter like this: -DotCoverPath"
-        exit 1
+} else {
+    if ($DotCoverPath -ne "") {
+        if (!(Test-Path $DotCoverPath)) {
+            Write-Error -Message "Cannot find DotCover.exe. Please provide a path to that file as a commandline parameter like this: -DotCoverPath"
+            exit 1
+        }
+        [bool]$ApplyDotCover = $true
     }
-    [bool]$ApplyDotCover = $true
 }
 
 If (!(Test-Path "$TestsResultsPath")) {
