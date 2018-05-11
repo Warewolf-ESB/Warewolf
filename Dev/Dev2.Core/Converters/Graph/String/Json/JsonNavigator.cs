@@ -53,12 +53,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
 
             var currentData = Data as JToken;
 
-            if (currentData == null)
-            {
-                throw new Exception(string.Format(ErrorResource.DataTypeMismatch,
-                    typeof (JToken), Data.GetType()));
-            }
-
             if (path.ActualPath == JsonPath.SeperatorSymbol)
             {
                 //nothing to do here yet
@@ -108,11 +102,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             var enumerableData = GetEnumerableValueForPathSegment(pathSegments[segmentIndex],
                                         currentData);
 
-            if (enumerableData == null)
-            {
-                currentData = null;
-            }
-            else
+            if (enumerableData != null)
             {
                 var enumerator = enumerableData.GetEnumerator();
                 enumerator.Reset();

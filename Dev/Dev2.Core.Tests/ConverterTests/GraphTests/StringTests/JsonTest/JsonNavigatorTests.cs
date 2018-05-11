@@ -20,8 +20,8 @@ using Unlimited.Framework.Converters.Graph.String.Xml;
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
 {
     [TestClass]
-    public class JsonNavigatorTests {
-
+    public class JsonNavigatorTests
+    {
         internal string testData => @"{
     ""Name"": ""Dev2"",
     ""Motto"": ""Eat lots of cake"",
@@ -501,6 +501,133 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
 
             const string expected = "Dev2";
             var actual = string.Join("|", data[path].Select(s => s.ToString().Trim()));
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SelectEnumerablesAsRelated_WithEnumerableSymbolAndSeperatorSymbol_Expected_PipeDelimited()
+        {
+            List<IPath> namePath = new List<IPath>() { new JsonPath("().", "().") };
+
+            var JsonNavigator = new JsonNavigator(testData);
+            
+            var actual = string.Join("|", JsonNavigator.SelectEnumerablesAsRelated(namePath).Values.FirstOrDefault());
+            const string expected = @"""Name"": ""Dev2""|""Motto"": ""Eat lots of cake""|""Departments"": [
+  {
+    ""Name"": ""Dev"",
+    ""Employees"": [
+      {
+        ""Name"": ""Brendon"",
+        ""Surename"": ""Page""
+      },
+      {
+        ""Name"": ""Jayd"",
+        ""Surename"": ""Page""
+      }
+    ]
+  },
+  {
+    ""Name"": ""Accounts"",
+    ""Employees"": [
+      {
+        ""Name"": ""Bob"",
+        ""Surename"": ""Soap""
+      },
+      {
+        ""Name"": ""Joe"",
+        ""Surename"": ""Pants""
+      }
+    ]
+  }
+]|""Contractors"": [
+  {
+    ""Name"": ""Roofs Inc."",
+    ""PhoneNumber"": ""123""
+  },
+  {
+    ""Name"": ""Glass Inc."",
+    ""PhoneNumber"": ""1234""
+  },
+  {
+    ""Name"": ""Doors Inc."",
+    ""PhoneNumber"": ""1235""
+  },
+  {
+    ""Name"": ""Cakes Inc."",
+    ""PhoneNumber"": ""1236""
+  }
+]|""PrimitiveRecordset"": [
+  ""\r\n        RandomData\r\n    "",
+  ""\r\n        RandomData1\r\n    ""
+]";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SelectEnumerablesAsRelated_WithSeperatorSymbol_Expected_UnchangedPath()
+        {
+            List<IPath> namePath = new List<IPath>() { new JsonPath(".", ".") };
+
+            var JsonNavigator = new JsonNavigator(testData);
+
+            var actual = string.Join("|", JsonNavigator.SelectEnumerablesAsRelated(namePath).Values.FirstOrDefault());
+
+            var expected = @"{
+  ""Name"": ""Dev2"",
+  ""Motto"": ""Eat lots of cake"",
+  ""Departments"": [
+    {
+      ""Name"": ""Dev"",
+      ""Employees"": [
+        {
+          ""Name"": ""Brendon"",
+          ""Surename"": ""Page""
+        },
+        {
+          ""Name"": ""Jayd"",
+          ""Surename"": ""Page""
+        }
+      ]
+    },
+    {
+      ""Name"": ""Accounts"",
+      ""Employees"": [
+        {
+          ""Name"": ""Bob"",
+          ""Surename"": ""Soap""
+        },
+        {
+          ""Name"": ""Joe"",
+          ""Surename"": ""Pants""
+        }
+      ]
+    }
+  ],
+  ""Contractors"": [
+    {
+      ""Name"": ""Roofs Inc."",
+      ""PhoneNumber"": ""123""
+    },
+    {
+      ""Name"": ""Glass Inc."",
+      ""PhoneNumber"": ""1234""
+    },
+    {
+      ""Name"": ""Doors Inc."",
+      ""PhoneNumber"": ""1235""
+    },
+    {
+      ""Name"": ""Cakes Inc."",
+      ""PhoneNumber"": ""1236""
+    }
+  ],
+  ""PrimitiveRecordset"": [
+    ""\r\n        RandomData\r\n    "",
+    ""\r\n        RandomData1\r\n    ""
+  ]
+}";
 
             Assert.AreEqual(expected, actual);
         }
