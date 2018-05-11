@@ -207,6 +207,7 @@ if (!$StartServerAsConsole.IsPresent) {
     [bool]$ConsoleServer = $True
 }
 
+[bool]$ApplyDotCover = $false
 if ($JobNames.Contains(" DotCover")) {
     [bool]$ApplyDotCover = $True
     $JobNames = $JobNames.Replace(" DotCover", "")
