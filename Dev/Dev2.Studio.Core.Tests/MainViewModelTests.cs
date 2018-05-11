@@ -949,6 +949,16 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void DeleteResourceConfirmedExpectContextRemoved2()
+        {
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object, FirstResource.Object }, "somefolder");
+            ShellViewModel.Handle(msg);
+            ResourceRepo.Verify(s => s.HasDependencies(FirstResource.Object), Times.Exactly(2));
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MainViewModel_HandleDeleteResourceMessage")]
         public void MainViewModel_HandleDeleteResourceMessage_WhenHasActionDeclined_PerformsAction()
