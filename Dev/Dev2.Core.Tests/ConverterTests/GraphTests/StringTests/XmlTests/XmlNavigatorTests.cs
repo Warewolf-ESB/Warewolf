@@ -64,14 +64,22 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void SelectScalarValueUsingNull_Expected_ArgumentNullException()
+        public void SelectScalarValue_WithNull_Expected_ArgumentNullException()
         {
             var xmlNavigator = new XmlNavigator(testData);
             xmlNavigator.SelectScalar(null);
         }
 
         [TestMethod]
-        public void SelectScalarValueUsingPathSeperator_Expected_ScalarValue()
+        [ExpectedException(typeof(Exception))]
+        public void SelectScalar_WithoutXmlPath_ExpectException()
+        {
+            var JsonNavigator = new XmlNavigator(testData);
+            JsonNavigator.SelectScalar(new JsonPath());
+        }
+
+        [TestMethod]
+        public void SelectScalarValue_WithPathSeperator_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath(".", ".");
 
@@ -115,7 +123,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         [TestMethod]
-        public void SelectScalarValueUsingScalarPathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
+        public void SelectScalarValue_WithScalarPathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company:Name", "Company:Name");
 
@@ -128,7 +136,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
         
         [TestMethod]
-        public void SelectScalarValueUsingScalarPathFromXml_WherePathMapsToANode_Expected_ScalarValue()
+        public void SelectScalarValue_WithScalarPathFromXml_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company.Motto", "Company.Motto");
 
@@ -139,8 +147,20 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 
             Assert.AreEqual(expected, actual);
         }
-        
-        public void SelectScalarValueUsingScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
+
+        [TestMethod]
+        public void SelectScalarValue_WithWrongPathSegment_Expected_NoValue()
+        {
+            IPath namePath = new XmlPath("Company.Nogo", "Company.Nogo");
+
+            var xmlNavigator = new XmlNavigator(testData);
+
+            var actual = xmlNavigator.SelectScalar(namePath).ToString();
+
+            Assert.AreEqual(string.Empty, actual);
+        }
+
+        public void SelectScalarValue_WithScalarPathFromXmlWithASingleNode_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Message", "Message");
 
@@ -153,7 +173,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
         
         [TestMethod]
-        public void SelectScalarValueUsingEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
+        public void SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToAnAttribute_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company.Departments().Department.Employees().Person:Name", "Company.Departments.Department.Employees.Person:Name");
 
@@ -166,7 +186,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
         
         [TestMethod]
-        public void SelectScalarValueUsingEnumerablePathFromXml_WherePathMapsToANode_Expected_ScalarValue()
+        public void SelectScalarValue_WithEnumerablePathFromXml_WherePathMapsToANode_Expected_ScalarValue()
         {
             IPath namePath = new XmlPath("Company().InlineRecordSet", "Company.InlineRecordSet");
 
@@ -432,5 +452,54 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         }
 
         #endregion SelectEnumerable Tests
+
+        #region Select Enumerable As Related Tests
+
+        [TestMethod]
+        public void SelectEnumerablesAsRelated_WithSeperatorSymbol_Expected_UnchangedPath()
+        {
+            List<IPath> namePath = new List<IPath>() { new XmlPath(".", ".") };
+
+            var XmlNavigator = new XmlNavigator(testData);
+
+            var actual = string.Join("|", XmlNavigator.SelectEnumerablesAsRelated(namePath).Values.FirstOrDefault());
+
+            var expected = @"<Company Name=""Dev2"">
+  <Motto>Eat lots of cake</Motto>
+  <PreviousMotto />
+  <Departments TestAttrib=""testing"">
+    <Department Name=""Dev"">
+      <Employees>
+        <Person Name=""Brendon"" Surename=""Page"" />
+        <Person Name=""Jayd"" Surename=""Page"" />
+      </Employees>
+    </Department>
+    <Department Name=""Accounts"">
+      <Employees>
+        <Person Name=""Bob"" Surename=""Soap"" />
+        <Person Name=""Joe"" Surename=""Pants"" />
+      </Employees>
+    </Department>
+  </Departments>
+  <InlineRecordSet>
+        RandomData
+    </InlineRecordSet>
+  <InlineRecordSet>
+        RandomData1
+    </InlineRecordSet>
+  <OuterNestedRecordSet>
+    <InnerNestedRecordSet ItemValue=""val1"" />
+    <InnerNestedRecordSet ItemValue=""val2"" />
+  </OuterNestedRecordSet>
+  <OuterNestedRecordSet>
+    <InnerNestedRecordSet ItemValue=""val3"" />
+    <InnerNestedRecordSet ItemValue=""val4"" />
+  </OuterNestedRecordSet>
+</Company>";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
     }
 }

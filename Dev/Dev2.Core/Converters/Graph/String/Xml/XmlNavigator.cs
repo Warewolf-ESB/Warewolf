@@ -40,22 +40,14 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                 throw new ArgumentNullException("path");
             }
 
-            var xmlPath = path as XmlPath;
 
-            if (xmlPath == null)
+            if (!(path is XmlPath xmlPath))
             {
                 throw new Exception(string.Format(ErrorResource.PathMismatch,
-                    typeof (XmlPath), path.GetType()));
+                    typeof(XmlPath), path.GetType()));
             }
 
             var document = Data as XDocument;
-
-            if (document == null)
-            {
-                throw new Exception(string.Format(ErrorResource.DataTypeMismatch,
-                    typeof (XDocument), Data.GetType()));
-            }
-
             var returnData = string.Empty;
             var currentElement = document.Root;
 
@@ -162,12 +154,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
             var document = Data as XDocument;
 
-            if (document == null)
-            {
-                throw new Exception(string.Format(ErrorResource.DataTypeMismatch,
-                    typeof (XDocument), Data.GetType()));
-            }
-
             List<object> returnData = null;
             var currentElement = document.Root;
 
@@ -209,13 +195,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             else
             {
                 var document = Data as XDocument;
-
-                if (document == null)
-                {
-                    throw new Exception(
-                        string.Format(ErrorResource.PathMismatch,
-                            typeof (XDocument), Data.GetType()));
-                }
 
                 //
                 // Create the root node
@@ -377,10 +356,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             }
         }
 
-        private static void ActualXElementSegment(XmlPathSegment pathSegment, IndexedPathSegmentTreeNode<string> newIndexedValueTreeNode, XElement parentCurentElement)
+        static void ActualXElementSegment(XmlPathSegment pathSegment, IndexedPathSegmentTreeNode<string> newIndexedValueTreeNode, XElement parentCurentElement)
         {
-            var childElements =
-                                    parentCurentElement.Elements(pathSegment.ActualSegment).ToList();
+            var childElements = parentCurentElement.Elements(pathSegment.ActualSegment).ToList();
             newIndexedValueTreeNode.EnumerableValue = childElements;
 
             if (childElements.Count == 0)
@@ -390,20 +368,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             }
             else
             {
-                newIndexedValueTreeNode.Enumerator =
-                    newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
-
+                newIndexedValueTreeNode.Enumerator = newIndexedValueTreeNode.EnumerableValue.GetEnumerator();
                 newIndexedValueTreeNode.Enumerator.Reset();
-
-                if (!newIndexedValueTreeNode.Enumerator.MoveNext())
-                {
-                    newIndexedValueTreeNode.CurrentValue = string.Empty;
-                    newIndexedValueTreeNode.EnumerationComplete = true;
-                }
-                else
-                {
-                    newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
-                }
+                newIndexedValueTreeNode.CurrentValue = newIndexedValueTreeNode.Enumerator.Current;
             }
         }
 
