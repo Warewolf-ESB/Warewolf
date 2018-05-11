@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -35,7 +34,6 @@ using Dev2.Runtime.Security;
 using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Settings;
-using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Browsers;
@@ -70,8 +68,6 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
-using Dev2.Views.Search;
-using Dev2.ViewModels.Search;
 using Dev2.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels
@@ -95,7 +91,6 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newPostgreSqlSourceCommand;
         private AuthorizeCommand<string> _newOracleSourceCommand;
         private AuthorizeCommand<string> _newOdbcSourceCommand;
-		private AuthorizeCommand<string> _newSqliteSourceCommand;
 		private AuthorizeCommand<string> _newWebSourceCommand;
         private AuthorizeCommand<string> _newServerSourceCommand;
         private AuthorizeCommand<string> _newEmailSourceCommand;
@@ -219,7 +214,6 @@ namespace Dev2.Studio.ViewModels
             NewPostgreSqlSourceCommand.UpdateContext(ActiveServer);
             NewOracleSourceCommand.UpdateContext(ActiveServer);
             NewOdbcSourceCommand.UpdateContext(ActiveServer);
-			NewSqliteSourceCommand.UpdateContext(ActiveServer);
 			NewServiceCommand.UpdateContext(ActiveServer);
             NewPluginSourceCommand.UpdateContext(ActiveServer);
             NewWebSourceCommand.UpdateContext(ActiveServer);
@@ -325,10 +319,6 @@ namespace Dev2.Studio.ViewModels
         {
             get => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveServerConnected()));
         }
-		public IAuthorizeCommand<string> NewSqliteSourceCommand
-		{
-			get => _newSqliteSourceCommand ?? (_newSqliteSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqliteSource(@""), param => IsActiveServerConnected()));
-		}
 		public IAuthorizeCommand<string> NewWebSourceCommand
         {
             get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
@@ -1205,7 +1195,7 @@ namespace Dev2.Studio.ViewModels
 		public void EditSqliteResource(IDbSource selectedSource, IWorkSurfaceKey key)
 		{
 			key = _worksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(key, WorkSurfaceContext.SqliteSource, selectedSource.Id);
-			ProcessDBSource(ProcessSqliteSource(selectedSource), key as WorkSurfaceKey);
+			ProcessDBSource(ProcessSqliteSource(selectedSource), key);
 		}
 		public void EditResource(IPluginSource selectedSource) => EditResource(selectedSource, null);
 
@@ -1287,8 +1277,6 @@ namespace Dev2.Studio.ViewModels
         public void NewOracleSource(string resourcePath) => _worksurfaceContextManager.NewOracleSource(resourcePath);
 
         public void NewOdbcSource(string resourcePath) => _worksurfaceContextManager.NewOdbcSource(resourcePath);
-
-        public void NewSqliteSource(string resourcePath) => _worksurfaceContextManager.NewSqliteSource(resourcePath);
 
         public void NewWebSource(string resourcePath) => _worksurfaceContextManager.NewWebSource(resourcePath);
 

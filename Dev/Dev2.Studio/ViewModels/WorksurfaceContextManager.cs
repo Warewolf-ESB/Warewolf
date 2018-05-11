@@ -68,8 +68,6 @@ namespace Dev2.Studio.ViewModels
         void EditOracleResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditOdbcResource(IDbSource selectedSource, IView view);
         void EditOdbcResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
-		void EditSqliteResource(IDbSource selectedSource, IView view);
-		void EditSqliteResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
 		void EditResource(IPluginSource selectedSource, IView view);
         void EditResource(IPluginSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey);
         void EditResource(IComPluginSource selectedSource, IView view);
@@ -90,7 +88,6 @@ namespace Dev2.Studio.ViewModels
         void NewPostgreSqlSource(string resourcePath);
         void NewOracleSource(string resourcePath);
         void NewOdbcSource(string resourcePath);
-		void NewSqliteSource(string resourcePath);
 		bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel);
         void NewWebSource(string resourcePath);
         void NewPluginSource(string resourcePath);
@@ -113,7 +110,6 @@ namespace Dev2.Studio.ViewModels
         void EditPostgreSqlSource(IContextualResourceModel resourceModel, IView view);
         void EditOracleSource(IContextualResourceModel resourceModel, IView view);
         void EditOdbcSource(IContextualResourceModel resourceModel, IView view);
-		void EditSqliteSource(IContextualResourceModel resourceModel, IView view);
 		void EditPluginSource(IContextualResourceModel resourceModel, IView view);
         void EditComPluginSource(IContextualResourceModel resourceModel, IView view);
         void EditWebSource(IContextualResourceModel resourceModel, IView view);
@@ -320,18 +316,6 @@ namespace Dev2.Studio.ViewModels
             OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-		public void EditSqliteResource(IDbSource selectedSource, IView view) => EditSqliteResource(selectedSource, view, null);
-		public void EditSqliteResource(IDbSource selectedSource, IView view, IWorkSurfaceKey workSurfaceKey)
-		{
-			var dbSourceViewModel = new ManageSqliteSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name), new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedSource, _shellViewModel.AsyncWorker);
-			var vm = new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, dbSourceViewModel, _shellViewModel.PopupProvider, view, ActiveServer);
-
-			workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.OdbcSource, selectedSource.Id);
-            
-			var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
-			OpeningWorkflowsHelper.AddWorkflow(workSurfaceKey);
-			AddAndActivateWorkSurface(workSurfaceContextViewModel);
-		}
 
 		public IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID)
         {
@@ -572,19 +556,6 @@ namespace Dev2.Studio.ViewModels
             { SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageDatabaseSourceControl(), ActiveServer));
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-		public void NewSqliteSource(string resourcePath)
-		{
-			var saveViewModel = GetSaveViewModel(resourcePath, Warewolf.Studio.Resources.Languages.Core.OdbcSourceNewHeaderLabel);
-			var key = (WorkSurfaceKey)WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.SqliteSource);
-			key.ServerID = ActiveServer.ServerID;
-
-			var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, new SourceViewModel<IDbSource>(_shellViewModel.EventPublisher, new ManageSqliteSourceViewModel(new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name)
-				, saveViewModel
-				, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
-				, _shellViewModel.AsyncWorker)
-			{ SelectedGuid = key.ResourceID.Value }, _shellViewModel.PopupProvider, new ManageDatabaseSourceControl(), ActiveServer));
-			AddAndActivateWorkSurface(workSurfaceContextViewModel);
-		}
 		public bool DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
         {
             var saveViewModel = GetSaveViewModel(string.Empty, explorerItemViewModel.ResourceName, explorerItemViewModel);
@@ -861,30 +832,7 @@ namespace Dev2.Studio.ViewModels
             _editHandler.TryAdd("Oracle", EditOracleSource);
             _editHandler.TryAdd("ODBC", EditOdbcSource);
             _editHandler.TryAdd("SqlDatabase", EditSqlServerSource);
-			_editHandler.TryAdd("SqliteDatabase", EditSqliteSource);
 
-		}
-
-		public void EditSqliteSource(IContextualResourceModel resourceModel, IView view)
-		{
-			var db = new DbSource(resourceModel.WorkflowXaml.ToXElement());
-			var def = new DbSourceDefinition
-			{
-				AuthenticationType = db.AuthenticationType,
-				DbName = db.DatabaseName,
-				Id = db.ResourceID,
-				Path = resourceModel.GetSavePath(),
-				Name = db.ResourceName,
-				Password = db.Password,
-				ServerName = db.Server,
-				Type = db.ServerType,
-				UserName = db.UserID
-			};
-			var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MySqlSource);
-			workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
-			workSurfaceKey.ResourceID = resourceModel.ID;
-			workSurfaceKey.ServerID = resourceModel.ServerID;
-			EditSqliteResource(def, view, workSurfaceKey);
 		}
 		public void EditSqlServerSource(IContextualResourceModel resourceModel, IView view)
         {
