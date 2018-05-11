@@ -70,6 +70,14 @@ namespace Dev2.Dialogs
             return ret.InitializeAsync(source);
         }
 
+        public static IResourcePickerDialog Create(enDsfActivityType activityType, IEnvironmentViewModel source)
+        {
+            var ret = new ResourcePickerDialog(activityType, source, EventPublishers.Aggregator, new AsyncWorker(), ConnectControlSingleton.Instance);
+            var task = ret.InitializeAsync(source);
+            task.Wait();
+            return task.Result;
+        }
+
         protected  async Task<IResourcePickerDialog> InitializeAsync(IEnvironmentViewModel environmentViewModel)
         {
             environmentViewModel.Connect();
