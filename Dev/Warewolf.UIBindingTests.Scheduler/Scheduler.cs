@@ -30,8 +30,15 @@ namespace Warewolf.UIBindingTests.Scheduler
             env.Setup(a => a.IsConnected).Returns(true);
             var svr = new Mock<IServer>();
             svr.Setup(a => a.IsConnected).Returns(true);
-            var serverRepo = new Mock<IServerRepository>();
-            CustomContainer.Register(serverRepo.Object);
+            var environmentRepository = new Mock<IServerRepository>();
+
+            var environments = new List<IServer>();
+            environmentRepository.Setup(e => e.All()).Returns(environments);
+            CustomContainer.Register(environmentRepository.Object);
+            var shellViewModel = new Mock<IShellViewModel>();
+            CustomContainer.Register(shellViewModel.Object);
+            CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
+
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popupController.Object, new SynchronousAsyncWorker(), svr.Object, a => env.Object);
             var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c", Guid.NewGuid().ToString()) };
 
