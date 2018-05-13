@@ -46,8 +46,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         string DisplayName { get; set; }
         bool IsNotifying { get; set; }
 
-        void Handle(ExecuteResourceMessage message);
-
         void Handle(SaveResourceMessage message);
 
         void Handle(UpdateWorksurfaceDisplayName message);

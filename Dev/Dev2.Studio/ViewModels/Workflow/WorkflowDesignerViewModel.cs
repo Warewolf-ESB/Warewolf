@@ -137,11 +137,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
         }
 
-        public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper)
-            : this(resource, workflowHelper, true)
-        {
-        }
-
         public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner)
             : this(EventPublishers.Aggregator, resource, workflowHelper, createDesigner)
         {
@@ -153,26 +148,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
         }
 
-        public WorkflowDesignerViewModel(IWorkflowDesignerWrapper workflowDesignerHelper, IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker)
-            : this(workflowDesignerHelper, eventPublisher, resource, workflowHelper, popupController, asyncWorker, true, false)
-        {
-        }
-
-        public WorkflowDesignerViewModel(IWorkflowDesignerWrapper workflowDesignerHelper, IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner)
-            : this(workflowDesignerHelper, eventPublisher, resource, workflowHelper, popupController, asyncWorker, createDesigner, false)
-        {
-        }
-
         public WorkflowDesignerViewModel(IWorkflowDesignerWrapper workflowDesignerHelper, IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner, bool liteInit)
             : this(eventPublisher, resource, workflowHelper, popupController, asyncWorker, createDesigner, liteInit)
         {
             _workflowDesignerHelper = workflowDesignerHelper;
-        }
-
-
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker)
-            : this(eventPublisher, resource, workflowHelper, popupController, asyncWorker, true, false)
-        {
         }
 
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner)
@@ -596,11 +575,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             get => _dataListViewModel;
             set
             {
-                if (_dataListViewModel != null && _dataListViewModel.Equals(value))
-                {
-                    return;
-                }
-
                 _dataListViewModel = value;
                 NotifyOfPropertyChange(() => DataListViewModel);
             }

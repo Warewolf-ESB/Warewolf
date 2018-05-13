@@ -821,7 +821,6 @@ namespace Dev2.Settings.Scheduler
         public AuthorizeCommand QuickViewInBrowserCommand => throw new NotImplementedException();
         public AuthorizeCommand QuickDebugCommand => throw new NotImplementedException();
         public void UpdateScheduleWithResourceDetails(string resourcePath, Guid id, string resourceName) => SchedulerTaskManager.UpdateScheduleWithResourceDetails(resourcePath, id, resourceName);
-        public void Handle(ExecuteResourceMessage message) => throw new NotImplementedException();
         public void Handle(SaveResourceMessage message) => throw new NotImplementedException();
         public void Handle(UpdateWorksurfaceDisplayName message) => throw new NotImplementedException();
         public void SetDebugStatus(DebugStatus debugStatus) => throw new NotImplementedException();

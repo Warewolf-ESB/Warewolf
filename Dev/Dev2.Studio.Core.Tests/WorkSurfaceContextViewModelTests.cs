@@ -20,6 +20,7 @@ using Caliburn.Micro;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Security;
@@ -187,6 +188,47 @@ namespace Dev2.Core.Tests
             return viewModel;
         }
 
+        static WorkflowDesignerViewModelMock WorkflowDesignerViewModelWithServerPermissionsMock(bool isConnected, Mock<IContextualResourceModel> ResourceModel = null)
+        {
+            var workflow = new ActivityBuilder();
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            ExecuteMessage exeMsg = null;
+
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
+
+            var env = new Mock<IServer>();
+            env.Setup(e => e.IsAuthorized).Returns(true);
+            env.Setup(e => e.Permissions).Returns(new List<IWindowsGroupPermission> { WindowsGroupPermission.CreateAdministrators() });
+            var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true);
+            env.Setup(model => model.AuthorizationService).Returns(mockAuthorizationService.Object);
+
+            var resourceModel = ResourceModel ?? new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment).Returns(env.Object);
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
+            resourceModel.Setup(m => m.Environment.IsConnected).Returns(isConnected);
+            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            resourceModel.Setup(r => r.Category).Returns("Test");
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel> { resourceModel.Object });
+            var xamlBuilder = new StringBuilder("abc");
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() =>
+            {
+                return workflow;
+            });
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            return viewModel;
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -206,6 +248,164 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Raise(model => model.IsConnectedChanged += null, connectedEventArgs);
             //------------Assert Results-------------------------
             Assert.AreEqual(DebugStatus.Executing, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkSurfaceContextViewModel_Debug")]
+        public void WorkSurfaceContextViewModel_Debug_ExpectReturn()
+        {
+            //------------Setup for test--------------------------
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
+            var mockDebugState = new Mock<IDebugState>();
+            mockDebugState.Setup(state => state.StateType).Returns(StateType.All);
+            mockDebugState.Setup(m => m.SessionID).Returns(workSurfaceContextViewModel.DebugOutputViewModel.SessionID);
+            workSurfaceContextViewModel.DebugOutputViewModel.Append(mockDebugState.Object);
+            //------------Precondition----------------------------
+            //------------Execute Test---------------------------
+            workSurfaceContextViewModel.Debug(null, false);
+            //------------Assert Results-------------------------
+            // NOTE: No Assert, purely for coverage
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkSurfaceContextViewModel_Debug")]
+        public void WorkSurfaceContextViewModel_Debug_StopExecution()
+        {
+            //------------Setup for test--------------------------
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
+            var mockDebugState = new Mock<IDebugState>();
+            mockDebugState.Setup(state => state.StateType).Returns(StateType.All);
+            mockDebugState.Setup(m => m.SessionID).Returns(workSurfaceContextViewModel.DebugOutputViewModel.SessionID);
+            workSurfaceContextViewModel.DebugOutputViewModel.Append(mockDebugState.Object);
+            //------------Precondition----------------------------
+            //------------Execute Test---------------------------
+            workSurfaceContextViewModel.StopExecution();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(DebugStatus.Finished, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkSurfaceContextViewModel_Debug")]
+        public void WorkSurfaceContextViewModel_Debug_ViewInBrowser_NullExpected()
+        {
+            //------------Setup for test--------------------------
+            //var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel()
+            var surfaceViewModel = new Mock<IWorkSurfaceViewModel>();
+            var workSurfaceKey = new WorkSurfaceKey
+            {
+                WorkSurfaceContext = WorkSurfaceContext.Workflow
+            };
+            var surfaceContext = new Mock<WorkSurfaceContextViewModel>(workSurfaceKey, surfaceViewModel.Object);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(mockEventAggregator.Object, new WorkSurfaceKey(), surfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
+
+            //------------Precondition----------------------------
+            //------------Execute Test---------------------------
+            workSurfaceContextViewModel.ViewInBrowser();
+            //------------Assert Results-------------------------
+            Assert.IsNull(workSurfaceContextViewModel.DebugOutputViewModel);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkSurfaceContextViewModel_Debug")]
+        public void WorkSurfaceContextViewModel_Debug_ViewInBrowser()
+        {
+            //------------Setup for test--------------------------
+            //var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel()
+            var surfaceViewModel = new Mock<IWorkSurfaceViewModel>();
+            CustomContainer.Register(new Mock<IServerRepository>().Object);
+            var workSurfaceKey = new WorkSurfaceKey
+            {
+                WorkSurfaceContext = WorkSurfaceContext.Workflow
+            };
+            var surfaceContext = new Mock<WorkSurfaceContextViewModel>(workSurfaceKey, surfaceViewModel.Object);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(mockEventAggregator.Object, new WorkSurfaceKey(), surfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
+            workSurfaceContextViewModel.WorkSurfaceViewModel = WorkflowDesignerViewModelMock(true);
+            //------------Precondition---------------------------
+            //------------Execute Test---------------------------
+            workSurfaceContextViewModel.ViewInBrowser();
+            //------------Assert Results-------------------------
+            // NOTE: No Assert, purely for coverage
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkSurfaceContextViewModel_Debug")]
+        public void WorkSurfaceContextViewModel_Debug_QuickViewInBrowser()
+        {
+            //------------Setup for test--------------------------
+            //var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel()
+            var surfaceViewModel = new Mock<IWorkSurfaceViewModel>();
+            CustomContainer.Register(new Mock<IServerRepository>().Object);
+            var workSurfaceKey = new WorkSurfaceKey
+            {
+                WorkSurfaceContext = WorkSurfaceContext.Workflow
+            };
+            var surfaceContext = new Mock<WorkSurfaceContextViewModel>(workSurfaceKey, surfaceViewModel.Object);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(mockEventAggregator.Object, new WorkSurfaceKey(), surfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
+            workSurfaceContextViewModel.WorkSurfaceViewModel = WorkflowDesignerViewModelMock(true);
+            //------------Precondition---------------------------
+            //------------Execute Test---------------------------
+            workSurfaceContextViewModel.QuickViewInBrowser();
+            //------------Assert Results-------------------------
+            // NOTE: No Assert, purely for coverage
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkSurfaceContextViewModel_Debug")]
+        public void WorkSurfaceContextViewModel_Debug_QuickDebug()
+        {
+            //------------Setup for test--------------------------
+            //var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel()
+            var surfaceViewModel = new Mock<IWorkSurfaceViewModel>();
+            CustomContainer.Register(new Mock<IServerRepository>().Object);
+            var workSurfaceKey = new WorkSurfaceKey
+            {
+                WorkSurfaceContext = WorkSurfaceContext.Workflow
+            };
+            var surfaceContext = new Mock<WorkSurfaceContextViewModel>(workSurfaceKey, surfaceViewModel.Object);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(mockEventAggregator.Object, new WorkSurfaceKey(), surfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
+            workSurfaceContextViewModel.WorkSurfaceViewModel = WorkflowDesignerViewModelMock(true);
+            workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
+            //------------Precondition---------------------------
+            //------------Execute Test---------------------------
+            workSurfaceContextViewModel.QuickDebug();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(DebugStatus.Finished, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkSurfaceContextViewModel_Debug")]
+        public void WorkSurfaceContextViewModel_ShowSaveDialog()
+        {
+            //------------Setup for test--------------------------
+            var surfaceViewModel = new Mock<IWorkSurfaceViewModel>();
+            CustomContainer.Register(new Mock<IServerRepository>().Object);
+            var workSurfaceKey = new WorkSurfaceKey
+            {
+                WorkSurfaceContext = WorkSurfaceContext.Workflow
+            };
+            var surfaceContext = new Mock<WorkSurfaceContextViewModel>(workSurfaceKey, surfaceViewModel.Object);
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(mockEventAggregator.Object, new WorkSurfaceKey(), surfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b, c) => { });
+            workSurfaceContextViewModel.WorkSurfaceViewModel = WorkflowDesignerViewModelWithServerPermissionsMock(true);
+            workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
+            //------------Precondition---------------------------
+            workSurfaceContextViewModel.ContextualResourceModel.Environment.Permissions = new List<IWindowsGroupPermission> { WindowsGroupPermission.CreateAdministrators() };
+
+            //------------Execute Test---------------------------
+            workSurfaceContextViewModel.ShowSaveDialog(workSurfaceContextViewModel.ContextualResourceModel, false);
+            //------------Assert Results-------------------------
+            // NOTE: No Assert, purely for coverage
         }
 
         [TestMethod]
