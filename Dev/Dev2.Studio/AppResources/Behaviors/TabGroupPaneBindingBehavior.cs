@@ -28,16 +28,6 @@ namespace Dev2.Studio.AppResources.Behaviors
         List<TabGroupPane> GetAllTabGroupPanes()
         {
             _tabGroupPanes = new List<TabGroupPane>();
-
-            if(DocumentHost == null)
-            {
-                if(AssociatedObject != null)
-                {
-                    _tabGroupPanes.Add(AssociatedObject);
-                }
-
-                return _tabGroupPanes;
-            }
             _tabGroupPanes.AddRange(DocumentHost.GetDescendents().OfType<TabGroupPane>());
             return _tabGroupPanes;
         }
@@ -59,22 +49,12 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         static void DocumentHostChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
-            if (itemsControlBindingBehavior == null)
+            if (!(dependencyObject is TabGroupPaneBindingBehavior itemsControlBindingBehavior))
             {
                 return;
             }
 
-            var oldValue = e.OldValue as DocumentContentHost;
-            var newValue = e.NewValue as DocumentContentHost;
-
-            if (oldValue != null)
-            {
-                oldValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
-                oldValue.PreviewMouseLeftButtonDown -= itemsControlBindingBehavior.NewValueOnPreviewMouseLeftButtonDown;
-            }
-
-            if (newValue != null)
+            if (e.NewValue is DocumentContentHost newValue)
             {
                 newValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
                 newValue.ActiveDocumentChanged += itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
@@ -88,16 +68,10 @@ namespace Dev2.Studio.AppResources.Behaviors
             var host = sender as DocumentContentHost;
             var workSurfaceContextViewModel = host?.ActiveDocument?.DataContext as WorkSurfaceContextViewModel;
 
-            if (_shellViewModel == null)
-            {
-                var mainViewModel = DocumentHost?.DataContext as ShellViewModel;
-                _shellViewModel = mainViewModel;
-            }
             if (_shellViewModel != null && _shellViewModel.ActiveItem != workSurfaceContextViewModel)
             {
                 _shellViewModel.ActiveItem = workSurfaceContextViewModel;
             }
-
         }
 
         #endregion DocumentHost
