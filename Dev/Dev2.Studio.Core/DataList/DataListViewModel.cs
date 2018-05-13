@@ -66,17 +66,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public bool CanSortItems => HasItems();
 
-        public IEnumerable<IDataListItemModel> VariableCollection
-        {
-            get
-            {
-                foreach (var scalar in ScalarCollection)
-                {
-                    yield return scalar;
-                }
-            }
-        }
-
         public ObservableCollection<DataListHeaderItemModel> BaseCollection
         {
             get => _baseCollection;
@@ -804,13 +793,11 @@ namespace Dev2.Studio.ViewModels.DataList
         public void Add(IScalarItemModel item)
         {
             _scalarCollection.Add(item);
-            NotifyOfPropertyChange(() => BaseCollection);
         }
 
         public void Remove(IScalarItemModel item)
         {
             _scalarCollection.Remove(item);
-            NotifyOfPropertyChange(() => BaseCollection);
         }
 
         public int ScalarCollectionCount => _scalarCollection?.Count ?? 0;
