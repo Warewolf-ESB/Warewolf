@@ -221,7 +221,7 @@ namespace Dev2.Studio.Views
             if (DataContext is ShellViewModel mainViewModel)
             {
                 ClearWindowCollection(mainViewModel);
-                ClearTabItems(mainViewModel);
+                ClearTabPaneItems(mainViewModel);
 
                 var localhostServer = mainViewModel.LocalhostServer;
                 if (localhostServer.IsConnected && !Equals(mainViewModel.ActiveServer, localhostServer))
@@ -257,6 +257,20 @@ namespace Dev2.Studio.Views
             }
         }
 
+        void ClearTabPaneItems(ShellViewModel mainViewModel)
+        {
+            var splitPane = DockCentre.Panes[0] as SplitPane;
+            // NOTE: If the tabs are docked vertical
+            if (splitPane.Panes.Count > 1)
+            {
+                ClearMultipleSplitPaneTabItems(mainViewModel, splitPane);
+            }
+            else
+            {
+                ClearMultipleChildSplitPaneTabItems(mainViewModel, splitPane);
+            }
+        }
+
         static void DisconnectServers(Interfaces.IServer localhostServer, Interfaces.IExplorerViewModel explorerViewModel)
         {
             if (explorerViewModel.ConnectControlViewModel != null)
@@ -268,6 +282,40 @@ namespace Dev2.Studio.Views
                         server.Disconnect();
                     }
                 }
+            }
+        }
+
+        void ClearMultipleSplitPaneTabItems(ShellViewModel mainViewModel, SplitPane splitPane)
+        {
+            foreach (var pane in splitPane.Panes)
+            {
+                var tabGroupPane = pane as TabGroupPane;
+                for (int i = tabGroupPane.Items.Count - 1; i >= 0; i--)
+                {
+                    var item = tabGroupPane.Items[i];
+                    var contentPane = item as ContentPane;
+                    RemoveWorkspaceItems(contentPane, mainViewModel);
+                }
+                tabGroupPane.Items.Clear();
+            }
+            int count = splitPane.Panes.Count - 1;
+            for (int index = count; count <= index; index--)
+            {
+                splitPane.Panes.RemoveAt(index);
+            }
+        }
+
+        void ClearMultipleChildSplitPaneTabItems(ShellViewModel mainViewModel, SplitPane splitPane)
+        {
+            var childSplitPane = splitPane.Panes[0] as SplitPane;
+            // NOTE: If the tabs are docked horizontal
+            if (childSplitPane.Panes.Count > 1)
+            {
+                ClearMultipleSplitPaneTabItems(mainViewModel, childSplitPane);
+            }
+            else
+            {
+                ClearTabItems(mainViewModel);
             }
         }
 
