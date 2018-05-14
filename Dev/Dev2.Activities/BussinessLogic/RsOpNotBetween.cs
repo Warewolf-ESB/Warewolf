@@ -40,13 +40,11 @@ namespace Dev2.BussinessLogic
                     {
                         throw new InvalidDataException(ErrorResource.IsBetweenDataTypeMismatch);
                     }
-                    if (DateTime.TryParse(a.ToString(), out DateTime recDateTime))
+                    if (DateTime.TryParse(a.ToString(), out DateTime recDateTime) && recDateTime > fromDt && recDateTime < toDt)
                     {
-                        if (recDateTime > fromDt && recDateTime < toDt)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
+
                 }
                 if (double.TryParse(fromval, out double fromNum))
                 {

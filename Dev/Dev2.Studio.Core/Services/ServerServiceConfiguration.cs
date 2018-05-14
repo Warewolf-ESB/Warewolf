@@ -68,14 +68,12 @@ namespace Dev2.Services
                 throw new Exception(ErrorResource.NullServiceManager);
             }
 
-            if(!ServiceManager.IsRunning())
+            if (!ServiceManager.IsRunning() && !ServiceManager.Start())
             {
-                if(!ServiceManager.Start())
-                {
-                    PopupController.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
-                    return false;
-                }
+                PopupController.Show("A time out occurred while trying to start the Warewolf server service. Please try again.", "Timeout", MessageBoxButton.OK, MessageBoxImage.Error, null, false, true, false, false, false, false);
+                return false;
             }
+
 
             return true;
         }

@@ -42,44 +42,7 @@ namespace Dev2.Intellisense.Provider
                 }
                 else
                 {
-                    if (currentChar == '[' && i > 0 && inputText[i - 1] == '[')
-                    {
-                        foundMinimum = i - 1;
-                        foundLength = maxStringLength - foundMinimum;
-                        i = -1;
-                    }
-                    else
-                    {
-                        if (currentChar == ']' || Char.IsSymbol(currentChar) || (currentChar == '(' && !closedBraceFound) || (currentChar == '(' && inputText.Length > i && i < inputText.Length && inputText[i + 1] == ')'))
-                        {
-                            i = -1;
-                        }
-                        else
-                        {
-                            if (!Char.IsLetterOrDigit(currentChar))
-                            {
-                                if (currentChar == '(' ||
-                                    currentChar == ')' ||
-                                    currentChar == '[' ||
-                                    currentChar == ']' ||
-                                    currentChar == '_' ||
-                                    currentChar == '.')
-                                {
-                                    foundMinimum = i;
-                                    foundLength = maxStringLength - i;
-                                }
-                                else
-                                {
-                                    i = -1;
-                                }
-                            }
-                            else
-                            {
-                                foundMinimum = i;
-                                foundLength = maxStringLength - i;
-                            }
-                        }
-                    }
+                    ParseWarewolfLanguageSquareBraces(ref foundMinimum, ref foundLength, inputText, maxStringLength, closedBraceFound, ref i, currentChar);
                 }
                 i--;
             }
@@ -116,6 +79,53 @@ namespace Dev2.Intellisense.Provider
             }
 
             return searchString;
+        }
+
+        private static void ParseWarewolfLanguageSquareBraces(ref int foundMinimum, ref int foundLength, string inputText, int maxStringLength, bool closedBraceFound, ref int i, char currentChar)
+        {
+            if (currentChar == '[' && i > 0 && inputText[i - 1] == '[')
+            {
+                foundMinimum = i - 1;
+                foundLength = maxStringLength - foundMinimum;
+                i = -1;
+            }
+            else
+            {
+                if (currentChar == ']' || Char.IsSymbol(currentChar) || (currentChar == '(' && !closedBraceFound) || (currentChar == '(' && inputText.Length > i && i < inputText.Length && inputText[i + 1] == ')'))
+                {
+                    i = -1;
+                }
+                else
+                {
+                    ParseLastChar(ref foundMinimum, ref foundLength, ref i, maxStringLength, currentChar);
+                }
+            }
+        }
+
+        static void ParseLastChar(ref int foundMinimum, ref int foundLength, ref int i, int maxStringLength, char currentChar)
+        {
+            if (!Char.IsLetterOrDigit(currentChar))
+            {
+                if (currentChar == '(' ||
+                    currentChar == ')' ||
+                    currentChar == '[' ||
+                    currentChar == ']' ||
+                    currentChar == '_' ||
+                    currentChar == '.')
+                {
+                    foundMinimum = i;
+                    foundLength = maxStringLength - i;
+                }
+                else
+                {
+                    i = -1;
+                }
+            }
+            else
+            {
+                foundMinimum = i;
+                foundLength = maxStringLength - i;
+            }
         }
     }
 }

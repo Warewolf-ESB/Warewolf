@@ -94,50 +94,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var innerCount = 1;
                     foreach (AssignObjectDTO t in FieldsCollection)
                     {
-                        try
-                        {
-                            if (!string.IsNullOrEmpty(t.FieldName))
-                            {
-                                var assignValue = new AssignValue(t.FieldName, t.FieldValue);
-                                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out string cleanExpression);
-                                if (isCalcEvaluation)
-                                {
-                                    assignValue = new AssignValue(t.FieldName, cleanExpression);
-                                }
-                                DebugItem debugItem = null;
-                                if (dataObject.IsDebugMode())
-                                {
-                                    debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue, update);
-                                }
-                                if (isCalcEvaluation)
-                                {
-                                    DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
-                                }
-                                else
-                                {
-                                    dataObject.Environment.AssignJson(assignValue, update);
-                                }
-                                if (debugItem != null)
-                                {
-                                    _debugInputs.Add(debugItem);
-                                }
-                                if (dataObject.IsDebugMode())
-                                {
-                                    if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
-                                    {
-                                        var length = dataObject.Environment.GetObjectLength(DataListUtil.ExtractRecordsetNameFromValue(assignValue.Name));
-                                        assignValue = new AssignValue(DataListUtil.ReplaceObjectBlankWithIndex(assignValue.Name, length), assignValue.Value);
-                                    }
-                                    AddSingleDebugOutputItem(dataObject.Environment, innerCount, assignValue, update);
-                                }
-                            }
-                            innerCount++;
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                            allErrors.AddError(e.Message);
-                        }
+                        innerCount = TryExecute(dataObject, update, allErrors, innerCount, t);
                     }
                     dataObject.Environment.CommitAssign();
                     allErrors.MergeErrors(errors);
@@ -153,6 +110,62 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Handle Errors
                 HandleErrors(dataObject, update, allErrors);
             }
+        }
+
+        private int TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int innerCount, AssignObjectDTO t)
+        {
+            try
+            {
+                innerCount = AssignField(dataObject, update, innerCount, t);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                allErrors.AddError(e.Message);
+            }
+
+            return innerCount;
+        }
+
+        private int AssignField(IDSFDataObject dataObject, int update, int innerCount, AssignObjectDTO t)
+        {
+            if (!string.IsNullOrEmpty(t.FieldName))
+            {
+                var assignValue = new AssignValue(t.FieldName, t.FieldValue);
+                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out string cleanExpression);
+                if (isCalcEvaluation)
+                {
+                    assignValue = new AssignValue(t.FieldName, cleanExpression);
+                }
+                DebugItem debugItem = null;
+                if (dataObject.IsDebugMode())
+                {
+                    debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue, update);
+                }
+                if (isCalcEvaluation)
+                {
+                    DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
+                }
+                else
+                {
+                    dataObject.Environment.AssignJson(assignValue, update);
+                }
+                if (debugItem != null)
+                {
+                    _debugInputs.Add(debugItem);
+                }
+                if (dataObject.IsDebugMode())
+                {
+                    if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
+                    {
+                        var length = dataObject.Environment.GetObjectLength(DataListUtil.ExtractRecordsetNameFromValue(assignValue.Name));
+                        assignValue = new AssignValue(DataListUtil.ReplaceObjectBlankWithIndex(assignValue.Name, length), assignValue.Value);
+                    }
+                    AddSingleDebugOutputItem(dataObject.Environment, innerCount, assignValue, update);
+                }
+            }
+            innerCount++;
+            return innerCount;
         }
 
         void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)

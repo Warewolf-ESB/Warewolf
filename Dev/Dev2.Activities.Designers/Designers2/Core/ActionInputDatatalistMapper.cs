@@ -21,58 +21,55 @@ namespace Dev2.Activities.Designers2.Core
                     {
                         continue;
                     }
-                    if (DataListSingleton.ActiveDataList != null)
-                    {
-                        if (!serviceInput.IsObject)
-                        {
-                            if (DataListSingleton.ActiveDataList.ScalarCollection != null)
-                            {
-                                var value = serviceInput?.Name;
-                                if (value != null)
-                                {
-                                    value = value.Split('(').First().TrimEnd(' ');
-                                    var alreadyExists = DataListSingleton.ActiveDataList.ScalarCollection.Count(model => model.Name.Equals(value, StringComparison.InvariantCulture));
-                                    if (alreadyExists < 1)
-                                    {
-                                        var variable = DataListUtil.AddBracketsToValueIfNotExist(value);
-                                        serviceInput.Value = variable;
-                                    }
-                                    else
-                                    {
-                                        var variable = DataListUtil.AddBracketsToValueIfNotExist(value);
-                                        serviceInput.Value = variable;
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
-                            {
-                                var value = serviceInput?.Name;
-                                if (value != null)
-                                {
-                                    value = value.Split('(').First().TrimEnd(' ');
-                                    var alreadyExists = DataListSingleton.ActiveDataList.ComplexObjectCollection.Count(model => model.Name.Equals(value, StringComparison.InvariantCulture));
-                                    if (alreadyExists < 1)
-                                    {
-                                        var objectName = "@" + value;
-                                        var variable = DataListUtil.AddBracketsToValueIfNotExist(objectName);
-                                        serviceInput.Value = variable;
-                                    }
-                                    else
-                                    {
-                                        var objectName = "@" + value;
-                                        var variable = DataListUtil.AddBracketsToValueIfNotExist(objectName);
-                                        serviceInput.Value = variable;
-                                    }
-                                }
-                            }
+                    MapInput(serviceInput);
+                }
+            }
+        }
 
-                        }
-                    }
+        private static void MapInput(IServiceInput serviceInput)
+        {
+            if (DataListSingleton.ActiveDataList != null)
+            {
+                MapInputToActiveDatalist(serviceInput);
+            }
+        }
 
+        private static void MapInputToActiveDatalist(IServiceInput serviceInput)
+        {
+            if (!serviceInput.IsObject)
+            {
+                MapToScalar(serviceInput);
+            }
+            else
+            {
+                MapToObject(serviceInput);
+            }
+        }
 
+        private static void MapToObject(IServiceInput serviceInput)
+        {
+            if (DataListSingleton.ActiveDataList.ComplexObjectCollection != null)
+            {
+                var value = serviceInput?.Name;
+                if (value != null)
+                {
+                    value = value.Split('(').First().TrimEnd(' ');
+                    var objectName = "@" + value;
+                    var variable = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                    serviceInput.Value = variable;
+                }
+            }
+        }
+
+        private static void MapToScalar(IServiceInput serviceInput)
+        {
+            if (DataListSingleton.ActiveDataList.ScalarCollection != null)
+            {
+                var value = serviceInput?.Name;
+                if (value != null)
+                {
+                    var variable = DataListUtil.AddBracketsToValueIfNotExist(value.Split('(').First().TrimEnd(' '));
+                    serviceInput.Value = variable;
                 }
             }
         }

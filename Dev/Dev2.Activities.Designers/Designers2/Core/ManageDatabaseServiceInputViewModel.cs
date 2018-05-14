@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers2.Core
             IsTesting = false;
             CloseCommand = new DelegateCommand(ExecuteClose);
             OkCommand = new DelegateCommand(ExecuteOk);
-            TestCommand = new DelegateCommand(ExecuteTest);
+            TestCommand = new DelegateCommand(TryExecuteTest);
             _generateOutputArea = new GenerateOutputsRegion();
             _generateInputArea = new GenerateInputsRegion();
             Errors = new List<string>();
@@ -157,39 +157,14 @@ namespace Dev2.Activities.Designers2.Core
             return new List<IServiceOutputMapping>();
         }
 
-        public void ExecuteTest()
+        public void TryExecuteTest()
         {
             OutputArea.IsEnabled = true;
             IsTesting = true;
             ResetTestForExecute();
             try
             {
-                TestResults = _serverModel.TestService(Model);
-                ProcessOdbc();
-                if (TestResults != null)
-                {
-                    if (TestResults.Columns.Count >= 1)
-                    {
-                        TestResultsAvailable = TestResults.Rows.Count != 0;
-                        IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
-                        _generateOutputArea.IsEnabled = true;
-                        OutputCountExpandAllowed = TestResults.Rows.Count > 3;
-
-                        if (!OutputCountExpandAllowed)
-                        {
-                            InputCountExpandAllowed = true;
-                        }
-                    }
-                    IsTesting = false;
-                    TestPassed = true;
-                    ShowTestMessage = TestResults.Columns.Count < 1;
-                    if (ShowTestMessage)
-                    {
-                        TestMessage = Warewolf.Studio.Resources.Languages.Core.NoReturnedDataExecuteSuccess;
-                    }
-
-                    TestFailed = false;
-                }
+                ExecuteTest();
             }
             catch (Exception e)
             {
@@ -210,6 +185,36 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var dbSource = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, Model.Source.Id);
                 TestResults.TableName = dbSource.DatabaseName.Replace(" ", "");
+            }
+        }
+
+        void ExecuteTest()
+        {
+            TestResults = _serverModel.TestService(Model);
+            ProcessOdbc();
+            if (TestResults != null)
+            {
+                if (TestResults.Columns.Count >= 1)
+                {
+                    TestResultsAvailable = TestResults.Rows.Count != 0;
+                    IsTestResultsEmptyRows = TestResults.Rows.Count < 1;
+                    _generateOutputArea.IsEnabled = true;
+                    OutputCountExpandAllowed = TestResults.Rows.Count > 3;
+
+                    if (!OutputCountExpandAllowed)
+                    {
+                        InputCountExpandAllowed = true;
+                    }
+                }
+                IsTesting = false;
+                TestPassed = true;
+                ShowTestMessage = TestResults.Columns.Count < 1;
+                if (ShowTestMessage)
+                {
+                    TestMessage = Warewolf.Studio.Resources.Languages.Core.NoReturnedDataExecuteSuccess;
+                }
+
+                TestFailed = false;
             }
         }
 
