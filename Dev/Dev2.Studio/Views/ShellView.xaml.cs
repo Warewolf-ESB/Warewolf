@@ -259,15 +259,17 @@ namespace Dev2.Studio.Views
 
         void ClearTabPaneItems(ShellViewModel mainViewModel)
         {
-            var splitPane = DockCentre.Panes[0] as SplitPane;
             // NOTE: If the tabs are docked vertical
-            if (splitPane.Panes.Count > 1)
+            if (DockCentre?.Panes[0] is SplitPane splitPane)
             {
-                ClearMultipleSplitPaneTabItems(mainViewModel, splitPane);
-            }
-            else
-            {
-                ClearMultipleChildSplitPaneTabItems(mainViewModel, splitPane);
+                if (splitPane.Panes.Count > 1)
+                {
+                    ClearMultipleSplitPaneTabItems(mainViewModel, splitPane);
+                }
+                else
+                {
+                    ClearMultipleChildSplitPaneTabItems(mainViewModel, splitPane);
+                }
             }
         }
 
@@ -307,11 +309,17 @@ namespace Dev2.Studio.Views
 
         void ClearMultipleChildSplitPaneTabItems(ShellViewModel mainViewModel, SplitPane splitPane)
         {
-            var childSplitPane = splitPane.Panes[0] as SplitPane;
             // NOTE: If the tabs are docked horizontal
-            if (childSplitPane.Panes.Count > 1)
+            if (splitPane.Panes[0] is SplitPane childSplitPane)
             {
-                ClearMultipleSplitPaneTabItems(mainViewModel, childSplitPane);
+                if (childSplitPane.Panes.Count > 1)
+                {
+                    ClearMultipleSplitPaneTabItems(mainViewModel, childSplitPane);
+                }
+                else
+                {
+                    ClearTabItems(mainViewModel);
+                }
             }
             else
             {
