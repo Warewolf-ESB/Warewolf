@@ -190,10 +190,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(data, "1");
         }
-
-        /// <summary>
-        /// Select enumerable values using root path from primitive expected single value in enumeration returned.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesUsingRootPathFromPrimitive_Expected_SingleValueInEnumeration()
         {
@@ -210,10 +207,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Selects the enumerable values as related using root path from primitive_ expected_ single value in enumeration.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingRootPathFromPrimitive_Expected_SingleValueInEnumeration()
         {
@@ -231,11 +225,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select scalar value using root path from enumerable containing only primitives expected last scalar value 
-        /// in enumeration.
-        /// </summary>
+        
         [TestMethod]
         public void SelectScalarValueUsingRootPathFromEnumerableContainingOnlyPrimitives_Expected_LastScalarValueInEnumeration()
         {
@@ -250,11 +240,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select enumerable values using root path from enumerable containing only primitives expected values for 
-        /// each value in enumeration.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesUsingRootPathFromEnumerableContainingOnlyPrimitives_Expected_ValuesForEachValueInEnumeration()
         {
@@ -272,11 +258,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select enumerable values as related using root path from enumerable containing only primitives 
-        /// expected values for each value in enumeration.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingRootPathFromEnumerableContainingOnlyPrimitives_Expected_ValuesForEachValueInEnumeration()
         {
@@ -293,10 +275,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select scalar value using scalar path from enumerable expected scalar value returned
-        /// </summary>
+        
         [TestMethod]
         public void SelectScalarValueUsingScalarPathFromEnumerable_Expected_ScalarValue()
         {
@@ -310,10 +289,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(data, testData.EnumerableData.Count);
         }
-
-        /// <summary>
-        /// Select scalar value using scalar path from reference type expected scalar value returned.
-        /// </summary>
+        
         [TestMethod]
         public void SelectScalarValueUsingScalarPathFromReferenceType_Expected_ScalarValue()
         {
@@ -327,11 +303,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(data, testData.Name);
         }
-
-        /// <summary>
-        /// Select scalar value using enumerable path from reference type expected scalar 
-        /// value from last item in enumerable collection.
-        /// </summary>
+        
         [TestMethod]
         public void SelectScalarValueUsingEnumerablePathFromReferenceType_Expected_ScalarValueFromLastItemInEnumerableCollection()
         {
@@ -345,10 +317,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(data, testData.EnumerableData.ElementAt(testData.EnumerableData.Count - 1).NestedData.Name);
         }
-
-        /// <summary>
-        /// Select scalar value using enumerable path from reference type where enumerable data is null expected null.
-        /// </summary>
+        
         [TestMethod]
         public void SelectScalarValueUsingEnumerablePathFromReferenceType_Where_EnumerableDataIsNull_Expected_Null()
         {
@@ -362,11 +331,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(data, null);
         }
-
-        /// <summary>
-        /// Select enumerable values using enumerable path from reference type expected values from each 
-        /// item in enumeration.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesUsingEnumerablePathFromReferenceType_Expected_ValuesFromEachItemInEnumeration()
         {
@@ -384,10 +349,6 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             Assert.AreEqual(expected, actual);
         }      
         
-        /// <summary>
-        /// Select enumerable values using enumerable path from reference type expected values from each 
-        /// item in enumeration.
-        /// </summary>
         [TestMethod]
         public void SelectEnumerableValuesUsingEnumerableReferenceType_Expected_ValuesFromEachItemInEnumeration()
         {
@@ -404,11 +365,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select enumerable values using enumerable path from reference type where enumerable data 
-        /// is null expected null.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesUsingEnumerablePathFromReferenceType_Where_EnumerableDataIsNull_Expected_Null()
         {
@@ -422,10 +379,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(data, null);
         }
-
-        /// <summary>
-        /// Select enumerable values using scalar path from enumerable expected single value in enumeration.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesUsingScalarPathFromEnumerable_Expected_SingleValueInEnumeration()
         {
@@ -442,10 +396,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select enumerable values using scalar path from reference type expected single value in enumeration.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesUsingScalarPathFromReferenceType_Expected_SingleValueInEnumeration()
         {
@@ -462,11 +413,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select enumerable values as related from reference type where paths contain a scalar path 
-        /// expected flattened data with value from scalar path repeating for each enumeration.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainAScalarPath_Expected_FlattenedDataWithValueFromScalarPathRepeatingForEachEnumeration()
         {
@@ -484,11 +431,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select enumerable values as related from reference type where paths contain unrelated enumerable 
-        /// paths expected flattened data with values from unrelated enumerable paths at matching indexes.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainUnrelatedEnumerablePaths_Expected_FlattenedDataWithValuesFromUnrelatedEnumerablePathsAtMatchingIndexes()
         {
@@ -496,7 +439,6 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             var enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
             var parallelEnumerableNamePath = new PocoPath("EnumerableData1().Name", "EnumerableData1.Name");
-            //PocoPath nestedEnumerableNamePath = new PocoPath("EnumerableData().EnumerableData().Name", "EnumerableData.EnumerableData.Name");
             var paths = new List<IPath> { enumerableNamePath, parallelEnumerableNamePath };
 
             var pocoNavigator = new PocoNavigator(testData);
@@ -504,13 +446,6 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             var maxCount = Math.Max(testData.EnumerableData.Count, testData.EnumerableData1.Count);
 
-            #region Complex Setup for Expected
-
-            //
-            // The code in this region is used to setup the exprected value.
-            // It can't be reused for other tests and can't be made generic
-            // without replicating the funcationality being tested.
-            //
             var tmpExpected = "";
             var tmpExpected1 = "";
             var separator = "|";
@@ -540,20 +475,13 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 }
             }
 
-            #endregion Complex Setup for Expected
-
             var expected = tmpExpected + "^" + tmpExpected1;
             var actual = string.Join("|", data[enumerableNamePath]);
             actual += "^" + string.Join("|", data[parallelEnumerableNamePath]);
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select enumerable values as related from reference type where paths contain nested enumerable 
-        /// paths expected flattened data with values from outer enumerable path repeating for every value 
-        /// from nested enumerable path.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
@@ -565,14 +493,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             var pocoNavigator = new PocoNavigator(testData);
             var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
-
-            #region Complex Setup for Expected
-
-            //
-            // The code in this region is used to setup the exprected value.
-            // It can't be reused for other tests and can't be made generic
-            // without replicating the funcationality being tested.
-            //
+            
             var tmpExpected = "";
             var tmpExpected1 = "";
             var separator = "|";
@@ -606,19 +527,13 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 }
             }
 
-            #endregion Complex Setup for Expected
-
             var expected = tmpExpected + "^" + tmpExpected1;
             var actual = string.Join("|", data[enumerableNamePath]);
             actual += "^" + string.Join("|", data[nestedEnumerableNamePath]);
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select enumerable values as related from reference type where paths contain a single path which is 
-        /// enumerable expected flattened data with values from enumerable path.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainASinglePathWhichIsEnumerable_Expected_FlattenedDataWithValuesFromEnumerablePath()
         {
@@ -635,11 +550,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Select enumerable values as related from reference type where paths contain a single path 
-        /// which is scalar expected flattened data with value from scalar path.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainASinglePathWhichIsScalar_Expected_FlattenedDataWithValueFromScalarPath()
         {
