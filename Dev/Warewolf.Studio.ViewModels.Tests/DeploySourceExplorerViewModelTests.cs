@@ -312,6 +312,29 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestCalculateOnNullExplorerItems()
+        {
+            //arrange
+            var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
+            var selectedEnvironmentMock = new Mock<IEnvironmentViewModel>();
+            selectedEnvironmentMock.Setup(it => it.IsConnected).Returns(true);
+            selectedEnvironmentMock.Setup(it => it.AsList()).Returns(new List<IExplorerItemViewModel> { explorerItemViewModelMock.Object });
+
+            var destination = new Mock<IDeployDestinationExplorerViewModel>();
+            destination.Setup(dest => dest.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            destination.Setup(dest => dest.SelectedEnvironment).Returns(selectedEnvironmentMock.Object);
+
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(destination.Object);
+            deployStatsViewerViewModel.Calculate(null);
+
+            //assert
+            Assert.AreEqual(0, deployStatsViewerViewModel.Connectors);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Services);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Sources);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Unknown);
+        }
+
+        [TestMethod]
         public void TestSelectActionFolder()
         {
             //arrange
