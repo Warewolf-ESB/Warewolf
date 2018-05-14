@@ -12,14 +12,11 @@ using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
-
 namespace Dev2.Common.Test
 {
     [TestClass]
     public class StringExtensionTests
     {
-
-
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("StringExtensions_IsJSON")]
@@ -34,8 +31,7 @@ namespace Dev2.Common.Test
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
-
-
+        
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("StringExtensions_IsJSON")]
@@ -65,8 +61,7 @@ namespace Dev2.Common.Test
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
-
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("StringExtension_Text")]
@@ -79,5 +74,17 @@ namespace Dev2.Common.Test
             //------------Assert Results-------------------------
             Assert.IsTrue(checkHasUnicodeInText);
         }
+
+        [TestMethod]
+        public void StringExtensions_BlankText_IsNotDate() => Assert.IsFalse("".IsDate(), "Blank string is date");
+
+        [TestMethod]
+        public void StringExtensions_XmlFragment_IsXml() => Assert.IsTrue("<frag>ment</frag><ment>frag</ment>".IsXml(), "Xml Fragment is not xml");
+
+        [TestMethod]
+        public void StringExtensions_MalformedXml_IsNotXml() => Assert.IsFalse("<frag>ment</ment><frag>frag</ment>".IsXml(), "Malformed Xml is still xml");
+
+        [TestMethod]
+        public void StringExtensions_Html_IsNotXml() => Assert.IsFalse("<html><frag>frag</frag>ment</html>".IsXml(), "Malformed Xml is still xml");
     }
 }

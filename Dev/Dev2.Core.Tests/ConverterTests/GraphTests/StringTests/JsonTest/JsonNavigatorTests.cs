@@ -10,22 +10,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Json;
+using Unlimited.Framework.Converters.Graph.String.Xml;
 
-
-namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
+namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
+{
     [TestClass]
-    [ExcludeFromCodeCoverage]
-    public class JsonNavigatorTests {
-
-        internal string Given()
-        {
-            return @"{
+    public class JsonNavigatorTests
+    {
+        internal string testData => @"{
     ""Name"": ""Dev2"",
     ""Motto"": ""Eat lots of cake"",
     ""Departments"": [      
@@ -83,19 +80,109 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
     ""
     ],
   }";
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SelectScalar_WithNull_ExpectArgumentNullException()
+        {
+            var JsonNavigator = new JsonNavigator(testData);
+            JsonNavigator.SelectScalar(null);
         }
 
-
-        #region SelectScalar Tests
-
-        /// <summary>
-        /// Selects the scalar value using scalar path from json expected scalar value returned.
-        /// </summary>
         [TestMethod]
-        public void SelectScalarValueUsingScalarPathFromJson_Expected_ScalarValue()
+        [ExpectedException(typeof(Exception))]
+        public void SelectScalar_WithoutJsonPath_ExpectException()
         {
-            var testData = Given();
+            var JsonNavigator = new JsonNavigator(testData);
+            JsonNavigator.SelectScalar(new XmlPath());
+        }
 
+        [TestMethod]
+        public void SelectScalarValue_WithEnumerableSymbolAndSeperatorSymbol_Expected_PrimitiveRecordset()
+        {
+            IPath namePath = new JsonPath("().", "().");
+
+            var JsonNavigator = new JsonNavigator(testData);
+
+            var actual = JsonNavigator.SelectScalar(namePath).ToString();
+            const string expected = @"""PrimitiveRecordset"": [
+  ""\r\n        RandomData\r\n    "",
+  ""\r\n        RandomData1\r\n    ""
+]";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SelectScalarValueUsingSeperatorSymbol_Expected_UnchangedPath()
+        {
+            IPath namePath = new JsonPath(".", ".");
+
+            var JsonNavigator = new JsonNavigator(testData);
+
+            var actual = JsonNavigator.SelectScalar(namePath).ToString();
+
+            var expected = @"{
+  ""Name"": ""Dev2"",
+  ""Motto"": ""Eat lots of cake"",
+  ""Departments"": [
+    {
+      ""Name"": ""Dev"",
+      ""Employees"": [
+        {
+          ""Name"": ""Brendon"",
+          ""Surename"": ""Page""
+        },
+        {
+          ""Name"": ""Jayd"",
+          ""Surename"": ""Page""
+        }
+      ]
+    },
+    {
+      ""Name"": ""Accounts"",
+      ""Employees"": [
+        {
+          ""Name"": ""Bob"",
+          ""Surename"": ""Soap""
+        },
+        {
+          ""Name"": ""Joe"",
+          ""Surename"": ""Pants""
+        }
+      ]
+    }
+  ],
+  ""Contractors"": [
+    {
+      ""Name"": ""Roofs Inc."",
+      ""PhoneNumber"": ""123""
+    },
+    {
+      ""Name"": ""Glass Inc."",
+      ""PhoneNumber"": ""1234""
+    },
+    {
+      ""Name"": ""Doors Inc."",
+      ""PhoneNumber"": ""1235""
+    },
+    {
+      ""Name"": ""Cakes Inc."",
+      ""PhoneNumber"": ""1236""
+    }
+  ],
+  ""PrimitiveRecordset"": [
+    ""\r\n        RandomData\r\n    "",
+    ""\r\n        RandomData1\r\n    ""
+  ]
+}";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SelectScalarValue_WithScalarPathFromJson_Expected_ScalarValue()
+        {
             IPath namePath = new JsonPath("Name", "Name");
 
             var JsonNavigator = new JsonNavigator(testData);
@@ -106,14 +193,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             Assert.AreEqual(expected, actual);
         }
 
-        /// <summary>
-        /// Selects the scalar value using enumerable path from json expected scalar value returned.
-        /// </summary>
         [TestMethod]
-        public void SelectScalarValueUsingEnumerablePathFromJson_Expected_ScalarValue()
+        public void SelectScalarValue_WithEnumerablePathFromJson_Expected_ScalarValue()
         {
-            var testData = Given();
-
             IPath namePath = new JsonPath("Departments().Employees().Name", "Departments.Employees.Name");
 
             var JsonNavigator = new JsonNavigator(testData);
@@ -123,16 +205,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Selects the scalar value using enumerable path from json where path maps to primitive enumerable
-        /// expected scalar value returned.
-        /// </summary>
+        
         [TestMethod]
-        public void SelectScalarValueUsingEnumerablePathFromJson_WherePathMapsToPrimitiveEnumerable_Expected_ScalarValue()
+        public void SelectScalarValue_WithEnumerablePathFromJson_WherePathMapsToPrimitiveEnumerable_Expected_ScalarValue()
         {
-            var testData = Given();
-
             IPath namePath = new JsonPath("PrimitiveRecordset()", "PrimitiveRecordset");
 
             var JsonNavigator = new JsonNavigator(testData);
@@ -143,19 +219,152 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             Assert.AreEqual(expected, actual);
         }
 
-        #endregion SelectScalar Tests
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SelectEnumerable_WithNull_ExpectArgumentNullException()
+        {
+            var JsonNavigator = new JsonNavigator(testData);
+            JsonNavigator.SelectEnumerable(null);
+        }
 
-        #region SelectEnumerable Tests
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void SelectEnumerable_WithoutJsonPath_ExpectArgumentNullException()
+        {
+            var JsonNavigator = new JsonNavigator(testData);
+            JsonNavigator.SelectEnumerable(new XmlPath());
+        }
 
-        /// <summary>
-        /// Selects the enumerable values using enumerable path from json where path maps to primitive enumerable
-        /// expected enumerable value returned.
-        /// </summary>
+        [TestMethod]
+        public void SelectEnumerable_WithEnumerableSymbolAndSeperatorSymbol_Expected_PipeDelimited()
+        {
+            IPath namePath = new JsonPath("().", "().");
+
+            var JsonNavigator = new JsonNavigator(testData);
+
+            var actual = string.Join("|", JsonNavigator.SelectEnumerable(namePath).Select(o => o.ToString().Trim()));
+            const string expected = @"""Name"": ""Dev2""|""Motto"": ""Eat lots of cake""|""Departments"": [
+  {
+    ""Name"": ""Dev"",
+    ""Employees"": [
+      {
+        ""Name"": ""Brendon"",
+        ""Surename"": ""Page""
+      },
+      {
+        ""Name"": ""Jayd"",
+        ""Surename"": ""Page""
+      }
+    ]
+  },
+  {
+    ""Name"": ""Accounts"",
+    ""Employees"": [
+      {
+        ""Name"": ""Bob"",
+        ""Surename"": ""Soap""
+      },
+      {
+        ""Name"": ""Joe"",
+        ""Surename"": ""Pants""
+      }
+    ]
+  }
+]|""Contractors"": [
+  {
+    ""Name"": ""Roofs Inc."",
+    ""PhoneNumber"": ""123""
+  },
+  {
+    ""Name"": ""Glass Inc."",
+    ""PhoneNumber"": ""1234""
+  },
+  {
+    ""Name"": ""Doors Inc."",
+    ""PhoneNumber"": ""1235""
+  },
+  {
+    ""Name"": ""Cakes Inc."",
+    ""PhoneNumber"": ""1236""
+  }
+]|""PrimitiveRecordset"": [
+  ""\r\n        RandomData\r\n    "",
+  ""\r\n        RandomData1\r\n    ""
+]";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SelectEnumerable_WithSeperatorSymbol_Expected_UnchangedPath()
+        {
+            IPath namePath = new JsonPath(".", ".");
+
+            var JsonNavigator = new JsonNavigator(testData);
+
+            var actual = string.Join("|", JsonNavigator.SelectEnumerable(namePath).Select(o => o.ToString().Trim()));
+
+            var expected = @"{
+  ""Name"": ""Dev2"",
+  ""Motto"": ""Eat lots of cake"",
+  ""Departments"": [
+    {
+      ""Name"": ""Dev"",
+      ""Employees"": [
+        {
+          ""Name"": ""Brendon"",
+          ""Surename"": ""Page""
+        },
+        {
+          ""Name"": ""Jayd"",
+          ""Surename"": ""Page""
+        }
+      ]
+    },
+    {
+      ""Name"": ""Accounts"",
+      ""Employees"": [
+        {
+          ""Name"": ""Bob"",
+          ""Surename"": ""Soap""
+        },
+        {
+          ""Name"": ""Joe"",
+          ""Surename"": ""Pants""
+        }
+      ]
+    }
+  ],
+  ""Contractors"": [
+    {
+      ""Name"": ""Roofs Inc."",
+      ""PhoneNumber"": ""123""
+    },
+    {
+      ""Name"": ""Glass Inc."",
+      ""PhoneNumber"": ""1234""
+    },
+    {
+      ""Name"": ""Doors Inc."",
+      ""PhoneNumber"": ""1235""
+    },
+    {
+      ""Name"": ""Cakes Inc."",
+      ""PhoneNumber"": ""1236""
+    }
+  ],
+  ""PrimitiveRecordset"": [
+    ""\r\n        RandomData\r\n    "",
+    ""\r\n        RandomData1\r\n    ""
+  ]
+}";
+
+            Assert.AreEqual(expected, actual);
+        }
+
         [TestMethod]
         public void SelectEnumerableValuesUsingEnumerablePathFromJson_WherePathMapsToPrimitiveEnumerable_Expected_EnumerableValue()
         {
-            var testData = Given();
-
             IPath path = new JsonPath("PrimitiveRecordset()", "PrimitiveRecordset");
 
             var JsonNavigator = new JsonNavigator(testData);
@@ -165,15 +374,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Selects the enumerable values using enumerable path from json expected enumerable value returned.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesUsingEnumerablePathFromJson_Expected_EnumerableValue()
         {
-            var testData = Given();
-
             IPath path = new JsonPath("Departments().Name", "Departments.Name");
 
             var JsonNavigator = new JsonNavigator(testData);
@@ -183,15 +387,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Selects the enumerable values using scalar path from json expected enumerable value returned.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesUsingScalarPathFromJson_Expected_EnumerableValue()
         {
-            var testData = Given();
-
             IPath path = new JsonPath("Motto", "Motto");
 
             var JsonNavigator = new JsonNavigator(testData);
@@ -201,16 +400,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Selects the enumerable values using enumerable path from json
-        /// where path maps through nested enumerables expected enumerable value returned.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesUsingEnumerablePathFromJson_WherePathMapsThroughNestedEnumerables_Expected_EnumerableValue()
         {
-            var testData = Given();
-
             IPath path = new JsonPath("Departments().Employees().Name", "Departments.Employees.Name");
 
             var JsonNavigator = new JsonNavigator(testData);
@@ -220,16 +413,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Selects enumerable values as related using enumerable path from json where paths contain a scalar path 
-        /// expected flattened data with value from scalar path repeating for each enumeration.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromJson_Where_PathsContainAScalarPath_Expected_FlattenedDataWithValueFromScalarPathRepeatingForEachEnumeration()
         {
-            var testData = Given();
-
             IPath path = new JsonPath("Name", "Name");
             IPath path1 = new JsonPath("Departments().Name", "Departments.Name");
             var paths = new List<IPath> { path, path1 };
@@ -243,17 +430,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Selects enumerable values as related using enumerable path from json where paths contain 
-        /// unrelated enumerable paths expected flattened data with values from unrelated enumerable 
-        /// paths at matching indexes.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromJson_Where_PathsContainUnrelatedEnumerablePaths_Expected_FlattenedDataWithValuesFromUnrelatedEnumerablePathsAtMatchingIndexes()
         {
-            var testData = Given();
-
             IPath path = new JsonPath("Departments().Name", "Departments.Name");
             IPath path1 = new JsonPath("Contractors().Name", "Contractors.Name");
             var paths = new List<IPath> { path, path1 };
@@ -267,17 +447,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Selects enumerable values as related using enumerable path from json where paths 
-        /// contain nested enumerable paths expected flattened data with values from 
-        /// outer enumerable path repeating for every value from nested enumerable path.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromJson_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
-            var testData = Given();
-
             IPath path3 = new JsonPath("Name", "Name");
             IPath path = new JsonPath("Departments().Name", "Departments.Name");
             IPath path1 = new JsonPath("Departments().Employees().Name", "Departments.Employees.Name");
@@ -293,20 +466,16 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             FixBreaks(ref expected, ref actual);
             Assert.AreEqual(expected, actual);
         }
+
         void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
         }
-        /// <summary>
-        /// Selects enumerable values as related using enumerable path from json where paths contain a single 
-        /// path which is enumerable expected flattened data with values from enumerable path.
-        /// </summary>
+
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromJson_Where_PathsContainASinglePathWhichIsEnumerable_Expected_FlattenedDataWithValuesFromEnumerablePath()
         {
-            var testData = Given();
-
             IPath path = new JsonPath("Departments().Employees().Name", "Departments.Employees.Name");
             var paths = new List<IPath> { path };
 
@@ -319,16 +488,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
 
             Assert.AreEqual(expected, actual);
         }
-
-        /// <summary>
-        /// Selects enumerable values as related using enumerable path from json where paths contain a single 
-        /// path which is scalar expected flattened data with value from scalar path.
-        /// </summary>
+        
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingEnumerablePathFromJson_Where_PathsContainASinglePathWhichIsScalar_Expected_FlattenedDataWithValueFromScalarPath()
         {
-            var testData = Given();
-
             IPath path = new JsonPath("Name", "Name");
             var paths = new List<IPath> { path };
 
@@ -342,6 +505,131 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
             Assert.AreEqual(expected, actual);
         }
 
-        #endregion SelectEnumerable Tests
+        [TestMethod]
+        public void SelectEnumerablesAsRelated_WithEnumerableSymbolAndSeperatorSymbol_Expected_PipeDelimited()
+        {
+            List<IPath> namePath = new List<IPath>() { new JsonPath("().", "().") };
+
+            var JsonNavigator = new JsonNavigator(testData);
+            
+            var actual = string.Join("|", JsonNavigator.SelectEnumerablesAsRelated(namePath).Values.FirstOrDefault());
+            const string expected = @"""Name"": ""Dev2""|""Motto"": ""Eat lots of cake""|""Departments"": [
+  {
+    ""Name"": ""Dev"",
+    ""Employees"": [
+      {
+        ""Name"": ""Brendon"",
+        ""Surename"": ""Page""
+      },
+      {
+        ""Name"": ""Jayd"",
+        ""Surename"": ""Page""
+      }
+    ]
+  },
+  {
+    ""Name"": ""Accounts"",
+    ""Employees"": [
+      {
+        ""Name"": ""Bob"",
+        ""Surename"": ""Soap""
+      },
+      {
+        ""Name"": ""Joe"",
+        ""Surename"": ""Pants""
+      }
+    ]
+  }
+]|""Contractors"": [
+  {
+    ""Name"": ""Roofs Inc."",
+    ""PhoneNumber"": ""123""
+  },
+  {
+    ""Name"": ""Glass Inc."",
+    ""PhoneNumber"": ""1234""
+  },
+  {
+    ""Name"": ""Doors Inc."",
+    ""PhoneNumber"": ""1235""
+  },
+  {
+    ""Name"": ""Cakes Inc."",
+    ""PhoneNumber"": ""1236""
+  }
+]|""PrimitiveRecordset"": [
+  ""\r\n        RandomData\r\n    "",
+  ""\r\n        RandomData1\r\n    ""
+]";
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void SelectEnumerablesAsRelated_WithSeperatorSymbol_Expected_UnchangedPath()
+        {
+            List<IPath> namePath = new List<IPath>() { new JsonPath(".", ".") };
+
+            var JsonNavigator = new JsonNavigator(testData);
+
+            var actual = string.Join("|", JsonNavigator.SelectEnumerablesAsRelated(namePath).Values.FirstOrDefault());
+
+            var expected = @"{
+  ""Name"": ""Dev2"",
+  ""Motto"": ""Eat lots of cake"",
+  ""Departments"": [
+    {
+      ""Name"": ""Dev"",
+      ""Employees"": [
+        {
+          ""Name"": ""Brendon"",
+          ""Surename"": ""Page""
+        },
+        {
+          ""Name"": ""Jayd"",
+          ""Surename"": ""Page""
+        }
+      ]
+    },
+    {
+      ""Name"": ""Accounts"",
+      ""Employees"": [
+        {
+          ""Name"": ""Bob"",
+          ""Surename"": ""Soap""
+        },
+        {
+          ""Name"": ""Joe"",
+          ""Surename"": ""Pants""
+        }
+      ]
+    }
+  ],
+  ""Contractors"": [
+    {
+      ""Name"": ""Roofs Inc."",
+      ""PhoneNumber"": ""123""
+    },
+    {
+      ""Name"": ""Glass Inc."",
+      ""PhoneNumber"": ""1234""
+    },
+    {
+      ""Name"": ""Doors Inc."",
+      ""PhoneNumber"": ""1235""
+    },
+    {
+      ""Name"": ""Cakes Inc."",
+      ""PhoneNumber"": ""1236""
+    }
+  ],
+  ""PrimitiveRecordset"": [
+    ""\r\n        RandomData\r\n    "",
+    ""\r\n        RandomData1\r\n    ""
+  ]
+}";
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

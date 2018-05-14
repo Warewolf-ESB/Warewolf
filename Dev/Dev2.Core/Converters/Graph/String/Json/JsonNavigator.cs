@@ -25,14 +25,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
     [Serializable]
     public class JsonNavigator : NavigatorBase, INavigator
     {
-        #region Constructor
-
-        public JsonNavigator(object data)
-        {
-            Data = JToken.Parse(data.ToString());
-        }
-
-        #endregion Constructor
+        public JsonNavigator(object data) => Data = JToken.Parse(data.ToString());
 
         #region Methods
 
@@ -52,12 +45,6 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             }
 
             var currentData = Data as JToken;
-
-            if (currentData == null)
-            {
-                throw new Exception(string.Format(ErrorResource.DataTypeMismatch,
-                    typeof (JToken), Data.GetType()));
-            }
 
             if (path.ActualPath == JsonPath.SeperatorSymbol)
             {
@@ -108,11 +95,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             var enumerableData = GetEnumerableValueForPathSegment(pathSegments[segmentIndex],
                                         currentData);
 
-            if (enumerableData == null)
-            {
-                currentData = null;
-            }
-            else
+            if (enumerableData != null)
             {
                 var enumerator = enumerableData.GetEnumerator();
                 enumerator.Reset();

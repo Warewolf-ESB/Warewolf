@@ -20,8 +20,7 @@ using Newtonsoft.Json;
 namespace Dev2
 {
     public static class StringExtension
-    {
-    
+    {    
         public static bool IsDate(this string payload)
         {
             var result = false;
@@ -158,7 +157,7 @@ namespace Dev2
 
                 if (reader.NodeType != XmlNodeType.CDATA)
                 {
-                    if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
+                     if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
                     {
                         isHtml = true;
                         result = false;
