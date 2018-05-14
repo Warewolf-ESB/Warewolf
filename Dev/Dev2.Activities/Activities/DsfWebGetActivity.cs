@@ -99,8 +99,9 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource url)
         {
-            return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h=>h.Name+":"+h.Value).ToArray());            
-        }        
+            return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
+        }
+
         #endregion
 
 

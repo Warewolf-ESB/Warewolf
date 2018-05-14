@@ -202,7 +202,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             //---------------Assert Precondition----------------
 
-            var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
+            var countBefore = DataListSingleton.ActiveDataList.ScalarCollectionCount;
             Assert.AreEqual(4, countBefore);
             //---------------Execute Test ----------------------
             var inputRegion = new DotNetConstructorInputRegion(modelItem, actionRegion.Object);
@@ -244,7 +244,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             //---------------Assert Precondition----------------
 
-            var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
+            var countBefore = DataListSingleton.ActiveDataList.ScalarCollectionCount;
             Assert.AreEqual(4, countBefore);
             //---------------Execute Test ----------------------
             var inputRegion = new DotNetConstructorInputRegion(modelItem, actionRegion.Object);
@@ -286,7 +286,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             //---------------Assert Precondition----------------
 
-            var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
+            var countBefore = DataListSingleton.ActiveDataList.ScalarCollectionCount;
             Assert.AreEqual(4, countBefore);
             //---------------Execute Test ----------------------
             var inputRegion = new DotNetConstructorInputRegion(modelItem, actionRegion.Object);
@@ -328,7 +328,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             //---------------Assert Precondition----------------
 
-            var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
+            var countBefore = DataListSingleton.ActiveDataList.ScalarCollectionCount;
             Assert.AreEqual(4, countBefore);
             //---------------Execute Test ----------------------
             var inputRegion = new DotNetConstructorInputRegion(modelItem, actionRegion.Object);
