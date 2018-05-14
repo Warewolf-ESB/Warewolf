@@ -383,7 +383,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -428,7 +428,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -475,7 +475,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -522,7 +522,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -569,7 +569,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -616,7 +616,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -662,7 +662,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -712,7 +712,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -758,7 +758,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -803,7 +803,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -850,7 +850,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -905,7 +905,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -949,7 +949,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -1465,7 +1465,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -1537,7 +1537,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -1612,7 +1612,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -1683,7 +1683,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -1765,7 +1765,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -1849,7 +1849,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -1933,7 +1933,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -2032,7 +2032,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -2132,7 +2132,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -2230,7 +2230,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -2315,7 +2315,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(resourceID);
@@ -2400,7 +2400,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -2470,7 +2470,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -2501,7 +2501,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -2533,7 +2533,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -2565,7 +2565,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
 
             var rootModel = CreateResourceModel(Guid.Empty);
@@ -2724,7 +2724,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
             var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.EnvironmentID, null);
 
@@ -2759,7 +2759,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
             var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.EnvironmentID, modelProperties);
 
@@ -2775,7 +2775,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("n1"));
+            dataListViewModel.Add(new ScalarItemModel("n1"));
             DataListSingleton.SetDataList(dataListViewModel);
             var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.EnvironmentID, modelProperties);
 

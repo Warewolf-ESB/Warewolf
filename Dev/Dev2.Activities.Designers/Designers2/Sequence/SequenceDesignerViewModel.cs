@@ -105,7 +105,7 @@ namespace Dev2.Activities.Designers2.Sequence
             }
         }
 
-        public bool SetModelItemForServiceTypes(IDataObject dataObject)
+        public bool TrySetModelItemForServiceTypes(IDataObject dataObject)
         {
             if (dataObject != null && (dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat) || dataObject.GetDataPresent(GlobalConstants.UpgradedExplorerItemModelFormat)))
             {
@@ -128,35 +128,41 @@ namespace Dev2.Activities.Designers2.Sequence
 
                 try
                 {
-                    var server = ServerRepository.FindSingle(c => c.EnvironmentID == envId);
-                    var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
-
-                    if (resource != null)
-                    {
-                        var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository, true);
-                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
-                        if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                        {
-                            dynamic mvm = Application.Current.MainWindow.DataContext;
-                            if (mvm != null && mvm.ActiveItem != null)
-                            {
-                                WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
-                            }
-                        }
-
-                        var modelItem = ModelItemUtils.CreateModelItem(d);
-                        if (modelItem != null)
-                        {
-                            dynamic mi = ModelItem;
-                            ModelItemCollection activitiesCollection = mi.Activities;
-                            activitiesCollection.Insert(activitiesCollection.Count, d);
-                            return true;
-                        }
-                    }                    
+                    return SetModelItemForServiceTypes(envId, resourceId);
                 }
                 catch (RuntimeBinderException e)
                 {
                     Dev2Logger.Error(e, "Warewolf Error");
+                }
+            }
+            return false;
+        }
+
+        private bool SetModelItemForServiceTypes(Guid envId, Guid resourceId)
+        {
+            var server = ServerRepository.FindSingle(c => c.EnvironmentID == envId);
+            var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
+
+            if (resource != null)
+            {
+                var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository, true);
+                d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+                if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                {
+                    dynamic mvm = Application.Current.MainWindow.DataContext;
+                    if (mvm != null && mvm.ActiveItem != null)
+                    {
+                        WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
+                    }
+                }
+
+                var modelItem = ModelItemUtils.CreateModelItem(d);
+                if (modelItem != null)
+                {
+                    dynamic mi = ModelItem;
+                    ModelItemCollection activitiesCollection = mi.Activities;
+                    activitiesCollection.Insert(activitiesCollection.Count, d);
+                    return true;
                 }
             }
             return false;
@@ -185,7 +191,7 @@ namespace Dev2.Activities.Designers2.Sequence
                     return true;
                 }
             }
-            return SetModelItemForServiceTypes(dataObject);
+            return TrySetModelItemForServiceTypes(dataObject);
         }
 
         public override void Validate()

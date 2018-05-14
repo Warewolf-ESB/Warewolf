@@ -1018,7 +1018,55 @@ namespace Dev2.Core.Tests.IntellisenseProvider
 
             //------------Assert Results-------------------------
 
-            Assert.AreEqual("some string [[obfsucationStaging]]", result);
+            Assert.AreEqual("some string [[obfsucationStaging]] some string", result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DefaultIntellisenseProvider_PerformMultipleSelection")]
+        public void DefaultIntellisenseProvider_PerformMultipleSelection_WhenSelectingOpenBracket_InsertedNormally()
+        {
+            //------------Setup for test--------------------------
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 11,
+                CaretPositionOnPopup = 0,
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                FilterType = enIntellisensePartType.None,
+                InputText = "s [[a]] s [",
+                IsInCalculateMode = false
+            };
+
+            //------------Execute Test---------------------------
+            var result = new DefaultIntellisenseProvider().PerformResultInsertion("[[b]]", context);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("s [[a]] s [[b]]", result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DefaultIntellisenseProvider_PerformMultipleSelection")]
+        public void DefaultIntellisenseProvider_PerformMultipleSelection_WhenSelectingChar_InsertedNormally()
+        {
+            //------------Setup for test--------------------------
+            var context = new IntellisenseProviderContext
+            {
+                CaretPosition = 11,
+                CaretPositionOnPopup = 0,
+                DesiredResultSet = IntellisenseDesiredResultSet.Default,
+                FilterType = enIntellisensePartType.None,
+                InputText = "s [[a]] s b",
+                IsInCalculateMode = false
+            };
+
+            //------------Execute Test---------------------------
+            var result = new DefaultIntellisenseProvider().PerformResultInsertion("[[b]]", context);
+
+            //------------Assert Results-------------------------
+
+            Assert.AreEqual("s [[a]] s [[b]]", result);
         }
 
         [TestMethod]
@@ -1125,8 +1173,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var scalarDataListItemWithNoError = DataListItemModelFactory.CreateScalarItemModel("var", "Random Variable", enDev2ColumnArgumentDirection.Both);
             scalarDataListItemWithError.HasError = true;
             scalarDataListItemWithError.ErrorMessage = "This is an Error";
-            dataListViewModel.ScalarCollection.Add(scalarDataListItemWithError);
-            dataListViewModel.ScalarCollection.Add(scalarDataListItemWithNoError);
+            dataListViewModel.Add(scalarDataListItemWithError);
+            dataListViewModel.Add(scalarDataListItemWithNoError);
             dataListViewModel.WriteToResourceModel();
             DataListSingleton.SetDataList(dataListViewModel);
         }

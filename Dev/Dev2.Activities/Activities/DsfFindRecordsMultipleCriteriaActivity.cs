@@ -113,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var searchContext = new SearchContext(this);
                 if (dataObject.IsDebugMode())
                 {
-                    AddDebugInputValues(dataObject, searchContext.ToSearch, ref allErrors, update);
+                    TryAddDebugInputValues(dataObject, searchContext.ToSearch, ref allErrors, update);
                 }
 
                 searchQuery.Execute(searchContext, allErrors, dataObject, update);
@@ -164,38 +164,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _errorsTo = errorTo;
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.MixedActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
 
-        void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, ref ErrorResultTO errorTos, int update)
+        void TryAddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, ref ErrorResultTO errorTos, int update)
         {
             if (dataObject.IsDebugMode())
             {
                 try
                 {
-                    var debugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("", "In Field(s)"), debugItem);
-                    foreach (var s in toSearch)
-                    {
-                        var searchFields = s;
-                        if (DataListUtil.IsValueRecordset(s))
-                        {
-                            searchFields = searchFields.Replace("()", "(*)");
-                        }
-                        AddDebugItem(new DebugEvalResult(searchFields, "", dataObject.Environment, update), debugItem);
-                    }
-                    _debugInputs.Add(debugItem);
-                    AddResultDebugInputs(ResultsCollection, dataObject.Environment, update);
-                    AddDebugInputItem(new DebugItemStaticDataParams(RequireAllFieldsToMatch ? "YES" : "NO", "Require All Fields To Match"));
-                    AddDebugInputItem(new DebugItemStaticDataParams(RequireAllTrue ? "YES" : "NO", "Require All Matches To Be True"));
+                    AddDebugInputValues(dataObject, toSearch, update);
                 }
                 catch (Exception e)
                 {
                     errorTos.AddError(e.Message);
                 }
             }
+        }
+
+        private void AddDebugInputValues(IDSFDataObject dataObject, IEnumerable<string> toSearch, int update)
+        {
+            var debugItem = new DebugItem();
+            AddDebugItem(new DebugItemStaticDataParams("", "In Field(s)"), debugItem);
+            foreach (var s in toSearch)
+            {
+                var searchFields = s;
+                if (DataListUtil.IsValueRecordset(s))
+                {
+                    searchFields = searchFields.Replace("()", "(*)");
+                }
+                AddDebugItem(new DebugEvalResult(searchFields, "", dataObject.Environment, update), debugItem);
+            }
+            _debugInputs.Add(debugItem);
+            AddResultDebugInputs(ResultsCollection, dataObject.Environment, update);
+            AddDebugInputItem(new DebugItemStaticDataParams(RequireAllFieldsToMatch ? "YES" : "NO", "Require All Fields To Match"));
+            AddDebugInputItem(new DebugItemStaticDataParams(RequireAllTrue ? "YES" : "NO", "Require All Matches To Be True"));
         }
 
         #region Overrides of DsfNativeActivity<string>

@@ -22,9 +22,6 @@ using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for FileChooserView.xaml
-    /// </summary>
     public partial class FileChooserView : IFileChooserView
     {
         readonly Grid _blackoutGrid = new Grid();

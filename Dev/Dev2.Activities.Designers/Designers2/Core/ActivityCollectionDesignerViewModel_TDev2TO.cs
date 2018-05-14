@@ -60,17 +60,14 @@ namespace Dev2.Activities.Designers2.Core
             // Do this before, because AddDTO() also attaches events
             AttachEvents(0);
 
-            switch (modelItemCollection.Count)
+            if (modelItemCollection.Count == 1)
             {
-                case 0:
-                    AddDto(1);
-                    AddDto(2);
-                    break;
-                case 1:
-                    AddDto(2);
-                    break;
-                default:
-                    break;
+                AddDto(2);
+            }
+            if (modelItemCollection.Count == 0)
+            {
+                AddDto(1);
+                AddDto(2);
             }
 
             AddBlankRow();
@@ -85,20 +82,17 @@ namespace Dev2.Activities.Designers2.Core
 
         void ModelItemCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
         {
-            //
         }
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
         {
-            if (oldItem?.GetCurrentValue() is TDev2TOFn dto && dto.CanRemove())
+            // old row is blank so remove
+            if (oldItem?.GetCurrentValue() is TDev2TOFn dto && dto.CanRemove() && ModelItemCollection != null)
             {
-                // old row is blank so remove
-                if (ModelItemCollection != null)
-                {
-                    var index = ModelItemCollection.IndexOf(oldItem) + 1;
-                    RemoveDto(dto, index);
-                }
+                var index = ModelItemCollection.IndexOf(oldItem) + 1;
+                RemoveDto(dto, index);
             }
+
             if (newItem != null)
             {
                 CurrentModelItem = newItem;
@@ -209,37 +203,40 @@ namespace Dev2.Activities.Designers2.Core
             // Restore
             _initialDto = new TDev2TOFn();
         }
-
-        /// <summary>
-        /// Gets the insert index for <see cref="AddToCollection"/>.
-        /// Returns the index of the last blank row.
-        /// </summary>
+        
         int GetIndexForAdd(bool overwrite)
         {
-            var indexNumber = 1;
+            int indexNumber = 1;
             if (overwrite)
             {
                 ModelItemCollection?.Clear();
             }
             else
             {
-                var lastDto = GetLastDto();
-                if (ModelItemCollection != null)
-                {
-                    indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
+                indexNumber = GetIndexWithoutOverwrite();
+            }
+            return indexNumber;
+        }
 
-                    if (ModelItemCollection.Count == 2)
+        int GetIndexWithoutOverwrite()
+        {
+            int indexNumber = 1;
+            var lastDto = GetLastDto();
+            if (ModelItemCollection != null)
+            {
+                indexNumber = ModelItemCollection.IndexOf(GetModelItem(ItemCount)) + 1;
+                if (ModelItemCollection.Count == 2)
+                {
+                    // Check whether we have 2 blank rows
+                    var firstDto = GetDto(1);
+                    if (firstDto.CanRemove() && lastDto.CanRemove())
                     {
-                        // Check whether we have 2 blank rows
-                        var firstDto = GetDto(1);
-                        if (firstDto.CanRemove() && lastDto.CanRemove())
-                        {
-                            RemoveAt(indexNumber, lastDto);
-                            indexNumber = indexNumber - 1;
-                        }
+                        RemoveAt(indexNumber, lastDto);
+                        indexNumber = indexNumber - 1;
                     }
                 }
             }
+
             return indexNumber;
         }
 
@@ -355,23 +352,28 @@ namespace Dev2.Activities.Designers2.Core
 
                 if (canAdd)
                 {
-                    var dto = (TDev2TOFn)sender;
-                    if (dto.CanAdd())
+                    AddBlank(sender);
+                }
+            }
+        }
+
+        private void AddBlank(object sender)
+        {
+            var dto = (TDev2TOFn)sender;
+            if (dto.CanAdd())
+            {
+                if (ModelItemCollection.Count == 2)
+                {
+                    var firstDto = GetDto(1);
+                    if (!firstDto.CanRemove())
                     {
-                        if (ModelItemCollection.Count == 2)
-                        {
-                            var firstDto = GetDto(1);
-                            if (!firstDto.CanRemove())
-                            {
-                                // first row is not blank
-                                AddBlankRow();
-                            }
-                        }
-                        else
-                        {
-                            AddBlankRow();
-                        }
+                        // first row is not blank
+                        AddBlankRow();
                     }
+                }
+                else
+                {
+                    AddBlankRow();
                 }
             }
         }
@@ -379,10 +381,7 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual void DoCustomAction(string propertyName)
         {
         }
-
-        /// <summary>
-        /// Attaches events to the ModelItemCollection starting at the specified zero-based index.
-        /// </summary>
+        
         void AttachEvents(int startIndex)
         {
             ProcessModelItemCollection(startIndex, mi =>
@@ -398,11 +397,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             dto.PropertyChanged += OnDtoPropertyChanged;
         }
-
-
-        /// <summary>
-        /// Process the ModelItemCollection starting at the specified zero-based index.
-        /// </summary>
+        
         void ProcessModelItemCollection(int startIndex, Action<ModelItem> processModelItem)
         {
             if (ModelItemCollection != null && !IsMerge)

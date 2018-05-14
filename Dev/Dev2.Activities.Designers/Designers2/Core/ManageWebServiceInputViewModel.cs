@@ -112,7 +112,6 @@ namespace Dev2.Activities.Designers2.Core
             TestResults = null;
             IsTesting = true;
 
-           
             try
             {
                 var testResult = _serverModel.TestService(Model);

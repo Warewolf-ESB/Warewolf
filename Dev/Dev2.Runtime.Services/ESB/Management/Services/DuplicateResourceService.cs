@@ -19,13 +19,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
-            if (tmp != null)
+            if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
             {
-                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
-                {
-                    return resourceId;
-                }
+                return resourceId;
             }
+
 
             return Guid.Empty;
         }
@@ -48,33 +46,29 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("NewResourceName", out StringBuilder newResourceName);
             values.TryGetValue("destinationPath", out StringBuilder destinationPath);
 
-            if (tmp != null)
+            if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId) && !string.IsNullOrEmpty(newResourceName?.ToString()))
             {
-                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
+                try
                 {
-                    if (!string.IsNullOrEmpty(newResourceName?.ToString()))
+                    if (destinationPath == null)
                     {
-                        try
-                        {
-                            if (destinationPath == null)
-                            {
-                                var failure = new ResourceCatalogDuplicateResult { Status = ExecStatus.Fail, Message = "Destination Paths not specified" };
-                                return serializer.SerializeToBuilder(failure);
-                            }
-                            var resourceCatalog = _catalog ?? ResourceCatalog.Instance;
-                            var resourceCatalogResult = resourceCatalog.DuplicateResource(resourceId.ToString().ToGuid(), destinationPath.ToString(), newResourceName.ToString());
-                            return serializer.SerializeToBuilder(resourceCatalogResult);
-                        }
-                        catch (Exception x)
-                        {
-                            Dev2Logger.Error(x.Message + " DuplicateResourceService", x, GlobalConstants.WarewolfError);
-                            var result = new ExecuteMessage { HasError = true, Message = x.Message.ToStringBuilder() };
-                            return serializer.SerializeToBuilder(result);
-                        }
-
+                        var failure = new ResourceCatalogDuplicateResult { Status = ExecStatus.Fail, Message = "Destination Paths not specified" };
+                        return serializer.SerializeToBuilder(failure);
                     }
+                    var resourceCatalog = _catalog ?? ResourceCatalog.Instance;
+                    var resourceCatalogResult = resourceCatalog.DuplicateResource(resourceId.ToString().ToGuid(), destinationPath.ToString(), newResourceName.ToString());
+                    return serializer.SerializeToBuilder(resourceCatalogResult);
                 }
+                catch (Exception x)
+                {
+                    Dev2Logger.Error(x.Message + " DuplicateResourceService", x, GlobalConstants.WarewolfError);
+                    var result = new ExecuteMessage { HasError = true, Message = x.Message.ToStringBuilder() };
+                    return serializer.SerializeToBuilder(result);
+                }
+
             }
+
+
             var success = new ExecuteMessage { HasError = true, Message = new StringBuilder("ResourceId is required")};
             return serializer.SerializeToBuilder(success);
         }
