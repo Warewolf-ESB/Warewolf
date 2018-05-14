@@ -385,5 +385,19 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             Assert.AreEqual(_manageOAuthSourceViewModel.TestMessage, "Test save exception");
         }
+
+        [TestMethod]
+        public void TestSaveConnection()
+        {
+            //arrange
+            _updateManager.Setup(u => u.Save(It.IsAny<IOAuthSource>())).Throws(new Exception("Test save exception"));
+            _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object, new SynchronousAsyncWorker()) { Name = "Testing OAuth" };
+            _manageOAuthSourceViewModel.Item = new DropBoxSource() { ResourceName = "testing", ResourcePath = "" };
+
+            var manageOAuthSourceVM = new PrivateObject(_manageOAuthSourceViewModel);
+            //act
+            manageOAuthSourceVM.Invoke("SaveConnection");
+            //assert
+        }
     }
 }
