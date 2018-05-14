@@ -46,13 +46,41 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "2";
             Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
         }
-
+        [TestMethod]
+        [TestCategory("Control Flow Tools")]
+        public void SwitchTool_ValidateParentProperties_ReturnValidExpressionError_UITest()
+        {
+            DialogsUIMap.Click_Switch_Dialog_Done_Button();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_ToDefaultSwitch();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_SwitchFirstArm();
+            Assert.IsTrue(DialogsUIMap.ActivityDefaultWindow.Exists);
+            DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "1";
+            Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm();
+            DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "1";
+            Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists);
+        }
+        [TestMethod]
+        [TestCategory("Control Flow Tools")]
+        public void SwitchTool_ValidateProperties_ReturnValidExpressionError_UITest()
+        {
+            DialogsUIMap.Click_Switch_Dialog_Done_Button();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_ToDefaultSwitch();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_SwitchFirstArm();
+            Assert.IsTrue(DialogsUIMap.ActivityDefaultWindow.Exists);
+            DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "1";
+            Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
+            WorkflowTabUIMap.DoubleClickSwitchFirstArm();
+            Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
+            Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists);
+        }
         [TestMethod]
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_OpenExistingSwitch_UITest()
         {
             DialogsUIMap.Click_Switch_Dialog_Done_Button();
-            Mouse.DoubleClick(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1);
+            Mouse.DoubleClick(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch);
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.DoneButton.Exists, "Switch dialog done button does not exist after dragging switch tool in from the toolbox.");
         }
 
