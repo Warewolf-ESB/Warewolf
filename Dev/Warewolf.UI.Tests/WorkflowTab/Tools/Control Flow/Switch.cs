@@ -42,7 +42,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsTrue(DialogsUIMap.ActivityDefaultWindow.Exists);
             DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "1";
             Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
-            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm();
+            ControlFlowToolsUIMap.Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm();
             DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "2";
             Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
         }
@@ -56,7 +56,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsTrue(DialogsUIMap.ActivityDefaultWindow.Exists);
             DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "1";
             Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
-            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm();
+            ControlFlowToolsUIMap.Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm();
             DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "1";
             Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists);
