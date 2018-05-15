@@ -13,6 +13,7 @@ using Dev2.Activities;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
@@ -20,6 +21,7 @@ using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Data.SystemTemplates.Models;
+using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
@@ -2625,6 +2627,157 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //---------------Test Result -----------------------
             //NOTE: Purely for cover, meant to only return
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddOutputs_SetOutputs_MoreLink_ShouldSetValue()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+
+            const string datalistFragment = @"<DataList>
+    <result Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+    <recordSet Description="""" IsEditable=""True"" ColumnIODirection=""Output"">
+      <f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+    </recordSet>
+    <recset2 Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+      <f2 Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+    </recset2>
+  </DataList>";
+
+            var resourceModel = CreateResourceModel();
+            resourceModel.DataList = datalistFragment;
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid())
+            {
+                TestName = "NameOne",
+                NameForDisplay = "NameOne"
+            };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition-`---------------
+            Assert.IsNotNull(methodInfo);
+
+            var resId = Guid.NewGuid();
+            var serverId = Guid.NewGuid();
+
+            var debugItem = new DebugItem();
+            var debugItemResult = new DebugItemResult
+            {
+                Variable = "[[Name]]",
+                Value = "Bob",
+                MoreLink = "MoreLink",
+                GroupName = "GroupName",
+                GroupIndex = 1
+            };
+            debugItem.ResultsList.Add(debugItemResult);
+            var debugOutputs = new List<IDebugItem>();
+            debugOutputs.Add(debugItem);
+
+            var debugState = new Mock<IDebugState>();
+            debugState.Setup(c => c.OriginatingResourceID).Returns(resId);
+            debugState.Setup(c => c.ServerID).Returns(serverId);
+            debugState.Setup(c => c.WorkspaceID).Returns(Guid.Empty);
+            debugState.Setup(c => c.Outputs).Returns(debugOutputs);
+
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[] 
+            {
+                debugState.Object
+            });
+            var outputs = testFrameworkViewModel.SelectedServiceTest.Outputs;
+
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("Contains", outputs[0].AssertOp);
+            Assert.AreEqual("Name", outputs[0].Variable);
+            Assert.AreEqual("Bob", outputs[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddOutputs_SetOutputs_DsfEnhancedDotNetDllActivity_ShouldSetValue()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+
+            const string datalistFragment = @"<DataList>
+    <result Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+    <recordSet Description="""" IsEditable=""True"" ColumnIODirection=""Output"">
+      <f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
+    </recordSet>
+    <recset2 Description="""" IsEditable=""True"" ColumnIODirection=""None"">
+      <f2 Description="""" IsEditable=""True"" ColumnIODirection=""None"" />
+    </recset2>
+  </DataList>";
+
+            var resourceModel = CreateResourceModel();
+            resourceModel.DataList = datalistFragment;
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid())
+            {
+                TestName = "NameOne",
+                NameForDisplay = "NameOne"
+            };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("SetOutputs", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition-`---------------
+            Assert.IsNotNull(methodInfo);
+
+            var mockWebClient = new Mock<IWarewolfWebClient>();
+            mockWebClient.Setup(web => web.DownloadString("MoreLink")).Returns("SomeAddress");
+            testFrameworkViewModel.WebClient = mockWebClient.Object;
+
+            var resId = Guid.NewGuid();
+            var serverId = Guid.NewGuid();
+
+            var debugItem = new DebugItem();
+            var debugItemResult = new DebugItemResult
+            {
+                Variable = "[[Name]]",
+                Value = "Bob",
+                MoreLink = "MoreLink",
+                GroupName = "GroupName",
+                GroupIndex = 1
+            };
+            debugItem.ResultsList.Add(debugItemResult);
+            var debugOutputs = new List<IDebugItem>();
+            debugOutputs.Add(debugItem);
+
+            var debugState = new Mock<IDebugState>();
+            debugState.Setup(c => c.OriginatingResourceID).Returns(resId);
+            debugState.Setup(c => c.ServerID).Returns(serverId);
+            debugState.Setup(c => c.WorkspaceID).Returns(Guid.Empty);
+            debugState.Setup(c => c.Outputs).Returns(debugOutputs);
+            debugState.Setup(c => c.ActualType).Returns(typeof(DsfEnhancedDotNetDllActivity).Name);
+
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[]
+            {
+                debugState.Object
+            });
+            var outputs = testFrameworkViewModel.SelectedServiceTest.Outputs;
+
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("=", outputs[0].AssertOp);
+            Assert.AreEqual("Name", outputs[0].Variable);
+            Assert.AreEqual("SomeAddress", outputs[0].Value);
         }
 
         IContextualResourceModel CreateResourceModelWithSingleScalarInput()
