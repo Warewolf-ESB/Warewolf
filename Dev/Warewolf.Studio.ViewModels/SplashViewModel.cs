@@ -77,8 +77,7 @@ namespace Warewolf.Studio.ViewModels
         public Uri CommunityUrl { get; set; }
         public Uri ExpertHelpUrl { get; set; }
         public string WarewolfCopyright { get; set; }
-        [ExcludeFromCodeCoverage]
-        public void ShowServerVersion()
+        public void ShowServerStudioVersion()
         {
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {

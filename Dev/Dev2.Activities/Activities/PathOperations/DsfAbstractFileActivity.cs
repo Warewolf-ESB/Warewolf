@@ -56,7 +56,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 		protected override void ExecuteTool(IDSFDataObject dataObject, int update)
 		{
 			var allErrors = new ErrorResultTO();
-			var errors = new ErrorResultTO();
 
 			// Process if no errors
 
@@ -64,90 +63,97 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 			{
 				InitializeDebug(dataObject);
 			}
-
-			if (!errors.HasErrors())
+            
+			try
+            {
+                TryExecuteTool(dataObject, update, allErrors);
+            }
+            catch (Exception ex)
 			{
-				try
+				allErrors.AddError(ex.Message);
+			}
+			finally
+			{
+				// Handle Errors
+				if (allErrors.HasErrors())
 				{
-					//Execute the concrete action for the specified activity
-					var outputs = ExecuteConcreteAction(dataObject, out errors, update);
-
-					allErrors.MergeErrors(errors);
-
-					if (outputs.Count > 0)
+					foreach (var err in allErrors.FetchErrors())
 					{
-						foreach (OutputTO output in outputs)
-						{
-							if (output.OutputStrings.Count > 0)
-							{
-								foreach (string value in output.OutputStrings)
-								{
-									if (output.OutPutDescription == GlobalConstants.ErrorPayload)
-									{
-										errors.AddError(value);
-									}
-									else
-									{
-										foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
-										{
-											dataObject.Environment.Assign(region, value, update);
-										}
-									}
-								}
-							}
-						}
-						allErrors.MergeErrors(errors);
+						dataObject.Environment.Errors.Add(err);
 					}
-					else
+					foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
 					{
-						if (AssignEmptyOutputsToRecordSet)
-						{
-							foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-							{
-								dataObject.Environment.Assign(region, "", update);
-							}
-						}
-					}
-					if (dataObject.IsDebugMode())
-					{
-						if (!String.IsNullOrEmpty(Result))
-						{
-							AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-						}
+						dataObject.Environment.Assign(region, "", update);
 					}
 				}
-				catch (Exception ex)
-				{
-					allErrors.AddError(ex.Message);
-				}
-				finally
-				{
-					// Handle Errors
-					if (allErrors.HasErrors())
-					{
-						foreach (var err in allErrors.FetchErrors())
-						{
-							dataObject.Environment.Errors.Add(err);
-						}
-						foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-						{
-							dataObject.Environment.Assign(region, "", update);
-						}
-					}
 
-					if (dataObject.IsDebugMode())
-					{
-						DispatchDebugState(dataObject, StateType.Before, update);
-						DispatchDebugState(dataObject, StateType.After, update);
-					}
+				if (dataObject.IsDebugMode())
+				{
+					DispatchDebugState(dataObject, StateType.Before, update);
+					DispatchDebugState(dataObject, StateType.After, update);
 				}
 			}
 		}
 
-		[DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        private ErrorResultTO TryExecuteTool(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            ErrorResultTO errors;
+            //Execute the concrete action for the specified activity
+            var outputs = TryExecuteConcreteAction(dataObject, out errors, update);
+
+            allErrors.MergeErrors(errors);
+
+            if (outputs.Count > 0)
+            {
+                foreach (OutputTO output in outputs)
+                {
+                    if (output.OutputStrings.Count > 0)
+                    {
+                        ParseOutputs(dataObject, update, errors, output);
+                    }
+                }
+                allErrors.MergeErrors(errors);
+            }
+            else
+            {
+                if (AssignEmptyOutputsToRecordSet)
+                {
+                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                    {
+                        dataObject.Environment.Assign(region, "", update);
+                    }
+                }
+            }
+            if (dataObject.IsDebugMode() && !String.IsNullOrEmpty(Result))
+            {
+                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+            }
+
+            return errors;
+        }
+
+        private static void ParseOutputs(IDSFDataObject dataObject, int update, ErrorResultTO errors, OutputTO output)
+        {
+            foreach (string value in output.OutputStrings)
+            {
+                if (output.OutPutDescription == GlobalConstants.ErrorPayload)
+                {
+                    errors.AddError(value);
+                }
+                else
+                {
+                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
+                    {
+                        dataObject.Environment.Assign(region, value, update);
+                    }
+                }
+            }
+        }
+
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
 		protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
 		
-		protected abstract IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
+		protected abstract IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update);
 
 		#region Properties
 

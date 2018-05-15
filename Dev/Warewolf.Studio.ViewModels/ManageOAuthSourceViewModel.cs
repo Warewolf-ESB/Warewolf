@@ -130,63 +130,57 @@ namespace Warewolf.Studio.ViewModels
                     {
                         Dev2Logger.Warn(e.Message, "Warewolf Warn");
                     }
-
-                    if (result != null)
-                    {
-                        if (result.State != _oauth2State)
-                        {
-                            TestPassed = false;
-                            TestFailed = true;
-                            TestMessage = "Authentication failed";
-                            AccessToken = string.Empty;
-                            HasAuthenticated = false;
-                        }
-                        else
-                        {
-                            TestPassed = true;
-                            TestFailed = false;
-                            TestMessage = "";
-                            AccessToken = result.AccessToken;
-                            HasAuthenticated = true;
-                        }
-                    }
-                    else
-                    {
-                        TestPassed = false;
-                        TestFailed = true;
-                        TestMessage = "Authentication failed";
-                        AccessToken = string.Empty;
-                        HasAuthenticated = false;
-
-                        var errorDescription = HttpUtility.ParseQueryString(uri.ToString()).Get("error_description");
-
-                        TestMessage = errorDescription ?? "Authentication failed";
-                    }
+                    AuthenticationFailed(uri, result);
                 }
             }
         }
 
-        
+        void AuthenticationFailed(Uri uri, OAuth2Response result)
+        {
+            if (result != null)
+            {
+                if (result.State != _oauth2State)
+                {
+                    TestPassed = false;
+                    TestFailed = true;
+                    TestMessage = "Authentication failed";
+                    AccessToken = string.Empty;
+                    HasAuthenticated = false;
+                }
+                else
+                {
+                    TestPassed = true;
+                    TestFailed = false;
+                    TestMessage = "";
+                    AccessToken = result.AccessToken;
+                    HasAuthenticated = true;
+                }
+            }
+            else
+            {
+                TestPassed = false;
+                TestFailed = true;
+                TestMessage = "Authentication failed";
+                AccessToken = string.Empty;
+                HasAuthenticated = false;
+
+                var errorDescription = HttpUtility.ParseQueryString(uri.ToString()).Get("error_description");
+
+                TestMessage = errorDescription ?? "Authentication failed";
+            }
+        }
+
         public List<string> Types
         {
-            get
-            {
-                return _types;
-            }
-            set
-            {
-                _types = value;
-            }
+            get => _types;
+            set => _types = value;
         }
 
         public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
 
         public string AccessToken
         {
-            get
-            {
-                return _accessToken;
-            }
+            get => _accessToken;
             set
             {
                 _accessToken = value;
@@ -196,10 +190,7 @@ namespace Warewolf.Studio.ViewModels
 
         public Uri AuthUri
         {
-            get
-            {
-                return _authUri;
-            }
+            get => _authUri;
             set
             {
                 _authUri = value;
@@ -209,10 +200,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string Path
         {
-            get
-            {
-                return _path;
-            }
+            get => _path;
             set
             {
                 _path = value;
@@ -224,7 +212,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestPassed
         {
-            get { return _testPassed; }
+            get => _testPassed;
             set
             {
                 _testPassed = value;
@@ -234,10 +222,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool TestFailed
         {
-            get
-            {
-                return _testFailed;
-            }
+            get => _testFailed;
             set
             {
                 _testFailed = value;
@@ -247,10 +232,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool Testing
         {
-            get
-            {
-                return _testing;
-            }
+            get => _testing;
             set
             {
                 _testing = value;
@@ -262,7 +244,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string TestMessage
         {
-            get { return _testMessage; }
+            get => _testMessage;
             set
             {
                 _testMessage = value;
@@ -292,10 +274,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string SelectedOAuthProvider
         {
-            get
-            {
-                return _selectedOAuthProvider;
-            }
+            get => _selectedOAuthProvider;
             set
             {
                 _selectedOAuthProvider = value;
@@ -305,10 +284,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string AppKey
         {
-            get
-            {
-                return _appKey;
-            }
+            get => _appKey;
             set
             {
                 _appKey = value;
@@ -319,7 +295,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Overrides of SourceBaseImpl<IOAuthSource>
 
-        
+
         public override string Name
         {
             get
@@ -372,10 +348,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IWebBrowser WebBrowser
         {
-            get
-            {
-                return _webBrowser;
-            }
+            get => _webBrowser;
             set
             {
                 _webBrowser = value;
@@ -402,10 +375,7 @@ namespace Warewolf.Studio.ViewModels
                         src.ResourceName = requestServiceNameViewModel.ResourceName.Name;
                         src.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
-                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
-                        {
-                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
-                        }
+                        AfterSave(requestServiceNameViewModel, src);
 
                         _oAuthSource = src;
                         Path = _oAuthSource.ResourcePath;
@@ -426,6 +396,14 @@ namespace Warewolf.Studio.ViewModels
                 Item = src;
                 _oAuthSource = src;
                 SetupHeaderTextFromExisting();
+            }
+        }
+
+        void AfterSave(IRequestServiceNameViewModel requestServiceNameViewModel, IOAuthSource src)
+        {
+            if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+            {
+                AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
             }
         }
 

@@ -45,14 +45,12 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                if (!string.IsNullOrEmpty(_searchText))
+                if (!string.IsNullOrEmpty(_searchText) && _children != null)
                 {
-                    if (_children != null)
-                    {
-                        var itemModels = _children.Where(model => model.IsVisible).ToObservableCollection();
-                        return itemModels;
-                    }
+                    var itemModels = _children.Where(model => model.IsVisible).ToObservableCollection();
+                    return itemModels;
                 }
+
                 return _children ?? (_children = new ObservableCollection<IRecordSetFieldItemModel>());
             }
             set
@@ -171,17 +169,22 @@ namespace Dev2.Studio.Core.Models.DataList
                     }
                     else
                     {
-                        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                        {
-                            RemoveError();
-                        }
+                        ConditionallyRemoveError();
                     }
                 }
             }
             return name;
+        }
+
+        void ConditionallyRemoveError()
+        {
+            if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                                        !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+            {
+                base.RemoveError();
+            }
         }
 
         #endregion

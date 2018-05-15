@@ -37,7 +37,7 @@ namespace Dev2.Studio.Core.DataList
 
             for (var i = objectItemModels.Count; i > 0; i--)
             {
-                _vm.ComplexObjectCollection.Remove(objectItemModels[i - 1]);
+                _vm.Remove(objectItemModels[i - 1]);
             }
         }
 
@@ -73,7 +73,8 @@ namespace Dev2.Studio.Core.DataList
                     }
 
                     itemModel = new ComplexObjectItemModel(path) { IsArray = isArray };
-                    _vm.ComplexObjectCollection.Add(itemModel);
+                    itemModel.IsVisible = _vm.IsItemVisible(itemModel.Name);
+                    _vm.Add(itemModel);
                 }
                 else
                 {
@@ -144,7 +145,7 @@ namespace Dev2.Studio.Core.DataList
             if (parentObj == null)
             {
                 parentObj = new ComplexObjectItemModel(parentObjectName);
-                _vm.ComplexObjectCollection.Add(parentObj);
+                _vm.Add(parentObj);
             }
 
             if (json.IsXml())
@@ -172,38 +173,43 @@ namespace Dev2.Studio.Core.DataList
         {
             if (objToProcess != null)
             {
-                var properties = objToProcess.Properties();
-                foreach (var property in properties)
+                ProcessJObject(parentObj, objToProcess);
+            }
+        }
+
+        private void ProcessJObject(IComplexObjectItemModel parentObj, JObject objToProcess)
+        {
+            var properties = objToProcess.Properties();
+            foreach (var property in properties)
+            {
+                var displayname = property.Name;
+                displayname = JPropertyExtensionMethods.IsEnumerable(property) ? displayname + "()" : displayname;
+                var childObj = parentObj.Children.FirstOrDefault(model => model.DisplayName == displayname);
+                if (childObj == null)
                 {
-                    var displayname = property.Name;
-                    displayname = JPropertyExtensionMethods.IsEnumerable(property) ? displayname + "()" : displayname;
-                    var childObj = parentObj.Children.FirstOrDefault(model => model.DisplayName == displayname);
-                    if (childObj == null)
+                    childObj = new ComplexObjectItemModel(displayname, parentObj) { IsArray = JPropertyExtensionMethods.IsEnumerable(property) };
+                    parentObj.Children.Add(childObj);
+                }
+                if (property.Value.IsObject())
+                {
+                    ProcessObjectForComplexObjectCollection(childObj, property.Value as JObject);
+                }
+                else
+                {
+                    if (!property.Value.IsEnumerable())
                     {
-                        childObj = new ComplexObjectItemModel(displayname, parentObj) { IsArray = JPropertyExtensionMethods.IsEnumerable(property) };
-                        parentObj.Children.Add(childObj);
+                        continue;
                     }
-                    if (property.Value.IsObject())
+
+                    var arrayVal = property.Value as JArray;
+                    if (arrayVal == null)
                     {
-                        ProcessObjectForComplexObjectCollection(childObj, property.Value as JObject);
+                        continue;
                     }
-                    else
+
+                    if (arrayVal.FirstOrDefault() is JObject obj)
                     {
-                        if (!property.Value.IsEnumerable())
-                        {
-                            continue;
-                        }
-
-                        var arrayVal = property.Value as JArray;
-                        if (arrayVal == null)
-                        {
-                            continue;
-                        }
-
-                        if (arrayVal.FirstOrDefault() is JObject obj)
-                        {
-                            ProcessObjectForComplexObjectCollection(childObj, obj);
-                        }
+                        ProcessObjectForComplexObjectCollection(childObj, obj);
                     }
                 }
             }
@@ -233,7 +239,7 @@ namespace Dev2.Studio.Core.DataList
             }
             else
             {
-                _vm.ComplexObjectCollection.Add(complexObjectItemModel);
+                _vm.Add(complexObjectItemModel);
             }
             if (xmlNode.HasChildNodes)
             {

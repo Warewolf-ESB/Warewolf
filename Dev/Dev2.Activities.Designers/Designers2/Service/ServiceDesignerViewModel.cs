@@ -308,14 +308,12 @@ namespace Dev2.Activities.Designers2.Service
         {
             base.OnToggleCheckedChanged(propertyName, isChecked);
 
-            if (propertyName == ShowLargeProperty.Name)
+            if (propertyName == ShowLargeProperty.Name && !isChecked)
             {
-                if (!isChecked)
-                {
-                    MappingManager.UpdateMappings();
-                    MappingManager.CheckForRequiredMapping();
-                }
+                MappingManager.UpdateMappings();
+                MappingManager.CheckForRequiredMapping();
             }
+
         }
 
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
@@ -534,14 +532,12 @@ namespace Dev2.Activities.Designers2.Service
             {
                 server.Connection.Verify(ValidationMemoManager.UpdateLastValidationMemoWithOfflineError);
             }
-            if (server.IsConnected)
+            if (server.IsConnected && resourceId != Guid.Empty)
             {
-                if (resourceId != Guid.Empty)
-                {
-                    ResourceModel = server.ResourceRepository.LoadContextualResourceModel(resourceId);
+                ResourceModel = server.ResourceRepository.LoadContextualResourceModel(resourceId);
 
-                }
             }
+
             if (!CheckSourceMissing())
             {
                 return false;
@@ -681,20 +677,18 @@ namespace Dev2.Activities.Designers2.Service
 
         public void Handle(UpdateResourceMessage message)
         {
-            if (message?.ResourceModel != null)
+            if (message?.ResourceModel != null && SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
             {
-                if (SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
+                var sourceNotAvailableMessage = ValidationMemoManager.DesignValidationErrors.FirstOrDefault(info => info.Message == ValidationMemoManager.SourceNotFoundMessage);
+                if (sourceNotAvailableMessage != null)
                 {
-                    var sourceNotAvailableMessage = ValidationMemoManager.DesignValidationErrors.FirstOrDefault(info => info.Message == ValidationMemoManager.SourceNotFoundMessage);
-                    if (sourceNotAvailableMessage != null)
-                    {
-                        ValidationMemoManager.RemoveError(sourceNotAvailableMessage);
-                        ValidationMemoManager.UpdateWorstError();
-                        MappingManager.InitializeMappings();
-                        MappingManager.UpdateMappings();
-                    }
+                    ValidationMemoManager.RemoveError(sourceNotAvailableMessage);
+                    ValidationMemoManager.UpdateWorstError();
+                    MappingManager.InitializeMappings();
+                    MappingManager.UpdateMappings();
                 }
             }
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

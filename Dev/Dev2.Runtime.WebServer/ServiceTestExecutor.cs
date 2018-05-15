@@ -33,14 +33,12 @@ namespace Dev2.Runtime.WebServer
                     esbEndpointClone.ExecuteRequest(dataObjectToUse, interTestRequest, workspaceGuid, out ErrorResultTO errs);
                 });
                 var result = serializer.Deserialize<ServiceTestModelTO>(interTestRequest.ExecuteResult);
-                if (result == null)
+                if (result == null && interTestRequest.ExecuteResult != null)
                 {
-                    if (interTestRequest.ExecuteResult != null)
-                    {
-                        var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString()) ?? new TestRunResult { TestName = dataObjectToUse.TestName };
-                        result = new ServiceTestModelTO { Result = r, TestName = r.TestName };
-                    }
+                    var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString()) ?? new TestRunResult { TestName = dataObjectToUse.TestName };
+                    result = new ServiceTestModelTO { Result = r, TestName = r.TestName };
                 }
+
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObjectToUse.DataListID);
                 dataObjectToUse.Environment = null;
                 testResults.Add(result);

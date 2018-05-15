@@ -13,14 +13,41 @@ using System.Collections.Specialized;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using Dev2.DataList.Contract;
+using Dev2.Interfaces;
 using Dev2.Runtime.WebServer;
+using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
     [TestClass]
     public class WebServerRequestTests
     {
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("WebServerRequest")]
+        public void WebServerRequest_CreateResponseWriter()
+        {
+            var executionDto = new ExecutionDto();
+            var mock = new Mock<IDSFDataObject>();
+            mock.SetupGet(o => o.Environment).Returns(new ExecutionEnvironment());
+            mock.SetupGet(o => o.IsDebug).Returns(true);
+            mock.SetupGet(o => o.RemoteInvoke).Returns(false);
+            mock.SetupGet(o => o.RemoteNonDebugInvoke).Returns(false);
+            executionDto.DataListFormat = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+            executionDto.ErrorResultTO = new Data.TO.ErrorResultTO();
+            executionDto.DataObject = mock.Object;
+
+
+            executionDto.Request = new Communication.EsbExecuteRequest();
+            executionDto.Request.WasInternalService = false;
+
+            executionDto.CreateResponseWriter();
+        }
+
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
