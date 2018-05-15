@@ -550,27 +550,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
         IEnumerable<IActionableErrorInfo> ValidateVariables()
         {
             var parser = new Dev2DataLanguageParser();
-
-            var error = ValidateVariable(parser, BatchSize, () => IsBatchSizeFocused = true);
-            if (error != null)
-            {
-                error.Message = "Batch Size " + error.Message;
-                yield return error;
-            }
-
-            error = ValidateVariable(parser, Timeout, () => IsTimeoutFocused = true);
-            if (error != null)
-            {
-                error.Message = "Timeout " + error.Message;
-                yield return error;
-            }
-
-            error = ValidateVariable(parser, Result, () => IsResultFocused = true);
-            if (error != null)
-            {
-                error.Message = "Result " + error.Message;
-                yield return error;
-            }
+            var allActionableErrors = new List<IActionableErrorInfo>();
+            AddBatchSizeError(parser, ref allActionableErrors);
+            AddTimeoutError(parser, ref allActionableErrors);
+            AddResultError(parser, ref allActionableErrors);
 
             foreach (var dc in GetInputMappings())
             {
@@ -578,19 +561,18 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 var inputColumn = dc.InputColumn;
                 var identityChecked = false;
 
-
                 if (output.IsAutoIncrement)
                 {
                     if (KeepIdentity && string.IsNullOrEmpty(inputColumn))
                     {
                         var msg = string.Format(ActivityResources.IdentityWithKeepOptionEnabledMsg, output.ColumnName);
-                        yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg };
+                        allActionableErrors.Add(new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg });
                     }
 
                     if (!KeepIdentity && !string.IsNullOrEmpty(inputColumn))
                     {
                         var msg = string.Format(ActivityResources.IdentityWithKeepOptionDisabledMsg, output.ColumnName);
-                        yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg };
+                        allActionableErrors.Add(new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg });
                     }
 
                     identityChecked = true;
@@ -599,16 +581,10 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 if (!output.IsNullable && string.IsNullOrEmpty(inputColumn) && !identityChecked)
                 {
                     var msg = string.Format(ActivityResources.NotNullableMsg, output.ColumnName);
-                    yield return new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg };
+                    allActionableErrors.Add(new ActionableErrorInfo(() => IsInputMappingsFocused = true) { ErrorType = ErrorType.Critical, Message = msg });
                 }
 
-
-                error = ValidateVariable(parser, inputColumn, () => IsInputMappingsFocused = true);
-                if (error != null)
-                {
-                    error.Message = "Input Mapping To Field '" + output.ColumnName + "' " + error.Message;
-                    yield return error;
-                }
+                AddInputMapToFieldError(parser, output, inputColumn, ref allActionableErrors);
 
                 if (!identityChecked)
                 {
@@ -616,12 +592,57 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
                     foreach (var looperror in rs)
                     {
-                        yield return looperror;
+                        allActionableErrors.Add(looperror);
                     }
                 }
-
-
             }
+            return allActionableErrors;
+        }
+
+        void AddInputMapToFieldError(Dev2DataLanguageParser parser, IDbColumn output, string inputColumn, ref List<IActionableErrorInfo> allActionableErrors)
+        {
+            var error = ValidateVariable(parser, inputColumn, () => IsInputMappingsFocused = true);
+            if (error != null)
+            {
+                error.Message = "Input Mapping To Field '" + output.ColumnName + "' " + error.Message;
+                allActionableErrors.Add(error);
+            }
+        }
+
+        void AddResultError(Dev2DataLanguageParser parser, ref List<IActionableErrorInfo> allActionableErrors)
+        {
+            var error = ValidateVariable(parser, Result, () => IsResultFocused = true);
+            if (error != null)
+            {
+                error.Message = "Result " + error.Message;
+                allActionableErrors.Add(error);
+            }
+
+            return error;
+        }
+
+        void AddTimeoutError(Dev2DataLanguageParser parser, ref List<IActionableErrorInfo> allActionableErrors)
+        {
+            var error = ValidateVariable(parser, Timeout, () => IsTimeoutFocused = true);
+            if (error != null)
+            {
+                error.Message = "Timeout " + error.Message;
+                allActionableErrors.Add(error);
+            }
+
+            return error;
+        }
+
+        void AddBatchSizeError(Dev2DataLanguageParser parser, ref List<IActionableErrorInfo> allActionableErrors)
+        {
+            var error = ValidateVariable(parser, BatchSize, () => IsBatchSizeFocused = true);
+            if (error != null)
+            {
+                error.Message = "Batch Size " + error.Message;
+                allActionableErrors.Add(error);
+            }
+
+            return error;
         }
 
         static IActionableErrorInfo ValidateVariable(Dev2DataLanguageParser parser, string variable, System.Action focusAction)

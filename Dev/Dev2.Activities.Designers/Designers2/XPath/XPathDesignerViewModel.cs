@@ -46,10 +46,8 @@ namespace Dev2.Activities.Designers2.XPath
         string SourceString => GetProperty<string>();
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
-        {
-            
-            foreach(var error in GetRuleSet("SourceString").ValidateRules("'XML'", () => IsSourceStringFocused = true))
-            
+        {            
+            foreach(var error in GetRuleSet("SourceString").ValidateRules("'XML'", () => IsSourceStringFocused = true))            
             {
                 yield return error;
             }
