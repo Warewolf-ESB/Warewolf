@@ -2949,6 +2949,104 @@ namespace Warewolf.Studio.ViewModels.Tests
             //NOTE: Purely for cover, meant to only return
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddOutputs_ProcessActivity_ShouldAddTestSteps()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+
+            var resourceModel = CreateResourceModel();
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid())
+            {
+                TestName = "NameOne",
+                NameForDisplay = "NameOne"
+            };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("ProcessActivity", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition-`---------------
+            Assert.IsNotNull(methodInfo);
+
+            var uniqueId = Guid.NewGuid();
+            var sequence = new DsfActivity { UniqueID = uniqueId.ToString(), DisplayName = "a" };
+            var modelItem = ModelItemUtils.CreateModelItem(sequence);
+
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[]
+            {
+                modelItem
+            });
+            var testSteps = testFrameworkViewModel.SelectedServiceTest.TestSteps;
+
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, testSteps.Count);
+            Assert.AreEqual("DsfActivity", testSteps[0].ActivityType);
+            Assert.AreEqual("a", testSteps[0].StepDescription);
+            Assert.AreEqual(1, testSteps[0].StepOutputs.Count);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddOutputs_ProcessActivity_ParentNotNull_ShouldAddTestSteps()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+
+            var resourceModel = CreateResourceModel();
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid())
+            {
+                TestName = "NameOne",
+                NameForDisplay = "NameOne"
+            };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("ProcessActivity", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition-`---------------
+            Assert.IsNotNull(methodInfo);
+
+            var seqUniqueId = Guid.NewGuid();
+            var actUniqueId = Guid.NewGuid();
+            var sequence = new DsfSequenceActivity { UniqueID = seqUniqueId.ToString(), DisplayName = "Sequence" };
+            var activity = new DsfActivity { UniqueID = actUniqueId.ToString(), DisplayName = "Activity", ParentServiceID = seqUniqueId.ToString() };
+            var modelItem = ModelItemUtils.CreateModelItem(sequence, activity);
+
+            var parentTestStep = new ServiceTestStep(seqUniqueId, "Sequence", new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
+            var childTestStep = new ServiceTestStep(seqUniqueId, "Activity", new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock)
+            {
+                Parent = parentTestStep
+            };
+            parentTestStep.Children.Add(childTestStep);
+            testFrameworkViewModel.SelectedServiceTest.TestSteps.Add(parentTestStep);
+
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[]
+             {
+                modelItem
+             });
+            var testSteps = testFrameworkViewModel.SelectedServiceTest.TestSteps;
+
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, testSteps.Count);
+            Assert.AreEqual("Sequence", testSteps[0].ActivityType);
+            Assert.AreEqual("Sequence", testSteps[0].StepDescription);
+            Assert.AreEqual(1, testSteps[0].StepOutputs.Count);
+        }
+
         IContextualResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var resourceModel = CreateResourceModel();
