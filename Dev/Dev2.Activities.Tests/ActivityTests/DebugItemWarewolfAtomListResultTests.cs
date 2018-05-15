@@ -136,6 +136,62 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         [TestMethod]
         [Owner("Rory McGuire")]
+        public void DebugItemWarewolfAtomListResult_IsListOldValue_LeftLabel_IsNotCalculate_GetDebugItemResult()
+        {
+            //---------------Set up test pack-------------------
+            const string rightLabel = "Some right label text";
+            const string leftLabel = "some left label text";
+            var env = new Mock<IExecutionEnvironment>();
+            env.Setup(environment => environment.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[scalar]]");
+            var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
+            env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(warewolfAtomResult);
+            var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
+            var newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            Assert.IsNotNull(newWarewolfAtomListresult);
+            newWarewolfAtomListresult.Item.AddSomething(DataStorage.WarewolfAtom.NewDataString("KingDom Of The Zulu"));
+            var debugEvalResult = new DebugItemWarewolfAtomListResult(newWarewolfAtomListresult, newWarewolfAtomListresult, "newValue", "Variable", leftLabel, rightLabel, "", false, false);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(debugEvalResult);
+            //---------------Execute Test ----------------------
+            Assert.AreEqual("", debugEvalResult.LabelText);
+            var debugItemResults = debugEvalResult.GetDebugItemResult();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(2, debugItemResults.Count);
+            Assert.AreEqual("KingDom Of The Zulu", debugItemResults[0].Value);
+            Assert.AreEqual(leftLabel, debugItemResults[0].Label);
+            Assert.AreEqual(null, debugItemResults[0].Variable);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void DebugItemWarewolfAtomListResult_IsListOldValue_LeftLabel_IsCalculate_GetDebugItemResult()
+        {
+            //---------------Set up test pack-------------------
+            const string rightLabel = "Some right label text";
+            const string leftLabel = "some left label text";
+            var env = new Mock<IExecutionEnvironment>();
+            env.Setup(environment => environment.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[scalar]]");
+            var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
+            env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(warewolfAtomResult);
+            var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
+            var newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            Assert.IsNotNull(newWarewolfAtomListresult);
+            newWarewolfAtomListresult.Item.AddSomething(DataStorage.WarewolfAtom.NewDataString("KingDom Of The Zulu"));
+            var debugEvalResult = new DebugItemWarewolfAtomListResult(newWarewolfAtomListresult, newWarewolfAtomListresult, "newValue", "[[Variable().WarewolfPositionColumn]]", leftLabel, rightLabel, "", true, false);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(debugEvalResult);
+            //---------------Execute Test ----------------------
+            Assert.AreEqual("", debugEvalResult.LabelText);
+            var debugItemResults = debugEvalResult.GetDebugItemResult();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(2, debugItemResults.Count);
+            Assert.AreEqual("", debugItemResults[0].Value);
+            Assert.AreEqual(leftLabel, debugItemResults[0].Label);
+            Assert.AreEqual("[[Variable()]]", debugItemResults[0].Variable);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
         public void DebugItemWarewolfAtomListResult_IsListOldValue_IsCalculate_GetDebugItemResult2()
         {
             //---------------Set up test pack-------------------
