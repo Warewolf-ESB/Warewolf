@@ -617,8 +617,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 error.Message = "Result " + error.Message;
                 allActionableErrors.Add(error);
             }
-
-            return error;
         }
 
         void AddTimeoutError(Dev2DataLanguageParser parser, ref List<IActionableErrorInfo> allActionableErrors)
@@ -629,8 +627,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 error.Message = "Timeout " + error.Message;
                 allActionableErrors.Add(error);
             }
-
-            return error;
         }
 
         void AddBatchSizeError(Dev2DataLanguageParser parser, ref List<IActionableErrorInfo> allActionableErrors)
@@ -641,8 +637,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                 error.Message = "Batch Size " + error.Message;
                 allActionableErrors.Add(error);
             }
-
-            return error;
         }
 
         static IActionableErrorInfo ValidateVariable(Dev2DataLanguageParser parser, string variable, System.Action focusAction)
