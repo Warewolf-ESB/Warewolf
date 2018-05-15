@@ -112,9 +112,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
       <Visible>False</Visible>
-	</AdditionalFiles>
+    </AdditionalFiles>
     <None Include="..\Dev2.Core.Tests\TestUtils.cs">
       <Link>TestUtils.cs</Link>
     </None>
@@ -252,6 +252,7 @@
     <Compile Include="Script\TestScriptDesignerViewModel.cs" />
     <Compile Include="Sequence\SequenceDesignerViewModelTests.cs" />
     <Compile Include="Service\ServiceDesignerViewModelTests.cs" />
+    <Compile Include="Service\ValidationMemoManagerTests.cs" />
     <Compile Include="Sharepoint\SharePointFileCopyViewModelTests.cs" />
     <Compile Include="Sharepoint\SharePointFileDownLoadViewModelTests.cs" />
     <Compile Include="Sharepoint\SharePointFileMoveViewModelTests.cs" />
@@ -373,6 +374,10 @@
     <ProjectReference Include="..\Warewolf.Studio.Core\Warewolf.Studio.Core.csproj">
       <Project>{F9FE2CE9-625E-4E7F-8F4C-FCE28BB59510}</Project>
       <Name>Warewolf.Studio.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
       <Project>{C52B12C2-6A1D-4C4F-A878-CF283662A226}</Project>
