@@ -221,7 +221,7 @@ namespace Dev2.Studio.Views
             if (DataContext is ShellViewModel mainViewModel)
             {
                 ClearWindowCollection(mainViewModel);
-                ClearTabPaneItems(mainViewModel);
+                ClearTabItems(mainViewModel);
 
                 var localhostServer = mainViewModel.LocalhostServer;
                 if (localhostServer.IsConnected && !Equals(mainViewModel.ActiveServer, localhostServer))
@@ -257,20 +257,15 @@ namespace Dev2.Studio.Views
             }
         }
 
-        void ClearTabPaneItems(ShellViewModel mainViewModel)
+        void ClearTabItems(ShellViewModel mainViewModel)
         {
-            // NOTE: If the tabs are docked vertical
-            if (DockCentre?.Panes[0] is SplitPane splitPane)
+            for (int i = TabManager.Items.Count - 1; i >= 0; i--)
             {
-                if (splitPane.Panes.Count > 1)
-                {
-                    ClearMultipleSplitPaneTabItems(mainViewModel, splitPane);
-                }
-                else
-                {
-                    ClearMultipleChildSplitPaneTabItems(mainViewModel, splitPane);
-                }
+                var item = TabManager.Items[i];
+                var contentPane = item as ContentPane;
+                RemoveWorkspaceItems(contentPane, mainViewModel);
             }
+            TabManager.Items.Clear();
         }
 
         static void DisconnectServers(Interfaces.IServer localhostServer, Interfaces.IExplorerViewModel explorerViewModel)
@@ -285,57 +280,6 @@ namespace Dev2.Studio.Views
                     }
                 }
             }
-        }
-
-        void ClearMultipleSplitPaneTabItems(ShellViewModel mainViewModel, SplitPane splitPane)
-        {
-            foreach (var pane in splitPane.Panes)
-            {
-                var tabGroupPane = pane as TabGroupPane;
-                for (int i = tabGroupPane.Items.Count - 1; i >= 0; i--)
-                {
-                    var item = tabGroupPane.Items[i];
-                    var contentPane = item as ContentPane;
-                    RemoveWorkspaceItems(contentPane, mainViewModel);
-                }
-                tabGroupPane.Items.Clear();
-            }
-            int count = splitPane.Panes.Count - 1;
-            for (int index = count; count <= index; index--)
-            {
-                splitPane.Panes.RemoveAt(index);
-            }
-        }
-
-        void ClearMultipleChildSplitPaneTabItems(ShellViewModel mainViewModel, SplitPane splitPane)
-        {
-            // NOTE: If the tabs are docked horizontal
-            if (splitPane.Panes[0] is SplitPane childSplitPane)
-            {
-                if (childSplitPane.Panes.Count > 1)
-                {
-                    ClearMultipleSplitPaneTabItems(mainViewModel, childSplitPane);
-                }
-                else
-                {
-                    ClearTabItems(mainViewModel);
-                }
-            }
-            else
-            {
-                ClearTabItems(mainViewModel);
-            }
-        }
-
-        void ClearTabItems(ShellViewModel mainViewModel)
-        {
-            for (int i = TabManager.Items.Count - 1; i >= 0; i--)
-            {
-                var item = TabManager.Items[i];
-                var contentPane = item as ContentPane;
-                RemoveWorkspaceItems(contentPane, mainViewModel);
-            }
-            TabManager.Items.Clear();
         }
 
         static void ClearWindowCollection(ShellViewModel mainViewModel)
