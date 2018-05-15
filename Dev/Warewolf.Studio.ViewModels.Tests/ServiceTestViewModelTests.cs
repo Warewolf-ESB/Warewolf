@@ -2780,6 +2780,48 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual("SomeAddress", outputs[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddOutputs_AddSequence_ShouldReturn()
+        {
+            //---------------Set up test pack-------------------
+            var popupController = new Mock<IPopupController>();
+            popupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            CustomContainer.Register(popupController.Object);
+            var mockResourceModel = CreateMockResourceModel();
+            var resourceId = Guid.NewGuid();
+            mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+
+            var resourceModel = CreateResourceModel();
+            var testFrameworkViewModel = new ServiceTestViewModel(resourceModel, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
+            var testModel = new ServiceTestModel(Guid.NewGuid())
+            {
+                TestName = "NameOne",
+                NameForDisplay = "NameOne"
+            };
+            testFrameworkViewModel.Tests = new ObservableCollection<IServiceTestModel> { testModel };
+            testFrameworkViewModel.SelectedServiceTest = testModel;
+            var methodInfo = typeof(ServiceTestViewModel).GetMethod("AddSequence", BindingFlags.NonPublic | BindingFlags.Instance);
+            //---------------Assert Precondition-`---------------
+            Assert.IsNotNull(methodInfo);
+
+            var uniqueId = Guid.NewGuid();
+            var sequence = new DsfSequenceActivity() { UniqueID = uniqueId.ToString(), DisplayName = "a" };
+            var serviceTestStep = new ServiceTestStep(uniqueId, "Sequence", new ObservableCollection<IServiceTestOutput> { new ServiceTestOutput("[[p]]", "b", "", "") }, StepType.Mock);
+            var serviceTestSteps = new ObservableCollection<IServiceTestStep>();
+            serviceTestSteps.Add(serviceTestStep);
+
+            //---------------Execute Test ----------------------
+            var invoke = methodInfo.Invoke(testFrameworkViewModel, new object[]
+            {
+                sequence, serviceTestStep, serviceTestSteps
+            });
+
+            //---------------Test Result -----------------------
+            //NOTE: Purely for cover, meant to only return
+        }
+
         IContextualResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var resourceModel = CreateResourceModel();
