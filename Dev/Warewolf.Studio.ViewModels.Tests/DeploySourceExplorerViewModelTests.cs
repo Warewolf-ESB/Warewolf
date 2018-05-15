@@ -325,7 +325,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             destination.Setup(dest => dest.SelectedEnvironment).Returns(selectedEnvironmentMock.Object);
 
             var deployStatsViewerViewModel = new DeployStatsViewerViewModel(destination.Object);
-            deployStatsViewerViewModel.Calculate(null);
+            deployStatsViewerViewModel.ReCalculate();
 
             //assert
             Assert.AreEqual(0, deployStatsViewerViewModel.Connectors);
