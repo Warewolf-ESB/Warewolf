@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
@@ -9,11 +8,10 @@ using Dev2.Services;
 using Warewolf.Resource.Errors;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Studio.Interfaces;
-using System;
 
 namespace Dev2.Activities.Designers2.Service
 {
-    public class ValidationMemoManager : IDisposable
+    public class ValidationMemoManager
     {
         readonly ServiceDesignerViewModel _serviceDesignerViewModel;
         internal readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
@@ -62,7 +60,6 @@ namespace Dev2.Activities.Designers2.Service
         {
             _versionsDifferent = value;
         }
-        public IDesignValidationService ValidationService => _validationService;
 
         public void RemovePermissionsError()
         {
@@ -285,11 +282,6 @@ namespace Dev2.Activities.Designers2.Service
                 _serviceDesignerViewModel.RootModel.AddError(error);
             }
             UpdateWorstError();
-        }
-
-        public void Dispose()
-        {
-            _validationService.Dispose();
         }
     }
 }
