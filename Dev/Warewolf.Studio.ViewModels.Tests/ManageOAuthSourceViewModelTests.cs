@@ -399,5 +399,47 @@ namespace Warewolf.Studio.ViewModels.Tests
             manageOAuthSourceVM.Invoke("SaveConnection");
             //assert
         }
+
+        [TestMethod]
+        public void TestSaveConnection_GiveN_AuthSource()
+        {
+            //arrange_updateManager.Setup(u => u.Save(It.IsAny<IOAuthSource>())).Throws(new Exception("Test save exception"));
+            _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object, new SynchronousAsyncWorker()) { Name = "Testing OAuth" };
+            _manageOAuthSourceViewModel.Item = new DropBoxSource() { ResourceName = "testing", ResourcePath = "" };
+
+            var mockShellVM = new Mock<IShellViewModel>();
+            var shellVMExplorer = new Mock<IExplorerViewModel>();
+            var requestServiceNameVM = new Mock<IRequestServiceNameViewModel>();
+            var mockEnvironment = new Mock<IEnvironmentViewModel>();
+            var explorerVM = new Mock<IExplorerViewModel>();
+            var mockEnvironments = new System.Collections.ObjectModel.ObservableCollection<IEnvironmentViewModel>();
+
+            mockShellVM.Setup(p => p.ExplorerViewModel).Returns(shellVMExplorer.Object);
+            mockEnvironment.Setup(p => p.ResourceId).Returns(It.IsAny<Guid>);
+            var mockServer = new Mock<IServer>();
+            mockServer.Setup(p => p.EnvironmentID).Returns(Guid.NewGuid());
+            mockEnvironment.Setup(p => p.Server).Returns(mockServer.Object);
+            mockEnvironments.Add(mockEnvironment.Object);
+            shellVMExplorer.Setup(p => p.Environments).Returns(mockEnvironments);            
+            explorerVM.Setup(p => p.Environments).Returns(mockEnvironments);
+            requestServiceNameVM.Setup(p => p.ShowSaveDialog()).Returns(System.Windows.MessageBoxResult.OK);
+            requestServiceNameVM.Setup(p => p.ResourceName).Returns(new Dev2.Common.Interfaces.SaveDialog.ResourceName("Some Awesome Path", "Cool Resource Name"));
+            requestServiceNameVM.Setup(p => p.SingleEnvironmentExplorerViewModel).Returns(explorerVM.Object);
+            var task = Task.FromResult(requestServiceNameVM.Object);
+            _manageOAuthSourceViewModel.RequestServiceNameViewModel = task;
+            var manageOAuthSourceVM = new PrivateObject(_manageOAuthSourceViewModel);
+            manageOAuthSourceVM.SetField("_oAuthSource", null);
+            CustomContainer.Register(mockShellVM.Object);
+            Assert.IsNull(_manageOAuthSourceViewModel.Path);
+            //act
+            manageOAuthSourceVM.Invoke("SaveConnection");
+            var returnedAuthSource = manageOAuthSourceVM.GetField("_oAuthSource") as IOAuthSource;
+            Assert.IsNotNull(returnedAuthSource);
+            Assert.AreEqual("Cool Resource Name", returnedAuthSource.ResourceName);
+            Assert.AreEqual("Some Awesome Path", returnedAuthSource.ResourcePath);
+            Assert.AreEqual("Some Awesome Path", _manageOAuthSourceViewModel.Path);
+            //assert
+        }
+
     }
 }
