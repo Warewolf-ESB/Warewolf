@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
@@ -134,7 +135,21 @@ namespace Dev2.Runtime.WebServer
                     }
                 }
             }
-            return string.Empty;
+            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
+            CleanUp(dto);
+            return new StringResponseWriter(executePayload, formatter.ContentType);
+        }
+
+        private static void CleanUp(ExecutionDto dto)
+        {
+            dto.DataObject = null;
+            dto.ErrorResultTO = null;
+            dto.PayLoad = null;
+            dto.Request = null;
+            dto.Resource = null;
+            dto.Serializer = null;
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+            GC.Collect(3,GCCollectionMode.Forced,false);
         }
 
         static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
@@ -156,5 +171,6 @@ namespace Dev2.Runtime.WebServer
             }
             return executePayload;
         }
+
     }
 }
