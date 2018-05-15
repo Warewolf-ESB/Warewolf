@@ -170,6 +170,30 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapC
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment4.LargeView, new Point(1, 29));
         }
 
+
+        public void Double_Click_Connector3()
+        {
+            WpfCustom uIItem970f65ad1c3d4028Custom = WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3;
+            // Click '970f65ad-1c3d-4028-b657-f687a5265c56,317,5;214,5 3...' custom control
+            Mouse.Click(uIItem970f65ad1c3d4028Custom, new Point(339, 274));
+            Mouse.DoubleClick(uIItem970f65ad1c3d4028Custom, new Point(339, 274));
+        }
+
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm()
+        {            
+            WpfListItem assigntool = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
+            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            
+            Mouse.Click(flowchart, new Point(361, 201));
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(361, 201));
+            Mouse.StartDragging(assigntool, new Point(27, 41));
+            Mouse.StopDragging(flowchart, new Point(361, 201));
+        }
+
         #region UIMaps
 
         UIMap UIMap
