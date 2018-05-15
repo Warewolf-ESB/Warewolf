@@ -233,19 +233,7 @@ namespace Dev2.Studio.Views
                 var explorerViewModel = mainViewModel.ExplorerViewModel;
                 if (explorerViewModel != null)
                 {
-                    explorerViewModel.SearchText = string.Empty;
-
-                    DisconnectServers(localhostServer, explorerViewModel);
-
-                    var environmentViewModels = explorerViewModel.Environments;
-                    if (environmentViewModels?.Count > 1)
-                    {
-                        for (var i = 0; i < environmentViewModels.Count - 1; i++)
-                        {
-                            var remoteEnvironment = environmentViewModels.FirstOrDefault(model => model.ResourceId != Guid.Empty);
-                            environmentViewModels.Remove(remoteEnvironment);
-                        }
-                    }
+                    DisconnectAllServers(localhostServer, explorerViewModel);
                 }
 
                 if (mainViewModel.ToolboxViewModel != null)
@@ -253,6 +241,23 @@ namespace Dev2.Studio.Views
                     mainViewModel.ToolboxViewModel.SearchTerm = string.Empty;
                     Toolbox.Activate();
                     Toolboxcontrol.Focus();
+                }
+            }
+        }
+
+        static void DisconnectAllServers(Interfaces.IServer localhostServer, Interfaces.IExplorerViewModel explorerViewModel)
+        {
+            explorerViewModel.SearchText = string.Empty;
+
+            DisconnectServers(localhostServer, explorerViewModel);
+
+            var environmentViewModels = explorerViewModel.Environments;
+            if (environmentViewModels?.Count > 1)
+            {
+                for (var i = 0; i < environmentViewModels.Count - 1; i++)
+                {
+                    var remoteEnvironment = environmentViewModels.FirstOrDefault(model => model.ResourceId != Guid.Empty);
+                    environmentViewModels.Remove(remoteEnvironment);
                 }
             }
         }
@@ -291,15 +296,20 @@ namespace Dev2.Studio.Views
                 {
                     if (window1.GetType().Name == "ToolWindowHostWindow")
                     {
-                        var contentPane = window1.Content as PaneToolWindow;
-                        foreach (var item in contentPane?.Pane?.Panes)
-                        {
-                            var pane = item as ContentPane;
-                            RemoveWorkspaceItems(pane, mainViewModel);
-                        }
+                        ClearWindowCollection(mainViewModel, window1);
                     }
                     window1.Close();
                 }
+            }
+        }
+
+        static void ClearWindowCollection(ShellViewModel mainViewModel, Window window1)
+        {
+            var contentPane = window1.Content as PaneToolWindow;
+            foreach (var item in contentPane?.Pane?.Panes)
+            {
+                var pane = item as ContentPane;
+                RemoveWorkspaceItems(pane, mainViewModel);
             }
         }
 
@@ -450,50 +460,55 @@ namespace Dev2.Studio.Views
             }
         }
 
-        void DockManager_OnToolWindowLoaded(object sender, PaneToolWindowEventArgs e)
+        void TryDockManager_OnToolWindowLoaded(object sender, PaneToolWindowEventArgs e)
         {
             try
             {
-                var window = e.Window;
-                var resourceDictionary = System.Windows.Application.Current.Resources;
-                if (resourceDictionary["WarewolfToolWindow"] is Style style)
-                {
-                    window.UseOSNonClientArea = false;
-                    window.Style = style;
-                    window.PreviewMouseLeftButtonUp += WindowOnPreviewMouseDown;
-                }
-
-                if (e.Source.GetType() == typeof(XamDockManager))
-                {
-                    var binding = Infragistics.Windows.Utilities.CreateBindingObject(DataContextProperty, BindingMode.OneWay, sender as XamDockManager);
-                    e.Window.SetBinding(DataContextProperty, binding);
-
-                    var shellViewModel = DataContext as ShellViewModel;
-                    PaneToolWindow = window;
-
-                    if (PaneToolWindow.Pane.Panes != null && PaneToolWindow.Pane.Panes.Count > 0)
-                    {
-                        var workSurfaceContextViewModel = PaneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
-                        shellViewModel?.ActivateItem(workSurfaceContextViewModel);
-                        PaneToolWindow.Name = "FloatingWindow";
-                        if (string.IsNullOrWhiteSpace(e.Window.Title))
-                        {
-                            PaneToolWindow.Title = Title;
-                        }
-                        else
-                        {
-                            UpdatePaneToolWindow(sender);
-                        }
-                        if (workSurfaceContextViewModel?.ContextualResourceModel != null)
-                        {
-                            PaneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel.ContextualResourceModel.DisplayName;
-                        }
-                    }
-                }
+                DockManager_OnToolWindowLoaded(sender, e);
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, "Warewolf Error");
+            }
+        }
+
+        void DockManager_OnToolWindowLoaded(object sender, PaneToolWindowEventArgs e)
+        {
+            var window = e.Window;
+            var resourceDictionary = System.Windows.Application.Current.Resources;
+            if (resourceDictionary["WarewolfToolWindow"] is Style style)
+            {
+                window.UseOSNonClientArea = false;
+                window.Style = style;
+                window.PreviewMouseLeftButtonUp += WindowOnPreviewMouseDown;
+            }
+
+            if (e.Source.GetType() == typeof(XamDockManager))
+            {
+                var binding = Infragistics.Windows.Utilities.CreateBindingObject(DataContextProperty, BindingMode.OneWay, sender as XamDockManager);
+                e.Window.SetBinding(DataContextProperty, binding);
+
+                var shellViewModel = DataContext as ShellViewModel;
+                PaneToolWindow = window;
+
+                if (PaneToolWindow.Pane.Panes != null && PaneToolWindow.Pane.Panes.Count > 0)
+                {
+                    var workSurfaceContextViewModel = PaneToolWindow.Pane.Panes[0].DataContext as WorkSurfaceContextViewModel;
+                    shellViewModel?.ActivateItem(workSurfaceContextViewModel);
+                    PaneToolWindow.Name = "FloatingWindow";
+                    if (string.IsNullOrWhiteSpace(e.Window.Title))
+                    {
+                        PaneToolWindow.Title = Title;
+                    }
+                    else
+                    {
+                        UpdatePaneToolWindow(sender);
+                    }
+                    if (workSurfaceContextViewModel?.ContextualResourceModel != null)
+                    {
+                        PaneToolWindow.ToolTip = "Floating window for - " + workSurfaceContextViewModel.ContextualResourceModel.DisplayName;
+                    }
+                }
             }
         }
 
@@ -540,30 +555,35 @@ namespace Dev2.Studio.Views
             {
                 if (DataContext is ShellViewModel shellViewModel)
                 {
-                    var paneToolWindow = sender as PaneToolWindow;
-                    if (paneToolWindow?.Pane?.Panes.Count > 0)
-                    {
-                        if (paneToolWindow.Pane.Panes[0] is ContentPane contentPane)
-                        {
-                            var workSurfaceContextViewModel = contentPane.DataContext as WorkSurfaceContextViewModel;
-                            shellViewModel.ActivateItem(workSurfaceContextViewModel);
-                        }
-                        else
-                        {
-                            var tabGroupPane = paneToolWindow.Pane.Panes[0] as TabGroupPane;
-                            if (tabGroupPane?.Items.Count >= 1)
-                            {
-                                var selectedContent = tabGroupPane.SelectedContent as ContentPane;
-                                var workSurfaceContextViewModel = selectedContent?.DataContext as WorkSurfaceContextViewModel;
-                                shellViewModel.ActivateItem(workSurfaceContextViewModel);
-                            }
-                        }
-                    }
+                    WindowOnPreviewMouseDown(sender, shellViewModel);
                 }
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, "Warewolf Error");
+            }
+        }
+
+        static void WindowOnPreviewMouseDown(object sender, ShellViewModel shellViewModel)
+        {
+            var paneToolWindow = sender as PaneToolWindow;
+            if (paneToolWindow?.Pane?.Panes.Count > 0)
+            {
+                if (paneToolWindow.Pane.Panes[0] is ContentPane contentPane)
+                {
+                    var workSurfaceContextViewModel = contentPane.DataContext as WorkSurfaceContextViewModel;
+                    shellViewModel.ActivateItem(workSurfaceContextViewModel);
+                }
+                else
+                {
+                    var tabGroupPane = paneToolWindow.Pane.Panes[0] as TabGroupPane;
+                    if (tabGroupPane?.Items.Count >= 1)
+                    {
+                        var selectedContent = tabGroupPane.SelectedContent as ContentPane;
+                        var workSurfaceContextViewModel = selectedContent?.DataContext as WorkSurfaceContextViewModel;
+                        shellViewModel.ActivateItem(workSurfaceContextViewModel);
+                    }
+                }
             }
         }
 
@@ -795,13 +815,11 @@ namespace Dev2.Studio.Views
             {
                 var tabGroupPane = e.Panes[0].Parent as TabGroupPane;
                 var splitPane = tabGroupPane?.Parent as SplitPane;
-                if (splitPane?.Parent is PaneToolWindow paneToolWindow)
+                if (splitPane?.Parent is PaneToolWindow paneToolWindow && string.IsNullOrWhiteSpace(paneToolWindow.Title))
                 {
-                    if (string.IsNullOrWhiteSpace(paneToolWindow.Title))
-                    {
-                        paneToolWindow.Title = Title;
-                    }
+                    paneToolWindow.Title = Title;
                 }
+
             }
         }
 

@@ -283,7 +283,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
 
             //act
-            await _target.ConnectControlViewModel.ConnectAsync(serverMock.Object);
+            await _target.ConnectControlViewModel.TryConnectAsync(serverMock.Object);
 
             //assert
             Assert.IsTrue(isEnvironmentChanged);
@@ -308,7 +308,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             env.SelectAll();
 
             //assert
-            _deployStatsViewerViewModel.Verify(it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(list => list.Count == 1 && list.Contains(explorerItemViewModelResourceCheckedMock.Object))));
+            _deployStatsViewerViewModel.Verify(it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(list => list.Count == 1 && list.Contains(explorerItemViewModelResourceCheckedMock.Object))));
         }
 
         [TestMethod]
@@ -351,7 +351,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
 
             _deployStatsViewerViewModel.Verify(
-                it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
+                it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }
 
         [TestMethod]
@@ -373,7 +373,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             axParentMock.VerifySet(it => it.IsFolderChecked = true);
             _deployStatsViewerViewModel.Verify(
-                it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
+                it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }
 
         [TestMethod]
@@ -395,7 +395,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             axParentMock.VerifySet(it => it.IsFolderChecked = true);
             _deployStatsViewerViewModel.Verify(
-                it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
+                it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }        
         #endregion Test methods
     }

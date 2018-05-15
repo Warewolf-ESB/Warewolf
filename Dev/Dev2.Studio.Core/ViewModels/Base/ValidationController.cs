@@ -22,13 +22,11 @@ namespace Dev2.Studio.Core.ViewModels.Base
         {
             var errorInfo = new KeyValuePair<string, string>(key, value);
 
-            if (!ValidationErrors.ContainsKey(key))
+            if (!ValidationErrors.ContainsKey(key) && !ValidationErrors.Contains(errorInfo))
             {
-                if(!ValidationErrors.Contains(errorInfo))
-                {
-                    ValidationErrors.Add(key, value);
-                }
+                ValidationErrors.Add(key, value);
             }
+
         }
 
         protected void RemoveError(string key)

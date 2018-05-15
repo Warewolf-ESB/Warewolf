@@ -163,25 +163,7 @@ namespace Dev2.Data.Operations
 
                 case enIndexFinderOccurrence.AllOccurrences:
                     List<int> foundIndexes;
-                    if (firstIndex != -1)
-                    {
-                        foundIndexes = new List<int> { firstIndex + 1 };
-                        var currentIndex = firstIndex;
-                        while (currentIndex != -1)
-                        {
-
-                            currentIndex = stringToSearchIn.IndexOf(charsToSearchFor, currentIndex + 1, comparisonType);
-                            if (currentIndex != -1)
-                            {
-                                foundIndexes.Add(currentIndex + 1);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foundIndexes = new List<int> { firstIndex };
-                    }
-
+                    foundIndexes = firstIndex != -1 ? FindAll(firstIndex, stringToSearchIn, charsToSearchFor, comparisonType) : new List<int> { firstIndex };
                     result = foundIndexes.ToArray();
                     break;
 
@@ -190,6 +172,22 @@ namespace Dev2.Data.Operations
 
             }
             return result;
+        }
+
+        private static List<int> FindAll(int firstIndex, string stringToSearchIn, string charsToSearchFor, StringComparison comparisonType)
+        {
+            var foundIndexes = new List<int> { firstIndex + 1 };
+            var currentIndex = firstIndex;
+            while (currentIndex != -1)
+            {
+                currentIndex = stringToSearchIn.IndexOf(charsToSearchFor, currentIndex + 1, comparisonType);
+                if (currentIndex != -1)
+                {
+                    foundIndexes.Add(currentIndex + 1);
+                }
+            }
+
+            return foundIndexes;
         }
 
         #endregion

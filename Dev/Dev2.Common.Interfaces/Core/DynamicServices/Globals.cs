@@ -124,14 +124,15 @@ namespace Dev2.Common.Interfaces.Core.DynamicServices
         /// <summary>
         ///     A PostgreSQL database
         /// </summary>
-
         PostgreSQL,
-
-
-        /// <summary>
-        ///     A SOAP based Web Service: REST web services are not supported
-        /// </summary>
-        WebService,
+		/// <summary>
+		///     A SQLite database
+		/// </summary>
+		SQLiteDatabase,
+		/// <summary>
+		///     A SOAP based Web Service: REST web services are not supported
+		/// </summary>
+		WebService,
 
         /// <summary>
         ///     A Dynamic Service that exists in the ServiceDefinition File

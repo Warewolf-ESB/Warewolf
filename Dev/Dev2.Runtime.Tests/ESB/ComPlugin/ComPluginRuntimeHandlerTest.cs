@@ -121,11 +121,11 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildValuedTypeParams_GivenValid_ShouldPassThrough()
+        public void TryBuildValuedTypeParams_GivenValid_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             var type = typeof(ComPluginRuntimeHandler);
-            var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
+            var methodInfo = type.GetMethod("TryBuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
             var args = new ComPluginInvokeArgs
             {
                 ClsId = adodbConnectionClassId,
@@ -141,18 +141,18 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                 }
             };
             //---------------Execute Test ----------------------
-            var enumerable = methodInfo.Invoke("BuildValuedTypeParams", new object[] { args }) as IEnumerable<object>;
+            var enumerable = methodInfo.Invoke("TryBuildValuedTypeParams", new object[] { args }) as IEnumerable<object>;
             //---------------Test Result -----------------------
             Assert.AreEqual(1,enumerable?.Count());
         }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void BuildValuedTypeParams_GivenValidObjectparam_ShouldPassThrough()
+        public void TryBuildValuedTypeParams_GivenValidObjectparam_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
             var type = typeof(ComPluginRuntimeHandler);
-            var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
+            var methodInfo = type.GetMethod("TryBuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
             var args = new ComPluginInvokeArgs
             {
                 ClsId = adodbConnectionClassId,
@@ -169,7 +169,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                 }
             };
             //---------------Execute Test ----------------------
-            var enumerable = methodInfo.Invoke("BuildValuedTypeParams", new object[] { args }) as IEnumerable<object>;
+            var enumerable = methodInfo.Invoke("TryBuildValuedTypeParams", new object[] { args }) as IEnumerable<object>;
             //---------------Test Result -----------------------
             Assert.AreEqual(1,enumerable?.Count());
         }

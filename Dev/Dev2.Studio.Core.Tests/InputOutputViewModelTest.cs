@@ -11,7 +11,11 @@
 using Dev2.Common.Interfaces.Data;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Util;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Factory;
+using Dev2.Studio.Interfaces.DataList;
+using Dev2.Studio.Interfaces.Enums;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -273,6 +277,50 @@ namespace Dev2.Core.Tests
         }
 
         #endregion GetGenerationTO Tests
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("InputOutputMappingViewModel_MapsTo")]
+        public void InputOutputMappingViewModel_MapsTo_UpdateDataListWithJsonObject_IsObject()
+        {
+            var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
+
+            var _resourceModel = new ResourceModel(testEnvironmentModel.Object)
+            {
+                ResourceName = "test",
+                ResourceType = ResourceType.Service,
+                DataList = @"
+                            <DataList>
+                                    <Scalar/>
+                                    <Country/>
+                                    <State />
+                                    <City>
+                                        <Name/>
+                                        <GeoLocation />
+                                    </City>
+                             </DataList>
+                            "
+            };
+
+            IDataListViewModel setupDatalist = new DataListViewModel();
+            DataListSingleton.SetDataList(setupDatalist);
+            DataListSingleton.ActiveDataList.InitializeDataListViewModel(_resourceModel);
+
+            //------------Setup for test--------------------------
+            var viewModel = InputOutputViewModelFactory.CreateInputOutputViewModel("testName", "[[@objName]]", "", "", false, "");
+
+            Assert.IsFalse(viewModel.Required);
+            Assert.IsFalse(viewModel.RequiredMissing);
+
+            //------------Execute Test---------------------------
+            viewModel.IsObject = true;
+            const string jsonString = "{\"Name\":\"\",\"Age\":\"\",\"School\":[{\"Name\":\"\",\"Location\":\"\"}],\"Gender\":\"\"}";
+            viewModel.JsonString = jsonString;
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(viewModel.Required);
+            Assert.IsFalse(viewModel.RequiredMissing);
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]

@@ -111,7 +111,10 @@ namespace Dev2.Activities.Designers2.Core
 
         void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _modelItem.SetProperty("Outputs", _outputs.ToList());
+            if (!Outputs.Equals(_outputs))
+            {
+                _modelItem.SetProperty("Outputs", _outputs.ToList());
+            }
         }
 
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs e)
@@ -326,41 +329,51 @@ namespace Dev2.Activities.Designers2.Core
 
         public string ObjectName
         {
-            get { return _objectName; }
+            get => _objectName;
             set
             {
-                if (IsObject &&!string.IsNullOrEmpty(ObjectResult))
+                if (IsObject && !string.IsNullOrEmpty(ObjectResult))
                 {
-                    try
-                    {
-                        if (value != null)
-                        {
-                            _objectName = value;
-                            OnPropertyChanged();
-                            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
-                            if (language.IsJsonIdentifierExpression)
-                            {
-                                if (_shellViewModel == null)
-                                {
-                                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
-                                }
-                                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
-                            }
-                            _modelItem.SetProperty("ObjectName", value);
-                        }
-                        else
-                        {
-                            _objectName = string.Empty;
-                            _modelItem.SetProperty("ObjectName", _objectName);
-                            OnPropertyChanged();
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
-                    }
+                    TrySetObjectName(value);
                 }
             }
+        }
+
+        private void TrySetObjectName(string value)
+        {
+            try
+            {
+                if (value != null)
+                {
+                    SetObjectName(value);
+                }
+                else
+                {
+                    _objectName = string.Empty;
+                    _modelItem.SetProperty("ObjectName", _objectName);
+                    OnPropertyChanged();
+                }
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
+            }
+        }
+
+        private void SetObjectName(string value)
+        {
+            _objectName = value;
+            OnPropertyChanged();
+            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(value);
+            if (language.IsJsonIdentifierExpression)
+            {
+                if (_shellViewModel == null)
+                {
+                    _shellViewModel = CustomContainer.Get<IShellViewModel>();
+                }
+                _shellViewModel.UpdateCurrentDataListWithObjectFromJson(DataListUtil.RemoveLanguageBrackets(value), ObjectResult);
+            }
+            _modelItem.SetProperty("ObjectName", value);
         }
 
         public string ObjectResult
@@ -407,7 +420,7 @@ namespace Dev2.Activities.Designers2.Core
                     if (Outputs != null && Outputs.Count > 0 && !IsObject)
                     {
                         var serviceOutputMappings = Outputs.Where(a => !string.IsNullOrEmpty(a.MappedTo) && (FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsComplexExpression || FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(a.MappedTo).IsWarewolfAtomExpression));
-                        errors = serviceOutputMappings.Select(a => "Invalid Output Mapping" + a.MappedTo).ToList();
+                        errors = serviceOutputMappings.Select(a => "Invalid Output Mapping: " + a.MappedTo).ToList();
                     }
                 }
                 catch(Exception e)

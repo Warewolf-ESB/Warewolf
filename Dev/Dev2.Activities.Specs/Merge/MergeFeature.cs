@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Core.Tests.Merge.Utils;
+using Dev2.Studio.ActivityDesigners;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
@@ -333,7 +334,7 @@ namespace Dev2.Activities.Specs.Merge
             var toolConflict = conflict as IToolConflictRow;
             return toolConflict;
         }
-        
+
         [Then(@"conflict ""(.*)"" Current matches tool ""(.*)""")]
         public void ThenConflictCurrentMatchesTool(int conflictRow, string mergeToolDescription)
         {
@@ -429,13 +430,22 @@ namespace Dev2.Activities.Specs.Merge
                                      typeof(TestMockDecisionStep),
                                      typeof(TestMockSwitchStep),
                                      typeof(DsfAbstractMultipleFilesActivity)};
+            
             var allActivityTypes = dev2ActivityIOMapping.Assembly.GetTypes().Where(t => dev2ActivityIOMapping.IsAssignableFrom(t) && (!excludedTypes.Contains(t)));
-
+            
             var countOfAllTools = allActivityTypes.Count();
             var currentDesignerTools = DesignerAttributeMap.DesignerAttributes.Count;
             Assert.AreEqual(countOfAllTools, currentDesignerTools, "Count mismatch between the assembly activities and the mapped activities in DesignerAttributeMap class");
             var allActivitiesAreMapped = allActivityTypes.All(t => DesignerAttributeMap.DesignerAttributes.ContainsKey(t));
             Assert.IsTrue(allActivitiesAreMapped, "Not all activities are mapped in the DesignerAttributeMap class");
+
+
+            Type[] extraExclusions = { typeof(DsfDecision), typeof(DsfSwitch) };
+            var activityTypes = allActivityTypes.Where(t => !(extraExclusions.Contains(t)));
+            var currentActivtyDesignerTools = ActivityDesignerHelper.DesignerAttributes.Count;
+            Assert.AreEqual(activityTypes.Count(), currentActivtyDesignerTools, "Count mismatch between the assembly activities and the mapped activities in ActivityDesignerHelper class");
+            var allActivitiesDesignersAreMapped = activityTypes.All(t => ActivityDesignerHelper.DesignerAttributes.ContainsKey(t));
+            Assert.IsTrue(allActivitiesDesignersAreMapped, "Not all activities are mapped in the ActivityDesignerHelper class");
         }
 
         [AfterScenario]
