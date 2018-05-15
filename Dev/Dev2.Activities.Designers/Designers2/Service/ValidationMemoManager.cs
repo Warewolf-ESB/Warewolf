@@ -178,62 +178,70 @@ namespace Dev2.Activities.Designers2.Service
             switch (WorstDesignError.FixType)
             {
                 case FixType.ReloadMapping:
-                    _serviceDesignerViewModel.ShowLarge = true;
-                    if (!_versionsDifferent)
-                    {
-                        var xml = _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData();
-                        var inputs = _serviceDesignerViewModel.MappingManager.GetMapping(xml, true, _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs);
-                        var outputs = _serviceDesignerViewModel.MappingManager.GetMapping(xml, false, _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs);
-
-                        _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.Clear();
-                        foreach (var input in inputs)
-                        {
-                            _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.Add(input);
-                        }
-
-                        _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs.Clear();
-                        foreach (var output in outputs)
-                        {
-                            _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs.Add(output);
-                        }
-                        _serviceDesignerViewModel.MappingManager.SetInputs();
-                        _serviceDesignerViewModel.MappingManager.SetOuputs();
-                        RemoveError(WorstDesignError);
-                        UpdateWorstError();
-                    }
-                    else
-                    {
-                        if (_versionsDifferent)
-                        {
-                            _serviceDesignerViewModel.ResourceModel = _serviceDesignerViewModel.NewModel;
-                            _serviceDesignerViewModel.MappingManager.InitializeMappings();
-                            RemoveErrors(
-                                LastValidationMemo.Errors.Where(a => a.Message.Contains(@"Incorrect Version")).ToList());
-                            UpdateWorstError();
-                        }
-                    }
+                    ApplyReloadMappingFix();
                     break;
-
                 case FixType.IsRequiredChanged:
-                    _serviceDesignerViewModel.ShowLarge = true;
-                    var inputOutputViewModels = _serviceDesignerViewModel.MappingManager.DeserializeMappings(true, _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData());
-                    foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
-                    {
-                        var model = inputOutputViewModel;
-                        var actualViewModel = _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
-                        if (actualViewModel != null && actualViewModel.Value == string.Empty)
-                        {
-                            actualViewModel.RequiredMissing = true;
-                        }
-
-                    }
-
+                    FixIsRequiredChanged();
                     break;
                 case FixType.None:
                 case FixType.Delete:
                 case FixType.InvalidPermissions:
                 default:
-                    break;
+                    return;
+            }
+        }
+
+        private void FixIsRequiredChanged()
+        {
+            _serviceDesignerViewModel.ShowLarge = true;
+            var inputOutputViewModels = _serviceDesignerViewModel.MappingManager.DeserializeMappings(true, _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData());
+            foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
+            {
+                var model = inputOutputViewModel;
+                var actualViewModel = _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
+                if (actualViewModel != null && actualViewModel.Value == string.Empty)
+                {
+                    actualViewModel.RequiredMissing = true;
+                }
+
+            }
+        }
+
+        private void ApplyReloadMappingFix()
+        {
+            _serviceDesignerViewModel.ShowLarge = true;
+            if (!_versionsDifferent)
+            {
+                var xml = _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData();
+                var inputs = _serviceDesignerViewModel.MappingManager.GetMapping(xml, true, _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs);
+                var outputs = _serviceDesignerViewModel.MappingManager.GetMapping(xml, false, _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs);
+
+                _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.Clear();
+                foreach (var input in inputs)
+                {
+                    _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.Add(input);
+                }
+
+                _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs.Clear();
+                foreach (var output in outputs)
+                {
+                    _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs.Add(output);
+                }
+                _serviceDesignerViewModel.MappingManager.SetInputs();
+                _serviceDesignerViewModel.MappingManager.SetOuputs();
+                RemoveError(WorstDesignError);
+                UpdateWorstError();
+            }
+            else
+            {
+                if (_versionsDifferent)
+                {
+                    _serviceDesignerViewModel.ResourceModel = _serviceDesignerViewModel.NewModel;
+                    _serviceDesignerViewModel.MappingManager.InitializeMappings();
+                    RemoveErrors(
+                        LastValidationMemo.Errors.Where(a => a.Message.Contains(@"Incorrect Version")).ToList());
+                    UpdateWorstError();
+                }
             }
         }
 
