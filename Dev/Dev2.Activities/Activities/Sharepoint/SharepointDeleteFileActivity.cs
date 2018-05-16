@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dev2.Common;
@@ -58,21 +59,24 @@ namespace Dev2.Activities.Sharepoint
             ExecuteTool(dataObject, 0);
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachInputs() => null;
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
-            
             _debugInputs = new List<DebugItem>();
             error = new ErrorResultTO();
             IList<OutputTO> outputs = new List<OutputTO>();
@@ -86,7 +90,6 @@ namespace Dev2.Activities.Sharepoint
             }
 
             ValidateRequest();
-
 
             var serverInputItr = new WarewolfIterator(context.Environment.Eval(ServerInputPath, update));
             colItr.AddVariableToIterateOn(serverInputItr);

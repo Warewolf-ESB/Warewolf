@@ -1,6 +1,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Debug;
@@ -22,9 +23,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
-
-
 
 namespace Dev2.Activities.Sharepoint
 {
@@ -53,20 +51,22 @@ namespace Dev2.Activities.Sharepoint
             ExecuteTool(dataObject, 0);
         }
 
-
         public override List<string> GetOutputs() => new List<string> { Result };
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-
         }
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachInputs() => null;
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
