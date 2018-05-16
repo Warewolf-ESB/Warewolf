@@ -1,6 +1,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Debug;
@@ -21,14 +22,11 @@ using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
-
-
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Read List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_List_Item")]
     public class SharepointReadListActivity : DsfActivityAbstract<string>, IEquatable<SharepointReadListActivity>
     {
-
         public SharepointReadListActivity()
         {
             DisplayName = "Sharepoint Read List Item";
@@ -55,19 +53,22 @@ namespace Dev2.Activities.Sharepoint
             ExecuteTool(dataObject, 0);
         }
 
-
         public override List<string> GetOutputs() => ReadListItems.Select(to => to.VariableName).ToList();
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachInputs() => null;
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
@@ -108,7 +109,6 @@ namespace Dev2.Activities.Sharepoint
                         var index = 1;
                         foreach (var listItem in listItems)
                         {
-
                             foreach (var sharepointReadListTo in sharepointReadListTos)
                             {
                                 var variableName = sharepointReadListTo.VariableName;
@@ -312,7 +312,6 @@ namespace Dev2.Activities.Sharepoint
             }
             return _debugOutputs;
         }
-
 
         public bool Equals(SharepointReadListActivity other)
         {
