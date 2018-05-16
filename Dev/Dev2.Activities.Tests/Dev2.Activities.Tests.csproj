@@ -264,6 +264,7 @@
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointCreateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointSearchToEqualityTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
+    <Compile Include="ActivityTests\BaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\DotNetDateTimeDifferenceTests.cs" />
     <Compile Include="ActivityTests\DotNetDateTimeActivityTests.cs" />
     <Compile Include="ActivityTests\DotNetAggregateCalculateActivityTest.cs" />
