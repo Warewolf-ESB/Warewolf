@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Factories.Case;
+using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -468,6 +469,63 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actualValue);
         }
         #endregion RecordSet Tests
+
+        #region InsertToCollection
+        
+        [TestMethod]
+        public void AddListToCollectionWhereNotOverwriteExpectInsertToCollection()
+        {
+            //------------Setup for test--------------------------
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>
+            {
+                new CaseConvertTO("String to Convert", "UPPER", "[[testVar]]", 1),
+                new CaseConvertTO("String to Convert", "UPPER", "[[testLanguage]]", 2)
+            };
+            var activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection = convertCollection;
+            var modelItem = TestModelItemUtil.CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, activity.ConvertCollection.Count);
+        }
+
+        [TestMethod]
+        public void AddListToCollectionWhereNotOverwriteEmptyListExpectAddToCollection()
+        {
+            //------------Setup for test--------------------------
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>()
+            {
+                new CaseConvertTO("", "UPPER", "[[testVar]]", 1)
+            };
+            var activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection = convertCollection;
+            var modelItem = TestModelItemUtil.CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            activity.AddListToCollection(new[] { "[[Var1]]" }, false, modelItem);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, activity.ConvertCollection.Count);
+        }
+
+        [TestMethod]
+        public void AddListToCollectionWhereOverwriteExpectAddToCollection()
+        {
+            //------------Setup for test--------------------------
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO>
+            {
+                new CaseConvertTO("String to Convert", "UPPER", "[[testVar]]", 1),
+                new CaseConvertTO("String to Convert", "UPPER", "[[testLanguage]]", 2)
+            };
+            var activity = new DsfCaseConvertActivity();
+            activity.ConvertCollection = convertCollection;
+            var modelItem = TestModelItemUtil.CreateModelItem(activity);
+            //------------Execute Test---------------------------
+            activity.AddListToCollection(new[] { "[[Var1]]" }, true, modelItem);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, activity.ConvertCollection.Count);
+        }
+
+        #endregion
 
         #region Private Test Methods
 
