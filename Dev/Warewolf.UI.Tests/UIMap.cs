@@ -353,7 +353,7 @@ namespace Warewolf.UI.Tests
         {
             Mouse.StartDragging(Tab);
             Mouse.StopDragging(0, 50);
-            Playback.Wait(2000);
+            Playback.Wait(1000);
         }
         public void Unpin_Pane_With_Context_Menu(UITestControl Tab)
         {
@@ -1100,18 +1100,5 @@ namespace Warewolf.UI.Tests
         private UtilityToolsUIMap _UtilityToolsUIMap;
 
         #endregion
-
-        /// <summary>
-        /// RightClickDebugOutput
-        /// </summary>
-        public void RightClickDebugOutput()
-        {
-            #region Variable Declarations
-            WpfCustom uIOUTPUTCustom = this.UIWarewolfDEV2PIETERTEWindow.UIDev2StudioViewModelsCustom.UIContentDockManagerCustom.UIOUTPUTCustom;
-            #endregion
-
-            // Right-Click 'OUTPUT' custom control
-            Mouse.Click(uIOUTPUTCustom, MouseButtons.Right, ModifierKeys.None, new Point(106, 28));
-        }
     }
 }

@@ -79,18 +79,6 @@ namespace Warewolf.UI.Tests
                 return this.mScriptErrorMessagebox;
             }
         }
-        
-        public UIWarewolfDEV2PIETERTEWindow UIWarewolfDEV2PIETERTEWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2PIETERTEWindow == null))
-                {
-                    this.mUIWarewolfDEV2PIETERTEWindow = new UIWarewolfDEV2PIETERTEWindow();
-                }
-                return this.mUIWarewolfDEV2PIETERTEWindow;
-            }
-        }
         #endregion
         
         #region Fields
@@ -99,8 +87,6 @@ namespace Warewolf.UI.Tests
         private MainStudioWindow mMainStudioWindow;
         
         private ScriptErrorMessagebox mScriptErrorMessagebox;
-        
-        private UIWarewolfDEV2PIETERTEWindow mUIWarewolfDEV2PIETERTEWindow;
         #endregion
     }
     
@@ -20256,109 +20242,6 @@ namespace Warewolf.UI.Tests
         
         #region Fields
         private HtmlButton mNOButton;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2PIETERTEWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2PIETERTEWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\PIETER.TERBLANCHE)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDev2StudioViewModelsCustom UIDev2StudioViewModelsCustom
-        {
-            get
-            {
-                if ((this.mUIDev2StudioViewModelsCustom == null))
-                {
-                    this.mUIDev2StudioViewModelsCustom = new UIDev2StudioViewModelsCustom(this);
-                }
-                return this.mUIDev2StudioViewModelsCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDev2StudioViewModelsCustom mUIDev2StudioViewModelsCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIDev2StudioViewModelsCustom : WpfCustom
-    {
-        
-        public UIDev2StudioViewModelsCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIContentDockManagerCustom UIContentDockManagerCustom
-        {
-            get
-            {
-                if ((this.mUIContentDockManagerCustom == null))
-                {
-                    this.mUIContentDockManagerCustom = new UIContentDockManagerCustom(this);
-                }
-                return this.mUIContentDockManagerCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIContentDockManagerCustom mUIContentDockManagerCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIContentDockManagerCustom : WpfCustom
-    {
-        
-        public UIContentDockManagerCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
-            this.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIOUTPUTCustom
-        {
-            get
-            {
-                if ((this.mUIOUTPUTCustom == null))
-                {
-                    this.mUIOUTPUTCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
-                    this.mUIOUTPUTCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
-                    this.mUIOUTPUTCustom.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
-                    #endregion
-                }
-                return this.mUIOUTPUTCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIOUTPUTCustom;
         #endregion
     }
 }
