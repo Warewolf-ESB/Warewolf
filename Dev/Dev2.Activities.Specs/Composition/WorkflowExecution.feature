@@ -1296,7 +1296,7 @@ Scenario: Executing unsaved workflow should execute by ID
 	  | variable    | value |
 	  | [[rec(1).a]] | yes   |
 	  | [[rec(2).a]] | no    |	 
-	  When '1' unsaved WF "Unsaved 1" is executed
+	  When "1" unsaved WF "Unsaved 1" is executed
 	  Then the workflow execution has "NO" error
 	  And the "Rec To Convert" in Workflow "Unsaved 1" debug outputs as    
 	  | # |                    |
@@ -1307,7 +1307,7 @@ Scenario: Executing unsaved workflow should execute by ID
 	  | variable    | value |
 	  | [[rec(1).a]] | 1   |
 	  | [[rec(2).a]] | 2    |	 
-	  When '2' unsaved WF "Unsaved 1" is executed	 
+	  When "2" unsaved WF "Unsaved 1" is executed	 
 	  And the "Assign 1" in Workflow "Unsaved 1" debug outputs as    
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = 1 |
@@ -1329,3 +1329,11 @@ Scenario:WF with RabbitMq Consume with no timeout
     Then the workflow execution has "No" error
 	And the "RabbitMqConsumeNotimeout" has a start and end duration
 	And "RabbitMqConsumeNotimeout" Duration is less or equal to 2 seconds
+
+Scenario: COM DLL service execute
+	Given I have a server at "localhost" with workflow "Testing COM DLL Activity Execute"
+	When "localhost" is the active environment used to execute "Testing COM DLL Activity Execute"
+    Then the workflow execution has "No" error
+	And the "Com DLL" in Workflow "Testing COM DLL Activity Execute" debug outputs is
+	|                                |
+	| [[PrimitiveReturnValue]] = 0   |
