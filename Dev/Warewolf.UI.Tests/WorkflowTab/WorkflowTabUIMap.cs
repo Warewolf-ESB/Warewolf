@@ -783,7 +783,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart, new Point(345, 199));
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3, new Point(339, 274));
         }
-
+       
         [Given(@"I Make Workflow Savable")]
         [When(@"I Make Workflow Savable")]
         [Then(@"I Make Workflow Savable")]
@@ -1486,7 +1486,21 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox.Text = filterText;
         }
-
+        /// <summary>
+        /// RecordedMethod1
+        /// </summary>
+        public void Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm()
+        {
+            #region Variable Declarations
+            WpfListItem assigntool = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
+            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
+            #endregion
+           
+            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
+            flowchart.EnsureClickable(new Point(361, 201));
+            Mouse.StartDragging(assigntool, new Point(27, 41));
+            Mouse.StopDragging(flowchart, new Point(361, 201));
+        }
 
         #region UIMaps
 
