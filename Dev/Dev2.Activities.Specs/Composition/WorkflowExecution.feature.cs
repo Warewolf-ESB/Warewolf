@@ -4838,7 +4838,7 @@ this.FeatureBackground();
 #line 1295
  testRunner.And("\"Unsaved 1\" contains an Assign \"Rec To Convert\" as", ((string)(null)), table232, "And ");
 #line 1299
-   testRunner.When("\"1\" unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\'1\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 1300
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -4868,7 +4868,7 @@ this.FeatureBackground();
 #line 1306
    testRunner.And("\"Unsaved 1\" contains an Assign \"Assign 1\" as", ((string)(null)), table234, "And ");
 #line 1310
-   testRunner.When("\"2\" unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\'2\' unsaved WF \"Unsaved 1\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             TechTalk.SpecFlow.Table table235 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
