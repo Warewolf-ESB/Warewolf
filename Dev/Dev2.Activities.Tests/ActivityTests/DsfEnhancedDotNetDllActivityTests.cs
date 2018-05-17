@@ -536,7 +536,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             StringAssert.Contains(values[1], "Burger");
             StringAssert.Contains(values[2], "Chicken");
         }
-
+       
         [TestMethod]
         [Owner("Hagashen Naidu")]
         public void Execute_GivenValidArgs_ListType_ToRecordset_ShouldReturnValidData()
@@ -1217,6 +1217,60 @@ namespace Dev2.Tests.Activities.ActivityTests
             var single = err.FetchErrors().Single();
             StringAssert.Contains(single, "is not compatible with");
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void Execute_GivenValidArgs_ListType_ToObject_ShouldReturnValidData_IsServiceTestExecution()
+        {
+            //---------------Set up test pack-------------------
+            var type = typeof(Human);
+            var activity = new DsfEnhancedDotNetDllActivityMock();
+            var catalog = new Mock<IResourceCatalog>();
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource<PluginSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(new PluginSource()
+                {
+                    AssemblyLocation = type.Assembly.Location
+                });
+            activity.ResourceCatalog = catalog.Object;
+            var mock = new Mock<IDSFDataObject>();
+
+            var esbChannel = new Mock<IEsbChannel>();
+            mock.SetupGet(o => o.EsbChannel).Returns(esbChannel.Object);
+            mock.Setup(o => o.IsServiceTestExecution).Returns(true);
+            mock.Setup(o => o.Environment).Returns(new ExecutionEnvironment());
+            activity.Namespace = new NamespaceItem
+            {
+                FullName = type.FullName,
+                AssemblyLocation = type.Assembly.Location,
+                AssemblyName = type.Assembly.FullName,
+                MethodName = "FavouriteFoods"
+            };
+            activity.Constructor = new PluginConstructor
+            {
+                Inputs = new List<IConstructorParameter>(),
+            };
+            activity.MethodsToRun = new List<IPluginAction>
+            {
+                new PluginAction()
+                {
+                    Method = "FavouriteFoods",
+                    IsObject = true,
+                    Inputs = new List<IServiceInput>(),
+                    OutputVariable = "[[@Foods()]]"
+                }
+            };
+            //---------------Assert Precondition----------------
+            activity.ExecuteMock(esbChannel.Object, mock.Object, string.Empty, string.Empty, out ErrorResultTO err);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(0, err.FetchErrors().Count);
+            var jContainer = mock.Object.Environment.EvalJContainer("[[@Foods()]]");
+            Assert.IsNotNull(jContainer);
+            var values = jContainer.Children().Select(token => token.ToString()).ToList();
+            Assert.IsNotNull(values);
+            StringAssert.Contains(values[0], "Pizza");
+            StringAssert.Contains(values[1], "Burger");
+            StringAssert.Contains(values[2], "Chicken");
+            Assert.IsTrue(mock.Object.IsServiceTestExecution);
+        }
     }
 
     class DsfEnhancedDotNetDllActivityMock : DsfEnhancedDotNetDllActivity
@@ -1226,5 +1280,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             ExecutionImpl(esbChannel, dataObject, inputs, outputs, out errors, 0);
         }
+       
     }
+
 }
