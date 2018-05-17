@@ -11,7 +11,11 @@
 using System;
 using System.Activities;
 using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces;
+using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.DynamicServices;
@@ -19,6 +23,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -306,6 +311,41 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteForEachProcess(out IDSFDataObject result, true, -1);
             Assert.AreEqual(x, id.UniqueID);
             // remove test datalist ;)
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfForEachActivity_Execute")]
+        public void DsfForEachActivity_Execute_ServiceTestExecution_WithNoUniqueId()
+        {
+            var uniqueId = Guid.NewGuid();
+
+            var env = new ExecutionEnvironment();
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsServiceTestExecution).Returns(() => true);
+
+            var serviceTestMock = new Mock<IServiceTestModelTO>();
+            var step = new ServiceTestStepTO();
+            var step_child = new ServiceTestStepTO {
+                UniqueId = uniqueId
+            };
+            step.Children = new ObservableCollection<IServiceTestStep>() { step_child };
+            var testSteps = new List<IServiceTestStep>
+            {
+                step
+            };
+            serviceTestMock.Setup(o => o.TestSteps).Returns(() => testSteps);
+            var serviceTest = serviceTestMock.Object;
+            data.Setup(o => o.ServiceTest).Returns(() => serviceTest);
+            var ob = new DsfForEachActivity
+            {
+                UniqueID = uniqueId.ToString()
+            };
+            ob.Execute(data.Object, 0);
+
+            Assert.AreEqual("Passed", step_child.Result.Message);
+            Assert.AreEqual(RunResult.TestPassed, step_child.Result.RunTestResult);
         }
 
         #endregion Output Mapping Tests
