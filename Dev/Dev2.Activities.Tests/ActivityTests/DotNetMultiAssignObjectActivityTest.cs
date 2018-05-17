@@ -577,5 +577,59 @@ namespace Dev2.Tests.Activities.ActivityTests
             var a = ob.GetDebugOutputs(env, 0);
             Assert.AreEqual("[[@names(3).Name]]", a[0].ResultsList[1].Variable);
         }
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity")]
+        public void DsfDotNetMultiAssignObjectActivity_DebugModeAddsDebugItems2()
+        {
+            var env = new ExecutionEnvironment();
+            env.AssignJson(new AssignValue("[[@names(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[@names(2).Name]]", "Jane"), 0);
+
+
+            var data = new Mock<IDSFDataObject>();
+            env.Assign("[[vals().newNames]]", "asdf", 0);
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+
+            var ob = new DsfDotNetMultiAssignObjectActivity
+            {
+                FieldsCollection = new List<AssignObjectDTO>
+                {
+                    new AssignObjectDTO("[[vals().newNames]]", "[[@names().Name]]", 0)
+                }
+            };
+            ob.Execute(data.Object, 0);
+
+            var a = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("[[vals(1).newNames]]", a[0].ResultsList[1].Variable);
+        }
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity")]
+        public void DsfDotNetMultiAssignObjectActivity_ToNewRecordset_DebugModeAddsDebugItems()
+        {
+            var env = new ExecutionEnvironment();
+            env.AssignJson(new AssignValue("[[@names(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[@names(2).Name]]", "Jane"), 0);
+            env.Assign("[[list().name]]", "asdf", 0);
+
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+
+            var ob = new DsfDotNetMultiAssignObjectActivity
+            {
+                FieldsCollection = new List<AssignObjectDTO>
+                {
+                    new AssignObjectDTO("[[list().name]]", "[[list().name]]", 0)
+                }
+            };
+            ob.Execute(data.Object, 0);
+
+            var a = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("asdf", a[0].ResultsList[1].Value);
+            Assert.AreEqual("[[list(1).name]]", a[0].ResultsList[1].Variable);
+        }
     }
 }
