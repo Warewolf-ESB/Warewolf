@@ -463,7 +463,9 @@
     <None Include="WorkflowServiceTesting\WorkflowServiceTestingUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Control Flow\ControlFlowToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Database\DatabaseToolsUIMap.uitest" />
-    <None Include="WorkflowTab\Tools\Data\DataToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Data\DataToolsUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="WorkflowTab\Tools\Email\EmailToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\File FTP FTPS + SFTP\FileToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\HTTP Web Methods\HTTPToolsUIMap.uitest" />
