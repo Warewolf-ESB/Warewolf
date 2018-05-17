@@ -7376,12 +7376,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 {
                     this.mUISQLErrorError15700seText = new WpfText(this);
                     #region Search Criteria
-                    this.mUISQLErrorError15700seText.SearchProperties[WpfText.PropertyNames.Name] = @"
-																															SQL Error: Error 15700, severity -1, state 1 was raised, but no message with that error number was found in sys.messages. If error is larger than 50000, make sure the user-defined message is added using sp_addmessage.
-																															An invalid parameter or option was specified for procedure 'some_procedure'.
-																															This is an error
-																															An invalid parameter or option was specified for procedure 'some_procedure'.
-																														";
+                    this.mUISQLErrorError15700seText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "SQL Error: Error 15700", PropertyExpressionOperator.Contains));
                     this.mUISQLErrorError15700seText.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mUISQLErrorError15700seText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
