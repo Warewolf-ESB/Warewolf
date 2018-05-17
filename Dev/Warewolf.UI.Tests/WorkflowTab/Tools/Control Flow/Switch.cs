@@ -48,11 +48,11 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "1";
             Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ActivityDefaultWindow));
-
-            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm();
+            WorkflowTabUIMap.DoubleClickSwitchFirstArm();
             Assert.IsTrue(UIMap.ControlExistsNow(DialogsUIMap.ActivityDefaultWindow));
             DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "2";
             Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
+            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow));
 
             WorkflowTabUIMap.DoubleClickSwitchFirstArm();
             Assert.IsTrue(UIMap.ControlExistsNow(DialogsUIMap.ActivityDefaultWindow));
@@ -61,12 +61,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsTrue(UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow));
             Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow));
-
-            WorkflowTabUIMap.DoubleClickSwitchFirstArm();
-            Assert.IsTrue(UIMap.ControlExistsNow(DialogsUIMap.ActivityDefaultWindow));
-            DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "3";
-            Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
-            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ActivityDefaultWindow));
         }
 
         #region Additional test attributes
