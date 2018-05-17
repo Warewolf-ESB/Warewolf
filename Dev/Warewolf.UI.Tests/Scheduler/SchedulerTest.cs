@@ -103,8 +103,7 @@ namespace Warewolf.UI.Tests.Scheduler
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
             Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.NewAssignWfSchedule.NewAssignWfText.DisplayText.Contains("*"));
 
-            SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.UserNameTextBoxEdit.Text = "dev2\\IntegrationTester";
-            SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.PasswordTextbox.Text = "I73573r0";
+            SchedulerUIMap.Enter_LocalSchedulerAdminCredentials_Into_SchedulerTab();
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow));
 
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
