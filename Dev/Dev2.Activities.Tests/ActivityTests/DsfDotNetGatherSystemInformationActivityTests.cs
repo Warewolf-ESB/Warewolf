@@ -61,7 +61,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var computer = env.EvalAsListOfStrings(outputs[0], 0);
 
             var computerName = env.EvalAsListOfStrings("[[computerName]]", 0);
-            Assert.AreEqual("T002034", computerName[0]);
+            Assert.AreEqual(System.Environment.MachineName, computerName[0]);
 
             var operatingSystem = env.EvalAsListOfStrings("[[operatingSystem]]", 0);
             Assert.IsFalse(string.IsNullOrWhiteSpace(operatingSystem[0]));
