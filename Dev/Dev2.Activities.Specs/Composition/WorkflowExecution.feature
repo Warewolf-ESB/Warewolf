@@ -1296,7 +1296,7 @@ Scenario: Executing unsaved workflow should execute by ID
 	  | variable    | value |
 	  | [[rec(1).a]] | yes   |
 	  | [[rec(2).a]] | no    |	 
-	  When "1" unsaved WF "Unsaved 1" is executed
+	  When '1' unsaved WF "Unsaved 1" is executed
 	  Then the workflow execution has "NO" error
 	  And the "Rec To Convert" in Workflow "Unsaved 1" debug outputs as    
 	  | # |                    |
@@ -1307,7 +1307,7 @@ Scenario: Executing unsaved workflow should execute by ID
 	  | variable    | value |
 	  | [[rec(1).a]] | 1   |
 	  | [[rec(2).a]] | 2    |	 
-	  When "2" unsaved WF "Unsaved 1" is executed	 
+	  When '2' unsaved WF "Unsaved 1" is executed	 
 	  And the "Assign 1" in Workflow "Unsaved 1" debug outputs as    
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = 1 |

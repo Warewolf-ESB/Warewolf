@@ -1031,13 +1031,6 @@ namespace Dev2.Activities.Specs.Composition
             ExecuteWorkflow(resourceModel);
         }
 
-        [When(@"""(.*)"" is executed")]
-        public void WhenIsExecuted(string workflowName)
-        {
-            var resourceModel = SaveAWorkflow(workflowName);
-            ExecuteWorkflow(resourceModel);
-        }
-
         [When(@"the workflow is Saved")]
         private IContextualResourceModel SaveTheWorkflow() => SaveAWorkflow(null);
 
@@ -2419,7 +2412,14 @@ namespace Dev2.Activities.Specs.Composition
             repository.Save(resourceModel);
         }
 
-        [When(@"""(.*)"" unsaved WF ""(.*)"" is executed")]
+        [When(@"""(.*)"" is executed")]
+        public void WhenIsExecuted(string workflowName)
+        {
+            var resourceModel = SaveAWorkflow(workflowName);
+            ExecuteWorkflow(resourceModel);
+        }
+
+        [When(@"'(.*)' unsaved WF ""(.*)"" is executed")]
         public void WhenUnsavedWFIsExecuted(int numberToExecute, string unsavedName)
         {
             var unsavedWFs = Get<List<IContextualResourceModel>>("unsavedWFS");
