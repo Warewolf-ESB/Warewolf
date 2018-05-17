@@ -28,7 +28,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities
 {
@@ -36,7 +36,8 @@ namespace Dev2.Activities
     /// Activity used for executing JavaScript through a tool
     /// </summary>
     //[ToolDescriptorInfo("Scripting-JavaScript", "Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_Script")]
-    public class DsfScriptingActivity : DsfActivityAbstract<string>,IEquatable<DsfScriptingActivity>
+    [ExcludeFromCodeCoverage]
+    public class DsfScriptingActivity : DsfActivityAbstract<string>, IEquatable<DsfScriptingActivity>
     {
         #region Properties
 
@@ -91,44 +92,32 @@ namespace Dev2.Activities
         {
             AddScriptSourcePathsToList();
             var allErrors = new ErrorResultTO();
-            var errors = new ErrorResultTO();
-            allErrors.MergeErrors(errors);
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
             {
-                if (!errors.HasErrors())
+
+                if (dataObject.IsDebugMode())
                 {
-                    if (dataObject.IsDebugMode())
+                    var language = ScriptType.GetDescription();
+                    AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
+                    AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
+                }
+                var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
+                while (scriptItr.HasMoreData())
+                {
+                    var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
+                    var value = engine.Execute(scriptItr.GetNextValue());
+
+                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                     {
-                        var language = ScriptType.GetDescription();
-                        AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
-                        AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
-                    }
 
-                    allErrors.MergeErrors(errors);
-
-                    if (allErrors.HasErrors())
-                    {
-                        return;
-                    }
-
-                    var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update,false, EscapeScript));
-                    while (scriptItr.HasMoreData())
-                    {
-                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType,_sources);
-                        var value = engine.Execute(scriptItr.GetNextValue());
-
-                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        env.Assign(region, value, update);
+                        if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                         {
-                            
-                            env.Assign(region, value, update);
-                            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            if (!string.IsNullOrEmpty(region))
                             {
-                                if (!string.IsNullOrEmpty(region))
-                                {
-                                    AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
-                                }
+                                AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
                             }
                         }
                     }
@@ -234,9 +223,9 @@ namespace Dev2.Activities
 
             return base.Equals(other)
                 && ScriptType == other.ScriptType
-                && EscapeScript == other.EscapeScript 
-                && string.Equals(IncludeFile, other.IncludeFile) 
-                && string.Equals(Script, other.Script) 
+                && EscapeScript == other.EscapeScript
+                && string.Equals(IncludeFile, other.IncludeFile)
+                && string.Equals(Script, other.Script)
                 && string.Equals(Result, other.Result);
         }
 
@@ -257,7 +246,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((DsfScriptingActivity) obj);
+            return Equals((DsfScriptingActivity)obj);
         }
 
         public override int GetHashCode()
@@ -266,7 +255,7 @@ namespace Dev2.Activities
             {
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_sources != null ? _sources.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (int) ScriptType;
+                hashCode = (hashCode * 397) ^ (int)ScriptType;
                 hashCode = (hashCode * 397) ^ EscapeScript.GetHashCode();
                 hashCode = (hashCode * 397) ^ (IncludeFile != null ? IncludeFile.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Script != null ? Script.GetHashCode() : 0);
