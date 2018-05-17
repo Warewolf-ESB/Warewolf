@@ -19,6 +19,7 @@ using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 
 namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses
 {
@@ -183,18 +184,40 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapC
         /// RecordedMethod1
         /// </summary>
         public void Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm()
-        {            
+        {
             WpfListItem assigntool = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
             WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            
-            Mouse.Click(flowchart, new Point(361, 201));
-            // Move 'Warewolf.Studio.ViewModels.ToolBox.ToolDescriptorV...' list item to 'Flowchart' custom control
-            flowchart.EnsureClickable(new Point(361, 201));
-            Mouse.StartDragging(assigntool, new Point(27, 41));
-            Mouse.StopDragging(flowchart, new Point(361, 201));
+            WpfCustom switchTool = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
+            WpfCustom aassignOnSurface = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
+
+            flowchart.EnsureClickable(new Point(469, 318));
+            Mouse.StartDragging(assigntool, new Point(218, 411));
+            Mouse.StopDragging(flowchart, new Point(469, 318));
+
+            Mouse.Click(switchTool, new Point(59, 43));
+            switchTool.EnsureClickable(new Point(119, 0));
+
+            // Move 'Flowchart' custom control
+            Mouse.StartDragging(flowchart, new Point(443, 168));
+            Mouse.StopDragging(flowchart, 29, 91);
         }
 
         #region UIMaps
+
+        DataToolsUIMap DataToolsUIMap
+        {
+            get
+            {
+                if (_dataToolsUIMap == null)
+                {
+                    _dataToolsUIMap = new DataToolsUIMap();
+                }
+
+                return _dataToolsUIMap;
+            }
+        }
+
+        private DataToolsUIMap _dataToolsUIMap;
 
         UIMap UIMap
         {
@@ -316,6 +339,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapC
 
         private UtilityToolsUIMap _UtilityToolsUIMap;
 
-        #endregion
+        #endregion        
     }
 }

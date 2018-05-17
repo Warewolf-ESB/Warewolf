@@ -15,6 +15,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragOnWorkflow_UITest()
         {
+            UIMap.InitializeABlankWorkflow();
+            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.VariableComboBox.Exists, "Varaible Combobox does not exist after dragging switch tool in from the toolbox.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.DisplayText.Exists, "Display Text Textbox does not exist after dragging switch tool in from the toolbox.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.OnErrorGroup.Exists, "On Error Pane does not exist after dragging switch tool in from the toolbox.");
@@ -28,14 +30,33 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_DragDialogWindow_UITest()
         {
+            UIMap.InitializeABlankWorkflow();
+            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
             Mouse.StartDragging(DialogsUIMap.DecisionOrSwitchDialog);
             Mouse.StopDragging(100, 100);
+        }
+        [TestMethod]
+        [TestCategory("Control Flow Tools")]
+        public void SwitchTool_EditSwitchCase_With_Three_Tools_UITest()
+        {
+            ExplorerUIMap.Filter_Explorer("FlowSwitch");
+            ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
+
+            UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
+            ControlFlowToolsUIMap.Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm();
+            Assert.IsTrue(UIMap.ControlExistsNow(DialogsUIMap.ActivityDefaultWindow));
+
+            DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "2";
+            Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
+            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ActivityDefaultWindow));
         }
 
         [TestMethod]
         [TestCategory("Control Flow Tools")]
         public void SwitchTool_EditSwitchCase_UITest()
         {
+            UIMap.InitializeABlankWorkflow();
+            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
             DialogsUIMap.Click_Switch_Dialog_Done_Button();
 
             Mouse.DoubleClick(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch);
@@ -69,9 +90,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
         public void MyTestInitialize()
         {
             UIMap.SetPlaybackSettings();
-            UIMap.AssertStudioIsRunning();
-            UIMap.InitializeABlankWorkflow();
-            WorkflowTabUIMap.Drag_Toolbox_Switch_Onto_DesignSurface();
+            UIMap.AssertStudioIsRunning();            
         }
 
         UIMap UIMap
