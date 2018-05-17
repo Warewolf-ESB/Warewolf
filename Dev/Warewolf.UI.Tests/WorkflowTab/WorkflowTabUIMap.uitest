@@ -4056,14 +4056,9 @@
                                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
-                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                            <PropertyCondition Name="Name">
-																															SQL Error: Error 15700, severity -1, state 1 was raised, but no message with that error number was found in sys.messages. If error is larger than 50000, make sure the user-defined message is added using sp_addmessage.
-																															An invalid parameter or option was specified for procedure 'some_procedure'.
-																															This is an error
-																															An invalid parameter or option was specified for procedure 'some_procedure'.
-																														</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="Name" Operator="Contains">SQL Error: Error 15700</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
