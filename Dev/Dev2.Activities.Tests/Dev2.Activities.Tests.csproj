@@ -322,6 +322,7 @@
     <Compile Include="ActivityTests\Sharepoint\SharepointReadFolderItemActivityTests.cs" />
     <Compile Include="ActivityTests\Sharepoint\SharepointReadListActivityTests.cs" />
     <Compile Include="ActivityTests\Sharepoint\SharepointUpdateListItemActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfDotNetGatherSystemInformationActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
