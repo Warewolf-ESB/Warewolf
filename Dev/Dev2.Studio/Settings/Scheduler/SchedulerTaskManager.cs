@@ -28,27 +28,28 @@ namespace Dev2.Settings.Scheduler
         readonly Task<IResourcePickerDialog> _resourcePickerDialogTask;
         EnvironmentViewModel _source;
 
-        internal SchedulerTaskManager(SchedulerViewModel schedulerViewModel, Task<IResourcePickerDialog> getResourcePicker, EnvironmentViewModel environmentViewModel)
+        internal SchedulerTaskManager(SchedulerViewModel schedulerViewModel, Task<IResourcePickerDialog> getResourcePicker)
         {
             _schedulerViewModel = schedulerViewModel;
             _resourcePickerDialogTask = getResourcePicker;
             var taskServiceConvertorFactory = new TaskServiceConvertorFactory();
             SchedulerFactory = new ClientSchedulerFactory(new Dev2TaskService(taskServiceConvertorFactory), taskServiceConvertorFactory);
-
-            Source = environmentViewModel;
-            CreateResourcePickerDialog();
         }
 
-        void CreateResourcePickerDialog()
+        IResourcePickerDialog CreateResourcePickerDialog()
         {
-            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source).ContinueWith(a => CurrentResourcePickerDialog = a.Result);
+            var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
+            ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source).ContinueWith(a => _currentResourcePicker = a.Result);
+            return res;
         }
+
+        Task<IResourcePickerDialog> GetResourcePickerDialog => _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
 
         public IResourcePickerDialog CurrentResourcePickerDialog
         {
             private get
             {
-                return _currentResourcePicker;
+                return _currentResourcePicker ?? CreateResourcePickerDialog();
             }
             set
             {
@@ -103,7 +104,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public bool CanSelectWorkflow() => true;
+        public bool CanSelectWorkflow() => CurrentResourcePickerDialog != null;
 
         public bool SaveTasks()
         {
@@ -303,7 +304,6 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        // TODO: rename to SelectWorkflowToSchedule
         public void AddWorkflow()
         {
             if (_schedulerViewModel.SelectedTask != null && _schedulerViewModel.CurrentEnvironment != null)
