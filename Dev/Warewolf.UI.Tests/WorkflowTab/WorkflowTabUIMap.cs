@@ -1487,7 +1487,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox.Text = filterText;
         }
        
-
         #region UIMaps
 
         UIMap UIMap
@@ -1773,37 +1772,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         }
 
         private WorkflowTabUIMap _WorkflowTabUIMap;
+
         #endregion
-
-
-        /// <summary>
-        /// RecordedMethod1
-        /// </summary>
-        public void Repin_To_Main_Window()
-        {
-            WpfCustom uIFlowchartCustom1 =MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom uIFloatingWindowCustom = UIMap.MainStudioWindow.UnpinnedTab;
-                        
-            Mouse.MouseDragSpeed = 1000;
-            // Move 'FloatingWindow' custom control
-            Mouse.StartDragging(uIFloatingWindowCustom, new Point(30, 21));
-            Mouse.StopDragging(uIFloatingWindowCustom, 533, 346);
-            Mouse.MouseDragSpeed = 2000;
-        }
-
-        /// <summary>
-        /// RecordedMethod2
-        /// </summary>
-        public void RecordedMethod2()
-        {
-            #region Variable Declarations
-            WpfCustom uIFloatingWindowCustom = UIMap.MainStudioWindow.UnpinnedTab;
-            #endregion
-            Mouse.MouseDragSpeed = 1000;
-            // Move 'FloatingWindow' custom control
-            Mouse.StartDragging(uIFloatingWindowCustom, new Point(30, 16));
-            Mouse.StopDragging(uIFloatingWindowCustom, 532, 304);
-            Mouse.MouseDragSpeed = 2000;
-        }
     }
 }
