@@ -37,6 +37,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfMultiAssignActivity : DsfActivityAbstract<string>
     {
+#pragma warning disable S3776,S1541,S134,CC0075,S1066,S1067
         public static readonly string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
         public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public static readonly string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
@@ -495,6 +496,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return hashCode;
             }
         }
+#pragma warning restore S3776,S1541,S134,CC0075,S1066,S1067
     }
 
 }
