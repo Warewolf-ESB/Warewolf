@@ -180,28 +180,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapC
             Mouse.DoubleClick(uIItem970f65ad1c3d4028Custom, new Point(339, 274));
         }
 
-        /// <summary>
-        /// RecordedMethod1
-        /// </summary>
-        public void Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm()
-        {
-            WpfListItem assigntool = UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.ToolListBox.DataTools.MultiAssign;
-            WpfCustom flowchart = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart;
-            WpfCustom switchTool = MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch;
-            WpfCustom aassignOnSurface = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign;
-
-            flowchart.EnsureClickable(new Point(469, 318));
-            Mouse.StartDragging(assigntool, new Point(218, 411));
-            Mouse.StopDragging(flowchart, new Point(469, 318));
-
-            Mouse.Click(switchTool, new Point(59, 43));
-            switchTool.EnsureClickable(new Point(119, 0));
-
-            // Move 'Flowchart' custom control
-            Mouse.StartDragging(flowchart, new Point(443, 168));
-            Mouse.StopDragging(flowchart, 29, 91);
-        }
-
         #region UIMaps
 
         DataToolsUIMap DataToolsUIMap

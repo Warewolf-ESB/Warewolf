@@ -35,21 +35,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Mouse.StartDragging(DialogsUIMap.DecisionOrSwitchDialog);
             Mouse.StopDragging(100, 100);
         }
-        [TestMethod]
-        [TestCategory("Control Flow Tools")]
-        public void SwitchTool_EditSwitchCase_With_Three_Tools_UITest()
-        {
-            ExplorerUIMap.Filter_Explorer("FlowSwitch");
-            ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
-
-            UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "Assign";
-            ControlFlowToolsUIMap.Drag_Toolbox_MultiAssign_Connect_Switch_Second_Arm();
-            Assert.IsTrue(UIMap.ControlExistsNow(DialogsUIMap.ActivityDefaultWindow));
-
-            DialogsUIMap.ActivityDefaultWindow.TextboxHost.SwitchArmCaseTextbox.TextInput.Text = "2";
-            Mouse.Click(DialogsUIMap.ActivityDefaultWindow.DoneButton);
-            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.ActivityDefaultWindow));
-        }
 
         [TestMethod]
         [TestCategory("Control Flow Tools")]
