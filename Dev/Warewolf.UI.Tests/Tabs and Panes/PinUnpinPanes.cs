@@ -55,17 +55,6 @@ namespace Warewolf.UI.Tests.Tabs
 
         [TestMethod]
         [TestCategory("Tabs and Panes")]
-        public void UnpinAndRepinNewWorkflowWizardTabByDraggingOnly()
-        {
-            UIMap.Click_NewWorkflow_RibbonButton();
-            UIMap.Unpin_Tab_With_Drag(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab);
-            UIMap.Pin_Unpinned_Pane_To_Default_Position();
-            Assert.IsFalse(UIMap.ControlExistsNow(UIMap.MainStudioWindow.UnpinnedTab), "Unpinned pane still exists after being dragged onto the central dock indicator.");
-            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.Exists, "Workflow tab did not dock into it's default position after being dragged onto the central dock indicator.");
-        }
-
-        [TestMethod]
-        [TestCategory("Tabs and Panes")]
         public void UnpinnedPaneContextMenuItems()
         {
             UIMap.Click_NewWorkflow_RibbonButton();
