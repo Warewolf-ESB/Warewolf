@@ -23,16 +23,8 @@ using Dev2.Data.Interfaces;
 
 namespace Dev2.Utils
 {
-    /// <summary>
-    /// Utilities for the workflow designer view model
-    /// </summary>
     public class WorkflowDesignerUtils
     {
-        /// <summary>
-        /// Is the list.
-        /// </summary>
-        /// <param name="activityField">The activity field.</param>
-        /// <returns></returns>
         public IList<string> FormatDsfActivityField(string activityField)
         {
             IList<string> result = new List<string>();
@@ -51,7 +43,7 @@ namespace Dev2.Utils
                     return result;
                 }
 
-                if(intellisenseParser.EventLog.HasEventLogs)
+                if (intellisenseParser.EventLog.HasEventLogs)
                 {
                     var languageParser = DataListFactory.CreateStudioLanguageParser();
 
@@ -59,45 +51,18 @@ namespace Dev2.Utils
                     {
                         result = languageParser.ParseForActivityDataItems(region);
                     }
-                    catch(Dev2DataLanguageParseError)
+                    catch (Dev2DataLanguageParseError)
                     {
                         return new List<string>();
                     }
-                    catch(NullReferenceException)
+                    catch (NullReferenceException)
                     {
                         return new List<string>();
                     }
 
                 }
                 var allNodes = new List<Node>();
-
-
-                if(nodes.Any() && !intellisenseParser.EventLog.HasEventLogs)
-                {
-                    nodes[0].CollectNodes(allNodes);
-
-                    
-                    for(int i = 0; i < allNodes.Count; i++)
-                    {
-                        if (allNodes[i] is DatalistRecordSetNode)
-                        {
-                            var refNode = allNodes[i] as DatalistRecordSetNode;
-                            var nodeName = refNode.GetRepresentationForEvaluation();
-                            nodeName = nodeName.Substring(2, nodeName.Length - 4);
-                            result.Add(nodeName);
-                        }
-                        else
-                        {
-                            if (allNodes[i] is DatalistReferenceNode)
-                            {
-                                var refNode = allNodes[i] as DatalistReferenceNode;
-                                var nodeName = refNode.GetRepresentationForEvaluation();
-                                nodeName = nodeName.Substring(2, nodeName.Length - 4);
-                                result.Add(nodeName);
-                            }
-                        }
-                    }
-                }
+                result = FormatDsfActivityField(result, intellisenseParser, nodes, allNodes);
             }
             try
             {
@@ -111,6 +76,41 @@ namespace Dev2.Utils
             return result;
         }
 
+        static IList<string> FormatDsfActivityField(IList<string> result, SyntaxTreeBuilder intellisenseParser, Node[] nodes, List<Node> allNodes)
+        {
+            if (nodes.Any() && !intellisenseParser.EventLog.HasEventLogs)
+            {
+                nodes[0].CollectNodes(allNodes);
+
+                for (int i = 0; i < allNodes.Count; i++)
+                {
+                    result = FormatDsfActivityField(result, allNodes, i);
+                }
+            }
+            return result;
+        }
+
+        static IList<string> FormatDsfActivityField(IList<string> result, List<Node> allNodes, int i)
+        {
+            if (allNodes[i] is DatalistRecordSetNode)
+            {
+                var refNode = allNodes[i] as DatalistRecordSetNode;
+                var nodeName = refNode.GetRepresentationForEvaluation();
+                nodeName = nodeName.Substring(2, nodeName.Length - 4);
+                result.Add(nodeName);
+            }
+            else
+            {
+                if (allNodes[i] is DatalistReferenceNode)
+                {
+                    var refNode = allNodes[i] as DatalistReferenceNode;
+                    var nodeName = refNode.GetRepresentationForEvaluation();
+                    nodeName = nodeName.Substring(2, nodeName.Length - 4);
+                    result.Add(nodeName);
+                }
+            }
+            return result;
+        }
 
         protected static IServer ActiveEnvironment { get; set; }
 

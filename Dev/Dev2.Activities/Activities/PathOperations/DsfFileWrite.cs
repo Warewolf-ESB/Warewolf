@@ -43,7 +43,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         protected override bool AssignEmptyOutputsToRecordSet => true;
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
+        protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             IList<OutputTO> outputs = new List<OutputTO>();
 

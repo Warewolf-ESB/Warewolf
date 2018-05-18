@@ -32,9 +32,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities
 {
-    /// <summary>
-    /// Activity used for executing JavaScript through a tool
-    /// </summary>
     //[ToolDescriptorInfo("Scripting-JavaScript", "Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_Script")]
     [ExcludeFromCodeCoverage]
     public class DsfScriptingActivity : DsfActivityAbstract<string>, IEquatable<DsfScriptingActivity>
@@ -77,11 +74,7 @@ namespace Dev2.Activities
         #endregion Ctor
         public override List<string> GetOutputs() => new List<string> { Result };
         #region Overrides of DsfNativeActivity<string>
-
-        /// <summary>
-        /// When overridden runs the activity's execution logic
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -92,36 +85,12 @@ namespace Dev2.Activities
         {
             AddScriptSourcePathsToList();
             var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
             {
-
-                if (dataObject.IsDebugMode())
-                {
-                    var language = ScriptType.GetDescription();
-                    AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
-                    AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
-                }
-                var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
-                while (scriptItr.HasMoreData())
-                {
-                    var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
-                    var value = engine.Execute(scriptItr.GetNextValue());
-
-                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                    {
-
-                        env.Assign(region, value, update);
-                        if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                        {
-                            if (!string.IsNullOrEmpty(region))
-                            {
-                                AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
-                            }
-                        }
-                    }
-                }
+                TryExecute(dataObject, update, allErrors, env);
             }
             catch (Exception e) when (e is NullReferenceException || e is RuntimeBinderException)
             {
@@ -145,6 +114,32 @@ namespace Dev2.Activities
                     }
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, IExecutionEnvironment env)
+        {
+            if (dataObject.IsDebugMode())
+            {
+                var language = ScriptType.GetDescription();
+                AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
+                AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
+            }
+            var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
+            while (scriptItr.HasMoreData())
+            {
+                var engine = new ScriptingEngineRepo().CreateEngine(ScriptType, _sources);
+                var value = engine.Execute(scriptItr.GetNextValue());
+
+                foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                {
+
+                    env.Assign(region, value, update);
+                    if (dataObject.IsDebugMode() && !allErrors.HasErrors() && !string.IsNullOrEmpty(region))
+                    {
+                        AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
+                    }
                 }
             }
         }

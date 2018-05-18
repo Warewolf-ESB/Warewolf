@@ -833,7 +833,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceModel = moqModel.Object;
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("a", enDev2ColumnArgumentDirection.Input));
+            dataListViewModel.Add(new ScalarItemModel("a", enDev2ColumnArgumentDirection.Input));
             dataListViewModel.WriteToResourceModel();
             return resourceModel;
         }
@@ -845,11 +845,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceModel = moqModel.Object;
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("a", enDev2ColumnArgumentDirection.Input));
+            dataListViewModel.Add(new ScalarItemModel("a", enDev2ColumnArgumentDirection.Input));
             var recordSetItemModel = new RecordSetItemModel("rec", enDev2ColumnArgumentDirection.Input);
             var recordSetFieldItemModels = new ObservableCollection<IRecordSetFieldItemModel> { new RecordSetFieldItemModel("field", recordSetItemModel, enDev2ColumnArgumentDirection.Input) };
             recordSetItemModel.Children = recordSetFieldItemModels;
-            dataListViewModel.RecsetCollection.Add(recordSetItemModel);
+            dataListViewModel.Add(recordSetItemModel);
             dataListViewModel.WriteToResourceModel();
             return resourceModel;
         }
@@ -861,7 +861,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var resourceModel = moqModel.Object;
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel);
-            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("res", enDev2ColumnArgumentDirection.Output));
+            dataListViewModel.Add(new ScalarItemModel("res", enDev2ColumnArgumentDirection.Output));
             dataListViewModel.WriteToResourceModel();
             return resourceModel;
         }

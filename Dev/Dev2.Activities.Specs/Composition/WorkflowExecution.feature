@@ -1075,26 +1075,7 @@ Scenario: Workflow Assign and Find Record Index executing with incorrect format 
 	  | # | [[rec().a]][[xr().a]] | 1 | =          | Warewolf | YES                            | NO                          |
 	  When "WFWithAssignandFindRecordindexs" is executed
 	  Then the workflow execution has "AN" error
-
-Scenario: Simple workflow executing against the server
-	 Given I have a workflow "WorkflowWithAssign"
-	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[rec().a]] | yes   |
-	  | [[rec().a]] | no    |	 
-	  When "WorkflowWithAssign" is executed
-	  Then the workflow execution has "NO" error
-	  And the "WorkflowWithAssign" has a start and end duration
-	  And the "Rec To Convert" in WorkFlow "WorkflowWithAssign" debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | yes       |
-	  | 2 | [[rec().a]] = | no        |
-	  And the "Rec To Convert" in Workflow "WorkflowWithAssign" debug outputs as    
-	  | # |                    |
-	  | 1 | [[rec(1).a]] = yes |
-	  | 2 | [[rec(2).a]] = no  |
 	  
-#PostgreSQL
 Scenario: Database PostgreSql Database service inputs and outputs
      Given I have a workflow "PostgreSqlGetCountries"
 	 And "PostgreSqlGetCountries" contains a postgre tool using "get_countries" with mappings as

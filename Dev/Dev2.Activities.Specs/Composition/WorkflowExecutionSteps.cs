@@ -68,11 +68,6 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Monitoring;
-using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Data.TO;
-using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
-using Dev2.Interfaces;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Dev2.Studio.Core.Factories;
@@ -84,11 +79,12 @@ using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using TestingDotnetDllCascading;
 using Warewolf.Sharepoint;
-using Dev2.Studio.ViewModels;
 using Caliburn.Micro;
 using Dev2.Studio.Core.Helpers;
 using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 using Dev2.Common;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Activities.Designers2.AdvancedRecordset;
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -294,7 +290,7 @@ namespace Dev2.Activities.Specs.Composition
                     PerformanceCounterCategory.Delete("Warewolf");
                 }
 
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Assert.IsNotNull(e);
                 }
@@ -3130,6 +3126,30 @@ namespace Dev2.Activities.Specs.Composition
 
             _commonSteps.AddActivityToActivityList(parentName, toolName, dsfWebGetRequestActivity);
         }
+
+        [Given(@"""(.*)"" contains Advanced Recordset ""(.*)"" with Query ""(.*)""")]
+        [When(@"""(.*)"" contains Advanced Recordset ""(.*)"" with Query ""(.*)""")]
+        [Then(@"""(.*)"" contains Advanced Recordset ""(.*)"" with Query ""(.*)""")]
+        public void GivenContainsAdvancedRecordsetWithQuery(string workflow, string toolname, string query, Table table)
+        {
+            var activity = new AdvancedRecordsetActivity
+            {
+                DisplayName = toolname,
+                SqlQuery = query,
+                Outputs = new List<IServiceOutputMapping>(),
+                RecordsetName = "TableCopy",
+            };
+            foreach (var tableRow in table.Rows)
+            {
+                var output = tableRow["MappedTo"];
+                var toVariable = tableRow["MappedFrom"];
+                var recSetName = DataListUtil.ExtractRecordsetNameFromValue(toVariable);
+                activity.Outputs.Add(new ServiceOutputMapping(output, toVariable, recSetName));
+                _commonSteps.AddVariableToVariableList(toVariable);
+            }
+            _commonSteps.AddActivityToActivityList(workflow, toolname, activity);
+        }
+
 
         [Given(@"""(.*)"" contains Calculate ""(.*)"" with formula ""(.*)"" into ""(.*)""")]
         public void GivenCalculateWithFormulaInto(string parentName, string activityName, string formula, string resultVariable)

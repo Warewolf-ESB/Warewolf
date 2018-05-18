@@ -12,10 +12,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Data.Odbc;
+using System.Xml;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Microsoft.Win32;
-
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Services.Sql
 {
@@ -101,7 +102,37 @@ namespace Dev2.Services.Sql
                 }
             }
         }
+        public DataTable FetchXmlData()
+        {
+            var table = new DataTable();
+            table.Columns.Add("ReadForXml");
+            VerifyConnection();
+            try
+            {
+                if (_command.CommandType == CommandType.StoredProcedure)
+                {
+                    _command.CommandType = CommandType.Text;
+                }
 
+                var reader = _factory.FetchDataSet(_command);
+                var doc = new XmlDocument();
+                doc.LoadXml(reader.GetXml());
+                table.LoadDataRow(new object[] { doc.InnerText }, true);
+                return table;
+
+            }
+            catch (Exception e)
+            {
+                if (!e.Message.Equals(ErrorResource.NotXmlResults))
+                {
+                    throw;
+                }
+                table.LoadDataRow(new object[] { "Error" }, true);
+                return table;
+            }
+            table.LoadDataRow(new object[] { "Error" }, true);
+            return table;
+        }
         public void Connect(string connectionString)
         {
             if (!Testing)
@@ -159,15 +190,7 @@ namespace Dev2.Services.Sql
                     _transaction?.Dispose();
 
                     _command?.Dispose();
-
-                    if (_connection != null)
-                    {
-                        if (_connection.State != ConnectionState.Closed)
-                        {
-                            _connection.Close();
-                        }
-                        _connection.Dispose();
-                    }
+                    DisposeConnection();
                 }
 
                 // Call the appropriate methods to clean up 
@@ -177,6 +200,18 @@ namespace Dev2.Services.Sql
 
                 // Note disposing has been done.
                 _disposed = true;
+            }
+        }
+
+        private void DisposeConnection()
+        {
+            if (_connection != null)
+            {
+                if (_connection.State != ConnectionState.Closed)
+                {
+                    _connection.Close();
+                }
+                _connection.Dispose();
             }
         }
 
@@ -195,8 +230,26 @@ namespace Dev2.Services.Sql
             return ExecuteReader(_command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
+		public DataSet FetchDataSet(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
 
-        public static T ExecuteReaader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
+			return _factory.FetchDataSet(command);
+		}
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteNonQuery(command);
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			VerifyArgument.IsNotNull("command", command);
+
+			return _factory.ExecuteScalar(command);
+		}
+		public static T ExecuteReaader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
         {
             try
             {

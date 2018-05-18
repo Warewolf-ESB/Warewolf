@@ -42,7 +42,6 @@ namespace Dev2.Common.Interfaces
         IList<IDebugState> DebugForTest { get; set; }
         string DuplicateTestTooltip { get; set; }
         ObservableCollection<IServiceTestStep> TestSteps { get; set; }
-        IServiceTestStep SelectedTestStep { get; set; }
 
         void SetItem(IServiceTestModel model);
         IServiceTestModel Clone();

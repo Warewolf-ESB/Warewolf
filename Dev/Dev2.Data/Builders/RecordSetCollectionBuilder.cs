@@ -38,53 +38,21 @@ namespace Dev2.Data.Builders
             {
                 var rsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
                 var scanRsName = tmp.RecordSetName;
-                
-                if(IsOutput)
+
+                if (IsOutput)
                 {
-                    if(IsDbService)
+                    if (IsDbService && !string.IsNullOrEmpty(rsName))
                     {
-                        if(!string.IsNullOrEmpty(rsName))
-                        {
-                            scanRsName = rsName;
-                        }
+                        scanRsName = rsName;
                     }
+
                 }
                 else
                 {
                     scanRsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
                 }
 
-                if (tmp.IsRecordSet)
-                {
-                    if (tmpCollections.ContainsKey(scanRsName))
-                    {
-                        tmpCollections[scanRsName].Add(tmp);
-                    }
-                    else
-                    {
-                        IList<IDev2Definition> newList = new List<IDev2Definition>();
-                        newList.Add(tmp);
-                        tmpCollections.Add(scanRsName, newList);
-                        tmpNames.Add(scanRsName);
-                    }
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(scanRsName))
-                    {
-                        if (tmpCollections.ContainsKey(scanRsName))
-                        {
-                            tmpCollections[scanRsName].Add(tmp);
-                        }
-                        else
-                        {
-                            IList<IDev2Definition> newList = new List<IDev2Definition>();
-                            newList.Add(tmp);
-                            tmpCollections.Add(scanRsName, newList);
-                            tmpNames.Add(scanRsName);
-                        }
-                    }
-                }
+                AddTmpRecordsetNames(tmpCollections, tmpNames, tmp, scanRsName);
             }
             IList<IRecordSetDefinition> tmpDefs = new List<IRecordSetDefinition>();
 
@@ -101,5 +69,39 @@ namespace Dev2.Data.Builders
             return result;
         }
 
+        static void AddTmpRecordsetNames(IDictionary<string, IList<IDev2Definition>> tmpCollections, IList<string> tmpNames, IDev2Definition tmp, string scanRsName)
+        {
+            if (tmp.IsRecordSet)
+            {
+                if (tmpCollections.ContainsKey(scanRsName))
+                {
+                    tmpCollections[scanRsName].Add(tmp);
+                }
+                else
+                {
+                    IList<IDev2Definition> newList = new List<IDev2Definition>();
+                    newList.Add(tmp);
+                    tmpCollections.Add(scanRsName, newList);
+                    tmpNames.Add(scanRsName);
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(scanRsName))
+                {
+                    if (tmpCollections.ContainsKey(scanRsName))
+                    {
+                        tmpCollections[scanRsName].Add(tmp);
+                    }
+                    else
+                    {
+                        IList<IDev2Definition> newList = new List<IDev2Definition>();
+                        newList.Add(tmp);
+                        tmpCollections.Add(scanRsName, newList);
+                        tmpNames.Add(scanRsName);
+                    }
+                }
+            }
+        }
     }
 }

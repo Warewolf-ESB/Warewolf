@@ -77,7 +77,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 }
             }
         }
-        
+
         void ItemPropertyChanged(object sender, PropertyChangedEventArgs e) => _modelItem.SetProperty(nameof(Inputs), _inputs.ToList());
 
         void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)

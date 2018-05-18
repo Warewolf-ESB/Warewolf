@@ -104,6 +104,6 @@ namespace Dev2.Data.Tests.Operations
             var raw = activityOperationsBroker.PutRaw(scrEndPoint,
                 new Dev2PutRawOperationTO(WriteType.AppendTop, "Some content to write"));
             Assert.AreEqual("Success", raw);
-        }        
+        }
     }
 }

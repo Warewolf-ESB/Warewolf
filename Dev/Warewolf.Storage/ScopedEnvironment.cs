@@ -45,8 +45,14 @@ namespace Warewolf.Storage
             return magic;
 
         }
-
-        public void AssignWithFrame(IAssignValue values, int update)
+		public void AssignWithFrame(IEnumerable<IAssignValue> values, int update)
+		{
+			foreach (var value in values)
+			{
+				AssignWithFrame(value, update);
+			}
+		}
+		public void AssignWithFrame(IAssignValue values, int update)
         {
             var name = UpdateDataSourceWithIterativeValue(_datasource, update, values.Name);
             var valuerep = UpdateDataSourceWithIterativeValue(_datasource, update, values.Value);
@@ -118,14 +124,12 @@ namespace Warewolf.Storage
             if (s.Contains("[[@"))
             {
                 var res = _inner.Eval(s, 0);
-                if (res.IsWarewolfAtomResult)
+                if (res.IsWarewolfAtomResult && res is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
                 {
-                    if (res is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
-                    {
-                        var resClause = clause.Invoke(atom.Item);
-                        _inner.AssignJson(new AssignValue(s, resClause.ToString()), 0);
-                    }
+                    var resClause = clause.Invoke(atom.Item);
+                    _inner.AssignJson(new AssignValue(s, resClause.ToString()), 0);
                 }
+
             }
             else
             {
@@ -192,6 +196,14 @@ namespace Warewolf.Storage
             _datasource = ds;
         }
 
-       
+        public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update)
+        {
+            return _inner.EvalAsTable(recordsetExpression, update);
+        }
+
+        public IEnumerable<Tuple<string, DataStorage.WarewolfAtom>[]> EvalAsTable(string recordsetExpression, int update, bool throwsifnotexists)
+        {
+            return _inner.EvalAsTable(recordsetExpression, update, throwsifnotexists);
+        }
     }
 }

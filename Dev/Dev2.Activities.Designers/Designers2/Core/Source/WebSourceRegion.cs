@@ -222,13 +222,11 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
-                if (!Equals(value, _selectedSource) && _selectedSource != null)
+                if (!Equals(value, _selectedSource) && _selectedSource != null && !string.IsNullOrEmpty(_selectedSource.HostName))
                 {
-                    if (!string.IsNullOrEmpty(_selectedSource.HostName))
-                    {
-                        StorePreviousValues(_selectedSource.Id);
-                    }
+                    StorePreviousValues(_selectedSource.Id);
                 }
+
                 if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
@@ -239,6 +237,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                         region.ObjectResult = string.Empty;
                         region.IsObject = false;
                         region.ObjectName = string.Empty;
+                        
                     }
                 }
                 RestoreIfPrevious(value);

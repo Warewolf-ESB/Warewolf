@@ -51,14 +51,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             var resourceIds = JsonConvert.DeserializeObject<List<string>>(resourceIdsString).Select(Guid.Parse);
                 Dev2Logger.Info("Get Dependencies On List. " + resourceIdsString, GlobalConstants.WarewolfInfo);
-            if(!string.IsNullOrEmpty(dependsOnMeString))
-            {
-                if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
+                if (!string.IsNullOrEmpty(dependsOnMeString) && !bool.TryParse(dependsOnMeString, out dependsOnMe))
                 {
                     dependsOnMe = false;
                 }
-            }
-            if(dependsOnMe)
+
+                if (dependsOnMe)
             {
                 //TODO : other way
             }

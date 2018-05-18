@@ -24,7 +24,7 @@ namespace ActivityUnitTests.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    
+
     public class DotNetDateTimeDifferenceTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -77,7 +77,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("9477", results[1]);
             Assert.AreEqual("9090", results[2]);
         }
-        
+
         [TestMethod]
         public void Blank_InputFormat_Expected_Error()
         {
@@ -95,7 +95,7 @@ namespace ActivityUnitTests.ActivityTests
 
             // remove test datalist ;)
             Assert.IsNull(actual);
-        }              
+        }
         #endregion Positive Test Cases
 
         #region Error Test Cases
@@ -144,7 +144,8 @@ namespace ActivityUnitTests.ActivityTests
         [TestCategory("DsfDateTimeDifferenceActivity_Equality")]
         public void DsfDateTimeDifferenceActivity_Expect_Equal()
         {
-            var activity1 = new DsfDotNetDateTimeDifferenceActivity {
+            var activity1 = new DsfDotNetDateTimeDifferenceActivity
+            {
                 Input1 = "[[recset1(*).f1]]",
                 Input2 = "[[recset2(*).f2]]",
                 InputFormat = "dd/MM/yyyy",

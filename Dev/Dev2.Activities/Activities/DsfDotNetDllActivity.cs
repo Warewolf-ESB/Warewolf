@@ -14,8 +14,6 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
 
-
-
 namespace Dev2.Activities
 {
     //[ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
@@ -33,8 +31,7 @@ namespace Dev2.Activities
             Type = "DotNet DLL Connector";
             DisplayName = "DotNet DLL";
         }
-
-
+        
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             tmpErrors = new ErrorResultTO();
@@ -48,8 +45,7 @@ namespace Dev2.Activities
                 tmpErrors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
-
-                
+            
             ExecuteService(update, out tmpErrors, Method, Namespace, dataObject);
         }
 
@@ -71,43 +67,47 @@ namespace Dev2.Activities
 
             try
             {
-                while (itrCollection.HasMoreData())
-                {
-                    var pos = 0;
-                    foreach (var itr in itrs)
-                    {
-                        var injectVal = itrCollection.FetchNextValue(itr);
-                        var param = methodParameters.ToList()[pos];
-
-
-                        param.Value = param.EmptyToNull &&
-                                      (injectVal == null ||
-                                       string.Compare(injectVal, string.Empty,
-                                           StringComparison.InvariantCultureIgnoreCase) == 0)
-                            ? null
-                            : injectVal;
-
-                        pos++;
-                    }                    
-                    if (!IsObject)
-                    {
-                        var i = 0;
-                        foreach (var serviceOutputMapping in Outputs)
-                        {
-                            OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
-                            i++;
-                        }
-                        var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
-                        args.OutputFormatter = outputFormatter;
-                    }
-                    var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
-                    ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
-                    ResponseManager.PushResponseIntoEnvironment(result, update, dataObject,false);
-                }
+                TryExecute(update, dataObject, itrs, itrCollection, methodParameters, args);
             }
             catch (Exception e)
             {
                 errors.AddError(e.Message);
+            }
+        }
+
+        private void TryExecute(int update, IDSFDataObject dataObject, List<IWarewolfIterator> itrs, IWarewolfListIterator itrCollection, List<MethodParameter> methodParameters, PluginInvokeArgs args)
+        {
+            while (itrCollection.HasMoreData())
+            {
+                var pos = 0;
+                foreach (var itr in itrs)
+                {
+                    var injectVal = itrCollection.FetchNextValue(itr);
+                    var param = methodParameters.ToList()[pos];
+                    
+                    param.Value = param.EmptyToNull &&
+                                  (injectVal == null ||
+                                   string.Compare(injectVal, string.Empty,
+                                       StringComparison.InvariantCultureIgnoreCase) == 0)
+                        ? null
+                        : injectVal;
+
+                    pos++;
+                }
+                if (!IsObject)
+                {
+                    var i = 0;
+                    foreach (var serviceOutputMapping in Outputs)
+                    {
+                        OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
+                        i++;
+                    }
+                    var outputFormatter = OutputFormatterFactory.CreateOutputFormatter(OutputDescription);
+                    args.OutputFormatter = outputFormatter;
+                }
+                var result = PluginServiceExecutionFactory.InvokePlugin(args).ToString();
+                ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
+                ResponseManager.PushResponseIntoEnvironment(result, update, dataObject, false);
             }
         }
 

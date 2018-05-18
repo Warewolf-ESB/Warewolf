@@ -687,28 +687,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("TestModel_NewTest")]
-        public void TestModel_SelectedTestStep_WhenSet_ShouldFirePropertyChanged()
-        {
-            //------------Setup for test--------------------------
-            var testModel = new ServiceTestModel(Guid.NewGuid());
-            var _wasCalled = false;
-            testModel.PropertyChanged += (sender, args) =>
-            {
-                if (args.PropertyName == "SelectedTestStep")
-                {
-                    _wasCalled = true;
-                }
-            };
-            //------------Execute Test---------------------------
-            testModel.SelectedTestStep = new Mock<IServiceTestStep>().Object;
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(testModel.SelectedTestStep);
-            Assert.IsTrue(_wasCalled);
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ServiceTestModel_AddRow")]
         public void ServiceTestModel_AddRow_WhenRecordsetValueUpdated_ShouldAddNewRow()
