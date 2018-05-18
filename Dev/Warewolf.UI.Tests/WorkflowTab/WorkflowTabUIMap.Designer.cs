@@ -91,6 +91,18 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mMainStudioWindow;
             }
         }
+        
+        public UIWarewolfDEV2CANDICEDWindow UIWarewolfDEV2CANDICEDWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2CANDICEDWindow == null))
+                {
+                    this.mUIWarewolfDEV2CANDICEDWindow = new UIWarewolfDEV2CANDICEDWindow();
+                }
+                return this.mUIWarewolfDEV2CANDICEDWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -99,6 +111,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
+        
+        private UIWarewolfDEV2CANDICEDWindow mUIWarewolfDEV2CANDICEDWindow;
         #endregion
     }
     
@@ -307,6 +321,18 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             }
         }
         
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        
         public WpfTabPage Unsaved2
         {
             get
@@ -327,6 +353,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         
         #region Fields
         private WorkflowTab mWorkflowTab;
+        
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
         
         private WpfTabPage mUnsaved2;
         #endregion
@@ -7484,6 +7512,97 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTabPage DragAndDropMergeResource2
+        {
+            get
+            {
+                if ((this.mDragAndDropMergeResource2 == null))
+                {
+                    this.mDragAndDropMergeResource2 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mDragAndDropMergeResource2.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mDragAndDropMergeResource2.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mDragAndDropMergeResource2;
+            }
+        }
+        
+        public WpfTabPage DragAndDropMergeResource1
+        {
+            get
+            {
+                if ((this.mDragAndDropMergeResource1 == null))
+                {
+                    this.mDragAndDropMergeResource1 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mDragAndDropMergeResource1.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mDragAndDropMergeResource1.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mDragAndDropMergeResource1;
+            }
+        }
+        
+        public WpfTabPage ResourceForSaveAllTabs1
+        {
+            get
+            {
+                if ((this.mResourceForSaveAllTabs1 == null))
+                {
+                    this.mResourceForSaveAllTabs1 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mResourceForSaveAllTabs1.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mResourceForSaveAllTabs1.SearchProperties[WpfTabPage.PropertyNames.Instance] = "2";
+                    this.mResourceForSaveAllTabs1.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mResourceForSaveAllTabs1;
+            }
+        }
+        
+        public WpfTabPage ResourceForSaveAllTabs2
+        {
+            get
+            {
+                if ((this.mResourceForSaveAllTabs2 == null))
+                {
+                    this.mResourceForSaveAllTabs2 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mResourceForSaveAllTabs2.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mResourceForSaveAllTabs2.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mResourceForSaveAllTabs2;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTabPage mDragAndDropMergeResource2;
+        
+        private WpfTabPage mDragAndDropMergeResource1;
+        
+        private WpfTabPage mResourceForSaveAllTabs1;
+        
+        private WpfTabPage mResourceForSaveAllTabs2;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
     public class TabManSplitPane1 : WpfCustom
     {
         
@@ -8205,6 +8324,75 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         
         #region Fields
         private WpfEdit mOutputsAutoCompleteTextBoxText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2CANDICEDWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2CANDICEDWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\CANDICE.DANIEL)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
+                {
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
+                }
+                return this.mUIUI_SplitPane_AutoIDCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
+    {
+        
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new WpfTabList(this);
+                    #region Search Criteria
+                    this.mUIUI_TabManager_AutoIDTabList.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+                    this.mUIUI_TabManager_AutoIDTabList.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTabList mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
 }
