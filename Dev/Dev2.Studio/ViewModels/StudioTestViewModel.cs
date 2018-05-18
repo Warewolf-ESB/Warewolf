@@ -138,20 +138,16 @@ namespace Dev2.ViewModels
                         case MessageBoxResult.No:
                             return true;
                         case MessageBoxResult.Yes:
-                            if (ViewModel.HasDuplicates())
-                            {
-                                ViewModel.ShowDuplicatePopup();
-                                return false;//dont close the tab
-                            }
-                            if (ViewModel.CanSave)
-                            {
-                                ViewModel.Save();
-                            }
+                            TrySave();
                             break;
                         case MessageBoxResult.OK:
                             break;
                         default:
-                            break;
+                            return true;
+                    }
+                    if (result == MessageBoxResult.Yes && ViewModel.HasDuplicates())
+                    {
+                        return false;//dont close the tab
                     }
                 }
             }
@@ -164,6 +160,18 @@ namespace Dev2.ViewModels
                 }                
             }
             return true;
+        }
+
+        private void TrySave()
+        {
+            if (ViewModel.HasDuplicates())
+            {
+                ViewModel.ShowDuplicatePopup();
+            }
+            if (ViewModel.CanSave)
+            {
+                ViewModel.Save();
+            }
         }
 
         #endregion

@@ -165,8 +165,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         {
             //------------Setup for test--------------------------
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
-
-            // Environment.MachineName
+            
             //------------Execute Test---------------------------
             var result = warewolfGroupOps.FormatUserForInsert("Guest", "MyPC");
 

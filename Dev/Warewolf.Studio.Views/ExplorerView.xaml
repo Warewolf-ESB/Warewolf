@@ -125,7 +125,7 @@
                       VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
                       KeyUp="ExplorerTree_OnKeyUp"
-                      Drop="DropTreeDrop"
+                      Drop="TryDropTreeDrop"
                       DragOver="ExplorerTree_OnDragOver"
                       DragLeave="ExplorerTree_OnDragLeave"
                       DragEnter="ExplorerTree_OnDragEnter">

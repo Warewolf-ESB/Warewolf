@@ -100,7 +100,7 @@ namespace Dev2.Activities.Sharepoint
 
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
+        protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
            
             _debugInputs = new List<DebugItem>();
@@ -129,126 +129,7 @@ namespace Dev2.Activities.Sharepoint
             {
                 try
                 {
-                    var path = colItr.FetchNextValue(inputItr);
-
-                    if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
-                    {
-                        if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                        {
-                            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
-
-                            if (IsFoldersSelected)
-                            {
-                                var folders = GetSharePointFolders(sharepointSource, path);
-                                var indexToUpsertTo = 1;
-
-                                foreach (var folder in folders)
-                                {
-                                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                                    indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                    outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), folder));
-                                    indexToUpsertTo++;
-                                }
-                            }
-                            if (IsFilesSelected)
-                            {
-                                var files = GetSharePointFiles(sharepointSource, path);
-                                var indexToUpsertTo = 1;
-
-                                foreach (var file in files)
-                                {
-                                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                        indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                    outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
-                                    indexToUpsertTo++;
-                                }
-                            }
-
-                            if (IsFilesAndFoldersSelected)
-                            {
-                                var folderAndPathList = new List<string>();
-                                folderAndPathList.AddRange(GetSharePointFiles(sharepointSource, path));
-                                folderAndPathList.AddRange(GetSharePointFolders(sharepointSource, path));
-
-                                var indexToUpsertTo = 1;
-
-                                foreach (var fileAndfolder in folderAndPathList)
-                                {
-                                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                        indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                    outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), fileAndfolder));
-                                    indexToUpsertTo++;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
-                            {
-                                if (IsFoldersSelected)
-                                {
-                                    var folders = GetSharePointFolders(sharepointSource, path);
-
-                                    foreach (var folder in folders)
-                                    {
-                                        outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
-                                    }
-                                }
-                                if (IsFilesSelected)
-                                {
-                                    var files = GetSharePointFiles(sharepointSource, path);
-
-                                    foreach (var file in files)
-                                    {
-                                        outputs.Add(DataListFactory.CreateOutputTO(Result, file));
-                                    }
-                                }
-
-                                if (IsFilesAndFoldersSelected)
-                                {
-                                    var folderAndPathList = new List<string>();
-                                    folderAndPathList.AddRange(GetSharePointFiles(sharepointSource, path));
-                                    folderAndPathList.AddRange(GetSharePointFolders(sharepointSource, path));
-
-                                    foreach (var fileAndfolder in folderAndPathList)
-                                    {
-                                        outputs.Add(DataListFactory.CreateOutputTO(Result, fileAndfolder));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (IsFoldersSelected)
-                        {
-                            var folders = GetSharePointFolders(sharepointSource, path);
-
-                            var xmlList = string.Join(",", folders.Select(c => c));
-                            outputs.Add(DataListFactory.CreateOutputTO(Result));
-                            outputs.Last().OutputStrings.Add(xmlList);
-                        }
-                        if (IsFilesSelected)
-                        {
-                            var files = GetSharePointFiles(sharepointSource, path);
-
-                            var xmlList = string.Join(",", files.Select(c => c));
-                            outputs.Add(DataListFactory.CreateOutputTO(Result));
-                            outputs.Last().OutputStrings.Add(xmlList);
-                        }
-
-                        if (IsFilesAndFoldersSelected)
-                        {
-                            var folderAndPathList = new List<string>();
-                            folderAndPathList.AddRange(GetSharePointFiles(sharepointSource, path));
-                            folderAndPathList.AddRange(GetSharePointFolders(sharepointSource, path));
-
-                            var xmlList = string.Join(",", folderAndPathList.Select(c => c));
-                            outputs.Add(DataListFactory.CreateOutputTO(Result));
-                            outputs.Last().OutputStrings.Add(xmlList);
-                        }
-                    }
+                    ExecuteConcreteAction(outputs, colItr, sharepointSource, inputItr);
                 }
                 catch (Exception e)
                 {
@@ -259,6 +140,150 @@ namespace Dev2.Activities.Sharepoint
             }
 
             return outputs;
+        }
+
+        private void ExecuteConcreteAction(IList<OutputTO> outputs, WarewolfListIterator colItr, SharepointSource sharepointSource, WarewolfIterator inputItr)
+        {
+            var path = colItr.FetchNextValue(inputItr);
+
+            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
+            {
+                if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                {
+                    var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+                    var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+
+                    if (IsFoldersSelected)
+                    {
+                        AddAllFolders(outputs, sharepointSource, path, recsetName, fieldName);
+                    }
+                    if (IsFilesSelected)
+                    {
+                        AddAllFiles(outputs, sharepointSource, path, recsetName, fieldName);
+                    }
+
+                    if (IsFilesAndFoldersSelected)
+                    {
+                        AddAllFilesAndFolders(outputs, sharepointSource, path, recsetName, fieldName);
+                    }
+                }
+                else
+                {
+                    AddBlankIndexDebugOutputs(outputs, sharepointSource, path);
+                }
+            }
+            else
+            {
+                if (IsFoldersSelected)
+                {
+                    var folders = GetSharePointFolders(sharepointSource, path);
+
+                    var xmlList = string.Join(",", folders.Select(c => c));
+                    outputs.Add(DataListFactory.CreateOutputTO(Result));
+                    outputs.Last().OutputStrings.Add(xmlList);
+                }
+                if (IsFilesSelected)
+                {
+                    var files = GetSharePointFiles(sharepointSource, path);
+
+                    var xmlList = string.Join(",", files.Select(c => c));
+                    outputs.Add(DataListFactory.CreateOutputTO(Result));
+                    outputs.Last().OutputStrings.Add(xmlList);
+                }
+
+                if (IsFilesAndFoldersSelected)
+                {
+                    var folderAndPathList = new List<string>();
+                    folderAndPathList.AddRange(GetSharePointFiles(sharepointSource, path));
+                    folderAndPathList.AddRange(GetSharePointFolders(sharepointSource, path));
+
+                    var xmlList = string.Join(",", folderAndPathList.Select(c => c));
+                    outputs.Add(DataListFactory.CreateOutputTO(Result));
+                    outputs.Last().OutputStrings.Add(xmlList);
+                }
+            }
+        }
+
+        void AddBlankIndexDebugOutputs(IList<OutputTO> outputs, SharepointSource sharepointSource, string path)
+        {
+            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+            {
+                if (IsFoldersSelected)
+                {
+                    var folders = GetSharePointFolders(sharepointSource, path);
+
+                    foreach (var folder in folders)
+                    {
+                        outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                    }
+                }
+                if (IsFilesSelected)
+                {
+                    var files = GetSharePointFiles(sharepointSource, path);
+
+                    foreach (var file in files)
+                    {
+                        outputs.Add(DataListFactory.CreateOutputTO(Result, file));
+                    }
+                }
+
+                if (IsFilesAndFoldersSelected)
+                {
+                    var folderAndPathList = new List<string>();
+                    folderAndPathList.AddRange(GetSharePointFiles(sharepointSource, path));
+                    folderAndPathList.AddRange(GetSharePointFolders(sharepointSource, path));
+
+                    foreach (var fileAndfolder in folderAndPathList)
+                    {
+                        outputs.Add(DataListFactory.CreateOutputTO(Result, fileAndfolder));
+                    }
+                }
+            }
+        }
+
+        private void AddAllFilesAndFolders(IList<OutputTO> outputs, SharepointSource sharepointSource, string path, string recsetName, string fieldName)
+        {
+            var folderAndPathList = new List<string>();
+            folderAndPathList.AddRange(GetSharePointFiles(sharepointSource, path));
+            folderAndPathList.AddRange(GetSharePointFolders(sharepointSource, path));
+
+            var indexToUpsertTo = 1;
+
+            foreach (var fileAndfolder in folderAndPathList)
+            {
+                var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                    indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), fileAndfolder));
+                indexToUpsertTo++;
+            }
+        }
+
+        private void AddAllFiles(IList<OutputTO> outputs, SharepointSource sharepointSource, string path, string recsetName, string fieldName)
+        {
+            var files = GetSharePointFiles(sharepointSource, path);
+            var indexToUpsertTo = 1;
+
+            foreach (var file in files)
+            {
+                var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                    indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
+                indexToUpsertTo++;
+            }
+        }
+
+        private void AddAllFolders(IList<OutputTO> outputs, SharepointSource sharepointSource, string path, string recsetName, string fieldName)
+        {
+            var folders = GetSharePointFolders(sharepointSource, path);
+            var indexToUpsertTo = 1;
+
+            foreach (var folder in folders)
+            {
+                var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                                indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), folder));
+                indexToUpsertTo++;
+            }
         }
 
         void ValidateRequest()

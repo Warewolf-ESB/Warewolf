@@ -147,28 +147,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             foreach (var resTestStep in res.TestSteps)
                             {
-                                var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
-                                foreach (var serviceTestStep in serviceTestSteps)
-                                {
-                                    var resServiceTestStep = serviceTestStep as ServiceTestStep;
-                                    if (resServiceTestStep == null)
-                                    {
-                                        continue;
-                                    }
-
-                                    UpdateTestStepResult(resServiceTestStep, resTestStep);
-
-                                    var serviceTestOutputs = resTestStep.StepOutputs;
-                                    if (serviceTestOutputs.Count > 0)
-                                    {
-                                        resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
-                                    }
-                                    var children = resTestStep.Children;
-                                    if (children.Count > 0)
-                                    {
-                                        SetChildrenTestResult(children, resServiceTestStep.Children);
-                                    }
-                                }
+                                RunTestStep(selectedServiceTest, resTestStep);
                             }
                         }
 
@@ -185,6 +164,32 @@ namespace Warewolf.Studio.ViewModels
                     selectedServiceTest.IsTestRunning = false;
                     selectedServiceTest.IsTestLoading = false;
                 });
+        }
+
+        private void RunTestStep(IServiceTestModel selectedServiceTest, IServiceTestStep resTestStep)
+        {
+            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
+            foreach (var serviceTestStep in serviceTestSteps)
+            {
+                var resServiceTestStep = serviceTestStep as ServiceTestStep;
+                if (resServiceTestStep == null)
+                {
+                    continue;
+                }
+
+                UpdateTestStepResult(resServiceTestStep, resTestStep);
+
+                var serviceTestOutputs = resTestStep.StepOutputs;
+                if (serviceTestOutputs.Count > 0)
+                {
+                    resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
+                }
+                var children = resTestStep.Children;
+                if (children.Count > 0)
+                {
+                    SetChildrenTestResult(children, resServiceTestStep.Children);
+                }
+            }
         }
 
         static void UpdateTestStepResult(ServiceTestStep resServiceTestStep, IServiceTestStep resTestStep)
