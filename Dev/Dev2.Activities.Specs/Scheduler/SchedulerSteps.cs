@@ -130,15 +130,14 @@ namespace Dev2.Activities.Specs.Scheduler
                 if (scheduler.HasErrors)
                 {
                     _scenarioContext["Error"] = scheduler.Error;
+                    Console.WriteLine("Error creating schedule: " + scheduler.Error);
                 }
             }
             catch (Exception e)
             {
-
                 _scenarioContext["Error"] = e.Message;
+                Console.WriteLine("Error creating schedule: " + e.Message);
             }
-
-
         }
 
         void UpdateTrigger(IScheduledResource task, Table table)
@@ -278,16 +277,14 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             try
             {
-
                 var i = 0;
                 var x = new TaskService();
                 x.GetFolder("Warewolf");
                 var task = x.FindTask(scheduleName);
+                Assert.IsNotNull(task, "Task " + scheduleName + " not found in Warewolf folder");
                 do
                 {
                     task.Run();
-
-
                     const int TimeOut = 10;
                     var time = 0;
                     while (task.State == TaskState.Running && time < TimeOut)
@@ -297,15 +294,12 @@ namespace Dev2.Activities.Specs.Scheduler
                     }
                     i++;
 
-
                 } while (i < times);
             }
             catch (Exception e)
             {
-
                 _scenarioContext["Error"] = e;
             }
-
         }
 
         public static bool AccountExists(string name)
@@ -368,8 +362,11 @@ namespace Dev2.Activities.Specs.Scheduler
         [AfterScenario("@Scheduler")]
         public static void CleanupAfterTestScheduler()
         {
-            var vm = _scenarioContext["Scheduler"] as SchedulerViewModel;
-            vm?.DeleteCommand.Execute(vm.SelectedTask);
+            if (_scenarioContext.ContainsKey("Scheduler"))
+            {
+                var vm = _scenarioContext["Scheduler"] as SchedulerViewModel;
+                vm?.DeleteCommand.Execute(vm.SelectedTask);
+            }
         }
     }
 }

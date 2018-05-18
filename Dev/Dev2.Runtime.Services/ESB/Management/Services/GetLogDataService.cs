@@ -30,29 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         ExecutionId = groupedEntry.Key,
                         Status = "Success"
                     };
-                    foreach (var s in groupedEntry)
-                    {
-                        if (s.Message.StartsWith("Started Execution"))
-                        {
-                            logEntry.StartDateTime = ParseDate(s.DateTime);
-                        }
-                        if (s.LogType == "ERROR")
-                        {
-                            logEntry.Status = "ERROR";
-                        }
-                        if (s.Message.StartsWith("Completed Execution"))
-                        {
-                            logEntry.CompletedDateTime = ParseDate(s.DateTime);
-                        }
-                        if (s.Message.StartsWith("About to execute"))
-                        {
-                            logEntry.User = GetUser(s.Message)?.TrimStart().TrimEnd() ?? "";
-                        }
-                        if (!string.IsNullOrEmpty(s.Url))
-                        {
-                            logEntry.Url = s.Url;
-                        }
-                    }
+                    logEntry = UpdateLogEntry(groupedEntry, logEntry);
                     if (logEntry.StartDateTime != DateTime.MinValue)
                     {
                         logEntry.ExecutionTime = (logEntry.CompletedDateTime - logEntry.StartDateTime).Milliseconds.ToString();
@@ -67,6 +45,34 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Get Log Data ServiceError", e, GlobalConstants.WarewolfInfo);
             }
             return serializer.SerializeToBuilder("");
+        }
+
+        LogEntry UpdateLogEntry(IGrouping<dynamic, dynamic> groupedEntry, LogEntry logEntry)
+        {
+            foreach (var s in groupedEntry)
+            {
+                if (s.Message.StartsWith("Started Execution"))
+                {
+                    logEntry.StartDateTime = ParseDate(s.DateTime);
+                }
+                if (s.LogType == "ERROR")
+                {
+                    logEntry.Status = "ERROR";
+                }
+                if (s.Message.StartsWith("Completed Execution"))
+                {
+                    logEntry.CompletedDateTime = ParseDate(s.DateTime);
+                }
+                if (s.Message.StartsWith("About to execute"))
+                {
+                    logEntry.User = GetUser(s.Message)?.TrimStart().TrimEnd() ?? "";
+                }
+                if (!string.IsNullOrEmpty(s.Url))
+                {
+                    logEntry.Url = s.Url;
+                }
+            }
+            return logEntry;
         }
 
         string GetValue(string key, Dictionary<string, StringBuilder> values)

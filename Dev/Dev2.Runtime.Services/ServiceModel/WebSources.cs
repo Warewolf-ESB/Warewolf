@@ -216,19 +216,23 @@ namespace Dev2.Runtime.ServiceModel
                     source.Client.Credentials = new NetworkCredential(source.UserName, source.Password);
                 }
                 source.Client.Headers.Add("user-agent", GlobalConstants.UserAgentString);
-
-                if (headers != null)
-                {
-                    foreach (var header in headers)
-                    {
-                        if (header != ":")
-                        {
-                            source.Client.Headers.Add(header.Trim());
-                        }
-                    }
-                }
+                AddHeaders(source, headers);
                 ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
+            }
+        }
+
+        static void AddHeaders(WebSource source, IEnumerable<string> headers)
+        {
+            if (headers != null)
+            {
+                foreach (var header in headers)
+                {
+                    if (header != ":")
+                    {
+                        source.Client.Headers.Add(header.Trim());
+                    }
+                }
             }
         }
     }

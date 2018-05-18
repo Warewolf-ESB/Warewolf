@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -17,6 +16,8 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 
+
+
 namespace Dev2.Studio.Core
 {
     public class UpdateProxy : ProxyBase, IUpdateManager
@@ -27,7 +28,7 @@ namespace Dev2.Studio.Core
             : base(communicationControllerFactory, connection)
         {
         }
-
+        
         public void SaveServerSource(IServerSource resource, Guid workspaceId)
         {
             var con = Connection;
@@ -45,7 +46,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-
+        
         public void TestConnection(IServerSource resource)
         {
             var con = Connection;
@@ -63,7 +64,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfTestException(output.Message.ToString(), null);
             }
         }
-
+        
         public IList<string> TestDbConnection(IDbSource resource)
         {
             var con = Connection;
@@ -83,8 +84,26 @@ namespace Dev2.Studio.Core
 
             return serialiser.Deserialize<List<string>>(output.Message);
         }
+		public IList<string> TestSqliteConnection(ISqliteDBSource resource)
+		{
+			var con = Connection;
+			var comsController = CommunicationControllerFactory.CreateController("TestSqliteService");
+			var serialiser = new Dev2JsonSerializer();
+			comsController.AddPayloadArgument("SqliteSource", serialiser.SerializeToBuilder(resource));
+			var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
+			if (output == null)
+			{
+				throw new WarewolfTestException(ErrorResource.UnableToContactServer, null);
+			}
 
-        public void SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID)
+			if (output.HasError)
+			{
+				throw new WarewolfTestException(output.Message.ToString(), null);
+			}
+
+			return serialiser.Deserialize<List<string>>(output.Message);
+		}
+		public void SaveDbSource(IDbSource toDbSource, Guid serverWorkspaceID)
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveDbSourceService");
@@ -96,8 +115,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-
-        [ExcludeFromCodeCoverage]
+        
         public void SaveDbService(IDatabaseService dbService)
         {
             var con = Connection;
@@ -110,8 +128,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-
-        [ExcludeFromCodeCoverage]
+        
         public DataTable TestDbService(IDatabaseService inputValues)
         {
             var con = Connection;
@@ -131,7 +148,7 @@ namespace Dev2.Studio.Core
 
             return serialiser.Deserialize<DataTable>(output.Message);
         }
-
+        
         public void SaveWebserviceSource(IWebServiceSource resource, Guid serverWorkspaceId)
         {
             var con = Connection;
@@ -144,7 +161,7 @@ namespace Dev2.Studio.Core
                 throw new WarewolfSaveException(output.Message.ToString(), null);
             }
         }
-
+        
         public void TestConnection(IWebServiceSource resource)
         {
             var con = Connection;
@@ -203,7 +220,6 @@ namespace Dev2.Studio.Core
             resource.IsSharepointOnline = output.IsSharepointOnline;
         }
 
-        [ExcludeFromCodeCoverage]
         public string TestWebService(IWebService inputValues)
         {
             var con = Connection;
@@ -224,7 +240,6 @@ namespace Dev2.Studio.Core
             return output.Message.ToString();
         }
 
-        [ExcludeFromCodeCoverage]
         public void SaveWebservice(IWebService model, Guid serverWorkspaceID)
         {
             var con = Connection;
@@ -403,6 +418,7 @@ namespace Dev2.Studio.Core
             }
         }
 
+
         public string TestRabbitMQServiceSource(IRabbitMQServiceSourceDefinition rabbitMqServiceSource)
         {
             var con = Connection;
@@ -456,7 +472,6 @@ namespace Dev2.Studio.Core
             return output.Message.ToString();
         }
 
-        [ExcludeFromCodeCoverage]
         public string TestWcfService(IWcfService service)
         {
             var con = Connection;

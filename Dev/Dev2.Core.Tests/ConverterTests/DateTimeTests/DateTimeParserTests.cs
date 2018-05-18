@@ -15,7 +15,7 @@ using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Tests.ConverterTests.DateTimeTests
 {
@@ -1925,8 +1925,31 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             //---------------Test Result -----------------------
             Assert.AreEqual(7 , int.Parse(result.ToString()));
         }
+
+        [TestMethod]
+        public void ProcessEscapedDateTimeRegion_WhileNotOnEscapeCharacter_ExpectBackslashFormatError()
+        {
+            //---------------Set up test pack-------------------
+            string error = "";
+            string currentValue = "";
+            bool nothingDied = false;
+            //---------------Execute Test ----------------------
+            DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref error, 'a', DateTimeParser.LiteralRegionStates.InsideInferredLiteralRegion, ref currentValue, ref nothingDied);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(ErrorResource.BackSlashFormatError, error, "Processing an unescaped DateTime region did not throw backslash format error.");
+        }
+
+        [TestMethod]
+        public void ProcessInferredEscapedDateTimeRegion_WhileNotOnEscapeCharacter_ExpectBackslashFormatError()
+        {
+            //---------------Set up test pack-------------------
+            string error = "";
+            string currentValue = "";
+            bool nothingDied = false;
+            //---------------Execute Test ----------------------
+            DateTimeLiteralProcessor.ProcessInsideInferredEscapedLiteral(ref error, 'a', DateTimeParser.LiteralRegionStates.InsideInferredLiteralRegion, ref currentValue, ref nothingDied);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(ErrorResource.BackSlashFormatError, error, "Processing an unescaped inferred DateTime region did not throw backslash format error.");
+        }
     }
-
-
-
 }

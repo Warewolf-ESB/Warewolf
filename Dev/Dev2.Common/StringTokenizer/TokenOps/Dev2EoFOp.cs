@@ -19,14 +19,14 @@ namespace Dev2.Common
         public bool IsFinalOp() => false;
 
         public int OpLength() => 0;
-    
+
         public string ExecuteOperation(ref StringBuilder sourceString, int startIdx, int len, bool isReversed)
         {
             if (isReversed)
             {
                 return sourceString.Substring(0, len);
             }
-            return sourceString.Substring(startIdx,len-startIdx);
+            return sourceString.Substring(startIdx, len - startIdx);
         }
     }
 }

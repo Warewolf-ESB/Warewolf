@@ -411,38 +411,43 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
             var selectedSharepointServer = SelectedSharepointServer;
             var selectedList = SelectedList;
-            
+
             _asyncWorker.Start(() => GetListFields(selectedSharepointServer, selectedList), columnList =>
                 
             {
                 if(columnList != null)
                 {
-                    var fieldMappings = columnList.Select(mapping =>
-                    {
-                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName.Replace(" ","").Replace(".",""),GetValidVariableName(mapping),"*");
-                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
-                        return sharepointReadListTo;
-                    }).ToList();
-                    if (ReadListItems == null || ReadListItems.Count == 0 || isFromListChange)
-                    {
-                        ReadListItems = fieldMappings;
-                    }
-                    else
-                    {
-                        foreach(var sharepointReadListTo in fieldMappings)
-                        {
-                            var listTo = sharepointReadListTo;
-                            var readListTo = ReadListItems.FirstOrDefault(to => to.FieldName == listTo.FieldName);
-                            if(readListTo == null)
-                            {
-                                ReadListItems.Add(sharepointReadListTo);
-                            }
-                        }
-                    }
-                    ListItems = ReadListItems;
+                    LoadColumnListFields(isFromListChange, columnList, selectedList);
                 }
                 continueWith?.Invoke();
             });
+        }
+
+        private void LoadColumnListFields(bool isFromListChange, List<ISharepointFieldTo> columnList, SharepointListTo selectedList)
+        {
+            var fieldMappings = columnList.Select(mapping =>
+            {
+                var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
+                var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
+                return sharepointReadListTo;
+            }).ToList();
+            if (ReadListItems == null || ReadListItems.Count == 0 || isFromListChange)
+            {
+                ReadListItems = fieldMappings;
+            }
+            else
+            {
+                foreach (var sharepointReadListTo in fieldMappings)
+                {
+                    var listTo = sharepointReadListTo;
+                    var readListTo = ReadListItems.FirstOrDefault(to => to.FieldName == listTo.FieldName);
+                    if (readListTo == null)
+                    {
+                        ReadListItems.Add(sharepointReadListTo);
+                    }
+                }
+            }
+            ListItems = ReadListItems;
         }
 
         static string GetValidVariableName(ISharepointFieldTo mapping)
