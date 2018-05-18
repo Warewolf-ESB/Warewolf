@@ -20,8 +20,7 @@ using Newtonsoft.Json;
 namespace Dev2
 {
     public static class StringExtension
-    {
-    
+    {    
         public static bool IsDate(this string payload)
         {
             var result = false;
@@ -113,15 +112,9 @@ namespace Dev2
             }
             return false;
         }
-
-        /// <summary>
-        /// Checks if the info contained in data is well formed XML
-        /// </summary>
+        
         public static bool IsXml(string data, out bool isFragment) => IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
-
-        /// <summary>
-        /// Checks if the info contained in data is well formed XML
-        /// </summary>
+        
         static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
             var trimedData = data.Trim();
@@ -136,28 +129,9 @@ namespace Dev2
                 {
                     using (XmlReader reader = XmlReader.Create(tr, IsXmlReaderSettings))
                     {
-
                         try
                         {
-                            long nodeCount = 0;
-                            while (reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
-                            {
-                                nodeCount++;
-
-                                if (reader.NodeType != XmlNodeType.CDATA)
-                                {
-                                    if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
-                                    {
-                                        isHtml = true;
-                                        result = false;
-                                    }
-
-                                    if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
-                                    {
-                                        isFragment = true;
-                                    }
-                                }
-                            }
+                            reader.ReadToEnd(ref isFragment, ref isHtml, ref result);
                         }
                         catch (Exception ex)
                         {
@@ -172,6 +146,29 @@ namespace Dev2
             }
 
             return result;
+        }
+
+        static void ReadToEnd(this XmlReader reader, ref bool isFragment, ref bool isHtml, ref bool result)
+        {
+            long nodeCount = 0;
+            while (reader.Read() && !isHtml && !isFragment && reader.NodeType != XmlNodeType.Document)
+            {
+                nodeCount++;
+
+                if (reader.NodeType != XmlNodeType.CDATA)
+                {
+                     if (reader.NodeType == XmlNodeType.Element && reader.Name.ToLower() == "html" && reader.Depth == 0)
+                    {
+                        isHtml = true;
+                        result = false;
+                    }
+
+                    if (reader.NodeType == XmlNodeType.Element && nodeCount > 1 && reader.Depth == 0)
+                    {
+                        isFragment = true;
+                    }
+                }
+            }
         }
     }
 }

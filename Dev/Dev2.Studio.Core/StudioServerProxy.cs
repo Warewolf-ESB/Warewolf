@@ -87,11 +87,11 @@ namespace Dev2.Studio.Core
             return false;
         }
 
-        public IDeletedFileMetadata Delete(IExplorerItemViewModel explorerItemViewModel)
+        public IDeletedFileMetadata TryDelete(IExplorerItemViewModel explorerItemViewModel)
         {
 
             var explorerDeleteProvider = new ExplorerDeleteProvider(this);
-            var deletedFileMetadata = explorerDeleteProvider.Delete(explorerItemViewModel);
+            var deletedFileMetadata = explorerDeleteProvider.TryDelete(explorerItemViewModel);
             return deletedFileMetadata;
         }
 

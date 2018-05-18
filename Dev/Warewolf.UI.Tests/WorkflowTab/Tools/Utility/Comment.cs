@@ -8,22 +8,42 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
     [CodedUITest]
     public class Comment
     {
-        private const string CommentToolWf = "TestingCommentToolResize";
+        private const string TestingCommentToolForHeightResize = "TestingCommentToolForHeightResize";
+        private const string TestingCommentToolForWidthResize = "TestingCommentToolForWidthResize";
 
         [TestMethod]
         [TestCategory("Utility Tools")]
-        public void CommentTool_EnterText_Save_And_Resize_Then_Debug_UITest()
+        public void CommentTool_EnterText_Save_And_Resize_Height_Then_Debug_UITest()
         {
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.Exists, "Comment Tool does not existon the design surface.");
             //Enter Text
             UtilityToolsUIMap.Enter_Text_Into_CommentTool("Some comment, some comment, some comment,");
             //Save
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"));
-            UIMap.Save_With_Ribbon_Button_And_Dialog(CommentToolWf);
+            UIMap.Save_With_Ribbon_Button_And_Dialog(TestingCommentToolForHeightResize);
             //Resize
             Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"));
-            var newHeight = UtilityToolsUIMap.Expand_Comment_Tool_Size();
+            var newHeight = UtilityToolsUIMap.Expand_Comment_Tool_Height_Size();
             Assert.AreEqual(newHeight, UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.Height);
+            //Debug
+            UIMap.Press_F6();
+            Assert.AreEqual("Comment", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CommentTreeItem.CommentButton.DisplayText);
+        }
+
+        [TestMethod]
+        [TestCategory("Utility Tools")]
+        public void CommentTool_EnterText_Save_And_Resize_Width_Then_Debug_UITest()
+        {
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.Exists, "Comment Tool does not existon the design surface.");
+            //Enter Text
+            UtilityToolsUIMap.Enter_Text_Into_CommentTool("Some comment, some comment, some comment,");
+            //Save
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"));
+            UIMap.Save_With_Ribbon_Button_And_Dialog(TestingCommentToolForWidthResize);
+            //Resize
+            Assert.IsFalse(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText.Contains("*"));
+            var newWidth = UtilityToolsUIMap.Expand_Comment_Tool_Width_Size();
+            Assert.AreEqual(newWidth, UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment.LargeViewContentCustom.Width);
             //Debug
             UIMap.Press_F6();
             Assert.AreEqual("Comment", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.CommentTreeItem.CommentButton.DisplayText);

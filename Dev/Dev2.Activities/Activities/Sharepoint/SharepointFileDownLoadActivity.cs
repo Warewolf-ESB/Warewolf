@@ -90,7 +90,7 @@ namespace Dev2.Activities.Sharepoint
         [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
+        protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {           
             _debugInputs = new List<DebugItem>();
             error = new ErrorResultTO();
@@ -122,48 +122,7 @@ namespace Dev2.Activities.Sharepoint
             {
                 try
                 {
-                    var serverPath = colItr.FetchNextValue(serverInputItr);
-                    var localPath = colItr.FetchNextValue(localInputItr);
-
-                    if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
-                    {
-                        if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                        {
-                            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
-
-                            var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
-
-                            var indexToUpsertTo = 1;
-
-                            foreach (var file in newPath)
-                            {
-                                var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                    indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
-                                indexToUpsertTo++;
-                            }
-                        }
-                        else
-                        {
-                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
-                            {
-                                var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
-                                foreach (var folder in newPath)
-                                {
-                                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
-
-                        var xmlList = string.Join(",", newPath.Select(c => c));
-                        outputs.Add(DataListFactory.CreateOutputTO(Result));
-                        outputs.Last().OutputStrings.Add(xmlList);
-                    }
+                    ExecuteConcreteAction(outputs, colItr, sharepointSource, serverInputItr, localInputItr);
                 }
                 catch (Exception e)
                 {
@@ -174,6 +133,55 @@ namespace Dev2.Activities.Sharepoint
             }
 
             return outputs;
+        }
+
+        private void ExecuteConcreteAction(IList<OutputTO> outputs, WarewolfListIterator colItr, SharepointSource sharepointSource, WarewolfIterator serverInputItr, WarewolfIterator localInputItr)
+        {
+            var serverPath = colItr.FetchNextValue(serverInputItr);
+            var localPath = colItr.FetchNextValue(localInputItr);
+
+            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
+            {
+                if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                {
+                    var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+                    var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+                    var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
+                    var indexToUpsertTo = 1;
+
+                    foreach (var file in newPath)
+                    {
+                        var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                            indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                        outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
+                        indexToUpsertTo++;
+                    }
+                }
+                else
+                {
+                    AddBlankIndexDebugOutputs(outputs, sharepointSource, serverPath, localPath);
+                }
+            }
+            else
+            {
+                var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
+
+                var xmlList = string.Join(",", newPath.Select(c => c));
+                outputs.Add(DataListFactory.CreateOutputTO(Result));
+                outputs.Last().OutputStrings.Add(xmlList);
+            }
+        }
+
+        private void AddBlankIndexDebugOutputs(IList<OutputTO> outputs, SharepointSource sharepointSource, string serverPath, string localPath)
+        {
+            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+            {
+                var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
+                foreach (var folder in newPath)
+                {
+                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                }
+            }
         }
 
         void ValidateRequest()

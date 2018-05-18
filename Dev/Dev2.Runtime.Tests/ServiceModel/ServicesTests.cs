@@ -8,10 +8,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Collections.Generic;
 using System.Xml.Linq;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Tests.Runtime.Plugins;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -942,6 +944,118 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #endregion
 
-             
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Services_Test")]
+        public void Services_Test_WhenTestingPluginHavingARecordSetFieldWithEmptyName_ExpectNotAdded()
+        {
+            //------------Setup for test--------------------------
+            var path = UnpackDLL("PrimativesTestDLL");
+
+            if (string.IsNullOrEmpty(path))
+            {
+                Assert.Fail("Failed to unpack required DLL [ PrimativesTestDLL ] ");
+            }
+
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var serviceDef = JsonResource.Fetch("PrimitivePluginReturningDouble");
+            var pluginService = JsonConvert.DeserializeObject<PluginService>(serviceDef, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            });
+            pluginService.Recordsets.Add(new Recordset
+            {
+                Name = "Test",
+                Fields = new List<RecordsetField>
+                {
+                    new RecordsetField
+                    {
+                        Name = ""                        
+                    }
+                }
+            });
+            //------------Execute Test---------------------------
+            var result = services.FetchRecordset(pluginService,true);
+            ////------------Assert Results-------------------------
+            Assert.AreEqual(1, result[0].Fields.Count);
+            StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "3.1");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Services_Test")]
+        public void Services_Test_WhenTestingPluginHavingARecordSetFieldNotInOutput_ExpectNotAdded()
+        {
+            //------------Setup for test--------------------------
+            var path = UnpackDLL("PrimativesTestDLL");
+
+            if (string.IsNullOrEmpty(path))
+            {
+                Assert.Fail("Failed to unpack required DLL [ PrimativesTestDLL ] ");
+            }
+
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var serviceDef = JsonResource.Fetch("PrimitivePluginReturningDouble");
+            var pluginService = JsonConvert.DeserializeObject<PluginService>(serviceDef, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            });
+            pluginService.Recordsets.Add(new Recordset
+            {
+                Name = "Test",
+                Fields = new List<RecordsetField>
+                {
+                    new RecordsetField
+                    {
+                        Name = "Bob",
+                        Alias = "BobProp"
+                    }
+                },
+                Records = new List<RecordsetRecord>
+                {
+                    new RecordsetRecord
+                    {
+                        Name = "BobRecord",
+                        Label = "BobRecord"
+                    }
+                }
+            });
+            //------------Execute Test---------------------------
+            var result = services.FetchRecordset(pluginService, true);
+            ////------------Assert Results-------------------------
+            Assert.AreEqual(1, result[0].Fields.Count);
+            StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Name, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.ActualPath, "PrimitiveReturnValue");
+            StringAssert.Contains(result[0].Fields[0].Path.SampleData, "3.1");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Services_Test")]
+        public void Services_Test_WhenWebServiceWithResponse_FetchRecordset_ExpectRecordset()
+        {
+            //------------Setup for test--------------------------
+            
+            var services = new Dev2.Runtime.ServiceModel.Services();
+            var webService = new WebService();
+            webService.RequestResponse = JsonConvert.SerializeObject(new { Name = "Bob", Age = 31 });
+            //------------Execute Test---------------------------
+            var result = services.FetchRecordset(webService, true);
+            ////------------Assert Results-------------------------
+            Assert.AreEqual(2, result[0].Fields.Count);
+            StringAssert.Contains(result[0].Fields[0].Name, "Name");
+            StringAssert.Contains(result[0].Fields[1].Name, "Age");
+        }
+
+        public string UnpackDLL(string name)
+        {
+            return DllExtractor.UnloadToFileSystem(name, "Plugins");
+        }
+
+
     }
 }

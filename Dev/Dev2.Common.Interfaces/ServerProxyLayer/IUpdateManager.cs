@@ -31,7 +31,8 @@ namespace Dev2.Common.Interfaces.ServerProxyLayer
     {
         void TestConnection(IServerSource resource);
         IList<string> TestDbConnection(IDbSource resource);
-        DataTable TestDbService(IDatabaseService inputValues);
+		IList<string> TestSqliteConnection(ISqliteDBSource resource);
+		DataTable TestDbService(IDatabaseService inputValues);
         void TestConnection(IWebServiceSource resource);
         void TestConnection(ISharepointServerSource resource);
         string TestWebService(IWebService inputValues);

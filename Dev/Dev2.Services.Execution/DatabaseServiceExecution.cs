@@ -23,6 +23,7 @@ using Dev2.Services.Sql;
 using MySql.Data.MySqlClient;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
+using System.Data.SQLite;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Interfaces;
@@ -32,6 +33,8 @@ using Warewolf.Storage.Interfaces;
 using System.Diagnostics;
 using System.Transactions;
 using System.Xml;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
 
 namespace Dev2.Services.Execution
 {
@@ -43,6 +46,7 @@ namespace Dev2.Services.Execution
         }
 
         public string ProcedureName { private get; set; }
+        public string SqlQuery { private get; set; }
 
         MySqlServer SetupMySqlServer(ErrorResultTO errors)
         {
@@ -132,6 +136,12 @@ namespace Dev2.Services.Execution
                         _errorResult.MergeErrors(invokeErrors);
                         return result;
                     }
+                case enSourceType.SQLiteDatabase:
+                    {
+                        object result = SqliteExecution(invokeErrors, update);
+                        _errorResult.MergeErrors(invokeErrors);
+                        return result;
+                    }
                 default:
                     return null;
             }
@@ -153,15 +163,13 @@ namespace Dev2.Services.Execution
                 }
             }
         }
-
         void MapDataRowsToEnvironment(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx)
         {
             foreach (DataRow row in executeService.Rows)
             {
                 ProcessDataRow(executeService, environment, update, ref started, ref rowIdx, row);
             }
-        }
-
+        }        
         void ProcessDataRow(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row)
         {
             foreach (var serviceOutputMapping in Outputs)
@@ -173,7 +181,25 @@ namespace Dev2.Services.Execution
             }
             rowIdx++;
         }
-
+        void TranslateDataSetToEnvironment(DataSet executeService, IExecutionEnvironment environment, int update)
+        {
+            var started = true;
+            foreach (DataTable table in executeService.Tables)
+            {
+                if (executeService != null && Outputs != null && Outputs.Count != 0 && table.Rows != null)
+                {
+                    try
+                    {
+                        var rowIdx = 1;
+                        MapDataRowsToEnvironment(table, environment, update, ref started, ref rowIdx);
+                    }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                    }
+                }
+            }
+        }
         static void ProcessOutputMapping(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row, IServiceOutputMapping serviceOutputMapping)
         {
             var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
@@ -233,18 +259,14 @@ namespace Dev2.Services.Execution
             }
         }
 
+
+
+
         void SqlExecution(ErrorResultTO errors, int update)
         {
 
-            var conStrBuilder = new SqlConnectionStringBuilder(Source.ConnectionString)
-            {
-                ConnectTimeout = 20,
-                MaxPoolSize = 100,
-                MultipleActiveResultSets = true,
-                Pooling = true,
-                ApplicationName = "Warewolf Service"
-            };
-            var connection = new SqlConnection(conStrBuilder.ConnectionString);
+            var connectionBuilder = new ConnectionBuilder();
+            var connection = new SqlConnection(connectionBuilder.ConnectionString(Source.ConnectionString));
             var startTime = Stopwatch.StartNew();
             try
             {
@@ -295,7 +317,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private SqlCommand CreateCommand(SqlConnection connection, List<SqlParameter> parameters)
+        SqlCommand CreateCommand(SqlConnection connection, List<SqlParameter> parameters)
         {
             var cmd = connection.CreateCommand();
             foreach (var item in parameters)
@@ -306,11 +328,10 @@ namespace Dev2.Services.Execution
             cmd.CommandText = ProcedureName;
             return cmd;
         }
-
         bool ReadForXml(int update, Stopwatch startTime, SqlConnection connection)
         {
             var xmlResults = false;
-            SqlTransaction dbTransaction = connection.BeginTransaction();
+            var dbTransaction = connection.BeginTransaction();
             try
             {
                 using (var cmd = CreateCommand(connection, GetSqlParameters()))
@@ -356,7 +377,7 @@ namespace Dev2.Services.Execution
             {
                 dbTransaction.Dispose();
             }
-            
+
             return xmlResults;
         }
 
@@ -535,11 +556,19 @@ namespace Dev2.Services.Execution
                     if (parameters != null)
                     {
 
-                        using (var dataSet = server.FetchDataTable())
-
+                        var xmlData = server.FetchXmlData();
+                        if (xmlData.Rows[0]["ReadForXml"].ToString() != "Error")
                         {
-                            TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
+                            TranslateDataTableToEnvironment(xmlData, DataObj.Environment, update);
                             return true;
+                        }
+                        else
+                        {
+                            using (var dataSet = server.FetchDataTable())
+                            {
+                                TranslateDataTableToEnvironment(dataSet, DataObj.Environment, update);
+                                return true;
+                            }
                         }
                     }
                 }
@@ -645,6 +674,72 @@ namespace Dev2.Services.Execution
 
         public void Dispose()
         {
+        }
+
+        SqliteServer SetupSqlite(ErrorResultTO errors)
+        {
+            var server = new SqliteServer();
+            try
+            {
+                server.Connect(Source.ConnectionString);
+                return server;
+            }
+            catch (SQLiteException ex)
+            {
+                var errorMessages = new StringBuilder();
+                errorMessages.Append(ex.Message);
+                errors.AddError(errorMessages.ToString());
+                Dev2Logger.Error(errorMessages.ToString(), GlobalConstants.WarewolfError);
+            }
+            catch (Exception ex)
+            {
+                errors.AddError($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+            }
+            return server;
+        }
+
+        bool SqliteExecution(ErrorResultTO errors, int update)
+        {
+            var startTime = Stopwatch.StartNew();
+            try
+            {
+                using (var server = SetupSqlite(errors))
+                {
+                    var cmd = server.CreateCommand();
+                    cmd.CommandText = SqlQuery;
+                    cmd.ExecuteScalar();
+                    using (var dataSet = server.FetchDataSet(cmd))
+                    {
+                        Dev2Logger.Info("Time taken to create DB " + SqlQuery + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                        var startTime1 = Stopwatch.StartNew();
+                        long size = 0;
+                        using (Stream s = new MemoryStream())
+                        {
+                            var formatter = new BinaryFormatter();
+                            formatter.Serialize(s, dataSet);
+                            size = s.Length;
+                        }
+                        TranslateDataSetToEnvironment(dataSet, DataObj.Environment, update);
+                        Dev2Logger.Info("Time taken to TranslateDataSetToEnvironment ( Size: " + size + " ) :" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                        return true;
+                    }
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                var errorMessages = new StringBuilder();
+                errorMessages.Append(ex.Message);
+                errors.AddError(errorMessages.ToString());
+                Dev2Logger.Error(errorMessages.ToString(), GlobalConstants.WarewolfError);
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("SQLite Error:", ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("SQLite Error:", ex.StackTrace);
+                errors.AddError($"SQLite Error: {ex.Message}");
+            }
+            return false;
         }
     }
 }

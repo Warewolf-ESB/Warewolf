@@ -15,7 +15,7 @@ using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Warewolf.Resource.Errors;
 
 namespace Dev2.Tests.ConverterTests.DateTimeTests
 {
@@ -26,11 +26,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
     public class DateTimeParserTests
     {
         static IDateTimeParser _parser;
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
+        
         public TestContext TestContext { get; set; }
 
         #region Additional test attributes
@@ -59,13 +55,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         #endregion
 
         #region TryParseDateTime Tests
-
-
+            
         #region Valid Parse Formats
-
-        /// <summary>
-        /// Tests that the parser returns the date time object with correctly evaluated date parts
-        /// </summary>
+            
         [TestMethod]
         public void TryParseDateTime_AllArgsValid_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
@@ -85,9 +77,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
         }
 
-        /// <summary>
-        /// Tests that the date time parser can parse inputs containing literals with input format supplied
-        /// </summary>
         [TestMethod]
         public void TryParseDateTime_DateTime_WithSimpleLiteral_Expected_InputStringParsedCorrectly()
         {
@@ -106,10 +95,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that the the parser is able to parse a date time input given the input format does not quote literals
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithInferredLiteral_Expected_InputCorrectlyParsed()
         {
@@ -128,10 +114,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that the Parser is able to parse an input given escaped literals
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithInferredLiteralContainingEscapedLiteralCharacter_Expected_InputParsedWithEscapedCharactersIncluded()
         {
@@ -150,11 +133,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-
-        /// <summary>
-        /// Test to ensure that multiple mixed escaped regions are correctly parsed
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithMixedInferredAndDelimtedLiteralRegions_Expected_InputRegionCorrectlyParsedForDateTimeValues()
         {
@@ -173,10 +152,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Test to ensure that parser can parse out regions using a different escape sequence
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInInferredLiteralRegion_Expected_InputParsedCorrectly()
         {
@@ -195,10 +171,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that the parser is able to parse literals within a literal region
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInLiteralRegion_Expected_InputParsedOutCorrectly()
         {
@@ -217,10 +190,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that the parser is able to parse escaped literals within a literal region 
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithLiteralContainingTheLiteralEscapeCharacter_Expected_DateParsedCorrectly()
         {
@@ -239,10 +209,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that the Parser is able to parse literal regions that have escape characters 
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithLiteralContainingTheLiteralEscapeCharacterAndAnEscapeCharacter_Expected_EscapedCharacter()
         {
@@ -261,10 +228,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that complex literal strings are handled by the datetime parser
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithComplexLiteral_Expected_InptParsedWithAllSpecifiedInputsInFormat()
         {
@@ -283,10 +247,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that Numeric input passed to the parser parser out region
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithSomeLiteralAndSomeNumeric_Expected_AllDataParsedThroughDateTimeParser()
         {
@@ -305,10 +266,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that the parser can parse input data containing slases
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithSlashed_Expected_DateTimeParsedOut()
         {
@@ -327,10 +285,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that dot characters are treated as literal strings 
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithDotes_Expected_DateTimeParsedOUtCorrectlyWithDotExcluded()
         {
@@ -349,10 +304,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that tbe parser is able to parse an input containing dashes and retrieves the correct date from the input string
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithDashesUsingNumeric_Expected_InputDataParsedOutAccordingToInputFormat()
         {
@@ -371,10 +323,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Test to ensure that a date format containing a dash character is not encoded into datetime input value
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithDashesUsingNumericAndLiteral_Expected_DatePartsParsedOutCorrectly()
         {
@@ -393,10 +342,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-
-        /// <summary>
-        /// Tests that shorthand dates are correctly parsed when parsing dates with literal input data.
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_WithDashesUsingNumericAndLiteralShorthand_Expected_DatePartsParsedOutCorrectly()
         {
@@ -416,9 +362,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
         }
 
-        /// <summary>
-        /// Tests that shorthand dates are correctly parsed when parsing dates with literal input data.
-        /// </summary>
         [TestMethod]
         public void TryParseDateTime_InputFormat_WithDashesUsingNumericAndLiteralShorthand_Expected_DatePartReturnedInInputString()
         {
@@ -469,10 +412,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
             Assert.IsTrue(IsParseable, string.Format(s, defaultFormat, translatedFormat, inputString, result));
         }
-
-        /// <summary>
-        /// Tests that the parser returns the date time object with correctly evaluated date parts
-        /// </summary>
+        
         [TestMethod]
         [TestCategory("DateTimeParserUnitTest")]
         [Description("Test for complex DateTimeParser input datetime without trailing spaces")]
@@ -487,10 +427,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
             Assert.IsTrue(returnDate.Day == 16 && returnDate.Month == 10 && returnDate.Year == 2044, "Incorrect object returned");
         }
-
-        /// <summary>
-        /// Tests that the parser returns the date time object with correctly evaluated date parts
-        /// </summary>
+        
         [TestMethod]
         [TestCategory("DateTimeParserUnitTest")]
         [Description("Test for complex DateTimeParser input datetime with trailing spaces")]
@@ -510,10 +447,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         #endregion Valid Parse Formats
 
         #region Invalid Parse Formats
-
-        /// <summary>
-        /// Tests that the parser does not parse datetime inputs when the input format does not match the input string
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_Invalid_Expected_FalseReturnedByParserIndicatingItIsUnableToParseTheInput()
         {
@@ -524,11 +458,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
 
             Assert.IsFalse(IsParseable);
         }
-
-        /// <summary>
-        /// Tests that the DateTime parser does not throw an exception when given a null value for input format but indicates that it is unable to parse a datetime 
-        /// object
-        /// </summary>
+        
         [TestMethod]
         public void TryParseDateTime_DateTime_NULL_Expected_FalseReturnedByParser()
         {
@@ -537,6 +467,18 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var IsParseable = _parser.TryParseDateTime(null, formatString, out IDateTimeResultTO dateTimeResult, out string result);
 
             Assert.IsFalse(IsParseable);
+        }
+
+        [TestMethod]
+        public void TryParseDateTime_DateTime_UnexpectedBackslash_BackSlashFormatErrorReturnedByParser()
+        {
+            const string inputString = "\\\"30041988\\\\\"";
+            const string formatString = "\\\"ddmmyyyy\\\\\"";
+
+            var IsParseable = _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
+
+            Assert.IsFalse(IsParseable);
+            Assert.AreEqual(@"A \'\\\' character must be followed by a \' or preceded by a \\.", result);
         }
 
         #endregion Invalid Parse Formats
@@ -1925,8 +1867,31 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             //---------------Test Result -----------------------
             Assert.AreEqual(7 , int.Parse(result.ToString()));
         }
+
+        [TestMethod]
+        public void ProcessEscapedDateTimeRegion_WhileNotOnEscapeCharacter_ExpectBackslashFormatError()
+        {
+            //---------------Set up test pack-------------------
+            string error = "";
+            string currentValue = "";
+            bool nothingDied = false;
+            //---------------Execute Test ----------------------
+            DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref error, 'a', DateTimeParser.LiteralRegionStates.InsideInferredLiteralRegion, ref currentValue, ref nothingDied);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(ErrorResource.BackSlashFormatError, error, "Processing an unescaped DateTime region did not throw backslash format error.");
+        }
+
+        [TestMethod]
+        public void ProcessInferredEscapedDateTimeRegion_WhileNotOnEscapeCharacter_ExpectBackslashFormatError()
+        {
+            //---------------Set up test pack-------------------
+            string error = "";
+            string currentValue = "";
+            bool nothingDied = false;
+            //---------------Execute Test ----------------------
+            DateTimeLiteralProcessor.ProcessInsideInferredEscapedLiteral(ref error, 'a', DateTimeParser.LiteralRegionStates.InsideInferredLiteralRegion, ref currentValue, ref nothingDied);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(ErrorResource.BackSlashFormatError, error, "Processing an unescaped inferred DateTime region did not throw backslash format error.");
+        }
     }
-
-
-
 }

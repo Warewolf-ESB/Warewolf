@@ -49,26 +49,19 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string TypeName
         {
-            get
-            {
-                return _typeName;
-            }
+            get => _typeName;
             set
             {
                 _typeName = value;
-
                 OnPropertyChanged("TypeName");
             }
         }
         public bool RequiredMissing
         {
-            get
-            {
-                return _requiredMissing;
-            }
+            get => _requiredMissing;
             set
             {
-                if(value.Equals(_requiredMissing))
+                if (value.Equals(_requiredMissing))
                 {
                     return;
                 }
@@ -79,10 +72,10 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public bool IsNew
         {
-            get { return _isNew; }
+            get => _isNew;
             set
             {
-                if(value.Equals(_isNew))
+                if (value.Equals(_isNew))
                 {
                     return;
                 }
@@ -119,10 +112,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string Value
         {
-            get
-            {
-                return _value;
-            }
+            get => _value;
             set
             {
                 if (!value.Equals(_value))
@@ -130,7 +120,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     _value = value;
                     OnPropertyChanged("Value");
 
-                    UpdateDataListWithJsonObject(_value);
+                    TryUpdateDataListWithJsonObject(_value);
 
                     if (Required)
                     {
@@ -142,18 +132,15 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string MapsTo
         {
-            get
-            {
-                return _mapsTo;
-            }
+            get => _mapsTo;
             set
             {
-                if(!value.Equals(_mapsTo))
+                if (!value.Equals(_mapsTo))
                 {
                     _mapsTo = value;
                     OnPropertyChanged("MapsTo");
 
-                    UpdateDataListWithJsonObject(_mapsTo);
+                    TryUpdateDataListWithJsonObject(_mapsTo);
 
                     if (Required)
                     {
@@ -163,27 +150,13 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        void UpdateDataListWithJsonObject(string expression)
+        void TryUpdateDataListWithJsonObject(string expression)
         {
             if (IsObject && !string.IsNullOrEmpty(JsonString))
             {
                 try
                 {
-                    var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(expression);
-                    if (language.IsJsonIdentifierExpression)
-                    {
-                        if (DataListSingleton.ActiveDataList != null)
-                        {
-                            var objToProcess = JsonConvert.DeserializeObject(JsonString) as JObject;
-                            var firstOrDefault = objToProcess?.Properties().FirstOrDefault();
-                            if (firstOrDefault != null)
-                            {
-                                var processString = firstOrDefault.Value.ToString();
-                                DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
-                                    DataListUtil.RemoveLanguageBrackets(expression), processString);
-                            }
-                        }
-                    }
+                    UpdateDataListWithJsonObject(expression);
                 }
                 catch (Exception)
                 {
@@ -192,18 +165,30 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        private void UpdateDataListWithJsonObject(string expression)
+        {
+            var language = FsInteropFunctions.ParseLanguageExpressionWithoutUpdate(expression);
+            if (language.IsJsonIdentifierExpression && DataListSingleton.ActiveDataList != null)
+            {
+                var objToProcess = JsonConvert.DeserializeObject(JsonString) as JObject;
+                var firstOrDefault = objToProcess?.Properties().FirstOrDefault();
+                if (firstOrDefault != null)
+                {
+                    var processString = firstOrDefault.Value.ToString();
+                    DataListSingleton.ActiveDataList.GenerateComplexObjectFromJson(
+                        DataListUtil.RemoveLanguageBrackets(expression), processString);
+                }
+            }
+        }
 
         public string DefaultValue { get; set; }
 
         public bool Required
         {
-            get
-            {
-                return _required;
-            }
+            get => _required;
             set
             {
-                if(!value.Equals(_required))
+                if (!value.Equals(_required))
                 {
                     _required = value;
                     OnPropertyChanged("Required");
@@ -218,10 +203,10 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public bool IsMapsToFocused
         {
-            get { return _isMapsToFocused; }
+            get => _isMapsToFocused;
             set
             {
-                if(value.Equals(_isMapsToFocused))
+                if (value.Equals(_isMapsToFocused))
                 {
                     return;
                 }
@@ -232,10 +217,10 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public bool IsValueFocused
         {
-            get { return _isValueFocused; }
+            get => _isValueFocused;
             set
             {
-                if(value.Equals(_isValueFocused))
+                if (value.Equals(_isValueFocused))
                 {
                     return;
                 }
@@ -248,27 +233,27 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public bool IsObject
         {
-            get { return _isObject; }
+            get => _isObject;
             set
             {
-                _isObject = value; 
+                _isObject = value;
                 NotifyOfPropertyChange(() => IsObject);
             }
         }
 
         public string JsonString
         {
-            get { return _jsonString; }
+            get => _jsonString;
             set
             {
                 _jsonString = value;
                 if (!string.IsNullOrEmpty(_mapsTo))
                 {
-                    UpdateDataListWithJsonObject(_mapsTo);
+                    TryUpdateDataListWithJsonObject(_mapsTo);
                 }
                 if (!string.IsNullOrEmpty(_value))
                 {
-                    UpdateDataListWithJsonObject(_value);
+                    TryUpdateDataListWithJsonObject(_value);
                 }
             }
         }

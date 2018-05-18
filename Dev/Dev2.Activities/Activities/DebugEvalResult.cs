@@ -54,14 +54,12 @@ namespace Dev2.Activities
             MockSelected = mockSelected;
             try
             {
-                if (ExecutionEnvironment.IsRecordsetIdentifier(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable))
+                if (ExecutionEnvironment.IsRecordsetIdentifier(_inputVariable) && DataListUtil.IsEvaluated(_inputVariable) && DataListUtil.GetRecordsetIndexType(_inputVariable) == enRecordsetIndexType.Blank)
                 {
-                    if (DataListUtil.GetRecordsetIndexType(_inputVariable) == enRecordsetIndexType.Blank)
-                    {
-                        var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(_inputVariable));
-                        _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
-                    }
+                    var length = environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(_inputVariable));
+                    _inputVariable = DataListUtil.ReplaceRecordsetBlankWithIndex(_inputVariable, length);
                 }
+
                 if (isDataMerge)
                 {
                     DataMergeItem(environment, update);
@@ -92,15 +90,13 @@ namespace Dev2.Activities
             var isCalcExpression = DataListUtil.IsCalcEvaluation(_inputVariable, out string cleanExpression);
             if (isCalcExpression && !isCalculate)
             {
-                if (_evalResult.IsWarewolfAtomResult)
+                if (_evalResult.IsWarewolfAtomResult && _evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomResult)
                 {
-                    if (_evalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomResult)
-                    {
-                        var res = atomResult.Item.ToString();
-                        DataListUtil.IsCalcEvaluation(res, out string resValue);
-                        _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(resValue));
-                    }
+                    var res = atomResult.Item.ToString();
+                    DataListUtil.IsCalcEvaluation(res, out string resValue);
+                    _evalResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString(resValue));
                 }
+
                 _inputVariable = cleanExpression;
             }
         }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Tests.Runtime.Util;
-using System.Diagnostics;                
+using System.Diagnostics;
 using System.Threading;
 using Dev2.Core.Tests;
 using Dev2.Studio.Core.Factories;
@@ -120,7 +120,7 @@ namespace Dev2.Integration.Tests
             DataListViewModelTests.Setup();
             for (var i = 2500; i > 0; i--)
             {
-                DataListViewModelTests._dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
+                DataListViewModelTests._dataListViewModel.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
             }
             var timeBefore = DateTime.Now;
 
