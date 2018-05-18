@@ -276,6 +276,17 @@ namespace Dev2.Studio.Views
             }
         }
 
+        void ClearTabItems(ShellViewModel mainViewModel)
+        {
+            for (int i = TabManager.Items.Count - 1; i >= 0; i--)
+            {
+                var item = TabManager.Items[i];
+                var contentPane = item as ContentPane;
+                RemoveWorkspaceItems(contentPane, mainViewModel);
+            }
+            TabManager.Items.Clear();
+        }
+
         static void ClearWindowCollection(ShellViewModel mainViewModel)
         {
             var windowCollection = System.Windows.Application.Current.Windows;

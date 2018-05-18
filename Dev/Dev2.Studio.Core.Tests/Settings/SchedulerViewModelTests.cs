@@ -2135,7 +2135,7 @@ namespace Dev2.Core.Tests.Settings
         {
         }
         internal MySchedulerTaskManager(IServer server, SchedulerViewModel vm, Task<IResourcePickerDialog> resourcePickerDialog, IShellViewModel shellVm)
-                                 : base(vm, resourcePickerDialog, new EnvironmentViewModel(server, shellVm))
+                                 : base(vm, resourcePickerDialog)
         {
 
         }

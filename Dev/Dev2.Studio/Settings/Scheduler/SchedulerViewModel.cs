@@ -93,9 +93,8 @@ namespace Dev2.Settings.Scheduler
         public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker)
             : base(eventPublisher)
         {
-            SchedulerTaskManager = new SchedulerTaskManager(this,
-                                                            getResourcePicker,
-                                                            new EnvironmentViewModel(server, CustomContainer.Get<IShellViewModel>(), true));
+            SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
+
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
             var directoryObjectPicker1 = directoryObjectPicker;
 
@@ -126,7 +125,7 @@ namespace Dev2.Settings.Scheduler
 
         public override string DisplayName
         {
-            get =>_displayName;
+            get => _displayName;
             set
             {
                 _displayName = value;
@@ -601,7 +600,7 @@ namespace Dev2.Settings.Scheduler
             {
                 ClearConnectionError();
                 CreateNewSchedulerTaskManagerSource();
-                
+
                 try
                 {
                     ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, CreateNewTask);
