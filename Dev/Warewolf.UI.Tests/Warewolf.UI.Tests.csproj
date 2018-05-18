@@ -451,7 +451,9 @@
     <None Include="Explorer\ExplorerUIMap.uitest" />
     <None Include="Merge\MergeDialogUIMap.uitest" />
     <None Include="Merge\MergeConflictsUIMap.uitest" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="RabbitMQSource\RabbitMQSourceUIMap.uitest" />
     <None Include="Scheduler\SchedulerUIMap.uitest" />
     <None Include="Search\SearchUIMap.uitest" />
