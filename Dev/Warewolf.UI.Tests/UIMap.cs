@@ -339,16 +339,12 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(MainStudioWindow.UnpinnedTab.SplitPane.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2 on unpinned tab.");
         }
 
-        public void Pin_Unpinned_Pane_To_Another_UnpinnedTab()
-        {
-            Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
-            Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
-        }
         public void Pin_Unpinned_Pane_To_Default_Position()
         {
             Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
-            Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
+            Mouse.StopDragging(MainStudioWindow.UnpinnedTab, 700, 500);
         }
+
         public void Unpin_Tab_With_Drag(UITestControl Tab)
         {
             Mouse.StartDragging(Tab);
@@ -359,9 +355,6 @@ namespace Warewolf.UI.Tests
         {
             Mouse.StartDragging(Tab);
             Mouse.StopDragging(0, 50);
-
-            //Mouse.Click(Tab, MouseButtons.Right, ModifierKeys.None, new Point(106, 28));
-            //Mouse.Click(MainStudioWindow.PaneContextItem.FloatingMenuItem);
         }
 
         public void Unpin_Tab2_With_Drag(UITestControl Tab)

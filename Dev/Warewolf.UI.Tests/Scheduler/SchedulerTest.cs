@@ -78,6 +78,7 @@ namespace Warewolf.UI.Tests.Scheduler
 
         [TestMethod]
         [TestCategory("Scheduler")]
+        [DeploymentItem("Microsoft.Win32.TaskScheduler.dll")]
         public void Open_SchedulerTask_For_New_Workflow_Schedule_UITests()
         {
             var ts = new TaskService();
