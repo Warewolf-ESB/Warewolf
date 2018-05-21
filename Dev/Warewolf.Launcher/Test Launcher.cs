@@ -761,19 +761,38 @@ namespace Warewolf.Launcher
                 File.WriteAllText(DotCoverRunnerXMLPath, RunnerXML);
                 Process.Start(DotCoverPath, "cover \"" + DotCoverRunnerXMLPath + "\" /LogFile=\"" + TestsResultsPath + "\\StudioDotCover.log\"");
             }
-            var i = 0;
-            while (!File.Exists(StudioLogFile) && i++ < 200)
+            try
             {
-                Console.WriteLine("Waiting for Studio to start...");
+                WaitForStudioStart(Path.GetDirectoryName(StudioPath));
+            }
+            catch (Exception)
+            {
+                if (!ApplyDotCover)
+                {
+                    Process.Start(StudioPath);
+                }
+                else
+                {
+                    Process.Start(DotCoverPath, "cover \"" + TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestsResultsPath + "\\StudioDotCover.log\"");
+                }
+            }
+        }
+
+        void WaitForStudioStart(string StudioFolderPath)
+        {
+            var TimeoutCounter = 0;
+            var StudioStartedFilePath = StudioFolderPath + "\\StudioStarted";
+            while (!(File.Exists(StudioStartedFilePath)) && TimeoutCounter++ < 100)
+            {
                 Thread.Sleep(3000);
             }
-            if (File.Exists(StudioLogFile))
+            if (!(File.Exists(StudioStartedFilePath)))
             {
-                Console.WriteLine("Studio has started.");
+                throw new Exception("Studio Cannot Start.");
             }
             else
             {
-                throw new Exception("Warewolf studio failed to start within 10 minutes.");
+                Console.WriteLine("Studio has started.");
             }
         }
 
