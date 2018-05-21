@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Security.Principal;
-using Warewolf.Launcher;
 
 namespace Bashley
 {
@@ -22,9 +21,7 @@ namespace Bashley
                 }
             }
 
-            Options.PargeArgs(args);
-
-            var build = new TestLauncher();
+            var build = Options.PargeArgs(args);
 
             build.JobSpecs = Job_Definitions.GetJobDefinitions();
 

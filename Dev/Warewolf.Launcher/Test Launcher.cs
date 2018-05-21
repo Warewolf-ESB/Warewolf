@@ -14,25 +14,25 @@ namespace Warewolf.Launcher
     {
         public string DoServerStart { get; set; }
         public string DoStudioStart { get; set; }
-        string ServerPath { get; set; }
-        string StudioPath { get; set; }
-        string ResourcesType { get; set; }
+        public string ServerPath { get; set; }
+        public string StudioPath { get; set; }
+        public string ResourcesType { get; set; }
         public string VSTest { get; set; }
         public string MSTest { get; set; }
         public string DotCoverPath { get; set; }
-        string ServerUsername { get; set; }
-        string ServerPassword { get; set; }
-        string RunAllJobs { get; set; }
+        public string ServerUsername { get; set; }
+        public string ServerPassword { get; set; }
+        public string RunAllJobs { get; set; }
         public string Cleanup { get; set; }
         public string AssemblyFileVersionsTest { get; set; }
         public string RecordScreen { get; set; }
         string Parallelize { get; set; }
         public string Category { get; set; }
         public string ProjectName { get; set; }
-        string RunAllUnitTests { get; set; }
-        string RunAllServerTests { get; set; }
-        string RunAllReleaseResourcesTests { get; set; }
-        string RunAllCodedUITests { get; set; }
+        public string RunAllUnitTests { get; set; }
+        public string RunAllServerTests { get; set; }
+        public string RunAllReleaseResourcesTests { get; set; }
+        public string RunAllCodedUITests { get; set; }
         public string RunWarewolfServiceTests { get; set; }
         public string DomywarewolfioStart { get; set; }
         public string TestsPath { get; set; } = Environment.CurrentDirectory;
@@ -40,7 +40,7 @@ namespace Warewolf.Launcher
         public string TestList { get; set; }
         public string MergeDotCoverSnapshotsInDirectory { get; set; }
         public string StartDocker { get; set; }
-        public string TestsResultsPath { get; private set; }
+        public string TestsResultsPath { get; set; } = Environment.CurrentDirectory + "\\TestResults";
         public string VSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\vstest.console.exe";
         public string MSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\MSTest.exe";
 
@@ -51,11 +51,6 @@ namespace Warewolf.Launcher
         public bool ApplyDotCover;
 
         public Dictionary<string, Tuple<string, string>> JobSpecs;
-
-        public TestLauncher()
-        {
-            TestsResultsPath = Environment.CurrentDirectory + "\\TestResults";
-        }
 
         string FindFileInParent(List<string> FileSpecs, int NumberOfParentsToSearch = 7)
         {
