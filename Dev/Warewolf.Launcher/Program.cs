@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Xml;
-using System.IO.Compression;
-using System.ServiceProcess;
 using System.Security.Principal;
 using Warewolf.Launcher;
 
@@ -14,7 +11,6 @@ namespace Bashley
 {
     public class Program
     {
-
         public static void Main(string[] args)
         {
             using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
