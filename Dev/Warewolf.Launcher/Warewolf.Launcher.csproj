@@ -101,6 +101,7 @@
     <Compile Include="ContainerOps.cs" />
     <Compile Include="Job Definitions.cs" />
     <Compile Include="Options.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Test Launcher.cs" />
   </ItemGroup>
   <ItemGroup>
