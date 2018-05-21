@@ -5,9 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.ServiceProcess;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace Warewolf.Launcher
