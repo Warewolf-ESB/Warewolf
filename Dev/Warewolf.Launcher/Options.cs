@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using System;
+using Warewolf.Launcher;
 
 namespace Bashley
 {
@@ -95,8 +96,9 @@ namespace Bashley
         [Option("StartDocker")]
         public bool StartDocker { get; set; }
 
-        public static void PargeArgs(string[] args)
+        public static TestLauncher PargeArgs(string[] args)
         {
+            var testLauncher = new TestLauncher();
             var parser = new Parser(with => with.EnableDashDash = true);
             var parserResult = parser.ParseArguments<Options>(args);
             if (args.Length > 0 && parserResult.Tag.ToString() == "NotParsed")
@@ -108,152 +110,152 @@ namespace Bashley
                 if (options.DoServerStart)
                 {
                     Console.WriteLine("Doing Server Start.");
-                    Program.DoServerStart = "true";
+                    testLauncher.DoServerStart = "true";
                 }
                 if (options.DoStudioStart)
                 {
                     Console.WriteLine("Doing Studio Start.");
-                    Program.DoStudioStart = "true";
+                    testLauncher.DoStudioStart = "true";
                 }
                 if (options.ServerPath != null)
                 {
                     Console.WriteLine("ServerPath: " + options.ServerPath);
-                    Program.ServerPath = options.ServerPath;
+                    testLauncher.ServerPath = options.ServerPath;
                 }
                 if (options.StudioPath != null)
                 {
                     Console.WriteLine("StudioPath: " + options.StudioPath);
-                    Program.StudioPath = options.StudioPath;
+                    testLauncher.StudioPath = options.StudioPath;
                 }
                 if (options.ResourcesType != null)
                 {
                     Console.WriteLine("ResourcesType: " + options.ResourcesType);
-                    Program.ResourcesType = options.ResourcesType;
+                    testLauncher.ResourcesType = options.ResourcesType;
                 }
                 if (options.VSTest)
                 {
                     Console.WriteLine("VSTest");
-                    Program.VSTest = "true";
+                    testLauncher.VSTest = "true";
                 }
                 if (options.MSTest)
                 {
                     Console.WriteLine("MSTest");
-                    Program.MSTest = "true";
+                    testLauncher.MSTest = "true";
                 }
                 if (options.DotCoverPath != null)
                 {
                     Console.WriteLine("DotCoverPath: " + options.DotCoverPath);
-                    Program.DotCoverPath = options.DotCoverPath;
+                    testLauncher.DotCoverPath = options.DotCoverPath;
                 }
                 if (options.ServerUsername != null)
                 {
-                    Program.ServerUsername = options.ServerUsername;
+                    testLauncher.ServerUsername = options.ServerUsername;
                 }
                 if (options.ServerPassword != null)
                 {
                     Console.WriteLine("ServerPassword: ****");
-                    Program.ServerPassword = options.ServerPassword;
+                    testLauncher.ServerPassword = options.ServerPassword;
                 }
                 if (options.RunAllJobs)
                 {
                     Console.WriteLine("RunAllJobs");
-                    Program.RunAllJobs = "true";
+                    testLauncher.RunAllJobs = "true";
                 }
                 if (options.Cleanup)
                 {
                     Console.WriteLine("Cleaning Up.");
-                    Program.Cleanup = "true";
+                    testLauncher.Cleanup = "true";
                 }
                 if (options.AssemblyFileVersionsTest != null)
                 {
                     Console.WriteLine("AssemblyFileVersionsTest: " + options.AssemblyFileVersionsTest);
-                    Program.AssemblyFileVersionsTest = options.AssemblyFileVersionsTest;
+                    testLauncher.AssemblyFileVersionsTest = options.AssemblyFileVersionsTest;
                 }
                 if (options.RecordScreen)
                 {
                     Console.WriteLine("Recording Screen.");
-                    Program.RecordScreen = "true";
+                    testLauncher.RecordScreen = "true";
                 }
                 if (options.Category != null)
                 {
                     Console.WriteLine("Category: " + options.Category);
-                    Program.Category = options.Category;
+                    testLauncher.Category = options.Category;
                 }
                 if (options.ProjectName != null)
                 {
                     Console.WriteLine("ProjectName: " + options.ProjectName);
-                    Program.ProjectName = options.ProjectName;
+                    testLauncher.ProjectName = options.ProjectName;
                 }
                 if (options.RunAllUnitTests)
                 {
                     Console.WriteLine("Running All Unit Tests.");
-                    Program.RunAllUnitTests = "true";
+                    testLauncher.RunAllUnitTests = "true";
                 }
                 if (options.RunAllServerTests)
                 {
                     Console.WriteLine("Running All Server Tests.");
-                    Program.RunAllServerTests = "true";
+                    testLauncher.RunAllServerTests = "true";
                 }
                 if (options.RunAllReleaseResourcesTests)
                 {
                     Console.WriteLine("Running All Release Resources Tests.");
-                    Program.RunAllReleaseResourcesTests = "true";
+                    testLauncher.RunAllReleaseResourcesTests = "true";
                 }
                 if (options.RunAllCodedUITests)
                 {
                     Console.WriteLine("Running All Coded UI Tests.");
-                    Program.RunAllCodedUITests = "true";
+                    testLauncher.RunAllCodedUITests = "true";
                 }
                 if (options.RunWarewolfServiceTests)
                 {
                     Console.WriteLine("Running Warewolf Service Tests.");
-                    Program.RunWarewolfServiceTests = "true";
+                    testLauncher.RunWarewolfServiceTests = "true";
                 }
                 if (options.DomywarewolfioStart)
                 {
                     Console.WriteLine("Doing my.warewolf.io Start.");
-                    Program.DomywarewolfioStart = "true";
+                    testLauncher.DomywarewolfioStart = "true";
                 }
                 if (options.TestsPath != null)
                 {
                     Console.WriteLine("TestsPath: " + options.TestsPath);
-                    Program.TestsPath = options.TestsPath;
-                    Program.TestsResultsPath = Program.TestsPath + "\\TestResults";
+                    testLauncher.TestsPath = options.TestsPath;
+                    testLauncher.TestsResultsPath = testLauncher.TestsPath + "\\TestResults";
                 }
                 if (options.JobName != null)
                 {
                     Console.WriteLine("JobName: " + options.JobName);
-                    Program.JobName = options.JobName;
+                    testLauncher.JobName = options.JobName;
                 }
                 if (options.TestList != null)
                 {
                     Console.WriteLine("TestList: " + options.TestList);
-                    Program.TestList = options.TestList;
+                    testLauncher.TestList = options.TestList;
                 }
                 if (options.MergeDotCoverSnapshotsInDirectory != null)
                 {
                     Console.WriteLine("Merging DotCover Snapshots In Directory: " + options.MergeDotCoverSnapshotsInDirectory);
-                    Program.MergeDotCoverSnapshotsInDirectory = options.MergeDotCoverSnapshotsInDirectory;
+                    testLauncher.MergeDotCoverSnapshotsInDirectory = options.MergeDotCoverSnapshotsInDirectory;
                 }
                 if (options.TestsResultsPath != null)
                 {
                     Console.WriteLine("TestsResultsPath: " + options.TestsResultsPath);
-                    Program.TestsResultsPath = options.TestsResultsPath;
+                    testLauncher.TestsResultsPath = options.TestsResultsPath;
                 }
                 if (options.VSTestPath != null)
                 {
                     Console.WriteLine("VSTestPath: " + options.VSTestPath);
-                    Program.VSTestPath = options.VSTestPath;
+                    testLauncher.VSTestPath = options.VSTestPath;
                 }
                 if (options.MSTestPath != null)
                 {
                     Console.WriteLine("MSTestPath: " + options.MSTestPath);
-                    Program.MSTestPath = options.MSTestPath;
+                    testLauncher.MSTestPath = options.MSTestPath;
                 }
                 if (options.StartDocker)
                 {
                     Console.WriteLine("Starting Docker.");
-                    Program.StartDocker = "true";
+                    testLauncher.StartDocker = "true";
                 }
             }).WithNotParsed(errs =>
             {
@@ -265,6 +267,7 @@ namespace Bashley
                     }
                 }
             });
+            return testLauncher;
         }
     }
 }
