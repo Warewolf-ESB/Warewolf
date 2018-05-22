@@ -60,6 +60,17 @@ namespace Bashley
             {
                 build.ApplyDotCover = !string.IsNullOrEmpty(build.DotCoverPath);
             }
+            
+            if (build.TestsPath.StartsWith(".."))
+            {
+                build.TestsPath = Path.Combine(Environment.CurrentDirectory, build.TestsPath);
+            }
+
+
+            if (build.TestsResultsPath.StartsWith(".."))
+            {
+                build.TestsResultsPath = Path.Combine(Environment.CurrentDirectory, build.TestsResultsPath);
+            }
 
             if (!File.Exists(build.TestsResultsPath))
             {
@@ -135,7 +146,7 @@ namespace Bashley
                 }
                 if (!File.Exists(build.VSTestPath) && !(File.Exists(build.MSTestPath)))
                 {
-                    throw new Exception("Error cannot find VSTest.console.exe or build.MSTest.exe. Use either -build.VSTestPath or -build.MSTestPath parameters to pass paths to one of those files.");
+                    throw new Exception("Error cannot find VSTest.console.exe or MSTest.exe. Use either --VSTestPath or --MSTestPath parameters to pass paths to one of those files.");
                 }
 
                 if (build.ApplyDotCover && build.DotCoverPath != "" && !(File.Exists(build.DotCoverPath)))
@@ -291,15 +302,15 @@ namespace Bashley
                         {
                             if (!string.IsNullOrEmpty(TestCategories))
                             {
-                                TestCategories = " /TestCaseFilter:\"(Testbuild.Category=" + TestCategories + ")\"";
+                                TestCategories = " /TestCaseFilter:\"(TestCategory=" + TestCategories + ")\"";
                             }
                             else
                             {
                                 var DefinedCategories = build.AllCategoriesDefinedForProject(ProjectSpec);
                                 if (DefinedCategories.Count() > 0)
                                 {
-                                    TestCategories = String.Join(")&(Testbuild.Category!=", DefinedCategories);
-                                    TestCategories = " /TestCaseFilter:\"(Testbuild.Category!=" + TestCategories + ")\"";
+                                    TestCategories = String.Join(")&(TestCategory!=", DefinedCategories);
+                                    TestCategories = " /TestCaseFilter:\"(TestCategory!=" + TestCategories + ")\"";
                                 }
                             }
                         }

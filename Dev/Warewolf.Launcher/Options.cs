@@ -1,6 +1,8 @@
 ﻿using CommandLine;
 using System;
+using System.Collections.Generic;
 using Warewolf.Launcher;
+using System.Linq;
 
 namespace Bashley
 {
@@ -101,7 +103,7 @@ namespace Bashley
             var testLauncher = new TestLauncher();
             var parser = new Parser(with => with.EnableDashDash = true);
             var parserResult = parser.ParseArguments<Options>(args);
-            if (args.Length > 0 && parserResult.Tag.ToString() == "NotParsed")
+            if (args.Length > 0 && parserResult.Tag == ParserResultType.NotParsed)
             {
                 throw new ArgumentException("Syntax Error in Args \"" + string.Join(" ", args) + "\". Some args take a string value for example: --ServerPath 'C:\\Builds\\Warewolf Server.exe'");
             }
