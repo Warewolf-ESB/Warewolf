@@ -312,6 +312,7 @@
     <Compile Include="ActivityTests\DsfSqlServerDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\DsfOracleDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\DsfODBCDatabaseActivityTests.cs" />
+    <Compile Include="ActivityTests\SequenceActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
