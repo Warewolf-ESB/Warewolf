@@ -32,7 +32,8 @@ namespace Warewolf.Launcher
         public string RunAllUnitTests { get; set; }
         public string RunAllServerTests { get; set; }
         public string RunAllReleaseResourcesTests { get; set; }
-        public string RunAllCodedUITests { get; set; }
+        public string RunAllDesktopUITests { get; set; }
+        public string RunAllWebUITests { get; set; }
         public string RunWarewolfServiceTests { get; set; }
         public string DomywarewolfioStart { get; set; }
         public string TestsPath { get; set; } = Environment.CurrentDirectory;
