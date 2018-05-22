@@ -236,13 +236,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var parentServiceName = string.Empty;
             var serviceName = string.Empty;
 
-            var isRemote = dataObject.IsRemoteWorkflow();
-
-            if ((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
-            {
-                dataObject.IsRemoteInvokeOverridden = true;
-            }
-
             var oldResourceId = dataObject.ResourceID;
 
             InitializeDebug(dataObject);
