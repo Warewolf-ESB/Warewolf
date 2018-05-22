@@ -72,10 +72,11 @@ namespace Bashley
                 ["Overlapping User Groups Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "OverlappingUserGroupsPermissionsSecurity"),
                 ["Resource Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ResourcePermissionsSecurity"),
                 ["Server Permissions Security Specs"] = new Tuple<string, string>("Warewolf.Security.Specs", "ServerPermissionsSecurity"),
+                //Web UI Tests
                 ["Other Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", null),
                 ["Execution Logging Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", "ExecutionLogging"),
                 ["No Warewolf Server Web UI Tests"] = new Tuple<string, string>("Warewolf.Web.UI.Tests", "NoWarewolfServer"),
-                //UI Tests
+                //Desktop UI Tests
                 ["Other UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", null),
                 ["Other UI Specs"] = new Tuple<string, string>("Warewolf.UI.Specs", null),
                 ["Assign Tool UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Assign Tool"),
@@ -124,8 +125,18 @@ namespace Bashley
                 ["Workflow Mocking Tests UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Workflow Mocking Tests"),
                 ["Workflow Testing UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Workflow Testing"),
                 ["Workflow Merging UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Merge"),
+                ["Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Search"),
+                ["Input Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Input Search"),
+                ["Output Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Output Search"),
+                ["Test Name Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Test Name Search"),
+                ["Scalar Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Scalar Search"),
+                ["Recordset Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Recordset Search"),
+                ["Object Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Object Search"),
+                ["Service Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Service Search"),
+                ["Title Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Title Search"),
                 //UI Load Spec
-                ["UI Load Spec"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null)
+                ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null),
+                ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests")
             };
         }
     }

@@ -65,8 +65,11 @@ namespace Bashley
         [Option("RunAllReleaseResourcesTests")]
         public bool RunAllReleaseResourcesTests { get; set; }
 
-        [Option("RunAllCodedUITests")]
-        public bool RunAllCodedUITests { get; set; }
+        [Option("RunAllWebUITests")]
+        public bool RunAllWebUITests { get; set; }
+
+        [Option("RunAllDesktopUITests")]
+        public bool RunAllDesktopUITests { get; set; }
 
         [Option("RunWarewolfServiceTests")]
         public bool RunWarewolfServiceTests { get; set; }
@@ -203,10 +206,15 @@ namespace Bashley
                     Console.WriteLine("Running All Release Resources Tests.");
                     testLauncher.RunAllReleaseResourcesTests = "true";
                 }
-                if (options.RunAllCodedUITests)
+                if (options.RunAllDesktopUITests)
                 {
-                    Console.WriteLine("Running All Coded UI Tests.");
-                    testLauncher.RunAllCodedUITests = "true";
+                    Console.WriteLine("Running All Desktop UI Tests.");
+                    testLauncher.RunAllDesktopUITests = "true";
+                }
+                if (options.RunAllWebUITests)
+                {
+                    Console.WriteLine("Running All Web UI Tests.");
+                    testLauncher.RunAllWebUITests = "true";
                 }
                 if (options.RunWarewolfServiceTests)
                 {
