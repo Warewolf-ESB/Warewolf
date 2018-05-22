@@ -109,6 +109,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
                                 }
                             }
+                            //Because the environment eval above where you can only send through a recordset name and not list this code wont be reached. 
+                            //No Coverage added.
                             if(warewolfEvalResult.IsWarewolfAtomListresult)
                             {
                                 if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
@@ -155,7 +157,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        allErrors.AddError(e.Message);
+                        allErrors.AddError(e.Message);  
                         dataObject.Environment.Assign(RecordsLength, "0", update);
                         AddDebugOutputItem(new DebugItemStaticDataParams("0", RecordsLength, "", "="));
                     }
