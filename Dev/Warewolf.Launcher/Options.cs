@@ -8,10 +8,10 @@ namespace Bashley
 {
     internal class Options
     {
-        [Option("DoServerStart")]
+        [Option("StartServer")]
         public bool DoServerStart { get; set; }
 
-        [Option("DoStudioStart")]
+        [Option("StartStudio")]
         public bool DoStudioStart { get; set; }
 
         [Option("ServerPath")]
