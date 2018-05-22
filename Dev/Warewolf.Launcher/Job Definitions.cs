@@ -132,7 +132,6 @@ namespace Bashley
                 ["Workflow Merge with Simple Tools Conflicting"] = new Tuple<string, string>("Warewolf.UI.Tests", "Merge Simple Tools Conflicts"),
                 ["Workflow Merge with Switch Tools Conflicting"] = new Tuple<string, string>("Warewolf.UI.Tests", "Merge Switch Conflicts"),
                 ["Workflow Merge with Variables Conflicting"] = new Tuple<string, string>("Warewolf.UI.Tests", "Merge Variable Conflicts"),
-                ["Workflow Merging UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Merge"),
                 ["Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Search"),
                 ["Input Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Input Search"),
                 ["Output Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Output Search"),
