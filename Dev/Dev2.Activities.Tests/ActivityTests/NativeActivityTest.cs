@@ -532,6 +532,43 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(RunResult.TestFailed, serviceTestModelTO.TestSteps[0].Result.RunTestResult);
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfNativeActivity_ExecuteTool")]
+        public void DsfNativeActivity_ExecuteTool_NoTestStepOutputs_TestExecution()
+        {
+            var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
+            {
+                ServerID = Guid.NewGuid(),
+                IsDebug = true,
+                ForEachNestingLevel = 0,
+                IsServiceTestExecution = true
+            };
+
+            var act = new TestNativeActivity(false, "bob");
+
+            var serviceTestModelTO = new ServiceTestModelTO
+            {
+                TestSteps = new List<IServiceTestStep>
+                {
+                    new ServiceTestStepTO
+                    {
+                        UniqueId = Guid.Parse(act.UniqueID),
+                        Type = StepType.Assert,
+                        StepOutputs = new ObservableCollection<IServiceTestOutput>
+                        {
+                        }
+                    }
+                }
+            };
+            dataObject.ServiceTest = serviceTestModelTO;
+            act.Execute(dataObject, 0);
+            act.DispatchDebugState(dataObject, StateType.After, 0);
+
+            Assert.AreEqual(RunResult.TestPending, serviceTestModelTO.TestSteps[0].Result.RunTestResult);
+            Assert.IsFalse(dataObject.StopExecution);
+        }
+
     }
 
     class TestNativeActivity : DsfNativeActivity<string>
