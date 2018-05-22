@@ -134,7 +134,7 @@ namespace Bashley
                 ["Object Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Object Search"),
                 ["Service Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Service Search"),
                 ["Title Search UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Title Search"),
-                //UI Load Spec
+                //Load Tests
                 ["UI Load Specs"] = new Tuple<string, string>("Warewolf.UI.Load.Specs", null),
                 ["Load Tests"] = new Tuple<string, string>("Dev2.Integration.Tests", "Load Tests")
             };
