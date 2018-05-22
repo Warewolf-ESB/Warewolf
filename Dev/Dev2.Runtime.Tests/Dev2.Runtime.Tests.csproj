@@ -51,6 +51,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
     <Reference Include="AeroWizard, Version=2.1.7.0, Culture=neutral, PublicKeyToken=915e74f5d64b8f37, processorArchitecture=MSIL">
       <HintPath>..\packages\AeroWizard.2.1.7\lib\net40\AeroWizard.dll</HintPath>
       <Private>True</Private>
@@ -720,6 +723,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TextFiles\LogFileWithFlatResultsNEwFormat.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextFiles\LogFileWithFlatResultsNEwFormatWithErrors.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="TextFiles\SubFolderB\SubFolderBTextFile1.txt" />
     <Content Include="TextFiles\SubFolderA\SubFolderATextFile1.txt" />

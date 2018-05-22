@@ -95,7 +95,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                             var scalarItemModel = new ScalarItemModel(scalarName);
                             if (!scalarItemModel.HasError)
                             {
-                                DataListSingleton.ActiveDataList.ScalarCollection.Add(scalarItemModel);
+                                DataListSingleton.ActiveDataList.Add(scalarItemModel);
                             }
                         }
                         if (DataListUtil.IsValueRecordsetWithFields(variableName))
@@ -106,7 +106,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                             if (rs == null)
                             {
                                 var recordSetItemModel = new RecordSetItemModel(rsName);
-                                DataListSingleton.ActiveDataList.RecsetCollection.Add(recordSetItemModel);
+                                DataListSingleton.ActiveDataList.Add(recordSetItemModel);
                                 recordSetItemModel.Children.Add(new RecordSetFieldItemModel(fieldName,
                                     recordSetItemModel));
                             }

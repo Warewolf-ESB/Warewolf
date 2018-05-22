@@ -189,7 +189,7 @@ namespace Dev2.Core.Tests
             var res = ser.SerializeToBuilder(new List<IPluginConstructor>());
             var aggr = new Mock<IEventAggregator>();
             var dataListViewModel = new DataListViewModel(aggr.Object);
-            dataListViewModel.ComplexObjectCollection.Add(new ComplexObjectItemModel("Name", null, enDev2ColumnArgumentDirection.Both));
+            dataListViewModel.Add(new ComplexObjectItemModel("Name", null, enDev2ColumnArgumentDirection.Both));
             DataListSingleton.SetDataList(dataListViewModel);
             var ns = new Mock<INamespaceItem>();
             RunTest("FetchPluginConstructors", new ExecuteMessage

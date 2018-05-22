@@ -19,6 +19,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NodaTime;
 using System.Diagnostics;
 using Dev2.Activities.DateAndTime;
+using Moq;
+using Warewolf.Storage;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -215,6 +218,90 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[dt]]", outputs[0]);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_Execute_Blank_ShouldHaveNoErrorWithDebugOutput()
+        {
+            //------------Setup for test--------------------------
+            const string varName = "[[dt]]";
+            var act = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = varName,
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            var dataMock = new Mock<IDSFDataObject>();
+            dataMock.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var executionEnvironment = new ExecutionEnvironment();
+            dataMock.Setup(o => o.Environment).Returns(executionEnvironment);
+            var data = dataMock.Object;
+
+            var timeBefore = DateTime.Now;
+
+            //------------Execute Test---------------------------
+            var activity = act.Execute(data, 0);
+            //------------Assert Results-------------------------
+            var timeAfter = DateTime.Now;
+
+            var debugout = act.GetDebugOutputs(executionEnvironment, 0);
+            var value = executionEnvironment.EvalAsListOfStrings(varName, 0);
+            Assert.AreEqual(value.Count, 1);
+            DateTime datetimeResult;
+            Assert.IsTrue(DateTime.TryParse(value[0], out datetimeResult));
+            Assert.IsTrue(timeBefore < datetimeResult && datetimeResult < timeAfter);
+
+            Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
+            Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
+            Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);
+        }
+
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        public void DsfDateTimeActivity_Execute_InvalidDateTime_ShouldHaveErrorWithDebugOutput()
+        {
+            //------------Setup for test--------------------------
+            const string varName = "[[dt]]";
+            var act = new DsfDotNetDateTimeActivity
+            {
+                DateTime = "a/p/R",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = varName,
+                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+            };
+            var dataMock = new Mock<IDSFDataObject>();
+            dataMock.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var executionEnvironment = new ExecutionEnvironment();
+            dataMock.Setup(o => o.Environment).Returns(executionEnvironment);
+            var data = dataMock.Object;
+
+            var timeBefore = DateTime.Now;
+
+            //------------Execute Test---------------------------
+            var activity = act.Execute(data, 0);
+            //------------Assert Results-------------------------
+            var timeAfter = DateTime.Now;
+
+            var debugout = act.GetDebugOutputs(executionEnvironment, 0);
+            var value = executionEnvironment.EvalAsListOfStrings(varName, 0);
+            Assert.AreEqual(value.Count, 1);
+            Assert.AreEqual("", value[0]);
+            Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
+            Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
+            Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);
+
+            Assert.AreEqual("The string was not recognized as a valid DateTime. There is an unknown word starting at index 0.", executionEnvironment.FetchErrors());
         }
 
 

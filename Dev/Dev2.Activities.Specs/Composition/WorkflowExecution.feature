@@ -1075,26 +1075,7 @@ Scenario: Workflow Assign and Find Record Index executing with incorrect format 
 	  | # | [[rec().a]][[xr().a]] | 1 | =          | Warewolf | YES                            | NO                          |
 	  When "WFWithAssignandFindRecordindexs" is executed
 	  Then the workflow execution has "AN" error
-
-Scenario: Simple workflow executing against the server
-	 Given I have a workflow "WorkflowWithAssign"
-	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[rec().a]] | yes   |
-	  | [[rec().a]] | no    |	 
-	  When "WorkflowWithAssign" is executed
-	  Then the workflow execution has "NO" error
-	  And the "WorkflowWithAssign" has a start and end duration
-	  And the "Rec To Convert" in WorkFlow "WorkflowWithAssign" debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | yes       |
-	  | 2 | [[rec().a]] = | no        |
-	  And the "Rec To Convert" in Workflow "WorkflowWithAssign" debug outputs as    
-	  | # |                    |
-	  | 1 | [[rec(1).a]] = yes |
-	  | 2 | [[rec(2).a]] = no  |
 	  
-#PostgreSQL
 Scenario: Database PostgreSql Database service inputs and outputs
      Given I have a workflow "PostgreSqlGetCountries"
 	 And "PostgreSqlGetCountries" contains a postgre tool using "get_countries" with mappings as
@@ -1329,3 +1310,11 @@ Scenario:WF with RabbitMq Consume with no timeout
     Then the workflow execution has "No" error
 	And the "RabbitMqConsumeNotimeout" has a start and end duration
 	And "RabbitMqConsumeNotimeout" Duration is less or equal to 2 seconds
+
+Scenario: COM DLL service execute
+	Given I have a server at "localhost" with workflow "Testing COM DLL Activity Execute"
+	When "localhost" is the active environment used to execute "Testing COM DLL Activity Execute"
+    Then the workflow execution has "No" error
+	And the "Com DLL" in Workflow "Testing COM DLL Activity Execute" debug outputs is
+	|                                |
+	| [[PrimitiveReturnValue]] = 0   |
