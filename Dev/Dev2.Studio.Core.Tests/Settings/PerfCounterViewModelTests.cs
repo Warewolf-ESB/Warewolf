@@ -21,8 +21,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
-
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -50,6 +49,7 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("PerfcounterViewModel_Constructor")]
         public void PerfcounterViewModel_ServerCountersCompare_Given_Null_Server_Counters_Returns_False()
         {
+            CommonSetupHelper.RegisterServerRepository();
             var authorizationService = new Mock<IAuthorizationService>();
             var securityService = new Mock<ISecurityService>();
             var permissions = new List<WindowsGroupPermission> { new WindowsGroupPermission() };
@@ -72,6 +72,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("PerfcounterViewModel_Constructor")]
         public void PerfcounterViewModel_Equals_Given_Null_Server_Counters_Returns_False()
         {
+            CommonSetupHelper.RegisterServerRepository();
+            CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
             var perfCounterTo = new Mock<IPerformanceCounterTo>();
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());
@@ -89,6 +91,8 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("PerfcounterViewModel_Constructor")]
         public void PerfcounterViewModel_Equals_Given_Null_Resource_Counters_Returns_False()
         {
+            CommonSetupHelper.RegisterServerRepository();
+            CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
             var perfCounterTo = new Mock<IPerformanceCounterTo>();
             perfCounterTo.Setup(to => to.ResourceCounters).Returns(new List<IResourcePerformanceCounter>());
             perfCounterTo.Setup(to => to.NativeCounters).Returns(new List<IPerformanceCounter>());

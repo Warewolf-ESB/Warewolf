@@ -70,6 +70,11 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
+	<None Include="..\Run Tests.ps1">
+      <Link>Run Tests.ps1</Link>
+	  <Visible>False</Visible>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ParserTestHelper.cs" />

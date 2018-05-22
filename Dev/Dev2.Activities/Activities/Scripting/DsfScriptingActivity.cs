@@ -28,12 +28,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities
 {
     //[ToolDescriptorInfo("Scripting-JavaScript", "Script", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Scripting_Script")]
-    public class DsfScriptingActivity : DsfActivityAbstract<string>,IEquatable<DsfScriptingActivity>
+    [ExcludeFromCodeCoverage]
+    public class DsfScriptingActivity : DsfActivityAbstract<string>, IEquatable<DsfScriptingActivity>
     {
         #region Properties
 
@@ -125,7 +126,6 @@ namespace Dev2.Activities
                 AddDebugInputItem(new DebugItemStaticDataParams(language, "Language"));
                 AddDebugInputItem(new DebugEvalResult(Script, "Script", env, update));
             }
-
             var scriptItr = new WarewolfIterator(dataObject.Environment.Eval(Script, update, false, EscapeScript));
             while (scriptItr.HasMoreData())
             {
@@ -140,7 +140,6 @@ namespace Dev2.Activities
                     {
                         AddDebugOutputItem(new DebugEvalResult(region, "", env, update));
                     }
-
                 }
             }
         }
@@ -219,9 +218,9 @@ namespace Dev2.Activities
 
             return base.Equals(other)
                 && ScriptType == other.ScriptType
-                && EscapeScript == other.EscapeScript 
-                && string.Equals(IncludeFile, other.IncludeFile) 
-                && string.Equals(Script, other.Script) 
+                && EscapeScript == other.EscapeScript
+                && string.Equals(IncludeFile, other.IncludeFile)
+                && string.Equals(Script, other.Script)
                 && string.Equals(Result, other.Result);
         }
 
@@ -242,7 +241,7 @@ namespace Dev2.Activities
                 return false;
             }
 
-            return Equals((DsfScriptingActivity) obj);
+            return Equals((DsfScriptingActivity)obj);
         }
 
         public override int GetHashCode()
@@ -251,7 +250,7 @@ namespace Dev2.Activities
             {
                 var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_sources != null ? _sources.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (int) ScriptType;
+                hashCode = (hashCode * 397) ^ (int)ScriptType;
                 hashCode = (hashCode * 397) ^ EscapeScript.GetHashCode();
                 hashCode = (hashCode * 397) ^ (IncludeFile != null ? IncludeFile.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Script != null ? Script.GetHashCode() : 0);

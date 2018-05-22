@@ -19,6 +19,8 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Globalization;
+using Warewolf.Storage;
+using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -978,6 +980,55 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
 
             Assert.IsTrue(result.Environment.HasErrors());
+        }
+
+        [TestMethod]
+        public void DsfDotNetMultiAssignActivity_RecordSetTypeBlank()
+        {
+            var env = new ExecutionEnvironment();
+            env.Assign("[[alist().other]]", "asdf", 0);
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var ob = new DsfDotNetMultiAssignActivity
+            {
+                FieldsCollection = new List<ActivityDTO>
+                {
+                    new ActivityDTO("[[list().name]]","[[alist().other]]",0)
+                }
+            };
+
+            ob.Execute(data.Object, 0);
+
+            var value = env.EvalAsListOfStrings("[[list().name]]", 0);
+            Assert.AreEqual("asdf", value[0]);
+            var outputs = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("[[list(1).name]]", outputs[0].ResultsList[1].Variable);
+        }
+
+        [TestMethod]
+        public void DsfDotNetMultiAssignActivity_RecordSetTypeBlankReassign()
+        {
+            var env = new ExecutionEnvironment();
+            env.Assign("[[alist().other]]", "asdf", 0);
+            env.Assign("[[list().name]]", "fdsa", 0);
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+            var ob = new DsfDotNetMultiAssignActivity
+            {
+                FieldsCollection = new List<ActivityDTO>
+                {
+                    new ActivityDTO("[[list().name]]","[[alist().other]]",0)
+                }
+            };
+
+            ob.Execute(data.Object, 0);
+
+            var value = env.EvalAsListOfStrings("[[list().name]]", 0);
+            Assert.AreEqual("asdf", value[0]);
+            var outputs = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("[[list(2).name]]", outputs[0].ResultsList[1].Variable);
         }
 
         #endregion Calculate Mode Tests

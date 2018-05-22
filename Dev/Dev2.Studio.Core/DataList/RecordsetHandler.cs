@@ -27,7 +27,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void AddRecordsetNamesIfMissing()
         {
-            var recsetNum = _vm.RecsetCollection?.Count ?? 0;
+            var recsetNum = _vm.RecsetCollectionCount;
             var recsetCount = 0;
 
             while (recsetCount < recsetNum)
@@ -82,7 +82,7 @@ namespace Dev2.Studio.Core.DataList
                 return;
             }
 
-            _vm.RecsetCollection.Remove(blankList.First());
+            _vm.Remove(blankList.First());
         }
 
         public void RemoveBlankRecordsetFields()
@@ -209,7 +209,7 @@ namespace Dev2.Studio.Core.DataList
                     childItem.Parent = recset;
                     recset.Children.Add(childItem);
                 }
-                _vm.RecsetCollection.Add(recset);
+                _vm.Add(recset);
             }
         }
 
@@ -244,7 +244,7 @@ namespace Dev2.Studio.Core.DataList
                 if (recset != null)
                 {
                     recset.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
-                    _vm.RecsetCollection.Add(recset);
+                    _vm.Add(recset);
                 }
             }
             else
@@ -254,7 +254,7 @@ namespace Dev2.Studio.Core.DataList
                 {
                     recset.IsEditable = Common.ParseIsEditable(null);
 
-                    _vm.RecsetCollection.Add(recset);
+                    _vm.Add(recset);
                 }
             }
             return recset;
@@ -328,13 +328,14 @@ namespace Dev2.Studio.Core.DataList
                 {
                     item.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel(item));
                 }
-                if (_vm.RecsetCollection.Count > 0)
+                item.IsVisible = _vm.IsItemVisible(item.Name);
+                if (_vm.RecsetCollectionCount > 0)
                 {
-                    _vm.RecsetCollection.Insert(_vm.RecsetCollection.Count - 1, item);
+                    _vm.RecsetCollection.Insert(_vm.RecsetCollectionCount - 1, item);
                 }
                 else
                 {
-                    _vm.RecsetCollection.Add(item);
+                    _vm.Add(item);
                 }
             }
         }
@@ -354,6 +355,7 @@ namespace Dev2.Studio.Core.DataList
             if (recsetToAddTo.Children.FirstOrDefault(c => c.DisplayName == part.Field) == null)
             {
                 var child = DataListItemModelFactory.CreateRecordSetFieldItemModel(part.Field, part.Description, recsetToAddTo);
+                child.IsVisible = _vm.IsItemVisible(child.Name);
                 if (recsetToAddTo.Children.Count > 0)
                 {
                     recsetToAddTo.Children.Insert(recsetToAddTo.Children.Count - 1, child);
@@ -372,7 +374,7 @@ namespace Dev2.Studio.Core.DataList
             {
                 foreach (var dataListItemModel in unusedRecordsets)
                 {
-                    _vm.RecsetCollection.Remove(dataListItemModel);
+                    _vm.Remove(dataListItemModel);
                 }
             }
             foreach (var recset in _vm.RecsetCollection)

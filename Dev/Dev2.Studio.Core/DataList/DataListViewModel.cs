@@ -151,25 +151,30 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
+        public bool IsItemVisible(string name)
+        {
+            if (!string.IsNullOrWhiteSpace(SearchText))
+            {
+                 return name.ToUpperInvariant().Contains(SearchText.ToUpperInvariant());
+            }
+            return true;
+        }
+
         public ObservableCollection<IScalarItemModel> ScalarCollection
         {
             get
             {
                 if (_scalarCollection != null)
                 {
-                    if (string.IsNullOrEmpty(_searchText))
-                    {
-                        return _scalarCollection;
-                    }
-                    return _scalarCollection.Where(model => model.IsVisible).ToObservableCollection();
+                    return _scalarCollection;
                 }
                 _scalarCollection = new ObservableCollection<IScalarItemModel>();
-                _scalarCollection.CollectionChanged += OnScalarCollectionOnCollectionChanged;
+                _scalarCollection.CollectionChanged += OnCollectionChangedHandler;
                 return _scalarCollection;
             }
         }
 
-        void OnScalarCollectionOnCollectionChanged(object o, NotifyCollectionChangedEventArgs args)
+        void OnCollectionChangedHandler(object o, NotifyCollectionChangedEventArgs args)
         {
             RemoveItemPropertyChangeEvent(args);
             AddItemPropertyChangeEvent(args);
@@ -181,20 +186,10 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 if (_complexObjectCollection != null)
                 {
-                    if (string.IsNullOrEmpty(_searchText))
-                    {
-                        return _complexObjectCollection;
-                    }
-                    return _complexObjectCollection.Where(model => model.IsVisible).ToObservableCollection();
+                    return _complexObjectCollection;
                 }
                 _complexObjectCollection = new ObservableCollection<IComplexObjectItemModel>();
-
-                _complexObjectCollection.CollectionChanged += (o, args) =>
-                {
-                    RemoveItemPropertyChangeEvent(args);
-                    AddItemPropertyChangeEvent(args);
-
-                };
+                _complexObjectCollection.CollectionChanged += OnCollectionChangedHandler;
                 return _complexObjectCollection;
             }
         }
@@ -247,22 +242,13 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                if (_recsetCollection == null)
-                {
-                    _recsetCollection = new ObservableCollection<IRecordSetItemModel>();
-                    _recsetCollection.CollectionChanged += (o, args) =>
-                    {
-                        RemoveItemPropertyChangeEvent(args);
-                        AddItemPropertyChangeEvent(args);
-                    };
-                }
-
-                if (string.IsNullOrEmpty(_searchText))
+                if (_recsetCollection != null)
                 {
                     return _recsetCollection;
                 }
-                var recordSetItemModels = _recsetCollection.Where(model => model.IsVisible).ToObservableCollection();
-                return recordSetItemModels;
+                _recsetCollection = new ObservableCollection<IRecordSetItemModel>();
+                _recsetCollection.CollectionChanged += OnCollectionChangedHandler;
+                return _recsetCollection;
             }
         }
 
@@ -383,7 +369,7 @@ namespace Dev2.Studio.ViewModels.DataList
                     }
                     else
                     {
-                        AddMissingRecsetParts(tmpRecsetList, part);
+                        AddMissingRecordSetDataList(tmpRecsetList, part);
                     }
                 }
             }
@@ -400,7 +386,7 @@ namespace Dev2.Studio.ViewModels.DataList
             WriteToResourceModel();
         }
 
-        private void AddMissingRecsetParts(List<IRecordSetItemModel> tmpRecsetList, IDataListVerifyPart part)
+        private void AddMissingRecordSetDataList(List<IRecordSetItemModel> tmpRecsetList, IDataListVerifyPart part)
         {
             var recsetToAddTo = RecsetCollection.FirstOrDefault(c => c.DisplayName == part.Recordset);
 
@@ -409,6 +395,7 @@ namespace Dev2.Studio.ViewModels.DataList
             if (recsetToAddTo != null)
             {
                 _recordsetHandler.AddMissingRecordSetPart(recsetToAddTo, part);
+                recsetToAddTo.IsVisible = recsetToAddTo.Children.Any(a => a.IsVisible);
             }
             else if (tmpRecset != null)
             {
@@ -568,7 +555,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 }
                 if (complexObj.Children.Count == 0)
                 {
-                    ComplexObjectCollection.Remove(complexObj);
+                    Remove(complexObj);
                 }
                 else
                 {
@@ -579,13 +566,13 @@ namespace Dev2.Studio.ViewModels.DataList
             if (itemToRemove is IScalarItemModel)
             {
                 var item = itemToRemove as IScalarItemModel;
-                ScalarCollection.Remove(item);
+                Remove(item);
                 CheckDataListItemsForDuplicates(DataList);
             }
             else if (itemToRemove is IRecordSetItemModel)
             {
                 var item = itemToRemove as IRecordSetItemModel;
-                RecsetCollection.Remove(item);
+                Remove(item);
                 CheckDataListItemsForDuplicates(DataList);
             }
             else
@@ -775,17 +762,17 @@ namespace Dev2.Studio.ViewModels.DataList
             BaseCollection = new OptomizedObservableCollection<DataListHeaderItemModel>();
 
             var variableNode = DataListItemModelFactory.CreateDataListHeaderItem("Variable");
-            if (ScalarCollection.Count == 0)
+            if (ScalarCollectionCount == 0)
             {
                 var dataListItemModel = DataListItemModelFactory.CreateScalarItemModel(string.Empty);
                 dataListItemModel.IsComplexObject = false;
                 dataListItemModel.AllowNotes = false;
-                ScalarCollection.Add(dataListItemModel);
+                Add(dataListItemModel);
             }
             BaseCollection.Add(variableNode);
 
             var recordsetsNode = DataListItemModelFactory.CreateDataListHeaderItem("Recordset");
-            if (RecsetCollection.Count == 0)
+            if (RecsetCollectionCount == 0)
             {
                 _recordsetHandler.AddRecordSet();
             }
@@ -802,6 +789,42 @@ namespace Dev2.Studio.ViewModels.DataList
 
             WriteToResourceModel();
         }
+
+        public void Add(IScalarItemModel item)
+        {
+            _scalarCollection.Add(item);
+        }
+
+        public void Remove(IScalarItemModel item)
+        {
+            _scalarCollection.Remove(item);
+        }
+
+        public int ScalarCollectionCount => _scalarCollection?.Count ?? 0;
+
+        public void Add(IRecordSetItemModel item)
+        {
+            _recsetCollection.Add(item);
+        }
+
+        public void Remove(IRecordSetItemModel item)
+        {
+            _recsetCollection.Remove(item);
+        }
+
+        public int RecsetCollectionCount => _recsetCollection?.Count ?? 0;
+
+        public void Add(IComplexObjectItemModel item)
+        {
+            _complexObjectCollection.Add(item);
+        }
+
+        public void Remove(IComplexObjectItemModel item)
+        {
+            _complexObjectCollection.Remove(item);
+        }
+
+        public int ComplexObjectCollectionCount => _complexObjectCollection?.Count ?? 0;
 
         public void ClearCollections()
         {
@@ -926,7 +949,7 @@ namespace Dev2.Studio.ViewModels.DataList
             _helper.AddItemToBuilder(result, item);
         }
 
-        bool HasItems() => (ScalarCollection != null && ScalarCollection.Count > 1) || (RecsetCollection != null && RecsetCollection.Count > 1) || (ComplexObjectCollection != null && ComplexObjectCollection.Count >= 1);
+        bool HasItems() => (ScalarCollection != null && ScalarCollectionCount > 1) || (RecsetCollection != null && RecsetCollectionCount > 1) || (ComplexObjectCollection != null && ComplexObjectCollectionCount >= 1);
 
         protected override void OnDispose()
         {
@@ -962,16 +985,14 @@ namespace Dev2.Studio.ViewModels.DataList
             _recordsetHandler.SetRecordSetItemsAsUsed();
         }
 
-        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify) => MissingWorkflowItems(partsToVerify, false);
-
-        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
+        public List<IDataListVerifyPart> MissingWorkflowItems(IList<IDataListVerifyPart> partsToVerify)
         {
             var missingWorkflowParts = new List<IDataListVerifyPart>();
 
             if (DataList != null)
             {                
-                missingWorkflowParts.AddRange(_missingDataList.MissingScalars(partsToVerify, excludeUnusedItems));
-                missingWorkflowParts.AddRange(_missingDataList.MissingRecordsets(partsToVerify, excludeUnusedItems));
+                missingWorkflowParts.AddRange(_missingDataList.MissingScalars(partsToVerify));
+                missingWorkflowParts.AddRange(_missingDataList.MissingRecordsets(partsToVerify));
             }
             _complexObjectHandler.DetectUnusedComplexObjects(partsToVerify);
             FindUnusedAndMissingCommand.RaiseCanExecuteChanged();

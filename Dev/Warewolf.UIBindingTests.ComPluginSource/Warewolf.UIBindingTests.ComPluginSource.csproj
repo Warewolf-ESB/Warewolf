@@ -110,6 +110,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
     <Compile Include="ComPluginSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

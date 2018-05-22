@@ -355,6 +355,29 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void MockSelected_Given_IsSearchCriteriaEnabled()
+        {
+            //---------------Set up test pack-------------------
+            var serviceTestOutput = new ServiceTestOutput("a", "a", "", "")
+            {
+                IsSearchCriteriaEnabled = false,
+                IsSinglematchCriteriaVisible = false
+            };
+            var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
+            { serviceTestOutput
+            }, StepType.Mock);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(testModel.MockSelected);
+            //---------------Execute Test ----------------------
+            testModel.MockSelected = true;
+            //---------------Test Result -----------------------
+            Assert.IsTrue(serviceTestOutput.IsSearchCriteriaEnabled);
+            Assert.IsTrue(serviceTestOutput.IsSinglematchCriteriaVisible);
+            Assert.IsFalse(serviceTestOutput.IsBetweenCriteriaVisible);
+        }
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         public void ServiceTestStep_EmptyStepOutputs_ShouldNotSetTestInvalid()
         {
@@ -365,6 +388,100 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsFalse(serviceTestStep.TestInvalid);
         }
 
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddNewRecordsetOutput_Given_Recordset_Adds_New_Test_Step()
+        {
+            //---------------Set up test pack-------------------            
+            var serviceTestOutput = new ServiceTestOutput("[[person().name]]", "bob", "", "")
+            {
+                IsSearchCriteriaEnabled = false,
+                IsSinglematchCriteriaVisible = false
+            };
+            var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
+            { serviceTestOutput
+            }, StepType.Mock);
+            var testModelObject = new PrivateObject(testModel);
+            //---------------Assert Precondition----------------
+            var ExpectedCount = testModel.StepOutputs.Count + 1;
+            Assert.IsTrue(testModel.MockSelected);
+            Assert.AreEqual(1, testModel.StepOutputs.Count);
+            //---------------Execute Test ----------------------           
+            testModelObject.Invoke("AddNewRecordsetOutput", "[[person().name]]");
+            var countAfter = testModel.StepOutputs.Count;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(ExpectedCount, countAfter);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddNewRecordsetOutput_Sets_VariableName_Given_TestStep_Has_Empty_Variable()
+        {
+            //---------------Set up test pack-------------------            
+            var serviceTestOutput = new ServiceTestOutput("", "", "", "")
+            {
+                IsSearchCriteriaEnabled = false,
+                IsSinglematchCriteriaVisible = false
+            };
+            var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
+            { serviceTestOutput
+            }, StepType.Mock);
+            var testModelObject = new PrivateObject(testModel);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(testModel.MockSelected);
+            //---------------Execute Test ----------------------           
+            testModelObject.Invoke("AddNewRecordsetOutput", "[[Name]]");
+            //---------------Test Result -----------------------
+            Assert.AreEqual("[[Name]]", testModel.StepOutputs[0].Variable);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddNewRecordsetOutput_LastInput_IsNull_ShouldSet_Variable()
+        {
+            //---------------Set up test pack-------------------            
+            var serviceTestOutput = new ServiceTestOutput("", "", "", "")
+            {
+                IsSearchCriteriaEnabled = false,
+                IsSinglematchCriteriaVisible = false
+            };
+            var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
+            { serviceTestOutput
+            }, StepType.Mock);
+            var testModelObject = new PrivateObject(testModel);
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(testModel.MockSelected);
+            //---------------Execute Test ----------------------           
+            testModelObject.Invoke("AddNewRecordsetOutput", "[[Person(1).Name]]");
+            //---------------Test Result -----------------------
+            Assert.AreEqual("[[Person(2).Name]]", testModel.StepOutputs[0].Variable);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void AddNewRecordsetOutput_LastInput_IsNotNull_ShouldSet_Variable()
+        {
+            //---------------Set up test pack-------------------            
+            var serviceTestOutput = new ServiceTestOutput("[[Person().Name]]", "bob", "", "")
+            {
+                IsSearchCriteriaEnabled = false,
+                IsSinglematchCriteriaVisible = false
+            };
+            var testModel = new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>()
+            { serviceTestOutput
+            }, StepType.Mock);
+            var testModelObject = new PrivateObject(testModel);
+            //---------------Assert Precondition----------------
+            var ExpectedCount = testModel.StepOutputs.Count + 1;
+            Assert.IsTrue(testModel.MockSelected);
+            Assert.AreEqual(1, testModel.StepOutputs.Count);
+            //---------------Execute Test ----------------------           
+            testModelObject.Invoke("AddNewRecordsetOutput", "[[Person(1).Name]]");
+            //---------------Test Result -----------------------
+            var countAfter = testModel.StepOutputs.Count;
+            //---------------Test Result -----------------------
+            Assert.AreEqual(ExpectedCount, countAfter);
+        }
 
         static ServiceTestStep CreateDecisionMock()
         {
@@ -372,5 +489,5 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
     }
 
-   
+
 }

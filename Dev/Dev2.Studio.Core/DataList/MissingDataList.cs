@@ -27,44 +27,32 @@ namespace Dev2.Studio.Core.DataList
             _scalarCollection = scalarCollection;
         }
 
-        public IEnumerable<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems)
+        public IEnumerable<IDataListVerifyPart> MissingRecordsets(IList<IDataListVerifyPart> partsToVerify)
         {
             var missingWorkflowParts = new List<IDataListVerifyPart>();
             foreach (var dataListItem in _recsetCollection.Where(model => !string.IsNullOrEmpty(model.DisplayName)))
             {
-                var excludeUnused = excludeUnusedItems && !dataListItem.IsUsed;
-                if (dataListItem.Children.Count > 0 && !partsToVerify.Any(part => part.Recordset == dataListItem.DisplayName) && dataListItem.IsEditable && excludeUnused)
+                if (dataListItem.Children.Count > 0)
                 {
-                    continue;
-                }
-
-                if (!partsToVerify.Any(part => part.Recordset == dataListItem.DisplayName) && dataListItem.IsEditable)
-                {
-                    MissingRecordsets(partsToVerify, excludeUnusedItems, missingWorkflowParts, dataListItem);
+                    AddIsEditablePartsToVerify(partsToVerify, missingWorkflowParts, dataListItem);
                 }
                 else
                 {
-                    var hasNoPartsToVerifyAndEditable = !partsToVerify.Any(part => part.Field == dataListItem.DisplayName && part.IsScalar) && dataListItem.IsEditable;
-                    if (hasNoPartsToVerifyAndEditable && excludeUnused)
-                    {
-                        continue;
-                    }
-
-                    if (hasNoPartsToVerifyAndEditable)
+                    if (!partsToVerify.Any(part => part.Field == dataListItem.DisplayName && part.IsScalar)&& dataListItem.IsEditable)
                     {
                         missingWorkflowParts.Add(
-                        IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description));
+                            IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
+                                dataListItem.Description));
                     }
                 }
             }
             return missingWorkflowParts;
         }
 
-        static void MissingRecordsets(IList<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems, List<IDataListVerifyPart> missingWorkflowParts, IRecordSetItemModel dataListItem)
+        private static void AddIsEditablePartsToVerify(IList<IDataListVerifyPart> partsToVerify, List<IDataListVerifyPart> missingWorkflowParts, IRecordSetItemModel dataListItem)
         {
-            if (excludeUnusedItems && !dataListItem.IsUsed)
+            if (!partsToVerify.Any(part => part.Recordset == dataListItem.DisplayName) && dataListItem.IsEditable)
             {
-
                 AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem);
                 foreach (var child in dataListItem.Children.Where(p => !string.IsNullOrEmpty(p.DisplayName)))
                 {
@@ -76,17 +64,18 @@ namespace Dev2.Studio.Core.DataList
                 missingWorkflowParts.AddRange(
                     from child in dataListItem.Children
                     where !partsToVerify.Any(part => child.Parent != null && part.Field == child.DisplayName && part.Recordset == child.Parent.DisplayName) && child.IsEditable
-                    where !excludeUnusedItems || dataListItem.IsUsed
                     select IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
             }
         }
 
-        public IEnumerable<IDataListVerifyPart> MissingScalars(IEnumerable<IDataListVerifyPart> partsToVerify, bool excludeUnusedItems) => (from dataListItem in _scalarCollection
-                                                                                                                                            where !string.IsNullOrEmpty(dataListItem.DisplayName)
-                                                                                                                                            where partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0
-                                                                                                                                            where dataListItem.IsEditable
-                                                                                                                                            where !excludeUnusedItems || dataListItem.IsUsed
-                                                                                                                                            select IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description)).ToList();
+        public IEnumerable<IDataListVerifyPart> MissingScalars(IEnumerable<IDataListVerifyPart> partsToVerify)
+        {
+            return (from dataListItem in _scalarCollection
+                    where !string.IsNullOrEmpty(dataListItem.DisplayName)
+                    where !partsToVerify.Any(part => part.Field == dataListItem.DisplayName && part.IsScalar)
+                    where dataListItem.IsEditable
+                    select IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description)).ToList();
+        }
 
         static void AddMissingWorkFlowRecordsetPart(List<IDataListVerifyPart> missingWorkflowParts,
         IRecordSetItemModel dataListItem,
