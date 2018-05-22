@@ -204,7 +204,8 @@ namespace Warewolf.Launcher
                 "PROGRAMDATA%\\Warewolf\\Workspaces",
                 "PROGRAMDATA%\\Warewolf\\Server Settings",
                 "PROGRAMDATA%\\Warewolf\\VersionControl",
-                Path.GetDirectoryName(ServerPath) + "\\ServerStarted"
+                Path.GetDirectoryName(ServerPath) + "\\ServerStarted",
+                Path.GetDirectoryName(StudioPath) + "\\StudioStarted"
             };
 
             foreach (var FileOrFolder in ToClean)
@@ -491,6 +492,13 @@ namespace Warewolf.Launcher
             {
                 ServerPath = FindWarewolfServerExe();
             }
+            else
+            {
+                if (ServerPath.StartsWith(".."))
+                {
+                    ServerPath = Path.Combine(Environment.CurrentDirectory, ServerPath);
+                }
+            }
             Console.WriteLine("Will now stop any currently running Warewolf servers and studios. Resources will be backed up to " + TestsResultsPath + ".");
             if (string.IsNullOrEmpty(ResourcesType))
             {
@@ -713,6 +721,13 @@ namespace Warewolf.Launcher
                 if (string.IsNullOrEmpty(ServerPath) || !(File.Exists(StudioPath)))
                 {
                     throw new Exception("Studio path not found: " + StudioPath);
+                }
+            }
+            else
+            {
+                if (StudioPath.StartsWith(".."))
+                {
+                    StudioPath = Path.Combine(Environment.CurrentDirectory, StudioPath);
                 }
             }
             if (string.IsNullOrEmpty(StudioPath))
