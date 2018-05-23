@@ -49,7 +49,24 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(DataObject.Environment.HasRecordSet("[[RecordSet()]]"));
             Assert.AreEqual(1, DataObject.Environment.GetLength("RecordSet"));
         }
-        
+
+
+        [TestMethod]
+        [TestCategory("DsfFolderRead_UpdateForEachInputs")]
+        public void DsfFolderRead_Execute_Expecting_No_Out_Puts_Has_1_Empty_Record1()
+        {
+            //------------Setup for test--------------------------
+            dirHelper = new DirectoryWrapper();
+            var id = Guid.NewGuid().ToString();
+            _inputPath = EnvironmentVariables.AppDataPath;
+            dirHelper.CreateIfNotExists(_inputPath);
+            var act = new DsfFolderRead { InputPath = _inputPath, Result = "[[RecordSet(*).File]]" };
+            //------------Execute Test---------------------------
+            var results = act.Execute(DataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(DataObject.Environment.HasRecordSet("[[RecordSet()]]"));
+            Assert.IsTrue(0 < DataObject.Environment.GetLength("RecordSet"));
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

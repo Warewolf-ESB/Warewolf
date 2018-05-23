@@ -94,5 +94,87 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
             var expected = new List<string> { "[[rs().Field1]]", "[[rs().Field2]]", "[[Result]]", "[[onErr]]" };
             CollectionAssert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void GetActivityFieldsOf_DsfCreateJsonActivity_ExpectedAllFindMissingFieldsToBeReturned()
+        {
+            var act = new DsfCreateJsonActivity {
+                JsonMappings = new List<JsonMappingTo>
+                {
+                    new JsonMappingTo("[[sourceName1]]", 1, true),
+                    new JsonMappingTo("[[sourceName2]]", 2, true),
+                },
+                OnErrorVariable = "[[onErr]]",
+                JsonString = "[[SourceString]]"
+            };
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);
+            var actual = strategy.GetActivityFields(act);
+            var expected = new List<string> { "[[sourceName1]]", "[[sourceName2]]", "[[SourceString]]", "[[onErr]]" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetActivityFieldsOf_DsfXPathActivity_ExpectedAllFindMissingFieldsToBeReturned()
+        {
+            var act = new DsfXPathActivity
+            {
+                ResultsCollection = new List<XPathDTO>
+                {
+                    new XPathDTO("[[outputVar1]]", "//the/path1", 1),
+                    new XPathDTO("[[outputVar2]]", "//the/path2", 2)
+                },
+                OnErrorVariable = "[[onErr]]",
+                SourceString = "[[SourceString]]"
+            };
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);
+            var actual = strategy.GetActivityFields(act);
+            var expected = new List<string> { "[[outputVar1]]", "//the/path1", "[[outputVar2]]", "//the/path2", "[[SourceString]]", "[[onErr]]" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetActivityFieldsOf_DsfFindRecordsMultipleCriteriaActivity_ExpectedAllFindMissingFieldsToBeReturned()
+        {
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                ResultsCollection = new List<FindRecordsTO>
+                {
+                    new FindRecordsTO("criteria1", "any", 1),
+                    new FindRecordsTO("criteria2", "any", 2)
+                },
+                OnErrorVariable = "[[onErr]]",
+                FieldsToSearch = "field1",
+                Result = "[[result]]"
+            };
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);
+            var actual = strategy.GetActivityFields(act);
+            var expected = new List<string> { "", "", "criteria1", "", "", "criteria2", "field1", "[[result]]", "[[onErr]]" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetActivityFieldsOf_NativeActivity_ExpectErrorWorkflowFieldToBeReturned()
+        {
+            var act = new DsfFindRecordsMultipleCriteriaActivity
+            {
+                ResultsCollection = new List<FindRecordsTO>
+                {
+                    new FindRecordsTO("criteria1", "any", 1),
+                    new FindRecordsTO("criteria2", "any", 2)
+                },
+                OnErrorVariable = "[[onErr]]",
+                FieldsToSearch = "field1",
+                Result = "[[result]]",
+                OnErrorWorkflow = "errorWorkflow"
+            };
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);
+            var actual = strategy.GetActivityFields(act);
+            var expected = new List<string> { "", "", "criteria1", "", "", "criteria2", "field1", "[[result]]", "[[onErr]]", "errorWorkflow" };
+            CollectionAssert.AreEqual(expected, actual);
+        }
     }
 }

@@ -76,7 +76,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
-                return double.Parse(value).Equals(double.Parse(comparisonValue.ToString()));
+                return !double.Parse(value).Equals(double.Parse(comparisonValue.ToString()));
             }
 
             return value != comparisonValue.ToString();
