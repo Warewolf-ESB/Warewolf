@@ -349,5 +349,23 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.PathOperations
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void DsfFolderEquality_OtherNullOrDifferentType()
+        {
+            var folderRead = new DsfFolderRead();
+            DsfFolderRead otherSame = null;
+            object other = null;
+            Assert.IsFalse(folderRead.Equals(other));
+            Assert.IsFalse(folderRead.Equals(otherSame));
+
+            other = folderRead;
+            otherSame = folderRead;
+            Assert.IsTrue(folderRead.Equals(other));
+            Assert.IsTrue(folderRead.Equals(otherSame));
+
+            Assert.IsFalse(folderRead.Equals(3));
+        }
     }
 }
