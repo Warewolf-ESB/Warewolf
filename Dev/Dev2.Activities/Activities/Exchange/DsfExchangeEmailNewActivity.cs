@@ -144,32 +144,20 @@ namespace Dev2.Activities.Exchange
                 var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty, update));
                 colItr.AddVariableToIterateOn(attachmentsItr);
 
-                if (!allErrors.HasErrors())
+                while (colItr.HasMoreData())
                 {
-                    while (colItr.HasMoreData())
+                    var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors, IsHtml);
+                    allErrors.MergeErrors(errors);
+                    if (!allErrors.HasErrors())
                     {
-                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors, IsHtml);
-                        allErrors.MergeErrors(errors);
-                        if (!allErrors.HasErrors())
-                        {
-                            indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
-                        }
-                    }
-                    if (IsDebug && !allErrors.HasErrors())
-                    {
-                        if (!string.IsNullOrEmpty(Result))
-                        {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                        }
+                        indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
                     }
                 }
-                else
+                if (IsDebug && !allErrors.HasErrors())
                 {
-                    if (IsDebug)
+                    if (!string.IsNullOrEmpty(Result))
                     {
-                        AddDebugInputItem(To, "To");
-                        AddDebugInputItem(Subject, "Subject");
-                        AddDebugInputItem(Body, "Body");
+                        AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
                     }
                 }
             }
@@ -201,15 +189,6 @@ namespace Dev2.Activities.Exchange
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
-        }
-
-        void AddDebugInputItem(string value, string label)
-        {
-            if (string.IsNullOrEmpty(value) || string.IsNullOrEmpty(label))
-            {
-                return;
-            }
-            AddDebugInputItem(DataListUtil.IsEvaluated(value) ? new DebugItemStaticDataParams("", value, label) : new DebugItemStaticDataParams(value, label));
         }
 
         int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)

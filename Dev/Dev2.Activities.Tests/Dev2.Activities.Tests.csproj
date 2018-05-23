@@ -299,6 +299,7 @@
     <Compile Include="ActivityTests\DsfSwitchTests.cs" />
     <Compile Include="ActivityTests\DotNetMultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\DotNetMultiAssignActivityTest.cs" />
+    <Compile Include="ActivityTests\Exchange\DsfExchangeEmailNewActivityTest.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\ReadFolderNewTests.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
@@ -396,6 +397,7 @@
     <Compile Include="TOTests\SharepointSearchToTests.cs" />
     <Compile Include="TOTests\ValidatedObjectTests.cs" />
     <Compile Include="ServiceTestHelperTests.cs" />
+    <Compile Include="TestMockStepTests.cs" />
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\SharepointUtilsTests.cs" />
