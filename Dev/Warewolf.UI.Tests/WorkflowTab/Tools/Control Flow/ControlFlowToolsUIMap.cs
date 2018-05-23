@@ -107,6 +107,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapC
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.Exists, "Decision Dialog does not exist after opening large Decision view");
         }
 
+        [When(@"I Drag Explorer First Item Onto Sequence")]
+        public void Drag_Explorer_First_Item_Onto_Sequence()
+        {
+            Mouse.StartDragging(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence);
+        }
         [When(@"I Double Click Sequence Tool to Change View")]
         public void SequenceTool_ChangeView_With_DoubleClick()
         {

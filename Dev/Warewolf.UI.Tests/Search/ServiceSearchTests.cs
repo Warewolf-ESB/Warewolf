@@ -6,14 +6,11 @@ using Warewolf.UI.Tests.Search.SearchUIMapClasses;
 
 namespace Warewolf.UI.Tests.Search
 {
-    /// <summary>
-    /// Summary description for SearchViewTests
-    /// </summary>
     [CodedUITest]
     public class ServiceSearchTests
     {
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Service Search")]
         public void Search_For_Hello_World_On_Remote_Server()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -28,7 +25,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Service Search")]
         public void Given_Match_WholeWord_And_Case_And_Hello_World_Returns_Row()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -43,7 +40,7 @@ namespace Warewolf.UI.Tests.Search
         }        
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Service Search")]
         public void Search_hello_And_No_Search_Option_Is_Selected()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -55,7 +52,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Service Search")]
         public void Search_Unexisting_Service_Name()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -67,7 +64,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Service Search")]
         public void Search_hello_And_Only_Service_Name_Is_Selected_And_Match_WholeWord_Is_True()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -81,7 +78,7 @@ namespace Warewolf.UI.Tests.Search
 
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Service Search")]
         public void Search_hello_And_Only_Service_Name_Is_False_And_Match_WholeWord_Is_False()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -94,7 +91,7 @@ namespace Warewolf.UI.Tests.Search
 
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Service Search")]
         public void Search_hello_And_Only_Service_Name_Is_Selected_And_Match_Case_Is_True()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -107,7 +104,7 @@ namespace Warewolf.UI.Tests.Search
 
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Service Search")]
         public void Search_hello_And_Only_Service_Name_Is_Selected_And_Match_Case_Is_False()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -119,7 +116,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Service Search")]
         public void Search_Hello_And_Only_Service_Name_Is_Selected()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -129,6 +126,8 @@ namespace Warewolf.UI.Tests.Search
             Mouse.Click(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.SearchButton);
             Assert.IsTrue(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1.Exists, "Hello search did not return a row as had expected,");
         }
+
+        #region Additional test attributes
 
         [TestInitialize]
         public void MyTestInitialize()
@@ -179,5 +178,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         private UIMap _UIMap;
+
+        #endregion
     }
 }

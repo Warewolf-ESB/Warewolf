@@ -8,6 +8,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SysInfo
     [TestClass]
     public class DsfGatherSystemInformationActivityComparerTest
     {
+#pragma warning disable S3776,S1541,S134,CC0075,S1066,S1067
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_DifferentUniqueIds_ActivityTools_AreNotEqual()
@@ -157,5 +158,6 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.SysInfo
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
         }
+#pragma warning restore S3776, S1541, S134, CC0075, S1066, S1067
     }
 }

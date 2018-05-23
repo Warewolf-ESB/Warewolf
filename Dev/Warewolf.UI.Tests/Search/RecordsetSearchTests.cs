@@ -6,15 +6,11 @@ using Warewolf.UI.Tests.Search.SearchUIMapClasses;
 
 namespace Warewolf.UI.Tests.Search
 {
-    /// <summary>
-    /// Summary description for SearchViewTests
-    /// </summary>
     [CodedUITest]
     public class RecordsetSearchTests
     {
-
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Recordset Search")]
         public void Given_Recordset_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -25,7 +21,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Recordset Search")]
         public void Given_Existing_Recordset_All_Lower_Case_And_Match_Case_Is_False()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -37,7 +33,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Recordset Search")]
         public void Given_Existing_Recordset_All_Upper_Case_And_Match_Case_Is_False()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -49,7 +45,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Recordset Search")]
         public void Given_Existing_Recordset_All_Lower_Case_And_Match_Case_Is_True()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -61,7 +57,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Recordset Search")]
         public void Given_Existing_Recordset_All_Upper_Case_And_Match_Case_Is_True()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -73,7 +69,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Recordset Search")]
         public void Given_Partial_Existing_Recordset_And_Match_WholeWord_Is_False()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -86,7 +82,7 @@ namespace Warewolf.UI.Tests.Search
 
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Recordset Search")]
         public void Given_Partial_Existing_Recordset_And_Match_WholeWord_Is_True()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -98,7 +94,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Recordset Search")]
         public void Given_UnExisting_Recordset_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -108,6 +104,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Unexpected Results were returned after seaching.");
         }
 
+        #region Additional test attributes
 
         [TestInitialize]
         public void MyTestInitialize()
@@ -157,6 +154,8 @@ namespace Warewolf.UI.Tests.Search
             }
         }
 
-        private UIMap _UIMap;
+        private UIMap _UIMap; 
+
+        #endregion
     }
 }
