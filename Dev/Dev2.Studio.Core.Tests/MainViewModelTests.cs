@@ -1158,8 +1158,7 @@ namespace Dev2.Core.Tests
 
 
         #region DeactivateItem
-
-        // PBI 9405 - 2013.06.13 - Massimo.Guerrera
+        
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
         {
@@ -4076,17 +4075,11 @@ namespace Dev2.Core.Tests
             public SpecialContext WorksurfaceContextManager { get; internal set; }
             public object ActiveItem { get; internal set; }
 
-            internal void ActivateItem(object p)
-            {
-                throw new NotImplementedException();
-            }
+            internal void ActivateItem(object p) => throw new NotImplementedException();
 
             public class SpecialContext
             {
-                internal void TryRemoveContext(object contextualResourceModel)
-                {
-                    throw new NotImplementedException();
-                }
+                internal void TryRemoveContext(object contextualResourceModel) => throw new NotImplementedException();
             }
         }
     }

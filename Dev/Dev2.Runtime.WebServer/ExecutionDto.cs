@@ -85,22 +85,27 @@ namespace Dev2.Runtime.WebServer
             }
             if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
             {
-                if (executePayload.IsJSON())
-                {
-                    formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                }
-                else
-                {
-                    if (executePayload.IsXml())
-                    {
-                        formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                    }
-                }
+                TryGetFormatter(executePayload, ref formatter);
             }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             dataObject.Environment = null;
             dto.ErrorResultTO.ClearErrors();
             return new StringResponseWriter(executePayload, formatter.ContentType);
+        }
+
+        static void TryGetFormatter(string executePayload, ref DataListFormat formatter)
+        {
+            if (executePayload.IsJSON())
+            {
+                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+            }
+            else
+            {
+                if (executePayload.IsXml())
+                {
+                    formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                }
+            }
         }
 
         static string GetExecutePayload(IDSFDataObject dataObject, IResource resource, WebRequestTO webRequest, ref DataListFormat formatter)

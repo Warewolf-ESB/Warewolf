@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\MSTest.TestAdapter.1.2.1\build\net45\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.1.2.1\build\net45\MSTest.TestAdapter.props')" />
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.props" Condition="Exists('..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4B51F904-5A54-4BE2-82BF-F8EE0BBD3170}</ProjectGuid>
+    <ProjectGuid>{DFE9341F-EDD8-4038-B278-0CDFA936DBCB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Warewolf.UIBindingTests.ComDll</RootNamespace>
-    <AssemblyName>Warewolf.UIBindingTests.ComDll</AssemblyName>
+    <RootNamespace>Warewolf.Studio.ServerProxyLayer.Test</RootNamespace>
+    <AssemblyName>Warewolf.Studio.ServerProxyLayer.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -17,6 +17,8 @@
     <ReferencePath>$(ProgramFiles)\Common Files\microsoft shared\VSTT\$(VisualStudioVersion)\UITestExtensionPackages</ReferencePath>
     <IsCodedUITest>False</IsCodedUITest>
     <TestProjectType>UnitTest</TestProjectType>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <SonarQubeExclude>True</SonarQubeExclude>
@@ -41,26 +43,20 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
+    </Reference>
     <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MSTest.TestFramework.1.2.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
+      <HintPath>..\packages\MSTest.TestFramework.1.1.18\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\MSTest.TestFramework.1.2.1\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
+      <HintPath>..\packages\MSTest.TestFramework.1.1.18\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="Moq, Version=4.7.137.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <HintPath>..\packages\Moq.4.7.137\lib\net45\Moq.dll</HintPath>
@@ -68,19 +64,9 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
-    <Reference Include="System.Activities" />
-    <Reference Include="System.Activities.Presentation" />
     <Reference Include="System.Configuration" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Runtime.DurableInstancing" />
-    <Reference Include="System.ValueTuple, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
-    </Reference>
-    <Reference Include="TechTalk.SpecFlow, Version=2.3.2.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
-      <HintPath>..\packages\SpecFlow.2.3.2\lib\net45\TechTalk.SpecFlow.dll</HintPath>
-    </Reference>
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
@@ -91,47 +77,23 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
       <Visible>False</Visible>
-    </AdditionalFiles>
-    <Compile Include="ComDll.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ComDll.feature</DependentUpon>
-    </Compile>
-    <Compile Include="ComDllSteps.cs" />
+	</AdditionalFiles>
+    <Compile Include="QueryManagerProxyTest.cs" />
+    <Compile Include="UpdateProxyTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="ComDll.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ComDll.feature.cs</LastGenOutput>
-    </None>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
-      <Project>{B95B724A-B052-4E18-98A4-88072C8DF2C2}</Project>
-      <Name>Dev2.Activities.Designers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
-      <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
-      <Name>Dev2.Activities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
       <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
-      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
-      <Name>Dev2.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
-      <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
+      <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
       <Name>Dev2.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
-      <Project>{d7189600-3c18-4d35-97a4-8095de1a4504}</Project>
+      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
       <Name>Dev2.Data.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
@@ -142,26 +104,26 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
-      <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
-      <Name>Dev2.Runtime.Services</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core\Dev2.Studio.Core.csproj">
       <Project>{A58B157B-960B-4E84-8957-24E4884C5C77}</Project>
       <Name>Dev2.Studio.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
-      <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
-      <Name>Warewolf.Core</Name>
+    <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
+      <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
+      <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
-      <Project>{61a15557-1d18-4c69-88eb-31bf49b7fb50}</Project>
-      <Name>Warewolf.Storage.Interfaces</Name>
+    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
+      <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
+      <Name>Dev2.Studio</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
-      <Project>{B3D070E0-11C1-4C1C-81A5-E680C1494945}</Project>
-      <Name>Warewolf.Storage</Name>
+    <ProjectReference Include="..\Warewolf.Studio.Themes.Luna\Warewolf.Studio.Themes.Luna.csproj">
+      <Project>{18717e42-df21-45a4-9527-f0bb95d7135d}</Project>
+      <Name>Warewolf.Studio.Themes.Luna</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
@@ -182,21 +144,15 @@
     </When>
   </Choose>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.1.2.1\build\net45\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.1.2.1\build\net45\MSTest.TestAdapter.props'))" />
-    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.1.2.1\build\net45\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.1.2.1\build\net45\MSTest.TestAdapter.targets'))" />
-    <Error Condition="!Exists('..\packages\SpecFlow.2.3.2\build\SpecFlow.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SpecFlow.2.3.2\build\SpecFlow.targets'))" />
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.props'))" />
+    <Error Condition="!Exists('..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets'))" />
   </Target>
-  <Import Project="..\packages\MSTest.TestAdapter.1.2.1\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.1.2.1\build\net45\MSTest.TestAdapter.targets')" />
-  <Import Project="..\packages\SpecFlow.2.3.2\build\SpecFlow.targets" Condition="Exists('..\packages\SpecFlow.2.3.2\build\SpecFlow.targets')" />
+  <Import Project="..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

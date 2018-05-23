@@ -9,14 +9,13 @@ namespace Warewolf.UI.Tests
     [CodedUITest]
     public class WorkflowContainingGridedToolsTests
     {
-        private const string Resource = "AlphaNumericValidator";
-
         [TestMethod]
         [TestCategory("Workflow Testing")]
-        public void Can_SAve_Tests_With_Grided_Tools()
+        public void Can_Save_Tests_With_Grided_Tools()
         {
-            ExplorerUIMap.Filter_Explorer(Resource);
+            ExplorerUIMap.Filter_Explorer("AlphaNumericValidator");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();

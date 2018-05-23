@@ -9,11 +9,8 @@ namespace Dev2.Common.TimeZoneBuilder
 {
     class TimeZoneBuilder : ITimeZoneBuilder
     {
-
         #region Implementation of IDateTimeParserBuilder
-        /// <summary>
-        ///     Creates a list of all valid time zones
-        /// </summary>
+
         public void Build()
         {
             TimeZones = new Dictionary<string, ITimeZoneTO>();
@@ -42,9 +39,37 @@ namespace Dev2.Common.TimeZoneBuilder
                 }
             }
 
-            //
-            // Create GMT entries
-            //
+            CreateGMTEntries();            
+            ReadSystemTimeZones();
+
+        }
+
+        private void ReadSystemTimeZones()
+        {
+            foreach (TimeZoneInfo timeZoneInfo in TimeZoneInfo.GetSystemTimeZones())
+            {
+                if (!TimeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out ITimeZoneTO timeZoneTo))
+                {
+                    TimeZones.Add(timeZoneInfo.DisplayName.ToLower(),
+                        new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
+                }
+
+                if (!TimeZones.TryGetValue(timeZoneInfo.DaylightName.ToLower(), out timeZoneTo))
+                {
+                    TimeZones.Add(timeZoneInfo.DaylightName.ToLower(),
+                        new TimeZoneTO(timeZoneInfo.DaylightName, timeZoneInfo.DaylightName, timeZoneInfo.DisplayName));
+                }
+
+                if (!TimeZones.TryGetValue(timeZoneInfo.StandardName.ToLower(), out timeZoneTo))
+                {
+                    TimeZones.Add(timeZoneInfo.StandardName.ToLower(),
+                        new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
+                }
+            }
+        }
+
+        private void CreateGMTEntries()
+        {
             const string GmtShort = "GMT";
             const string GmtLong = "Greenwich Mean Time";
             TimeZones.Add(GmtShort.ToLower(), new TimeZoneTO(GmtShort, GmtShort, GmtLong));
@@ -69,31 +94,6 @@ namespace Dev2.Common.TimeZoneBuilder
                     TimeZones.Add(GmtShort + "+00:30", new TimeZoneTO(GmtShort, GmtShort + "+00:30", GmtLong));
                 }
             }
-
-            //
-            // Read in system time zones
-            //
-            foreach (TimeZoneInfo timeZoneInfo in TimeZoneInfo.GetSystemTimeZones())
-            {
-                if (!TimeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out ITimeZoneTO timeZoneTo))
-                {
-                    TimeZones.Add(timeZoneInfo.DisplayName.ToLower(),
-                        new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
-                }
-
-                if (!TimeZones.TryGetValue(timeZoneInfo.DaylightName.ToLower(), out timeZoneTo))
-                {
-                    TimeZones.Add(timeZoneInfo.DaylightName.ToLower(),
-                        new TimeZoneTO(timeZoneInfo.DaylightName, timeZoneInfo.DaylightName, timeZoneInfo.DisplayName));
-                }
-
-                if (!TimeZones.TryGetValue(timeZoneInfo.StandardName.ToLower(), out timeZoneTo))
-                {
-                    TimeZones.Add(timeZoneInfo.StandardName.ToLower(),
-                        new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
-                }
-            }
-
         }
 
         #endregion

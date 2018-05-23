@@ -28,18 +28,11 @@ namespace Dev2.Core.Tests
         
         public ShellViewModelPersistenceMock(IServerRepository serverRepository,IAsyncWorker asyncWorker, bool createDesigners = true)
             : base(new Mock<IEventAggregator>().Object, asyncWorker, serverRepository, new VersionChecker(), new Mock<IViewFactory>().Object, createDesigners)
-        {
-          
+        {          
         }
 
-        public void TestClose()
-        {
-            OnDeactivate(true);
-        }
+        public void TestClose() => OnDeactivate(true);
 
-        public void CallDeactivate(WorkSurfaceContextViewModel item)
-        {
-            DeactivateItem(item, true);
-        }
+        public void CallDeactivate(IWorkSurfaceContextViewModel item) => DeactivateItem(item, true);
     }
 }
