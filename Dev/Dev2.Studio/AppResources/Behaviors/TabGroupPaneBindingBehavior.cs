@@ -24,23 +24,10 @@ namespace Dev2.Studio.AppResources.Behaviors
     public class TabGroupPaneBindingBehavior : Behavior<TabGroupPane>
     {
         #region Private Methods
-
-        /// <summary>
-        ///     Gets all tab group panes which are descendents of the DocumentHost
-        /// </summary>
+        
         List<TabGroupPane> GetAllTabGroupPanes()
         {
             _tabGroupPanes = new List<TabGroupPane>();
-
-            if(DocumentHost == null)
-            {
-                if(AssociatedObject != null)
-                {
-                    _tabGroupPanes.Add(AssociatedObject);
-                }
-
-                return _tabGroupPanes;
-            }
             _tabGroupPanes.AddRange(DocumentHost.GetDescendents().OfType<TabGroupPane>());
             return _tabGroupPanes;
         }
@@ -56,34 +43,18 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public DocumentContentHost DocumentHost
         {
-            get
-            {
-                return (DocumentContentHost) GetValue(DocumentHostProperty);
-            }
-            set
-            {
-                SetValue(DocumentHostProperty, value);
-            }
-        }        
+            get => (DocumentContentHost)GetValue(DocumentHostProperty);
+            set => SetValue(DocumentHostProperty, value);
+        }
 
         static void DocumentHostChangedCallback(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs e)
         {
-            var itemsControlBindingBehavior = dependencyObject as TabGroupPaneBindingBehavior;
-            if (itemsControlBindingBehavior == null)
+            if (!(dependencyObject is TabGroupPaneBindingBehavior itemsControlBindingBehavior))
             {
                 return;
             }
 
-            var oldValue = e.OldValue as DocumentContentHost;
-            var newValue = e.NewValue as DocumentContentHost;
-
-            if (oldValue != null)
-            {
-                oldValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
-                oldValue.PreviewMouseLeftButtonDown -= itemsControlBindingBehavior.NewValueOnPreviewMouseLeftButtonDown;
-            }
-
-            if (newValue != null)
+            if (e.NewValue is DocumentContentHost newValue)
             {
                 newValue.ActiveDocumentChanged -= itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
                 newValue.ActiveDocumentChanged += itemsControlBindingBehavior.DocumentHostOnActiveDocumentChanged;
@@ -97,16 +68,10 @@ namespace Dev2.Studio.AppResources.Behaviors
             var host = sender as DocumentContentHost;
             var workSurfaceContextViewModel = host?.ActiveDocument?.DataContext as WorkSurfaceContextViewModel;
 
-            if (_shellViewModel == null)
-            {
-                var mainViewModel = DocumentHost?.DataContext as ShellViewModel;
-                _shellViewModel = mainViewModel;
-            }
             if (_shellViewModel != null && _shellViewModel.ActiveItem != workSurfaceContextViewModel)
             {
                 _shellViewModel.ActiveItem = workSurfaceContextViewModel;
             }
-
         }
 
         #endregion DocumentHost
@@ -114,7 +79,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         static List<TabGroupPane> _tabGroupPanes;
         ShellViewModel _shellViewModel;
 
-        void ActiveItemChanged(WorkSurfaceContextViewModel workSurfaceContextViewModel)
+        void ActiveItemChanged(IWorkSurfaceContextViewModel workSurfaceContextViewModel)
         {
             if (_tabGroupPanes == null || _tabGroupPanes.Count <= 0)
             {
@@ -161,7 +126,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        static void SetActivePane(WorkSurfaceContextViewModel newValue)
+        static void SetActivePane(IWorkSurfaceContextViewModel newValue)
         {
             if (_tabGroupPanes != null && _tabGroupPanes.Count > 0)
             {

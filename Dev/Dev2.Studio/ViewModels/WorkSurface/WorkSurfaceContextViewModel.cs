@@ -18,11 +18,9 @@ using Dev2.Messages;
 using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
-using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Help;
@@ -39,12 +37,12 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 using Dev2.ViewModels;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
     public class WorkSurfaceContextViewModel : BaseViewModel,
                                  IHandle<SaveResourceMessage>,
-                                 IHandle<ExecuteResourceMessage>,
                                  IHandle<UpdateWorksurfaceDisplayName>, IWorkSurfaceContextViewModel
     {
         #region private fields
@@ -72,16 +70,9 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region public properties
 
-        public WorkSurfaceKey WorkSurfaceKey { get; }
+        public IWorkSurfaceKey WorkSurfaceKey { get; }
 
-        public IServer Environment
-        {
-            get
-            {
-                var environmentModel = ContextualResourceModel?.Environment;
-                return environmentModel;
-            }
-        }
+        public IServer Environment => ContextualResourceModel?.Environment;
 
         public DebugOutputViewModel DebugOutputViewModel
         {
@@ -114,11 +105,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
             set
             {
-                if (_dataListViewModel != null && _dataListViewModel.Equals(value))
-                {
-                    return;
-                }
-
                 _dataListViewModel = value;
                 NotifyOfPropertyChange(() => DataListViewModel);
             }
@@ -129,11 +115,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             get => _workSurfaceViewModel;
             set
             {
-                if (_workSurfaceViewModel == value)
-                {
-                    return;
-                }
-
                 _workSurfaceViewModel = value;
                 NotifyOfPropertyChange(() => WorkSurfaceViewModel);
 
@@ -152,12 +133,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         #region ctors
 
-        public WorkSurfaceContextViewModel(WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
+        public WorkSurfaceContextViewModel(IWorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
             : this(EventPublishers.Aggregator, workSurfaceKey, workSurfaceViewModel, new PopupController(), (a, b, c) => SaveDialogHelper.ShowNewWorkflowSaveDialog(a, null, b, c))
         {
         }
 
-        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IPopupController popupController, Action<IContextualResourceModel, bool, System.Action> saveDialogAction)
+        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, IWorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IPopupController popupController, Action<IContextualResourceModel, bool, System.Action> saveDialogAction)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("popupController", popupController);
@@ -217,12 +198,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         #endregion ctors
 
         #region IHandle
-
-        public void Handle(ExecuteResourceMessage message)
-        {
-            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
-            Debug(message.Resource, false);
-        }
 
         public void Handle(SaveResourceMessage message)
         {
@@ -366,9 +341,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             inputDataViewModel.DebugExecutionStart += () =>
             {
                 SetDebugStatus(DebugStatus.Executing);
-                var workfloDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
                 DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
-                workfloDesignerViewModel?.GetWorkflowLink();
             };
             inputDataViewModel.DebugExecutionFinished += () =>
             {
@@ -472,10 +445,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         bool _waitingforDialog;
         bool _workspaceSaved;
 
-        public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
-        {
-            SaveDialogHelper.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
-        }
+        public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager) => SaveDialogHelper.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
 
         public bool Save() => Save(false, false);
         public bool Save(bool isLocalSave, bool isStudioShutdown)

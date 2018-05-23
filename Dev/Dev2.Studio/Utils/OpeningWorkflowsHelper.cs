@@ -9,80 +9,45 @@
 */
 
 using System.Collections.Generic;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.AppResources.Comparers;
 
 namespace Dev2.Utils
 {
-
-
-    /// <summary>
-    /// Hold currently opening workflows ;)
-    /// </summary>
     public static class OpeningWorkflowsHelper
     {
 
-        static readonly List<WorkSurfaceKey> _resourcesCurrentlyInOpeningState = new List<WorkSurfaceKey>();
-        static readonly List<WorkSurfaceKey> _resourcesCurrentlyInOpeningStateWaitingForLoad = new List<WorkSurfaceKey>();
+        static readonly List<IWorkSurfaceKey> _resourcesCurrentlyInOpeningState = new List<IWorkSurfaceKey>();
+        static readonly List<IWorkSurfaceKey> _resourcesCurrentlyInOpeningStateWaitingForLoad = new List<IWorkSurfaceKey>();
         static readonly IDictionary<string, bool> _resourcesCurrentlyWaitingForFirstFocusLoss = new Dictionary<string, bool>();
-        static readonly List<WorkSurfaceKey> _resourceCurrentlyWaitingForWaterMarkUpdates = new List<WorkSurfaceKey>();
-
-
-        /// <summary>
-        /// Adds the workflow.
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        public static void AddWorkflow(WorkSurfaceKey workSurfaceKey)
+        static readonly List<IWorkSurfaceKey> _resourceCurrentlyWaitingForWaterMarkUpdates = new List<IWorkSurfaceKey>();
+        
+        public static void AddWorkflow(IWorkSurfaceKey workSurfaceKey)
         {
             _resourcesCurrentlyInOpeningState.Add(workSurfaceKey);
             _resourcesCurrentlyInOpeningStateWaitingForLoad.Add(workSurfaceKey);
         }
-
-        /// <summary>
-        /// Removes the workflow.
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        public static void RemoveWorkflow(WorkSurfaceKey workSurfaceKey)
+        
+        public static void RemoveWorkflow(IWorkSurfaceKey workSurfaceKey)
         {
             _resourcesCurrentlyInOpeningState.Remove(workSurfaceKey);
         }
 
-        /// <summary>
-        /// Removes the workflow waiting for designer load.
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        public static void RemoveWorkflowWaitingForDesignerLoad(WorkSurfaceKey workSurfaceKey)
+        public static void RemoveWorkflowWaitingForDesignerLoad(IWorkSurfaceKey workSurfaceKey)
         {
             _resourcesCurrentlyInOpeningStateWaitingForLoad.Remove(workSurfaceKey);
         }
-
-        /// <summary>
-        /// Fetches the opening keys.
-        /// </summary>
-        /// <returns></returns>
-        public static List<WorkSurfaceKey> FetchOpeningKeys() => _resourcesCurrentlyInOpeningState;
-
-        /// <summary>
-        /// Determines whether [is workflow waitingfor designer load] [the specified work surface key].
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        /// <returns></returns>
-        public static bool IsWorkflowWaitingforDesignerLoad(WorkSurfaceKey workSurfaceKey) => _resourcesCurrentlyInOpeningStateWaitingForLoad.Contains(workSurfaceKey);
-
-        /// <summary>
-        /// Removes the workflow waiting for first focus loss.
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        public static void RemoveWorkflowWaitingForFirstFocusLoss(WorkSurfaceKey workSurfaceKey)
+        
+        public static List<IWorkSurfaceKey> FetchOpeningKeys() => _resourcesCurrentlyInOpeningState;
+        
+        public static bool IsWorkflowWaitingforDesignerLoad(IWorkSurfaceKey workSurfaceKey) => _resourcesCurrentlyInOpeningStateWaitingForLoad.Contains(workSurfaceKey);
+        
+        public static void RemoveWorkflowWaitingForFirstFocusLoss(IWorkSurfaceKey workSurfaceKey)
         {
             _resourcesCurrentlyWaitingForFirstFocusLoss[workSurfaceKey.ToString()] = false;
         }
-
-        /// <summary>
-        /// Determines whether [is waiting for fist focus loss] [the specified work surface key].
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        /// <returns></returns>
-        public static bool IsWaitingForFistFocusLoss(WorkSurfaceKey workSurfaceKey)
+        
+        public static bool IsWaitingForFistFocusLoss(IWorkSurfaceKey workSurfaceKey)
         {
             if(_resourcesCurrentlyWaitingForFirstFocusLoss.ContainsKey(workSurfaceKey.ToString()))
             {
@@ -91,12 +56,8 @@ namespace Dev2.Utils
 
             return false;
         }
-
-        /// <summary>
-        /// Prunes the workflow from caches.
-        /// </summary>
-        /// <param name="workSurfaceKey">The work surface key.</param>
-        public static void PruneWorkflowFromCaches(WorkSurfaceKey workSurfaceKey)
+        
+        public static void PruneWorkflowFromCaches(IWorkSurfaceKey workSurfaceKey)
         {
             if(_resourcesCurrentlyWaitingForFirstFocusLoss.ContainsKey(workSurfaceKey.ToString()))
             {
@@ -118,6 +79,5 @@ namespace Dev2.Utils
                 _resourceCurrentlyWaitingForWaterMarkUpdates.Remove(workSurfaceKey);
             }
         }
-
     }
 }

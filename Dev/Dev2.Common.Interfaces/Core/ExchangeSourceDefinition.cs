@@ -45,7 +45,19 @@ namespace Dev2.Common.Interfaces.Core
                 && Timeout == other.Timeout;
         }
 
-        public bool Equals(IExchangeSource other) => Equals(other as ExchangeSourceDefinition);
+        public bool Equals(IExchangeSource other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
+                && Timeout == other.Timeout;
+        }
 
         public override bool Equals(object obj)
         {
