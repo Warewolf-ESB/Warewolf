@@ -188,7 +188,7 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
-        [Given(@"I have server a ""(.*)"" with workflow ""(.*)""")]
+        [Given(@"I have a server at ""(.*)"" with workflow ""(.*)""")]
         public void GivenIHaveAWorkflowOnServer(string serverName, string workflow)
         {
             AppUsageStats.LocalHost = "http://localhost:3142";
@@ -219,22 +219,30 @@ namespace Dev2.Activities.Specs.Composition
 
                     var newEnvironment = new Server(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName };
                     EnsureEnvironmentConnected(newEnvironment, EnvironmentConnectionTimeout);
-                    newEnvironment.ForceLoadResources();
-
-                    var resourceModel = newEnvironment.ResourceRepository.FindSingle(r => r.ResourceName == workflow);
-
-                    _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(newEnvironment.Connection.ServerEvents);
-
-                    _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
-
-                    Add(workflow, resourceModel);
-                    Add("parentWorkflowName", workflow);
-                    Add("environment", newEnvironment);
-                    Add("resourceRepo", newEnvironment.ResourceRepository);
-                    Add("debugStates", new List<IDebugState>());
-
+                    LoadResourcesAndSubscribeToDebugOutput(workflow, newEnvironment);
+                }
+                else
+                {
+                    LoadResourcesAndSubscribeToDebugOutput(workflow, environmentModel);
                 }
             }
+        }
+
+        void LoadResourcesAndSubscribeToDebugOutput(string workflow, IServer newEnvironment)
+        {
+            newEnvironment.ForceLoadResources();
+
+            var resourceModel = newEnvironment.ResourceRepository.FindSingle(r => r.ResourceName == workflow);
+
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(newEnvironment.Connection.ServerEvents);
+
+            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+
+            Add(workflow, resourceModel);
+            Add("parentWorkflowName", workflow);
+            Add("environment", newEnvironment);
+            Add("resourceRepo", newEnvironment.ResourceRepository);
+            Add("debugStates", new List<IDebugState>());
         }
 
         [BeforeFeature()]
@@ -1012,18 +1020,10 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is the active environment used to execute ""(.*)""")]
         public void WhenIsTheActiveEnvironmentUsedToExecute(string connectionName, string workflowName)
         {
-
             TryGetValue(workflowName, out IContextualResourceModel resourceModel);
             TryGetValue("environment", out IServer server);
             TryGetValue("resourceRepo", out IResourceRepository repository);
 
-            ExecuteWorkflow(resourceModel);
-        }
-
-        [When(@"""(.*)"" is executed")]
-        public void WhenIsExecuted(string workflowName)
-        {
-            var resourceModel = SaveAWorkflow(workflowName);
             ExecuteWorkflow(resourceModel);
         }
 
@@ -1288,6 +1288,7 @@ namespace Dev2.Activities.Specs.Composition
             Assert.IsTrue(toolSpecificDebug.All(a => a.Server == remoteName));
             Assert.IsTrue(debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && !ds.DisplayName.Equals(toolName)).All(a => a.Server == "localhost"));
         }
+
         [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs is")]
         public void ThenTheInWorkflowDebugOutputsIs(string p0, string p1, Table table)
         {
@@ -2407,6 +2408,13 @@ namespace Dev2.Activities.Specs.Composition
             repository.Save(resourceModel);
         }
 
+        [When(@"""(.*)"" is executed")]
+        public void WhenIsExecuted(string workflowName)
+        {
+            var resourceModel = SaveAWorkflow(workflowName);
+            ExecuteWorkflow(resourceModel);
+        }
+
         [When(@"'(.*)' unsaved WF ""(.*)"" is executed")]
         public void WhenUnsavedWFIsExecuted(int numberToExecute, string unsavedName)
         {
@@ -2732,10 +2740,7 @@ namespace Dev2.Activities.Specs.Composition
             };
             _commonSteps.AddActivityToActivityList(parentName, rabbitMqname, dsfPublishRabbitMqActivity);
         }
-
-
-
-
+        
         [Given(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         [Then(@"""(.*)"" contains an DotNet DLL ""(.*)"" as")]
         public void GivenContainsAnDotNetDLLAs(string parentName, string dotNetServiceName, Table table)
@@ -2868,10 +2873,8 @@ namespace Dev2.Activities.Specs.Composition
             var result = table.Rows[0]["Result"];
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, downloadActivity);
-
         }
-
-
+        
         [Given(@"""(.*)"" contains a DropboxDelete ""(.*)"" Setup as")]
         public void GivenContainsADropboxDeleteSetupAs(string parentName, string dotNetServiceName, Table table)
         {
@@ -2978,8 +2981,7 @@ namespace Dev2.Activities.Specs.Composition
                 });
             }
         }
-
-
+        
         [Given(@"""(.*)"" service Action ""(.*)"" with inputs and output ""(.*)"" as")]
         public void GivenServiceActionWithInputsAndOutputAs(string serviceName, string action, string outputVar, Table table)
         {
@@ -2995,9 +2997,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             dsfEnhancedDotNetDllActivity.MethodsToRun.Add(pluginAction);
         }
-
-
-
+        
         [Given(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         [Then(@"""(.*)"" contains an Assign Object ""(.*)"" as")]
         public void GivenContainsAnAssignObjectAs(string parentName, string assignName, Table table)
@@ -3026,8 +3026,7 @@ namespace Dev2.Activities.Specs.Composition
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
-
-
+        
         [When(@"I rollback ""(.*)"" to version ""(.*)""")]
         public void WhenIRollbackToVersion(string workflowName, string version)
         {
@@ -3039,34 +3038,13 @@ namespace Dev2.Activities.Specs.Composition
             rep.RollbackTo(id, version);
         }
 
-        [Then(@"the ""(.*)"" in Workflow ""(.*)"" debug outputs does not exist\|")]
-        public void ThenTheInWorkflowDebugOutputsDoesNotExist(string workflowName, string version)
-        {
-            TryGetValue("activityList", out Dictionary<string, Activity> activityList);
-            TryGetValue("parentWorkflowName", out string parentWorkflowName);
-
-            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
-
-            if (parentWorkflowName == workflowName)
-            {
-                workflowId = Guid.Empty;
-            }
-
-            var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == workflowId && ds.DisplayName.Equals(workflowName)).ToList();
-            Assert.AreEqual(0, toolSpecificDebug.Count);
-        }
-
-
         [When(@"""(.*)"" is executed without saving")]
         public void WhenIsExecutedWithoutSaving(string workflowName)
         {
             TryGetValue(workflowName, out IContextualResourceModel resourceModel);
             TryGetValue("environment", out IServer server);
             TryGetValue("resourceRepo", out IResourceRepository repository);
-
-
+            
             var debugStates = Get<List<IDebugState>>("debugStates").ToList();
             debugStates.Clear();
 

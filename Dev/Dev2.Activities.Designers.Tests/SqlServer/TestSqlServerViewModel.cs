@@ -423,10 +423,16 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             {
                 throw new Exception("bob");
             }
-
+            
             if (HasRecError)
             {
                 return null;
+            }
+            if (ReturnsNoColumns)
+            {
+                var dtEmpty= new DataTable();
+                dtEmpty.TableName = "bob";
+                return dtEmpty;
             }
             var dt = new DataTable();
             dt.Columns.Add("a");
@@ -439,7 +445,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
         public IStudioUpdateManager UpdateRepository => _updateRepository;
         public bool ThrowsTestError { get; set; }
-
+        public bool ReturnsNoColumns { get; set; }
         #endregion
     }
 
@@ -532,6 +538,12 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             {
                 return null;
             }
+            if (ReturnsNoColumns)
+            {
+                var dtEmpty = new DataTable();
+                dtEmpty.TableName = "bob";
+                return dtEmpty;
+            }
             var dt = new DataTable();
             dt.Columns.Add("a");
             dt.TableName = "bob";
@@ -541,7 +553,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
         public IStudioUpdateManager UpdateRepository => _updateRepository;
         public bool ThrowsTestError { get; set; }
-
+        public bool ReturnsNoColumns { get; set; }
         #endregion
     }
     class InputViewForTest : ManageDatabaseServiceInputViewModel

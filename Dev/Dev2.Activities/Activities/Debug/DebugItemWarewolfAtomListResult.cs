@@ -262,11 +262,11 @@ namespace Dev2.Activities.Debug
                     var rawExpression = _assignedToVariableName;
                     if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
                     {
-                        groupName = RecordsetGroupName(ref grpIdx, ref displayExpression, rawExpression);
+                        RecordsetGroupName(ref grpIdx, ref displayExpression, rawExpression, ref groupName);
                     }
                     else
                     {
-                        groupName = ObjectGroupName(ref grpIdx, displayExpression);
+                        ObjectGroupName(ref grpIdx, displayExpression, ref groupName);
                     }
 
                     var debugOperator = "";
@@ -275,7 +275,7 @@ namespace Dev2.Activities.Debug
                     {
                         debugOperator = "=";
                         debugType = DebugItemResultType.Variable;
-                        displayExpression = _isCalculate ? GroupDisplayExpression(groupName, displayExpression) : displayExpression;
+                        displayExpression = _isCalculate ? (groupName ?? displayExpression) : displayExpression;
                     }
                     else
                     {
@@ -297,15 +297,8 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        private static string GroupDisplayExpression(string groupName, string displayExpression)
+        static void ObjectGroupName(ref int grpIdx, string displayExpression, ref string groupName)
         {
-            displayExpression = groupName ?? displayExpression;
-            return displayExpression;
-        }
-
-        static string ObjectGroupName(ref int grpIdx, string displayExpression)
-        {
-            var groupName = "";
             var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
             int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
@@ -316,12 +309,10 @@ namespace Dev2.Activities.Debug
                 grpIdx++;
                 groupName = @group;
             }
-            return groupName;
         }
 
-        private string RecordsetGroupName(ref int grpIdx, ref string displayExpression, string rawExpression)
+        private void RecordsetGroupName(ref int grpIdx, ref string displayExpression, string rawExpression, ref string groupName)
         {
-            string groupName;
             grpIdx++;
             groupName = rawExpression;
             var dataLanguageParser = new Dev2DataLanguageParser();
@@ -334,8 +325,6 @@ namespace Dev2.Activities.Debug
                     displayExpression = _assignedToVariableName.Replace(val, repVal);
                 }
             }
-
-            return groupName;
         }
 
         void HasLeftLabel(List<IDebugItemResult> results)

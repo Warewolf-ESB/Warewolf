@@ -681,7 +681,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 foreach (var debugItemResult in debugItem.ResultsList)
                 {
-                    SetOutputs(outPutState, dataList, outPuts, debugItemResult);
+                    SetResultListOutputs(outPutState, dataList, outPuts, debugItemResult);
                 }
             }
             SelectedServiceTest.Outputs = outPuts;
@@ -690,7 +690,7 @@ namespace Warewolf.Studio.ViewModels
             SelectedServiceTest.ErrorContainsText = outPutState.ErrorMessage;
         }
 
-        void SetOutputs(IDebugState outPutState, DataListModel dataList, ObservableCollection<IServiceTestOutput> outPuts, IDebugItemResult debugItemResult)
+        void SetResultListOutputs(IDebugState outPutState, DataListModel dataList, ObservableCollection<IServiceTestOutput> outPuts, IDebugItemResult debugItemResult)
         {
             var variable = debugItemResult.Variable.Replace("[[", "").Replace("]]", "");
             var value = debugItemResult.Value;
@@ -1235,7 +1235,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (step.Parent == null)
                 {
-                    ProcessActivity(step);
+                    ProcessStepActivity(step);
                 }
                 else
                 {
@@ -1267,7 +1267,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void ProcessActivity(IServiceTestStep step)
+        void ProcessStepActivity(IServiceTestStep step)
         {
             var exists = FindExistingStep(step.UniqueId.ToString());
             if (exists == null)

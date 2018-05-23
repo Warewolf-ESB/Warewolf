@@ -43,7 +43,6 @@ namespace Warewolf.Studio.ViewModels
         bool _lastRunDateVisibility;
         bool _neverRunStringVisibility;
         IList<IDebugState> _debugForTest;
-        IServiceTestStep _selectedTestStep;
         ObservableCollection<IServiceTestStep> _testSteps;
         string _errorContainsText;
         bool _isTestLoading;
@@ -460,17 +459,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 _testSteps = value;
                 OnPropertyChanged(() => TestSteps);
-            }
-        }
-
-       
-        public IServiceTestStep SelectedTestStep
-        {
-            get { return _selectedTestStep; }
-            set
-            {
-                _selectedTestStep = value;
-                OnPropertyChanged(() => SelectedTestStep);
             }
         }
 

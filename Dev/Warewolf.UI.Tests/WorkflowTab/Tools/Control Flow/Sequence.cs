@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
@@ -59,6 +60,16 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
             DialogsUIMap.Click_DropNotAllowed_MessageBox_OK();
         }
+        const string HelloWorld = "Hello World";
+        [TestMethod]
+        [TestCategory("Control Flow Tools")]
+        public void Sequence_DraggingResourceFromFolder_UITest()
+        {
+            Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.Exists, "Sequence on the design surface does not exist");
+            ExplorerUIMap.Filter_Explorer(HelloWorld);
+            ControlFlowToolsUIMap.Drag_Explorer_First_Item_Onto_Sequence();
+            Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence.SequenceSmallView.ElementTable.AssignObject.Exists, "Hello World Worflow does not exist.");
+        }
 
         #region Additional test attributes
 
@@ -70,7 +81,20 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             UIMap.Click_NewWorkflow_RibbonButton();
             WorkflowTabUIMap.Drag_Toolbox_Sequence_Onto_DesignSurface();
         }
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
 
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
         UIMap UIMap
         {
             get

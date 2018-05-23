@@ -55,8 +55,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(chart);
-            var diff = CreateContextualResourceModel(otherChart);
+            var current = ParserTestHelper.CreateContextualResourceModel(chart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(otherChart);
 
             var psd = new ServiceDifferenceParser(activityParser, new ResourceDefinationCleaner());
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);
@@ -103,31 +103,7 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(calculateUniqueId, devActivityDiff1.UniqueID);
         }
 
-        static IContextualResourceModel CreateContextualResourceModel(Flowchart chart)
-        {
-            var workflowHelper = new WorkflowHelper();
-            var tempResource = new Mock<IContextualResourceModel>();
-
-            var builder = workflowHelper.CreateWorkflow("bob");
-            builder.Implementation = chart;
-            var tempResourceWorkflowXaml = workflowHelper.GetXamlDefinition(builder);
-            var mock = new Mock<IServer>();
-            mock.Setup(server => server.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(),
-                    It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
-                .Returns(new ExecuteMessage
-                {
-                    HasError = false,
-                    Message = tempResourceWorkflowXaml
-                });
-            tempResource.Setup(model => model.Environment).Returns(mock.Object);
-            tempResource.Setup(model => model.Category).Returns(@"Unassigned\" + "bob");
-            tempResource.Setup(model => model.ResourceName).Returns("bob");
-            tempResource.Setup(model => model.DisplayName).Returns("bob");
-            tempResource.Setup(model => model.IsNewWorkflow).Returns(true);
-            tempResource.Setup(model => model.WorkflowXaml).Returns(tempResourceWorkflowXaml);
-
-            return tempResource.Object;
-        }
+        
 
         [TestInitialize]
         public void Init()
@@ -186,8 +162,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(chart);
-            var diff = CreateContextualResourceModel(otherChart);
+            var current = ParserTestHelper.CreateContextualResourceModel(chart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(otherChart);
 
             var psd = new ServiceDifferenceParser();
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);
@@ -301,8 +277,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(chart);
-            var diff = CreateContextualResourceModel(otherChart);
+            var current = ParserTestHelper.CreateContextualResourceModel(chart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(otherChart);
 
             var psd = new ServiceDifferenceParser();
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);
@@ -407,8 +383,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(otherChart);
-            var diff = CreateContextualResourceModel(chart);
+            var current = ParserTestHelper.CreateContextualResourceModel(otherChart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);
@@ -524,8 +500,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(otherChart);
-            var diff = CreateContextualResourceModel(chart);
+            var current = ParserTestHelper.CreateContextualResourceModel(otherChart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);
@@ -620,8 +596,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(otherChart);
-            var diff = CreateContextualResourceModel(chart);
+            var current = ParserTestHelper.CreateContextualResourceModel(otherChart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);
@@ -755,8 +731,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(otherChart);
-            var diff = CreateContextualResourceModel(chart);
+            var current = ParserTestHelper.CreateContextualResourceModel(otherChart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);
@@ -898,8 +874,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(otherChart);
-            var diff = CreateContextualResourceModel(chart);
+            var current = ParserTestHelper.CreateContextualResourceModel(otherChart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);
@@ -1047,8 +1023,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(otherChart);
-            var diff = CreateContextualResourceModel(chart);
+            var current = ParserTestHelper.CreateContextualResourceModel(otherChart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);
@@ -1187,8 +1163,8 @@ namespace Warewolf.MergeParser.Tests
                 }
             };
 
-            var current = CreateContextualResourceModel(otherChart);
-            var diff = CreateContextualResourceModel(chart);
+            var current = ParserTestHelper.CreateContextualResourceModel(otherChart);
+            var diff = ParserTestHelper.CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
             var (currentTree, diffTree) = psd.GetDifferences(current, diff);

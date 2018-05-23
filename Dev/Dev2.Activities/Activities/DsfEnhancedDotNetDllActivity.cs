@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -427,7 +428,7 @@ namespace Dev2.Activities
         }
 
         #region Overrides of DsfActivity
-
+        [ExcludeFromCodeCoverage] //This does not appear to be used anywhere
         protected override void ChildDebugStateDispatch(IDSFDataObject dataObject)
         {
             if (dataObject.IsDebugMode())

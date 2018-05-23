@@ -41,10 +41,24 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
                 return this.mMainStudioWindow;
             }
         }
+        
+        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
+        {
+            get
+            {
+                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
+                {
+                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
+                }
+                return this.mUIWarewolfDEV2SANELEMTWindow;
+            }
+        }
         #endregion
         
         #region Fields
         private MainStudioWindow mMainStudioWindow;
+        
+        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -270,12 +284,31 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
                 return this.mCloseButton;
             }
         }
+        
+        public WpfCustom OUTPUT
+        {
+            get
+            {
+                if ((this.mOUTPUT == null))
+                {
+                    this.mOUTPUT = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mOUTPUT.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mOUTPUT.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
+                    this.mOUTPUT.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mOUTPUT;
+            }
+        }
         #endregion
         
         #region Fields
         private WorkSurfaceContext mWorkSurfaceContext;
         
         private WpfButton mCloseButton;
+        
+        private WpfCustom mOUTPUT;
         #endregion
     }
     
@@ -592,6 +625,35 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         }
         
         #region Properties
+        public WpfListItem NameNewAssignWf2
+        {
+            get
+            {
+                if ((this.mNameNewAssignWf2 == null))
+                {
+                    this.mNameNewAssignWf2 = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNameNewAssignWf2.SearchProperties[WpfListItem.PropertyNames.Name] = "Name:NewAssignWf ResourceId:750a765f-fc2e-4636-b259-7f5d9ee80d69";
+                    this.mNameNewAssignWf2.SearchProperties[WpfListItem.PropertyNames.Instance] = "2";
+                    this.mNameNewAssignWf2.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNameNewAssignWf2;
+            }
+        }
+        
+        public NewAssignWfSchedule NewAssignWfSchedule
+        {
+            get
+            {
+                if ((this.mNewAssignWfSchedule == null))
+                {
+                    this.mNewAssignWfSchedule = new NewAssignWfSchedule(this);
+                }
+                return this.mNewAssignWfSchedule;
+            }
+        }
+        
         public NewTask1ResourceListItem NewTask1ResourceListItem
         {
             get
@@ -654,6 +716,10 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         #endregion
         
         #region Fields
+        private WpfListItem mNameNewAssignWf2;
+        
+        private NewAssignWfSchedule mNewAssignWfSchedule;
+        
         private NewTask1ResourceListItem mNewTask1ResourceListItem;
         
         private ScheduleNewTaskListItem mScheduleNewTaskListItem;
@@ -663,6 +729,78 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         private GenericResourceListItem mGenericResourceListItem;
         
         private UILoadTestiListItem mUILoadTestiListItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class NewAssignWfSchedule : WpfListItem
+    {
+        
+        public NewAssignWfSchedule(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Name:NewAssignWf ResourceId:750a765f-fc2e-4636-b259-7f5d9ee80d69";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox EnableorDisabled
+        {
+            get
+            {
+                if ((this.mEnableorDisabled == null))
+                {
+                    this.mEnableorDisabled = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mEnableorDisabled.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Enable or Disable the schedule";
+                    this.mEnableorDisabled.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mEnableorDisabled;
+            }
+        }
+        
+        public WpfButton Delete
+        {
+            get
+            {
+                if ((this.mDelete == null))
+                {
+                    this.mDelete = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDelete.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mDelete.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDelete;
+            }
+        }
+        
+        public WpfText NewAssignWfText
+        {
+            get
+            {
+                if ((this.mNewAssignWfText == null))
+                {
+                    this.mNewAssignWfText = new WpfText(this);
+                    #region Search Criteria
+                    this.mNewAssignWfText.SearchProperties[WpfText.PropertyNames.Name] = "NewAssignWf *";
+                    this.mNewAssignWfText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNewAssignWfText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mEnableorDisabled;
+        
+        private WpfButton mDelete;
+        
+        private WpfText mNewAssignWfText;
         #endregion
     }
     
@@ -1197,6 +1335,107 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         private WpfButton mDeleteButton;
         
         private WpfCheckBox mEnableorDisablethescCheckBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    {
+        
+        public UIWarewolfDEV2SANELEMTWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UIUI_SchedulerView_AutCustom UIUI_SchedulerView_AutCustom
+        {
+            get
+            {
+                if ((this.mUIUI_SchedulerView_AutCustom == null))
+                {
+                    this.mUIUI_SchedulerView_AutCustom = new UIUI_SchedulerView_AutCustom(this);
+                }
+                return this.mUIUI_SchedulerView_AutCustom;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UIUI_SchedulerView_AutCustom mUIUI_SchedulerView_AutCustom;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_SchedulerView_AutCustom : WpfCustom
+    {
+        
+        public UIUI_SchedulerView_AutCustom(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SchedulerView";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SchedulerView_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public UISchedulesList UISchedulesList
+        {
+            get
+            {
+                if ((this.mUISchedulesList == null))
+                {
+                    this.mUISchedulesList = new UISchedulesList(this);
+                }
+                return this.mUISchedulesList;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private UISchedulesList mUISchedulesList;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UISchedulesList : WpfList
+    {
+        
+        public UISchedulesList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "Schedules";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem UINameNewAssignWfResouListItem
+        {
+            get
+            {
+                if ((this.mUINameNewAssignWfResouListItem == null))
+                {
+                    this.mUINameNewAssignWfResouListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mUINameNewAssignWfResouListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "Name:NewAssignWf ResourceId:750a765f-fc2e-4636-b259-7f5d9ee80d69";
+                    this.mUINameNewAssignWfResouListItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUINameNewAssignWfResouListItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mUINameNewAssignWfResouListItem;
         #endregion
     }
 }
