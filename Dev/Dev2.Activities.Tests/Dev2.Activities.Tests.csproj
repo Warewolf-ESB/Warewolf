@@ -397,6 +397,7 @@
     <Compile Include="TOTests\SharepointSearchToTests.cs" />
     <Compile Include="TOTests\ValidatedObjectTests.cs" />
     <Compile Include="ServiceTestHelperTests.cs" />
+    <Compile Include="TestMockStepTests.cs" />
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\SharepointUtilsTests.cs" />
