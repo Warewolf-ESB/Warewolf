@@ -356,6 +356,8 @@ namespace ActivityUnitTests.ActivityTest
             Assert.AreEqual(result, dsfForEachItems[0].Value);
         }
         [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("DsfWebGetRequestActivity_Execute")]
         public void WebGetRequestExecuteWithHeaders()
         {
             const string response = "[\"value1\",\"value2\"]";
@@ -375,6 +377,30 @@ namespace ActivityUnitTests.ActivityTest
             dsfWebGetActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
             Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Response]]", 0)));
+        }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("DsfWebGetRequestActivity_Execute")]
+        public void WebGetRequestWithTimeoutActivity_ExecuteWithHeaders()
+        {
+            var dsfWebGetActivity = new DsfWebGetRequestWithTimeoutActivity
+            {
+                Url = "[[URL]]",
+                Result = "[[Response]]",
+                TimeOutText = "hhh",
+                Headers = "Authorization: Basic 321654987"
+            };
+            var environment = new ExecutionEnvironment();
+            environment.Assign("[[URL]]", "http://rsaklfsvrtfsbld:9910/api/values", 0);
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(environment);
+            dataObjectMock.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObjectMock.Setup(o => o.EsbChannel).Returns(new MockEsb());
+            //------------Execute Test---------------------------
+            dsfWebGetActivity.Execute(dataObjectMock.Object, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Value hhh for TimeoutSecondsText could not be interpreted as a numeric value.\r\nExecution aborted - see error messages.", environment.FetchErrors().ToString());
         }
         static DsfWebGetRequestWithTimeoutActivity GetWebGetRequestWithTimeoutActivity(Mock<IWebRequestInvoker> mockWebRequestInvoker)
         {
