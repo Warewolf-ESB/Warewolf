@@ -6,14 +6,11 @@ using Warewolf.UI.Tests.Search.SearchUIMapClasses;
 
 namespace Warewolf.UI.Tests.Search
 {
-    /// <summary>
-    /// Summary description for SearchViewTests
-    /// </summary>
     [CodedUITest]
     public class ScalarSearchTests
     {
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Scalar Search")]
         public void Given_Scalar_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -24,7 +21,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Scalar Search")]
         public void Given_Existing_Scalar_All_Lower_Case_And_Match_Case_Is_False()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -36,7 +33,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Scalar Search")]
         public void Given_Existing_Scalar_All_Upper_Case_And_Match_Case_Is_False()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -48,7 +45,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Scalar Search")]
         public void Given_Existing_Scalar_All_Lower_Case_And_Match_Case_Is_True()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -60,7 +57,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Scalar Search")]
         public void Given_Existing_Scalar_All_Upper_Case_And_Match_Case_Is_True()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -72,7 +69,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Scalar Search")]
         public void Given_Partial_Existing_Scalar_And_Match_WholeWord_Is_False()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -85,7 +82,7 @@ namespace Warewolf.UI.Tests.Search
 
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Scalar Search")]
         public void Given_Partial_Existing_Scalar_And_Match_WholeWord_Is_True()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -97,7 +94,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         [TestMethod]
-        [TestCategory("Search View")]
+        [TestCategory("Scalar Search")]
         public void Given_UnExisting_Scalar_IsTrue_Message_Returns_Workflows_Containg_Given_Variable()
         {
             Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SearchButton, new Point(16, 11));
@@ -107,6 +104,7 @@ namespace Warewolf.UI.Tests.Search
             Assert.IsFalse(UIMap.ControlExistsNow(SearchUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SearchTab.WorkSurfaceContent.ContentDockManager.SearchViewUserControl.SearchResultsTable.ResultRow1), "Unexpected Results were returned after seaching.");
         }
 
+        #region Addition test methods
 
         [TestInitialize]
         public void MyTestInitialize()
@@ -157,5 +155,7 @@ namespace Warewolf.UI.Tests.Search
         }
 
         private UIMap _UIMap;
+
+        #endregion
     }
 }

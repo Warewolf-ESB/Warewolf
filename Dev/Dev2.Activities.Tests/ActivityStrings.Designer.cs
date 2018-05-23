@@ -66,6 +66,56 @@ namespace Dev2.Tests.Activities {
         ///	&lt;NewVar/&gt;
         ///&lt;/ADL&gt;.
         /// </summary>
+        internal static string BaseConvert_DLShape {
+            get {
+                return ResourceManager.GetString("BaseConvert_DLShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///            &lt;testRecSet&gt;
+        ///	&lt;testVar/&gt;
+        ///            &lt;/testRecSet&gt;
+        ///            &lt;NewVar/&gt;
+        ///&lt;/ADL&gt;.
+        /// </summary>
+        internal static string BaseConvert_DLWithRecordSetShape {
+            get {
+                return ResourceManager.GetString("BaseConvert_DLWithRecordSetShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///  &lt;testVar&gt;change this base&lt;/testVar&gt;  
+        ///  &lt;testRecSet&gt;&lt;field&gt;change this base&lt;/field&gt;&lt;/testRecSet&gt;  
+        ///&lt;/ADL&gt;.
+        /// </summary>
+        internal static string BaseConvert_MixedRegionTypes_CurrentDL {
+            get {
+                return ResourceManager.GetString("BaseConvert_MixedRegionTypes_CurrentDL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///	&lt;testVar/&gt;
+        ///  &lt;testRecSet&gt;&lt;field&gt;&lt;/field&gt;&lt;/testRecSet&gt;  
+        ///&lt;/ADL&gt;.
+        /// </summary>
+        internal static string BaseConvert_MixedRegionTypes_DLShape {
+            get {
+                return ResourceManager.GetString("BaseConvert_MixedRegionTypes_DLShape", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ADL&gt;
+        ///	&lt;testVar/&gt;
+        ///	&lt;NewVar/&gt;
+        ///&lt;/ADL&gt;.
+        /// </summary>
         internal static string CaseConvert_DLShape {
             get {
                 return ResourceManager.GetString("CaseConvert_DLShape", resourceCulture);

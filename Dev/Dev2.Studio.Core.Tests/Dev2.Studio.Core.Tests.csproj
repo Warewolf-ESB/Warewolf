@@ -487,6 +487,10 @@
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.MergeParser.Tests\Warewolf.MergeParser.Tests.csproj">
+      <Project>{240C477A-DD4C-4604-A6E9-43024257104E}</Project>
+      <Name>Warewolf.MergeParser.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.MergeParser\Warewolf.MergeParser.csproj">
       <Project>{01b6f143-3f8c-4545-b06f-57d2c5ae7c9c}</Project>
       <Name>Warewolf.MergeParser</Name>

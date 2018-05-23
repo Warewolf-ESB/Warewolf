@@ -270,6 +270,7 @@
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointCreateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointSearchToEqualityTests.cs" />
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
+    <Compile Include="ActivityTests\BaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\DotNetDateTimeDifferenceTests.cs" />
     <Compile Include="ActivityTests\DotNetDateTimeActivityTests.cs" />
     <Compile Include="ActivityTests\DotNetAggregateCalculateActivityTest.cs" />
@@ -318,6 +319,17 @@
     <Compile Include="ActivityTests\DsfSqlServerDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\DsfOracleDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\DsfODBCDatabaseActivityTests.cs" />
+    <Compile Include="ActivityTests\Sharepoint\MockSharepointSource.cs" />
+    <Compile Include="ActivityTests\Sharepoint\SharepointCopyFileActivityTests.cs" />
+    <Compile Include="ActivityTests\Sharepoint\SharepointCreateListItemActivityTests.cs" />
+    <Compile Include="ActivityTests\Sharepoint\SharepointDeleteFileActivityTests.cs" />
+    <Compile Include="ActivityTests\Sharepoint\SharepointFileDownLoadActivityTests.cs" />
+    <Compile Include="ActivityTests\Sharepoint\SharepointFileUploadActivityTests.cs" />
+    <Compile Include="ActivityTests\Sharepoint\SharepointMoveFileActivityTests.cs" />
+    <Compile Include="ActivityTests\Sharepoint\SharepointReadFolderItemActivityTests.cs" />
+    <Compile Include="ActivityTests\Sharepoint\SharepointReadListActivityTests.cs" />
+    <Compile Include="ActivityTests\Sharepoint\SharepointUpdateListItemActivityTests.cs" />
+    <Compile Include="ActivityTests\DsfDotNetGatherSystemInformationActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebDeleteActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebGetActivityTests.cs" />
     <Compile Include="ActivityTests\Web\DsfWebPutActivityTests.cs" />
@@ -504,6 +516,10 @@
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj">
+      <Project>{D7A04A3F-DDBD-497C-A311-EFD2016830DF}</Project>
+      <Name>Warewolf.Sharepoint</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
       <Project>{61A15557-1D18-4C69-88EB-31BF49B7FB50}</Project>

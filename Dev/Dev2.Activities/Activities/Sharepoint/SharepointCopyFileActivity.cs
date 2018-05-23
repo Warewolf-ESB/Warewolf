@@ -22,6 +22,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Sharepoint
 {
@@ -75,16 +76,20 @@ namespace Dev2.Activities.Sharepoint
             ExecuteTool(dataObject, 0);
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachInputs() => null;
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)

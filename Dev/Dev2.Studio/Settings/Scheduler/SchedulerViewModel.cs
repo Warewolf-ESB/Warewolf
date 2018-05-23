@@ -99,6 +99,7 @@ namespace Dev2.Settings.Scheduler
             : base(eventPublisher)
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
+
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
             var directoryObjectPicker1 = directoryObjectPicker;
 
@@ -129,7 +130,7 @@ namespace Dev2.Settings.Scheduler
 
         public override string DisplayName
         {
-            get =>_displayName;
+            get => _displayName;
             set
             {
                 _displayName = value;
@@ -604,7 +605,7 @@ namespace Dev2.Settings.Scheduler
             {
                 ClearConnectionError();
                 CreateNewSchedulerTaskManagerSource();
-                
+
                 try
                 {
                     ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, CreateNewTask);

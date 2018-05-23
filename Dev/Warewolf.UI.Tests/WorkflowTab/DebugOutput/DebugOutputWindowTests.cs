@@ -132,6 +132,7 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
             UIMap.Press_F6();
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UISQLServerDatabaseTreeItem.UISQLErrorError15700seText.Exists);
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UISQLServerDatabaseTreeItem.UIErrorText.Exists);
         }
 
         #region Additional test attributes
