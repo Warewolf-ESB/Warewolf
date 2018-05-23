@@ -2734,7 +2734,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             return new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
         }
 
-        static ServiceDesignerViewModel CreateServiceDesignerViewModel(Guid instanceID, params IErrorInfo[] resourceErrors)
+        public static ServiceDesignerViewModel CreateServiceDesignerViewModel(Guid instanceID, params IErrorInfo[] resourceErrors)
         {
             return CreateServiceDesignerViewModel(instanceID, null, resourceErrors);
         }
