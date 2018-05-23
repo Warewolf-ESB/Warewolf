@@ -16,7 +16,7 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -485,12 +485,45 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("Errors")]
         public void DsfUniqueActivity_Invalid_Result()
         {
-         
-            const string DataList = "<ADL><recset1>\r\n\t\t<field1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>";
-            SetupArguments("<root>" + DataList + "</root>", DataList, "[[recset1().field2]]"
-                , "[[recset1().field1]]", "[[OutVar1]]");
+
+            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
+            SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
+                , "[[recset1(-1)]]"
+                , "[[recset1()]]", "[[res()]]");
+
             var result = ExecuteProcess();
-            Assert.AreEqual("Invalid In fields", result.Environment.FetchErrors());
+
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
+
+            Assert.AreEqual(1, result.Environment.Errors.Count);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.UniqueResultCannotBeScalarErrorTest, result.Environment.FetchErrors());
+        }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void GivenEmptyStringAndName_ExecutionEnvironmentIsValidRecordSetIndex_ShouldReturn()
+        {
+            ExecutionEnvironment _environment;
+            _environment = new ExecutionEnvironment();
+            Assert.IsNotNull(_environment);
+            Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec().a]]"));
         }
         #region Private Test Methods
 
