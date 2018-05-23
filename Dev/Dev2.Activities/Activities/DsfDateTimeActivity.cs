@@ -37,6 +37,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class DsfDateTimeActivity : DsfActivityAbstract<string>, IDateTimeOperationTO
     {
+#pragma warning disable S3776,S1541,S134,CC0075,S1066,S1067
 
         #region Properties
 
@@ -414,5 +415,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return hashCode;
             }
         }
+
+#pragma warning restore S3776, S1541, S134, CC0075, S1066, S1067
     }
 }

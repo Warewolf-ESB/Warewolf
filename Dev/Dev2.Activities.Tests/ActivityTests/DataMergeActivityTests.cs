@@ -13,28 +13,18 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Text;
 using ActivityUnitTests;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for DataSplitActivityTest
-    /// </summary>
     [TestClass]
-    
     public class DataMergeActivityTest : BaseActivityUnitTest
     {
         IList<DataMergeDTO> _mergeCollection = new List<DataMergeDTO>();
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
-
+        
         #region Additional test attributes
+
         [TestInitialize]
         public void MyTestInitialize()
         {
@@ -58,8 +48,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
-            // remove test datalist ;)
-
             Assert.AreEqual("Dev2,0317641234", actual);
         }
 
@@ -70,13 +58,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
-            // remove test datalist ;)
 
             Assert.AreEqual("Wallis,Barney,Trevor,Travis,Jurie,Brendon,Massimo,Ashley,Sashen,Wallis,", actual);
         }
-
-        // SN: 16-01-2012 - Added to test with merge character being the last character of an entry in 
-        //                  DataList
+        
         [TestMethod]
         public void Merge_RecordsetWithStarCharMerge_Given_CharSameAsLastCharacterInEntry_Expected_DataMergedTogether()
         {
@@ -84,7 +69,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
-            // remove test datalist ;)
 
             Assert.AreEqual("WallissBarneysTrevorsTravissJuriesBrendonsMassimosAshleysSashensWalliss", actual);
         }
@@ -97,7 +81,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
-            // remove test datalist ;)
 
             Assert.AreEqual("Travis works at Dev2.", actual);
         }
@@ -162,6 +145,19 @@ Wallis,Buchan
         }
 
         #endregion Tab Merge Tests
+
+        #region No Merge Collection Tests
+
+        [TestMethod]
+        public void Merge_With_No_Merge_Collection_Expected_Blank_Result()
+        {
+            SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]]", _mergeCollection);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
+            Assert.AreEqual(string.Empty, actual);
+        }
+
+        #endregion
 
         #region Index Tests
 

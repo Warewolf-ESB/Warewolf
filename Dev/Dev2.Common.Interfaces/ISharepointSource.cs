@@ -10,6 +10,7 @@ namespace Dev2.Common.Interfaces
 
         string UserName { get; set; }
         string Password { get; set; }
+        ISharepointHelper CreateSharepointHelper();
 
     }
 
