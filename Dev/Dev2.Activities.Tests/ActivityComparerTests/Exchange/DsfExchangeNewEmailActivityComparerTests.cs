@@ -497,5 +497,23 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Exchange
             //---------------Test Result -----------------------
             Assert.IsTrue(equals);
         }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        public void Null_Objects_Not_Equal_Same_Object_Equal()
+        {
+            //---------------Set up test pack-------------------
+            var exchangeEmailActivity = new DsfExchangeEmailNewActivity { };
+            Object other = exchangeEmailActivity;
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(exchangeEmailActivity.Equals(null));
+            Assert.IsFalse(other.Equals(null));
+            Assert.IsFalse(other.Equals(1));
+            Assert.IsFalse(exchangeEmailActivity.Equals(1));
+            //---------------Execute Test ----------------------
+
+            Assert.IsTrue(exchangeEmailActivity.Equals(other));
+            Assert.IsTrue(exchangeEmailActivity.Equals(exchangeEmailActivity));
+        }
     }
 }
