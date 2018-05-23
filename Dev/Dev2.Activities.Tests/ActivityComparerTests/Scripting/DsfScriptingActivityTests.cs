@@ -1,12 +1,18 @@
 ﻿using System;
+using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Warewolf.Storage;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
 {
     [TestClass]
-    public class DsfScriptingActivityTests
+    public class DsfScriptingActivityTests : BaseActivityUnitTest
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -271,7 +277,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var dsfScriptingActivity = new DsfScriptingActivity() { UniqueID = uniqueId, EscapeScript = true };
-            var javascriptActivity = new DsfScriptingActivity() { UniqueID = uniqueId, EscapeScript = true};
+            var javascriptActivity = new DsfScriptingActivity() { UniqueID = uniqueId, EscapeScript = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfScriptingActivity.Equals(javascriptActivity));
             //---------------Execute Test ----------------------
@@ -288,7 +294,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var javascriptActivity = new DsfScriptingActivity() { UniqueID = uniqueId, EscapeScript =true };
+            var javascriptActivity = new DsfScriptingActivity() { UniqueID = uniqueId, EscapeScript = true };
             var dsfScriptingActivity = new DsfScriptingActivity() { UniqueID = uniqueId, EscapeScript = false };
             //---------------Assert Precondition----------------
             Assert.IsFalse(javascriptActivity.Equals(dsfScriptingActivity));

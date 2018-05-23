@@ -147,6 +147,52 @@ namespace Dev2.Tests.Activities.ActivityTests
             CollectionAssert.AreEqual(dataExpected, dataList, comparer);
         }
 
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDataMergeActivity_Execute")]
+        public void DsfDataSplitActivity_Execute_WhenUsingStarAndMixedSplitType_WithEmptyLine_ExpectCorrectSplit()
+        {
+
+            //------------Setup for test--------------------------
+
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col2]]", "Chars", "|", 2));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col3]]", "New Line", "", 3));
+            _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 4));
+            _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 5));
+
+            SetupArguments("<root><ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
+                           "13456456789|Samantha Some|Jones" + Environment.NewLine +
+                           Environment.NewLine +
+                           "09123456646|James|Apple</testData></ADL></root>",
+                           "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
+                           "[[testData]]",
+                           _resultsCollection);
+
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out string error);
+            var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
+            var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col3", out error);
+            var dataList = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "data", out error);
+
+            // remove test datalist ;)
+
+            //------------Assert Results-------------------------
+
+            var col1Expected = new List<string> { "RSA ID","09123456646" };
+            var col2Expected = new List<string> { "FirstName", "James" };
+            var col3Expected = new List<string> { "LastName", "Apple" };
+            var dataExpected = new List<string> { "13456456789|Samantha Some|Jones" };
+
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
+            CollectionAssert.AreEqual(col1Expected, col1List, comparer);
+            CollectionAssert.AreEqual(col2Expected, col2List, comparer);
+            CollectionAssert.AreEqual(col3Expected, col3List, comparer);
+            CollectionAssert.AreEqual(dataExpected, dataList, comparer);
+        }
+
         #endregion
 
         [TestMethod] // - OK
