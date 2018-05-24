@@ -109,19 +109,7 @@ namespace Dev2.Activities
                 if(String.IsNullOrEmpty(ResultFields))
                 {
                     throw new Exception(string.Format(ErrorResource.Invalid, "from fields"));
-                }
-                if(toresultfields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
-                {
-                    throw new Exception(string.Format(ErrorResource.Invalid, "result"));
-                }
-                if(fromFields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
-                {
-                    throw new Exception(string.Format(ErrorResource.Invalid, "from"));
-                }
-                if(fromResultFieldresultfields.Any(a => !ExecutionEnvironment.IsValidRecordSetIndex(a)))
-                {
-                    throw new Exception(string.Format(ErrorResource.Invalid, "selected fields"));
-                }
+                }                
                 if(toresultfields.Any(ExecutionEnvironment.IsScalar))
                 {
                     throw new Exception(string.Format(ErrorResource.ScalarsNotAllowed, "'Result'"));
