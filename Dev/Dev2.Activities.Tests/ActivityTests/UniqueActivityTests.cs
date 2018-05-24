@@ -480,7 +480,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Invalid In fields", result.Environment.FetchErrors());
         }
 
-       
         [TestMethod]
         [Owner("Candice Daniel")]
         public void GivenEmptyStringAndName_ExecutionEnvironmentIsValidRecordSetIndex_ShouldReturn()
