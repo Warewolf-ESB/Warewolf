@@ -480,42 +480,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("Invalid In fields", result.Environment.FetchErrors());
         }
 
-        [TestMethod]
-        [Owner("Candice Daniel")]
-        [TestCategory("Errors")]
-        public void DsfUniqueActivity_Invalid_Result()
-        {
-
-            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
-            const string DataListWithData = "<ADL>" +
-                                            "<recset1>" +
-                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
-                                            "</recset1>" +
-                                            "<recset1>" +
-                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
-                                            "</recset1>" +
-                                            "<OutVar1/></ADL>";
-            SetupArguments("<root>" + DataListWithData + "</root>"
-                , DataList
-                , "[[recset1(-1)]]"
-                , "[[recset1()]]", "[[res()]]");
-
-            var result = ExecuteProcess();
-
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
-
-            Assert.AreEqual(1, result.Environment.Errors.Count);
-            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.UniqueResultCannotBeScalarErrorTest, result.Environment.FetchErrors());
-        }
+       
         [TestMethod]
         [Owner("Candice Daniel")]
         public void GivenEmptyStringAndName_ExecutionEnvironmentIsValidRecordSetIndex_ShouldReturn()
