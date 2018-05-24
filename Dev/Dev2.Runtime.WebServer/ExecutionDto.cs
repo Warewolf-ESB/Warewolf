@@ -89,8 +89,8 @@ namespace Dev2.Runtime.WebServer
                 TryGetFormatter(executePayload, ref formatter);
             }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-            dataObject.Environment = null;
-            dto.ErrorResultTO.ClearErrors();
+            
+            CleanUp(dto);
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 
@@ -117,37 +117,28 @@ namespace Dev2.Runtime.WebServer
                 switch (dataObject.ReturnType) {
                     case EmitionTypes.XML:
                     {
-                        return ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,
-                            resource.DataList.ToString(), 0);
+                        return ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
                     }
                     case EmitionTypes.SWAGGER:
                     {
                         formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                        return ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource,
-                            resource.DataList.ToString(), webRequest.WebServerUrl);
+                        return ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
                     }
                     default:
                     case EmitionTypes.JSON:
                     {
                         formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                        return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject,
-                            resource.DataList.ToString(), 0);
+                        return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
                     }
                 }
             }
-            Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-            CleanUp(dto);
-            return new StringResponseWriter(executePayload, formatter.ContentType);
+            return string.Empty;
         }
 
         private static void CleanUp(ExecutionDto dto)
         {
             dto.DataObject = null;
-            dto.ErrorResultTO = null;
-            dto.PayLoad = null;
-            dto.Request = null;
-            dto.Resource = null;
-            dto.Serializer = null;
+            dto.ErrorResultTO.ClearErrors();
             GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
             GC.Collect(3,GCCollectionMode.Forced,false);
         }
