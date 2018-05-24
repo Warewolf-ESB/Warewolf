@@ -93,7 +93,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IDebugState _debugState;
         bool _isOnDemandSimulation;
         IResourceCatalog _resourceCatalog;
-        ErrorResultTO _tmpErrors = new ErrorResultTO();
 
         protected IDebugState DebugState => _debugState;
 
@@ -142,50 +141,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void Execute(NativeActivityContext context)
         {
-            Dev2Logger.Debug($"Start {GetType().Name}", GlobalConstants.WarewolfDebug);
-            _tmpErrors = new ErrorResultTO();
-            _isOnDemandSimulation = false;
-            var dataObject = context.GetExtension<IDSFDataObject>();
-
-            var errorString = dataObject.Environment.FetchErrors();
-            _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-            
-            DataListExecutionID.Set(context, dataObject.DataListID);
-
-
-            _previousParentInstanceID = dataObject.ParentInstanceID;
-            _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
-
-            OnBeforeExecute(context);
-
-            try
-            {
-                var className = GetType().Name;
-                Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
-                OnExecute(context);
-                
-            }
-            catch (Exception ex)
-            {
-
-                Dev2Logger.Error("OnExecute", ex, GlobalConstants.WarewolfError);
-                errorString = ex.Message;
-                var errorResultTO = new ErrorResultTO();
-                errorResultTO.AddError(errorString);
-                dataObject.Environment?.AddError(errorResultTO.MakeDataListReady());
-            }
-            finally
-            {
-                if (!_isExecuteAsync || _isOnDemandSimulation)
-                {
-                    OnExecutedCompleted(context);
-                    if (dataObject.Environment != null)
-                    {
-                        DoErrorHandling(dataObject, 0);
-                    }
-                }
-
-            }
         }
 
         protected void DoErrorHandling(IDSFDataObject dataObject, int update)
