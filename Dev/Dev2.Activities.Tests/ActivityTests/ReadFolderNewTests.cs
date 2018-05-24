@@ -47,6 +47,42 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [TestCategory("DsfFolderRead_UpdateForEachInputs")]
+        public void DsfFolderRead_Execute_ExpectRecords()
+        {
+            //------------Setup for test--------------------------
+            dirHelper = new DirectoryWrapper();
+            var id = Guid.NewGuid().ToString();
+            _inputPath = EnvironmentVariables.ResourcePath + "\\" + id.Substring(0, 8);
+            dirHelper.CreateIfNotExists(_inputPath);
+            dirHelper.CreateIfNotExists(_inputPath + "\\1");
+            dirHelper.CreateIfNotExists(_inputPath + "\\2");
+            var act = new DsfFolderReadActivity { InputPath = _inputPath, Result = "[[RecordSet(*).File]]" };
+            //------------Execute Test---------------------------
+            var results = act.Execute(DataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(2 <= DataObject.Environment.GetLength("RecordSet"));
+        }
+
+        [TestMethod]
+        [TestCategory("DsfFolderRead_UpdateForEachInputs")]
+        public void DsfFolderRead_Execute_ExpectRecords2()
+        {
+            //------------Setup for test--------------------------
+            dirHelper = new DirectoryWrapper();
+            var id = Guid.NewGuid().ToString();
+            _inputPath = EnvironmentVariables.ResourcePath + "\\" + id.Substring(0, 8);
+            dirHelper.CreateIfNotExists(_inputPath);
+            dirHelper.CreateIfNotExists(_inputPath + "\\1");
+            dirHelper.CreateIfNotExists(_inputPath + "\\2");
+            var act = new DsfFolderReadActivity { InputPath = _inputPath, Result = "[[RecordSet().File]]" };
+            //------------Execute Test---------------------------
+            var results = act.Execute(DataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(2 <= DataObject.Environment.GetLength("RecordSet"));
+        }
+
+        [TestMethod]
         [TestCategory("DsfFolderReadActivity_UpdateForEachInputs")]
         public void DsfFolderReadActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
