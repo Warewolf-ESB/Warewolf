@@ -246,16 +246,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             var timeBefore = DateTime.Now;
 
             //------------Execute Test---------------------------
-            var activity = act.Execute(data, 0);
+            act.Execute(data, 0);
             //------------Assert Results-------------------------
             var timeAfter = DateTime.Now;
 
             var debugout = act.GetDebugOutputs(executionEnvironment, 0);
             var value = executionEnvironment.EvalAsListOfStrings(varName, 0);
-            Assert.AreEqual(value.Count, 1);
+            Assert.AreEqual(1,value.Count);
             DateTime datetimeResult;
-            Assert.IsTrue(DateTime.TryParse(value[0], out datetimeResult));
-            Assert.IsTrue(timeBefore < datetimeResult && datetimeResult < timeAfter);
+            Assert.IsTrue(DateTime.TryParse(value[0], out datetimeResult),$"Failed to parse value: {value[0]} as a DateTime");
+            Assert.IsTrue(timeBefore < datetimeResult,$"{timeBefore} not < {datetimeResult}");
+            Assert.IsTrue(datetimeResult < timeAfter,$"{datetimeResult} not < {timeAfter}");
 
             Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
             Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
