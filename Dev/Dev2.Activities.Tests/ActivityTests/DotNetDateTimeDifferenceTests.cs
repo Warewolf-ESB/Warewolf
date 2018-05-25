@@ -121,12 +121,14 @@ namespace ActivityUnitTests.ActivityTests
         [TestCategory("DsfDateTimeDifferenceActivity_Equality")]
         public void DsfDateTimeDifferenceActivity_Expect_NotEqual()
         {
+            var id = Guid.NewGuid().ToString();
             var activity1 = new DsfDotNetDateTimeDifferenceActivity
             {
                 Input1 = "[[recset1(*).f1]]",
                 Input2 = "[[recset2(*).f2]]",
                 InputFormat = "dd/MM/yyyy",
                 OutputType = "Days",
+                UniqueID = id,
                 Result = "[[resCol(*).res]]"
             };
             var activity2 = new DsfDotNetDateTimeDifferenceActivity
@@ -135,6 +137,7 @@ namespace ActivityUnitTests.ActivityTests
                 Input2 = "[[recset1(*).f2]]",
                 InputFormat = "MM/dd/yyyy",
                 OutputType = "Months",
+                UniqueID = id,
                 Result = "[[resCol1(*).res]]"
             };
         }
@@ -144,12 +147,14 @@ namespace ActivityUnitTests.ActivityTests
         [TestCategory("DsfDateTimeDifferenceActivity_Equality")]
         public void DsfDateTimeDifferenceActivity_Expect_Equal()
         {
+            var id = Guid.NewGuid().ToString();
             var activity1 = new DsfDotNetDateTimeDifferenceActivity
             {
                 Input1 = "[[recset1(*).f1]]",
                 Input2 = "[[recset2(*).f2]]",
                 InputFormat = "dd/MM/yyyy",
                 OutputType = "Days",
+                UniqueID = id,
                 Result = "[[resCol(*).res]]"
             };
             var activity2 = new DsfDotNetDateTimeDifferenceActivity
@@ -158,6 +163,7 @@ namespace ActivityUnitTests.ActivityTests
                 Input2 = "[[recset2(*).f2]]",
                 InputFormat = "dd/MM/yyyy",
                 OutputType = "Days",
+                UniqueID = id,
                 Result = "[[resCol(*).res]]"
             };
             var activity1_otherref = activity1;
