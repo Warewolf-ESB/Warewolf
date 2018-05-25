@@ -53,6 +53,7 @@ namespace Dev2.Activities.Specs.Scheduler
 
             _scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(_scenarioContext);
+            CustomContainer.Register(new Mock<IExplorerTooltips>().Object);
         }
 
         [Given(@"I have a schedule ""(.*)""")]

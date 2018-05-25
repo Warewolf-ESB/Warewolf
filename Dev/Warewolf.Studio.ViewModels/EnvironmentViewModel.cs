@@ -1168,7 +1168,7 @@ namespace Warewolf.Studio.ViewModels
             return itemCreated;
         }
 
-        public ExplorerItemViewModel CreateExplorerItemFromResource(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IContextualResourceModel explorerItem)
+        public IExplorerItemViewModel CreateExplorerItemFromResource(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IContextualResourceModel explorerItem)
         {
             var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction?.Invoke(a); }, _shellViewModel, _controller)
             {

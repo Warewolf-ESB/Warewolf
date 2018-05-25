@@ -36,22 +36,16 @@ namespace Dev2.Runtime.Hosting
 
     public class ResourceCatalogBuilder
     {
-        private readonly List<IResource> _resources = new List<IResource>();
-        private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
-        private readonly IResourceUpgrader _resourceUpgrader;
-        private readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
-        private readonly object _addLock = new object();
+        readonly List<IResource> _resources = new List<IResource>();
+        readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
+        readonly IResourceUpgrader _resourceUpgrader;
+        readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
+        readonly object _addLock = new object();
         readonly List<string> _convertToBiteExtension = new List<string>();
 
+        public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader) => _resourceUpgrader = resourceUpgrader;
 
-        public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)
-        {
-            _resourceUpgrader = resourceUpgrader;
-        }
-        public ResourceCatalogBuilder()
-        {
-            _resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
-        }
+        public ResourceCatalogBuilder() => _resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
 
         public IList<IResource> ResourceList => _resources;
         public List<DuplicateResource> DuplicateResources => _duplicateResources;

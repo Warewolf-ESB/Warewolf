@@ -164,9 +164,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 ServiceActionRepo.Instance.RemoveFromCache(resource.ResourceID);
                 ServerAuthorizationService.Instance.Remove(resource.ResourceID);
             }
-
-
-            ((ResourceCatalog)_resourceCatalog).RemoveFromResourceActivityCache(workspaceID, resource);
+            
+            _resourceCatalog.RemoveFromResourceActivityCache(workspaceID, resource);
             return ResourceCatalogResultBuilder.CreateSuccessResult("Success");
         }
         void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)

@@ -23,6 +23,7 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -33,22 +34,26 @@ using Dev2.Communication;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Dialogs;
+using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
+using Dev2.ViewModels.WorkSurface;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Scheduler
 {
-    public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
+    public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab, ISchedulerViewModel
     {
         ICommand _saveCommand;
         ICommand _newCommand;
@@ -94,6 +99,7 @@ namespace Dev2.Settings.Scheduler
             : base(eventPublisher)
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
+
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
             var directoryObjectPicker1 = directoryObjectPicker;
 
@@ -124,7 +130,7 @@ namespace Dev2.Settings.Scheduler
 
         public override string DisplayName
         {
-            get =>_displayName;
+            get => _displayName;
             set
             {
                 _displayName = value;
@@ -599,7 +605,7 @@ namespace Dev2.Settings.Scheduler
             {
                 ClearConnectionError();
                 CreateNewSchedulerTaskManagerSource();
-                
+
                 try
                 {
                     ScheduledResourceModel = new ClientScheduledResourceModel(CurrentEnvironment, CreateNewTask);
@@ -802,10 +808,36 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        public void UpdateScheduleWithResourceDetails(string resourcePath, Guid id, string resourceName)
-        {
-            SchedulerTaskManager.UpdateScheduleWithResourceDetails(resourcePath, id, resourceName);
-        }
+        bool ISchedulerViewModel.IsDirty { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IWorkSurfaceKey WorkSurfaceKey => throw new NotImplementedException();
+        public IServer Environment => throw new NotImplementedException();
+        public bool DeleteRequested { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IDataListViewModel DataListViewModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IWorkSurfaceViewModel WorkSurfaceViewModel { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public IContextualResourceModel ContextualResourceModel => throw new NotImplementedException();
+        AuthorizeCommand IWorkSurfaceContextViewModel.SaveCommand => throw new NotImplementedException();
+        public AuthorizeCommand RunCommand => throw new NotImplementedException();
+        public AuthorizeCommand ViewInBrowserCommand => throw new NotImplementedException();
+        public AuthorizeCommand DebugCommand => throw new NotImplementedException();
+        public AuthorizeCommand QuickViewInBrowserCommand => throw new NotImplementedException();
+        public AuthorizeCommand QuickDebugCommand => throw new NotImplementedException();
+        public void UpdateScheduleWithResourceDetails(string resourcePath, Guid id, string resourceName) => SchedulerTaskManager.UpdateScheduleWithResourceDetails(resourcePath, id, resourceName);
+        public void Handle(SaveResourceMessage message) => throw new NotImplementedException();
+        public void Handle(UpdateWorksurfaceDisplayName message) => throw new NotImplementedException();
+        public void SetDebugStatus(DebugStatus debugStatus) => throw new NotImplementedException();
+        public void Debug(IContextualResourceModel resourceModel, bool isDebug) => throw new NotImplementedException();
+        public void StopExecution() => throw new NotImplementedException();
+        public void ViewInBrowser() => throw new NotImplementedException();
+        public void QuickViewInBrowser() => throw new NotImplementedException();
+        public void QuickDebug() => throw new NotImplementedException();
+        public void BindToModel() => throw new NotImplementedException();
+        public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager) => throw new NotImplementedException();
+        public bool CanSave() => throw new NotImplementedException();
+        public bool Save() => throw new NotImplementedException();
+        public bool Save(bool isLocalSave, bool isStudioShutdown) => throw new NotImplementedException();
+        public bool IsEnvironmentConnected() => throw new NotImplementedException();
+        public void FindMissing() => throw new NotImplementedException();
+        public void Debug() => throw new NotImplementedException();
     }
 
     public static class SchedulerServerExtensions

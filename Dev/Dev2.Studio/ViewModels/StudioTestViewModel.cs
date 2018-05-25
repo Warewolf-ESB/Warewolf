@@ -15,7 +15,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels
 {
-    public class StudioTestViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab, IHandle<DebugOutputMessage>
+    public class StudioTestViewModel : BaseWorkSurfaceViewModel, IStudioTestWorkSurfaceViewModel, IHelpSource, IStudioTab, IHandle<DebugOutputMessage>
     {
         readonly IPopupController _popupController;
         DebugOutputViewModel _debugOutputViewModel;

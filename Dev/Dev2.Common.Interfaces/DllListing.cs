@@ -6,13 +6,13 @@ namespace Dev2.Common.Interfaces
     [Serializable]
     public class DllListing : IFileListing
     {
-        public DllListing(IFileListing selectedDll)
+        public DllListing(IDllListingModel selectedDll)
         {
             Name = selectedDll.Name;
             FullName = selectedDll.FullName;
             IsDirectory = selectedDll.IsDirectory;
-            ClsId = (selectedDll as DllListing)?.ClsId;
-            Is32Bit = (selectedDll as DllListing)?.Is32Bit ?? false;
+            ClsId = selectedDll?.ClsId;
+            Is32Bit = selectedDll?.Is32Bit ?? false;
         }
 
         public DllListing()
@@ -45,13 +45,7 @@ namespace Dev2.Common.Interfaces
             }
             return Equals((DllListing)obj);
         }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override int GetHashCode()
         {
             unchecked

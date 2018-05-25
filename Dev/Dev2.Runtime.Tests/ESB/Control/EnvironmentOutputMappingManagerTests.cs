@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Builders;
@@ -27,7 +26,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Set up test pack-------------------
             var manager = new EnvironmentOutputMappingManager();
             //---------------Assert Precondition----------------
-            //(IDSFDataObject dataObject, string outputDefs, int update, bool handleErrors, ErrorResultTO errors)
             var dsfObject = new Mock<IDSFDataObject>();
             var env = new Mock<IExecutionEnvironment>();
             dsfObject.Setup(o => o.PopEnvironment());
@@ -39,7 +37,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Test Result -----------------------
             dsfObject.Verify(o => o.PopEnvironment(), Times.Once);
             Assert.IsNotNull(executionEnvironment);
-
         }
 
         [TestMethod]
@@ -65,7 +62,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
             env.VerifyGet(o => o.AllErrors);
             env.VerifyGet(o => o.Errors);
             Assert.IsNotNull(executionEnvironment);
-            //---------------Test Result -----------------------
         }
 
         [TestMethod]
@@ -89,8 +85,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 new Dev2Definition("rec2(1).LastName","rec2(1).LastName","[[rec2(1).LastName]]", "rec2", false, "[[rec2(1).LastName]]", true, "[[rec2(1).LastName]]"),
             };
             builder.SetParsedOutput(new List<IDev2Definition>(outputs));
-            var outputRecSets = builder.Generate();
-            
+            var outputRecSets = builder.Generate();            
             //---------------Execute Test ----------------------
             var methodInfo = typeof(EnvironmentOutputMappingManager).GetMethod("TryEvalAssignRecordSets", BindingFlags.NonPublic | BindingFlags.Static);
             //---------------Test Result -----------------------
@@ -98,6 +93,22 @@ namespace Dev2.Tests.Runtime.ESB.Control
             environment.Verify(executionEnvironment => executionEnvironment.EvalAssignFromNestedStar(It.IsAny<string>(), It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), It.IsAny<int>()));
             environment.Verify(executionEnvironment => executionEnvironment.EvalAssignFromNestedLast(It.IsAny<string>(), It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), It.IsAny<int>()));
             environment.Verify(executionEnvironment => executionEnvironment.EvalAssignFromNestedNumeric(It.IsAny<string>(), It.IsAny<CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult>(), It.IsAny<int>()));
+        }
+
+        [TestMethod]
+        public void EvalAssignScalars_GivenRecordsetWithoutItems_ShouldEvaluate()
+        {
+            //---------------Set up test pack-------------------
+            var innerEnvironment = new Mock<IExecutionEnvironment>();
+            innerEnvironment.Setup(executionEnvironment => executionEnvironment.Eval(It.IsAny<string>(), It.IsAny<int>()))
+                .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Value"))))
+                .Verifiable();
+            var environment = new Mock<IExecutionEnvironment>();
+            //---------------Execute Test ----------------------
+            var methodInfo = typeof(EnvironmentOutputMappingManager).GetMethod("EvalAssignScalars", BindingFlags.NonPublic | BindingFlags.Static);
+            //---------------Test Result -----------------------
+            methodInfo.Invoke(null, new object[] { innerEnvironment.Object, environment.Object, 1, new Dev2Definition("rec(*).LastName", "rec(*).LastName", "[[rec(*).LastName]]", "rec", false, "[[rec(*).LastName]]", true, "[[rec(*).LastName]]") });
+            innerEnvironment.Verify(executionEnvironment => executionEnvironment.Eval(It.IsAny<string>(), It.IsAny<int>()));
         }
 
         [TestMethod]

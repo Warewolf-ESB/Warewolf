@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common.Interfaces.Core;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -24,6 +25,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Activity
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         public void Equals_Given_EmptyActivityTools_AreEqual()
@@ -594,6 +596,62 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Activity
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
+        }
+
+        [TestMethod]
+        public void SavedSource_Null_Object_Is_NotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var wcfServiceSourceDefinition = new WcfServiceSourceDefinition
+            {
+                Id = Guid.NewGuid(),
+                Path = "A"
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(wcfServiceSourceDefinition.Equals(null), "Equals operator can't compare to null.");
+        }
+
+        [TestMethod]
+        public void SavedSource_Itself_Is_Equal()
+        {
+            //---------------Set up test pack-------------------
+            var wcfServiceSourceDefinition = new WcfServiceSourceDefinition
+            {
+                Id = Guid.NewGuid(),
+                Path = "A"
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsTrue(wcfServiceSourceDefinition.Equals(wcfServiceSourceDefinition), "Equals operator can't compare to itself.");
+        }
+
+        [TestMethod]
+        public void SavedSource_DifferentType_Is_NotEqual()
+        {
+            //---------------Set up test pack-------------------
+            var wcfServiceSourceDefinition = new WcfServiceSourceDefinition { EndpointUrl = "bravo" };
+            object differentObject = new ActivityDTO
+            {
+                IndexNumber = 0,
+                FieldName = "A"
+            };
+            //---------------Assert Precondition----------------
+            Assert.IsFalse(wcfServiceSourceDefinition.Equals(differentObject), "Equals operator can't compare to differently typed object.");
+        }
+
+        [TestMethod]
+        public void EqualsOperator_WithEqualObjects_AreEqual()
+        {
+            var firstWcfServiceSourceDefinition = new WcfServiceSourceDefinition { EndpointUrl = "bravo" };
+            var secondWcfServiceSourceDefinition = new WcfServiceSourceDefinition { EndpointUrl = "bravo" };
+            Assert.IsTrue(firstWcfServiceSourceDefinition == secondWcfServiceSourceDefinition, "Equals operator doesnt work.");
+        }
+
+        [TestMethod]
+        public void NotEqualsOperator_WithNotEqualObjects_AreNotEqual()
+        {
+            var firstWcfServiceSourceDefinition = new WcfServiceSourceDefinition { EndpointUrl = "bravo" };
+            var secondWcfServiceSourceDefinition = new WcfServiceSourceDefinition { EndpointUrl = "charlie" };
+            Assert.IsTrue(firstWcfServiceSourceDefinition != secondWcfServiceSourceDefinition, "Not equals operator doesnt work.");
         }
     }
 }
