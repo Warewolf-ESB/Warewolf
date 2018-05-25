@@ -183,7 +183,8 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <AdditionalFiles Include="..\SonarQube\SonarLint.xml">
+    <Compile Include="ActivityTests\DsfRecordsetNullhandlerLengthActivityTest.cs" />
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
       <Visible>False</Visible>
     </AdditionalFiles>
     <Compile Include="ActivityComparerTests\PathOperations\DsfFolderReadNewComparerTests.cs" />
@@ -305,6 +306,8 @@
     <Compile Include="ActivityTests\DsfSwitchTests.cs" />
     <Compile Include="ActivityTests\DotNetMultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\DotNetMultiAssignActivityTest.cs" />
+    <Compile Include="ActivityTests\Exchange\DsfExchangeEmailNewActivityTest.cs" />
+    <Compile Include="ActivityTests\AbstractFileActivityTests.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\ReadFolderNewTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetTests.cs" />
@@ -319,6 +322,7 @@
     <Compile Include="ActivityTests\DsfSqlServerDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\DsfOracleDatabaseActivityTests.cs" />
     <Compile Include="ActivityTests\DsfODBCDatabaseActivityTests.cs" />
+    <Compile Include="ActivityTests\SequenceActivityTests.cs" />
     <Compile Include="ActivityTests\Sharepoint\MockSharepointSource.cs" />
     <Compile Include="ActivityTests\Sharepoint\SharepointCopyFileActivityTests.cs" />
     <Compile Include="ActivityTests\Sharepoint\SharepointCreateListItemActivityTests.cs" />
@@ -413,6 +417,7 @@
     <Compile Include="TOTests\SharepointSearchToTests.cs" />
     <Compile Include="TOTests\ValidatedObjectTests.cs" />
     <Compile Include="ServiceTestHelperTests.cs" />
+    <Compile Include="TestMockStepTests.cs" />
     <Compile Include="Utils\FindRecordsDisplayUtilTests.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Utils\SharepointUtilsTests.cs" />

@@ -27,6 +27,7 @@ using Warewolf.Exchange.Email.Wrapper;
 
 namespace Dev2.Activities.Exchange
 {
+#pragma warning disable S3776,S1541,S134,CC0075,S1066,S1067
     public class DsfExchangeEmailActivity : DsfActivityAbstract<string>,IEquatable<DsfExchangeEmailActivity>
     {
         readonly IDev2EmailSender _emailSender;
@@ -365,4 +366,5 @@ namespace Dev2.Activities.Exchange
             }
         }
     }
+#pragma warning restore S3776,S1541,S134,CC0075,S1066,S1067
 }
