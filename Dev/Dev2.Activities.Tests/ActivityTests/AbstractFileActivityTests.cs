@@ -59,7 +59,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
         public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
             public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(InputPath);
-            protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
+            protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
             {
                 error = new ErrorResultTO();
                 var output = new OutputTO(GlobalConstants.ErrorPayload)
