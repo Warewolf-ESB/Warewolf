@@ -302,12 +302,13 @@ namespace Dev2.Activities.DateAndTime
         
         public bool Equals(DsfDotNetDateTimeDifferenceActivity other)
         {
-            var eq = this.DisplayName.Equals(other.DisplayName);
-            eq &= this.Input1.Equals(other.Input1);
-            eq &= this.Input2.Equals(other.Input2);
-            eq &= this.InputFormat.Equals(other.InputFormat);
-            eq &= this.OutputType.Equals(other.OutputType);
-            eq &= this.Result.Equals(other.Result);
+            var eq = base.Equals(other);
+            eq &= DisplayName.Equals(other.DisplayName);
+            eq &= Input1.Equals(other.Input1);
+            eq &= Input2.Equals(other.Input2);
+            eq &= InputFormat.Equals(other.InputFormat);
+            eq &= OutputType.Equals(other.OutputType);
+            eq &= Result.Equals(other.Result);
             return eq;
         }
         public override bool Equals(object obj)
