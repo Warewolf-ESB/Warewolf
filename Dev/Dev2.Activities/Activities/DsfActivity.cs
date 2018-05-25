@@ -213,7 +213,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
         }
 
-        internal IAuthorizationService AuthorizationService
+       internal IAuthorizationService AuthorizationService
         {
             get
             {

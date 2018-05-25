@@ -16,7 +16,7 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -469,7 +469,26 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[res]]", outputs[0]);
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("Errors")]
+        public void DsfUniqueActivity_ResultIsEmpty()
+        {
+            const string DataList = "<ADL><recset1>\r\n\t\t<field1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>";
+            SetupArguments("<root>" + DataList + "</root>", DataList, "", "[[recset1().field1]]",null);
+            var result = ExecuteProcess();
+            Assert.AreEqual("Invalid In fields", result.Environment.FetchErrors());
+        }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void GivenEmptyStringAndName_ExecutionEnvironmentIsValidRecordSetIndex_ShouldReturn()
+        {
+            ExecutionEnvironment _environment;
+            _environment = new ExecutionEnvironment();
+            Assert.IsNotNull(_environment);
+            Assert.IsTrue(ExecutionEnvironment.IsValidRecordSetIndex("[[rec().a]]"));
+        }
         #region Private Test Methods
 
         void SetupArguments(string currentDL, string testData, string inFields, string resultFields, string result)
