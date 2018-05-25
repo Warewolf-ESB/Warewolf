@@ -97,7 +97,6 @@ namespace Dev2.Activities.DateAndTime
             DateTime = string.Empty;
             InputFormat = string.Empty;
             OutputFormat = string.Empty;
-            //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
             TimeModifierType = "";
             TimeModifierAmountDisplay = string.Empty;
             TimeModifierAmount = 0;
@@ -349,13 +348,14 @@ namespace Dev2.Activities.DateAndTime
 
         public bool Equals(DsfDotNetDateTimeActivity other)
         {
-            var eq = this.DisplayName.Equals(other.DisplayName);
-            eq &= this.DateTime.Equals(other.DateTime);
-            eq &= this.InputFormat.Equals(other.InputFormat);
-            eq &= this.OutputFormat.Equals(other.OutputFormat);
-            eq &= this.TimeModifierType.Equals(other.TimeModifierType);
-            eq &= this.TimeModifierAmountDisplay.Equals(other.TimeModifierAmountDisplay);
-            eq &= this.TimeModifierAmount.Equals(other.TimeModifierAmount);
+            var eq = base.Equals(other);
+            eq &= DisplayName.Equals(other.DisplayName);
+            eq &= DateTime.Equals(other.DateTime);
+            eq &= InputFormat.Equals(other.InputFormat);
+            eq &= OutputFormat.Equals(other.OutputFormat);
+            eq &= TimeModifierType.Equals(other.TimeModifierType);
+            eq &= TimeModifierAmountDisplay.Equals(other.TimeModifierAmountDisplay);
+            eq &= TimeModifierAmount.Equals(other.TimeModifierAmount);
             eq &= Result.Equals(other.Result);
             return eq;
         }
