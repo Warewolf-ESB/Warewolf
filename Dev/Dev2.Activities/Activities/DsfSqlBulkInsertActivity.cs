@@ -501,10 +501,6 @@ namespace Dev2.Activities
 
         List<string> GetNamesFromMappings() => InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.ColumnName).ToList();
 
-        List<Type> GETTypesFromMappingTypes() => InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
-
-        List<string> GetNamesFromMappings() => InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.ColumnName).ToList();
-
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             if (updates != null)
