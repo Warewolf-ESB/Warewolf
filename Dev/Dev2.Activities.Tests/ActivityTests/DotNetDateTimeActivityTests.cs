@@ -244,7 +244,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var data = dataMock.Object;
 
             var timeBefore = DateTime.Now;
-
             //------------Execute Test---------------------------
             act.Execute(data, 0);
             //------------Assert Results-------------------------
@@ -255,8 +254,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1,value.Count);
             DateTime datetimeResult;
             Assert.IsTrue(DateTime.TryParse(value[0], out datetimeResult),$"Failed to parse value: {value[0]} as a DateTime");
-            Assert.IsTrue(timeBefore < datetimeResult,$"{timeBefore} not < {datetimeResult}");
-            Assert.IsTrue(datetimeResult < timeAfter,$"{datetimeResult} not < {timeAfter}");
+            Assert.IsTrue(timeBefore <= datetimeResult,$"{timeBefore} not <= {datetimeResult}");
+            Assert.IsTrue(datetimeResult <= timeAfter,$"{datetimeResult} not <= {timeAfter}");
 
             Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
             Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
