@@ -285,6 +285,23 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCl
                 return this.mWorkSurfaceContext;
             }
         }
+        
+        public WpfCustom OUTPUT
+        {
+            get
+            {
+                if ((this.mOUTPUT == null))
+                {
+                    this.mOUTPUT = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mOUTPUT.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ContentPane";
+                    this.mOUTPUT.SearchProperties[WpfControl.PropertyNames.AutomationId] = "OutputPane";
+                    this.mOUTPUT.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mOUTPUT;
+            }
+        }
         #endregion
         
         #region Fields
@@ -293,6 +310,8 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCl
         private WpfButton mCloseButton;
         
         private WorkSurfaceContext mWorkSurfaceContext;
+        
+        private WpfCustom mOUTPUT;
         #endregion
     }
     

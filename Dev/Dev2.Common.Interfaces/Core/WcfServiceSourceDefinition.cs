@@ -29,7 +29,18 @@ namespace Dev2.Common.Interfaces.Core
             return string.Equals(EndpointUrl, other.EndpointUrl);
         }
 
-        public bool Equals(IWcfServerSource other) => Equals(other as WcfServiceSourceDefinition);
+        public bool Equals(IWcfServerSource other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return string.Equals(EndpointUrl, other.EndpointUrl);
+        }
 
         public override int GetHashCode()
         {
@@ -41,9 +52,9 @@ namespace Dev2.Common.Interfaces.Core
             }
         }
 
-        public static bool operator ==(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => Equals(left, right);
+        public static bool operator ==(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => left.Equals(right);
 
-        public static bool operator !=(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => !Equals(left, right);
+        public static bool operator !=(WcfServiceSourceDefinition left, WcfServiceSourceDefinition right) => !left.Equals(right);
 
         #endregion Equality members
     }

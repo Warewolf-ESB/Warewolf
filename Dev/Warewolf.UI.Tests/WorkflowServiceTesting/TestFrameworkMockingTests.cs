@@ -35,6 +35,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         {
             ExplorerUIMap.Filter_Explorer("Control Flow - Sequence");
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.SequenceItem.FindUniqueNamesItem.FindOnlyUniqueNamesExpander.Exists);
@@ -157,6 +158,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         {
             ExplorerUIMap.Filter_Explorer(WorkflowServiceTestingTests.DotnetWfWithObjOutput);
             ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             UIMap.Press_F6();
             UIMap.Click_Create_Test_From_Debug();
             WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass);

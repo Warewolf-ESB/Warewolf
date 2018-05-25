@@ -1048,7 +1048,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapC
         #endregion
     }
     
-    [GeneratedCode("Coded UITest Builder", "14.0.23107.0")]
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
     public class Comment4 : WpfCustom
     {
         

@@ -949,6 +949,16 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void DeleteResourceConfirmedExpectContextRemoved2()
+        {
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object, FirstResource.Object }, "somefolder");
+            ShellViewModel.Handle(msg);
+            ResourceRepo.Verify(s => s.HasDependencies(FirstResource.Object), Times.Exactly(2));
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MainViewModel_HandleDeleteResourceMessage")]
         public void MainViewModel_HandleDeleteResourceMessage_WhenHasActionDeclined_PerformsAction()
@@ -1148,8 +1158,7 @@ namespace Dev2.Core.Tests
 
 
         #region DeactivateItem
-
-        // PBI 9405 - 2013.06.13 - Massimo.Guerrera
+        
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
         {
@@ -4066,17 +4075,11 @@ namespace Dev2.Core.Tests
             public SpecialContext WorksurfaceContextManager { get; internal set; }
             public object ActiveItem { get; internal set; }
 
-            internal void ActivateItem(object p)
-            {
-                throw new NotImplementedException();
-            }
+            internal void ActivateItem(object p) => throw new NotImplementedException();
 
             public class SpecialContext
             {
-                internal void TryRemoveContext(object contextualResourceModel)
-                {
-                    throw new NotImplementedException();
-                }
+                internal void TryRemoveContext(object contextualResourceModel) => throw new NotImplementedException();
             }
         }
     }

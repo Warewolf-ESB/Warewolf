@@ -82,30 +82,34 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
         {
             //------------Setup for test--------------------------
             const string response = "{\"Message\":\"Error\"}";
-            var dsfWebGetActivity = new DsfWebGetActivity();
-            dsfWebGetActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
-            var mockResourceCatalog = new Mock<IResourceCatalog>();
-            var webSource = new WebSource();
-            webSource.Address = "http://rsaklfsvrtfsbld:9910/api/";
-            webSource.AuthenticationType = AuthenticationType.Anonymous;            
-            mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webSource);
-            dsfWebGetActivity.ResourceCatalog = mockResourceCatalog.Object;
+            var environment = new ExecutionEnvironment();
+
+            var dsfWebGetActivity = new TestDsfWebGetActivity();
+            dsfWebGetActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
+
             var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Message", "[[Message]]", "") };
             dsfWebGetActivity.Outputs = serviceOutputs;
+
             var serviceXml = XmlResource.Fetch("WebService");
             var service = new WebService(serviceXml) { RequestResponse = response };
             dsfWebGetActivity.OutputDescription = service.GetOutputDescription();
-
+            dsfWebGetActivity.ResponseFromWeb = response;
+            dsfWebGetActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
             dsfWebGetActivity.QueryString = "Error";
 
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(environment);
+            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+          
             dsfWebGetActivity.SourceId = Guid.Empty;
             dsfWebGetActivity.Headers = new List<INameValue>();
-            var dataObject = new DsfDataObject("", Guid.NewGuid());
-            dataObject.EsbChannel = new MockEsb();
+            dsfWebGetActivity.OutputDescription = new OutputDescription();
+            dsfWebGetActivity.OutputDescription.DataSourceShapes.Add(new DataSourceShape() { Paths = new List<IPath>() { new StringPath() { ActualPath = "[[Response]]", OutputExpression = "[[Response]]" } } });
+
             //------------Execute Test---------------------------
-            dsfWebGetActivity.Execute(dataObject, 0);
+            dsfWebGetActivity.Execute(dataObjectMock.Object, 0);
             //------------Assert Results-------------------------
-            Assert.AreEqual("Error", ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval("[[Message]]", 0)));
+            Assert.AreEqual(response, ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[Message]]", 0)));
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
@@ -85,22 +86,27 @@ namespace Dev2.Runtime.WebServer
             }
             if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
             {
-                if (executePayload.IsJSON())
-                {
-                    formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                }
-                else
-                {
-                    if (executePayload.IsXml())
-                    {
-                        formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-                    }
-                }
+                TryGetFormatter(executePayload, ref formatter);
             }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
-            dataObject.Environment = null;
-            dto.ErrorResultTO.ClearErrors();
+            
+            CleanUp(dto);
             return new StringResponseWriter(executePayload, formatter.ContentType);
+        }
+
+        static void TryGetFormatter(string executePayload, ref DataListFormat formatter)
+        {
+            if (executePayload.IsJSON())
+            {
+                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
+            }
+            else
+            {
+                if (executePayload.IsXml())
+                {
+                    formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                }
+            }
         }
 
         static string GetExecutePayload(IDSFDataObject dataObject, IResource resource, WebRequestTO webRequest, ref DataListFormat formatter)
@@ -111,25 +117,30 @@ namespace Dev2.Runtime.WebServer
                 switch (dataObject.ReturnType) {
                     case EmitionTypes.XML:
                     {
-                        return ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,
-                            resource.DataList.ToString(), 0);
+                        return ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
                     }
                     case EmitionTypes.SWAGGER:
                     {
                         formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                        return ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource,
-                            resource.DataList.ToString(), webRequest.WebServerUrl);
+                        return ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource, resource.DataList.ToString(), webRequest.WebServerUrl);
                     }
                     default:
                     case EmitionTypes.JSON:
                     {
                         formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                        return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject,
-                            resource.DataList.ToString(), 0);
+                        return ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
                     }
                 }
             }
             return string.Empty;
+        }
+
+        private static void CleanUp(ExecutionDto dto)
+        {
+            dto.DataObject = null;
+            dto.ErrorResultTO.ClearErrors();
+            GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
+            GC.Collect(3,GCCollectionMode.Forced,false);
         }
 
         static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
@@ -151,5 +162,6 @@ namespace Dev2.Runtime.WebServer
             }
             return executePayload;
         }
+
     }
 }
