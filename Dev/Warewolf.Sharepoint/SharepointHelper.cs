@@ -1,4 +1,5 @@
-﻿using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+﻿using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.SharePoint.Client;
 using System;
@@ -11,7 +12,7 @@ using File = Microsoft.SharePoint.Client.File;
 
 namespace Warewolf.Sharepoint
 {
-    public class SharepointHelper
+    public class SharepointHelper : ISharepointHelper
     {
         string Server { get; set; }
         string UserName { get; set; }
@@ -69,9 +70,9 @@ namespace Warewolf.Sharepoint
             return ctx;
         }
 
-        public List<SharepointListTo> LoadLists()
+        public List<ISharepointListTo> LoadLists()
         {
-            var lists = new List<SharepointListTo>();
+            var lists = new List<ISharepointListTo>();
             using (var context = GetContext())
             {
                 var listCollection = context.Web.Lists;
@@ -242,13 +243,11 @@ namespace Warewolf.Sharepoint
                 localPath = Path.GetDirectoryName(localPath);
             }
 
-            if (!overwrite && !string.IsNullOrEmpty(localPath) && !string.IsNullOrEmpty(fileName))
+            if (!overwrite && !string.IsNullOrEmpty(localPath) && !string.IsNullOrEmpty(fileName) && CheckIfFileExist(Path.Combine(localPath, fileName)))
             {
-                if (CheckIfFileExist(Path.Combine(localPath, fileName)))
-                {
-                    return "Success";
-                }
+                return "Success";
             }
+
 
             CreateFolderIfNotExist(localPath);
 

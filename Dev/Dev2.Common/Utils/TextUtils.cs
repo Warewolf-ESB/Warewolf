@@ -24,12 +24,7 @@ namespace Dev2.Common.Utils
                     var index = indexOfReplacement - 1;
                     if (index >= 0)
                     {
-                        var backwardsLookup = stringToReplaceIn[index];
-                        if (backwardsLookup == '\r')
-                        {
-                            dontReplace = false;
-                            startIndex = indexOfReplacement + 2;
-                        }
+                        BackwardsLookup(stringToReplaceIn, ref startIndex, indexOfReplacement, ref dontReplace, index);
                     }
 
                     if (dontReplace)
@@ -45,6 +40,16 @@ namespace Dev2.Common.Utils
             }
 
             return stringToReplaceIn;
+        }
+
+        private static void BackwardsLookup(string stringToReplaceIn, ref int startIndex, int indexOfReplacement, ref bool dontReplace, int index)
+        {
+            var backwardsLookup = stringToReplaceIn[index];
+            if (backwardsLookup == '\r')
+            {
+                dontReplace = false;
+                startIndex = indexOfReplacement + 2;
+            }
         }
     }
 }

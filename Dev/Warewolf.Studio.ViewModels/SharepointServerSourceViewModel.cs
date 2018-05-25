@@ -130,20 +130,18 @@ namespace Warewolf.Studio.ViewModels
 
         void CancelTest()
         {
-            if (_token != null)
+            if (_token != null && !_token.IsCancellationRequested && _token.Token.CanBeCanceled)
             {
-                if (!_token.IsCancellationRequested && _token.Token.CanBeCanceled)
+                _token.Cancel();
+                Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
-                    _token.Cancel();
-                    Dispatcher.CurrentDispatcher.Invoke(() =>
-                    {
-                        Testing = false;
-                        TestFailed = true;
-                        TestPassed = false;
-                        TestMessage = "Test Cancelled";
-                    });
-                }
+                    Testing = false;
+                    TestFailed = true;
+                    TestPassed = false;
+                    TestMessage = "Test Cancelled";
+                });
             }
+
         }
 
         public bool CanTest()

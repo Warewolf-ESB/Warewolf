@@ -1,3 +1,4 @@
+using Dev2.Studio.Interfaces.Enums;
 using System;
 
 namespace Dev2.Common.Interfaces
@@ -7,5 +8,6 @@ namespace Dev2.Common.Interfaces
         Guid? EnvironmentID { get; set; }
         Guid? ResourceID { get; set; }
         Guid? ServerID { get; set; }
+        WorkSurfaceContext WorkSurfaceContext { get; set; }
     }
 }

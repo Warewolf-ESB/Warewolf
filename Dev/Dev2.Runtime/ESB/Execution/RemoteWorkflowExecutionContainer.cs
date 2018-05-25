@@ -181,13 +181,11 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 var returnData = ExecuteGetRequest(connection, "ping", "<DataList></DataList>", false);
-                if (!string.IsNullOrEmpty(returnData))
+                if (!string.IsNullOrEmpty(returnData) && returnData.Contains("Pong"))
                 {
-                    if (returnData.Contains("Pong"))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
+
             }
             catch (Exception)
             {

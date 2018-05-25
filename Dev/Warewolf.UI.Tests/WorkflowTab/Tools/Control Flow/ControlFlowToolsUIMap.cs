@@ -19,6 +19,7 @@ using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.LoopConstructs.LoopConstructToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses;
 using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 
 namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapClasses
 {
@@ -107,6 +108,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapC
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.Exists, "Decision Dialog does not exist after opening large Decision view");
         }
 
+        [When(@"I Drag Explorer First Item Onto Sequence")]
+        public void Drag_Explorer_First_Item_Onto_Sequence()
+        {
+            Mouse.StartDragging(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
+            Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Sequence);
+        }
         [When(@"I Double Click Sequence Tool to Change View")]
         public void SequenceTool_ChangeView_With_DoubleClick()
         {
@@ -170,7 +177,31 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapC
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Comment4.LargeView, new Point(1, 29));
         }
 
+
+        public void Double_Click_Connector3()
+        {
+            WpfCustom uIItem970f65ad1c3d4028Custom = WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector3;
+            // Click '970f65ad-1c3d-4028-b657-f687a5265c56,317,5;214,5 3...' custom control
+            Mouse.Click(uIItem970f65ad1c3d4028Custom, new Point(339, 274));
+            Mouse.DoubleClick(uIItem970f65ad1c3d4028Custom, new Point(339, 274));
+        }
+
         #region UIMaps
+
+        DataToolsUIMap DataToolsUIMap
+        {
+            get
+            {
+                if (_dataToolsUIMap == null)
+                {
+                    _dataToolsUIMap = new DataToolsUIMap();
+                }
+
+                return _dataToolsUIMap;
+            }
+        }
+
+        private DataToolsUIMap _dataToolsUIMap;
 
         UIMap UIMap
         {
@@ -292,6 +323,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.ControlFlow.ControlFlowToolsUIMapC
 
         private UtilityToolsUIMap _UtilityToolsUIMap;
 
-        #endregion
+        #endregion        
     }
 }

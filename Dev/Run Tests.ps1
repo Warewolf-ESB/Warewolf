@@ -163,6 +163,15 @@ $JobSpecs["Workflow Merge with Sequence Tools Conflicting"]	= "Warewolf.UI.Tests
 $JobSpecs["Workflow Merge with Simple Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Simple Tools Conflicts"
 $JobSpecs["Workflow Merge with Switch Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Switch Conflicts"
 $JobSpecs["Workflow Merge with Variables Conflicting"]		= "Warewolf.UI.Tests", "Merge Variable Conflicts"
+$JobSpecs["Search UI Tests"]								= "Warewolf.UI.Tests", "Search"
+$JobSpecs["Input Search UI Tests"]							= "Warewolf.UI.Tests", "Input Search"
+$JobSpecs["Output Search UI Tests"]							= "Warewolf.UI.Tests", "Output Search"
+$JobSpecs["Test Name Search UI Tests"]						= "Warewolf.UI.Tests", "Test Name Search"
+$JobSpecs["Scalar Search UI Tests"]							= "Warewolf.UI.Tests", "Scalar Search"
+$JobSpecs["Recordset Search UI Tests"]						= "Warewolf.UI.Tests", "Recordset Search"
+$JobSpecs["Object Search UI Tests"]							= "Warewolf.UI.Tests", "Object Search"
+$JobSpecs["Service Search UI Tests"]						= "Warewolf.UI.Tests", "Service Search"
+$JobSpecs["Title Search UI Tests"]							= "Warewolf.UI.Tests", "Title Search"
 #Load Tests
 $JobSpecs["UI Load Specs"]	= "Warewolf.UI.Load.Specs"
 $JobSpecs["Load Tests"]		= "Dev2.Integration.Tests", "Load Tests"
@@ -207,11 +216,18 @@ if (!$StartServerAsConsole.IsPresent) {
     [bool]$ConsoleServer = $True
 }
 
+[bool]$ApplyDotCover = $false
 if ($JobNames.Contains(" DotCover")) {
     [bool]$ApplyDotCover = $True
     $JobNames = $JobNames.Replace(" DotCover", "")
 } else {
-    [bool]$ApplyDotCover = $DotCoverPath -ne ""
+    if ($DotCoverPath -ne "") {
+        if (!(Test-Path $DotCoverPath)) {
+            Write-Error -Message "Cannot find DotCover.exe. Please provide a path to that file as a commandline parameter like this: -DotCoverPath"
+            exit 1
+        }
+        [bool]$ApplyDotCover = $true
+    }
 }
 
 If (!(Test-Path "$TestsResultsPath")) {
@@ -791,7 +807,6 @@ function Start-Studio {
     }
 	if ($StudioPath -eq "") {
 		Write-Error -Message "Cannot find Warewolf Studio. To run the studio provide a path to the Warewolf Studio exe file as a commandline parameter like this: -StudioPath"
-        sleep 30
 		exit 1
 	}
     $StudioLogFile = "$env:LocalAppData\Warewolf\Studio Logs\Warewolf Studio.log"
@@ -828,18 +843,18 @@ function Start-Studio {
         Out-File -LiteralPath "$DotCoverRunnerXMLPath" -Encoding default -InputObject $RunnerXML
 		Start-Process $DotCoverPath "cover `"$DotCoverRunnerXMLPath`" /LogFile=`"$TestsResultsPath\StudioDotCover.log`""
     }
-    $i = 0
-    while (!(Test-Path $StudioLogFile) -and $i++ -lt 200){
+    Write-Host "Waiting for Studio at $StudioPath to start..."
+    $TimeoutCounter = 0
+    $StudioStartedFilePath = (Get-Item $StudioPath).Directory.FullName + "\StudioStarted"
+    while (!(Test-Path $StudioStartedFilePath) -and $TimeoutCounter++ -lt 200) {
         Write-Warning "Waiting for Studio to start..."
-        Sleep 3
+        sleep 3
     }
-    if (Test-Path $StudioLogFile) {
-	    Write-Host Studio has started.
-    } else {
+    if (!(Test-Path $StudioStartedFilePath)) {
 		Write-Error -Message "Warewolf studio failed to start within 10 minutes."
-        sleep 30
-		exit 1
+        exit 1
     }
+    Write-Host Studio has started.
 }
 
 function Start-ServerContainer {

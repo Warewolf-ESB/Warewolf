@@ -88,7 +88,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             inputview.PropertyChanged += (sender, args) => called = true;
             inputview.Model = new DatabaseService();
             //------------Execute Test---------------------------
-            inputview.ExecuteTest();
+            inputview.TryExecuteTest();
 
             //------------Assert Results-------------------------
             Assert.IsTrue(called);
@@ -131,7 +131,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             inputview.Model = null;
 
             //------------Execute Test---------------------------
-            inputview.ExecuteTest();
+            inputview.TryExecuteTest();
 
             //------------Assert Results-------------------------
             Assert.IsTrue(inputview.Errors.Count == 1);
@@ -194,7 +194,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService() { Source = new DbSourceDefinition(), Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" }, };
-            inputview.ExecuteTest();
+            inputview.TryExecuteTest();
             //------------Execute Test---------------------------
 
             Assert.IsTrue(inputview.TestPassed);
@@ -229,7 +229,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService() { Source = new DbSourceDefinition(), Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" }, };
-            inputview.ExecuteTest();
+            inputview.TryExecuteTest();
             //------------Execute Test---------------------------
 
             Assert.IsTrue(inputview.TestPassed);
@@ -302,5 +302,25 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsTrue(vm.IsTesting);
             Assert.IsNotNull(vm.Model);
         }
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("SqlServer_MethodName")]
+        public void ManageDatabaseServiceInputViewModel_TestActionSetSourceAndReturnNoDataMessage()
+        {
+            //------------Setup for test--------------------------
+            var mod = new SqlServerModel();
+            mod.ReturnsNoColumns = true;
+            var act = new DsfSqlServerDatabaseActivity();
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            inputview.Model = new DatabaseService() { Source = new DbSourceDefinition(), Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "" }, };
+            inputview.TryExecuteTest();
+            
+            Assert.IsTrue(inputview.TestPassed);
+            Assert.IsFalse(inputview.TestFailed);
+            Assert.AreEqual("No data returned.   ", inputview.TestMessage);
+            Assert.IsTrue(inputview.ShowTestMessage);
+        }
+
     }
 }

@@ -193,16 +193,7 @@ namespace Dev2.Activities
                         AddOptionsDebugItems();
                     }
 
-                    if (InputMappings != null)
-                    {
-                        foreach (var dataColumnMapping in InputMappings)
-                        {
-                            if (!string.IsNullOrEmpty(dataColumnMapping.InputColumn))
-                            {
-                                sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
-                            }
-                        }
-                    }
+                    sqlBulkCopy = AddInputMappings(sqlBulkCopy);
                     var wrapper = new SqlBulkCopyWrapper(sqlBulkCopy);
                     SqlBulkInserter.Insert(wrapper, dataTableToInsert);
                     dataObject.Environment.Assign(Result, "Success", update);
@@ -213,6 +204,21 @@ namespace Dev2.Activities
                 }
                 dataTableToInsert?.Dispose();
             }
+        }
+
+        SqlBulkCopy AddInputMappings(SqlBulkCopy sqlBulkCopy)
+        {
+            if (InputMappings != null)
+            {
+                foreach (var dataColumnMapping in InputMappings)
+                {
+                    if (!string.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                    {
+                        sqlBulkCopy.ColumnMappings.Add(new SqlBulkCopyColumnMapping(dataColumnMapping.OutputColumn.ColumnName, dataColumnMapping.OutputColumn.ColumnName));
+                    }
+                }
+            }
+            return sqlBulkCopy;
         }
 
         void AddOptionsDebugItems()
@@ -280,13 +286,11 @@ namespace Dev2.Activities
             if (timeoutItr != null)
             {
                 var timeoutString = parametersIteratorCollection.FetchNextValue(timeoutItr);
-                if (!string.IsNullOrEmpty(timeoutString))
+                if (!string.IsNullOrEmpty(timeoutString) && int.TryParse(timeoutString, out int parsedValue))
                 {
-                    if (int.TryParse(timeoutString, out int parsedValue))
-                    {
-                        timeout = parsedValue;
-                    }
+                    timeout = parsedValue;
                 }
+
             }
             else
             {
@@ -299,13 +303,11 @@ namespace Dev2.Activities
             if (batchItr != null)
             {
                 var batchSizeString = parametersIteratorCollection.FetchNextValue(batchItr);
-                if (!string.IsNullOrEmpty(batchSizeString))
+                if (!string.IsNullOrEmpty(batchSizeString) && int.TryParse(batchSizeString, out int parsedValue))
                 {
-                    if (int.TryParse(batchSizeString, out int parsedValue))
-                    {
-                        batchSize = parsedValue;
-                    }
+                    batchSize = parsedValue;
                 }
+
             }
             else
             {
@@ -437,32 +439,27 @@ namespace Dev2.Activities
 
         DataTable BuildDataTableToInsert()
         {
-            if (InputMappings == null)
+            if(InputMappings == null)
             {
                 return null;
             }
 
             var dataTableToInsert = new DataTable();
-
-            foreach (var dataColumnMapping in InputMappings)
+   
+            foreach(var dataColumnMapping in InputMappings)
             {
-                if (string.IsNullOrEmpty(dataColumnMapping.InputColumn))
+                if(string.IsNullOrEmpty(dataColumnMapping.InputColumn))
                 {
                     // Nulls are ok ;)
-                    if (dataColumnMapping.OutputColumn.IsNullable)
+                    if(dataColumnMapping.OutputColumn.IsNullable)
                     {
                         continue;
                     }
 
                     // Check identity flag ;)
-                    if (dataColumnMapping.OutputColumn.IsAutoIncrement)
+                    if(dataColumnMapping.OutputColumn.IsAutoIncrement)
                     {
-                        // check keep identity value ;)
-                        if (KeepIdentity)
-                        {
-                            // no mapping, identity and keep on, this is an issue ;)
-                            throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsTrue, dataColumnMapping.OutputColumn.ColumnName));
-                        }
+                        CheckIdentityKeepValue(dataColumnMapping);
 
                         // null, identity and no keep flag active ;)
                         continue;
@@ -473,17 +470,15 @@ namespace Dev2.Activities
                 }
 
                 // more identity checks - this time it has data ;)
-                if (dataColumnMapping.OutputColumn.IsAutoIncrement)
+                if (dataColumnMapping.OutputColumn.IsAutoIncrement && !KeepIdentity)
                 {
-                    if (!KeepIdentity)
-                    {
-                        // we have data in an identity column and the keep identity option is disabled - oh no!
-                        throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsFalse, dataColumnMapping.OutputColumn.ColumnName));
-                    }
+                    // we have data in an identity column and the keep identity option is disabled - oh no!
+                    throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsFalse, dataColumnMapping.OutputColumn.ColumnName));
                 }
 
+
                 var dataColumn = new DataColumn { ColumnName = dataColumnMapping.OutputColumn.ColumnName, DataType = dataColumnMapping.OutputColumn.DataType };
-                if (dataColumn.DataType == typeof(string))
+                if(dataColumn.DataType == typeof(string))
                 {
                     dataColumn.MaxLength = dataColumnMapping.OutputColumn.MaxLength;
                 }
@@ -491,6 +486,20 @@ namespace Dev2.Activities
             }
             return dataTableToInsert;
         }
+
+        private void CheckIdentityKeepValue(DataColumnMapping dataColumnMapping)
+        {
+            // check keep identity value ;)
+            if (KeepIdentity)
+            {
+                // no mapping, identity and keep on, this is an issue ;)
+                throw new Exception(string.Format(ErrorResource.ColumnSetAsIdentityKeepIdentityIsTrue, dataColumnMapping.OutputColumn.ColumnName));
+            }
+        }
+
+        List<Type> GETTypesFromMappingTypes() => InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
+
+        List<string> GetNamesFromMappings() => InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.ColumnName).ToList();
 
         List<Type> GETTypesFromMappingTypes() => InputMappings?.Select(dataColumnMapping => dataColumnMapping.OutputColumn.DataType).ToList();
 

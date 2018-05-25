@@ -67,8 +67,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             var allErrors = new ErrorResultTO();
             var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -82,38 +80,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                        var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-                        if (CountNumber == string.Empty)
-                        {
-                            allErrors.AddError(ErrorResource.BlankResultVariable);
-                        }
-                        if(dataObject.IsDebugMode())
-                        {
-                            AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment, update));
-                        }
-                        var rule = new IsSingleValueRule(() => CountNumber);
-                        var single = rule.Check();
-                        if (single != null)
-                        {
-                            allErrors.AddError(single.Message);
-                        }
-                        else
-                        {
-                            if (dataObject.Environment.HasRecordSet(RecordsetName))
-                            {
-                                var count = dataObject.Environment.GetCount(rs);
-                                var value = count.ToString();
-                                dataObject.Environment.Assign(CountNumber, value, update);
-                                AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
-
-                            }
-                            else
-                            {
-                                allErrors.AddError(String.Format(ErrorResource.NullRecordSet, RecordsetName));
-                            }
-                        }
+                        TryExecuteTool(dataObject, update, allErrors);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         AddDebugInputItem(new DebugItemStaticDataParams("", RecordsetName, "Recordset", "="));
                         allErrors.AddError(e.Message);
@@ -136,6 +105,40 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        private void TryExecuteTool(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+            if (CountNumber == string.Empty)
+            {
+                allErrors.AddError(ErrorResource.BlankResultVariable);
+            }
+            if (dataObject.IsDebugMode())
+            {
+                AddDebugInputItem(new DebugEvalResult(dataObject.Environment.ToStar(RecordsetName), "Recordset", dataObject.Environment, update));
+            }
+            var rule = new IsSingleValueRule(() => CountNumber);
+            var single = rule.Check();
+            if (single != null)
+            {
+                allErrors.AddError(single.Message);
+            }
+            else
+            {
+                if (dataObject.Environment.HasRecordSet(RecordsetName))
+                {
+                    var count = dataObject.Environment.GetCount(rs);
+                    var value = count.ToString();
+                    dataObject.Environment.Assign(CountNumber, value, update);
+                    AddDebugOutputItem(new DebugEvalResult(CountNumber, "", dataObject.Environment, update));
+
+                }
+                else
+                {
+                    allErrors.AddError(String.Format(ErrorResource.NullRecordSet, RecordsetName));
                 }
             }
         }

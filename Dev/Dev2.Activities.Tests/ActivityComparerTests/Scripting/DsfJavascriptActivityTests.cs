@@ -1,7 +1,11 @@
 ﻿using System;
 using Dev2.Activities.Scripting;
 using Dev2.Common.Interfaces.Enums;
+using Dev2.Data.TO;
+using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Warewolf.Storage;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
 {
@@ -271,7 +275,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var dsfJavascriptActivity = new DsfJavascriptActivity() { UniqueID = uniqueId, EscapeScript = true };
-            var javascriptActivity = new DsfJavascriptActivity() { UniqueID = uniqueId, EscapeScript = true};
+            var javascriptActivity = new DsfJavascriptActivity() { UniqueID = uniqueId, EscapeScript = true };
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfJavascriptActivity.Equals(javascriptActivity));
             //---------------Execute Test ----------------------
@@ -288,7 +292,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
         {
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
-            var javascriptActivity = new DsfJavascriptActivity() { UniqueID = uniqueId, EscapeScript =true };
+            var javascriptActivity = new DsfJavascriptActivity() { UniqueID = uniqueId, EscapeScript = true };
             var dsfJavascriptActivity = new DsfJavascriptActivity() { UniqueID = uniqueId, EscapeScript = false };
             //---------------Assert Precondition----------------
             Assert.IsFalse(javascriptActivity.Equals(dsfJavascriptActivity));
@@ -299,5 +303,27 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Scripting
             //---------------Test Result -----------------------
             Assert.IsTrue(@equals);
         }
+
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        public void JavascriptActivity_ExecuteTool()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var javascriptActivity = new DsfJavascriptActivity() { UniqueID = uniqueId, EscapeScript = true };
+            var dsfJavascriptActivity = new DsfJavascriptActivity() { UniqueID = uniqueId, EscapeScript = false };
+
+            var mockObject = new Mock<IDSFDataObject>() ;
+            var env = new ExecutionEnvironment();
+            var esbChannel = new Mock<IEsbChannel>().Object;
+            var errorResultTO = new ErrorResultTO();
+            mockObject.Setup(o => o.Environment).Returns(() => env);
+            mockObject.Setup(o => o.IsDebugMode()).Returns(() => true);
+            //---------------Execute Test ----------------------
+            javascriptActivity.Execute(mockObject.Object, 0);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("True", env.HasErrors().ToString());
+        }
     }
 }
+

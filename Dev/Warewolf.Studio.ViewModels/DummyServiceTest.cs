@@ -69,7 +69,6 @@ namespace Warewolf.Studio.ViewModels
         public IList<IDebugState> DebugForTest { get; set; }
         public string DuplicateTestTooltip { get; set; }
         public ObservableCollection<IServiceTestStep> TestSteps { get; set; }
-        public IServiceTestStep SelectedTestStep { get; set; }        
         public bool IsTestSelected { get; set; }
         public bool IsTestLoading { get; set; }
         public bool TestPassed { get; set; }

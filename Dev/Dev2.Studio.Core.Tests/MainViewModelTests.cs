@@ -949,6 +949,16 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        public void DeleteResourceConfirmedExpectContextRemoved2()
+        {
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object, FirstResource.Object }, "somefolder");
+            ShellViewModel.Handle(msg);
+            ResourceRepo.Verify(s => s.HasDependencies(FirstResource.Object), Times.Exactly(2));
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MainViewModel_HandleDeleteResourceMessage")]
         public void MainViewModel_HandleDeleteResourceMessage_WhenHasActionDeclined_PerformsAction()
@@ -1148,8 +1158,7 @@ namespace Dev2.Core.Tests
 
 
         #region DeactivateItem
-
-        // PBI 9405 - 2013.06.13 - Massimo.Guerrera
+        
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
         {
@@ -3776,7 +3785,6 @@ namespace Dev2.Core.Tests
                 EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
                 wcm.Verify(manager => manager.DisplayResourceWizard(resourceModel.Object));
             }
-
         }
 
         [TestMethod]
@@ -3799,7 +3807,6 @@ namespace Dev2.Core.Tests
             ShellViewModel.NewComPluginSource("path");
             //---------------Test Result -----------------------
             wcm.VerifyAll();
-
         }
 
         [TestMethod]
@@ -3822,7 +3829,6 @@ namespace Dev2.Core.Tests
             ShellViewModel.AddDeploySurface(enumerable);
             //---------------Test Result -----------------------
             wcm.VerifyAll();
-
         }
 
         [TestMethod]
@@ -3830,7 +3836,6 @@ namespace Dev2.Core.Tests
         public void OpenVersion_GivenVersionInfo_ShouldOpenSurfaceWithCorrectVersion()
         {
             //---------------Set up test pack-------------------
-
             CreateFullExportsAndVm();
             var pv = new PrivateObject(ShellViewModel);
 
@@ -3845,7 +3850,6 @@ namespace Dev2.Core.Tests
             ShellViewModel.OpenVersion(Guid.Empty, version);
             //---------------Test Result -----------------------
             wcm.VerifyAll();
-
         }
 
         [TestMethod]
@@ -3853,7 +3857,6 @@ namespace Dev2.Core.Tests
         public void StudioDebug_GivenId_ShouldLoadResourceModel()
         {
             //---------------Set up test pack-------------------
-
             CreateFullExportsAndVm();
             var pv = new PrivateObject(ShellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
@@ -3877,7 +3880,6 @@ namespace Dev2.Core.Tests
                 EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()));
                 wcm.Verify(manager => manager.DisplayResourceWizard(resourceModel.Object));
             }
-
         }
 
         [TestMethod]
@@ -3891,7 +3893,7 @@ namespace Dev2.Core.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
-            wcm.Setup(manager => manager.CreateNewScheduleWorkSurface(resourceModel.Object));
+            wcm.Setup(manager => manager.TryCreateNewScheduleWorkSurface(resourceModel.Object));
             EnvironmentModel.Setup(model => model.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>()))
                 .Returns(resourceModel.Object);
             pv.SetField("_worksurfaceContextManager", BindingFlags.Instance | BindingFlags.NonPublic, wcm.Object);
@@ -3927,7 +3929,6 @@ namespace Dev2.Core.Tests
                 EnvironmentModel.Verify(model => model.ResourceRepository.LoadContextualResourceModelAsync(It.IsAny<Guid>()));
             });
             task.Wait();
-
         }
 
         [TestMethod]
@@ -3995,11 +3996,11 @@ namespace Dev2.Core.Tests
             ShellViewModel.Items.Add(surfaceContext.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(ShellViewModel);
-            Assert.IsNotNull(ShellViewModel.SaveAllCommand);
+            Assert.IsNotNull(ShellViewModel.SaveAllAndCloseCommand);
             Assert.IsNotNull(ShellViewModel.Items);
 
             //---------------Execute Test ----------------------
-            ShellViewModel.SaveAllCommand.Execute(null);
+            ShellViewModel.SaveAllAndCloseCommand.Execute(null);
             //---------------Test Result -----------------------
             surfaceContext.VerifyAll();
         }
@@ -4074,17 +4075,11 @@ namespace Dev2.Core.Tests
             public SpecialContext WorksurfaceContextManager { get; internal set; }
             public object ActiveItem { get; internal set; }
 
-            internal void ActivateItem(object p)
-            {
-                throw new NotImplementedException();
-            }
+            internal void ActivateItem(object p) => throw new NotImplementedException();
 
             public class SpecialContext
             {
-                internal void TryRemoveContext(object contextualResourceModel)
-                {
-                    throw new NotImplementedException();
-                }
+                internal void TryRemoveContext(object contextualResourceModel) => throw new NotImplementedException();
             }
         }
     }

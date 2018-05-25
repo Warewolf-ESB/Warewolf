@@ -30,6 +30,7 @@ namespace Dev2.Studio.Interfaces
         bool WorkspaceSave { get; }
         Action WorkflowChanged { get; set; }
         bool CanViewWorkflowLink { get; set; }
+        bool CanMerge { get; set; }
 
         void UpdateWorkflowLink(string newLink);
         bool NotifyItemSelected(object primarySelection);

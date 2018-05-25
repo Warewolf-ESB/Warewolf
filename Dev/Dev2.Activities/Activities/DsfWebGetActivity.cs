@@ -17,6 +17,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using Dev2.Comparer;
+using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel;
 
 namespace Dev2.Activities
@@ -90,6 +91,7 @@ namespace Dev2.Activities
                 IsObject = IsObject,
                 ObjectName = ObjectName
             };
+            webRequestResult = Scrubber.Scrub(webRequestResult);
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
         }
 
@@ -97,8 +99,9 @@ namespace Dev2.Activities
 
         protected virtual string PerformWebRequest(IEnumerable<NameValue> head, string query, WebSource url)
         {
-            return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h=>h.Name+":"+h.Value).ToArray());            
-        }        
+            return WebSources.Execute(url, WebRequestMethod.Get, query, String.Empty, true, out _errorsTo, head.Select(h => h.Name + ":" + h.Value).ToArray());
+        }
+
         #endregion
 
 

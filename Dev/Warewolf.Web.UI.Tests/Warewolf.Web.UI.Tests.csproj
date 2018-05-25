@@ -87,6 +87,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <AdditionalFiles Include="..\SonarQube\SonarLint.xml" >
+      <Visible>False</Visible>
+	</AdditionalFiles>
     <None Include="BrowserWebDrivers\Profiles\Chrome\CrashpadMetrics-active.pma" />
     <None Include="BrowserWebDrivers\Profiles\Chrome\Crashpad\metadata" />
     <None Include="BrowserWebDrivers\Profiles\Chrome\Crashpad\settings.dat" />

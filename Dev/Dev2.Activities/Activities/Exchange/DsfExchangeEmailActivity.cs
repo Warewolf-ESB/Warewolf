@@ -115,60 +115,7 @@ namespace Dev2.Activities.Exchange
                     dataObject.Environment.Errors.Add(ErrorResource.InvalidEmailSource);
                     return;
                 }
-                if (IsDebug)
-                {
-                    AddDebugInputItem(new DebugEvalResult(To, "To", dataObject.Environment, update));
-                    AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment, update));
-                    AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment, update));
-                }
-                var colItr = new WarewolfListIterator();
-
-                var toItr = new WarewolfIterator(dataObject.Environment.Eval(To, update));
-                colItr.AddVariableToIterateOn(toItr);
-
-                var ccItr = new WarewolfIterator(dataObject.Environment.Eval(Cc, update));
-                colItr.AddVariableToIterateOn(ccItr);
-
-                var bccItr = new WarewolfIterator(dataObject.Environment.Eval(Bcc, update));
-                colItr.AddVariableToIterateOn(bccItr);
-
-                var subjectItr = new WarewolfIterator(dataObject.Environment.Eval(Subject, update));
-                colItr.AddVariableToIterateOn(subjectItr);
-
-                var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body, update));
-                colItr.AddVariableToIterateOn(bodyItr);
-
-                var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty, update));
-                colItr.AddVariableToIterateOn(attachmentsItr);
-
-                if (!allErrors.HasErrors())
-                {
-                    while (colItr.HasMoreData())
-                    {
-                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
-                        allErrors.MergeErrors(errors);
-                        if (!allErrors.HasErrors())
-                        {
-                            indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
-                        }
-                    }
-                    if (IsDebug && !allErrors.HasErrors())
-                    {
-                        if (!string.IsNullOrEmpty(Result))
-                        {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                        }
-                    }
-                }
-                else
-                {
-                    if (IsDebug)
-                    {
-                        AddDebugInputItem(To, "To");
-                        AddDebugInputItem(Subject, "Subject");
-                        AddDebugInputItem(Body, "Body");
-                    }
-                }
+                indexToUpsertTo = TryExecute(dataObject, update, allErrors, indexToUpsertTo, runtimeSource);
             }
             catch (Exception e)
             {
@@ -198,6 +145,64 @@ namespace Dev2.Activities.Exchange
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+        }
+
+        private int TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int indexToUpsertTo, IExchange runtimeSource)
+        {
+            if (IsDebug)
+            {
+                AddDebugInputItem(new DebugEvalResult(To, "To", dataObject.Environment, update));
+                AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment, update));
+                AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment, update));
+            }
+            var colItr = new WarewolfListIterator();
+
+            var toItr = new WarewolfIterator(dataObject.Environment.Eval(To, update));
+            colItr.AddVariableToIterateOn(toItr);
+
+            var ccItr = new WarewolfIterator(dataObject.Environment.Eval(Cc, update));
+            colItr.AddVariableToIterateOn(ccItr);
+
+            var bccItr = new WarewolfIterator(dataObject.Environment.Eval(Bcc, update));
+            colItr.AddVariableToIterateOn(bccItr);
+
+            var subjectItr = new WarewolfIterator(dataObject.Environment.Eval(Subject, update));
+            colItr.AddVariableToIterateOn(subjectItr);
+
+            var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body, update));
+            colItr.AddVariableToIterateOn(bodyItr);
+
+            var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty, update));
+            colItr.AddVariableToIterateOn(attachmentsItr);
+
+            if (!allErrors.HasErrors())
+            {
+                while (colItr.HasMoreData())
+                {
+                    var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
+                    allErrors.MergeErrors(errors);
+                    if (!allErrors.HasErrors())
+                    {
+                        indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
+                    }
+                }
+                if (IsDebug && !allErrors.HasErrors() && !string.IsNullOrEmpty(Result))
+                {
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                }
+
+            }
+            else
+            {
+                if (IsDebug)
+                {
+                    AddDebugInputItem(To, "To");
+                    AddDebugInputItem(Subject, "Subject");
+                    AddDebugInputItem(Body, "Body");
+                }
+            }
+
+            return indexToUpsertTo;
         }
 
         void AddDebugInputItem(string value, string label)
