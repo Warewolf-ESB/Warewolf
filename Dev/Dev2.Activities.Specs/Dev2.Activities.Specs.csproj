@@ -370,6 +370,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+  <PackageReference Include="Legacy2CPSWorkaround" Version="1.0.0">
+    <PrivateAssets>All</PrivateAssets>
+  </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Composition\DBSource\XmlFetch.cs" />
     <Compile Include="Composition\WorkflowExecutionSteps.cs" />
     <Compile Include="Scheduler\SchedulerSteps.cs" />
