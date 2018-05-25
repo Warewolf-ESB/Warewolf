@@ -32,6 +32,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class AbstractFileActivityTests : BaseActivityUnitTest
     {
+        public TestContext TestContext { get; set; }
         class TestActivity : DsfAbstractFileActivity
         {
             public TestActivity(string displayName) : base(displayName)
@@ -73,7 +74,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        [Owner("Hagashen Naidu")]
+        [Owner("Rory McGuire")]
         [TestCategory("DsfAbstractFileActivity_UpdateForEachInputs")]
         public void DsfAbstractFileActivity_FileOutputStringError_ShouldExistInEnvironmentErrors()
         {
