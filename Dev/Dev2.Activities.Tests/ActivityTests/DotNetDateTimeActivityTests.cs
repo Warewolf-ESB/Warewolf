@@ -422,6 +422,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDotNetDateTimeActivity_Equal()
         {
             //------------Setup for test--------------------------
+            var id = Guid.NewGuid().ToString();
             var act1 = new DsfDotNetDateTimeActivity
             {
                 DateTime = "",
@@ -430,6 +431,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 TimeModifierType = "",
                 TimeModifierAmount = 1,
                 Result = "[[dt]]",
+                UniqueID = id,
                 TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
             };
             var act2 = new DsfDotNetDateTimeActivity
@@ -440,6 +442,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 TimeModifierType = "",
                 TimeModifierAmount = 1,
                 Result = "[[dt]]",
+                UniqueID = id,
                 TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
             };
             //------------Execute Test---------------------------
@@ -486,6 +489,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDotNetDateTimeActivity_NotEqual()
         {
             //------------Setup for test--------------------------
+            var id = Guid.NewGuid().ToString();
             var act1 = new DsfDotNetDateTimeActivity
             {
                 DateTime = "",
@@ -494,6 +498,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 TimeModifierType = "",
                 TimeModifierAmount = 1,
                 Result = "[[dt]]",
+                UniqueID = id,
                 TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
             };
             var act2 = new DsfDotNetDateTimeActivity
@@ -504,6 +509,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 TimeModifierType = "",
                 TimeModifierAmount = 1,
                 Result = "[[dt]]",
+                UniqueID = id,
                 TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
             };
             //------------Execute Test---------------------------
