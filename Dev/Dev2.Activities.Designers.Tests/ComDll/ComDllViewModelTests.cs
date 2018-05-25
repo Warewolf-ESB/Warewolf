@@ -286,9 +286,6 @@ namespace Dev2.Activities.Designers.Tests.ComDll
             var vm = new ComDllViewModel(CreateModelItemWithValues(), ps.Object);
             vm.TestProcedure();
             //------------Assert Results-------------------------
-
-
-
         }
 
         [TestMethod]
@@ -311,6 +308,32 @@ namespace Dev2.Activities.Designers.Tests.ComDll
             var buildRegions = vm.BuildRegions();
             //---------------Test Result -----------------------
             Assert.AreEqual(buildRegions.Single(region => region is INamespaceToolRegion<INamespaceItem>).Errors.Count, 1);
+        }
+
+        [TestMethod]
+        public void Equals_WithOperator_ShouldBeEqual()
+        {
+            //---------------Set up test pack-------------------
+            var firstObject = new ComPluginSourceDefinition() { Id = id };
+            var secondObject = new ComPluginSourceDefinition() { Id = id };
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(firstObject==secondObject, "ComPluginSourceDefinition object equals operator broken.");
+        }
+
+        [TestMethod]
+        public void Equals_WithNotEqualOperator_ShouldNotBeEqual()
+        {
+            //---------------Set up test pack-------------------
+            var firstObject = new ComPluginSourceDefinition() { Id = id };
+            var secondObject = new ComPluginSourceDefinition() { Id = Guid.NewGuid() };
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(firstObject != secondObject, "ComPluginSourceDefinition object not equals operator broken.");
         }
 
         static readonly Guid id = Guid.NewGuid();

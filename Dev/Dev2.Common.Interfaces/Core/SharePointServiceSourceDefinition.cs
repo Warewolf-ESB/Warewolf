@@ -44,7 +44,18 @@ namespace Dev2.Common.Interfaces.Core
             return string.Equals(Server, other.Server) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && AuthenticationType == other.AuthenticationType;
         }
 
-        public bool Equals(ISharepointServerSource other) => Equals(other as SharePointServiceSourceDefinition);
+        public bool Equals(ISharepointServerSource other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return string.Equals(Server, other.Server) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && AuthenticationType == other.AuthenticationType;
+        }
 
         public override bool Equals(object obj)
         {

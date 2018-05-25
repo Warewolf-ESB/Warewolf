@@ -61,13 +61,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException(ErrorResource.ResourceIdNotAGUID);
                 }
                 var resource = ResourceCatalog.GetResource(theWorkspace.ID, resId);
-                if (!string.IsNullOrEmpty(dependsOnMeString))
+                if (!string.IsNullOrEmpty(dependsOnMeString) && !bool.TryParse(dependsOnMeString, out dependsOnMe))
                 {
-                    if (!bool.TryParse(dependsOnMeString, out dependsOnMe))
-                    {
-                        dependsOnMe = false;
-                    }
+                    dependsOnMe = false;
                 }
+
 
                 if (dependsOnMe)
                 {

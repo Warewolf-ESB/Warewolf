@@ -26,7 +26,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DataSplitActivityTest
     /// </summary>
     [TestClass]
-    
+
     public class DataSplitActivityTest : BaseActivityUnitTest
     {
         IList<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();
@@ -43,7 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            if(_resultsCollection == null)
+            if (_resultsCollection == null)
             {
                 _resultsCollection = new List<DataSplitDTO>();
             }
@@ -91,7 +91,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var col1Expected = new List<string> { "RSA ID" };
             var col2Expected = new List<string> { "FirstName" };
-            var col3Expected = new List<string> { "LastName"};
+            var col3Expected = new List<string> { "LastName" };
             var dataExpected = new List<string> { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
 
             var comparer = new ActivityUnitTests.Utils.StringComparer();
@@ -139,6 +139,52 @@ namespace Dev2.Tests.Activities.ActivityTests
             var col2Expected = new List<string> { "FirstName" };
             var col3Expected = new List<string> { "LastName" };
             var dataExpected = new List<string> { "13456456789|Samantha Some|Jones", "09123456646|James|Apple" };
+
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
+            CollectionAssert.AreEqual(col1Expected, col1List, comparer);
+            CollectionAssert.AreEqual(col2Expected, col2List, comparer);
+            CollectionAssert.AreEqual(col3Expected, col3List, comparer);
+            CollectionAssert.AreEqual(dataExpected, dataList, comparer);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDataMergeActivity_Execute")]
+        public void DsfDataSplitActivity_Execute_WhenUsingStarAndMixedSplitType_WithEmptyLine_ExpectCorrectSplit()
+        {
+
+            //------------Setup for test--------------------------
+
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col2]]", "Chars", "|", 2));
+            _resultsCollection.Add(new DataSplitDTO("[[rs().col3]]", "New Line", "", 3));
+            _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 4));
+            _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 5));
+
+            SetupArguments("<root><ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
+                           "13456456789|Samantha Some|Jones" + Environment.NewLine +
+                           Environment.NewLine +
+                           "09123456646|James|Apple</testData></ADL></root>",
+                           "<ADL><rs><col1/><col2/><col3/><data/></rs><testData/></ADL>",
+                           "[[testData]]",
+                           _resultsCollection);
+
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+
+            var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out string error);
+            var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
+            var col3List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col3", out error);
+            var dataList = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "data", out error);
+
+            // remove test datalist ;)
+
+            //------------Assert Results-------------------------
+
+            var col1Expected = new List<string> { "RSA ID","09123456646" };
+            var col2Expected = new List<string> { "FirstName", "James" };
+            var col3Expected = new List<string> { "LastName", "Apple" };
+            var dataExpected = new List<string> { "13456456789|Samantha Some|Jones" };
 
             var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(col1Expected, col1List, comparer);
@@ -215,7 +261,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
             var result = ExecuteProcess();
-            var expected = new List<string> { @"" 
+            var expected = new List<string> { @""
                                                      , @"Branson|0812457"
                                                      };
 
@@ -387,17 +433,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO>();
             resultsCollection.Add(new DataSplitDTO("[[rec().data]]", "New Line", "", 1));
             var sourceString = File.ReadAllText("LargeRowsDataSplit.txt");
-            var act = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultsCollection,SkipBlankRows = true };            
-            var dataObject = new DsfDataObject("",Guid.Empty)
+            var act = new DsfDataSplitActivity { SourceString = sourceString, ResultsCollection = resultsCollection, SkipBlankRows = true };
+            var dataObject = new DsfDataObject("", Guid.Empty)
             {
                 IsDebug = false,
             };
             act.Execute(dataObject, 0);
 
             var totalCount = dataObject.Environment.GetCount("rec");
-            var res = dataObject.Environment.Eval("[[rec().data]]",0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            Assert.AreEqual("0827373254", res.Item.First().ToString());            
-            Assert.AreEqual(8300000, totalCount,CurrentDl);
+            var res = dataObject.Environment.Eval("[[rec().data]]", 0) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            Assert.AreEqual("0827373254", res.Item.First().ToString());
+            Assert.AreEqual(8300000, totalCount, CurrentDl);
         }
 
         //2012.09.28: massimo.guerrera - Add tab functionality
@@ -508,7 +554,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         @"Ms|Kerrin|deSil",
                                                         @"5.Sir|Richard|",
                                                         @"896"
-                                                        
+
                                                         };
             var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out string error);
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));

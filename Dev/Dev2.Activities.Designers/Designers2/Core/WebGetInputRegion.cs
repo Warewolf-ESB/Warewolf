@@ -102,7 +102,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                return _modelItem.GetProperty<string>("QueryString") ?? string.Empty;
+                return _modelItem?.GetProperty<string>("QueryString") ?? string.Empty;
             }
             set
             {
@@ -120,6 +120,7 @@ namespace Dev2.Activities.Designers2.Core
             set
             {
                 _requestUrl = value;
+                _modelItem.SetProperty("RequestUrl", value ?? string.Empty);
                 OnPropertyChanged();
             }
         }

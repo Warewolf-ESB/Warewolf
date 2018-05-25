@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
@@ -9,11 +8,10 @@ using Dev2.Services;
 using Warewolf.Resource.Errors;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Studio.Interfaces;
-using System;
 
 namespace Dev2.Activities.Designers2.Service
 {
-    public class ValidationMemoManager : IDisposable
+    public class ValidationMemoManager
     {
         readonly ServiceDesignerViewModel _serviceDesignerViewModel;
         internal readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
@@ -22,7 +20,6 @@ namespace Dev2.Activities.Designers2.Service
             ErrorType = ErrorType.None,
             Message = @"Service Working Normally"
         };
-        IDesignValidationService _validationService;
         IErrorInfo _worstDesignError;
         bool _versionsDifferent;
 
@@ -62,7 +59,6 @@ namespace Dev2.Activities.Designers2.Service
         {
             _versionsDifferent = value;
         }
-        public IDesignValidationService ValidationService => _validationService;
 
         public void RemovePermissionsError()
         {
@@ -115,6 +111,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public void InitializeValidationService(IServer server)
         {
+            IDesignValidationService _validationService;
             if (server?.Connection?.ServerEvents != null)
             {
                 _validationService = new DesignValidationService(server.Connection.ServerEvents);
@@ -181,64 +178,70 @@ namespace Dev2.Activities.Designers2.Service
             switch (WorstDesignError.FixType)
             {
                 case FixType.ReloadMapping:
-                    _serviceDesignerViewModel.ShowLarge = true;
-                    if (!_versionsDifferent)
-                    {
-                        var xml = _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData();
-                        var inputs = _serviceDesignerViewModel.MappingManager.GetMapping(xml, true, _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs);
-                        var outputs = _serviceDesignerViewModel.MappingManager.GetMapping(xml, false, _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs);
-
-                        _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.Clear();
-                        foreach (var input in inputs)
-                        {
-                            _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.Add(input);
-                        }
-
-                        _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs.Clear();
-                        foreach (var output in outputs)
-                        {
-                            _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs.Add(output);
-                        }
-                        _serviceDesignerViewModel.MappingManager.SetInputs();
-                        _serviceDesignerViewModel.MappingManager.SetOuputs();
-                        RemoveError(WorstDesignError);
-                        UpdateWorstError();
-                    }
-                    else
-                    {
-                        if (_versionsDifferent)
-                        {
-                            _serviceDesignerViewModel.ResourceModel = _serviceDesignerViewModel.NewModel;
-                            _serviceDesignerViewModel.MappingManager.InitializeMappings();
-                            RemoveErrors(
-                                LastValidationMemo.Errors.Where(a => a.Message.Contains(@"Incorrect Version")).ToList());
-                            UpdateWorstError();
-                        }
-                    }
+                    ApplyReloadMappingFix();
                     break;
-
                 case FixType.IsRequiredChanged:
-                    _serviceDesignerViewModel.ShowLarge = true;
-                    var inputOutputViewModels = _serviceDesignerViewModel.MappingManager.DeserializeMappings(true, _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData());
-                    foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
-                    {
-                        var model = inputOutputViewModel;
-                        var actualViewModel = _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
-                        if (actualViewModel != null)
-                        {
-                            if (actualViewModel.Value == string.Empty)
-                            {
-                                actualViewModel.RequiredMissing = true;
-                            }
-                        }
-                    }
-
+                    FixIsRequiredChanged();
                     break;
                 case FixType.None:
                 case FixType.Delete:
                 case FixType.InvalidPermissions:
                 default:
-                    break;
+                    return;
+            }
+        }
+
+        private void FixIsRequiredChanged()
+        {
+            _serviceDesignerViewModel.ShowLarge = true;
+            var inputOutputViewModels = _serviceDesignerViewModel.MappingManager.DeserializeMappings(true, _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData());
+            foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
+            {
+                var model = inputOutputViewModel;
+                var actualViewModel = _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
+                if (actualViewModel != null && actualViewModel.Value == string.Empty)
+                {
+                    actualViewModel.RequiredMissing = true;
+                }
+
+            }
+        }
+
+        private void ApplyReloadMappingFix()
+        {
+            _serviceDesignerViewModel.ShowLarge = true;
+            if (!_versionsDifferent)
+            {
+                var xml = _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData();
+                var inputs = _serviceDesignerViewModel.MappingManager.GetMapping(xml, true, _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs);
+                var outputs = _serviceDesignerViewModel.MappingManager.GetMapping(xml, false, _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs);
+
+                _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.Clear();
+                foreach (var input in inputs)
+                {
+                    _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.Add(input);
+                }
+
+                _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs.Clear();
+                foreach (var output in outputs)
+                {
+                    _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Outputs.Add(output);
+                }
+                _serviceDesignerViewModel.MappingManager.SetInputs();
+                _serviceDesignerViewModel.MappingManager.SetOuputs();
+                RemoveError(WorstDesignError);
+                UpdateWorstError();
+            }
+            else
+            {
+                if (_versionsDifferent)
+                {
+                    _serviceDesignerViewModel.ResourceModel = _serviceDesignerViewModel.NewModel;
+                    _serviceDesignerViewModel.MappingManager.InitializeMappings();
+                    RemoveErrors(
+                        LastValidationMemo.Errors.Where(a => a.Message.Contains(@"Incorrect Version")).ToList());
+                    UpdateWorstError();
+                }
             }
         }
 
@@ -287,11 +290,6 @@ namespace Dev2.Activities.Designers2.Service
                 _serviceDesignerViewModel.RootModel.AddError(error);
             }
             UpdateWorstError();
-        }
-
-        public void Dispose()
-        {
-            _validationService.Dispose();
         }
     }
 }

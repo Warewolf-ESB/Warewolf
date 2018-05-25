@@ -94,70 +94,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                        var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-                        if (RecordsLength == string.Empty)
-                        {
-                            allErrors.AddError(ErrorResource.BlankResultVariable);
-                        }
-                        if(dataObject.IsDebugMode())
-                        {
-                            var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()", "(*)"), update);
-                            if(warewolfEvalResult.IsWarewolfRecordSetResult)
-                            {
-                                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recsetResult)
-                                {
-                                    AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
-                                }
-                            }
-                            //Because the environment eval above where you can only send through a recordset name and not list this code wont be reached. 
-                            //No Coverage added.
-                            if(warewolfEvalResult.IsWarewolfAtomListresult)
-                            {
-                                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult recsetResult)
-                                {
-                                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment, update));
-                                }
-                            }
-                        }
-                        var rule = new IsSingleValueRule(() => RecordsLength);
-                        var single = rule.Check();
-                        if(single != null)
-                        {
-                            allErrors.AddError(single.Message);
-                        }
-                        else
-                        {
-                        
-                            if(dataObject.Environment.HasRecordSet(RecordsetName))
-                            {
-                                var count = dataObject.Environment.GetLength(rs);
-                                var value = count.ToString();
-                                dataObject.Environment.Assign(RecordsLength, value, update);
-                                if (dataObject.Environment.Errors != null && !dataObject.Environment.Errors.Any())
-                                {
-                                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
-                                }
-
-                            }
-                            else
-                            {
-                                if (TreatNullAsZero)
-                                {
-                                    dataObject.Environment.Assign(RecordsLength, 0.ToString(), update);
-                                    AddDebugOutputItem(new DebugItemWarewolfAtomResult(0.ToString(), RecordsLength, ""));
-                                }
-                                else
-                                {
-                                    allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
-                                }
-                                
-                            }
-                           
-                        }
+                        TryExecuteTool(dataObject, update, allErrors);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                        allErrors.AddError(e.Message);  
+                        allErrors.AddError(e.Message);
                         dataObject.Environment.Assign(RecordsLength, "0", update);
                         AddDebugOutputItem(new DebugItemStaticDataParams("0", RecordsLength, "", "="));
                     }
@@ -178,6 +119,66 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+            }
+        }
+
+        private void TryExecuteTool(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+            if (RecordsLength == string.Empty)
+            {
+                allErrors.AddError(ErrorResource.BlankResultVariable);
+            }
+            if (dataObject.IsDebugMode())
+            {
+                var warewolfEvalResult = dataObject.Environment.Eval(RecordsetName.Replace("()", "(*)"), update);
+                if (warewolfEvalResult.IsWarewolfRecordSetResult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult recsetResult)
+                {
+                    AddDebugInputItem(new DebugItemWarewolfRecordset(recsetResult.Item, RecordsetName, "Recordset", "="));
+                }
+
+                //Because the environment eval above where you can only send through a recordset name and not list this code wont be reached.
+                //No Coverage added.
+                if (warewolfEvalResult.IsWarewolfAtomListresult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult atomListResult)
+                {
+                    AddDebugInputItem(new DebugEvalResult(RecordsetName, "Recordset", dataObject.Environment, update));
+                }
+
+            }
+            var rule = new IsSingleValueRule(() => RecordsLength);
+            var single = rule.Check();
+            if (single != null)
+            {
+                allErrors.AddError(single.Message);
+            }
+            else
+            {
+
+                if (dataObject.Environment.HasRecordSet(RecordsetName))
+                {
+                    var count = dataObject.Environment.GetLength(rs);
+                    var value = count.ToString();
+                    dataObject.Environment.Assign(RecordsLength, value, update);
+                    if (dataObject.Environment.Errors != null && !dataObject.Environment.Errors.Any())
+                    {
+                        AddDebugOutputItem(new DebugItemWarewolfAtomResult(value, RecordsLength, ""));
+                    }
+
+                }
+                else
+                {
+                    if (TreatNullAsZero)
+                    {
+                        dataObject.Environment.Assign(RecordsLength, 0.ToString(), update);
+                        AddDebugOutputItem(new DebugItemWarewolfAtomResult(0.ToString(), RecordsLength, ""));
+                    }
+                    else
+                    {
+                        allErrors.AddError(string.Format(ErrorResource.NullRecordSet, RecordsetName));
+                    }
+
+                }
+
             }
         }
 

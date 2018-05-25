@@ -22,6 +22,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Activities.Sharepoint
 {
@@ -75,19 +76,23 @@ namespace Dev2.Activities.Sharepoint
             ExecuteTool(dataObject, 0);
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachInputs() => null;
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
-        protected override IList<OutputTO> ExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
+        protected override IList<OutputTO> TryExecuteConcreteAction(IDSFDataObject context, out ErrorResultTO error, int update)
         {
             _debugInputs = new List<DebugItem>();
             error = new ErrorResultTO();
@@ -119,48 +124,7 @@ namespace Dev2.Activities.Sharepoint
             {
                 try
                 {
-                    var serverPath = colItr.FetchNextValue(serverInputFromItr);
-                    var localPath = colItr.FetchNextValue(serverInputFromTo);
-
-                    if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
-                    {
-                        if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                        {
-                            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
-
-                            var newPath = CopyFile(sharepointSource, serverPath, localPath);
-
-                            var indexToUpsertTo = 1;
-
-                            foreach (var file in newPath)
-                            {
-                                var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
-                                    indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
-                                indexToUpsertTo++;
-                            }
-                        }
-                        else
-                        {
-                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
-                            {
-                                var newPath = CopyFile(sharepointSource, serverPath, localPath);
-                                foreach (var folder in newPath)
-                                {
-                                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
-                                }
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var newPath = CopyFile(sharepointSource, serverPath, localPath);
-
-                        var xmlList = string.Join(",", newPath.Select(c => c));
-                        outputs.Add(DataListFactory.CreateOutputTO(Result));
-                        outputs.Last().OutputStrings.Add(xmlList);
-                    }
+                    ExecuteConcreteAction(outputs, colItr, sharepointSource, serverInputFromItr, serverInputFromTo);
                 }
                 catch (Exception e)
                 {
@@ -171,6 +135,57 @@ namespace Dev2.Activities.Sharepoint
             }
 
             return outputs;
+        }
+
+        private void ExecuteConcreteAction(IList<OutputTO> outputs, WarewolfListIterator colItr, SharepointSource sharepointSource, WarewolfIterator serverInputFromItr, WarewolfIterator serverInputFromTo)
+        {
+            var serverPath = colItr.FetchNextValue(serverInputFromItr);
+            var localPath = colItr.FetchNextValue(serverInputFromTo);
+
+            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
+            {
+                if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                {
+                    var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+                    var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+
+                    var newPath = CopyFile(sharepointSource, serverPath, localPath);
+
+                    var indexToUpsertTo = 1;
+
+                    foreach (var file in newPath)
+                    {
+                        var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                            indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                        outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
+                        indexToUpsertTo++;
+                    }
+                }
+                else
+                {
+                    if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+                    {
+                        AddOutputsForBlankIndex(outputs, sharepointSource, serverPath, localPath);
+                    }
+                }
+            }
+            else
+            {
+                var newPath = CopyFile(sharepointSource, serverPath, localPath);
+
+                var xmlList = string.Join(",", newPath.Select(c => c));
+                outputs.Add(DataListFactory.CreateOutputTO(Result));
+                outputs.Last().OutputStrings.Add(xmlList);
+            }
+        }
+
+        private void AddOutputsForBlankIndex(IList<OutputTO> outputs, SharepointSource sharepointSource, string serverPath, string localPath)
+        {
+            var newPath = CopyFile(sharepointSource, serverPath, localPath);
+            foreach (var folder in newPath)
+            {
+                outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+            }
         }
 
         void ValidateRequest()

@@ -1,6 +1,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Debug;
@@ -17,14 +18,10 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.TO;
 using Dev2.Util;
-using Microsoft.SharePoint.Client;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
-
-
 
 namespace Dev2.Activities.Sharepoint
 {
@@ -58,17 +55,20 @@ namespace Dev2.Activities.Sharepoint
 
         public override List<string> GetOutputs() => new List<string> { Result };
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
         }
 
+        [ExcludeFromCodeCoverage]
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-
         }
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachInputs() => null;
 
+        [ExcludeFromCodeCoverage]
         public override IList<DsfForEachItem> GetForEachOutputs() => null;
 
         public override enFindMissingType GetFindMissingType() => enFindMissingType.MixedActivity;
@@ -83,54 +83,7 @@ namespace Dev2.Activities.Sharepoint
             var allErrors = new ErrorResultTO();
             try
             {
-                var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
-                if (sharepointReadListTos.Any())
-                {
-                    var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
-                    var listOfIterators = new Dictionary<string, IWarewolfIterator>();
-                    if (sharepointSource == null)
-                    {
-                        var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
-                        sharepointSource = new SharepointSource(contents.ToXElement());
-                    }
-                    var env = dataObject.Environment;
-                    if (dataObject.IsDebugMode())
-                    {
-                        AddInputDebug(env,  update);
-                    }
-                    var sharepointHelper = sharepointSource.CreateSharepointHelper();
-                    var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
-                    using (var ctx = sharepointHelper.GetContext())
-                    {
-                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update, RequireAllCriteriaToMatch);
-                        var list = ctx.Web.Lists.GetByTitle(SharepointList);
-                        var listItems = list.GetItems(camlQuery);
-                        ctx.Load(listItems);
-                        ctx.ExecuteQuery();
-                        var iteratorList = new WarewolfListIterator();
-                        foreach (var sharepointReadListTo in sharepointReadListTos)
-                        {
-                            var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName, update));
-                            iteratorList.AddVariableToIterateOn(warewolfIterator);
-                            listOfIterators.Add(sharepointReadListTo.InternalName, warewolfIterator);
-                        }
-                        foreach (var listItem in listItems)
-                        {
-
-                            foreach (var warewolfIterator in listOfIterators)
-                            {
-                                listItem[warewolfIterator.Key] = warewolfIterator.Value.GetNextValue();
-                            }
-                            listItem.Update();
-                            ctx.ExecuteQuery();
-                        }
-                    }
-                    if (!string.IsNullOrEmpty(Result))
-                    {
-                        env.Assign(Result, "Success", update);
-                        AddOutputDebug(dataObject, env, update);
-                    }
-                }
+                ExecuteConcreteAction(dataObject, update);
             }
             catch (Exception e)
             {
@@ -151,6 +104,58 @@ namespace Dev2.Activities.Sharepoint
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        private void ExecuteConcreteAction(IDSFDataObject dataObject, int update)
+        {
+            var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+            if (sharepointReadListTos.Any())
+            {
+                var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
+                var listOfIterators = new Dictionary<string, IWarewolfIterator>();
+                if (sharepointSource == null)
+                {
+                    var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
+                    sharepointSource = new SharepointSource(contents.ToXElement());
+                }
+                var env = dataObject.Environment;
+                if (dataObject.IsDebugMode())
+                {
+                    AddInputDebug(env, update);
+                }
+                var sharepointHelper = sharepointSource.CreateSharepointHelper();
+                var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
+                using (var ctx = sharepointHelper.GetContext())
+                {
+                    var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update, RequireAllCriteriaToMatch);
+                    var list = ctx.Web.Lists.GetByTitle(SharepointList);
+                    var listItems = list.GetItems(camlQuery);
+                    ctx.Load(listItems);
+                    ctx.ExecuteQuery();
+                    var iteratorList = new WarewolfListIterator();
+                    foreach (var sharepointReadListTo in sharepointReadListTos)
+                    {
+                        var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName, update));
+                        iteratorList.AddVariableToIterateOn(warewolfIterator);
+                        listOfIterators.Add(sharepointReadListTo.InternalName, warewolfIterator);
+                    }
+                    foreach (var listItem in listItems)
+                    {
+
+                        foreach (var warewolfIterator in listOfIterators)
+                        {
+                            listItem[warewolfIterator.Key] = warewolfIterator.Value.GetNextValue();
+                        }
+                        listItem.Update();
+                        ctx.ExecuteQuery();
+                    }
+                }
+                if (!string.IsNullOrEmpty(Result))
+                {
+                    env.Assign(Result, "Success", update);
+                    AddOutputDebug(dataObject, env, update);
                 }
             }
         }

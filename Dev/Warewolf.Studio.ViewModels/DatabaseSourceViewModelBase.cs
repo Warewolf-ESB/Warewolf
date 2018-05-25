@@ -370,7 +370,7 @@ namespace Warewolf.Studio.ViewModels
             VerifyArgument.IsNotNull("aggregator", aggregator);
             _updateManager = updateManager;
             TestCommand = new DelegateCommand(TestConnection, CanTest);
-            OkCommand = new DelegateCommand(SaveConnection, CanSave);
+            OkCommand = new DelegateCommand(TrySaveConnection, CanSave);
             CancelTestCommand = new DelegateCommand(CancelTest, CanCancelTest);
             Testing = false;
             _testPassed = false;
@@ -467,7 +467,8 @@ namespace Warewolf.Studio.ViewModels
             }
             return serverName;
         }
-        void SaveConnection()
+
+        void TrySaveConnection()
         {
             Testing = true;
             TestFailed = false;
@@ -477,24 +478,7 @@ namespace Warewolf.Studio.ViewModels
                 RequestServiceNameViewModel.Wait();
                 if (RequestServiceNameViewModel.Exception == null)
                 {
-                    var requestServiceNameViewModel = RequestServiceNameViewModel.Result;
-                    var res = requestServiceNameViewModel.ShowSaveDialog();
-
-                    if (res == MessageBoxResult.OK)
-                    {
-                        _resourceName = requestServiceNameViewModel.ResourceName.Name;
-                        var src = ToDbSource();
-
-                        src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
-                        Save(src);
-                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null && !TestFailed)
-                        {
-                            DbSource = src;
-                            Path = DbSource.Path;
-                            SetupHeaderTextFromExisting();
-                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
-                        }
-                    }
+                    SaveConnection();
                 }
                 else
                 {
@@ -509,22 +493,42 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void CancelTest()
+        void SaveConnection()
         {
-            if (_token != null)
+            var requestServiceNameViewModel = RequestServiceNameViewModel.Result;
+            var res = requestServiceNameViewModel.ShowSaveDialog();
+
+            if (res == MessageBoxResult.OK)
             {
-                if (!_token.IsCancellationRequested && _token.Token.CanBeCanceled)
+                _resourceName = requestServiceNameViewModel.ResourceName.Name;
+                var src = ToDbSource();
+
+                src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
+                Save(src);
+                if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null && !TestFailed)
                 {
-                    _token.Cancel();
-                    Dispatcher.CurrentDispatcher.Invoke(() =>
-                    {
-                        Testing = false;
-                        TestFailed = true;
-                        TestPassed = false;
-                        TestMessage = "Test Cancelled";
-                    });
+                    DbSource = src;
+                    Path = DbSource.Path;
+                    SetupHeaderTextFromExisting();
+                    AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
                 }
             }
+        }
+
+        void CancelTest()
+        {
+            if (_token != null && !_token.IsCancellationRequested && _token.Token.CanBeCanceled)
+            {
+                _token.Cancel();
+                Dispatcher.CurrentDispatcher.Invoke(() =>
+                {
+                    Testing = false;
+                    TestFailed = true;
+                    TestPassed = false;
+                    TestMessage = "Test Cancelled";
+                });
+            }
+
         }
         bool CanCancelTest() => Testing;
 
@@ -558,7 +562,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override void Save()
         {
-            SaveConnection();
+            TrySaveConnection();
         }
 
         void Save(IDbSource toDbSource)

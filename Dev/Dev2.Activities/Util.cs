@@ -36,15 +36,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            if(ValueIsDate(value))
+            if (ValueIsDate(value) && ValueIsDate(comparisonValue.ToString()))
             {
-                if(ValueIsDate(comparisonValue.ToString()))
-                {
-                    return DateTime.Parse(value) == DateTime.Parse(comparisonValue.ToString());
-                }
+                return DateTime.Parse(value) == DateTime.Parse(comparisonValue.ToString());
             }
 
-            if(ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
+
+            if (ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
                 return double.Parse(value).Equals(double.Parse(comparisonValue.ToString()));
             }
@@ -66,15 +64,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            if(ValueIsDate(value))
+            if (ValueIsDate(value) && ValueIsDate(comparisonValue.ToString()))
             {
-                if(ValueIsDate(comparisonValue.ToString()))
-                {
-                    return DateTime.Parse(value) != DateTime.Parse(comparisonValue.ToString());
-                }
+                return DateTime.Parse(value) != DateTime.Parse(comparisonValue.ToString());
             }
 
-            if(ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
+
+            if (ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
                 return !double.Parse(value).Equals(double.Parse(comparisonValue.ToString()));
             }
@@ -96,21 +92,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            if(ValueIsDate(value))
+            if (ValueIsDate(value) && ValueIsDate(comparisonValue.ToString()))
             {
-                if(ValueIsDate(comparisonValue.ToString()))
-                {
-                    return DateTime.Parse(value) < DateTime.Parse(comparisonValue.ToString());
-                }
+                return DateTime.Parse(value) < DateTime.Parse(comparisonValue.ToString());
             }
 
-            if(ValueIsNumber(value))
+
+            if (ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
-                if(ValueIsNumber(comparisonValue.ToString()))
-                {
-                    return double.Parse(value) < double.Parse(comparisonValue.ToString());
-                }
+                return double.Parse(value) < double.Parse(comparisonValue.ToString());
             }
+
 
             return false;
         }
@@ -128,21 +120,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            if(ValueIsDate(value))
+            if (ValueIsDate(value) && ValueIsDate(comparisonValue.ToString()))
             {
-                if(ValueIsDate(comparisonValue.ToString()))
-                {
-                    return DateTime.Parse(value) <= DateTime.Parse(comparisonValue.ToString());
-                }
+                return DateTime.Parse(value) <= DateTime.Parse(comparisonValue.ToString());
             }
 
-            if(ValueIsNumber(value))
+
+            if (ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
-                if(ValueIsNumber(comparisonValue.ToString()))
-                {
-                    return double.Parse(value) <= double.Parse(comparisonValue.ToString());
-                }
+                return double.Parse(value) <= double.Parse(comparisonValue.ToString());
             }
+
 
             return false;
         }
@@ -161,21 +149,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return false;
             }
 
-            if(ValueIsDate(value))
+            if (ValueIsDate(value) && ValueIsDate(comparisonValue.ToString()))
             {
-                if(ValueIsDate(comparisonValue.ToString()))
-                {
-                    return DateTime.Parse(value) > DateTime.Parse(comparisonValue.ToString());
-                }
+                return DateTime.Parse(value) > DateTime.Parse(comparisonValue.ToString());
             }
 
-            if(ValueIsNumber(value))
+
+            if (ValueIsNumber(value) && ValueIsNumber(comparisonValue.ToString()))
             {
-                if(ValueIsNumber(comparisonValue.ToString()))
-                {
-                    return double.Parse(value) > double.Parse(comparisonValue.ToString());
-                }
+                return double.Parse(value) > double.Parse(comparisonValue.ToString());
             }
+
 
 
             return false;

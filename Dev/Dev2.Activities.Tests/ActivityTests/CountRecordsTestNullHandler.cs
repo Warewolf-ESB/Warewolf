@@ -13,31 +13,32 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using ActivityUnitTests;
-using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for CountRecordsTest
-    /// </summary>
     [TestClass]
     public class CountRecordsTestNullHandler : BaseActivityUnitTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext { get; set; }
+        [TestMethod]
+        public void CountOutputToBlank_Expected_BlankResultVariableError()
+        {
+            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", string.Empty);
+
+            var result = ExecuteProcess();
+            const string expected = @"5";
+            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out string actual, out string error);
+
+            Assert.AreEqual(1, result.Environment.Errors.Count);
+            Assert.AreEqual("<InnerError>Blank result variable</InnerError>", result.Environment.Errors.FirstOrDefault());
+        }
 
         #region Store To Scalar Tests
 
         [TestMethod]
         public void CountOutputToScalar_Expected_ScalarValueCorrectlySetToRecordSetCount()
         {
-
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 
             var result = ExecuteProcess();
@@ -47,14 +48,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual);
-
         }
 
         //Bug 7853
         [TestMethod]
         public void CountOutputToScalar_With_EmptyRecSet_Expected_ScalarValueCorrectlySetTo0()
         {
-
             SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 
             var result = ExecuteProcess();
@@ -64,10 +63,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual);
-
         } 
         
-
         #endregion Store To Scalar Tests
 
         #region Store To RecordSet Tests
@@ -89,10 +86,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion Store To RecordSet Tests
-
-
         
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfCountRecordsetActivity_UpdateForEachInputs")]

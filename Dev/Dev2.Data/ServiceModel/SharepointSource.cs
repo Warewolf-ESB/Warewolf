@@ -104,7 +104,7 @@ namespace Dev2.Data.ServiceModel
 
         public override bool IsResourceVersion => false;
 
-        public List<SharepointListTo> LoadLists()
+        public List<ISharepointListTo> LoadLists()
         {
             var sharepointHelper = CreateSharepointHelper();
             return sharepointHelper.LoadLists();
@@ -118,7 +118,7 @@ namespace Dev2.Data.ServiceModel
             return sharepointHelper.LoadFieldsForList(listName, editableFieldsOnly);
         }
 
-        public SharepointHelper CreateSharepointHelper()
+        public virtual ISharepointHelper CreateSharepointHelper()
         {
             string userName = null;
             string password = null;

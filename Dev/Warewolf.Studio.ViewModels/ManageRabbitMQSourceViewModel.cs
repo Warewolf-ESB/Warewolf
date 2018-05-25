@@ -184,10 +184,7 @@ namespace Warewolf.Studio.ViewModels
                         var source = ToSource();
                         source.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(source);
-                        if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
-                        {
-                            AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, source.ResourceID);
-                        }
+                        AfterSave(requestServiceNameViewModel, source);
 
                         Item = source;
                         _rabbitMQServiceSource = source;
@@ -202,6 +199,14 @@ namespace Warewolf.Studio.ViewModels
                 Item = source;
                 _rabbitMQServiceSource = source;
                 SetupHeaderTextFromExisting();
+            }
+        }
+
+        void AfterSave(IRequestServiceNameViewModel requestServiceNameViewModel, IRabbitMQServiceSourceDefinition source)
+        {
+            if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+            {
+                AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, source.ResourceID);
             }
         }
 

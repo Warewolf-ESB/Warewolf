@@ -189,5 +189,32 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             //------------Assert Results-------------------------
             Assert.AreEqual(region.SelectedSource, s2);
         }
+
+        [TestMethod]
+        public void DbSource_Equals_WithOperator_ShouldBeEqual()
+        {
+            var id = Guid.NewGuid();
+            //---------------Set up test pack-------------------
+            var firstObject = new DbSourceDefinition() { Id = id };
+            var secondObject = new DbSourceDefinition() { Id = id };
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(firstObject == secondObject, "DbSourceDefinition object equals operator broken.");
+        }
+
+        [TestMethod]
+        public void DbSource_Equals_WithNotEqualOperator_ShouldNotBeEqual()
+        {
+            //---------------Set up test pack-------------------
+            var firstObject = new DbSourceDefinition() { Id = Guid.NewGuid() };
+            var secondObject = new DbSourceDefinition() { Id = Guid.NewGuid() };
+
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            //---------------Test Result -----------------------
+            Assert.IsTrue(firstObject != secondObject, "DbSourceDefinition object not equals operator broken.");
+        }
     }
 }

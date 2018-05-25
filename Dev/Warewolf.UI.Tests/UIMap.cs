@@ -1,4 +1,9 @@
-﻿using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+﻿using System.CodeDom.Compiler;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UITesting.HtmlControls;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
 using System.Windows.Input;
 using MouseButtons = System.Windows.Forms.MouseButtons;
 using System;
@@ -42,7 +47,6 @@ namespace Warewolf.UI.Tests
             Playback.PlaybackSettings.WaitForReadyTimeout = 60000;
             Mouse.MouseMoveSpeed = 2500;
             Mouse.MouseDragSpeed = 2500;
-
             Playback.PlaybackError -= OnPlaybackError;
             Playback.PlaybackError += OnPlaybackError;
         }
@@ -70,7 +74,7 @@ namespace Warewolf.UI.Tests
         {
             Assert.IsTrue(MainStudioWindow.Exists, "Warewolf studio is not running. You are expected to run \"Dev\\Run Tests.ps1\" as an administrator and wait for it to complete before running any coded UI tests");
             Keyboard.SendKeys(MainStudioWindow, "^%{F4}");
-            
+
         }
 
         public void TryPin_Unpinned_Pane_To_Default_Position()
@@ -338,12 +342,25 @@ namespace Warewolf.UI.Tests
         public void Pin_Unpinned_Pane_To_Default_Position()
         {
             Mouse.StartDragging(MainStudioWindow.UnpinnedTab, new Point(5, 5));
-            Mouse.StopDragging(MainStudioWindow.UnpinnedTab);
+            Mouse.StopDragging(MainStudioWindow.UnpinnedTab, 700, 500);
         }
+
         public void Unpin_Tab_With_Drag(UITestControl Tab)
         {
             Mouse.StartDragging(Tab);
-            Mouse.StopDragging(0, 21);
+            Mouse.StopDragging(0, 50);
+            Playback.Wait(1000);
+        }
+        public void Unpin_Pane_With_Context_Menu(UITestControl Tab)
+        {
+            Mouse.StartDragging(Tab);
+            Mouse.StopDragging(0, 50);
+        }
+
+        public void Unpin_Tab2_With_Drag(UITestControl Tab)
+        {
+            Mouse.StartDragging(Tab);
+            Mouse.StopDragging(0, 100);
             Playback.Wait(2000);
         }
 
@@ -867,7 +884,7 @@ namespace Warewolf.UI.Tests
         [Then(@"The GetCountries Recordset Is Visible in Debug Output")]
         public void ThenTheDebugOutputShowsGetCountriesRecordset()
         {
-            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetName.DisplayText.StartsWith("[[dbo_GetCountries(") && 
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetName.DisplayText.StartsWith("[[dbo_GetCountries(") &&
                 WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetName.DisplayText.EndsWith(").CountryID]]"), "DB connector debug output recordset is not dbo_GetCountries with CountryID field.");
             Assert.IsTrue(!String.IsNullOrEmpty(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.Step1.RecordsetGroup.RecordsetValue.DisplayText), "No recordset value in debug output for new DB connector.");
         }
