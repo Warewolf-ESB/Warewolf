@@ -21,7 +21,7 @@ namespace Dev2.Tests.Runtime.Security
     {
         static void WaitForEvents()
         {
-            Thread.Sleep(2000); // wait for event to fire
+            Thread.Sleep(5000); // wait for event to fire
         }
 
 
