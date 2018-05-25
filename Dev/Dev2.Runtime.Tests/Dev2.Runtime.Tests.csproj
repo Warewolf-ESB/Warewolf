@@ -299,7 +299,6 @@
     <Compile Include="Services\GetDirectoriesRelativeToServerTests.cs" />
     <Compile Include="Services\GetScheduledResourceHistoryTest.cs" />
     <Compile Include="Services\GetScheduledResourcesTest.cs" />
-    <Compile Include="Security\ServerSecurityServiceTests.cs" />
     <Compile Include="Security\TestServerSecurityService.cs" />
     <Compile Include="Json\JsonResource.cs" />
     <Compile Include="ServiceModel\Data\RecordsetListHelperTests.cs" />

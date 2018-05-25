@@ -46,6 +46,7 @@ namespace Dev2.Tests.Runtime.WebServer
             { "Servicename", "the_servicename" },
             { "wid", "the_workflowid" }
         };
+        public TestContext TestContext { get; set; }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -1110,7 +1111,8 @@ namespace Dev2.Tests.Runtime.WebServer
             var location = handlerMock.Location;
             //---------------Test Result -----------------------
             var locationCurrent = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            Assert.AreEqual(locationCurrent, location);
+            string currentLocation = Path.GetDirectoryName(Path.GetDirectoryName(TestContext.TestRunDirectory));
+            Assert.IsTrue(location == locationCurrent || location == currentLocation, location + " does not equal " + locationCurrent + " or " + currentLocation);
         }
 
         [TestMethod]
