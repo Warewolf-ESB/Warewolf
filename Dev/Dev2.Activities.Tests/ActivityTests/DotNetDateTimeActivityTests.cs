@@ -233,9 +233,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 InputFormat = "",
                 OutputFormat = "",
                 TimeModifierType = "",
-                TimeModifierAmount = 1,
+                TimeModifierAmount = 0,
                 Result = varName,
-                TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
+                TimeModifierAmountDisplay = 0.ToString(CultureInfo.InvariantCulture)
             };
             var dataMock = new Mock<IDSFDataObject>();
             dataMock.Setup(o => o.IsDebugMode()).Returns(() => true);
@@ -256,8 +256,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(DateTime.TryParse(value[0], out datetimeResult),$"Failed to parse value: {value[0]} as a DateTime");
             var dtTimeBeforeDiff = datetimeResult.Subtract(timeBefore).Ticks;
             var dtTimeAfterDiff = timeAfter.Subtract(datetimeResult).Ticks;
-            Assert.IsTrue(dtTimeBeforeDiff>=0,$"{dtTimeBeforeDiff} not >= 0");
-            Assert.IsTrue(dtTimeAfterDiff>=0,$"{dtTimeAfterDiff} not >= 0");
+            Assert.IsTrue(dtTimeBeforeDiff>=0,$"Before Time. {dtTimeBeforeDiff} not >= 0");
+            Assert.IsTrue(dtTimeAfterDiff>=0,$"After Time. {dtTimeAfterDiff} not >= 0");
 
             Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
             Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
