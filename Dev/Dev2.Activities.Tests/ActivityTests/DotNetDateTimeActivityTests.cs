@@ -254,8 +254,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1,value.Count);
             DateTime datetimeResult;
             Assert.IsTrue(DateTime.TryParse(value[0], out datetimeResult),$"Failed to parse value: {value[0]} as a DateTime");
-            Assert.IsTrue(timeBefore <= datetimeResult,$"{timeBefore} not <= {datetimeResult}");
-            Assert.IsTrue(datetimeResult <= timeAfter,$"{datetimeResult} not <= {timeAfter}");
+            var dtTimeBeforeDiff = datetimeResult.Subtract(timeBefore).Ticks;
+            var dtTimeAfterDiff = timeAfter.Subtract(datetimeResult).Ticks;
+            Assert.IsTrue(dtTimeBeforeDiff>=0,$"{dtTimeBeforeDiff} not >= 0");
+            Assert.IsTrue(dtTimeAfterDiff>=0,$"{dtTimeAfterDiff} not >= 0");
 
             Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
             Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
