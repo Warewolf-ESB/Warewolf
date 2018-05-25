@@ -418,13 +418,14 @@ namespace Dev2.Activities
 
         public bool Equals(DsfDotNetGatherSystemInformationActivity other)
         {
-            var eq = this.DisplayName.Equals(other.DisplayName);
-            if (!(this._getSystemInformation is null))
+            var eq = base.Equals(other);
+            eq &= DisplayName.Equals(other.DisplayName);
+            if (!(_getSystemInformation is null))
             {
-                eq &= this._getSystemInformation.Equals(other._getSystemInformation);
+                eq &= _getSystemInformation.Equals(other._getSystemInformation);
             }
-            if (!(this._currentIdentity is null)) {
-                eq &= this._currentIdentity.Equals(other._currentIdentity);
+            if (!(_currentIdentity is null)) {
+                eq &= _currentIdentity.Equals(other._currentIdentity);
             }
 
             return eq;
