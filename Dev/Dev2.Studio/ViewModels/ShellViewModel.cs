@@ -68,7 +68,6 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common.Common;
-using Dev2.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -1798,8 +1797,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 else if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
                 {
-                    var schedulerViewModel = vm as ISchedulerViewModel;
-                    if (schedulerViewModel?.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
+                    if (vm is Settings.Scheduler.SchedulerViewModel schedulerViewModel && schedulerViewModel?.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
                     {
                         closeStudio = CallSaveDialog(closeStudio);
                         break;
