@@ -226,6 +226,36 @@ namespace Warewolf.UI.Tests.Settings.SettingsUIMapClasses
             Assert.IsTrue(DialogsUIMap.ServicePickerDialog.Exists, "Service picker dialog does not exist.");
         }
 
+        public WpfEdit FindServerPermissionsWindowsGroupTextbox(UITestControl row)
+        {
+            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(0);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.Edit) as WpfEdit;
+        }
+
+        public WpfCheckBox FindServerPermissionsAdministratorPermissionsCheckbox(UITestControl row)
+        {
+            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(3);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
+        }
+
+        public WpfCheckBox FindServerPermissionsContributePermissionsCheckbox(UITestControl row)
+        {
+            var firstOrDefaultCell = row.GetChildren().Where(child => child.ControlType == ControlType.Cell).ElementAtOrDefault(6);
+            return firstOrDefaultCell?.GetChildren().FirstOrDefault(child => child.ControlType == ControlType.CheckBox) as WpfCheckBox;
+        }
+
+        public void AddNewServerPermissionsUser()
+        {
+            var thirdRowGroupUser = FindServerPermissionsWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.ThridRow).Text;
+            if (string.IsNullOrWhiteSpace(thirdRowGroupUser))
+            {
+                FindServerPermissionsWindowsGroupTextbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.ThridRow).Text = "Warewolf User";
+                FindServerPermissionsAdministratorPermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.ThridRow).Checked = true;
+                FindServerPermissionsContributePermissionsCheckbox(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.SecurityTab.SecurityWindow.ServerPermissions.ThridRow).Checked = false;
+                Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+            }
+        }
+
         [When(@"I Click Select Resource Button From Resource Permissions")]
         public void Click_Select_Resource_Button_From_Resource_Permissions()
         {

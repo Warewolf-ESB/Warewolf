@@ -496,7 +496,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(Result, dsfForEachItems[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Candice Daniel")]
+        [TestCategory("DsfReplaceActivity_Replace_Recordset_Fields")]
+        public void DsfReplaceActivity_TestingIsSingleValueRule()
+        {
+            SetupArguments(ActivityStrings.ReplaceDataListWithData, ActivityStrings.ReplaceDataListShape, "[[CompanyName]]", "Dev2", "TheUnlimted", "[[rec]],[[bob]]", false);
 
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
+
+            Assert.AreEqual(2, result.Environment.Errors.Count);
+            Assert.AreEqual("The result field only allows a single result\r\nScalar value { rec } is NULL", result.Environment.FetchErrors());
+        }
 
         #region Private Test Methods
 
