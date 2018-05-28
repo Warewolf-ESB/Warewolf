@@ -1254,7 +1254,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicated items will reference each other (checked) or leave the dependancy on the origional item (unchecked).
+        ///   Looks up a localized string similar to Duplicated items will reference each other (checked) or leave the dependancy on the original item (unchecked).
         /// </summary>
         public static string DuplicateCheckBoxTooltip {
             get {
