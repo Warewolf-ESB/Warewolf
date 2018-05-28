@@ -29,7 +29,8 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
-    public class DsfCountRecordsetActivity : DsfActivityAbstract<string>,IEquatable<DsfCountRecordsetActivity>
+#pragma warning disable S3776,S1541,S134,CC0075,S1066,S1067
+   public class DsfCountRecordsetActivity : DsfActivityAbstract<string>,IEquatable<DsfCountRecordsetActivity>
     {
         #region Fields
 
@@ -241,4 +242,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
     }
+#pragma warning restore S3776,S1541,S134,CC0075,S1066,S1067
 }

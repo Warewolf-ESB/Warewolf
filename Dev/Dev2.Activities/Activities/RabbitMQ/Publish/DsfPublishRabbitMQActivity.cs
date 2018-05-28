@@ -109,6 +109,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                         Channel.QueueBind(queueName, queueName, "", new Dictionary<string, object>());
 
                         var basicProperties = Channel.CreateBasicProperties();
+                        basicProperties.Persistent = true;
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }

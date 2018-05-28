@@ -25,6 +25,7 @@ using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage;
+using WarewolfParserInterop;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -490,6 +491,78 @@ namespace Dev2.Tests.Activities.ActivityTests
             ExecuteProcess(dataObject, true, null, false, true, false, environmentID);
             //------------Assert Results-------------------------
             Assert.IsTrue(dataObject.IsServiceTestExecution);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfActivity_OnExecute")]
+        public void DsfActivity_GetDebugInputs_WhenListInput_DebugInputExists()
+        {
+            //------------Setup for test--------------------------
+            var environmentID = Guid.Empty;
+            var env = new ExecutionEnvironment();
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+            env.Assign("[[list().Name]]", "bob", 0);
+            //------------Execute Test---------------------------
+            var act = new DsfActivity
+            {
+                Inputs = new List<IServiceInput>
+                    {
+                        new ServiceInput("Input1", "[[list(*).Name]]")
+                    }
+            };
+            var inputs = act.GetDebugInputs(env, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, inputs.Count);
+            Assert.AreEqual("bob", inputs[0].ResultsList[0].Value);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfActivity_OnExecute")]
+        public void DsfActivity_GetDebugOutputsFromEnv_ObjectNotNull()
+        {
+            //------------Setup for test--------------------------
+            var environmentID = Guid.Empty;
+            var env = new ExecutionEnvironment();
+            var dataObject = new DsfDataObject(CurrentDl, ExecutionId)
+            {
+
+                ServerID = Guid.NewGuid(),
+                ExecutingUser = User,
+                IsDebug = true,
+                EnvironmentID = environmentID,
+                Environment = env,
+                IsRemoteInvokeOverridden = false,
+                DataList = new StringBuilder(CurrentDl),
+                IsServiceTestExecution = true
+            };
+            env.Assign("[[list().Name]]", "bob", 0);
+            //------------Execute Test---------------------------
+            var act = new DsfActivity
+            {
+                ObjectName = "objectname",
+                IsObject = true,
+                Outputs = new List<IServiceOutputMapping>
+                    {
+                        new ServiceOutputMapping("bob", "[[out]]", "list")
+                    }
+            };
+            var outputs = act.GetDebugOutputs(env, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, outputs[0].ResultsList.Count);
+            Assert.AreEqual("objectname", outputs[0].ResultsList[0].Value);
         }
     }
 }
