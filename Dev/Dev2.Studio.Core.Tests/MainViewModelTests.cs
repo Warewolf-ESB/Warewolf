@@ -949,16 +949,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void DeleteResourceConfirmedExpectContextRemoved2()
-        {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object, FirstResource.Object }, "somefolder");
-            ShellViewModel.Handle(msg);
-            ResourceRepo.Verify(s => s.HasDependencies(FirstResource.Object), Times.Exactly(2));
-        }
-
-        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("MainViewModel_HandleDeleteResourceMessage")]
         public void MainViewModel_HandleDeleteResourceMessage_WhenHasActionDeclined_PerformsAction()
@@ -1158,7 +1148,7 @@ namespace Dev2.Core.Tests
 
 
         #region DeactivateItem
-        
+
         [TestMethod]
         public void MainViewModelDeactivateItemWithPreviousItemNotOpenExpectedNoActiveItem()
         {
@@ -1465,7 +1455,7 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(mockMainViewModel.Items[0], mockMainViewModel.ActiveItem);
             mockPopUp.Verify(m => m.Show(), Times.Never());
         }
-        
+
         #endregion
 
         #region OnDeactivate
@@ -1592,7 +1582,7 @@ namespace Dev2.Core.Tests
             viewModel.Items.Add(contextViewModel);
 
             viewModel.TestClose();
-            
+
             resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());
         }
 
