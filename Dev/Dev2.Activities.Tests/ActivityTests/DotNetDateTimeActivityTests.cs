@@ -243,22 +243,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             dataMock.Setup(o => o.Environment).Returns(executionEnvironment);
             var data = dataMock.Object;
 
-            var timeBefore = DateTime.Now;
             //------------Execute Test---------------------------
             act.Execute(data, 0);
             //------------Assert Results-------------------------
-            var timeAfter = DateTime.Now;
-
             var debugout = act.GetDebugOutputs(executionEnvironment, 0);
             var value = executionEnvironment.EvalAsListOfStrings(varName, 0);
             Assert.AreEqual(1,value.Count);
-            DateTime datetimeResult;
-            Assert.IsTrue(DateTime.TryParse(value[0], out datetimeResult),$"Failed to parse value: {value[0]} as a DateTime");
-            var dtTimeBeforeDiff = datetimeResult.Subtract(timeBefore).Ticks;
-            var dtTimeAfterDiff = timeAfter.Subtract(datetimeResult).Ticks;
-            Assert.IsTrue(dtTimeBeforeDiff>=0,$"Before Time. {dtTimeBeforeDiff} not >= 0");
-            Assert.IsTrue(dtTimeAfterDiff>=0,$"After Time. {dtTimeAfterDiff} not >= 0");
-
+            Assert.IsTrue(DateTime.TryParse(value[0], out DateTime datetimeResult),$"Failed to parse value: {value[0]} as a DateTime");
             Assert.AreEqual(false, debugout[0].ResultsList[0].HasError);
             Assert.AreEqual(varName, debugout[0].ResultsList[0].Variable);
             Assert.AreEqual(DebugItemResultType.Variable, debugout[0].ResultsList[0].Type);
