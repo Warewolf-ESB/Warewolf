@@ -1527,7 +1527,7 @@ If you are on a domain, you still need to provide the email address of the accou
     <value>Duplicate the current resource</value>
   </data>
   <data name="DuplicateCheckBoxTooltip" xml:space="preserve">
-    <value>Duplicated items will reference each other (checked) or leave the dependancy on the origional item (unchecked)</value>
+    <value>Duplicated items will reference each other (checked) or leave the dependancy on the original item (unchecked)</value>
   </data>
   <data name="DuplicateButtonTooltip" xml:space="preserve">
     <value>Duplicate the Resource(s)</value>

@@ -48,7 +48,6 @@ using Dev2.ViewModels.Merge;
 using Dev2.Views.Merge;
 using Dev2.ViewModels.Search;
 using Dev2.Views.Search;
-using Dev2.ViewModels.WorkSurface;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -1218,10 +1217,8 @@ namespace Dev2.Studio.ViewModels
             if (workSurfaceContextViewModel != null)
             {
                 var workSurfaceViewModel = workSurfaceContextViewModel.WorkSurfaceViewModel;
-                if (workSurfaceViewModel != null)
+                if (workSurfaceViewModel != null && workSurfaceViewModel is SchedulerViewModel findWorkSurfaceContextViewModel)
                 {
-                    var findWorkSurfaceContextViewModel = (ISchedulerViewModel)workSurfaceViewModel;
-
                     if (findWorkSurfaceContextViewModel.IsDirty)
                     {
                         _shellViewModel.PopupProvider.Show(Warewolf.Studio.Resources.Languages.Core.SchedulerUnsavedTaskMessage,
