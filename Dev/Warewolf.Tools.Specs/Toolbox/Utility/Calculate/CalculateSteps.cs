@@ -64,7 +64,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             scenarioContext.TryGetValue("formula", out string formula);
             if (isAggregate)
             {
-                var calculate = new DsfAggregateCalculateActivity
+                var calculate = new DsfDotNetAggregateCalculateActivity
                 {
                     Result = resultVariable,
                     Expression = formula
