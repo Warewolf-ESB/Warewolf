@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Data.Interfaces;
@@ -837,12 +838,12 @@ namespace Dev2.PathOperations
                 }
                 zip.Save(tempFilename);
             }
-
-            DirectoryHelper.CleanUp(tmpDir);
+            var dir = new DirectoryHelper();
+            dir.CleanUp(tmpDir);
 
             return tempFilename;
         }
-
+      
         string TransferTempZipFileToDestination(IActivityIOOperationsEndPoint src, IActivityIOOperationsEndPoint dst,
             IDev2ZipOperationTO args, string tmpZip)
         {

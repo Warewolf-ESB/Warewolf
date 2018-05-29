@@ -11,20 +11,10 @@
 using System.IO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
-namespace Dev2.Scheduler
-{ // not required for code coverage this is simply a pass through required for unit testing
-    public class DirectoryHelper : IDirectoryHelper
+namespace Dev2.Common.Common
+{
+    public class FileHelper : IFileHelper
     {
-        public string[] GetFiles(string path) => Directory.GetFiles(path);
-
-        public string CreateIfNotExists(string debugOutputPath)
-        {
-            if(!Directory.Exists(debugOutputPath))
-            {
-                return Directory.CreateDirectory(debugOutputPath).Name;
-            }
-
-            return debugOutputPath;
-        }
+        public string ReadAllText(string fileName) => File.ReadAllText(fileName);
     }
 }

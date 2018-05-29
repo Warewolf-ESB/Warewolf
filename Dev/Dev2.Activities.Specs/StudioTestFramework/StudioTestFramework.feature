@@ -239,6 +239,26 @@ Scenario: Rename existing test
 	And I select "testing2"
 	And Test name is "testing2"
 
+Scenario: Rename existing test without Keeping Old file
+	Given the test builder is open with "Workflow 3"
+	And Tab Header is "Workflow 3 - Tests"
+	And there are no tests
+	And I click New Test
+	And I set Test Values as
+	| TestName | AuthenticationType | Error |
+	| Test1    | Windows            | true  |
+	Then NoErrorExpected is "false"	
+	And save is enabled
+	When I save
+	When I change the test name to "testing2"
+	Then save is enabled
+	When I save
+	When I change the test name to "testing4"
+	Then save is enabled
+	When I save
+	Then there are 1 tests
+	Then there are 1 tests in directory 
+
 Scenario: Loading existing Tests has correct Name for display
 	Given the test builder is open with "Workflow 3"
 	And Tab Header is "Workflow 3 - Tests"

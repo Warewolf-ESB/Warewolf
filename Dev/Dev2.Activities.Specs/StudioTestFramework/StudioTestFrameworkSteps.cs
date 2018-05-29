@@ -40,6 +40,7 @@ using Warewolf.Studio.ViewModels;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Activities.Specs.BaseTypes;
 using System.IO;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Activities.Specs.TestFramework
 {
@@ -47,12 +48,16 @@ namespace Dev2.Activities.Specs.TestFramework
     public class StudioTestFrameworkSteps
     {
         static IServer _environmentModel;
+        public static IDirectoryHelper DirectoryHelperInstance()
+        {
+            return new DirectoryHelper();
+        }
         const int EXPECTED_NUMBER_OF_RESOURCES = 104;
         public StudioTestFrameworkSteps(ScenarioContext scenarioContext)
         {
             MyContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
         }
-
+       
         ScenarioContext MyContext { get; }
 
         [BeforeFeature("StudioTestFramework")]
@@ -130,7 +135,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 ConnectAndLoadServer();
             }
 
-            DirectoryHelper.CleanUp(EnvironmentVariables.TestPath);
+            DirectoryHelperInstance().CleanUp(EnvironmentVariables.TestPath);
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
             commsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
         }
@@ -907,6 +912,16 @@ namespace Dev2.Activities.Specs.TestFramework
             Assert.AreEqual(testCount, currentTests.Count());
         }
 
+        [Then(@"there are (.*) tests in directory")]
+        public void ThenThereAreTestsInDirectory(int testCount)
+        {
+            var serviceTest = GetTestFrameworkFromContext();
+            var resourceId = serviceTest.SelectedServiceTest.ParentId;
+            var path = Path.Combine(EnvironmentVariables.TestPath, resourceId.ToString());
+            var fyles = DirectoryHelperInstance().GetFiles(path);
+            Assert.AreEqual(testCount, fyles.Count());
+        }
+
         [Then(@"test name starts with ""(.*)""")]
         public void ThenTestNameStartsWith(string testName)
         {
@@ -1182,7 +1197,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTest = GetTestFrameworkFromContext();
             serviceTest.SelectedServiceTest.TestName = testName;
         }
-
+       
         [Then(@"I set ErrorExpected to ""(.*)""")]
         public void ThenISetErrorExpectedTo(string value)
         {
