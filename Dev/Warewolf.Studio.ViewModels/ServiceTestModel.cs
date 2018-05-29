@@ -162,6 +162,7 @@ namespace Warewolf.Studio.ViewModels
             get { return _testName; }
             set
             {
+                OldTestName = _testName;
                 _testName = value;
                 OnPropertyChanged(() => TestName);
                 OnPropertyChanged(() => IsDirty);
@@ -395,7 +396,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => UserAuthenticationSelected);
                 OnPropertyChanged(() => IsDirty);
             }
-        }
+        }        
         public bool IsDirty
         {
             get
