@@ -458,7 +458,6 @@ namespace Warewolf.Launcher
 
         public static void RetryOnTestError(TestLauncher build, string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath)
         {
-            Console.WriteLine("Re-running all test failures in \"" + FullTRXFilePath + "\".");
             build.TestList = "";
             XmlDocument trxContent = new XmlDocument();
             trxContent.Load(FullTRXFilePath);
@@ -495,6 +494,7 @@ namespace Warewolf.Launcher
                 Console.WriteLine("No failing tests to retry found in any trx file in " + FullTRXFilePath);
                 return;
             }
+            Console.WriteLine("Re-running all test failures in \"" + FullTRXFilePath + "\".");
             var retryResults = RunTests(build, jobName, testAssembliesList, TestAssembliesDirectories, testSettingsFile, TestRunnerPath);
             if (retryResults != FullTRXFilePath)
             {
@@ -534,6 +534,7 @@ namespace Warewolf.Launcher
                             if (OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
                             {
                                 OriginalTestResult.Attributes["outcome"].InnerText = "Passed";
+                                Console.WriteLine(OriginalTestResult.Attributes["testName"].InnerXml + " was retried. It's error and stack trace were " + OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText + " " + OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText);
                                 foreach (XmlNode testChild in OriginalTestResult.ChildNodes)
                                 {
                                     OriginalTestResult.RemoveChild(testChild);
