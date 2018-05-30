@@ -8,14 +8,14 @@ using System.Management;
 
 namespace Warewolf.Launcher
 {
-    public class ContainerOps
+    public class Container_Launcher
     {
         readonly string _remoteDockerApi;
         string _remoteContainerID = null;
         string _remoteImageID = null;
         public string hostname;
 
-        public ContainerOps(string remoteDockerApi = "test-load")
+        public Container_Launcher(string remoteDockerApi = "test-load")
         {
             _remoteDockerApi = remoteDockerApi;
             hostname = StartRemoteContainer();
