@@ -1148,14 +1148,13 @@ namespace Warewolf.Launcher
         {
             string TestRunnerPath;
             Environment.CurrentDirectory = build.TestsResultsPath + "\\..";
-            string categories = VSTestCategories(build, ProjectSpec, TestCategories);
             string FullArgsList;
-            if (build.TestList == "")
+            if (string.IsNullOrEmpty(build.TestList))
             {
                 FullArgsList = TestAssembliesList +
                     " /logger:trx " +
                     VSTestSettingsArgument(build, TestSettingsFile) +
-                    categories;
+                    VSTestCategories(build, ProjectSpec, TestCategories);
             }
             else
             {
@@ -1164,7 +1163,6 @@ namespace Warewolf.Launcher
                     VSTestSettingsArgument(build, TestSettingsFile) +
                     build.TestList;
             }
-
 
             // Write full command including full argument string.
             TestRunnerPath = build.TestsResultsPath + "\\..\\Run " + JobName + ".bat";
