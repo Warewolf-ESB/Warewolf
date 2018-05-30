@@ -116,7 +116,7 @@ namespace Bashley
                 ["Sharepoint Tools UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Sharepoint Tools"),
                 ["Shortcut Keys UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Shortcut Keys"),
                 ["Source Wizards UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Source Wizards"),
-                ["Tabs And Panes UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Tabs and Panes"),
+                ["Tabs and Panes UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Tabs and Panes"),
                 ["Tools UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Tools"),
                 ["Utility Tools UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Utility Tools"),
                 ["Variables UI Tests"] = new Tuple<string, string>("Warewolf.UI.Tests", "Variables"),
