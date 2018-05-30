@@ -122,7 +122,7 @@ namespace Warewolf.Launcher
             if (File.Exists(SourceFilePath))
             {
                 CopyOnWrite(DestinationFilePath);
-                Console.WriteLine("Moving \"SourceFilePath\" to \"DestinationFilePath\"");
+                Console.WriteLine("Moving \"" + SourceFilePath + "\" to \"" + DestinationFilePath + "\"");
                 File.Move(SourceFilePath, DestinationFilePath);
             }
         }
