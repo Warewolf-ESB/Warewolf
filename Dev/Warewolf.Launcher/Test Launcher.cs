@@ -1279,7 +1279,8 @@ namespace Warewolf.Launcher
                 }
                 else
                 {
-                    Process.Start(TestRunnerPath).WaitForExit();
+                    // Run Test Runner Batch File
+                    StartAndWaitFor(TestRunnerPath);
                     if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart) || !string.IsNullOrEmpty(build.DomywarewolfioStart))
                     {
                         build.CleanupServerStudio(!build.ApplyDotCover);
@@ -1287,9 +1288,33 @@ namespace Warewolf.Launcher
                 }
                 build.MoveArtifactsToTestResults(build.ApplyDotCover, (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart)), !string.IsNullOrEmpty(build.DoStudioStart));
                 var directory = new DirectoryInfo(build.TestsResultsPath);
-                return directory.GetFiles().Where((filePath) => { return filePath.Name.EndsWith(".trx"); }).OrderByDescending(f => f.LastWriteTime).First().FullName;
+                var testResultFiles = directory.GetFiles().Where((filePath) => { return filePath.Name.EndsWith(".trx"); });
+                if (testResultFiles != null)
+                {
+                    return testResultFiles.OrderByDescending(f => f.LastWriteTime).First().FullName;
+                }
             }
             return "";
+        }
+
+        static void StartAndWaitFor(string TestRunnerPath)
+        {
+            ProcessStartInfo startinfo = new ProcessStartInfo();
+            startinfo.FileName = TestRunnerPath;
+            Process process = new Process();
+            process.StartInfo = startinfo;
+            process.StartInfo.UseShellExecute = false;
+            process.StartInfo.RedirectStandardOutput = true;
+            process.StartInfo.RedirectStandardError = true;
+            process.Start();
+
+
+            while (!process.StandardOutput.EndOfStream)
+            {
+                Console.WriteLine(process.StandardOutput.ReadLine());
+            }
+
+            process.WaitForExit();
         }
 
         private static string ParseTrxFilePath(string standardOutput)
