@@ -479,26 +479,76 @@ namespace Warewolf.Launcher
             string TestRunnerPath;
             if (build.TestList.StartsWith(","))
             {
-                var restoreResultsPath = build.TestsResultsPath;
-                build.TestsResultsPath = Path.Combine(build.TestsResultsPath, "RetriedTestResults");
                 if (string.IsNullOrEmpty(build.MSTest))
                 {
-                    build.TestList = build.TestList.Replace("^.", " /Tests:");
-                    TestRunnerPath = VSTestRunner(build, jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(build.TestsPath, "RetryResults"));
+                    build.TestList = " /Tests:" + build.TestList.Substring(1, build.TestList.Length-1);
+                    TestRunnerPath = VSTestRunner(build, jobName, "", "", testAssembliesList, testSettingsFile);
                 }
                 else
                 {
                     build.TestList = build.TestList.Replace(",", " /test:");
-                    TestRunnerPath = MSTestRunner(build, jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(build.TestsPath, "RetryResults"));
+                    TestRunnerPath = MSTestRunner(build, jobName, "", "", testAssembliesList, testSettingsFile, Path.Combine(build.TestsResultsPath, "RetryResults"));
                 }
-                build.TestsResultsPath = restoreResultsPath;
             }
             else
             {
                 Console.WriteLine("No failing tests to retry found in any trx file in " + FullTRXFilePath);
                 return;
             }
-            RunTests(build, jobName, testAssembliesList, TestAssembliesDirectories, testSettingsFile, TestRunnerPath);
+            var retryResults = RunTests(build, jobName, testAssembliesList, TestAssembliesDirectories, testSettingsFile, TestRunnerPath);
+            if (retryResults != FullTRXFilePath)
+            {
+                MergeRetryResults(FullTRXFilePath, retryResults);
+            }
+            else
+            {
+                Console.WriteLine(TestRunnerPath + " did not produce a test result trx file in " + build.TestsResultsPath);
+            }
+        }
+
+        static void MergeRetryResults(string originalResults, string retryResults)
+        {
+            XmlDocument trxContent = new XmlDocument();
+            trxContent.Load(retryResults);
+            if (trxContent.DocumentElement.ChildNodes.Item(2).ChildNodes.Count > 0)
+            {
+                XmlDocument originalTrxContent = new XmlDocument();
+                originalTrxContent.Load(originalResults);
+                foreach (XmlNode TestResult in trxContent.DocumentElement.ChildNodes.Item(2).ChildNodes)
+                {
+                    if (TestResult.Attributes["outcome"].InnerText == "Failed")
+                    {
+                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.ChildNodes.Item(2).ChildNodes)
+                        {
+                            if (OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
+                            {
+                                OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText += "\n" + TestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText;
+                                OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText += "\n" + TestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (XmlNode OriginalTestResult in originalTrxContent.DocumentElement.ChildNodes.Item(2).ChildNodes)
+                        {
+                            if (OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
+                            {
+                                OriginalTestResult.Attributes["outcome"].InnerText = "Passed";
+                                foreach (XmlNode testChild in OriginalTestResult.ChildNodes)
+                                {
+                                    OriginalTestResult.RemoveChild(testChild);
+                                }
+                            }
+                        }
+                    }
+                }
+                originalTrxContent.Save(originalResults);
+            }
+            else
+            {
+                Console.WriteLine("Error parsing /TestRun/TestDefinitions/UnitTest/TestMethod from trx file at " + retryResults);
+            }
+            File.Delete(retryResults);
         }
 
         void MoveScreenRecordingsToTestResults()
@@ -1093,10 +1143,10 @@ namespace Warewolf.Launcher
             return TestCategories;
         }
 
-        public static string VSTestRunner(TestLauncher build, string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath)
+        public static string VSTestRunner(TestLauncher build, string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile)
         {
             string TestRunnerPath;
-            Environment.CurrentDirectory = TestsResultsPath + "\\..";
+            Environment.CurrentDirectory = build.TestsResultsPath + "\\..";
             string categories = VSTestCategories(build, ProjectSpec, TestCategories);
             string FullArgsList;
             if (build.TestList == "")
@@ -1200,7 +1250,7 @@ namespace Warewolf.Launcher
             return DotCoverRunnerPath;
         }
 
-        public static void RunTests(TestLauncher build, string JobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
+        public static string RunTests(TestLauncher build, string JobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
         {
             if (File.Exists(TestRunnerPath))
             {
@@ -1236,7 +1286,10 @@ namespace Warewolf.Launcher
                     }
                 }
                 build.MoveArtifactsToTestResults(build.ApplyDotCover, (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart)), !string.IsNullOrEmpty(build.DoStudioStart));
+                var directory = new DirectoryInfo(build.TestsResultsPath);
+                return directory.GetFiles().Where((filePath) => { return filePath.Name.EndsWith(".trx"); }).OrderByDescending(f => f.LastWriteTime).First().FullName;
             }
+            return "";
         }
 
         private static string ParseTrxFilePath(string standardOutput)
