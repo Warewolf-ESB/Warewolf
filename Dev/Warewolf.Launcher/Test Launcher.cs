@@ -482,7 +482,7 @@ namespace Warewolf.Launcher
             {
                 foreach (XmlNode TestResult in trxContent.DocumentElement.ChildNodes.Item(2).ChildNodes)
                 {
-                    if (TestResult.Attributes["outcome"].InnerText == "Failed")
+                    if (TestResult.Attributes["outcome"] != null && TestResult.Attributes["outcome"].InnerText == "Failed")
                     {
                         build.TestList += "," + TestResult.Attributes["testName"].InnerXml;
                     }

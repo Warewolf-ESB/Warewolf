@@ -275,8 +275,8 @@ namespace Bashley
                     {
                         TestRunnerPath = TestLauncher.MSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
                     }
-                    var latestTrxFile = TestLauncher.RunTests(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
-                    TestLauncher.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, latestTrxFile);
+                    var TrxFile = TestLauncher.RunTests(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                    TestLauncher.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
                 {
