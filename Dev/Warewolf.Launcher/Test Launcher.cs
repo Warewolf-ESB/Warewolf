@@ -10,7 +10,7 @@ using System.Threading;
 using System.Xml;
 
 namespace Warewolf.Launcher
-{538
+{
     class TestLauncher
     {
         public string DoServerStart { get; set; }
