@@ -10,7 +10,7 @@ using System.Threading;
 using System.Xml;
 
 namespace Warewolf.Launcher
-{
+{538
     class TestLauncher
     {
         public string DoServerStart { get; set; }
@@ -535,7 +535,6 @@ namespace Warewolf.Launcher
                             if (OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
                             {
                                 OriginalTestResult.Attributes["outcome"].InnerText = "Passed";
-                                Console.WriteLine(OriginalTestResult.Attributes["testName"].InnerXml + " was retried. It's error and stack trace were " + OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText + " " + OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText);
                                 foreach (XmlNode testChild in OriginalTestResult.ChildNodes)
                                 {
                                     OriginalTestResult.RemoveChild(testChild);
