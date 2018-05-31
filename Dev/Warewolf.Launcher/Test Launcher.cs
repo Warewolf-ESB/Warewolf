@@ -510,7 +510,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Console.WriteLine("No failing tests to retry found in trx file at " + FullTRXFilePath);
+                Console.WriteLine("No failing tests found to retry in trx file at " + FullTRXFilePath);
                 return;
             }
             Console.WriteLine("Re-running all test failures in \"" + FullTRXFilePath + "\".");
