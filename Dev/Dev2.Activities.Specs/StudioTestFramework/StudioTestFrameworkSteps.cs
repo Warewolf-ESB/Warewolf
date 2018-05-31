@@ -144,7 +144,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void WhenIReloadTests()
         {
             var commsController = new CommunicationController { ServiceName = "ReloadAllTests" };
-            commsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
+            commsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);            
         }
 
         [Then(@"test folder is cleaned")]
@@ -1197,7 +1197,17 @@ namespace Dev2.Activities.Specs.TestFramework
             var serviceTest = GetTestFrameworkFromContext();
             serviceTest.SelectedServiceTest.TestName = testName;
         }
-       
+
+        [When(@"tests count is ""(.*)""")]
+        public void WhenTestsCountIs(int testCount)
+        {
+            var serviceTest = GetTestFrameworkFromContext();            
+            var workflowTests =_environmentModel.ResourceRepository.LoadAllTests();
+            var filteredTests = workflowTests.Where(test => test.ResourceId == serviceTest.ResourceID);
+            Assert.AreEqual(testCount, filteredTests.Count());
+        }
+
+
         [Then(@"I set ErrorExpected to ""(.*)""")]
         public void ThenISetErrorExpectedTo(string value)
         {

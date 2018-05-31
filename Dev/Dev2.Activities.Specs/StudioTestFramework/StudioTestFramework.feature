@@ -256,8 +256,8 @@ Scenario: Rename existing test without Keeping Old file
 	When I change the test name to "testing4"
 	Then save is enabled
 	When I save
-	Then there are 1 tests
-	Then there are 1 tests in directory 
+	And I reload tests	
+	And tests count is "1"	
 
 Scenario: Loading existing Tests has correct Name for display
 	Given the test builder is open with "Workflow 3"
