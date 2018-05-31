@@ -380,7 +380,9 @@ namespace Warewolf.Launcher
 
             if (Studio)
             {
-                MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%LocalAppData%\\Warewolf\\Studio Logs\\Warewolf Studio.log"), "JobName Studio.log");
+                string studioLogFile = Environment.ExpandEnvironmentVariables("%LocalAppData%\\Warewolf\\Studio Logs\\Warewolf Studio.log");
+                WaitForFileUnlock(studioLogFile);
+                MoveFileToTestResults(studioLogFile, "JobName Studio.log");
             }
             if (Studio && DotCover)
             {
