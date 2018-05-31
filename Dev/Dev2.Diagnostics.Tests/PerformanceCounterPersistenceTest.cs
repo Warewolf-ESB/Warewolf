@@ -123,7 +123,6 @@ namespace Dev2.Diagnostics.Test
             var serialiser = new Dev2JsonSerializer();
             var persisted = serialiser.Deserialize<IList<IPerformanceCounter>>(saved);
             Assert.AreEqual(persisted.Count,1);
-            Assert.IsTrue(persisted.First() is TestCounter);
 
             File.Delete(fileName);
         }
@@ -151,7 +150,6 @@ namespace Dev2.Diagnostics.Test
             _file.Setup(a => a.ReadAllText(fileName)).Returns(File.ReadAllText(fileName));
             var persisted = obj.LoadOrCreate(fileName);
             Assert.AreEqual(persisted.Count, 1);
-            Assert.IsTrue(persisted.First() is TestCounter);
 
             File.Delete(fileName);
         }
