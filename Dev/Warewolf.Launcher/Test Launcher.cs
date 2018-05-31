@@ -412,9 +412,17 @@ namespace Warewolf.Launcher
             }
             if (Server)
             {
-                MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log"), "JobName Server.log");
-                MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.log"), "JobName my.warewolf.io Server.log");
-                MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.errors.log"), "JobName my.warewolf.io Server Errors.log");
+                string serverLogFile = Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log");
+                WaitForFileUnlock(serverLogFile);
+                MoveFileToTestResults(serverLogFile, "JobName Server.log");
+
+                string myWarewolfIoLogFile = Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.log");
+                WaitForFileUnlock(serverLogFile);
+                MoveFileToTestResults(myWarewolfIoLogFile, "JobName my.warewolf.io Server.log");
+
+                string myWarewolfIoErrorsLogFile = Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\my.warewolf.io.errors.log");
+                WaitForFileUnlock(myWarewolfIoErrorsLogFile);
+                MoveFileToTestResults(myWarewolfIoErrorsLogFile, "JobName my.warewolf.io Server Errors.log");
             }
             if (Server && DotCover)
             {
