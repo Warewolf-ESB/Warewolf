@@ -235,7 +235,7 @@ namespace Warewolf.Launcher
             MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%PROGRAMDATA%\\Warewolf\\Tests"), "Server Service Tests JobName");
         }
 
-        bool WaitForFileUnlock(string FileSpec)
+        static bool WaitForFileUnlock(string FileSpec)
         {
             var locked = true;
             var RetryCount = 0;
@@ -458,6 +458,7 @@ namespace Warewolf.Launcher
 
         public static void RetryOnTestError(TestLauncher build, string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath)
         {
+            WaitForFileUnlock(FullTRXFilePath);
             build.TestList = "";
             XmlDocument trxContent = new XmlDocument();
             trxContent.Load(FullTRXFilePath);
