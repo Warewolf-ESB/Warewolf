@@ -21,7 +21,7 @@ namespace Bashley
                     throw new UnauthorizedAccessException("Must run as an administrator.");
                 }
             }
-
+            
             var build = Options.PargeArgs(args);
 
             build.JobSpecs = Job_Definitions.GetJobDefinitions();

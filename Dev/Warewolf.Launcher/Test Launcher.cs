@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
 using System.Xml;
@@ -53,6 +54,13 @@ namespace Warewolf.Launcher
         public bool ApplyDotCover;
 
         public Dictionary<string, Tuple<string, string>> JobSpecs;
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll", EntryPoint = "FindWindow", SetLastError = true)]
+        static extern IntPtr FindWindowByCaption(IntPtr zeroOnly, string lpWindowName);
 
         string FindFileInParent(List<string> FileSpecs, int NumberOfParentsToSearch = 7)
         {
@@ -600,7 +608,6 @@ namespace Warewolf.Launcher
             Console.WriteLine("Will now stop any currently running Warewolf servers and studios. Resources will be backed up to " + TestsResultsPath + ".");
             if (string.IsNullOrEmpty(ResourcesType))
             {
-                var title = "Server Resources";
                 var message = "What type of resources would you like to install the server with?";
                 var UITest = new Tuple<string, string>("UITests", "Use these resources for running UI Tests.");
                 var ServerTest = new Tuple<string, string>("ServerTests", "Use these resources for running everything except unit tests and Coded UI tests.");
@@ -612,7 +619,18 @@ namespace Warewolf.Launcher
                 {
                     optionStrings += '\n' + option.Item1 + ": " + option.Item2;
                 }
-                Console.WriteLine(title + '\n' + message + optionStrings);
+                Console.WriteLine('\n' + message + '\n' + optionStrings + "\n\nOr Press Enter to continue...");
+                string originalTitle = Console.Title;
+                string uniqueTitle = Guid.NewGuid().ToString();
+                Console.Title = uniqueTitle;
+                Thread.Sleep(50);
+                IntPtr handle = FindWindowByCaption(IntPtr.Zero, uniqueTitle);
+
+                if (handle != IntPtr.Zero)
+                {
+                    Console.Title = originalTitle;
+                    SetForegroundWindow(handle);
+                }
                 ResourcesType = Console.ReadLine();
                 if (ResourcesType == "" || ResourcesType.ToLower() == "u")
                 {
