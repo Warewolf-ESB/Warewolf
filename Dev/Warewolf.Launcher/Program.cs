@@ -276,7 +276,7 @@ namespace Bashley
                         TestRunnerPath = TestLauncher.MSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
                     }
                     var latestTrxFile = TestLauncher.RunTests(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
-                    TestLauncher.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, @"D:\Repos\GENDEV\Warewolf\Dev\Warewolf.UI.Tests\bin\Debug\TestResults\Ashley.lewis_ASH_2018-05-30_13_40_46.trx");//latestTrxFile);
+                    TestLauncher.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, latestTrxFile);
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
                 {
