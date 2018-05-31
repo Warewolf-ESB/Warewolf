@@ -35,6 +35,8 @@ using System.Transactions;
 using System.Xml;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using TSQL;
+using System.Linq;
 
 namespace Dev2.Services.Execution
 {
@@ -99,7 +101,7 @@ namespace Dev2.Services.Execution
                     {
                         try
                         {
-                            SqlExecution(invokeErrors, update);
+                            MssqlSqlExecution(invokeErrors, update);
                             _errorResult.MergeErrors(invokeErrors);
                             return Guid.NewGuid();
                         }
@@ -169,7 +171,7 @@ namespace Dev2.Services.Execution
             {
                 ProcessDataRow(executeService, environment, update, ref started, ref rowIdx, row);
             }
-        }        
+        }
         void ProcessDataRow(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row)
         {
             foreach (var serviceOutputMapping in Outputs)
@@ -260,9 +262,59 @@ namespace Dev2.Services.Execution
         }
 
 
+        static string MssqlGetSqlForProcedure(SqlConnection connection, string procedureName)
+        {
+            var command = connection.CreateCommand();
+            command.CommandType = CommandType.Text;
+            command.CommandText = string.Format("sp_helptext '{0}'", procedureName);
+            using (var reader = command.ExecuteReader(CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo))
+            {
+                var sb = new StringBuilder();
+                while (reader.Read())
+                {
+                    object value = reader.GetValue(0);
+                    if (value != null)
+                    {
+                        sb.Append(value);
+                    }
+                }
+                if (sb.Length == 0)
+                {
+                    throw new WarewolfDbException(string.Format("There is no text for object '{0}'.", procedureName));
+                }
+                return sb.ToString();
+            }
+        }
 
+        private bool MssqlIsStoredProcForXmlResult(SqlConnection connection, string procedureName)
+        {
+            bool result = false;
+            var procSqlScript = MssqlGetSqlForProcedure(connection, procedureName);
+            var statements = TSQLStatementReader.ParseStatements(procSqlScript);
+            foreach (var statement in statements)
+            {
+                var tokens = statement.Tokens;
+                var cnt = tokens.Count;
 
-        void SqlExecution(ErrorResultTO errors, int update)
+                if (cnt < 3)
+                {
+                    continue;
+                }
+
+                var i = 0;
+                for (; i< tokens.Count; i++)
+                {
+                    if (tokens[i].Type == TSQL.Tokens.TSQLTokenType.Keyword && tokens[i].Text.ToUpper() == "FOR")
+                    {
+                        i++;
+                        result = (i < tokens.Count && tokens[i].Type == TSQL.Tokens.TSQLTokenType.Identifier && tokens[i].Text == "XML");
+                    }
+                }
+            }
+            return result;
+        }
+
+        void MssqlSqlExecution(ErrorResultTO errors, int update)
         {
 
             var connectionBuilder = new ConnectionBuilder();
@@ -271,38 +323,13 @@ namespace Dev2.Services.Execution
             try
             {
                 connection.Open();
-                var isXmlRead = ReadForXml(update, startTime, connection);
-                if (!isXmlRead)
+                if (MssqlIsStoredProcForXmlResult(connection, ProcedureName))
                 {
-                    using (SqlTransaction dbTransaction = connection.BeginTransaction())
-                    {
-                        try
-                        {
-                            using (var cmd = CreateCommand(connection, GetSqlParameters()))
-                            {
-                                cmd.Transaction = dbTransaction;
-                                using (var reader = cmd.ExecuteReader())
-                                {
-                                    var table = new DataTable();
-                                    table.Load(reader);
-                                    reader.Close();
-                                    dbTransaction.Commit();
-                                    Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-                                    var startTime1 = Stopwatch.StartNew();
-                                    TranslateDataTableToEnvironment(table, DataObj.Environment, update);
-                                    Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
-
-                                }
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            dbTransaction.Rollback();
-                            Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
-                            Dev2Logger.Error("SQL Error:", ex.StackTrace);
-                            errors.AddError($"SQL Error: {ex.Message}");
-                        }
-                    }
+                    MssqlReadDataForXml(update, startTime, connection);
+                }
+                else
+                {
+                    MssqlReadData(errors, update, startTime, connection);
                 }
             }
             catch (Exception ex)
@@ -317,41 +344,68 @@ namespace Dev2.Services.Execution
             }
         }
 
-        SqlCommand CreateCommand(SqlConnection connection, List<SqlParameter> parameters)
+        private void MssqlReadData(ErrorResultTO errors, int update, Stopwatch startTime, SqlConnection connection)
         {
-            var cmd = connection.CreateCommand();
-            foreach (var item in parameters)
+            using (SqlTransaction dbTransaction = connection.BeginTransaction())
             {
-                cmd.Parameters.Add(item);
-            }
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.CommandText = ProcedureName;
-            return cmd;
-        }
-        bool ReadForXml(int update, Stopwatch startTime, SqlConnection connection)
-        {
-            var xmlResults = false;
-            var dbTransaction = connection.BeginTransaction();
-            try
-            {
-                using (var cmd = CreateCommand(connection, GetSqlParameters()))
+                try
                 {
-                    cmd.Transaction = dbTransaction;
-                    using (var reader = cmd.ExecuteXmlReader())
+                    using (var cmd = MssqlCreateCommand(connection, GetSqlParameters()))
                     {
-                        while (reader.Read())
+                        cmd.Transaction = dbTransaction;
+                        using (var reader = cmd.ExecuteReader())
                         {
-                            var outerXml = reader.ReadOuterXml();
-                            var table = new DataTable("x");
-                            table.Columns.Add("ReadForXml");
-                            table.LoadDataRow(new object[] { outerXml }, true);
+                            var table = new DataTable();
+                            table.Load(reader);
+                            reader.Close();
                             dbTransaction.Commit();
                             Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
                             var startTime1 = Stopwatch.StartNew();
                             TranslateDataTableToEnvironment(table, DataObj.Environment, update);
                             Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    dbTransaction.Rollback();
+                    Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
+                    Dev2Logger.Error("SQL Error:", ex.StackTrace);
+                    errors.AddError($"SQL Error: {ex.Message}");
+                }
+            }
+        }
+
+        bool MssqlReadDataForXml(int update, Stopwatch startTime, SqlConnection connection)
+        {
+            var xmlResults = false;
+            var dbTransaction = connection.BeginTransaction();
+            try
+            {
+                using (var cmd = MssqlCreateCommand(connection, GetSqlParameters()))
+                {
+                    cmd.Transaction = dbTransaction;
+                    using (var reader = cmd.ExecuteXmlReader())
+                    {
+                        var hasXmlElement = reader.Read();
+                        var table = new DataTable("x");
+                        table.Columns.Add("ReadForXml");
+                        while (hasXmlElement)
+                        {
+                            var outerXml = reader.ReadOuterXml();
+                            if (outerXml == string.Empty)
+                            {
+                                break;
+                            }
+                            table.LoadDataRow(new object[] { outerXml }, true);
                             xmlResults = true;
                         }
+                        Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                        var startTime1 = Stopwatch.StartNew();
+                        TranslateDataTableToEnvironment(table, DataObj.Environment, update);
+                        Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+                        dbTransaction.Commit();
                     }
                 }
             }
@@ -379,6 +433,18 @@ namespace Dev2.Services.Execution
             }
 
             return xmlResults;
+        }
+
+        SqlCommand MssqlCreateCommand(SqlConnection connection, List<SqlParameter> parameters)
+        {
+            var cmd = connection.CreateCommand();
+            foreach (var item in parameters)
+            {
+                cmd.Parameters.Add(item);
+            }
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.CommandText = ProcedureName;
+            return cmd;
         }
 
         bool MySqlExecution(ErrorResultTO errors, int update)
