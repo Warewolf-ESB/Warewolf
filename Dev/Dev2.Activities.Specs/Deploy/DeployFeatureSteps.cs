@@ -20,7 +20,7 @@ namespace Dev2.Activities.Specs.Deploy
         static ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
         readonly Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
-        static Container_Launcher _containerOps = new Container_Launcher();
+        static RemoteContainerLauncher _containerOps = new RemoteContainerLauncher();
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
