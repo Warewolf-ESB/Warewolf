@@ -20,7 +20,7 @@ namespace Dev2.Activities.Specs.Deploy
         static ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
         readonly Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
-        static RemoteContainerLauncher _containerOps = new RemoteContainerLauncher();
+        static RemoteContainerLauncher _containerOps = new RemoteContainerLauncher("test-load");
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
@@ -48,7 +48,7 @@ namespace Dev2.Activities.Specs.Deploy
 
         void ConnectToRemoteServerContainer()
         {
-            string destinationServerHostname = _containerOps.hostname;
+            string destinationServerHostname = _containerOps._hostname;
 
             var formattableString = $"http://{destinationServerHostname}:3142";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(formattableString, "WarewolfAdmin", "W@rEw0lf@dm1n"))

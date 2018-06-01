@@ -98,7 +98,6 @@
     <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Local Container Launcher.cs" />
     <Compile Include="Remote Container Launcher.cs" />
     <Compile Include="Job Definitions.cs" />
     <Compile Include="Options.cs" />

@@ -13,20 +13,27 @@ namespace Warewolf.Launcher
         readonly string _remoteDockerApi;
         public string _remoteContainerID = null;
         public string _remoteImageID = null;
-        public string hostname;
+        public string _hostname;
 
-        public RemoteContainerLauncher(string remoteDockerApi = "test-load")
+        public RemoteContainerLauncher(string remoteDockerApi = "localhost", string hostname = "")
         {
             _remoteDockerApi = remoteDockerApi;
-            hostname = StartRemoteContainer();
+            _hostname = StartRemoteContainer(hostname);
         }
 
-        public string StartRemoteContainer()
+        public string StartRemoteContainer(string hostname)
         {
             Build(GetServerPath());
             CreateContainer();
             StartContainer();
-            return GetContainerHostname();
+            if (hostname == "")
+            {
+                return GetContainerHostname();
+            }
+            else
+            {
+                return hostname;
+            }
         }
 
         public void DeleteRemoteContainer()
@@ -90,14 +97,27 @@ namespace Warewolf.Launcher
             }
         }
 
-        void CreateContainer()
+        void CreateContainer(string hostname = "")
         {
             var url = "http://" + _remoteDockerApi + ":2375/containers/create";
-            HttpContent containerContent = new StringContent(@"
+            HttpContent containerContent;
+            if (hostname == "")
+            {
+                containerContent = new StringContent(@"
 {
      ""Image"":""" + _remoteImageID + @"""
 }
 ");
+            }
+            else
+            {
+                containerContent = new StringContent(@"
+{
+    ""Hostname"": """ + hostname + @""",
+     ""Image"":""" + _remoteImageID + @"""
+}
+");
+            }
             containerContent.Headers.Remove("Content-Type");
             containerContent.Headers.Add("Content-Type", "application/json");
             using (var client = new HttpClient())
