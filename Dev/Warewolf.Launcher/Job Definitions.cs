@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Bashley
+namespace Warewolf.Launcher
 {
     class Job_Definitions
     {

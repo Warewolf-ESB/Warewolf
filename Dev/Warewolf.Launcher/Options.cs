@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Warewolf.Launcher;
 using System.Linq;
 
-namespace Bashley
+namespace Warewolf.Launcher
 {
     internal class Options
     {
