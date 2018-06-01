@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using System.Threading;
@@ -241,6 +242,18 @@ namespace Warewolf.Launcher
 
             MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%PROGRAMDATA%\\Warewolf\\Resources"), "Server Resources JobName");
             MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%PROGRAMDATA%\\Warewolf\\Tests"), "Server Service Tests JobName");
+        }
+
+        internal void TryStartLocalCIRemoteContainer()
+        {
+            try
+            {
+                new LocalServerContainerLauncher("TST-CI-REMOTE", "localhost");
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine("Failed to start local CI Remote server container.\n" + e.Message);
+            }
         }
 
         static bool WaitForFileUnlock(string FileSpec)
@@ -1287,6 +1300,7 @@ namespace Warewolf.Launcher
                     if (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart))
                     {
                         build.StartServer();
+                        build.TryStartLocalCIRemoteContainer();
                         if (!string.IsNullOrEmpty(build.DoStudioStart))
                         {
                             build.StartStudio();

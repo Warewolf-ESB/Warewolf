@@ -5,9 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Security.Principal;
-using Warewolf.Launcher;
 
-namespace Bashley
+namespace Warewolf.Launcher
 {
     public class Program
     {
@@ -352,6 +351,7 @@ namespace Bashley
                 {
                     build.InstallServer();
                     build.StartServer();
+                    build.TryStartLocalCIRemoteContainer();
                     if (String.IsNullOrEmpty(build.DoServerStart) && String.IsNullOrEmpty(build.DomywarewolfioStart))
                     {
                         build.StartStudio();
