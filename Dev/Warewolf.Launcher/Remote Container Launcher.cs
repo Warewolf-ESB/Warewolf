@@ -11,8 +11,8 @@ namespace Warewolf.Launcher
     public class RemoteContainerLauncher
     {
         readonly string _remoteDockerApi;
-        string _remoteContainerID = null;
-        string _remoteImageID = null;
+        public string _remoteContainerID = null;
+        public string _remoteImageID = null;
         public string hostname;
 
         public RemoteContainerLauncher(string remoteDockerApi = "test-load")
@@ -65,7 +65,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        void StartContainer()
+        public void StartContainer()
         {
             var url = "http://" + _remoteDockerApi + ":2375/containers/" + _remoteContainerID + "/start";
             HttpContent containerStartContent = new StringContent("");
@@ -119,7 +119,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        void Build(string serverPath)
+        public void Build(string serverPath)
         {
             byte[] paramFileBytes = CreateTarGZ(serverPath);
             var url = "http://" + _remoteDockerApi + ":2375/build";
@@ -159,7 +159,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        string ParseForContainerID(string responseText)
+        public string ParseForContainerID(string responseText)
         {
             if (responseText.Length > 7 + 64)
             {
@@ -334,7 +334,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        string GetServerPath()
+        public static string GetServerPath()
         {
             String[] properties = { "Name", "ExecutablePath" };
             SelectQuery s = new SelectQuery("Win32_Process",
