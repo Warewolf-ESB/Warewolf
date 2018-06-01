@@ -318,7 +318,7 @@ namespace Dev2.Services.Execution
         {
 
             var connectionBuilder = new ConnectionBuilder();
-            var connection = new SqlConnection(connectionBuilder.ConnectionString(Source.ConnectionString));
+            var connection = new SqlConnection(connectionBuilder.ConnectionString(Source.GetConnectionStringWithTimeout(30)));
             var startTime = Stopwatch.StartNew();
             try
             {

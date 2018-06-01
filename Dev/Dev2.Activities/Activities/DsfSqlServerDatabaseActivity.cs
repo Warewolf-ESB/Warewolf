@@ -52,7 +52,8 @@ namespace Dev2.Activities
                 databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
                 databaseServiceExecution.Outputs = Outputs;
             }
-
+            //ServiceExecution.SetTimeout()
+            //ServiceExecution.SetCommandTimeout()
             ServiceExecution.Execute(out execErrors, update);
             var fetchErrors = execErrors.FetchErrors();
             foreach (var error in fetchErrors)
