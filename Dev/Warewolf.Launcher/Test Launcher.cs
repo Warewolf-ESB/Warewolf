@@ -523,7 +523,7 @@ namespace Warewolf.Launcher
             }
             else
             {
-                Console.WriteLine("No failing tests to retry found in any trx file in " + FullTRXFilePath);
+                Console.WriteLine("No failing tests found to retry in trx file at " + FullTRXFilePath);
                 return;
             }
             Console.WriteLine("Re-running all test failures in \"" + FullTRXFilePath + "\".");
@@ -554,8 +554,17 @@ namespace Warewolf.Launcher
                         {
                             if (OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
                             {
-                                OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText += "\n" + TestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText;
-                                OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText += "\n" + TestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText;
+                                if (OriginalTestResult.ChildNodes.Item(0).ChildNodes.Count > 0)
+                                {
+                                    if (OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Count > 0)
+                                    {
+                                        OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText += "\n" + TestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(0).InnerText;
+                                    }
+                                    if (OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Count > 1)
+                                    {
+                                        OriginalTestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText += "\n" + TestResult.ChildNodes.Item(0).ChildNodes.Item(0).ChildNodes.Item(1).InnerText;
+                                    }
+                                }
                             }
                         }
                     }
