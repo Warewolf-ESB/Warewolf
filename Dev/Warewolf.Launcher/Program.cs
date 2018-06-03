@@ -263,19 +263,19 @@ namespace Warewolf.Launcher
                     }
 
                     // Setup for screen recording
-                    var TestSettingsFile = TestLauncher.ScreenRecordingTestSettingsFile(build, JobName);
+                    var TestSettingsFile = build.ScreenRecordingTestSettingsFile(build, JobName);
 
                     string TestRunnerPath;
                     if (string.IsNullOrEmpty(build.MSTest))
                     {
-                        TestRunnerPath = TestLauncher.VSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
+                        TestRunnerPath = build.VSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile);
                     }
                     else
                     {
-                        TestRunnerPath = TestLauncher.MSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
+                        TestRunnerPath = build.MSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
                     }
-                    var TrxFile = TestLauncher.RunTests(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
-                    TestLauncher.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
+                    var TrxFile = build.RunTests(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
+                    build.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
                 {
