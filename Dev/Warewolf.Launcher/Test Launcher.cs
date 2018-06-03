@@ -332,7 +332,7 @@ namespace Warewolf.Launcher
                 {
                     XmlDocument trxContent = new XmlDocument();
                     trxContent.Load(FullTRXFilePath);
-                    if (trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Count > 0)
+                    if (trxContent.DocumentElement.ChildNodes.Count > 0 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Count > 2 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Count > 0)
                     {
                         foreach (XmlNode TestResult in trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes)
                         {
