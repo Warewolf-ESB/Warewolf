@@ -243,7 +243,7 @@ namespace Warewolf.Launcher
             MoveFileToTestResults(Environment.ExpandEnvironmentVariables("%PROGRAMDATA%\\Warewolf\\Tests"), "Server Service Tests JobName");
         }
 
-        static bool WaitForFileUnlock(string FileSpec)
+        bool WaitForFileUnlock(string FileSpec)
         {
             var locked = true;
             var RetryCount = 0;
@@ -474,7 +474,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        public static void RetryOnTestError(TestLauncher build, string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath)
+        public void RetryOnTestError(TestLauncher build, string jobName, string testAssembliesList, List<string> TestAssembliesDirectories, string testSettingsFile, string FullTRXFilePath)
         {
             WaitForFileUnlock(FullTRXFilePath);
             build.TestList = "";
@@ -525,7 +525,7 @@ namespace Warewolf.Launcher
             }
         }
 
-        static void MergeRetryResults(string originalResults, string retryResults)
+        void MergeRetryResults(string originalResults, string retryResults)
         {
             XmlDocument trxContent = new XmlDocument();
             trxContent.Load(retryResults);
@@ -1056,7 +1056,7 @@ namespace Warewolf.Launcher
             throw new Exception("Cannot resolve spec: " + TestAssemblyFileSpecs);
         }
 
-        public static string ScreenRecordingTestSettingsFile(TestLauncher build, string JobName)
+        public string ScreenRecordingTestSettingsFile(TestLauncher build, string JobName)
         {
             var TestSettingsFile = "";
             if (build.RecordScreen != null)
@@ -1087,7 +1087,7 @@ namespace Warewolf.Launcher
             return TestSettingsFile;
         }
 
-        public static string VSTestSettingsArgument(TestLauncher build, string TestSettingsFile)
+        public string VSTestSettingsArgument(TestLauncher build, string TestSettingsFile)
         {
             string TestSettings = "";
             if (build.RecordScreen != null)
@@ -1097,7 +1097,7 @@ namespace Warewolf.Launcher
             return TestSettings;
         }
 
-        public static string MSTestSettingsArgument(TestLauncher build, string TestSettingsFile)
+        public string MSTestSettingsArgument(TestLauncher build, string TestSettingsFile)
         {
             string TestSettings;
             if (build.RecordScreen != null)
@@ -1112,7 +1112,7 @@ namespace Warewolf.Launcher
             return TestSettings;
         }
 
-        public static string VSTestCategories(TestLauncher build, string ProjectSpec, string TestCategories)
+        public string VSTestCategories(TestLauncher build, string ProjectSpec, string TestCategories)
         {
             if (string.IsNullOrEmpty(build.TestList))
             {
@@ -1142,7 +1142,7 @@ namespace Warewolf.Launcher
             return TestCategories;
         }
 
-        public static string MSTestCategories(TestLauncher build, string ProjectSpec, string TestCategories)
+        public string MSTestCategories(TestLauncher build, string ProjectSpec, string TestCategories)
         {
             if (String.IsNullOrEmpty(build.TestList))
             {
@@ -1173,7 +1173,7 @@ namespace Warewolf.Launcher
             return TestCategories;
         }
 
-        public static string VSTestRunner(TestLauncher build, string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile)
+        public string VSTestRunner(TestLauncher build, string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile)
         {
             string TestRunnerPath;
             Environment.CurrentDirectory = build.TestsResultsPath + "\\..";
@@ -1200,7 +1200,7 @@ namespace Warewolf.Launcher
             return TestRunnerPath;
         }
 
-        public static string MSTestRunner(TestLauncher build, string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath)
+        public string MSTestRunner(TestLauncher build, string JobName, string ProjectSpec, string TestCategories, string TestAssembliesList, string TestSettingsFile, string TestsResultsPath)
         {
             // Resolve test results file name
             var TestResultsFile = TestsResultsPath + "\"" + JobName + " Results.trx";
@@ -1231,7 +1231,7 @@ namespace Warewolf.Launcher
             return TestRunnerPath;
         }
 
-        public static string DotCoverRunner(TestLauncher build, string JobName, List<string> TestAssembliesDirectories)
+        public string DotCoverRunner(TestLauncher build, string JobName, List<string> TestAssembliesDirectories)
         {
             // Write DotCover Runner XML 
             var DotCoverSnapshotFile = Path.Combine(build.TestsResultsPath, JobName + " DotCover Output.dcvr");
@@ -1278,7 +1278,7 @@ namespace Warewolf.Launcher
             return DotCoverRunnerPath;
         }
 
-        public static string RunTests(TestLauncher build, string JobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
+        public string RunTests(TestLauncher build, string JobName, string TestAssembliesList, List<string> TestAssembliesDirectories, string TestSettingsFile, string TestRunnerPath)
         {
             if (File.Exists(TestRunnerPath))
             {
@@ -1325,7 +1325,7 @@ namespace Warewolf.Launcher
             return "";
         }
 
-        static void StartAndWaitFor(string TestRunnerPath)
+        void StartAndWaitFor(string TestRunnerPath)
         {
             ProcessStartInfo startinfo = new ProcessStartInfo();
             startinfo.FileName = TestRunnerPath;
@@ -1345,7 +1345,7 @@ namespace Warewolf.Launcher
             process.WaitForExit();
         }
 
-        private static string ParseTrxFilePath(string standardOutput)
+        string ParseTrxFilePath(string standardOutput)
         {
             const string parseFrom = "Results File: ";
             const string parseTo = "Total tests:";
