@@ -46,7 +46,7 @@ namespace Warewolf.Launcher
         public string TestsResultsPath { get; set; } = Environment.CurrentDirectory + "\\TestResults";
         public string VSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\vstest.console.exe";
         public string MSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\MSTest.exe";
-        public int RetryCount { get; internal set; } = 0
+        public int RetryCount { get; internal set; } = 0;
 
         public string ServerExeName;
         public string StudioExeName;
