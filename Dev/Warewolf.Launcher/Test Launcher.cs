@@ -358,16 +358,13 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        if (trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Attributes["outcome"].InnerText == "Failed")
+                        if (trxContent.DocumentElement.ChildNodes.Count > 0 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Count > 2 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Count > 0 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Attributes["outcome"].InnerText == "Failed")
                         {
                             PlayList += "<Add Test=\"" + trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Attributes["className"].InnerText + "." + trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Name + "\" />";
                         }
                         else
                         {
-                            if (trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0) == null)
-                            {
-                                Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
-                            }
+                            Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
                         }
                     }
                 }
