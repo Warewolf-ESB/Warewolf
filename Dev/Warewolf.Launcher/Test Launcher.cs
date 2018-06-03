@@ -332,19 +332,19 @@ namespace Warewolf.Launcher
                 {
                     XmlDocument trxContent = new XmlDocument();
                     trxContent.Load(FullTRXFilePath);
-                    if (trxContent.DocumentElement.SelectNodes("/TestRun/Results/UnitTestResult").Count > 0)
+                    if (trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Count > 0)
                     {
-                        foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/TestRun/Results/UnitTestResult"))
+                        foreach (XmlNode TestResult in trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes)
                         {
                             if (TestResult.Attributes["outcome"].InnerText == "Failed")
                             {
-                                if (trxContent.DocumentElement.SelectNodes("/TestRun/TestDefinitions/UnitTest/TestMethod").Count > 0)
+                                if (trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(3).ChildNodes.Count > 0)
                                 {
-                                    foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/TestRun/TestDefinitions/UnitTest/TestMethod"))
+                                    foreach (XmlNode TestDefinition in trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(3).ChildNodes)
                                     {
-                                        if (TestDefinition.Name == TestResult.Attributes["TestName"].InnerText)
+                                        if (TestDefinition.ChildNodes.Item(2).Name == TestResult.Attributes["TestName"].InnerText)
                                         {
-                                            PlayList += "<Add Test=\"" + TestDefinition.Attributes["ClassName"] + "." + TestDefinition.Name + "\" />";
+                                            PlayList += "<Add Test=\"" + TestDefinition.ChildNodes.Item(2).Attributes["ClassName"] + "." + TestDefinition.ChildNodes.Item(2).Name + "\" />";
                                         }
                                     }
                                 }
@@ -358,13 +358,13 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        if (trxContent.DocumentElement.SelectSingleNode("/TestRun/Results/UnitTestResult").Attributes["outcome"].InnerText == "Failed")
+                        if (trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Attributes["outcome"].InnerText == "Failed")
                         {
-                            PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/TestRun/TestDefinitions/UnitTest/TestMethod").Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/TestRun/TestDefinitions/UnitTest/TestMethod").Name + "\" />";
+                            PlayList += "<Add Test=\"" + trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Attributes["className"].InnerText + "." + trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Name + "\" />";
                         }
                         else
                         {
-                            if (trxContent.DocumentElement.SelectSingleNode("/TestRun/Results/UnitTestResult") == null)
+                            if (trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0) == null)
                             {
                                 Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
                             }
