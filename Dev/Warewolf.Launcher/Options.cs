@@ -1,8 +1,5 @@
 ﻿using CommandLine;
 using System;
-using System.Collections.Generic;
-using Warewolf.Launcher;
-using System.Linq;
 
 namespace Warewolf.Launcher
 {
