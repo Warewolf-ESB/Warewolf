@@ -46,6 +46,7 @@ namespace Warewolf.Launcher
         public string TestsResultsPath { get; set; } = Environment.CurrentDirectory + "\\TestResults";
         public string VSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\vstest.console.exe";
         public string MSTestPath { get; set; } = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\MSTest.exe";
+        public int RetryCount { get; internal set; } = 0
 
         public string ServerExeName;
         public string StudioExeName;
@@ -268,7 +269,7 @@ namespace Warewolf.Launcher
         {
             var exists = false;
             var RetryCount = 0;
-            while (!exists && RetryCount < 12)
+            while (!exists && RetryCount < 100)
             {
                 RetryCount++;
                 if (File.Exists(FileSpec))
@@ -278,7 +279,7 @@ namespace Warewolf.Launcher
                 else
                 {
                     Console.WriteLine("Still waiting for " + FileSpec + " file to exist.");
-                    Thread.Sleep(10000);
+                    Thread.Sleep(3000);
                 }
             }
             return exists;
@@ -316,12 +317,6 @@ namespace Warewolf.Launcher
 
         public void MoveArtifactsToTestResults(bool DotCover, bool Server, bool Studio)
         {
-            if (File.Exists("C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx"))
-            {
-                File.Move("C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TestWindow\\TestResults\\*.trx", TestsResultsPath);
-                Console.WriteLine("Moved loose TRX files from VS install directory into TestResults.");
-            }
-
             if (Cleanup != null)
             {
                 //Write failing tests playlist.
@@ -578,9 +573,9 @@ namespace Warewolf.Launcher
 
         void MoveScreenRecordingsToTestResults()
         {
-            Console.WriteLine("Getting UI test screen recordings from \"TestsResultsPath\"");
+            Console.WriteLine("Getting UI test screen recordings from \"" + TestsResultsPath + "\"");
             var ScreenRecordingsFolder = TestsResultsPath + "\\ScreenRecordings";
-            if (File.Exists(ScreenRecordingsFolder + "\\In"))
+            if (Directory.Exists(ScreenRecordingsFolder + "\\In"))
             {
                 File.Move(ScreenRecordingsFolder + "\\In\\*", ScreenRecordingsFolder);
             }
@@ -913,6 +908,7 @@ namespace Warewolf.Launcher
                 {
                     Process.Start(DotCoverPath, "cover \"" + TestsResultsPath + "\\Studio DotCover Runner.xml\" /LogFile=\"" + TestsResultsPath + "\\StudioDotCover.log\"");
                 }
+                WaitForStudioStart(Path.GetDirectoryName(StudioPath));
             }
         }
 
@@ -1084,28 +1080,13 @@ namespace Warewolf.Launcher
             return TestSettingsFile;
         }
 
-        public string VSTestSettingsArgument(TestLauncher build, string TestSettingsFile)
+        public string TestSettingsArgument(TestLauncher build, string TestSettingsFile)
         {
             string TestSettings = "";
             if (build.RecordScreen != null)
             {
                 TestSettings = " /Settings:\"" + TestSettingsFile + "\"";
             }
-            return TestSettings;
-        }
-
-        public string MSTestSettingsArgument(TestLauncher build, string TestSettingsFile)
-        {
-            string TestSettings;
-            if (build.RecordScreen != null)
-            {
-                TestSettings = " /Settings:\"" + TestSettingsFile + "\"";
-            }
-            else
-            {
-                TestSettings = "";
-            }
-
             return TestSettings;
         }
 
@@ -1179,14 +1160,14 @@ namespace Warewolf.Launcher
             {
                 FullArgsList = TestAssembliesList +
                     " /logger:trx " +
-                    VSTestSettingsArgument(build, TestSettingsFile) +
+                    TestSettingsArgument(build, TestSettingsFile) +
                     VSTestCategories(build, ProjectSpec, TestCategories);
             }
             else
             {
                 FullArgsList = TestAssembliesList +
                     " /logger:trx " +
-                    VSTestSettingsArgument(build, TestSettingsFile) +
+                    TestSettingsArgument(build, TestSettingsFile) +
                     build.TestList;
             }
 
@@ -1210,14 +1191,14 @@ namespace Warewolf.Launcher
             {
                 FullArgsList = TestAssembliesList +
                     " /resultsfile:\"" + TestResultsFile + "\"" +
-                    MSTestSettingsArgument(build, TestSettingsFile) +
+                    TestSettingsArgument(build, TestSettingsFile) +
                     categories;
             }
             else
             {
                 FullArgsList = TestAssembliesList +
                     " /resultsfile:\"" + TestResultsFile + "\"" +
-                    MSTestSettingsArgument(build, TestSettingsFile) +
+                    TestSettingsArgument(build, TestSettingsFile) +
                     build.TestList;
             }
 
