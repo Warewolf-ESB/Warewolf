@@ -274,8 +274,15 @@ namespace Warewolf.Launcher
                     {
                         TestRunnerPath = build.MSTestRunner(build, JobName, ProjectSpec, TestCategories, TestAssembliesList, TestSettingsFile, build.TestsResultsPath);
                     }
+
+                    //Run Tests
                     var TrxFile = build.RunTests(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TestRunnerPath);
-                    build.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
+
+                    //Re-try Failures
+                    for (var count = 0; count < build.RetryCount; count++)
+                    {
+                        build.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
+                    }
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
                 {
@@ -344,7 +351,7 @@ namespace Warewolf.Launcher
                 build.MoveArtifactsToTestResults(build.ApplyDotCover, File.Exists(Environment.ExpandEnvironmentVariables("%ProgramData%\\Warewolf\\Server Log\\wareWolf-Server.log")), File.Exists(Environment.ExpandEnvironmentVariables("%LocalAppData\\Warewolf\\Studio Logs\\Warewolf Studio.log")));
             }
 
-            if (string.IsNullOrEmpty(build.Cleanup) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory) && string.IsNullOrEmpty(build.StartDocker))
+            if (string.IsNullOrEmpty(build.Cleanup) && string.IsNullOrEmpty(build.AssemblyFileVersionsTest) && string.IsNullOrEmpty(build.JobName) && string.IsNullOrEmpty(build.RunWarewolfServiceTests) && string.IsNullOrEmpty(build.MergeDotCoverSnapshotsInDirectory))
             {
                 build.Startmywarewolfio();
                 if (String.IsNullOrEmpty(build.DomywarewolfioStart))
