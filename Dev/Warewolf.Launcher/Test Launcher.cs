@@ -260,7 +260,7 @@ namespace Warewolf.Launcher
         {
             var locked = true;
             var RetryCount = 0;
-            while (locked && RetryCount < 12)
+            while (locked && RetryCount < 100)
             {
                 RetryCount++;
                 try
@@ -271,7 +271,7 @@ namespace Warewolf.Launcher
                 catch
                 {
                     Console.WriteLine("Still waiting for " + FileSpec + " file to unlock.");
-                    Thread.Sleep(10000);
+                    Thread.Sleep(3000);
                 }
             }
             return locked;
@@ -355,7 +355,7 @@ namespace Warewolf.Launcher
                                 {
                                     foreach (XmlNode TestDefinition in trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(3).ChildNodes)
                                     {
-                                        if (TestDefinition.ChildNodes.Item(2).Name == TestResult.Attributes["TestName"].InnerText)
+                                        if (TestDefinition.ChildNodes.Count > 2 && TestDefinition.ChildNodes.Item(2).Name == TestResult.Attributes["TestName"].InnerText)
                                         {
                                             PlayList += "<Add Test=\"" + TestDefinition.ChildNodes.Item(2).Attributes["ClassName"] + "." + TestDefinition.ChildNodes.Item(2).Name + "\" />";
                                         }
@@ -799,12 +799,8 @@ namespace Warewolf.Launcher
 
         void WaitForServerStart(string ServerFolderPath)
         {
-            var TimeoutCounter = 0;
             var ServerStartedFilePath = ServerFolderPath + "\\ServerStarted";
-            while (!(File.Exists(ServerStartedFilePath)) && TimeoutCounter++ < 100)
-            {
-                Thread.Sleep(3000);
-            }
+            WaitForFileExist(ServerStartedFilePath);
             if (!(File.Exists(ServerStartedFilePath)))
             {
                 throw new Exception("Server Cannot Start.");
@@ -938,12 +934,8 @@ namespace Warewolf.Launcher
 
         void WaitForStudioStart(string StudioFolderPath)
         {
-            var TimeoutCounter = 0;
             var StudioStartedFilePath = StudioFolderPath + "\\StudioStarted";
-            while (!(File.Exists(StudioStartedFilePath)) && TimeoutCounter++ < 100)
-            {
-                Thread.Sleep(3000);
-            }
+            WaitForFileExist(StudioStartedFilePath);
             if (!(File.Exists(StudioStartedFilePath)))
             {
                 throw new Exception("Studio Cannot Start.");
@@ -1339,7 +1331,7 @@ namespace Warewolf.Launcher
                 build.MoveArtifactsToTestResults(build.ApplyDotCover, (!string.IsNullOrEmpty(build.DoServerStart) || !string.IsNullOrEmpty(build.DoStudioStart)), !string.IsNullOrEmpty(build.DoStudioStart));
                 var directory = new DirectoryInfo(build.TestsResultsPath);
                 var testResultFiles = directory.GetFiles().Where((filePath) => { return filePath.Name.EndsWith(".trx"); });
-                if (testResultFiles != null)
+                if (testResultFiles.Count() > 0)
                 {
                     return testResultFiles.OrderByDescending(f => f.LastWriteTime).First().FullName;
                 }
