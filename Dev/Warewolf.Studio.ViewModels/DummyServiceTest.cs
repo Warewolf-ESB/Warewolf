@@ -14,10 +14,8 @@ namespace Warewolf.Studio.ViewModels
 {
     public class DummyServiceTest : IServiceTestModel, INewServiceResource
     {
-#pragma warning disable 649
-        readonly bool _isNewTest;
+        bool _isNewTest;
         ICommand _newCommand;
-#pragma warning restore 649
 
         public DummyServiceTest(Action<bool> createNewAction)
         {
@@ -61,10 +59,7 @@ namespace Warewolf.Studio.ViewModels
         public bool IsNewTest
         {
             get => _isNewTest;
-            set
-            {
-
-            }
+            set => _isNewTest = value;
         }
         public bool NewTest { get; set; }
         public bool IsTestRunning { get; set; }
@@ -74,7 +69,6 @@ namespace Warewolf.Studio.ViewModels
         public IList<IDebugState> DebugForTest { get; set; }
         public string DuplicateTestTooltip { get; set; }
         public ObservableCollection<IServiceTestStep> TestSteps { get; set; }
-        public IServiceTestStep SelectedTestStep { get; set; }        
         public bool IsTestSelected { get; set; }
         public bool IsTestLoading { get; set; }
         public bool TestPassed { get; set; }
@@ -99,6 +93,7 @@ namespace Warewolf.Studio.ViewModels
         
         public IServiceTestModel Clone() => this;
         public void SetItem(IServiceTestModel model) => throw new NotImplementedException();
+        public void ResetOldTestName() => throw new NotImplementedException();
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => throw new NotImplementedException();
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType) => throw new NotImplementedException();
 

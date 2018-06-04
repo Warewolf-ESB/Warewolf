@@ -170,18 +170,14 @@ namespace Dev2.Runtime.Security
             {
                 var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 var section = config.GetSection(SectionName);
-                if(section != null)
+                if (section != null && !section.SectionInformation.IsProtected && !section.ElementInformation.IsLocked)
                 {
-                    if(!section.SectionInformation.IsProtected)
-                    {
-                        if(!section.ElementInformation.IsLocked)
-                        {
-                            section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
-                            section.SectionInformation.ForceSave = true;
-                            config.Save(ConfigurationSaveMode.Full);
-                        }
-                    }
+                    section.SectionInformation.ProtectSection("RsaProtectedConfigurationProvider");
+                    section.SectionInformation.ForceSave = true;
+                    config.Save(ConfigurationSaveMode.Full);
                 }
+
+
             }
             catch(Exception e)
             {
@@ -219,10 +215,8 @@ namespace Dev2.Runtime.Security
         /// <param name="serverKey">The server key.</param>
         /// <param name="systemKey">The system key.</param>
         /// <returns>a <see cref="NameValueCollection"/> configuration.</returns>
-    
-        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey)
-        {
-            return new NameValueCollection
+
+        public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey) => new NameValueCollection
             {
                 {
                     "ServerID", serverID
@@ -234,7 +228,6 @@ namespace Dev2.Runtime.Security
                     "SystemKey", systemKey
                 }
             };
-        }
 
         #endregion
 

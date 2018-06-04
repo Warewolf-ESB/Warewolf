@@ -24,49 +24,16 @@ namespace Dev2.Runtime.WebServer
     {
         public static string SetEmitionType(this IDSFDataObject dataObject, WebRequestTO webRequest, string serviceName, NameValueCollection headers)
         {
-            int loc;
+            int extensionStartLocation;
             var originalServiceName = serviceName;
-            if (!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
+            if (!string.IsNullOrEmpty(serviceName) && (extensionStartLocation = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
             {
                 dataObject.ReturnType = EmitionTypes.XML;
 
-                if (loc > 0)
+                if (extensionStartLocation > 0)
                 {
-                    var typeOf = serviceName.Substring(loc + 1);
-                    if (Enum.TryParse(typeOf.ToUpper(), out EmitionTypes myType))
-                    {
-                        dataObject.ReturnType = myType;
-                    }
-
-                    serviceName = !typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase) ? serviceName.Substring(0, loc) : serviceName.Substring(0, serviceName.Substring(0, loc).LastIndexOf(".", StringComparison.Ordinal));
-                    if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase) || typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        dataObject.IsServiceTestExecution = true;
-                        var idx = originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
-                        if (idx > loc)
-                        {
-                            var testName = originalServiceName.Substring(idx + 1).ToUpper();
-                            dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
-                        }
-                        else
-                        {
-                            dataObject.TestName = "*";
-                        }
-                        if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            dataObject.ReturnType = EmitionTypes.TEST;
-                        }
-                        if (typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            dataObject.ReturnType = EmitionTypes.TRX;
-                        }
-                    }
-
-                    if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
-                    {
-                        dataObject.ReturnType = EmitionTypes.SWAGGER;
-                    }
-                    dataObject.ServiceName = serviceName;
+                    var extension = serviceName.Substring(extensionStartLocation + 1);
+                    serviceName = SetReturnTypeForExtension(dataObject, extensionStartLocation, originalServiceName, extension);
                 }
             }
             else
@@ -81,6 +48,44 @@ namespace Dev2.Runtime.WebServer
                 }
                 dataObject.SetContentType(headers);
             }
+            return serviceName;
+        }
+
+        private static string SetReturnTypeForExtension(IDSFDataObject dataObject, int loc, string originalServiceName, string typeOf)
+        {
+            if (Enum.TryParse(typeOf.ToUpper(), out EmitionTypes myType))
+            {
+                dataObject.ReturnType = myType;
+            }
+
+            var serviceName = !typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase) ? originalServiceName.Substring(0, loc) : originalServiceName.Substring(0, originalServiceName.Substring(0, loc).LastIndexOf(".", StringComparison.Ordinal));
+            if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase) || typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
+            {
+                dataObject.IsServiceTestExecution = true;
+                var idx = originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
+                if (idx > loc)
+                {
+                    var testName = originalServiceName.Substring(idx + 1).ToUpper();
+                    dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
+                }
+                else
+                {
+                    dataObject.TestName = "*";
+                }
+                if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    dataObject.ReturnType = EmitionTypes.TEST;
+                }
+                if (typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    dataObject.ReturnType = EmitionTypes.TRX;
+                }
+            }
+            if (typeOf.Equals("api", StringComparison.OrdinalIgnoreCase))
+            {
+                dataObject.ReturnType = EmitionTypes.SWAGGER;
+            }
+            dataObject.ServiceName = serviceName;
             return serviceName;
         }
 
@@ -182,10 +187,7 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName)
-        {
-            return !string.IsNullOrEmpty(serviceName) && (serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx") && (returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX);
-        }
+        static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName) => !string.IsNullOrEmpty(serviceName) && (serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx") && (returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX);
 
         public static void SetResourceNameAndId(this IDSFDataObject dataObject, IResourceCatalog catalog, string serviceName, out IResource resource)
         {
@@ -237,10 +239,10 @@ namespace Dev2.Runtime.WebServer
         public static bool CanExecuteCurrentResource(this IDSFDataObject dataObject, IResource resource, IAuthorizationService service)
         {
             var canExecute = true;
-            if (service != null && dataObject.ReturnType != EmitionTypes.TEST && dataObject.ReturnType != EmitionTypes.TRX)
+            if (service != null && dataObject.ReturnType != EmitionTypes.TRX)
             {
-                var hasView = service.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
-                var hasExecute = service.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
+                var hasView = service.IsAuthorized(dataObject.ExecutingUser,AuthorizationContext.View, dataObject.ResourceID.ToString());
+                var hasExecute = service.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, dataObject.ResourceID.ToString());
                 canExecute = (hasExecute && hasView) || ((dataObject.RemoteInvoke || dataObject.RemoteNonDebugInvoke) && hasExecute) || (resource != null && resource.ResourceType == "ReservedService");
             }
             return canExecute;
@@ -301,7 +303,7 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        static List<IServiceTestModelTO> RunAllTestsForWorkflow(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, string testsResourceId = null)
+        static List<IServiceTestModelTO> RunAllTestsForWorkflow(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog)
         {
             var allTests = testCatalog.Fetch(dataObject.ResourceID) ?? new List<IServiceTestModelTO>();
             var taskList = new List<Task>();

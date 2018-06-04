@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Text;
 using Microsoft.Practices.Prism.Mvvm;
 
 
@@ -22,10 +23,13 @@ namespace Dev2.Studio.Interfaces
         IServer Environment { get; }
         Guid ServerID { get; set; }
         bool IsNewWorkflow { get; set; }
+        bool IsNotWarewolfPath { get; set; } 
+
         event Action<IContextualResourceModel> OnResourceSaved;
         event Action OnDataListChanged;
         IView GetView(Func<IView> view);
 
-        void ClearErrors();        
+        void ClearErrors();
+        StringBuilder GetWorkflowXaml();
     }
 }

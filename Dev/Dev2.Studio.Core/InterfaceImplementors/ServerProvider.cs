@@ -60,10 +60,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
 
         #region Load
 
-        public List<IServer> Load()
-        {
-            return Load(CustomContainer.Get<IServerRepository>());
-        }
+        public List<IServer> Load() => Load(CustomContainer.Get<IServerRepository>());
 
         public List<IServer> Load(IServerRepository serverRepository)
         {
@@ -80,10 +77,7 @@ namespace Dev2.Studio.Core.InterfaceImplementors
             return environments.ToList();
         }
 
-        public List<IServer> ReloadServers()
-        {
-            return ReloadServers(CustomContainer.Get<IServerRepository>());
-        }
+        public List<IServer> ReloadServers() => ReloadServers(CustomContainer.Get<IServerRepository>());
 
         public List<IServer> ReloadServers(IServerRepository serverRepository)
         {

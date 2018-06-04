@@ -68,10 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _fieldsCollection = new List<ActivityDTO>();
         }
 
-        public override List<string> GetOutputs()
-        {
-            return FieldsCollection.Select(dto => dto.FieldName).ToList();
-        }          
+        public override List<string> GetOutputs() => FieldsCollection.Select(dto => dto.FieldName).ToList();
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -95,50 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var innerCount = 1;
                     foreach (ActivityDTO t in FieldsCollection)
                     {
-                        try
-                        {
-                            if (!string.IsNullOrEmpty(t.FieldName))
-                            {
-                                var assignValue = new AssignValue(t.FieldName, t.FieldValue);
-                                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out string cleanExpression);
-                                if (isCalcEvaluation)
-                                {
-                                    assignValue = new AssignValue(t.FieldName, cleanExpression);
-                                }
-                                DebugItem debugItem = null;
-                                if (dataObject.IsDebugMode())
-                                {
-                                    debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue, update);
-                                }
-                                if (isCalcEvaluation)
-                                {
-                                    DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
-                                }
-                                else
-                                {
-                                    dataObject.Environment.AssignWithFrame(assignValue, update);
-                                }
-                                if (debugItem != null)
-                                {
-                                    _debugInputs.Add(debugItem);
-                                }
-                                if (dataObject.IsDebugMode())
-                                {
-                                    if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
-                                    {
-                                        var length = dataObject.Environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(assignValue.Name));
-                                        assignValue = new AssignValue(DataListUtil.ReplaceRecordsetBlankWithIndex(assignValue.Name, length), assignValue.Value);
-                                    }
-                                    AddSingleDebugOutputItem(dataObject.Environment, innerCount, assignValue, update);
-                                }
-                            }
-                            innerCount++;
-                        }
-                        catch (Exception e)
-                        {
-                            Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                            allErrors.AddError(e.Message);
-                        }
+                        innerCount = TryExecute(dataObject, update, allErrors, innerCount, t);
                     }
                     dataObject.Environment.CommitAssign();
                     allErrors.MergeErrors(errors);
@@ -153,6 +107,61 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // Handle Errors
                 HandleErrors(dataObject, update, allErrors);
+            }
+        }
+
+        private int TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int innerCount, ActivityDTO t)
+        {
+            try
+            {
+                AssignField(dataObject, update, innerCount, t);
+                innerCount++;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                allErrors.AddError(e.Message);
+            }
+
+            return innerCount;
+        }
+
+        private void AssignField(IDSFDataObject dataObject, int update, int innerCount, ActivityDTO t)
+        {
+            if (!string.IsNullOrEmpty(t.FieldName))
+            {
+                var assignValue = new AssignValue(t.FieldName, t.FieldValue);
+                var isCalcEvaluation = DataListUtil.IsCalcEvaluation(t.FieldValue, out string cleanExpression);
+                if (isCalcEvaluation)
+                {
+                    assignValue = new AssignValue(t.FieldName, cleanExpression);
+                }
+                DebugItem debugItem = null;
+                if (dataObject.IsDebugMode())
+                {
+                    debugItem = AddSingleInputDebugItem(dataObject.Environment, innerCount, assignValue, update);
+                }
+                if (isCalcEvaluation)
+                {
+                    DoCalculation(dataObject.Environment, t.FieldName, t.FieldValue, update);
+                }
+                else
+                {
+                    dataObject.Environment.AssignWithFrame(assignValue, update);
+                }
+                if (debugItem != null)
+                {
+                    _debugInputs.Add(debugItem);
+                }
+                if (dataObject.IsDebugMode())
+                {
+                    if (DataListUtil.IsValueRecordset(assignValue.Name) && DataListUtil.GetRecordsetIndexType(assignValue.Name) == enRecordsetIndexType.Blank)
+                    {
+                        var length = dataObject.Environment.GetLength(DataListUtil.ExtractRecordsetNameFromValue(assignValue.Name));
+                        assignValue = new AssignValue(DataListUtil.ReplaceRecordsetBlankWithIndex(assignValue.Name, length), assignValue.Value);
+                    }
+                    AddSingleDebugOutputItem(dataObject.Environment, innerCount, assignValue, update);
+                }
             }
         }
 
@@ -382,10 +391,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -419,28 +425,54 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
+
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => _debugOutputs;
+
+        public override IList<DsfForEachItem> GetForEachInputs() => (from item in FieldsCollection
+                                                                     where !string.IsNullOrEmpty(item.FieldValue) && item.FieldValue.Contains("[[")
+                                                                     select new DsfForEachItem { Name = item.FieldName, Value = item.FieldValue }).ToList();
+
+        public override IList<DsfForEachItem> GetForEachOutputs() => (from item in FieldsCollection
+                                                                      where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
+                                                                      select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
+
+        public bool Equals(DsfDotNetMultiAssignActivity other)
         {
-            return _debugInputs;
+            if (FieldsCollection.Count != other.FieldsCollection.Count)
+            {
+                return false;
+            }
+
+            var eq = base.Equals(other);
+            for (int i=0; i<FieldsCollection.Count; i++)
+            {
+                eq &= FieldsCollection[i].Equals(other.FieldsCollection[i]);
+            }
+            eq &= UpdateAllOccurrences.Equals(other.UpdateAllOccurrences);
+            eq &= CreateBookmark.Equals(other.CreateBookmark);
+            if (!(ServiceHost is null))
+            {
+                eq &= ServiceHost.Equals(other.ServiceHost);
+            }
+
+            return eq;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is DsfDotNetMultiAssignActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override int GetHashCode()
         {
-            return _debugOutputs;
-        }
-
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return (from item in FieldsCollection
-                    where !string.IsNullOrEmpty(item.FieldValue) && item.FieldValue.Contains("[[")
-                    select new DsfForEachItem { Name = item.FieldName, Value = item.FieldValue }).ToList();
-        }
-
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return (from item in FieldsCollection
-                    where !string.IsNullOrEmpty(item.FieldName) && item.FieldName.Contains("[[")
-                    select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
+            var hashCode = -838835648;
+            hashCode = hashCode * -1521134295 + base.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<IList<ActivityDTO>>.Default.GetHashCode(FieldsCollection);
+            return hashCode;
         }
     }
 }

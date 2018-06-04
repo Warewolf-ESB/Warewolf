@@ -28,7 +28,6 @@ using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
-
     [ToolDescriptorInfo("ControlFlow-Sequence", "Sequence", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Sequence")]
     public class DsfSequenceActivity : DsfActivityAbstract<string>,IEquatable<DsfSequenceActivity>
     {
@@ -67,16 +66,11 @@ namespace Dev2.Activities
             set;
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
+
         #region Get Debug Inputs/Outputs
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
-        {
-            return DebugItem.EmptyList;
-        }
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
 
         #endregion Get Inputs/Outputs
 
@@ -157,10 +151,7 @@ namespace Dev2.Activities
             WorkSurfaceMappingId = Guid.Parse(UniqueID);
             UniqueID = isNestedForEach ? Guid.NewGuid().ToString() : UniqueID;
         }
-        /// <summary>
-        /// When overridden runs the activity's execution logic 
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -199,48 +190,47 @@ namespace Dev2.Activities
             {
                 DispatchDebugState(dataObject, StateType.After, update);
             }
-            if (dataObject.IsServiceTestExecution)
+            if (dataObject.IsServiceTestExecution && _originalUniqueID == Guid.Empty)
             {
-                if (_originalUniqueID == Guid.Empty)
-                {
-                    _originalUniqueID = Guid.Parse(UniqueID);
-                }
+                _originalUniqueID = Guid.Parse(UniqueID);
             }
+
             var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == _originalUniqueID);
             var serviceTestSteps = serviceTestStep?.Children;
             foreach (var dsfActivity in Activities)
             {
                 if (dsfActivity is IDev2Activity act)
                 {
-                    act.Execute(dataObject, update);
-                    if (dataObject.IsServiceTestExecution)
-                    {
-                        var contentId = Guid.Parse(act.UniqueID);
-                        if (dsfActivity.GetType().Name == "DsfActivity")
-                        {
-                            if (dsfActivity is DsfActivity newAct)
-                            {
-                                contentId = newAct.GetWorkSurfaceMappingId();
-                            }
-                        }
-                        UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList(), contentId);
-                    }
+                    ExecuteActivity(dataObject, update, serviceTestSteps, dsfActivity, act);
                 }
             }
-            if (dataObject.IsServiceTestExecution)
+            if (dataObject.IsServiceTestExecution && serviceTestStep != null)
             {
-                if (serviceTestStep != null)
-                {
-                    var testRunResult = new TestRunResult();
-                    GetFinalTestRunResult(serviceTestStep, testRunResult);
-                    serviceTestStep.Result = testRunResult;
-                }
+                var testRunResult = new TestRunResult();
+                GetFinalTestRunResult(serviceTestStep, testRunResult);
+                serviceTestStep.Result = testRunResult;
             }
+
             OnCompleted(dataObject);
             if (dataObject.IsDebugMode())
             {
                 _debugOutputs = new List<DebugItem>();
                 DispatchDebugState(dataObject, StateType.Duration, update);
+            }
+        }
+
+        private void ExecuteActivity(IDSFDataObject dataObject, int update, ObservableCollection<IServiceTestStep> serviceTestSteps, Activity dsfActivity, IDev2Activity act)
+        {
+            act.Execute(dataObject, update);
+            if (dataObject.IsServiceTestExecution)
+            {
+                var contentId = Guid.Parse(act.UniqueID);
+                if (dsfActivity.GetType().Name == "DsfActivity" && dsfActivity is DsfActivity newAct)
+                {
+                    contentId = newAct.GetWorkSurfaceMappingId();
+                }
+
+                UpdateDebugStateWithAssertions(dataObject, serviceTestSteps?.ToList(), contentId);
             }
         }
 
@@ -293,10 +283,7 @@ namespace Dev2.Activities
             dataObject.ForEachNestingLevel--;
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.Sequence;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.Sequence;
 
         #endregion
 
@@ -308,17 +295,37 @@ namespace Dev2.Activities
 
         public bool Equals(DsfSequenceActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && CommonEqualityOps.CollectionEquals(Activities, other.Activities, new ActivityComparer());
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfSequenceActivity) obj);
         }
 

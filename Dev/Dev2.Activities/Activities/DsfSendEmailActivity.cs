@@ -50,12 +50,7 @@ namespace Dev2.Activities
         EmailSource _selectedEmailSource;
     
         #endregion
-
-        /// <summary>
-        /// The property that holds all the conversions
-        /// </summary>
-
-        
+                
         public EmailSource SelectedEmailSource
         {
             get
@@ -123,10 +118,7 @@ namespace Dev2.Activities
 
         
         public bool IsHtml { get; set; }
-
-        /// <summary>
-        /// The property that holds the result string the user enters into the "Result" box
-        /// </summary>
+        
         [FindMissing]
         public new string Result { get; set; }
 
@@ -161,10 +153,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         #region Overrides of DsfNativeActivity<string>
 
@@ -179,10 +168,6 @@ namespace Dev2.Activities
                 return _dataObject.IsDebugMode();
             }
         }
-        /// <summary>
-        /// When overridden runs the activity's execution logic
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
 
         protected override void OnExecute(NativeActivityContext context)
             
@@ -193,8 +178,6 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             _dataObject = dataObject;
 
             var allErrors = new ErrorResultTO();
@@ -204,85 +187,15 @@ namespace Dev2.Activities
             try
             {
                 var runtimeSource = ResourceCatalog.GetResource<EmailSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
-               
-                if(runtimeSource==null)
+
+                if (runtimeSource == null)
                 {
                     dataObject.Environment.Errors.Add(ErrorResource.InvalidEmailSource);
                     return;
                 }
-                if(IsDebug)
-                {
-                    var fromAccount = FromAccount;
-                    if(String.IsNullOrEmpty(fromAccount))
-                    {
-                        fromAccount = runtimeSource.UserName;
-                        AddDebugInputItem(fromAccount, "From Account");
-                    }
-                    else
-                    {
-                        AddDebugInputItem(new DebugEvalResult(FromAccount, "From Account", dataObject.Environment, update));
-                    }
-                    AddDebugInputItem(new DebugEvalResult(To, "To", dataObject.Environment, update));
-                    AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment, update));
-                    AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment, update));
-                }
-                var colItr = new WarewolfListIterator();
-
-                var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount ?? string.Empty, update));
-                colItr.AddVariableToIterateOn(fromAccountItr);
-
-                var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword,update));
-                colItr.AddVariableToIterateOn(passwordItr);
-
-                var toItr = new WarewolfIterator(dataObject.Environment.Eval(To, update));
-                colItr.AddVariableToIterateOn(toItr);
-
-                var ccItr = new WarewolfIterator(dataObject.Environment.Eval(Cc, update));
-                colItr.AddVariableToIterateOn(ccItr);
-
-                var bccItr = new WarewolfIterator(dataObject.Environment.Eval(Bcc, update));
-                colItr.AddVariableToIterateOn(bccItr);
-
-                var subjectItr = new WarewolfIterator(dataObject.Environment.Eval(Subject, update));
-                colItr.AddVariableToIterateOn(subjectItr);
-
-                var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body ?? string.Empty, update));
-                colItr.AddVariableToIterateOn(bodyItr);
-
-                var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty, update));
-                colItr.AddVariableToIterateOn(attachmentsItr);
-
-                if(!allErrors.HasErrors())
-                {
-                    while(colItr.HasMoreData())
-                    {
-                        var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
-                        allErrors.MergeErrors(errors);
-                        if(!allErrors.HasErrors())
-                        {
-                            indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
-                        }
-                    }
-                    if(IsDebug && !allErrors.HasErrors())
-                    {
-                        if (!string.IsNullOrEmpty(Result))
-                        {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                        }
-                    }
-                }
-                else
-                {
-                    if(IsDebug)
-                    {
-                        AddDebugInputItem(FromAccount, "From Account");
-                        AddDebugInputItem(To, "To");
-                        AddDebugInputItem(Subject, "Subject");
-                        AddDebugInputItem(Body, "Body");
-                    }
-                }
+                indexToUpsertTo = TryExecute(dataObject, update, allErrors, indexToUpsertTo, runtimeSource);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFEmail", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
@@ -291,7 +204,6 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-
                 if(allErrors.HasErrors())
                 {
                     foreach(var err in allErrors.FetchErrors())
@@ -311,6 +223,81 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
+        }
+
+        private int TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int indexToUpsertTo, EmailSource runtimeSource)
+        {
+            if (IsDebug)
+            {
+                var fromAccount = FromAccount;
+                if (String.IsNullOrEmpty(fromAccount))
+                {
+                    fromAccount = runtimeSource.UserName;
+                    AddDebugInputItem(fromAccount, "From Account");
+                }
+                else
+                {
+                    AddDebugInputItem(new DebugEvalResult(FromAccount, "From Account", dataObject.Environment, update));
+                }
+                AddDebugInputItem(new DebugEvalResult(To, "To", dataObject.Environment, update));
+                AddDebugInputItem(new DebugEvalResult(Subject, "Subject", dataObject.Environment, update));
+                AddDebugInputItem(new DebugEvalResult(Body, "Body", dataObject.Environment, update));
+            }
+            var colItr = new WarewolfListIterator();
+
+            var fromAccountItr = new WarewolfIterator(dataObject.Environment.Eval(FromAccount ?? string.Empty, update));
+            colItr.AddVariableToIterateOn(fromAccountItr);
+
+            var passwordItr = new WarewolfIterator(dataObject.Environment.Eval(DecryptedPassword, update));
+            colItr.AddVariableToIterateOn(passwordItr);
+
+            var toItr = new WarewolfIterator(dataObject.Environment.Eval(To, update));
+            colItr.AddVariableToIterateOn(toItr);
+
+            var ccItr = new WarewolfIterator(dataObject.Environment.Eval(Cc, update));
+            colItr.AddVariableToIterateOn(ccItr);
+
+            var bccItr = new WarewolfIterator(dataObject.Environment.Eval(Bcc, update));
+            colItr.AddVariableToIterateOn(bccItr);
+
+            var subjectItr = new WarewolfIterator(dataObject.Environment.Eval(Subject, update));
+            colItr.AddVariableToIterateOn(subjectItr);
+
+            var bodyItr = new WarewolfIterator(dataObject.Environment.Eval(Body ?? string.Empty, update));
+            colItr.AddVariableToIterateOn(bodyItr);
+
+            var attachmentsItr = new WarewolfIterator(dataObject.Environment.Eval(Attachments ?? string.Empty, update));
+            colItr.AddVariableToIterateOn(attachmentsItr);
+
+            if (!allErrors.HasErrors())
+            {
+                while (colItr.HasMoreData())
+                {
+                    var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
+                    allErrors.MergeErrors(errors);
+                    if (!allErrors.HasErrors())
+                    {
+                        indexToUpsertTo = UpsertResult(indexToUpsertTo, dataObject.Environment, result, update);
+                    }
+                }
+                if (IsDebug && !allErrors.HasErrors() && !string.IsNullOrEmpty(Result))
+                {
+                    AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                }
+
+            }
+            else
+            {
+                if (IsDebug)
+                {
+                    AddDebugInputItem(FromAccount, "From Account");
+                    AddDebugInputItem(To, "To");
+                    AddDebugInputItem(Subject, "Subject");
+                    AddDebugInputItem(Body, "Body");
+                }
+            }
+
+            return indexToUpsertTo;
         }
 
         void AddDebugInputItem(string value, string label)
@@ -398,10 +385,8 @@ namespace Dev2.Activities
             return result;
         }
 
-        List<string> GetSplitValues(string stringToSplit, char[] splitOn)
-        {
-            return stringToSplit.Split(splitOn, StringSplitOptions.RemoveEmptyEntries).ToList();
-        }
+        List<string> GetSplitValues(string stringToSplit, char[] splitOn) => stringToSplit.Split(splitOn, StringSplitOptions.RemoveEmptyEntries).ToList();
+
         void AddAttachmentsValue(string attachmentsValue, MailMessage mailMessage)
         {
             try
@@ -454,10 +439,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -514,7 +496,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -523,7 +505,7 @@ namespace Dev2.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -538,22 +520,24 @@ namespace Dev2.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(FromAccount, Password, To, Cc, Bcc, Subject, Attachments, Body);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(FromAccount, Password, To, Cc, Bcc, Subject, Attachments, Body);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion
 
         public bool Equals(DsfSendEmailActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var emailSourcesComparer = new EmailSourceComparer();
             var emailSourcesAreEqual = emailSourcesComparer.Equals(SelectedEmailSource, other.SelectedEmailSource);
             var paswordsAreEqual = CommonEqualityOps.PassWordsCompare(Password, other.Password);
@@ -574,9 +558,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfSendEmailActivity) obj);
         }
 

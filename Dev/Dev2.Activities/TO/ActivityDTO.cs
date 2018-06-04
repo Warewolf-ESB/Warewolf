@@ -132,10 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public List<string> OutList { get; set; }
 
-        public OutputTO ConvertToOutputTo()
-        {
-            return DataListFactory.CreateOutputTO(FieldName, OutList);
-        }
+        public OutputTO ConvertToOutputTo() => DataListFactory.CreateOutputTO(FieldName, OutList);
 
         /// <summary>
         /// Validates the property name with the default rule set in <value>ActivityDTO</value>
@@ -205,10 +202,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return body.Member.Name;
         }
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
-        }
+        public bool IsEmpty() => string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
@@ -240,25 +234,62 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         
         public bool Equals(ActivityDTO other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
-            return string.Equals(FieldName, other.FieldName) 
-                && string.Equals(FieldValue, other.FieldValue) 
-                && IndexNumber == other.IndexNumber
-                && IsFieldNameFocused == other.IsFieldNameFocused
-                && IsFieldValueFocused == other.IsFieldValueFocused 
-                && string.Equals(ErrorMessage, other.ErrorMessage) 
-                && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable)
-                && string.Equals(WatermarkTextValue, other.WatermarkTextValue) 
-                && Inserted == other.Inserted 
-                && OutList.SequenceEqual(other.OutList, StringComparer.Ordinal);
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            var equal = IsFieldMatch(other);
+            equal &= IsFocusedMatch(other);
+            equal &= IsIndexAndInsertedMatch(other);
+            equal &= IsStringTypeMatch(other);
+            equal &= IsWatermarkMatch(other);
+
+            return equal;
         }
+
+        private bool IsFieldMatch(ActivityDTO other) =>
+            string.Equals(FieldName, other.FieldName) &&
+            string.Equals(FieldValue, other.FieldValue);
+
+        private bool IsFocusedMatch(ActivityDTO other) =>
+            IsFieldNameFocused == other.IsFieldNameFocused &&
+            IsFieldValueFocused == other.IsFieldValueFocused;
+
+        private bool IsIndexAndInsertedMatch(ActivityDTO other) =>
+            IndexNumber == other.IndexNumber &&
+            Inserted == other.Inserted;
+
+        private bool IsWatermarkMatch(ActivityDTO other) =>
+            string.Equals(WatermarkTextVariable, other.WatermarkTextVariable) &&
+            string.Equals(WatermarkTextValue, other.WatermarkTextValue);
+
+        private bool IsStringTypeMatch(ActivityDTO other) =>
+            string.Equals(ErrorMessage, other.ErrorMessage) &&
+            OutList.SequenceEqual(other.OutList, StringComparer.Ordinal);
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((ActivityDTO) obj);
         }
 

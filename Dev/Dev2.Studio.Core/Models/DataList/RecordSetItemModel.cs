@@ -45,14 +45,12 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                if (!string.IsNullOrEmpty(_searchText))
+                if (!string.IsNullOrEmpty(_searchText) && _children != null)
                 {
-                    if (_children != null)
-                    {
-                        var itemModels = _children.Where(model => model.IsVisible).ToObservableCollection();
-                        return itemModels;
-                    }
+                    var itemModels = _children.Where(model => model.IsVisible).ToObservableCollection();
+                    return itemModels;
                 }
+
                 return _children ?? (_children = new ObservableCollection<IRecordSetFieldItemModel>());
             }
             set
@@ -171,17 +169,22 @@ namespace Dev2.Studio.Core.Models.DataList
                     }
                     else
                     {
-                        if(!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
-                            !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
-                        {
-                            RemoveError();
-                        }
+                        ConditionallyRemoveError();
                     }
                 }
             }
             return name;
+        }
+
+        void ConditionallyRemoveError()
+        {
+            if (!string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateValue, StringComparison.InvariantCulture) &&
+                                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateVariable, StringComparison.InvariantCulture) &&
+                                        !string.Equals(ErrorMessage, StringResources.ErrorMessageDuplicateRecordset, StringComparison.InvariantCulture) &&
+                                        !string.Equals(ErrorMessage, StringResources.ErrorMessageEmptyRecordSet, StringComparison.InvariantCulture))
+            {
+                base.RemoveError();
+            }
         }
 
         #endregion
@@ -194,26 +197,43 @@ namespace Dev2.Studio.Core.Models.DataList
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString()
-        {
-            return DisplayName;
-        }
+        public override string ToString() => DisplayName;
 
         #endregion
 
         public bool Equals(RecordSetItemModel other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) && Equals(Input, other.Input) && Equals(Output, other.Output)
                 && Equals(_children, other._children);
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((RecordSetItemModel) obj);
         }
 

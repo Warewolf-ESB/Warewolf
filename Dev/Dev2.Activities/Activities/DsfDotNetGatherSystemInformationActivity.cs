@@ -50,10 +50,7 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<string> GetOutputs()
-        {
-            return SystemInformationCollection.Select(to => to.Result).ToList();
-        }
+        public override List<string> GetOutputs() => SystemInformationCollection.Select(to => to.Result).ToList();
 
         public DsfDotNetGatherSystemInformationActivity()
             : base("Gather System Information")
@@ -91,51 +88,10 @@ namespace Dev2.Activities
             {
                 _currentIdentity = dataObject.ExecutingUser.Identity;
             }
-            var indexCounter = 0;
             InitializeDebug(dataObject);
             try
             {
-                CleanArgs();
-
-                foreach (GatherSystemInformationTO item in SystemInformationCollection)
-                {
-                    try
-                    {
-                        indexCounter++;
-
-                        if (dataObject.IsDebugMode())
-                        {
-                            var inputToAdd = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
-                            AddDebugItem(new DebugItemStaticDataParams("", dataObject.Environment.EvalToExpression(item.Result, update), "", "="), inputToAdd);
-                            AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
-                            _debugInputs.Add(inputToAdd);
-                        }
-
-                        if (!allErrors.HasErrors())
-                        {
-                            HandleNoErrorsFound(dataObject, update, allErrors, item);
-                        }
-                    }
-                    catch (Exception err)
-                    {
-                        dataObject.Environment.Assign(item.Result, null, update);
-                        allErrors.AddError(err.Message);
-                    }
-                }
-                dataObject.Environment.CommitAssign();
-                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
-                {
-                    var innerCount = 1;
-                    foreach (GatherSystemInformationTO item in SystemInformationCollection)
-                    {
-                        var itemToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", "", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment, update), itemToAdd);
-                        _debugOutputs.Add(itemToAdd);
-                        innerCount++;
-                    }
-                }
+                TryExecute(dataObject, update, allErrors);
             }
             catch (Exception e)
             {
@@ -145,6 +101,52 @@ namespace Dev2.Activities
             finally
             {
                 HandleErrors(dataObject, update, allErrors);
+            }
+        }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            CleanArgs();
+
+            var indexCounter = 0;
+            foreach (GatherSystemInformationTO item in SystemInformationCollection)
+            {
+                try
+                {
+                    indexCounter++;
+
+                    if (dataObject.IsDebugMode())
+                    {
+                        var inputToAdd = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams("", dataObject.Environment.EvalToExpression(item.Result, update), "", "="), inputToAdd);
+                        AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
+                        _debugInputs.Add(inputToAdd);
+                    }
+
+                    if (!allErrors.HasErrors())
+                    {
+                        HandleNoErrorsFound(dataObject, update, allErrors, item);
+                    }
+                }
+                catch (Exception err)
+                {
+                    dataObject.Environment.Assign(item.Result, null, update);
+                    allErrors.AddError(err.Message);
+                }
+            }
+            dataObject.Environment.CommitAssign();
+            if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+            {
+                var innerCount = 1;
+                foreach (GatherSystemInformationTO item in SystemInformationCollection)
+                {
+                    var itemToAdd = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", "", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                    AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment, update), itemToAdd);
+                    _debugOutputs.Add(itemToAdd);
+                    innerCount++;
+                }
             }
         }
 
@@ -277,10 +279,7 @@ namespace Dev2.Activities
             return GetForEachItems(enumerable.ToArray());
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -316,12 +315,9 @@ namespace Dev2.Activities
             }
         }
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
-        {
-            return _debugInputs;
-        }
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -406,10 +402,7 @@ namespace Dev2.Activities
             return string.Empty;
         }
 
-        public int GetCollectionCount()
-        {
-            return SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
-        }
+        public int GetCollectionCount() => SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
@@ -421,6 +414,30 @@ namespace Dev2.Activities
             {
                 AddToCollection(listToAdd, modelItem);
             }
+        }
+
+        public bool Equals(DsfDotNetGatherSystemInformationActivity other)
+        {
+            var eq = base.Equals(other);
+            eq &= DisplayName.Equals(other.DisplayName);
+            if (!(_getSystemInformation is null))
+            {
+                eq &= _getSystemInformation.Equals(other._getSystemInformation);
+            }
+            if (!(_currentIdentity is null)) {
+                eq &= _currentIdentity.Equals(other._currentIdentity);
+            }
+
+            return eq;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is DsfDotNetGatherSystemInformationActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
         }
     }
 }

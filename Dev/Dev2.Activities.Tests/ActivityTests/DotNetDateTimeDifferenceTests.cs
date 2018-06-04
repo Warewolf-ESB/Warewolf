@@ -24,7 +24,7 @@ namespace ActivityUnitTests.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    
+
     public class DotNetDateTimeDifferenceTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -77,7 +77,7 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("9477", results[1]);
             Assert.AreEqual("9090", results[2]);
         }
-        
+
         [TestMethod]
         public void Blank_InputFormat_Expected_Error()
         {
@@ -95,7 +95,7 @@ namespace ActivityUnitTests.ActivityTests
 
             // remove test datalist ;)
             Assert.IsNull(actual);
-        }              
+        }
         #endregion Positive Test Cases
 
         #region Error Test Cases
@@ -114,6 +114,89 @@ namespace ActivityUnitTests.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[dtd]]", outputs[0]);
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeDifferenceActivity_Equality")]
+        public void DsfDateTimeDifferenceActivity_Expect_NotEqual()
+        {
+            var id = Guid.NewGuid().ToString();
+            var activity1 = new DsfDotNetDateTimeDifferenceActivity
+            {
+                Input1 = "[[recset1(*).f1]]",
+                Input2 = "[[recset2(*).f2]]",
+                InputFormat = "dd/MM/yyyy",
+                OutputType = "Days",
+                UniqueID = id,
+                Result = "[[resCol(*).res]]"
+            };
+            var activity2 = new DsfDotNetDateTimeDifferenceActivity
+            {
+                Input1 = "[[recset2(*).f1]]",
+                Input2 = "[[recset1(*).f2]]",
+                InputFormat = "MM/dd/yyyy",
+                OutputType = "Months",
+                UniqueID = id,
+                Result = "[[resCol1(*).res]]"
+            };
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DsfDateTimeDifferenceActivity_Equality")]
+        public void DsfDateTimeDifferenceActivity_Expect_Equal()
+        {
+            var id = Guid.NewGuid().ToString();
+            var activity1 = new DsfDotNetDateTimeDifferenceActivity
+            {
+                Input1 = "[[recset1(*).f1]]",
+                Input2 = "[[recset2(*).f2]]",
+                InputFormat = "dd/MM/yyyy",
+                OutputType = "Days",
+                UniqueID = id,
+                Result = "[[resCol(*).res]]"
+            };
+            var activity2 = new DsfDotNetDateTimeDifferenceActivity
+            {
+                Input1 = "[[recset1(*).f1]]",
+                Input2 = "[[recset2(*).f2]]",
+                InputFormat = "dd/MM/yyyy",
+                OutputType = "Days",
+                UniqueID = id,
+                Result = "[[resCol(*).res]]"
+            };
+            var activity1_otherref = activity1;
+            Assert.IsTrue(activity1.Equals(activity1_otherref));
+            Assert.IsTrue(activity1.Equals(activity2));
+            string tmp_holder;
+
+            tmp_holder = activity2.Input1;
+            activity2.Input1 = "[[notsame(*).f1]]";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.Input1 = tmp_holder;
+
+            tmp_holder = activity2.Input2;
+            activity2.Input2 = "[[notsame(*).f2]]";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.Input2 = tmp_holder;
+
+            tmp_holder = activity2.InputFormat;
+            activity2.InputFormat = "MM/dd/yyyy";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.InputFormat = tmp_holder;
+
+            tmp_holder = activity2.OutputType;
+            activity2.OutputType = "Minutes";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.OutputType = tmp_holder;
+
+            tmp_holder = activity2.Result;
+            activity2.Result = "[[res(*).res]]";
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.Result = tmp_holder;
+
+            Assert.IsTrue(activity1.Equals(activity2));
         }
 
         #region Private Test Methods

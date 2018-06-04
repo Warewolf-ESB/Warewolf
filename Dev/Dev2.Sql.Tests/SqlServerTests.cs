@@ -15,6 +15,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -404,7 +405,7 @@ namespace Dev2.Sql.Tests
             {
                 sqlServer.Connect("a");
                 factory.Verify(a => a.BuildConnection(It.IsAny<string>()));
-                conn.Verify(a => a.Open());
+                conn.Verify(a => a.EnsureOpen());
 
 
 
@@ -436,7 +437,7 @@ namespace Dev2.Sql.Tests
 
             sqlServer.Connect("a");
             sqlServer.BeginTransaction();
-            conn.Verify(a => a.Open(), Times.Never);//Connection is open
+            conn.Verify(a => a.EnsureOpen(), Times.Never);//Connection is open
 
             //------------Assert Results-------------------------
             conn.Verify(a => a.BeginTransaction());
@@ -468,7 +469,7 @@ namespace Dev2.Sql.Tests
                 sqlServer.BeginTransaction();
                 sqlServer.RollbackTransaction();
                 factory.Verify(a => a.BuildConnection(It.IsAny<string>()));
-                conn.Verify(a => a.Open(), Times.Never);
+                conn.Verify(a => a.EnsureOpen(), Times.Never);
 
                 dbTran.Verify(a => a.Rollback());
                 dbTran.Verify(a => a.Dispose());
@@ -1057,6 +1058,54 @@ namespace Dev2.Sql.Tests
                 sqlServer.Dispose();
             }
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenConnectionString_ShouldReturnUpdatedConnectionWithPoolNoMARS()
+
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            var source = new DbSource();
+            source.Server = "localhost";
+            source.ServerType = Common.Interfaces.Core.DynamicServices.enSourceType.SqlDatabase;
+            source.AuthenticationType = AuthenticationType.Windows;
+            //------------Execute Test---------------------------
+
+            var updatedConnectionString = connectionBuilder.ConnectionString(source.ConnectionString);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(updatedConnectionString.Contains("MultipleActiveResultSets=True"));
+            StringAssert.Contains(updatedConnectionString, "Application Name=\"Warewolf Service\"");
+            StringAssert.Contains(updatedConnectionString, "Pooling=True");
+            StringAssert.Contains(updatedConnectionString, "Data Source=localhost");
+            StringAssert.Contains(updatedConnectionString, "Integrated Security=True");
+            StringAssert.Contains(updatedConnectionString, "Max Pool Size=100");
+            StringAssert.Contains(updatedConnectionString, "Connect Timeout=30");
+
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectionBuilder")]
+        public void ConnectionBuilder_GivenConnectionString_ShouldReturnConnectionUpdatedConnectionWithPoolNoMARS()
+
+        {
+            //------------Setup for test--------------------------
+            var connectionBuilder = new ConnectionBuilder();
+            var source = new DbSource();
+            source.Server = "localhost";
+            source.ServerType = Common.Interfaces.Core.DynamicServices.enSourceType.SqlDatabase;
+            source.AuthenticationType = AuthenticationType.Windows;
+            //------------Execute Test---------------------------
+
+            var connection = connectionBuilder.BuildConnection(source.ConnectionString);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(connection);
+            Assert.IsInstanceOfType(connection, typeof(ISqlConnection));
+
+        }
+
     }
     class DbEx : DbException
     {

@@ -64,5 +64,18 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
         protected override void ExecuteTool(IDSFDataObject dataObject,int update)
         {
         }
+
+        public bool Equals(TestActivity other)
+        {
+            return ReferenceEquals(this, other);
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is TestActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
+        }
     }
 }

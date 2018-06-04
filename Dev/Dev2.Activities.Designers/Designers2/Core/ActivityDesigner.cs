@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -37,14 +37,12 @@ using FontAwesome.WPF;
 namespace Dev2.Activities.Designers2.Core
 {
     [ActivityDesignerOptions(AllowDrillIn = false, AlwaysCollapseChildren = true)]
-    public class ActivityDesigner<TViewModel> : ActivityDesigner, IDisposable, IUpdatesHelp, IErrorsSource
+    public class ActivityDesigner<TViewModel> : ActivityDesigner, IUpdatesHelp, IErrorsSource
         where TViewModel : ActivityDesignerViewModel
     {
         bool _isInitialFocusDone;
         readonly AdornerControl _errorsAdorner;
-        bool _isDisposed;
-        DependencyPropertyDescriptor _zIndexProperty;
-        
+
         protected TViewModel _dataContext;
 
         bool _isSetFocusActionSet;
@@ -54,28 +52,22 @@ namespace Dev2.Activities.Designers2.Core
         {
             _errorsAdorner = new ErrorsAdorner(this);
             Loaded += OnRoutedEventHandler;
-            Unloaded += ActivityDesignerUnloaded;
             AllowDrop = true;
             PreviewKeyDown += OnPreviewKeyDown;
         }
 
-        void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
+        static void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
-            if (keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control)
+            if (keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control && keyEventArgs.OriginalSource.GetType() != typeof(TextBox))
             {
-                if (keyEventArgs.OriginalSource.GetType() != typeof(TextBox))
-                {
-                    keyEventArgs.Handled = true;
-                }
+                keyEventArgs.Handled = true;
             }
 
-            if (keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) ||
-                keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem))
+            var isComboBoxOrComboBoxItem = (keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) || keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem));
+            var keyIsUndoOrDelete = ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete);
+            if (isComboBoxOrComboBoxItem && keyIsUndoOrDelete)
             {
-                if ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete)
-                {
-                    keyEventArgs.Handled = true;
-                }
+                keyEventArgs.Handled = true;
             }
         }
 
@@ -111,7 +103,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             get
             {
-                if (UpdateContentEnabled())
+                if (IsServiceTestContentEnabled())
                 {
                     return false;
                 }
@@ -120,30 +112,47 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        bool UpdateContentEnabled()
+        bool IsServiceTestContentEnabled()
         {
             var parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
             var dataContext = parentContentPane?.DataContext;
             if (dataContext != null)
             {
-                if (dataContext.GetType().Name == "ServiceTestViewModel")
-                {
-                    if (ContentDesignerTemplate != null)
-                    {
-                        if (ContentDesignerTemplate.Parent.GetType().Name != "ForeachDesigner" &&
-                            ContentDesignerTemplate.Parent.GetType().Name != "SequenceDesigner" &&
-                            ContentDesignerTemplate.Parent.GetType().Name != "SelectAndApplyDesigner")
-                        {
-                            ContentDesignerTemplate.IsEnabled = false;
-                        }
-                        ContentDesignerTemplate.RightButtons.Clear();
-                        ContentDesignerTemplate.LeftButtons.Clear();
-                    }
+                UpdateServiceTest(dataContext);
 
-                }
                 return true;
             }
             return false;
+        }
+
+        void UpdateContentEnabled()
+        {
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var dataContext = parentContentPane?.DataContext;
+            if (dataContext != null)
+            {
+                UpdateServiceTest(dataContext);
+
+                if (dataContext.GetType().Name == "MergeWorkflowViewModel")
+                {
+                    ViewModel.IsMerge = true;
+                }
+            }
+        }
+
+        private void UpdateServiceTest(object dataContext)
+        {
+            if (dataContext.GetType().Name == "ServiceTestViewModel" && ContentDesignerTemplate != null)
+            {
+                if (ContentDesignerTemplate.Parent.GetType().Name != "ForeachDesigner" &&
+                    ContentDesignerTemplate.Parent.GetType().Name != "SequenceDesigner" &&
+                    ContentDesignerTemplate.Parent.GetType().Name != "SelectAndApplyDesigner")
+                {
+                    ContentDesignerTemplate.IsEnabled = false;
+                }
+                ContentDesignerTemplate.RightButtons.Clear();
+                ContentDesignerTemplate.LeftButtons.Clear();
+            }
         }
 
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
@@ -172,7 +181,7 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            if (ViewModel != null && e.OriginalSource.GetType()==typeof(Border))
+            if (ViewModel != null && e.OriginalSource.GetType() == typeof(Border))
             {
                 UpdateHelpDescriptor(ViewModel.HelpText);
             }
@@ -224,15 +233,13 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnMouseEnter(MouseEventArgs e)
         {
-            if (!_isSetFocusActionSet)
+            if (!_isSetFocusActionSet && DataContext is ActivityDesignerViewModel vm)
             {
-                if (DataContext is ActivityDesignerViewModel vm)
-                {
-                    vm.SetIntialFocusAction(SetInitialiFocus);
-                    _isSetFocusActionSet = true;
-                    return;
-                }
+                vm.SetIntialFocusAction(SetInitialiFocus);
+                _isSetFocusActionSet = true;
+                return;
             }
+
             base.OnMouseEnter(e);
         }
 
@@ -283,74 +290,27 @@ namespace Dev2.Activities.Designers2.Core
 
         void ApplyEventHandlers(TViewModel viewModel)
         {
-            _zIndexProperty = DependencyPropertyDescriptor.FromProperty(ActivityDesignerViewModel.ZIndexPositionProperty, typeof(TViewModel));
+            var _zIndexProperty = DependencyPropertyDescriptor.FromProperty(ActivityDesignerViewModel.ZIndexPositionProperty, typeof(TViewModel));
             _zIndexProperty.AddValueChanged(viewModel, OnZIndexPositionChanged);
-
             Context?.Items.Subscribe<Selection>(OnSelectionChanged);
         }
 
         void OnZIndexPositionChanged(object sender, EventArgs args)
         {
             var viewModel = (TViewModel)sender;
-
             var element = Parent as FrameworkElement;
             element?.SetZIndex(viewModel.ZIndexPosition);
         }
 
-        void OnSelectionChanged(Selection item)
-        {
-            ViewModel.IsSelected = item.SelectedObjects.Any(modelItem => modelItem == ModelItem);
-        }
+        void OnSelectionChanged(Selection item) => ViewModel.IsSelected = item.SelectedObjects.Any(modelItem => modelItem == ModelItem);
 
-        protected override void OnPreviewDragEnter(DragEventArgs e)
-        {
-            ActivityHelper.HandleDragEnter(e);
-        }
+        protected override void OnPreviewDragEnter(DragEventArgs e) => ActivityHelper.HandleDragEnter(e);
 
         #region IDisposable Members
 
+        public void UpdateHelpDescriptor(string helpText) => ViewModel?.UpdateHelpDescriptor(helpText);
 
-        ~ActivityDesigner()
-        {
-            // Do not re-create Dispose clean-up code here.
-            // Calling Dispose(false) is optimal in terms of
-            // readability and maintainability.
-            Dispose(false);
-        }
-
-        public void UpdateHelpDescriptor(string helpText)
-        {
-            ViewModel?.UpdateHelpDescriptor(helpText);
-        }
-
-        void OnRoutedEventHandler(object sender, RoutedEventArgs args)
-        {
-            Application.Current?.Dispatcher?.InvokeAsync(OnLoaded, DispatcherPriority.Background);
-        }
-
-        void ActivityDesignerUnloaded(object sender, RoutedEventArgs e)
-        {
-            OnUnloaded();
-            Dispose();
-        }
-
-        protected virtual void OnUnloaded()
-        {
-
-        }
-        
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                _isDisposed = true;
-            }
-        }
+        void OnRoutedEventHandler(object sender, RoutedEventArgs args) => Application.Current?.Dispatcher?.InvokeAsync(OnLoaded, DispatcherPriority.Background);
 
         #endregion
 
@@ -386,26 +346,19 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     base.OnContextMenuOpening(e);
 
-                    if (ViewModel != null && ViewModel.HasLargeView)
+                    if (ViewModel != null && ViewModel.HasLargeView && !ViewModel.ShowSmall && ViewModel.ShowSmall)
                     {
-                        var header = "Collapse Large View";
-                        var fontAwesomeIcon = FontAwesomeIcon.Compress;
-                        if (ViewModel.ShowSmall)
+                        var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
+                        var icon = new Image
                         {
-                            fontAwesomeIcon = FontAwesomeIcon.Expand;
-                            header = "Show Large View";
-                        }
-                        else
-                        {
-                            if (ViewModel.ShowSmall)
-                            {
-                                var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
-                                var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
-                                _showCollapseLargeView.Header = "Show Large View";
-                                _showCollapseLargeView.Icon = icon;
-                            }
-                        }
+                            Source = imageSource,
+                            Height = 14,
+                            Width = 14
+                        };
+                        _showCollapseLargeView.Header = "Show Large View";
+                        _showCollapseLargeView.Icon = icon;
                     }
+
                 }
             }
         }

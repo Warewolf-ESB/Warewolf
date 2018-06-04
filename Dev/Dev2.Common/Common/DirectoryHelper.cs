@@ -12,23 +12,28 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Warewolf.Resource.Errors;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Common.Common
 {
-    public static class DirectoryHelper
+    public class DirectoryHelper : IDirectoryHelper
     {
-        
+        public string[] GetFiles(string path) => Directory.GetFiles(path);
+
         /// <summary>
         /// This needs to be remove at Version 3.0
         /// </summary>
         /// <param name="path"></param>
         /// <param name="extensions"></param>
         /// <returns></returns>
-        public static IEnumerable<string> GetFilesByExtensions(string path, params string[] extensions)
+        public IEnumerable<string> GetFilesByExtensions(string path, params string[] extensions)
         {
             var dir = new DirectoryInfo(path);
             if (extensions == null)
+            {
                 throw new ArgumentNullException("extensions");
+            }
+
             var _files = new List<string>();
             foreach (string ext in extensions)
             {
@@ -41,7 +46,7 @@ namespace Dev2.Common.Common
             return _files;
         }
 
-        public static void Copy(string sourceDirName, string destDirName, bool copySubDirs)
+        public void Copy(string sourceDirName, string destDirName, bool copySubDirs)
         {
             if (!Directory.Exists(destDirName))
             {
@@ -68,7 +73,7 @@ namespace Dev2.Common.Common
             }
         }
 
-        public static void CleanUp(string path)
+        public void CleanUp(string path)
         {
             if (path != null)
             {
@@ -97,12 +102,12 @@ namespace Dev2.Common.Common
 
         static void CheckIfDeleteIsValid(FileSystemInfo fsi)
         {
-            if (fsi.FullName.ToLower() == @"C:\".ToLower())
+            if (string.Equals(fsi.FullName, @"C:\", StringComparison.CurrentCultureIgnoreCase))
             {
                 throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
                     fsi.FullName));
             }
-            if (fsi.FullName.ToLower() == @"C:\Windows\System".ToLower())
+            if (string.Equals(fsi.FullName, @"C:\Windows\System", StringComparison.CurrentCultureIgnoreCase))
             {
                 throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
                     fsi.FullName));
@@ -167,6 +172,16 @@ namespace Dev2.Common.Common
                 throw new NotSupportedException(string.Format(ErrorResource.CannotDeleteSystemFiles,
                     fsi.FullName));
             }
+        }
+
+        public string CreateIfNotExists(string debugOutputPath)
+        {
+            if (!Directory.Exists(debugOutputPath))
+            {
+                return Directory.CreateDirectory(debugOutputPath).Name;
+            }
+
+            return debugOutputPath;
         }
     }
 }

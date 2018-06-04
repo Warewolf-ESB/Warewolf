@@ -152,6 +152,108 @@ namespace Dev2.Tests.Activities.Utils
             // Assert.Inconclusive("Verify the correctness of this test method.");
         }
 
+        [TestMethod]
+        public void Util_Eq()
+        {
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq("theString", null));
+
+
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq("1970-01-01", "1970-01-01"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq("1970-01-01", "1970-01-01 12:01:01"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq("not a date", "1970-01-01 12:01:01"));
+
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq("1.45", "1.45"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq("1.45", "1.454"));
+        }
+
+        [TestMethod]
+        public void Util_NtEq()
+        {
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.NtEq("theString", null));
+
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.NtEq("1970-01-01", "1970-01-01"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.NtEq("1970-01-01", "1970-01-01 12:01:01"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.NtEq("not a date", "1970-01-01 12:01:01"));
+
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.NtEq("1.45", "1.45"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.NtEq("1.45", "1.454"));
+        }
+
+        [TestMethod]
+        public void Util_LsTh()
+        {
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsTh("theString", null));
+
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsTh("1970-01-01", "1970-01-01"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsTh("1970-01-01", "1970-01-01 12:01:01"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsTh("1970-01-02", "1970-01-01 12:01:01"));
+
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsTh("1.45", "1.45"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsTh("1.451", "1.45"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsTh("1.45", "1.454"));
+        }
+
+        [TestMethod]
+        public void Util_LsThEq()
+        {
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsThEq("theString", null));
+
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsThEq("1970-01-01", "1970-01-01"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsThEq("1970-01-01", "1970-01-01 12:01:01"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsThEq("1970-01-02", "1970-01-01 12:01:01"));
+
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsThEq("1.45", "1.45"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsThEq("1.451", "1.45"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.LsThEq("1.45", "1.454"));
+        }
+
+        [TestMethod]
+        public void Util_GrTh()
+        {
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh("theString", null));
+
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh("1970-01-01", "1970-01-01"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh("1970-01-01", "1970-01-01 12:01:01"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh("1970-01-02", "1970-01-01 12:01:01"));
+
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh("1.45", "1.45"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh("1.451", "1.45"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh("1.45", "1.454"));
+        }
+
+        [TestMethod]
+        public void Util_GrThEq()
+        {
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq("theString", null));
+
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq("1970-01-01", "1970-01-01"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq("1970-01-01", "1970-01-01 12:01:01"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq("1970-01-02", "1970-01-01 12:01:01"));
+
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq("1.45", "1.45"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq("1.451", "1.45"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq("1.45", "1.454"));
+        }
+
+        [TestMethod]
+        public void Util_Btw()
+        {
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("", null, null));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("theString", null, null));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("theString", "from", null));
+
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("1970-01-01", "1970-01-01", "1970-01-02"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("1970-01-01 12:01:01", "1970-01-01", "1970-01-02"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("1970-01-01", "1970-01-01 12:01:01", "1970-01-02"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("1970-01-01 12:00:00", "1970-01-01", "1970 -01-01 12:01:01"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("1970-01-01 13:00:00", "1970-01-01", "1970 -01-01 12:01:01"));
+
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("1.45", "1.45", "1.45"));
+            Assert.IsTrue(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("1.451", "1.45", "1.5"));
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("1.45", "1.454", "1.5"));
+
+            Assert.IsFalse(Unlimited.Applications.BusinessDesignStudio.Activities.Util.Btw("bob", "apple", "cat"));
+        }
     }
 }
 

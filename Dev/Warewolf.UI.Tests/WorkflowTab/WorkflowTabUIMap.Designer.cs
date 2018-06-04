@@ -43,16 +43,16 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         }
         
         /// <summary>
-        /// AssertMethod1 - Use 'AssertMethod1ExpectedValues' to pass parameters into this method.
+        /// Open_Workflow_Tab_UI_Map_Designer_To_Flowchart - Use 'Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues' to pass parameters into this method.
         /// </summary>
-        public void AssertMethod1()
+        public void Open_Workflow_Tab_UI_Map_Designer_To_Flowchart()
         {
             #region Variable Declarations
             WpfText uISQLErrorError15700seText = this.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UISQLServerDatabaseTreeItem.UISQLErrorError15700seText;
             #endregion
 
             // Verify that the 'ControlType' property of 'SQL Error: Error 15700, severity -1, state 1 was r...' label equals 'Text'
-            Assert.AreEqual(this.AssertMethod1ExpectedValues.UISQLErrorError15700seTextControlType, uISQLErrorError15700seText.ControlType.ToString());
+            Assert.AreEqual(this.Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues.UISQLErrorError15700seTextControlType, uISQLErrorError15700seText.ControlType.ToString());
         }
         
         #region Properties
@@ -68,15 +68,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             }
         }
         
-        public virtual AssertMethod1ExpectedValues AssertMethod1ExpectedValues
+        public virtual Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues
         {
             get
             {
-                if ((this.mAssertMethod1ExpectedValues == null))
+                if ((this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues == null))
                 {
-                    this.mAssertMethod1ExpectedValues = new AssertMethod1ExpectedValues();
+                    this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues = new Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues();
                 }
-                return this.mAssertMethod1ExpectedValues;
+                return this.mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
             }
         }
         
@@ -92,39 +92,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             }
         }
         
-        public UICodedUITestBuilderWindow UICodedUITestBuilderWindow
+        public UIWarewolfDEV2CANDICEDWindow UIWarewolfDEV2CANDICEDWindow
         {
             get
             {
-                if ((this.mUICodedUITestBuilderWindow == null))
+                if ((this.mUIWarewolfDEV2CANDICEDWindow == null))
                 {
-                    this.mUICodedUITestBuilderWindow = new UICodedUITestBuilderWindow();
+                    this.mUIWarewolfDEV2CANDICEDWindow = new UIWarewolfDEV2CANDICEDWindow();
                 }
-                return this.mUICodedUITestBuilderWindow;
-            }
-        }
-        
-        public UIWpfWindow UIWpfWindow
-        {
-            get
-            {
-                if ((this.mUIWpfWindow == null))
-                {
-                    this.mUIWpfWindow = new UIWpfWindow();
-                }
-                return this.mUIWpfWindow;
-            }
-        }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
+                return this.mUIWarewolfDEV2CANDICEDWindow;
             }
         }
         #endregion
@@ -132,15 +108,11 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         #region Fields
         private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
         
-        private AssertMethod1ExpectedValues mAssertMethod1ExpectedValues;
+        private Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues mOpen_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues;
         
         private MainStudioWindow mMainStudioWindow;
         
-        private UICodedUITestBuilderWindow mUICodedUITestBuilderWindow;
-        
-        private UIWpfWindow mUIWpfWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
+        private UIWarewolfDEV2CANDICEDWindow mUIWarewolfDEV2CANDICEDWindow;
         #endregion
     }
     
@@ -160,10 +132,10 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
     }
     
     /// <summary>
-    /// Parameters to be passed into 'AssertMethod1'
+    /// Parameters to be passed into 'Open_Workflow_Tab_UI_Map_Designer_To_Flowchart'
     /// </summary>
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class AssertMethod1ExpectedValues
+    public class Open_Workflow_Tab_UI_Map_Designer_To_FlowchartExpectedValues
     {
         
         #region Fields
@@ -348,10 +320,43 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mWorkflowTab;
             }
         }
+        
+        public UIUI_TabManager_AutoIDTabList UIUI_TabManager_AutoIDTabList
+        {
+            get
+            {
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
+                {
+                    this.mUIUI_TabManager_AutoIDTabList = new UIUI_TabManager_AutoIDTabList(this);
+                }
+                return this.mUIUI_TabManager_AutoIDTabList;
+            }
+        }
+        
+        public WpfTabPage Unsaved2
+        {
+            get
+            {
+                if ((this.mUnsaved2 == null))
+                {
+                    this.mUnsaved2 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mUnsaved2.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mUnsaved2.SearchProperties[WpfTabPage.PropertyNames.Instance] = "2";
+                    this.mUnsaved2.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mUnsaved2;
+            }
+        }
         #endregion
         
         #region Fields
         private WorkflowTab mWorkflowTab;
+        
+        private UIUI_TabManager_AutoIDTabList mUIUI_TabManager_AutoIDTabList;
+        
+        private WpfTabPage mUnsaved2;
         #endregion
     }
     
@@ -364,6 +369,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+            this.SearchProperties[WpfTabPage.PropertyNames.Instance] = "1";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -848,6 +854,23 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             }
         }
         
+        public WpfCustom StartNode2
+        {
+            get
+            {
+                if ((this.mStartNode2 == null))
+                {
+                    this.mStartNode2 = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mStartNode2.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.StartSymbol";
+                    this.mStartNode2.SearchProperties[WpfControl.PropertyNames.AutomationId] = "StartSymbol";
+                    this.mStartNode2.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mStartNode2;
+            }
+        }
+        
         public WpfCustom StartNode
         {
             get
@@ -899,18 +922,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             }
         }
         
-        public WpfCustom Connector3
+        public Connector3 Connector3
         {
             get
             {
                 if ((this.mConnector3 == null))
                 {
-                    this.mConnector3 = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mConnector3.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
-                    this.mConnector3.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
-                    this.mConnector3.WindowTitles.Add("Warewolf");
-                    #endregion
+                    this.mConnector3 = new Connector3(this);
                 }
                 return this.mConnector3;
             }
@@ -1049,6 +1067,23 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 return this.mKeepNewNameFlowChartName;
             }
         }
+        
+        public WpfCustom UIItem1b66d61971804317Custom
+        {
+            get
+            {
+                if ((this.mUIItem1b66d61971804317Custom == null))
+                {
+                    this.mUIItem1b66d61971804317Custom = new WpfCustom(this);
+                    #region Search Criteria
+                    this.mUIItem1b66d61971804317Custom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+                    this.mUIItem1b66d61971804317Custom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "1b66d619-7180-4317-805d-4bf5074d91da,300,187.5 300,237.5";
+                    this.mUIItem1b66d61971804317Custom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIItem1b66d61971804317Custom;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1058,13 +1093,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         
         private CreateJson mCreateJson;
         
+        private WpfCustom mStartNode2;
+        
         private WpfCustom mStartNode;
         
         private WpfCustom mConnector1;
         
         private WpfCustom mConnector2;
         
-        private WpfCustom mConnector3;
+        private Connector3 mConnector3;
         
         private Error1 mError1;
         
@@ -1085,6 +1122,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         private WpfCustom mHelloWordFlowChartName;
         
         private KeepNewNameFlowChartName mKeepNewNameFlowChartName;
+        
+        private WpfCustom mUIItem1b66d61971804317Custom;
         #endregion
     }
     
@@ -1122,6 +1161,43 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         
         #region Fields
         private WpfToggleButton mOpenQuickVariableInpToggleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Connector3 : WpfCustom
+    {
+        
+        public Connector3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConnectorWithoutStartDot";
+            this.SearchProperties[WpfControl.PropertyNames.Instance] = "3";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Item1Text
+        {
+            get
+            {
+                if ((this.mItem1Text == null))
+                {
+                    this.mItem1Text = new WpfText(this);
+                    #region Search Criteria
+                    this.mItem1Text.SearchProperties[WpfText.PropertyNames.AutomationId] = "labelTextBlock";
+                    this.mItem1Text.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mItem1Text;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mItem1Text;
         #endregion
     }
     
@@ -7328,10 +7404,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
                 {
                     this.mUISQLErrorError15700seText = new WpfText(this);
                     #region Search Criteria
-                    this.mUISQLErrorError15700seText.SearchProperties[WpfText.PropertyNames.Name] = @"SQL Error: Error 15700, severity -1, state 1 was raised, but no message with that error number was found in sys.messages. If error is larger than 50000, make sure the user-defined message is added using sp_addmessage.
-An invalid parameter or option was specified for procedure 'some_procedure'.
-This is an error
-An invalid parameter or option was specified for procedure 'some_procedure'.";
+                    this.mUISQLErrorError15700seText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "SQL Error: Error 15700", PropertyExpressionOperator.Contains));
                     this.mUISQLErrorError15700seText.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
                     this.mUISQLErrorError15700seText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
@@ -7339,10 +7412,29 @@ An invalid parameter or option was specified for procedure 'some_procedure'.";
                 return this.mUISQLErrorError15700seText;
             }
         }
+        
+        public WpfText UIErrorText
+        {
+            get
+            {
+                if ((this.mUIErrorText == null))
+                {
+                    this.mUIErrorText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIErrorText.SearchProperties[WpfText.PropertyNames.Name] = "Error :";
+                    this.mUIErrorText.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIErrorText.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIErrorText;
+            }
+        }
         #endregion
         
         #region Fields
         private WpfText mUISQLErrorError15700seText;
+        
+        private WpfText mUIErrorText;
         #endregion
     }
     
@@ -7416,6 +7508,97 @@ An invalid parameter or option was specified for procedure 'some_procedure'.";
         
         #region Fields
         private WpfButton mCommentButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UIUI_TabManager_AutoIDTabList : WpfTabList
+    {
+        
+        public UIUI_TabManager_AutoIDTabList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfTabPage DragAndDropMergeResource2
+        {
+            get
+            {
+                if ((this.mDragAndDropMergeResource2 == null))
+                {
+                    this.mDragAndDropMergeResource2 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mDragAndDropMergeResource2.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mDragAndDropMergeResource2.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mDragAndDropMergeResource2;
+            }
+        }
+        
+        public WpfTabPage DragAndDropMergeResource1
+        {
+            get
+            {
+                if ((this.mDragAndDropMergeResource1 == null))
+                {
+                    this.mDragAndDropMergeResource1 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mDragAndDropMergeResource1.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mDragAndDropMergeResource1.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mDragAndDropMergeResource1;
+            }
+        }
+        
+        public WpfTabPage ResourceForSaveAllTabs1
+        {
+            get
+            {
+                if ((this.mResourceForSaveAllTabs1 == null))
+                {
+                    this.mResourceForSaveAllTabs1 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mResourceForSaveAllTabs1.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mResourceForSaveAllTabs1.SearchProperties[WpfTabPage.PropertyNames.Instance] = "2";
+                    this.mResourceForSaveAllTabs1.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mResourceForSaveAllTabs1;
+            }
+        }
+        
+        public WpfTabPage ResourceForSaveAllTabs2
+        {
+            get
+            {
+                if ((this.mResourceForSaveAllTabs2 == null))
+                {
+                    this.mResourceForSaveAllTabs2 = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mResourceForSaveAllTabs2.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mResourceForSaveAllTabs2.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
+                    #endregion
+                }
+                return this.mResourceForSaveAllTabs2;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfTabPage mDragAndDropMergeResource2;
+        
+        private WpfTabPage mDragAndDropMergeResource1;
+        
+        private WpfTabPage mResourceForSaveAllTabs1;
+        
+        private WpfTabPage mResourceForSaveAllTabs2;
         #endregion
     }
     
@@ -8145,151 +8328,71 @@ An invalid parameter or option was specified for procedure 'some_procedure'.";
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UICodedUITestBuilderWindow : WpfWindow
+    public class UIWarewolfDEV2CANDICEDWindow : WpfWindow
     {
         
-        public UICodedUITestBuilderWindow()
+        public UIWarewolfDEV2CANDICEDWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Coded UI Test Builder";
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\CANDICE.DANIEL)";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Coded UI Test Builder");
+            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
             #endregion
         }
         
         #region Properties
-        public WpfWindow UIWpfWindow
+        public UIUI_SplitPane_AutoIDCustom UIUI_SplitPane_AutoIDCustom
         {
             get
             {
-                if ((this.mUIWpfWindow == null))
+                if ((this.mUIUI_SplitPane_AutoIDCustom == null))
                 {
-                    this.mUIWpfWindow = new WpfWindow(this);
-                    #region Search Criteria
-                    this.mUIWpfWindow.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
-                    this.mUIWpfWindow.WindowTitles.Add("Coded UI Test Builder");
-                    #endregion
+                    this.mUIUI_SplitPane_AutoIDCustom = new UIUI_SplitPane_AutoIDCustom(this);
                 }
-                return this.mUIWpfWindow;
+                return this.mUIUI_SplitPane_AutoIDCustom;
             }
         }
         #endregion
         
         #region Fields
-        private WpfWindow mUIWpfWindow;
+        private UIUI_SplitPane_AutoIDCustom mUIUI_SplitPane_AutoIDCustom;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWpfWindow : WpfWindow
+    public class UIUI_SplitPane_AutoIDCustom : WpfCustom
     {
         
-        public UIWpfWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            #endregion
-        }
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIDebugOutputCustom UIDebugOutputCustom
-        {
-            get
-            {
-                if ((this.mUIDebugOutputCustom == null))
-                {
-                    this.mUIDebugOutputCustom = new UIDebugOutputCustom(this);
-                }
-                return this.mUIDebugOutputCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDebugOutputCustom mUIDebugOutputCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIDebugOutputCustom : WpfCustom
-    {
-        
-        public UIDebugOutputCustom(UITestControl searchLimitContainer) : 
+        public UIUI_SplitPane_AutoIDCustom(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.DebugOutputView";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "DebugOutput";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.SplitPane";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "UI_SplitPane_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
             #endregion
         }
         
         #region Properties
-        public UIDebugOutputTreeTree UIDebugOutputTreeTree
+        public WpfTabList UIUI_TabManager_AutoIDTabList
         {
             get
             {
-                if ((this.mUIDebugOutputTreeTree == null))
+                if ((this.mUIUI_TabManager_AutoIDTabList == null))
                 {
-                    this.mUIDebugOutputTreeTree = new UIDebugOutputTreeTree(this);
-                }
-                return this.mUIDebugOutputTreeTree;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIDebugOutputTreeTree mUIDebugOutputTreeTree;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIDebugOutputTreeTree : WpfTree
-    {
-        
-        public UIDebugOutputTreeTree(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "DebugOutputTree";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfTreeItem UISQLServerDatabaseTreeItem
-        {
-            get
-            {
-                if ((this.mUISQLServerDatabaseTreeItem == null))
-                {
-                    this.mUISQLServerDatabaseTreeItem = new WpfTreeItem(this);
+                    this.mUIUI_TabManager_AutoIDTabList = new WpfTabList(this);
                     #region Search Criteria
-                    this.mUISQLServerDatabaseTreeItem.SearchProperties[WpfTreeItem.PropertyNames.AutomationId] = "Step";
-                    this.mUISQLServerDatabaseTreeItem.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mUIUI_TabManager_AutoIDTabList.SearchProperties[WpfTabList.PropertyNames.AutomationId] = "UI_TabManager_AutoID";
+                    this.mUIUI_TabManager_AutoIDTabList.WindowTitles.Add("Warewolf (DEV2\\CANDICE.DANIEL)");
                     #endregion
                 }
-                return this.mUISQLServerDatabaseTreeItem;
+                return this.mUIUI_TabManager_AutoIDTabList;
             }
         }
         #endregion
         
         #region Fields
-        private WpfTreeItem mUISQLServerDatabaseTreeItem;
+        private WpfTabList mUIUI_TabManager_AutoIDTabList;
         #endregion
     }
 }

@@ -144,28 +144,7 @@ namespace Dev2.Data.SystemTemplates.Models
                     {
                         allCol2Values.RemoveAt(0);
                     }
-                    for (var i = 0; i < Math.Max(allCol1Values.Count, allCol2Values.Count); i++)
-                    {
-                        if (i > allCol1Values.Count)
-                        {
-                            allCol1Values.Add(null);
-                        }
-                        if (i > allCol2Values.Count)
-                        {
-                            allCol2Values.Add(null);
-                        }
-
-                        try
-                        {
-                            expandStarredIndices.Append(" " + mode + " " + allCol1Values[i] + " " + fn + " " +
-                                                        allCol2Values[i]);
-                        }
-                        catch (IndexOutOfRangeException)
-                        {
-                            errors.AddError(ErrorResource.RecordsetsHaveDifferntSizes);
-                            allErrors.MergeErrors(errors);
-                        }
-                    }
+                    AddAllColumns(mode, errors, allErrors, fn, expandStarredIndices, allCol1Values, allCol2Values);
                     errors = allErrors;
                     return "If " + expandStarredIndices;
                 }
@@ -187,6 +166,32 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             errors = allErrors;
             return "<< Internal Error Generating Decision Model: Populated Column Count Cannot Exceed 3 >>";
+        }
+
+        private static void AddAllColumns(Dev2DecisionMode mode, ErrorResultTO errors, ErrorResultTO allErrors, string fn, StringBuilder expandStarredIndices, IList<string> allCol1Values, IList<string> allCol2Values)
+        {
+            for (var i = 0; i < Math.Max(allCol1Values.Count, allCol2Values.Count); i++)
+            {
+                if (i > allCol1Values.Count)
+                {
+                    allCol1Values.Add(null);
+                }
+                if (i > allCol2Values.Count)
+                {
+                    allCol2Values.Add(null);
+                }
+
+                try
+                {
+                    expandStarredIndices.Append(" " + mode + " " + allCol1Values[i] + " " + fn + " " +
+                                                allCol2Values[i]);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    errors.AddError(ErrorResource.RecordsetsHaveDifferntSizes);
+                    allErrors.MergeErrors(errors);
+                }
+            }
         }
 
         string ResolveStarredIndices(IExecutionEnvironment env, string mode, out ErrorResultTO errors)
@@ -366,8 +371,16 @@ namespace Dev2.Data.SystemTemplates.Models
         }
         public bool Equals(Dev2Decision other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var cols1Equal = CommonEqualityOps.CollectionEquals(Cols1, other.Cols1, new WarewolfAtomComparer());
             var cols2Equal = CommonEqualityOps.CollectionEquals(Cols2, other.Cols2, new WarewolfAtomComparer());
             var cols3Equal = CommonEqualityOps.CollectionEquals(Cols3, other.Cols3, new WarewolfAtomComparer());
@@ -382,9 +395,21 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((Dev2Decision) obj);
         }
 

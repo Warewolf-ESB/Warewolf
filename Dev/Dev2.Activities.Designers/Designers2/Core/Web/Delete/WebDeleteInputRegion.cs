@@ -67,11 +67,15 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
         {
             var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
             var nameValues = existing ?? new List<INameValue>();
-            var headerCollection = new ObservableCollection<INameValue>();
-            headerCollection.CollectionChanged += HeaderCollectionOnCollectionChanged;
-            headerCollection.AddRange(nameValues);
-            Headers = headerCollection;
+            Headers = new ObservableCollection<INameValue>(nameValues.Where(name => !string.IsNullOrEmpty(name.Name)));
 
+            Headers.Add(new ObservableAwareNameValue(Headers, s =>
+            {
+                _modelItem.SetProperty("Headers",
+                    _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
+            }));
+
+            Headers.CollectionChanged += HeaderCollectionOnCollectionChanged;
             if (Headers.Count == 0)
             {
                 Headers.Add(new ObservableAwareNameValue(Headers, s =>
@@ -174,18 +178,18 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebDeleteRegionClone()
+            return new WebDeleteInputRegion()
             {
                 Headers = headers2,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled
-            };
+            } as IToolRegion;
         }
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WebDeleteRegionClone region)
+            if (toRestore is WebDeleteInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;

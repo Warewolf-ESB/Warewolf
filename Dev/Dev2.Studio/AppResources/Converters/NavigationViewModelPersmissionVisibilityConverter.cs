@@ -38,10 +38,7 @@ namespace Dev2.Studio.AppResources.Converters
             return Convert(requiredPermission, userPermissions.Value);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return null;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => null;
 
         object Convert(Permissions requiredPermission, Permissions userPermissions)
         {

@@ -14,9 +14,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 using Dev2.Common;
-using Ionic.Zip;
 using Warewolf.Resource.Errors;
-
 
 namespace Dev2.Studio.Core.Helpers
 {
@@ -25,7 +23,6 @@ namespace Dev2.Studio.Core.Helpers
         // Used to migrate Dev2 -> Warewolf 
         const string NewPath = @"Warewolf\";
         const string OldPath = @"Dev2\";
-
 
         /// <summary>
         /// Gets the ouput path.
@@ -43,21 +40,20 @@ namespace Dev2.Studio.Core.Helpers
 
         public static void CreateTextFile(StringBuilder outputTxt, string outputPath)
         {
-            Dev2Logger.Info("", "Warewolf Info");
+            Dev2Logger.Info("Create Text File for output path: " + outputPath, GlobalConstants.WarewolfInfo);
+
             EnsurePathIsvalid(outputPath, ".txt");
-            var fs = File.Open(outputPath,
-                                      FileMode.OpenOrCreate,
-                                      FileAccess.Write);
+            var fs = File.Open(outputPath, FileMode.OpenOrCreate, FileAccess.Write);
             using (var writer = new StreamWriter(fs, Encoding.UTF8))
             {
-                Dev2Logger.Info("Writing a text file", "Warewolf Info");
+                Dev2Logger.Info("Writing a text file", GlobalConstants.WarewolfInfo);
                 writer.Write(outputTxt);
             }
         }
 
         public static string GetDebugItemTempFilePath(string uri)
         {
-            Dev2Logger.Info("", "Warewolf Info");
+            Dev2Logger.Info("Get Debug Item Temp File Path for uri: " + uri, GlobalConstants.WarewolfInfo);
 
             using (var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
             {
@@ -68,26 +64,6 @@ namespace Dev2.Studio.Core.Helpers
                 return uniqueOutputPath;
             }
         }
-
-    
-        public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
-        {
-            CreateTextFile(fileContent, uniqueOutputPath);
-            var sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
-            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
-            if (sourceDirectoryName != null)
-            {
-                var destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
-                using (var zip = new ZipFile())
-                {
-                    zip.AddFile(uniqueOutputPath, ".");
-                    zip.Save(destinationArchiveFileName);
-                }
-                return destinationArchiveFileName;
-            }
-            return null;
-        }
-
 
         /// <summary>
         /// Ensures the path isvalid.
@@ -141,7 +117,6 @@ namespace Dev2.Studio.Core.Helpers
 
         public static void MigrateTempData(string rootPath)
         {
-
             var fullNewPath = Path.Combine(rootPath, NewPath);
             var fullOldPath = Path.Combine(rootPath, OldPath);
 

@@ -66,6 +66,31 @@ namespace Warewolf.UI.Tests.WebSource
             Assert.IsTrue(WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.DefaultQueryTextBox.TestPassedImage.Exists, "Expected Test to Pass, but got different results after clicking test button.");
         }
 
+        /// <summary>
+        /// If this test is failing, check first to see if the Link is still working.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("Web Sources")]
+        // ReSharper disable once InconsistentNaming        
+        public void Test_WebServiceSource_ValidateDefaultHttps_AddedOnMissingText_UITests()
+        {
+            const string httpsAddress = "https://data.gov.in";
+            const string httpAddress = "http://data.gov.in";
+            const string noPrefixAddress = "data.gov.in";
+            //Create Source
+            ExplorerUIMap.Click_NewWebSource_From_ExplorerContextMenu();
+            WebSourceUIMap.Enter_TextIntoAddress_On_WebServiceSourceTab(httpsAddress);
+            Keyboard.SendKeys("\t");
+            Assert.AreEqual(httpsAddress, WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text);
+            WebSourceUIMap.Enter_TextIntoAddress_On_WebServiceSourceTab(noPrefixAddress);
+            Keyboard.SendKeys("\t");
+            Assert.AreEqual(httpsAddress, WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text);
+            WebSourceUIMap.Enter_TextIntoAddress_On_WebServiceSourceTab(httpAddress);
+            Keyboard.SendKeys("\t");
+            Assert.AreEqual(httpAddress, WebSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WebSourceTab.WorkSurfaceContext.AddressTextbox.Text);
+        }
+        
+
         #region Additional test attributes
 
         [TestInitialize()]

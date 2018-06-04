@@ -15,7 +15,7 @@ using Microsoft.Practices.Prism.Mvvm;
 
 namespace Dev2.ViewModels
 {
-    public class StudioTestViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab, IHandle<DebugOutputMessage>
+    public class StudioTestViewModel : BaseWorkSurfaceViewModel, IStudioTestWorkSurfaceViewModel, IHelpSource, IStudioTab, IHandle<DebugOutputMessage>
     {
         readonly IPopupController _popupController;
         DebugOutputViewModel _debugOutputViewModel;
@@ -52,10 +52,8 @@ namespace Dev2.ViewModels
             ViewModel?.Dispose();
         }
 
-        public override object GetView(object context = null)
-        {
-            return View;
-        }
+        public override object GetView(object context = null) => View;
+
         [ExcludeFromCodeCoverage]
         protected override void OnViewAttached(object view, object context)
         {
@@ -140,20 +138,16 @@ namespace Dev2.ViewModels
                         case MessageBoxResult.No:
                             return true;
                         case MessageBoxResult.Yes:
-                            if (ViewModel.HasDuplicates())
-                            {
-                                ViewModel.ShowDuplicatePopup();
-                                return false;//dont close the tab
-                            }
-                            if (ViewModel.CanSave)
-                            {
-                                ViewModel.Save();
-                            }
+                            TrySave();
                             break;
                         case MessageBoxResult.OK:
                             break;
                         default:
-                            break;
+                            return true;
+                    }
+                    if (result == MessageBoxResult.Yes && ViewModel.HasDuplicates())
+                    {
+                        return false;//dont close the tab
                     }
                 }
             }
@@ -166,6 +160,18 @@ namespace Dev2.ViewModels
                 }                
             }
             return true;
+        }
+
+        private void TrySave()
+        {
+            if (ViewModel.HasDuplicates())
+            {
+                ViewModel.ShowDuplicatePopup();
+            }
+            if (ViewModel.CanSave)
+            {
+                ViewModel.Save();
+            }
         }
 
         #endregion

@@ -19,6 +19,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Collections.Generic;
 using System;
 using System.Globalization;
+using Warewolf.Storage;
+using Moq;
+using WarewolfParserInterop;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -499,6 +502,134 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[@Pet.Name]]", inputs[0].Value);
             Assert.AreEqual("[[result]]", inputs[0].Name);
         }
-    }
 
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity_Equality")]
+        public void DsfDotNetMultiAssignObjectActivity_WhenDifferentFieldCollectionData_SHouldBeNotEqual()
+        {
+            var fieldCollection = new List<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[a]]", "12", fieldCollection.Count));
+            var activity1 = new DsfDotNetMultiAssignObjectActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+
+            var fieldCollection2 = new List<AssignObjectDTO>();
+            fieldCollection2.Add(new AssignObjectDTO("[[a]]", "111", fieldCollection2.Count));
+            var activity2 = new DsfDotNetMultiAssignObjectActivity
+            {
+                UniqueID = activity1.UniqueID, // simulate this assign being from a copied/cloned workflow
+                OutputMapping = null,
+                FieldsCollection = fieldCollection2
+            };
+
+            Assert.IsFalse(activity1.Equals(activity2));
+        }
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity_Equality")]
+        public void DsfDotNetMultiAssignObjectActivity_WhenSameFieldCollectionData_ShouldBeEqual()
+        {
+            var fieldCollection = new List<AssignObjectDTO>();
+            fieldCollection.Add(new AssignObjectDTO("[[a]]", "12", fieldCollection.Count));
+            var activity1 = new DsfDotNetMultiAssignObjectActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+
+            var fieldCollection2 = new List<AssignObjectDTO>();
+            fieldCollection2.Add(new AssignObjectDTO("[[a]]", "12", fieldCollection2.Count));
+            var activity2 = new DsfDotNetMultiAssignObjectActivity
+            {
+                UniqueID = activity1.UniqueID, // simulate this assign being from a copied/cloned workflow
+                OutputMapping = null,
+                FieldsCollection = fieldCollection2
+            };
+
+            Assert.IsTrue(activity1.Equals(activity2));
+            activity2.CreateBookmark = true;
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.CreateBookmark = false;
+            activity2.UpdateAllOccurrences = true;
+            Assert.IsFalse(activity1.Equals(activity2));
+            activity2.UpdateAllOccurrences = false;
+            Assert.IsTrue(activity1.Equals(activity2));
+        }
+
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity")]
+        public void DsfDotNetMultiAssignObjectActivity_DebugModeAddsDebugItems()
+        {
+            var env = new ExecutionEnvironment();
+            env.AssignJson(new AssignValue("[[@names(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[@names(2).Name]]", "Jane"), 0);
+
+
+            var data = new Mock<IDSFDataObject>();
+            env.Assign("[[val]]", "asdf", 0);
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+
+            var ob = new DsfDotNetMultiAssignObjectActivity
+            {
+                FieldsCollection = new List<AssignObjectDTO>
+                {
+                    new AssignObjectDTO("[[@names().Name]]", "[[val]]", 0)
+                }
+            };
+            ob.Execute(data.Object, 0);
+
+            var a = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("[[@names(3).Name]]", a[0].ResultsList[1].Variable);
+        }
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity")]
+        public void DsfDotNetMultiAssignObjectActivity_DebugModeAddsDebugItems2()
+        {
+            var env = new ExecutionEnvironment();
+            env.AssignJson(new AssignValue("[[@names(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[@names(2).Name]]", "Jane"), 0);
+
+
+            var data = new Mock<IDSFDataObject>();
+            env.Assign("[[vals().newNames]]", "asdf", 0);
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+
+            var ob = new DsfDotNetMultiAssignObjectActivity
+            {
+                FieldsCollection = new List<AssignObjectDTO>
+                {
+                    new AssignObjectDTO("[[vals().newNames]]", "[[@names().Name]]", 0)
+                }
+            };
+            ob.Execute(data.Object, 0);
+
+            var a = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("[[vals(1).newNames]]", a[0].ResultsList[1].Variable);
+        }
+
+        [TestMethod]
+        [TestCategory("DsfMultiAssignActivity")]
+        public void DsfDotNetMultiAssignObjectActivity_ToNewRecordset_DebugModeAddsDebugItems()
+        {
+            var env = new ExecutionEnvironment();
+            env.AssignJson(new AssignValue("[[@names(1).Name]]", "Mary"), 0);
+            env.AssignJson(new AssignValue("[[@names(2).Name]]", "Jane"), 0);
+            env.Assign("[[list().name]]", "asdf", 0);
+
+            var data = new Mock<IDSFDataObject>();
+            data.Setup(o => o.Environment).Returns(() => env);
+            data.Setup(o => o.IsDebugMode()).Returns(() => true);
+
+            var ob = new DsfDotNetMultiAssignObjectActivity
+            {
+                FieldsCollection = new List<AssignObjectDTO>
+                {
+                    new AssignObjectDTO("[[list().name]]", "[[list().name]]", 0)
+                }
+            };
+            ob.Execute(data.Object, 0);
+
+            var a = ob.GetDebugOutputs(env, 0);
+            Assert.AreEqual("asdf", a[0].ResultsList[1].Value);
+            Assert.AreEqual("[[list(1).name]]", a[0].ResultsList[1].Variable);
+        }
+    }
 }

@@ -92,6 +92,8 @@ namespace Dev2.Studio.Core.Models
 
         public string Outputs { get; set; }
 
+        public Guid OriginalId { get; set; }
+
         public bool IsValid
         {
             get => _isValid;
@@ -188,10 +190,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public bool IsAuthorized(AuthorizationContext authorizationContext)
-        {
-            return (UserPermissions & authorizationContext.ToPermissions()) != 0;
-        }
+        public bool IsAuthorized(AuthorizationContext authorizationContext) => (UserPermissions & authorizationContext.ToPermissions()) != 0;
 
         public Version Version
         {
@@ -356,6 +355,8 @@ namespace Dev2.Studio.Core.Models
         }
 
         public bool IsNewWorkflow { get; set; }
+        public bool IsNotWarewolfPath { get; set; }
+        public bool IsOpeningFromOtherDir { get; set ; }
 
         public string ServerResourceType { get; set; }
 
@@ -402,10 +403,7 @@ namespace Dev2.Studio.Core.Models
             OnDesignValidationReceived?.Invoke(this, memo);
         }
 
-        public IView GetView(Func<IView> view)
-        {
-            return view.Invoke();
-        }
+        public IView GetView(Func<IView> view) => view.Invoke();
 
         public void ClearErrors()
         {
@@ -422,10 +420,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public IList<IErrorInfo> GetErrors(Guid instanceId)
-        {
-            return _errors.Where(e => e.InstanceID == instanceId).ToList();
-        }
+        public IList<IErrorInfo> GetErrors(Guid instanceId) => _errors.Where(e => e.InstanceID == instanceId).ToList();
 
         public void AddError(IErrorInfo error)
         {
@@ -470,6 +465,7 @@ namespace Dev2.Studio.Core.Models
                 DataTags = resourceModel.DataTags;
                 DisplayName = resourceModel.DisplayName;
                 VersionInfo = resourceModel.VersionInfo;
+                IsVersionResource = resourceModel.IsVersionResource;
                 HelpLink = resourceModel.HelpLink;
                 IsDebugMode = resourceModel.IsDebugMode;
                 ResourceName = resourceModel.ResourceName;
@@ -536,22 +532,29 @@ namespace Dev2.Studio.Core.Models
 
                 if (result != null)
                 {
-                    var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
-                    var endNode = result.IndexOf("</Category>", 0, true);
-                    if (endNode > startNode)
-                    {
-                        var len = endNode - startNode;
-                        var oldCategory = result.Substring(startNode, len);
-                        if (oldCategory != Category)
-                        {
-                            result = result.Replace(oldCategory, Category);
-                        }
-                    }
+                    result = ReplaceCategory(result);
                 }
             }
             else
             {
                 throw new Exception(ErrorResource.ToServiceDefinitionDoesNotRupportResourcesOfTypeSource);
+            }
+
+            return result;
+        }
+
+        StringBuilder ReplaceCategory(StringBuilder result)
+        {
+            var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
+            var endNode = result.IndexOf("</Category>", 0, true);
+            if (endNode > startNode)
+            {
+                var len = endNode - startNode;
+                var oldCategory = result.Substring(startNode, len);
+                if (oldCategory != Category)
+                {
+                    result = result.Replace(oldCategory, Category);
+                }
             }
 
             return result;
@@ -612,6 +615,8 @@ namespace Dev2.Studio.Core.Models
         
         public string Error => null;
 
+        
+
         public string this[string columnName]
         {
             get
@@ -645,15 +650,13 @@ namespace Dev2.Studio.Core.Models
                     RemoveError("NoResourceName");
                 }
 
-                if (columnName == "HelpLink")
+                if (columnName == "HelpLink" && !Uri.TryCreate(HelpLink, UriKind.Absolute, out Uri testUri))
                 {
-                    if (!Uri.TryCreate(HelpLink, UriKind.Absolute, out Uri testUri))
-                    {
-                        errMsg = "The help link is not in a valid format";
-                        AddError(columnName, errMsg);
-                        return errMsg;
-                    }
+                    errMsg = "The help link is not in a valid format";
+                    AddError(columnName, errMsg);
+                    return errMsg;
                 }
+
 
                 return null;
             }
@@ -678,6 +681,22 @@ namespace Dev2.Studio.Core.Models
         {
             _validationService?.Dispose();
             base.OnDispose();
+        }
+
+        public StringBuilder GetWorkflowXaml()
+        {
+            if (WorkflowXaml != null)
+            {
+                return WorkflowXaml;
+            }
+
+            var msg = Environment?.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, true);
+            if (msg != null && msg.Message.Length != 0)
+            {
+                WorkflowXaml = msg.Message;
+            }
+
+            return WorkflowXaml;
         }
     }
 }

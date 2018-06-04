@@ -24,24 +24,14 @@ using Dev2.Validation;
 using Warewolf.Resource.Errors;
 using Dev2.Studio.Interfaces;
 
-
-
-
-
-
-
-
-
 namespace Dev2.Activities.Designers2.ExchangeEmail
 {
     public class ExchangeEmailDesignerViewModel : CustomToolWithRegionBase, IExchangeServiceViewModel
     {
-
         readonly IEventAggregator _eventPublisher;
         readonly IServer _server;
         readonly IAsyncWorker _asyncWorker;
         ISourceToolRegion<IExchangeSource> _sourceRegion;
-
 
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
@@ -118,10 +108,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public ISourceToolRegion<IExchangeSource> SourceRegion
         {
-            get
-            {
-                return _sourceRegion;
-            }
+            get => _sourceRegion;
             set
             {
                 _sourceRegion = value;
@@ -132,11 +119,10 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         string _statusMessage;
         public string StatusMessage
         {
-            get { return _statusMessage; }
+            get => _statusMessage;
             set
             {
                 _statusMessage = value;
-
                 OnPropertyChanged("StatusMessage");
             }
         }
@@ -145,14 +131,10 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public bool Testing
         {
-            get
-            {
-                return _testing;
-            }
-             set
+            get => _testing;
+            set
             {
                 _testing = value;
-
                 OnPropertyChanged("Testing");
             }
         }
@@ -171,7 +153,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         public static readonly DependencyProperty CanTestEmailAccountProperty = DependencyProperty.Register("CanTestEmailAccount", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(true));
         public bool IsEmailSourceFocused { get => (bool)GetValue(IsEmailSourceFocusedProperty); set => SetValue(IsEmailSourceFocusedProperty, value); }
         public static readonly DependencyProperty IsEmailSourceFocusedProperty = DependencyProperty.Register("IsEmailSourceFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
-        
+
         public bool IsToFocused { get => (bool)GetValue(IsToFocusedProperty); set => SetValue(IsToFocusedProperty, value); }
         public static readonly DependencyProperty IsToFocusedProperty = DependencyProperty.Register("IsToFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
 
@@ -186,19 +168,20 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public bool IsAttachmentsFocused { get => (bool)GetValue(IsAttachmentsFocusedProperty); set => SetValue(IsAttachmentsFocusedProperty, value); }
         public static readonly DependencyProperty IsAttachmentsFocusedProperty = DependencyProperty.Register("IsAttachmentsFocused", typeof(bool), typeof(ExchangeEmailDesignerViewModel), new PropertyMetadata(default(bool)));
-        string To { get { return GetProperty<string>(); } }
-        string Cc { get { return GetProperty<string>(); } }
-        string Bcc { get { return GetProperty<string>(); } }
+        string To => GetProperty<string>();
+
+        string Cc => GetProperty<string>();
+
+        string Bcc => GetProperty<string>();
+
         string Attachments { get => GetProperty<string>(); set => SetProperty(value); }
-        string Subject { get { return GetProperty<string>(); } }
-        string Body { get { return GetProperty<string>(); } }
+        string Subject => GetProperty<string>();
+
+        string Body => GetProperty<string>();
 
         public bool CanTestEmailAccount
         {
-            get
-            {
-                return (bool)GetValue(CanTestEmailAccountProperty);
-            }
+            get => (bool)GetValue(CanTestEmailAccountProperty);
             set
             {
                 SetValue(CanTestEmailAccountProperty, value);
@@ -208,7 +191,6 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         public void TestEmailAccount()
         {
-
             if (Errors != null && Errors.Count > 0)
             {
                 return;
@@ -229,15 +211,15 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(() => IsToFocused = true) { Message = ErrorResource.InvalidSource } };
                 return;
             }
-        
-            var testSource = new ExchangeSource()
+
+            var testSource = new ExchangeSource
             {
                 AutoDiscoverUrl = SourceRegion.SelectedSource.AutoDiscoverUrl,
                 Password = SourceRegion.SelectedSource.Password,
                 UserName = SourceRegion.SelectedSource.UserName,
             };
 
-            var testMessage = new ExchangeTestMessage()
+            var testMessage = new ExchangeTestMessage
             {
                 Body = Body,
                 Subject = Subject,
@@ -294,30 +276,27 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             StatusMessage = message;
         }
 
-
         void ChooseAttachments()
         {
-
-    
             const string Separator = ";";
-            var message = new FileChooserMessage();
-            message.SelectedFiles = Attachments.Split(Separator.ToCharArray());
+            var message = new FileChooserMessage
+            {
+                SelectedFiles = Attachments.Split(Separator.ToCharArray())
+            };
             message.PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "SelectedFiles")
+                if (args.PropertyName == "SelectedFiles" && message.SelectedFiles != null)
                 {
-                    if (message.SelectedFiles != null)
+                    if (string.IsNullOrEmpty(Attachments))
                     {
-                        if (string.IsNullOrEmpty(Attachments))
-                        {
-                            Attachments = string.Join(Separator, message.SelectedFiles);
-                        }
-                        else
-                        {
-                            Attachments += Separator + string.Join(Separator, message.SelectedFiles);
-                        }
+                        Attachments = string.Join(Separator, message.SelectedFiles);
+                    }
+                    else
+                    {
+                        Attachments += Separator + string.Join(Separator, message.SelectedFiles);
                     }
                 }
+
             };
             _eventPublisher.Publish(message);
         }
@@ -411,10 +390,3 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         }
     }
 }
-
-
-
-
-
-
-

@@ -250,10 +250,29 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Scripting.ScriptingToolsUIMapClass
                 return this.mWorkflowTab;
             }
         }
+        
+        public WpfTabPage WorkflowTabNext
+        {
+            get
+            {
+                if ((this.mWorkflowTabNext == null))
+                {
+                    this.mWorkflowTabNext = new WpfTabPage(this);
+                    #region Search Criteria
+                    this.mWorkflowTabNext.SearchProperties[WpfTabPage.PropertyNames.Name] = "Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel";
+                    this.mWorkflowTabNext.SearchProperties[WpfTabPage.PropertyNames.Instance] = "2";
+                    this.mWorkflowTabNext.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mWorkflowTabNext;
+            }
+        }
         #endregion
         
         #region Fields
         private WorkflowTab mWorkflowTab;
+        
+        private WpfTabPage mWorkflowTabNext;
         #endregion
     }
     

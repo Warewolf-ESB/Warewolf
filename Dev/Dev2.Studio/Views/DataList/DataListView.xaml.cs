@@ -81,7 +81,6 @@ namespace Dev2.Studio.Views.DataList
                     vm.RemoveBlankRows(itemThatChanged);
                     vm.ValidateNames(itemThatChanged);
 
-                    // code to log errors to revulytics
                     if (vm.HasErrors && vm.DataListErrorMessage.Length != 0)
                     {
                         var applicationTracker = CustomContainer.Get<IApplicationTracker>();
@@ -90,7 +89,6 @@ namespace Dev2.Studio.Views.DataList
                             applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventVariables.RedBracketsSyntax, vm.DataListErrorMessage);
                         }
                     }
-
                 }
             }
         }

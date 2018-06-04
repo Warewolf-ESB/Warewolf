@@ -41,10 +41,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return ImagePath;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 
     public class ErrorTypeToTooltipConverter : IValueConverter
@@ -73,9 +70,6 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return Tooltip;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
     }
 }

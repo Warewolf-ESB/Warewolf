@@ -2401,6 +2401,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid command sent to ExecuteXmlReader.  The command must return an Xml result..
+        /// </summary>
+        public static string NotXmlResults {
+            get {
+                return ResourceManager.GetString("NotXmlResults", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No username and password provided,.
         /// </summary>
         public static string NoUserNameAndPassword {
@@ -3488,6 +3497,24 @@ namespace Warewolf.Resource.Errors {
         public static string UserInputRequired {
             get {
                 return ResourceManager.GetString("UserInputRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User: {0} does not have Execute Permission to resource {1}..
+        /// </summary>
+        public static string UserNotAuthorizedToExecuteException {
+            get {
+                return ResourceManager.GetString("UserNotAuthorizedToExecuteException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User: {0} requires View and Execute permissions to Execute resource {1}..
+        /// </summary>
+        public static string UserNotAuthorizedToExecuteOuterWorkflowException {
+            get {
+                return ResourceManager.GetString("UserNotAuthorizedToExecuteOuterWorkflowException", resourceCulture);
             }
         }
         

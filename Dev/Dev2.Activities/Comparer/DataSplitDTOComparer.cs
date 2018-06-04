@@ -8,8 +8,16 @@ namespace Dev2.Comparer
     {
         public bool Equals(DataSplitDTO x, DataSplitDTO y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             var oulistsAreEqual = Common.CommonEqualityOps.CollectionEquals(x.OutList, y.OutList, StringComparer.Ordinal);
             var @equals = string.Equals(x.At, y.At)
                           && x.EnableAt.Equals(y.EnableAt)
@@ -27,9 +35,6 @@ namespace Dev2.Comparer
             ;
         }
 
-        public int GetHashCode(DataSplitDTO obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(DataSplitDTO obj) => 1;
     }
 }

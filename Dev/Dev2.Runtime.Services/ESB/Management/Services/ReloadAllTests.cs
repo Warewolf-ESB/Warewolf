@@ -55,19 +55,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public override string HandlesType()
-        {
-            return "ReloadAllTests";
-        }
+        public override string HandlesType() => "ReloadAllTests";
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Any;
     }
 }

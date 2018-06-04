@@ -505,6 +505,78 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             //------------Assert Results-------------------------
         }
 
+        private static void SetupViewModel(out Mock<IContextualResourceModel> resourceModel, out WorkflowDesignerViewModelMock viewModel)
+        {
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
+            resourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            var serverEvents = new Mock<IEventPublisher>();
+            mockConnection.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
+            resourceModel.Setup(model => model.Category).Returns("myservice");
+            resourceModel.Setup(model => model.ResourceName).Returns("myservice");
+            resourceModel.Setup(model => model.DataList).Returns(StringResourcesTest.DebugInputWindow_NoInputs_XMLData);
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
+            var mockPopController = new Mock<IPopupController>();
+            mockPopController.Setup(controller => controller.ShowNoInputsSelectedWhenClickLink()).Verifiable();
+            var mockExtenalProcessExecutor = new Mock<IExternalProcessExecutor>();
+            mockExtenalProcessExecutor.Setup(executor => executor.OpenInBrowser(It.IsAny<Uri>())).Verifiable();
+            viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, mockPopController.Object, mockExtenalProcessExecutor.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            resourceModel.SetupProperty(model => model.WorkflowXaml);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkflowDesignerModel_CanMerge")]
+        public void WorkflowDesignerViewModel_CanMerge_ExpectedTrue()
+        {
+            //------------Setup for test--------------------------
+            SetupViewModel(out Mock<IContextualResourceModel> resourceModel, out WorkflowDesignerViewModelMock viewModel);
+            resourceModel.Setup(model => model.IsVersionResource).Returns(true);
+            //------------Assert Preconditions-------------------
+            Assert.IsNull(resourceModel.Object.WorkflowXaml);
+            //------------Execute Test---------------------------
+            Assert.IsTrue(viewModel.CanMerge);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("WorkflowDesignerModel_MergeCommand")]
+        public void WorkflowDesignerViewModel_MergeCommand_CanExecute()
+        {
+            //------------Setup for test--------------------------
+            SetupViewModel(out Mock<IContextualResourceModel> resourceModel, out WorkflowDesignerViewModelMock viewModel);
+            //------------Assert Preconditions-------------------
+            Assert.IsNull(resourceModel.Object.WorkflowXaml);
+            //------------Execute Test---------------------------
+            viewModel.MergeCommand.Execute(null);
+            Assert.IsTrue(viewModel.MergeCommand.CanExecute(null));
+            //------------Assert Results-------------------------
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("WorkflowDesignerModel_ShowDependenciesCommand")]
@@ -956,7 +1028,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             DataListSingleton.SetDataList(dataListViewModel);
             var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = WorkflowDesignerUnitTest.CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
             workflowDesigner.PopUp = mockPopUp.Object;
@@ -974,7 +1046,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DeployTooltip);
 
             Assert.IsFalse(workflowDesigner.CanMerge);
-            Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.MergeTooltip);
+            Assert.AreEqual(Studio.Resources.Languages.Tooltips.ViewMergeTooltip, workflowDesigner.MergeTooltip);
 
             Assert.IsFalse(workflowDesigner.CanDuplicate);
             Assert.AreEqual(Studio.Resources.Languages.Tooltips.NoPermissionsToolTip, workflowDesigner.DuplicateTooltip);

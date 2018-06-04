@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -48,12 +49,12 @@ namespace Dev2.Activities
         }
 
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            errors = new ErrorResultTO();
+            tmpErrors = new ErrorResultTO();
             if (Namespace == null)
             {
-                errors.AddError(ErrorResource.NoNamespaceSelected);
+                tmpErrors.AddError(ErrorResource.NoNamespaceSelected);
                 return;
             }
 
@@ -62,7 +63,7 @@ namespace Dev2.Activities
                 Constructor = new PluginConstructor();
             }
 
-            ExecuteService(update, out errors, Constructor, Namespace, dataObject);
+            ExecuteService(update, out tmpErrors, Constructor, Namespace, dataObject);
         }
 
         void ExecuteService(int update, out ErrorResultTO errors, IPluginConstructor constructor, INamespaceItem namespaceItem, IDSFDataObject dataObject)
@@ -100,72 +101,80 @@ namespace Dev2.Activities
             pluginExecutionDto.Args = args;
             try
             {
-                using (var appDomain = PluginServiceExecutionFactory.CreateAppDomain())
-                {
-                    if (dataObject.IsServiceTestExecution)
-                    {
-                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == pluginExecutionDto.Args.PluginConstructor.ID);
-                        if (serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
-                        {
-                            var start = DateTime.Now;
-                            MockConstructorExecution(dataObject, serviceTestStep, ref pluginExecutionDto);
-                            DebugStateForConstructorInputsOutputs(dataObject, update, true, start);
-                        }
-                        else
-                        {
-                            var start = DateTime.Now;
-                            RegularConstructorExecution(dataObject, appDomain, ref pluginExecutionDto);
-                            DebugStateForConstructorInputsOutputs(dataObject, update, false, start);
+                TryExecuteService(update, dataObject, pluginExecutionDto, args);
+            }
+            catch (Exception e)
+            {
+                errors.AddError(e.Message.Contains("Cannot convert given JSON to target type") ? ErrorResource.JSONIncompatibleConversionError + Environment.NewLine + e.Message : e.Message);
+            }
+        }
 
-                        }
+        void TryExecuteService(int update, IDSFDataObject dataObject, PluginExecutionDto pluginExecutionDto, PluginInvokeArgs args)
+        {
+            using (var appDomain = PluginServiceExecutionFactory.CreateAppDomain())
+            {
+                if (dataObject.IsServiceTestExecution)
+                {
+                    var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == pluginExecutionDto.Args.PluginConstructor.ID);
+                    if (serviceTestStep != null && serviceTestStep.Type == StepType.Mock)
+                    {
+                        var start = DateTime.Now;
+                        MockConstructorExecution(dataObject, serviceTestStep, ref pluginExecutionDto);
+                        DebugStateForConstructorInputsOutputs(dataObject, update, true, start);
                     }
                     else
                     {
                         var start = DateTime.Now;
                         RegularConstructorExecution(dataObject, appDomain, ref pluginExecutionDto);
                         DebugStateForConstructorInputsOutputs(dataObject, update, false, start);
-                    }
-
-                    var index = 0;
-                    foreach (var dev2MethodInfo in args.MethodsToRun)
-                    {
-                        if (dataObject.IsServiceTestExecution)
-                        {
-                            var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == dev2MethodInfo.ID);
-                            if (serviceTestStep != null)
-                            {
-                                if (serviceTestStep.Type == StepType.Mock)
-                                {
-                                    MockMethodExecution(dataObject, serviceTestStep, dev2MethodInfo, index);
-                                }
-                                else
-                                {
-                                    RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index, update, dataObject);
-                                }
-                            }
-                            else
-                            {
-                                RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index, update, dataObject);
-                            }
-                        }
-                        else
-                        {
-                            RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index, update, dataObject);
-
-                        }
-                        if (dev2MethodInfo.HasError)
-                        {
-                            break;
-                        }
-
-                        index++;
 
                     }
                 }
+                else
+                {
+                    var start = DateTime.Now;
+                    RegularConstructorExecution(dataObject, appDomain, ref pluginExecutionDto);
+                    DebugStateForConstructorInputsOutputs(dataObject, update, false, start);
+                }
+
+                var index = 0;
+                foreach (var dev2MethodInfo in args.MethodsToRun)
+                {
+                    if (dataObject.IsServiceTestExecution)
+                    {
+                        var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == dev2MethodInfo.ID);
+                        MethodExecution(update, dataObject, pluginExecutionDto, appDomain, index, dev2MethodInfo, serviceTestStep);
+                    }
+                    else
+                    {
+                        RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index, update, dataObject);
+                    }
+                    if (dev2MethodInfo.HasError)
+                    {
+                        break;
+                    }
+
+                    index++;
+                }
             }
-            catch (Exception e)
+        }
+
+        private void MethodExecution(int update, IDSFDataObject dataObject, PluginExecutionDto pluginExecutionDto, Isolated<PluginRuntimeHandler> appDomain, int index, IDev2MethodInfo dev2MethodInfo, IServiceTestStep serviceTestStep)
+        {
+            if (serviceTestStep != null)
             {
-                errors.AddError(e.Message.Contains("Cannot convert given JSON to target type") ? ErrorResource.JSONIncompatibleConversionError + Environment.NewLine + e.Message : e.Message);
+                if (serviceTestStep.Type == StepType.Mock)
+                {
+                    MockMethodExecution(dataObject, serviceTestStep, dev2MethodInfo, index);
+                }
+                else
+                {
+                    RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index, update, dataObject);
+                }
+            }
+            else
+            {
+                RegularMethodExecution(appDomain, pluginExecutionDto, dev2MethodInfo, index, update, dataObject);
             }
         }
 
@@ -226,25 +235,30 @@ namespace Dev2.Activities
             {
                 foreach (var serviceTestOutput in serviceTestStep.StepOutputs)
                 {
-                    var start = DateTime.Now;
-                    if (dev2MethodInfo.IsObject)
-                    {
-                        var jContainer = JToken.Parse(serviceTestOutput.Value) as JContainer
-                                         ?? serviceTestOutput.Value.DeserializeToObject();
-                        if (!string.IsNullOrEmpty(serviceTestOutput.Variable))
-                        {
-                            dataObject.Environment.AddToJsonObjects(serviceTestOutput.Variable, jContainer);
-                        }
-                    }
-                    else
-                    {
-                        dataObject.Environment.Assign(serviceTestOutput.Variable, serviceTestOutput.Value, 0);
-                    }
-                    dev2MethodInfo.MethodResult = serviceTestOutput.Value;
-                    MethodsToRun[index].MethodResult = serviceTestOutput.Value;
-                    DispatchDebugStateForMethod(MethodsToRun[index], dataObject, 0, true, start);
+                    DispatchDebugState(dataObject, dev2MethodInfo, index, serviceTestOutput);
                 }
             }
+        }
+
+        private void DispatchDebugState(IDSFDataObject dataObject, IDev2MethodInfo dev2MethodInfo, int index, IServiceTestOutput serviceTestOutput)
+        {
+            var start = DateTime.Now;
+            if (dev2MethodInfo.IsObject)
+            {
+                var jContainer = JToken.Parse(serviceTestOutput.Value) as JContainer
+                                 ?? serviceTestOutput.Value.DeserializeToObject();
+                if (!string.IsNullOrEmpty(serviceTestOutput.Variable))
+                {
+                    dataObject.Environment.AddToJsonObjects(serviceTestOutput.Variable, jContainer);
+                }
+            }
+            else
+            {
+                dataObject.Environment.Assign(serviceTestOutput.Variable, serviceTestOutput.Value, 0);
+            }
+            dev2MethodInfo.MethodResult = serviceTestOutput.Value;
+            MethodsToRun[index].MethodResult = serviceTestOutput.Value;
+            DispatchDebugStateForMethod(MethodsToRun[index], dataObject, 0, true, start);
         }
 
         static void MockConstructorExecution(IDSFDataObject dataObject, IServiceTestStep serviceTestStep, ref PluginExecutionDto pluginExecutionDto)
@@ -321,50 +335,60 @@ namespace Dev2.Activities
             }
             else
             {
-                if (!pluginAction.IsVoid)
+                UpdateEnvironment(pluginAction, update, dataObject, methodResult, outputVariable);
+            }
+            DispatchDebugStateForMethod(pluginAction, dataObject, update, false, start);
+        }
+
+        private static void UpdateEnvironment(IPluginAction pluginAction, int update, IDSFDataObject dataObject, string methodResult, string outputVariable)
+        {
+            if (!pluginAction.IsVoid)
+            {
+                var jObj = JToken.Parse(methodResult) ?? methodResult.DeserializeToObject();
+                if (!methodResult.IsJSON() && !pluginAction.IsObject)
                 {
-                    var jObj = JToken.Parse(methodResult) ?? methodResult.DeserializeToObject();
-                    if (!methodResult.IsJSON() && !pluginAction.IsObject)
+                    pluginAction.MethodResult = methodResult.TrimEnd('\"').TrimStart('\"');
+                }
+                if (jObj != null)
+                {
+                    AddJObjToEnvironment(pluginAction, update, dataObject, outputVariable, jObj);
+                }
+            }
+        }
+
+        private static void AddJObjToEnvironment(IPluginAction pluginAction, int update, IDSFDataObject dataObject, string outputVariable, JToken jObj)
+        {
+            if (jObj.IsEnumerableOfPrimitives())
+            {
+                var values = jObj.Children().Select(token => token.ToString()).ToList();
+                if (DataListUtil.IsValueScalar(outputVariable))
+                {
+                    var valueString = string.Join(",", values);
+                    dataObject.Environment.Assign(outputVariable, valueString, update);
+                }
+                else
+                {
+                    foreach (var value in values)
                     {
-                        pluginAction.MethodResult = methodResult.TrimEnd('\"').TrimStart('\"');
-                    }
-                    if (jObj != null)
-                    {
-                        if (jObj.IsEnumerableOfPrimitives())
-                        {
-                            var values = jObj.Children().Select(token => token.ToString()).ToList();
-                            if (DataListUtil.IsValueScalar(outputVariable))
-                            {
-                                var valueString = string.Join(",", values);
-                                dataObject.Environment.Assign(outputVariable, valueString, update);
-                            }
-                            else
-                            {
-                                foreach (var value in values)
-                                {
-                                    dataObject.Environment.Assign(outputVariable, value, update);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (jObj.IsPrimitive())
-                            {
-                                var value = jObj.ToString();
-                                if (!value.IsJSON() && !pluginAction.IsObject)
-                                {
-                                    value = value.TrimEnd('\"').TrimStart('\"');
-                                }
-                                if (!string.IsNullOrEmpty(outputVariable))
-                                {
-                                    dataObject.Environment.Assign(outputVariable, value, update);
-                                }
-                            }
-                        }
+                        dataObject.Environment.Assign(outputVariable, value, update);
                     }
                 }
             }
-            DispatchDebugStateForMethod(pluginAction, dataObject, update, false, start);
+            else
+            {
+                if (jObj.IsPrimitive())
+                {
+                    var value = jObj.ToString();
+                    if (!value.IsJSON() && !pluginAction.IsObject)
+                    {
+                        value = value.TrimEnd('\"').TrimStart('\"');
+                    }
+                    if (!string.IsNullOrEmpty(outputVariable))
+                    {
+                        dataObject.Environment.Assign(outputVariable, value, update);
+                    }
+                }
+            }
         }
 
         PluginInvokeArgs BuidlPluginInvokeArgs(int update, IPluginConstructor constructor, INamespaceItem namespaceItem, IDSFDataObject dataObject)
@@ -404,7 +428,7 @@ namespace Dev2.Activities
         }
 
         #region Overrides of DsfActivity
-
+        [ExcludeFromCodeCoverage] //This does not appear to be used anywhere
         protected override void ChildDebugStateDispatch(IDSFDataObject dataObject)
         {
             if (dataObject.IsDebugMode())
@@ -426,50 +450,60 @@ namespace Dev2.Activities
                 var serviceTestStep = dataObject.ServiceTest?.TestSteps?.Flatten(step => step.Children)?.FirstOrDefault(step => step.UniqueId == Guid.Parse(UniqueID));
                 if (serviceTestStep != null)
                 {
-                    if (!dataObject.IsDebugMode())
+                    UpdateTestStep(dataObject, serviceTestStep);
+                }
+            }
+        }
+
+        private void UpdateTestStep(IDSFDataObject dataObject, IServiceTestStep serviceTestStep)
+        {
+            if (!dataObject.IsDebugMode())
+            {
+                var serviceTestSteps = serviceTestStep.Children;
+                foreach (var serviceTestTestStep in serviceTestSteps)
+                {
+                    UpdateForRegularActivity(dataObject, serviceTestTestStep);
+                }
+            }
+            var testRunResult = new TestRunResult();
+            GetFinalTestRunResult(serviceTestStep, testRunResult);
+            serviceTestStep.Result = testRunResult;
+            if (dataObject.IsDebugMode())
+            {
+                var states = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
+                if (states != null)
+                {
+                    states = states.Where(state => state.ID == Guid.Parse(UniqueID)).ToList();
+                    var debugState = states.FirstOrDefault();
+                    if (debugState != null)
                     {
-                        var serviceTestSteps = serviceTestStep.Children;
-                        foreach (var serviceTestTestStep in serviceTestSteps)
-                        {
-                            UpdateForRegularActivity(dataObject, serviceTestTestStep);
-                        }
+                        AddDebugItem(testRunResult, debugState);
                     }
-                    var testRunResult = new TestRunResult();
-                    GetFinalTestRunResult(serviceTestStep, testRunResult);
-                    serviceTestStep.Result = testRunResult;
-                    if (dataObject.IsDebugMode())
-                    {
-                        var states = TestDebugMessageRepo.Instance.GetDebugItems(dataObject.ResourceID, dataObject.TestName);
-                        if (states != null)
-                        {
-                            states = states.Where(state => state.ID == Guid.Parse(UniqueID)).ToList();
-                            var debugState = states.FirstOrDefault();
-                            if (debugState != null)
-                            {
-                                var msg = testRunResult.Message;
-                                if (testRunResult.RunTestResult == RunResult.TestPassed)
-                                {
-                                    msg = Messages.Test_PassedResult;
-                                }
+                }
+            }
+        }
 
-                                var hasError = testRunResult.RunTestResult == RunResult.TestFailed;
+        static void AddDebugItem(TestRunResult testRunResult, IDebugState debugState)
+        {
+            var msg = testRunResult.Message;
+            if (testRunResult.RunTestResult == RunResult.TestPassed)
+            {
+                msg = Messages.Test_PassedResult;
+            }
 
-                                var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg, hasError);
-                                var itemToAdd = new DebugItem();
-                                itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
+            var hasError = testRunResult.RunTestResult == RunResult.TestFailed;
 
-                                if (debugState.AssertResultList != null)
-                                {
-                                    var addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
+            var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg, hasError);
+            var itemToAdd = new DebugItem();
+            itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
 
-                                    if (addItem)
-                                    {
-                                        debugState.AssertResultList.Add(itemToAdd);
-                                    }
-                                }
-                            }
-                        }
-                    }
+            if (debugState.AssertResultList != null)
+            {
+                var addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
+
+                if (addItem)
+                {
+                    debugState.AssertResultList.Add(itemToAdd);
                 }
             }
         }
@@ -570,18 +604,16 @@ namespace Dev2.Activities
         IEnumerable<DebugItem> BuildConstructorInputs(IExecutionEnvironment env, int update, bool isMock)
         {
             var inputs = new List<DebugItem>();
-            if (Constructor != null)
+            if (Constructor != null && ConstructorInputs != null && ConstructorInputs.Any())
             {
-                if (ConstructorInputs != null && ConstructorInputs.Any())
+                foreach (var constructorInput in ConstructorInputs)
                 {
-                    foreach (var constructorInput in ConstructorInputs)
-                    {
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugEvalResult(constructorInput.Value, constructorInput.Name, env, update, false, false, isMock), debugItem);
-                        inputs.Add(debugItem);
-                    }
+                    var debugItem = new DebugItem();
+                    AddDebugItem(new DebugEvalResult(constructorInput.Value, constructorInput.Name, env, update, false, false, isMock), debugItem);
+                    inputs.Add(debugItem);
                 }
             }
+
 
             return inputs;
         }
@@ -645,15 +677,20 @@ namespace Dev2.Activities
 
         #endregion
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(DsfEnhancedDotNetDllActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var comparer = new EnhancedPluginComparer();
             var @equals = comparer.Equals(this, other);
             return base.Equals(other) && @equals;
@@ -661,9 +698,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfEnhancedDotNetDllActivity)obj);
         }
 

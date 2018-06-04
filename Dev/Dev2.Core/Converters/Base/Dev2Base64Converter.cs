@@ -36,10 +36,7 @@ namespace Dev2.Converters
             return result;
         }
 
-        public string ConvertToBase(byte[] payload)
-        {
-            return Convert.ToBase64String(payload);
-        }
+        public string ConvertToBase(byte[] payload) => Convert.ToBase64String(payload);
 
         public byte[] NeutralizeToCommon(string payload)
         {
@@ -50,9 +47,6 @@ namespace Dev2.Converters
             return encoder.GetBytes(tmp);
         }
 
-        public Enum HandlesType()
-        {
-            return enDev2BaseConvertType.Base64;
-        }
+        public Enum HandlesType() => enDev2BaseConvertType.Base64;
     }
 }

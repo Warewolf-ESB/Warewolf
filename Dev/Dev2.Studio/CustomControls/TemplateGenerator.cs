@@ -24,7 +24,9 @@ namespace Dev2.CustomControls
         public static DataTemplate CreateDataTemplate(Func<object> factory)
         {
             if (factory == null)
+            {
                 throw new ArgumentNullException("factory");
+            }
 
             var frameworkElementFactory = new FrameworkElementFactory(typeof(_TemplateGeneratorControl));
             frameworkElementFactory.SetValue(_TemplateGeneratorControl.FactoryProperty, factory);
@@ -40,10 +42,14 @@ namespace Dev2.CustomControls
         public static ControlTemplate CreateControlTemplate(Type controlType, Func<object> factory)
         {
             if (controlType == null)
+            {
                 throw new ArgumentNullException("controlType");
+            }
 
             if (factory == null)
+            {
                 throw new ArgumentNullException("factory");
+            }
 
             var frameworkElementFactory = new FrameworkElementFactory(typeof(_TemplateGeneratorControl));
             frameworkElementFactory.SetValue(_TemplateGeneratorControl.FactoryProperty, factory);

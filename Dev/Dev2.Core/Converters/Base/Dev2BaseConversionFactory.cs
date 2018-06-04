@@ -22,10 +22,7 @@ namespace Dev2.Converters
         /// <param name="from"></param>
         /// <param name="to"></param>
         /// <returns></returns>
-        public IBaseConversionBroker CreateBroker(IBaseConverter from, IBaseConverter to)
-        {
-            return new Dev2BaseConversionBroker(from, to);
-        }
+        public IBaseConversionBroker CreateBroker(IBaseConverter from, IBaseConverter to) => new Dev2BaseConversionBroker(from, to);
 
         /// <summary>
         ///     Create a base converter

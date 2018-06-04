@@ -35,10 +35,7 @@ namespace Dev2.Studio.Core.Models.DataList
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        public override string ToString()
-        {
-            return DisplayName;
-        }
+        public override string ToString() => DisplayName;
 
         public override string ValidateName(string name)
         {

@@ -133,8 +133,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsTrue(viewModel.CloseHelpCommand.CanExecute(null));
             Assert.IsNotNull(viewModel.PickResourceCommand);
             Assert.IsTrue(viewModel.PickResourceCommand.CanExecute(null));
-            Assert.IsNotNull(viewModel.PickWindowsGroupCommand);
-            Assert.IsTrue(viewModel.PickWindowsGroupCommand.CanExecute(null));
+            VerifyWindowsPermission(securitySettingsTO, viewModel);
             Assert.IsNotNull(viewModel.ServerPermissions);
             Assert.IsNotNull(viewModel.ResourcePermissions);
 
@@ -144,6 +143,19 @@ namespace Dev2.Core.Tests.Settings
             // constructor adds an extra "new"  permission
             Assert.AreEqual(serverPerms.Count + 1, viewModel.ServerPermissions.Count);
             Assert.AreEqual(resourcePerms.Count + 1, viewModel.ResourcePermissions.Count);
+        }
+
+        static void VerifyWindowsPermission(SecuritySettingsTO securitySettingsTO, SecurityViewModel viewModel)
+        {
+            Assert.IsNotNull(viewModel.PickWindowsGroupCommand);
+            if (securitySettingsTO != null)
+            {
+                Assert.IsTrue(viewModel.PickWindowsGroupCommand.CanExecute(securitySettingsTO.WindowsGroupPermissions[0]));
+            }
+            else
+            {
+                Assert.IsFalse(viewModel.PickWindowsGroupCommand.CanExecute(null));
+            }
         }
 
         [TestMethod]
@@ -942,6 +954,65 @@ namespace Dev2.Core.Tests.Settings
             }
             Assert.AreEqual(1, viewModel.ResourcePermissions.Count(p => p.IsNew));
             Assert.AreEqual(1, viewModel.ServerPermissions.Count(p => p.IsNew));
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        public void SecurityViewModel_HasInvalidResourcePermission_Given_Invalid_Resource_That_Is_Being_Deleted_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                ResourceName = "Resource1",
+                WindowsGroup = "",
+                IsDeleted = true,
+                IsServer = false
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateServerPermissions = securityViewModel.HasInvalidResourcePermission();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(hasDuplicateServerPermissions);
+        }
+
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        public void SecurityViewModel_HasInvalidResourcePermission_Given_Resource_And_No_Group_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                ResourceName = "Resource1",
+                WindowsGroup = "",
+                IsServer = false
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateServerPermissions = securityViewModel.HasInvalidResourcePermission();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(hasDuplicateServerPermissions);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        public void SecurityViewModel_HasInvalidResourcePermission_Given_Group_And_No_Resource_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IServer>().Object, () => new Mock<IResourcePickerDialog>().Object);
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceName = string.Empty,
+                IsServer = false
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateServerPermissions = securityViewModel.HasInvalidResourcePermission();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(hasDuplicateServerPermissions);
         }
 
         [TestMethod]

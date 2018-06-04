@@ -57,37 +57,37 @@ namespace Dev2.TO
         public CommonFunctions.WarewolfEvalResult EvalResult => _evalResult ?? (_evalResult = _env.EvalForJson(
             Simple.SourceName));
 
-        public object EvalResultAsObject
+        public object GetEvalResultAsObject()
         {
-            get
+            if (_evalResultAsObject == null)
             {
-                if (_evalResultAsObject == null)
+                var e = EvalResult;
+                _evalResultAsObject = CommonFunctions.evalResultToJsonCompatibleObject(e);
+                if (EvalResult.IsWarewolfAtomListresult && _evalResultAsObject == null)
                 {
-                    var e = EvalResult;
-                    _evalResultAsObject = CommonFunctions.evalResultToJsonCompatibleObject(e);
-                    if (EvalResult.IsWarewolfAtomListresult && _evalResultAsObject == null)
-                    {
-                        _evalResultAsObject = new object[] { null };
-                    }
-                    if (e.IsWarewolfAtomResult)
-                    {
-                        if (e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
-                        {
-                            if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
-                            {
-                                _evalResultAsObject = true;
-                            }
-                            else
-                            {
-                                if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "false")
-                                {
-                                    _evalResultAsObject = false;
-                                }
-                            }
-                        }
-                    }
+                    _evalResultAsObject = new object[] { null };
                 }
-                return _evalResultAsObject;
+                if (e.IsWarewolfAtomResult && e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
+                {
+                    SetEvalResultAsObject(x);
+                }
+
+            }
+            return _evalResultAsObject;
+        }
+
+        void SetEvalResultAsObject(CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x)
+        {
+            if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
+            {
+                _evalResultAsObject = true;
+            }
+            else
+            {
+                if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "false")
+                {
+                    _evalResultAsObject = false;
+                }
             }
         }
 
@@ -158,22 +158,13 @@ namespace Dev2.TO
             }
         }
 
-        public int MaxCount
-        {
-            get
-            {
-                return Evaluations.Select(x => x.Count).Max();
-            }
-        }
+        public int MaxCount => Evaluations.Select(x => x.Count).Max();
 
         public string DestinationName => Compound.DestinationName;
 
-        public object EvaluatedResultIndexed(int i)
-        {
-            return i < MaxCount ?
-                Evaluations.First().EvalResultAsObject :
+        public object EvaluatedResultIndexed(int i) => i < MaxCount ?
+                Evaluations.First().GetEvalResultAsObject() :
                 Evaluations.First().EvalResult.IsWarewolfAtomListresult ? new object[] { null } : null;
-        }
 
         public object ComplexEvaluatedResultIndexed(int i)
         {
@@ -258,23 +249,28 @@ namespace Dev2.TO
                     var a = new JObject();
                     foreach (KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair in data)
                     {
-                        if (pair.Key != FsInteropFunctions.PositionColumn)
-                        {
-                            try
-                            {
-                                a.Add(new JProperty(pair.Key, CommonFunctions.atomToJsonCompatibleObject(pair.Value[j])));
-                            }
-                            catch (Exception)
-                            {
-                                a.Add(new JProperty(pair.Key, null));
-                            }
-                        }
+                        TryAddPairKey(j, a, pair);
                     }
                     jObjects.Add(a);
                 }
                 return jObjects;
             }
             throw new Exception(ErrorResource.InvalidResultTypeFromWarewolfStorage);
+        }
+
+        private static void TryAddPairKey(int j, JObject a, KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>> pair)
+        {
+            if (pair.Key != FsInteropFunctions.PositionColumn)
+            {
+                try
+                {
+                    a.Add(new JProperty(pair.Key, CommonFunctions.atomToJsonCompatibleObject(pair.Value[j])));
+                }
+                catch (Exception)
+                {
+                    a.Add(new JProperty(pair.Key, null));
+                }
+            }
         }
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
@@ -309,7 +305,7 @@ namespace Dev2.TO
                     }
                     if (complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1 ||
-                        
+
                        !Enumerable.Range(1, complex.Item.Count() - 1)
                            .Where(i => i % 2 == 1)
                            .Select(i =>
@@ -318,17 +314,20 @@ namespace Dev2.TO
                                             complex.Item.ElementAt(i)
                                             ) == ",")
                            .Aggregate((a, b) => a && b))
-                    
+
                     {
                         return ErrorResource.ExpressionMustBeCommaSeperated;
                     }
                 }
-                else if (!parsed.IsRecordSetNameExpression &&
-                        !parsed.IsRecordSetExpression &&
-                        !parsed.IsScalarExpression &&
-                        !parsed.IsWarewolfAtomExpression)
+                else
                 {
-                    return ErrorResource.OnlyScalarRecordsetCommaSeperated;
+                    if (!parsed.IsRecordSetNameExpression &&
+                      !parsed.IsRecordSetExpression &&
+                      !parsed.IsScalarExpression &&
+                      !parsed.IsWarewolfAtomExpression)
+                    {
+                        return ErrorResource.OnlyScalarRecordsetCommaSeperated;
+                    }
                 }
             }
             catch (Exception)
@@ -338,15 +337,8 @@ namespace Dev2.TO
             return null;
         }
 
-        public bool HasRecordSetInCompound
-        {
-            get
-            {
-                return
-                    IsCompound &&
+        public bool HasRecordSetInCompound => IsCompound &&
                     Evaluations.Any(x =>
-                    FsInteropFunctions.ParseLanguageExpression(x.Simple.SourceName,0).IsRecordSetNameExpression);
-            }
-        }
+                    FsInteropFunctions.ParseLanguageExpression(x.Simple.SourceName, 0).IsRecordSetNameExpression);
     }
 }

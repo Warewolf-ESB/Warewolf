@@ -11,55 +11,30 @@
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-
 
 namespace Dev2.Common
 {
-    class Dev2Tokenizer : IDev2Tokenizer, IDisposable
+    class Dev2Tokenizer : IDev2Tokenizer
     {
-        readonly CharEnumerator _charEnumerator;
         readonly bool _isReversed;
         readonly int _masterLen;
+        private StringBuilder _sourceString;
         readonly IList<IDev2SplitOp> _ops;
-        readonly char[] _tokenParts;
-
-        readonly bool _useEnumerator;
-
-        bool _disposing;
+        
         bool _hasMoreOps;
         int _opPointer;
         int _startIdx;
 
-        internal Dev2Tokenizer(string candiateString, IList<IDev2SplitOp> ops, bool reversed)
+        internal Dev2Tokenizer(StringBuilder sourceString, IList<IDev2SplitOp> ops, bool reversed)
         {
             _ops = ops;
             _isReversed = reversed;
-            _useEnumerator = CanUseEnumerator();
-            _masterLen = candiateString.Length;
-            
-            if (!_useEnumerator)
-            {
-                _tokenParts = candiateString.ToCharArray();
-            }
-            else
-            {
-                _charEnumerator = candiateString.GetEnumerator();
-            }
-
+            _masterLen = sourceString.Length;
+            _sourceString = sourceString;
             _opPointer = 0;
             _hasMoreOps = true;
-
-            _startIdx = !_isReversed ? 0 : _tokenParts.Length - 1;
-        }
-
-        #region Private Method
-
-        bool CanUseEnumerator()
-        {
-            var result = _ops != null && _ops?.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count;
-            return result;
+            _startIdx = !_isReversed ? 0 : sourceString.Length - 1;
         }
 
         void MoveOpPointer()
@@ -93,43 +68,16 @@ namespace Dev2.Common
             return result;
         }
 
-        #endregion Private Method
+        public bool HasMoreOps() => _hasMoreOps;
 
-        public bool HasMoreOps()
-        {
-            return _hasMoreOps;
-        }
-        
         public string NextToken()
         {
-            string result;
-            
-            // we can be smart about the operations ;)
-            result = _useEnumerator ? _ops[_opPointer].ExecuteOperation(_charEnumerator, _startIdx, _masterLen, _isReversed) : _ops[_opPointer].ExecuteOperation(_tokenParts, _startIdx, _isReversed);
-
+            var result = _ops[_opPointer].ExecuteOperation(ref _sourceString, _startIdx, _masterLen, _isReversed);
             MoveStartIndex(result.Length + _ops[_opPointer].OpLength());
             MoveOpPointer();
-            // check to see if there is data to fetch still?
-            _hasMoreOps = !_ops[_opPointer].IsFinalOp() & HasMoreData();
+            _hasMoreOps = !_ops[_opPointer].IsFinalOp() && HasMoreData();
 
             return result;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposing)
-            {
-                if (disposing)
-                {
-                    _charEnumerator.Dispose();
-                }
-                _disposing = true;
-            }
         }
     }
 }

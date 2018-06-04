@@ -165,7 +165,45 @@ namespace Dev2.Activities.Designers.Tests.Decision
             Assert.AreEqual(isSearchCriteriaEnabled, decisionTO.IsSearchCriteriaVisible);
             Assert.AreEqual(isSearchCriteriaBlank, string.IsNullOrEmpty(decisionTO.SearchCriteria));
         }
-        
+
+
+        class DecisionDesignerViewModelTestObject : DecisionDesignerViewModel
+        {
+            public DecisionDesignerViewModelTestObject(ModelItem modelItem): base(modelItem)
+            {
+            }
+            public string GetDisplayText => DisplayText;
+            public void TestUpdateDecisionDisplayName(DecisionTO dec)
+            {
+                this.UpdateDecisionDisplayName(dec);
+            }
+        }
+
+        [TestMethod]
+        [Owner("Rory McGuire")]
+        [TestCategory("DecisionDesignerViewModel")]
+        public void Verify_UpdateDecisionDisplayName()
+        {
+            //------------Setup for test--------------------------
+            var items = new List<DecisionTO>
+            {
+                new DecisionTO("xxxx","xxxx", "Equals", 1),
+                new DecisionTO("yyyy","yyyy", "Contains", 2)
+            };
+            using (var viewModel = new DecisionDesignerViewModelTestObject(CreateModelItem("If this or that"))) {
+                viewModel.DisplayText = "If this or that";
+                //------------Precondition---------------------------
+                Assert.AreEqual(viewModel.DisplayText, "If this or that");
+
+                //------------Execute Test---------------------------
+                viewModel.TestUpdateDecisionDisplayName(items[0]);
+                Assert.AreEqual(viewModel.DisplayText, "If xxxx Is = xxxx");
+
+                viewModel.TestUpdateDecisionDisplayName(items[1]);
+                Assert.AreEqual(viewModel.DisplayText, "If xxxx Is = xxxx");
+            }
+        }
+
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("DecisionDesignerViewModel_OnSearchTypeChanged")]

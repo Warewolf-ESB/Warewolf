@@ -42,9 +42,9 @@ namespace Dev2.Common.Interfaces
         IList<IDebugState> DebugForTest { get; set; }
         string DuplicateTestTooltip { get; set; }
         ObservableCollection<IServiceTestStep> TestSteps { get; set; }
-        IServiceTestStep SelectedTestStep { get; set; }
 
         void SetItem(IServiceTestModel model);
+        void ResetOldTestName();
         IServiceTestModel Clone();
         IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs);
         IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType);

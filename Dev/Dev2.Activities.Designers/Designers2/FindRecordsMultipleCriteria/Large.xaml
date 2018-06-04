@@ -6,12 +6,9 @@
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
-                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:findRecordsMultipleCriteria="clr-namespace:Dev2.Activities.Designers2.FindRecordsMultipleCriteria"
@@ -104,17 +101,6 @@
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource ActivityMappingDataGridStyle}"
                                Margin="0,3">
-            <i:Interaction.Behaviors>
-                <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors2:DataGridWatermarkModifier.WatermarkText>
-                        <sys:String>[[Recordset().F1]]</sys:String>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                        <sys:Int32>0</sys:Int32>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors2:DataGridWatermarkModifier>
-            </i:Interaction.Behaviors>
-
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="25"
                                         Header="#"
@@ -287,7 +273,7 @@
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
                   Margin="-6,0,0,0"
-                  Content="Require All Matches To Be True"
+                  Content="All Matches Required For At Least One Field"
                   IsChecked="{Binding ModelItem.RequireAllTrue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static languages:Tooltips.FindToolTipRequireAllMatchesToBeTrue}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllTrue_AutoID}">
@@ -300,7 +286,7 @@
                   Grid.Column="0"
                   Grid.ColumnSpan="2"
                   Margin="-6,0,0,0"
-                  Content="Requires All Fields To Match"
+                  Content="Each Field Has At Least One Match"
                   IsChecked="{Binding ModelItem.RequireAllFieldsToMatch, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ToolTip="{x:Static languages:Tooltips.FindToolTipRequireAllFieldsToMatch}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_RequireAllFieldsToMatch_AutoID}">

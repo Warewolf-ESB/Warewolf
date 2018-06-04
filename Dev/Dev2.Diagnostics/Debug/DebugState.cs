@@ -9,8 +9,6 @@
 */
 
 
-#region
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -24,13 +22,9 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-#endregion
 
 namespace Dev2.Diagnostics.Debug
 {
-    /// <summary>
-    ///     A default debug state
-    /// </summary>
     [Serializable]
     public class DebugState : IDebugState, INotifyPropertyChanged
     {
@@ -61,14 +55,8 @@ namespace Dev2.Diagnostics.Debug
 
         public Guid DisconnectedID
         {
-            get
-            {
-                return _disconnectedID;
-            }
-            set
-            {
-                _disconnectedID = value;
-            }
+            get => _disconnectedID;
+            set => _disconnectedID = value;
         }
 
         static DebugState()
@@ -79,6 +67,7 @@ namespace Dev2.Diagnostics.Debug
                 Directory.CreateDirectory(tempPath);
             }
         }
+
         #endregion
 
         #region IDebugState - Properties
@@ -451,16 +440,10 @@ namespace Dev2.Diagnostics.Debug
         #endregion
 
 
-        public bool IsFinalStep()
-        {
-            return StateType == StateType.End && OriginalInstanceID == ID && (!ParentID.HasValue || ParentID == Guid.Empty);
-        }
+        public bool IsFinalStep() => StateType == StateType.End && OriginalInstanceID == ID && (!ParentID.HasValue || ParentID == Guid.Empty);
 
-        public bool IsFirstStep()
-        {
-            return StateType == StateType.Start &&
+        public bool IsFirstStep() => StateType == StateType.Start &&
                    OriginalInstanceID == ID;
-        }
 
         public bool IsDurationVisible
         {
@@ -541,15 +524,9 @@ namespace Dev2.Diagnostics.Debug
             }
         }
 
-        public static bool operator ==(DebugState left, DebugState right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(DebugState left, DebugState right) => Equals(left, right);
 
-        public static bool operator !=(DebugState left, DebugState right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(DebugState left, DebugState right) => !Equals(left, right);
 
         #endregion
 
@@ -561,12 +538,9 @@ namespace Dev2.Diagnostics.Debug
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-            if (propertyName?.Equals("ParentID") ?? false)
+            if (propertyName?.Equals("ParentID") != null && ParentID == Guid.Empty)
             {
-                if (ParentID == Guid.Empty)
-                {
-                    ParentID = null;
-                }
+                ParentID = null;
             }
         }
     }

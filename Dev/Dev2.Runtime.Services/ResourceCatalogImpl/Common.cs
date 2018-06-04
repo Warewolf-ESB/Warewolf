@@ -21,10 +21,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         static readonly ConcurrentDictionary<string, object> FileLocks = new ConcurrentDictionary<string, object>();
         static ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
         static readonly object LoadLock = new object();
-        public static object GetFileLock(string file)
-        {
-            return FileLocks.GetOrAdd(file, o => new object());
-        }
+        public static object GetFileLock(string file) => FileLocks.GetOrAdd(file, o => new object());
+
         public static object GetWorkspaceLock(Guid workspaceID)
         {
             lock (LoadLock)

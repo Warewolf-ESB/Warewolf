@@ -1,17 +1,19 @@
 ﻿@Deploy
+@RemoteServer
 Feature: Deploy Feature
-In order to schedule workflows
+In order to deploy workflows
 	As a Warewolf user
-	I want to setup schedules
+	I want to setup deployments
 
-@ignore
-Scenario: Deploy a renamed resource to localhost
-	Given I am Connected to remote server "tst-ci-remote"
-	And I reload the destination resources
-	Then I RollBack Resource
-	Given the destination resource is "RenamedWorkFlowToDeploy"
-	And I select resource "OriginalWorkFlowName" from source server
-	And And the localhost resource is "OriginalWorkFlowName"
-	When I Deploy resource to remote
-	And I reload the destination resources
-	Then the destination resource is "OriginalWorkFlowName"
+Scenario: Deploy a renamed resource
+	Given localhost and destination server are connected
+	And I have a workflow "OriginalName"
+	And the workflow contains an Assign "Rec To Convert" as
+	| variable    | value |
+	| [[rec().a]] | yes   |
+	| [[rec().a]] | no    |
+	And the workflow contains Count Record "CountRec" on "[[rec()]]" into "[[count]]"
+	When the workflow is Saved
+	And I deploy the workflow
+	And I rename the workflow to "RenamedResource" and re deploy
+	Then Remote server has updated name

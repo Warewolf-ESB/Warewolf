@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -41,21 +41,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
-            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();            
-            //if (Switches != null)
-            //{
-            //    foreach (var swt in Switches)
-            //    {
-            //        armConnectors.Add(($"{GetDisplayName()}: {swt.Key}->{swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
-            //    }
-            //}
-            //if (Default != null)
-            //{
-            //    foreach (var dft in Default)
-            //    {
-            //        armConnectors.Add(($"{GetDisplayName()}: DEFAULT->{dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
-            //    }
-            //}
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             return armConnectors;
         }
 
@@ -85,9 +71,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = debugOutputs;
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string>();
-        }
+        public override List<string> GetOutputs() => new List<string>();
     }
 }

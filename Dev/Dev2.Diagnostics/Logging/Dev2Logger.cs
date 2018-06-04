@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -17,14 +17,8 @@ using log4net;
 using log4net.Appender;
 using log4net.Repository.Hierarchy;
 
-
-
-
 namespace Dev2.Common
 {
-    /// <summary>
-    /// A single common logging location ;)
-    /// </summary>
     public static class Dev2Logger
     {
         static readonly ILog _log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -91,10 +85,7 @@ namespace Dev2.Common
             _log.Info(customMessage, exception);
         }
 
-        static string UpdateCustomMessage(object message, string executionId)
-        {
-            return $"[{executionId}] - {message}";
-        }
+        static string UpdateCustomMessage(object message, string executionId) => $"[{executionId}] - {message}";
 
         public static void UpdateLoggingConfig(string level)
         {
@@ -198,7 +189,7 @@ namespace Dev2.Common
                 var appenderElements = log4netElement.Elements("appender");
                 var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
                 UpdateFileSizeForFileLogAppender(maxLogSize, appenders);
-                
+
                 var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.EventLogAppender");
                 var rootElement = log4netElement.Element("root");
                 if (eventAppender == null)
@@ -220,11 +211,11 @@ namespace Dev2.Common
             {
                 var appenderElements = log4netElement.Elements("appender");
                 var appenders = appenderElements as IList<XElement> ?? appenderElements.ToList();
-                
+
                 var eventAppender = appenders.FirstOrDefault(element => element.Attribute("type").Value == "log4net.Appender.EventLogAppender");
                 if (eventAppender == null)
                 {
-                    
+
                     var fileAppender = appenders.FirstOrDefault(element => element.Attribute("name").Value == "LogFileAppender");
                     ConfigureEventLoggerAppender(applicationNameForEventLog, "ERROR", fileAppender);
                     var rootElement = log4netElement.Element("root");

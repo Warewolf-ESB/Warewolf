@@ -10,5 +10,6 @@ namespace Dev2.Common.Interfaces
         string ClsId { get; set; }
         IFileListing SelectedDll { get; set; }
         string ResourcePath { get; set; }
+        string Name { get; }
     }
 }

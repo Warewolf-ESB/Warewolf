@@ -32,6 +32,7 @@ namespace Dev2.Activities.Designers2.Sequence
     {
         object _smallViewItem;
         bool _addedFromDesignSurface;
+        private IServerRepository _serverRepository;
 
         public SequenceDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -92,7 +93,19 @@ namespace Dev2.Activities.Designers2.Sequence
             }
         }
 
-        public bool SetModelItemForServiceTypes(IDataObject dataObject)
+        public IServerRepository ServerRepository
+        {
+            get
+            {
+                return _serverRepository ?? Dev2.Studio.Core.ServerRepository.Instance;
+            }
+            set
+            {
+                _serverRepository = value;
+            }
+        }
+
+        public bool TrySetModelItemForServiceTypes(IDataObject dataObject)
         {
             if (dataObject != null && (dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat) || dataObject.GetDataPresent(GlobalConstants.UpgradedExplorerItemModelFormat)))
             {
@@ -115,32 +128,7 @@ namespace Dev2.Activities.Designers2.Sequence
 
                 try
                 {
-                    var server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envId);
-                    var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
-
-                    if (resource == null)
-                    {
-                        var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
-                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
-                        if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                        {
-                            dynamic mvm = Application.Current.MainWindow.DataContext;
-                            if (mvm != null && mvm.ActiveItem != null)
-                            {
-                                WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
-                            }
-                        }
-
-                        var modelItem = ModelItemUtils.CreateModelItem(d);
-                        if (modelItem != null)
-                        {
-                            dynamic mi = ModelItem;
-                            ModelItemCollection activitiesCollection = mi.Activities;
-                            activitiesCollection.Insert(activitiesCollection.Count, d);
-                            return true;
-                        }
-                    }                    
-                    return true;
+                    return SetModelItemForServiceTypes(envId, resourceId);
                 }
                 catch (RuntimeBinderException e)
                 {
@@ -150,16 +138,34 @@ namespace Dev2.Activities.Designers2.Sequence
             return false;
         }
 
-        private static void ValidateRemoteProperties(IContextualResourceModel resource, DsfActivity d)
+        private bool SetModelItemForServiceTypes(Guid envId, Guid resourceId)
         {
-            if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+            var server = ServerRepository.FindSingle(c => c.EnvironmentID == envId);
+            var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
+
+            if (resource != null)
             {
-                dynamic mvm = Application.Current.MainWindow.DataContext;
-                if (mvm != null && mvm.ActiveItem != null)
+                var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository, true);
+                d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+                if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                 {
-                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
+                    dynamic mvm = Application.Current.MainWindow.DataContext;
+                    if (mvm != null && mvm.ActiveItem != null)
+                    {
+                        WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
+                    }
+                }
+
+                var modelItem = ModelItemUtils.CreateModelItem(d);
+                if (modelItem != null)
+                {
+                    dynamic mi = ModelItem;
+                    ModelItemCollection activitiesCollection = mi.Activities;
+                    activitiesCollection.Insert(activitiesCollection.Count, d);
+                    return true;
                 }
             }
+            return false;
         }
 
         public bool DoDrop(IDataObject dataObject)
@@ -185,7 +191,7 @@ namespace Dev2.Activities.Designers2.Sequence
                     return true;
                 }
             }
-            return SetModelItemForServiceTypes(dataObject);
+            return TrySetModelItemForServiceTypes(dataObject);
         }
 
         public override void Validate()

@@ -109,25 +109,13 @@ namespace Dev2.Activities.Designers2.Core
         string PrivateKeyFile => GetProperty<string>();
         string DestinationPrivateKeyFile => GetProperty<string>();
 
-        protected virtual void ValidateInputPath()
-        {
-            InputPathValue = ValidatePath(InputPathLabel, InputPath, () => IsInputPathFocused = true, true);
-        }
+        protected virtual void ValidateInputPath() => InputPathValue = ValidatePath(InputPathLabel, InputPath, () => IsInputPathFocused = true, true);
 
-        protected virtual void ValidateOutputPath()
-        {
-            OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true, true);
-        }
+        protected virtual void ValidateOutputPath() => OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true, true);
 
-        void ValidateSftpKey()
-        {
-            SftpValue = ValidatePath("Private Key Path", PrivateKeyFile, () => IsSftpFocused = true, false);
-        }
+        void ValidateSftpKey() => SftpValue = ValidatePath("Private Key Path", PrivateKeyFile, () => IsSftpFocused = true, false);
 
-        void ValidateDestinationSftpKey()
-        {
-            DestinationSftpValue = ValidatePath("Destination Private Key Path", DestinationPrivateKeyFile, () => IsSftpFocused = true, false);
-        }
+        void ValidateDestinationSftpKey() => DestinationSftpValue = ValidatePath("Destination Private Key Path", DestinationPrivateKeyFile, () => IsSftpFocused = true, false);
 
         protected virtual void ValidateInputAndOutputPaths()
         {
@@ -178,21 +166,20 @@ namespace Dev2.Activities.Designers2.Core
             return pathValue;
         }
 
-        protected virtual void ValidateFileContent(string content, string label)
-        {
-            FileContentValue = ValidateFileContent(content, label, () => FileHasContent = true);
-        }
+        protected virtual void ValidateFileContent(string content, string label) => FileContentValue = ValidateFileContent(content, label, () => FileHasContent = true);
 
         public bool FileHasContent
         {
-            get { return (bool)GetValue(FileHasContentProperty); }
-            set { SetValue(FileHasContentProperty, value); }
+            get => (bool)GetValue(FileHasContentProperty);
+            set => SetValue(FileHasContentProperty, value);
         }
 
         public static readonly DependencyProperty FileHasContentProperty = 
             DependencyProperty.Register("FileHasContent", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
-        protected virtual string ValidateFileContent(string content, string label, Action onError, bool contentIsRequired = true)
+        protected virtual string ValidateFileContent(string content, string label, Action onError) => ValidateFileContent(content, label, onError, true);
+
+        protected virtual string ValidateFileContent(string content, string label, Action onError, bool contentIsRequired)
         {
             var errors = new List<IActionableErrorInfo>();
             var fileActivityRuleSet = new RuleSet();
@@ -205,21 +192,20 @@ namespace Dev2.Activities.Designers2.Core
             return content;
         }
 
-        protected virtual void ValidateArchivePassword(string password, string label)
-        {
-            ArchivePasswordValue = ValidateArchivePassword(password, label, () => ArchivePasswordExists = true);
-        }
+        protected virtual void ValidateArchivePassword(string password, string label) => ArchivePasswordValue = ValidateArchivePassword(password, label, () => ArchivePasswordExists = true);
 
         public bool ArchivePasswordExists
         {
-            get { return (bool)GetValue(ArchivePasswordExistsProperty); }
-            set { SetValue(ArchivePasswordExistsProperty, value); }
+            get => (bool)GetValue(ArchivePasswordExistsProperty);
+            set => SetValue(ArchivePasswordExistsProperty, value);
         }
 
         public static readonly DependencyProperty ArchivePasswordExistsProperty = 
             DependencyProperty.Register("ArchivePasswordExists", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
-        protected virtual string ValidateArchivePassword(string password, string label, Action onError, bool contentIsRequired = true)
+        protected virtual string ValidateArchivePassword(string password, string label, Action onError) => ValidateArchivePassword(password, label, onError, true);
+
+        protected virtual string ValidateArchivePassword(string password, string label, Action onError, bool contentIsRequired)
         {
             var errors = new List<IActionableErrorInfo>();
             var fileActivityRuleSet = new RuleSet();

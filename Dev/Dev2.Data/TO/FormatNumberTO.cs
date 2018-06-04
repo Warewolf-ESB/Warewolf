@@ -59,10 +59,7 @@ namespace Dev2.Data.TO
 
         #region Methods
 
-        public enRoundingType GetRoundingTypeEnum()
-        {
-            return (enRoundingType)Dev2EnumConverter.GetEnumFromStringDiscription(RoundingType, typeof(enRoundingType));
-        }
+        public enRoundingType GetRoundingTypeEnum() => (enRoundingType)Dev2EnumConverter.GetEnumFromStringDiscription(RoundingType, typeof(enRoundingType));
 
         #endregion Methods
     }

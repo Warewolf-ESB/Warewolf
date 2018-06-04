@@ -38,6 +38,7 @@ namespace Warewolf.UI.Tests.Tools
             Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.BodyComboBox.Enabled, "Body Combobox is not enabled.");
             Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.TestButton.Enabled, "Test Button is not enabled.");
             Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.ResultComboBox.Enabled, "Result Combobox is not enabled.");
+            Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.HtmlBodyCheckBox.Enabled, "HTML Body Combobox is not enabled.");
             // New Source
             EmailToolsUIMap.Click_NewSourceButton_From_ExchangeSendTool();
             Assert.IsTrue(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.Exists, "Exchange Source Tab does not exist.");
@@ -49,6 +50,21 @@ namespace Warewolf.UI.Tests.Tools
             ExchangeSourceUIMap.Click_ExchangeSource_TestConnection_Button();
             System.Drawing.Point point;
             Assert.IsFalse(ExchangeSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ExchangeSourceTab.SendTestModelsCustom.ToTextBox.ItemImage.TryGetClickablePoint(out point), "Connection test Passed");
+        }
+
+        [TestMethod]
+        [TestCategory("Email Tools")]
+        public void ExchangeSendTool_HtmlBody_Checkbox_Is_Selected_UITest()
+        {
+            Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.Exists, "Exchange Email tool does not exist after dragging in from the toolbox");
+            // Large View
+            EmailToolsUIMap.ExchangeSendTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.HtmlBodyCheckBox.Enabled, "HTML Body Combobox is not enabled.");
+            EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.HtmlBodyCheckBox.Checked = true;
+            EmailToolsUIMap.ExchangeSendTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.SmallViewContent.Exists);
+            EmailToolsUIMap.ExchangeSendTool_ChangeView_With_DoubleClick();
+            Assert.IsTrue(EmailToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.ExchangeEmail.LargeViewContent.HtmlBodyCheckBox.Checked, "HTML Body Combobox is not checked after changing to small view.");
         }
 
         [TestMethod]

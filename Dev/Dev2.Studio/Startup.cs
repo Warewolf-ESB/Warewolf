@@ -1,25 +1,47 @@
-﻿using Dev2.Studio;
+﻿using Dev2.Common;
+using Dev2.Studio;
+using Dev2.Utils;
+using log4net.Config;
 using System;
+using System.IO;
 
 namespace Dev2
 {
-    public class Startup
+    public static class Startup
     {
         [STAThread]
         public static void Main(string[] args)
         {
+            ConfigureLogging();
+            Dev2Logger.Info("Studio " + Warewolf.Studio.AntiCorruptionLayer.Utils.FetchVersionInfo() + " Starting.", GlobalConstants.WarewolfInfo);
             var wrapper = new SingleInstanceApplicationWrapper();
             wrapper.Run(args);
         }
+
+        static void ConfigureLogging()
+        {
+            var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
+            if (!File.Exists(settingsConfigFile))
+            {
+                File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
+            }
+            Dev2Logger.AddEventLogging(settingsConfigFile, GlobalConstants.WarewolfStudio);
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
+        }
     }
 
-    public class SingleInstanceApplicationWrapper : Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase
+    public class SingleInstanceApplicationWrapper : Microsoft.VisualBasic.ApplicationServices.WindowsFormsApplicationBase, IDisposable
     {
         App _app;
 
         public SingleInstanceApplicationWrapper()
         {
             IsSingleInstance = true;
+        }
+
+        public void Dispose()
+        {
+            ((IDisposable)_app).Dispose();
         }
 
         protected override bool OnStartup(Microsoft.VisualBasic.ApplicationServices.StartupEventArgs eventArgs)

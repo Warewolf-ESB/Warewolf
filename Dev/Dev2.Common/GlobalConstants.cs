@@ -351,6 +351,8 @@ where pn.nspname = 'public';
         public static readonly string UpgradedExplorerItemModelFormat = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
         public static readonly string VersionDownloadPath = "Installers\\";
         public static readonly string VersionFolder = "VersionControl";
+        public static readonly string ServerVersion = "Server Version: ";
+        public static readonly string MinimumSupportedVersion = "Minimum supported version:";
         public static readonly Guid NullDataListID = Guid.Empty;
         
         public static readonly Guid ServerWorkspaceID = Guid.Empty;
@@ -395,6 +397,8 @@ where pn.nspname = 'public';
         public static readonly string WarewolfError = "Warewolf Error";
         public static readonly string WarewolfDebug = "Warewolf Debug";
         public static readonly string WarewolfWarn = "Warewolf Warn";
+        public static readonly string HTTPSAddress = "https://";
+        public static readonly string HTTPAddress = "http://";
 
         public static readonly string ResourcePickerWorkflowString = "DsfWorkflowActivity";
 
@@ -519,25 +523,9 @@ where pn.nspname = 'public';
             }
         }
 
-        public static int MinCompressVersionMinor
-        {
-            get
-            {
-#pragma warning disable 162
-                return 7;
-#pragma warning restore 162
-            }
-        }
+        public static int MinCompressVersionMinor => 7;
 
-        public static int MinCompressVersionMajor
-        {
-            get
-            {
-#pragma warning disable 162
-                return 0;
-#pragma warning restore 162
-            }
-        }
+        public static int MinCompressVersionMajor => 0;
 
         public static string ApplicationJsonHeader { get; } = "application/json";
         public static string ApplicationXmlHeader { get; } = "application/xml";
@@ -552,6 +540,7 @@ where pn.nspname = 'public';
         public static readonly string DropBoxFailure = "Failed";
         public static readonly string GlobalCounterName = "All";
         public static readonly string Warewolf = "Warewolf";
+        public static readonly string WarewolfStudio = "Warewolf Studio";
         public static readonly string WarewolfServices = "Warewolf Services";
         public static readonly string UserEchoURL = "http://community.warewolf.io/topics/249-https-connection-from-localhost-to-a-remote-server/";
 

@@ -41,7 +41,7 @@ namespace Dev2.Activities
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            var webRequestResult = PerformWebPostRequest(head, query, url, string.Empty);
+            var webRequestResult = PerformWebRequest(head, query, url, string.Empty);
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs , IsObject = IsObject, ObjectName = ObjectName};
             ResponseManager.PushResponseIntoEnvironment(webRequestResult, update, dataObject);
             

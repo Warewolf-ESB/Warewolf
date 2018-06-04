@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests.Workflows
             var serverRepo = new Mock<IServerRepository>();
             CustomContainer.Register(serverRepo.Object);
             var repo = new Mock<IResourceRepository>();
-            repo.Setup(repository => repository.SaveToServer(It.IsAny<IResourceModel>())).Verifiable();
+            repo.Setup(repository => repository.SaveToServer(It.IsAny<IResourceModel>(), It.IsAny<string>())).Verifiable();
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
@@ -48,25 +48,8 @@ namespace Dev2.Core.Tests.Workflows
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
             var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository, true);
-
-            var prop = new Mock<ModelProperty>();
-            prop.Setup(p => p.ComputedValue).Returns(testAct);
-            properties.Add("Action", prop);
-
-            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
-
-            var source = new Mock<ModelItem>();
-            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
-            source.Setup(s => s.ItemType).Returns(typeof(FlowSwitch<string>));
-
-
-            //mock item adding - this is obsolote functionality but not refactored due to overhead
-            var args = new Mock<ModelChangedEventArgs>();
-            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
-
-
-            var eventArgs = new Mock<ModelChangedEventArgs>();
-            eventArgs.Setup(c => c.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+            var actId = Guid.NewGuid();
+            testAct.UniqueID = actId.ToString();           
 
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>())).Verifiable();
@@ -75,19 +58,21 @@ namespace Dev2.Core.Tests.Workflows
             var modelService = new Mock<ModelService>();
             var viewStateService = new Mock<ViewStateService>();
             var chart = new Flowchart();
+            chart.Nodes.Add(testAct.GetFlowNode());
             var flowChart = ModelItemUtils.CreateModelItem(chart);
             modelService.Setup(p => p.Root).Returns(flowChart).Verifiable();
             modelService.Setup(p => p.Find(flowChart, typeof(Flowchart))).Returns(() => new List<ModelItem>() { flowChart }).Verifiable();
             var dHelper = new Mock<IWorkflowDesignerWrapper>();
             dHelper.Setup(p => p.GetService<ModelService>(It.IsAny<WorkflowDesigner>())).Returns(modelService.Object).Verifiable();
             dHelper.Setup(p => p.GetService<ViewStateService>(It.IsAny<WorkflowDesigner>())).Returns(viewStateService.Object);
-            var wd = new WorkflowDesignerViewModelMock(dHelper.Object, crm.Object, wh.Object, eventAggregator.Object, _moq.Object);
-            var obj = new Mock<IMergeToolModel>();
+            var wd = new MergePreviewWorkflowDesignerViewModelMock(dHelper.Object, crm.Object, wh.Object, eventAggregator.Object, _moq.Object);
+            var obj = new Mock<IToolConflictItem>();
+            obj.Setup(o => o.UniqueId).Returns(actId);
             wd.AddItem(obj.Object);
             dHelper.VerifyAll();
             modelService.VerifyAll();
             viewStateService.Verify(p => p.RemoveViewState(It.IsAny<ModelItem>(), It.IsAny<string>()));
-            viewStateService.Verify(p => p.StoreViewState(It.IsAny<ModelItem>(), It.IsAny<string>(),It.IsAny<Point>()));
+            viewStateService.Verify(p => p.StoreViewState(It.IsAny<ModelItem>(), It.IsAny<string>(), It.IsAny<Point>()));
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Dev2.Studio.Interfaces
 
     public interface IExplorerDeleteProvider
     {
-        IDeletedFileMetadata Delete(IExplorerItemViewModel explorerItemViewModel);
+        IDeletedFileMetadata TryDelete(IExplorerItemViewModel explorerItemViewModel);
     }
 
     public interface IExplorerRepository :IExplorerDeleteProvider

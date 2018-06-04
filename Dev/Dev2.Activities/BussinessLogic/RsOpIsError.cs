@@ -10,16 +10,9 @@ namespace Dev2.DataList
 
     public class RsOpIsError : AbstractRecsetSearchValidation
     {
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
-        {
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => a => false;
 
-            return a => false;
-
-        }
-        public override string HandlesType()
-        {
-            return "There is An Error";
-        }
+        public override string HandlesType() => "There is An Error";
 
         public override int ArgumentCount => 0;
     }

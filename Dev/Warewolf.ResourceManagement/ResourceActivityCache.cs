@@ -11,15 +11,17 @@ namespace Warewolf.ResourceManagement
         readonly IActivityParser _activityParser;
         readonly ConcurrentDictionary<Guid,IDev2Activity> _cache;
 
+        public ConcurrentDictionary<Guid, IDev2Activity> Cache => _cache;
+
         public ResourceActivityCache(IActivityParser activityParser, ConcurrentDictionary<Guid, IDev2Activity> cache)
         {
-            _activityParser = activityParser;
-            _cache = cache;
+            _activityParser = activityParser ?? throw new ArgumentNullException(nameof(activityParser));
+            _cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
         public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid) => Parse(activity, resourceIdGuid, false);
 
-        public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid, bool failOnException)
+        public IDev2Activity Parse(DynamicActivity activity, Guid resourceIdGuid, bool failOnError)
         {
             if(HasActivityInCache(resourceIdGuid))
             {
@@ -35,13 +37,13 @@ namespace Warewolf.ResourceManagement
                 try
                 {
                     var act = _activityParser.Parse(dynamicActivity);
-                    if (_cache.TryAdd(resourceIdGuid, act))
+                    if (Cache.TryAdd(resourceIdGuid, act))
                     {
                         return act;
                     }
-                    _cache.AddOrUpdate(resourceIdGuid, act, (guid, dev2Activity) =>
+                    Cache.AddOrUpdate(resourceIdGuid, act, (guid, dev2Activity) =>
                     {
-                        _cache[resourceIdGuid] = act;
+                        Cache[resourceIdGuid] = act;
                         return act;
                     });
                     return act;
@@ -49,7 +51,7 @@ namespace Warewolf.ResourceManagement
                 catch(Exception err) //errors caught inside                    
                 {
                     Dev2Logger.Error(err, "Warewolf Error");
-                    if(failOnException)
+                    if(failOnError)
                     {
                         throw;
                     }
@@ -58,19 +60,13 @@ namespace Warewolf.ResourceManagement
             return null;
         }
 
-        public IDev2Activity GetActivity(Guid resourceIdGuid)
-        {
-            return _cache[resourceIdGuid];
-        }
+        public IDev2Activity GetActivity(Guid resourceIdGuid) => Cache[resourceIdGuid];
 
-        public bool HasActivityInCache(Guid resourceIdGuid)
-        {
-            return _cache.ContainsKey(resourceIdGuid);
-        }
+        public bool HasActivityInCache(Guid resourceIdGuid) => Cache.ContainsKey(resourceIdGuid);
 
         public void RemoveFromCache(Guid resourceID)
         {
-            _cache.TryRemove(resourceID, out IDev2Activity act);
+            Cache.TryRemove(resourceID, out IDev2Activity act);
         }
     }
 }

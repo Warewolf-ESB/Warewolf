@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-             xmlns:aprop="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"
              xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
@@ -81,7 +80,7 @@
         </Grid>
 
         <Grid Grid.Row="1" Focusable="False">
-            <TreeView ItemsSource="{Binding Path=BaseCollection,Mode=TwoWay, IsAsync=True}"
+            <TreeView ItemsSource="{Binding Path=BaseCollection,Mode=OneWay, IsAsync=True}"
                       HorizontalAlignment="Stretch"
                       Margin="{StaticResource ElementBorderTop}"
                       x:Name="ScalarExplorer"
@@ -97,10 +96,19 @@
                       VirtualizingStackPanel.ScrollUnit="Pixel"  
                       VirtualizingStackPanel.CacheLength="20,20"
                       VirtualizingStackPanel.CacheLengthUnit="Item">
+                <TreeView.ItemContainerStyle>
+                    <Style BasedOn="{StaticResource VariableTreeViewItemStyle}" TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsVisible}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TreeView.ItemContainerStyle>
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type dataList3:ScalarItemModel}">
-                        <Grid HorizontalAlignment="Stretch" 
-                              Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Grid HorizontalAlignment="Stretch" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="38" SharedSizeGroup="B" />
@@ -192,8 +200,7 @@
                         </Grid>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetItemModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
-                        <Grid HorizontalAlignment="Stretch" 
-                              Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Grid HorizontalAlignment="Stretch" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="38" SharedSizeGroup="B" />
@@ -278,8 +285,7 @@
                         </Grid>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type dataList3:RecordSetFieldItemModel}">
-                        <Grid HorizontalAlignment="Stretch" 
-                              Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Grid HorizontalAlignment="Stretch" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="38" SharedSizeGroup="B" />
@@ -364,8 +370,7 @@
                         </Grid>
                     </HierarchicalDataTemplate>
                     <HierarchicalDataTemplate DataType="{x:Type dataList3:ComplexObjectItemModel}" ItemsSource="{Binding Path=Children, IsAsync=True}">
-                        <Grid HorizontalAlignment="Stretch" 
-                              Visibility="{Binding IsVisible,Converter={StaticResource BoolToVisibilityConverter}}">
+                        <Grid HorizontalAlignment="Stretch" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
                                 <ColumnDefinition Width="38" SharedSizeGroup="B" />

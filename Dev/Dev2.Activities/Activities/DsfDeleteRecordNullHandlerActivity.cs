@@ -55,10 +55,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         public bool TreatNullAsZero { get; set; }
         
@@ -174,12 +171,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return _debugInputs;
-        }
-
-   
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => _debugInputs;
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
@@ -213,22 +205,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(RecordsetName);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(RecordsetName);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            return GetForEachItems(Result);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
 
         #endregion
 
         public bool Equals(DsfDeleteRecordNullHandlerActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other) 
                 && string.Equals(RecordsetName, other.RecordsetName) 
                 && string.Equals(Result, other.Result) 
@@ -237,9 +231,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfDeleteRecordNullHandlerActivity) obj);
         }
 

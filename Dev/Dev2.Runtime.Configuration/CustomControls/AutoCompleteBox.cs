@@ -79,7 +79,7 @@ namespace System.Windows.Controls
             get { return (int)GetValue(MinimumPrefixLengthProperty); }
             set { SetValue(MinimumPrefixLengthProperty, value); }
         }
-        
+
         public static readonly DependencyProperty MinimumPrefixLengthProperty =
             DependencyProperty.Register(
                 "MinimumPrefixLength",
@@ -108,7 +108,7 @@ namespace System.Windows.Controls
             get { return (int)GetValue(MinimumPopulateDelayProperty); }
             set { SetValue(MinimumPopulateDelayProperty, value); }
         }
-                
+
         public static readonly DependencyProperty MinimumPopulateDelayProperty =
             DependencyProperty.Register(
                 "MinimumPopulateDelay",
@@ -214,7 +214,7 @@ namespace System.Windows.Controls
             get { return (bool)GetValue(IsTextCompletionEnabledProperty); }
             set { SetValue(IsTextCompletionEnabledProperty, value); }
         }
-        
+
         public static readonly DependencyProperty IsTextCompletionEnabledProperty =
             DependencyProperty.Register(
                 "IsTextCompletionEnabled",
@@ -232,7 +232,7 @@ namespace System.Windows.Controls
             get { return GetValue(ItemTemplateProperty) as DataTemplate; }
             set { SetValue(ItemTemplateProperty, value); }
         }
-        
+
         public static readonly DependencyProperty ItemTemplateProperty =
             DependencyProperty.Register(
                 "ItemTemplate",
@@ -250,7 +250,7 @@ namespace System.Windows.Controls
             get { return GetValue(ItemContainerStyleProperty) as Style; }
             set { SetValue(ItemContainerStyleProperty, value); }
         }
-        
+
         public static readonly DependencyProperty ItemContainerStyleProperty =
             DependencyProperty.Register(
                 ElementItemContainerStyle,
@@ -268,7 +268,7 @@ namespace System.Windows.Controls
             get { return GetValue(TextBoxStyleProperty) as Style; }
             set { SetValue(TextBoxStyleProperty, value); }
         }
-        
+
         public static readonly DependencyProperty TextBoxStyleProperty =
             DependencyProperty.Register(
                 ElementTextBoxStyle,
@@ -286,7 +286,7 @@ namespace System.Windows.Controls
             get { return (double)GetValue(MaxDropDownHeightProperty); }
             set { SetValue(MaxDropDownHeightProperty, value); }
         }
-        
+
         public static readonly DependencyProperty MaxDropDownHeightProperty =
             DependencyProperty.Register(
                 "MaxDropDownHeight",
@@ -329,7 +329,7 @@ namespace System.Windows.Controls
             get { return (bool)GetValue(IsDropDownOpenProperty); }
             set { SetValue(IsDropDownOpenProperty, value); }
         }
-        
+
         public static readonly DependencyProperty IsDropDownOpenProperty =
             DependencyProperty.Register(
                 "IsDropDownOpen",
@@ -473,7 +473,7 @@ namespace System.Windows.Controls
             get { return GetValue(TextProperty) as string; }
             set { SetValue(TextProperty, value); }
         }
-        
+
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(
                 "Text",
@@ -639,18 +639,18 @@ namespace System.Windows.Controls
             get { return _text; }
             set
             {
-                if(_text != null)
+                if (_text != null)
                 {
                     _text.SelectionChanged -= OnTextBoxSelectionChanged;
                     _text.TextChanged -= OnTextBoxTextChanged;
                 }
-                _text = value;                
-                if(_text != null)
+                _text = value;
+                if (_text != null)
                 {
                     _text.SelectionChanged += OnTextBoxSelectionChanged;
                     _text.TextChanged += OnTextBoxTextChanged;
 
-                    if(Text != null)
+                    if (Text != null)
                     {
                         UpdateTextValue(Text);
                     }
@@ -663,7 +663,7 @@ namespace System.Windows.Controls
             get { return _adapter; }
             set
             {
-                if(_adapter != null)
+                if (_adapter != null)
                 {
                     _adapter.SelectionChanged -= OnAdapterSelectionChanged;
                     _adapter.Commit -= OnAdapterSelectionComplete;
@@ -674,8 +674,8 @@ namespace System.Windows.Controls
 
                 _adapter = value;
 
-                if(_adapter != null)
-                {                    
+                if (_adapter != null)
+                {
                     _adapter.SelectionChanged += OnAdapterSelectionChanged;
                     _adapter.Commit += OnAdapterSelectionComplete;
                     _adapter.Cancel += OnAdapterSelectionCanceled;
@@ -705,98 +705,98 @@ namespace System.Windows.Controls
         public event RoutedEventHandler TextChanged;
 #else
         public static readonly RoutedEvent TextChangedEvent = EventManager.RegisterRoutedEvent("TextChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(AutoCompleteBox));
-        
+
         public event RoutedEventHandler TextChanged
         {
             add { AddHandler(TextChangedEvent, value); }
             remove { RemoveHandler(TextChangedEvent, value); }
         }
 #endif
-        
+
 #if SILVERLIGHT
         public event PopulatingEventHandler Populating;
 #else
         public static readonly RoutedEvent PopulatingEvent = EventManager.RegisterRoutedEvent("Populating", RoutingStrategy.Bubble, typeof(PopulatingEventHandler), typeof(AutoCompleteBox));
-        
+
         public event PopulatingEventHandler Populating
         {
             add { AddHandler(PopulatingEvent, value); }
             remove { RemoveHandler(PopulatingEvent, value); }
         }
 #endif
-        
+
 #if SILVERLIGHT
         public event PopulatedEventHandler Populated;
 #else
         public static readonly RoutedEvent PopulatedEvent = EventManager.RegisterRoutedEvent("Populated", RoutingStrategy.Bubble, typeof(PopulatedEventHandler), typeof(AutoCompleteBox));
-        
+
         public event PopulatedEventHandler Populated
         {
             add { AddHandler(PopulatedEvent, value); }
             remove { RemoveHandler(PopulatedEvent, value); }
         }
 #endif
-        
+
 #if SILVERLIGHT
         public event RoutedPropertyChangingEventHandler<bool> DropDownOpening;
 #else
         public static readonly RoutedEvent DropDownOpeningEvent = EventManager.RegisterRoutedEvent("DropDownOpening", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
-        
+
         public event RoutedPropertyChangingEventHandler<bool> DropDownOpening
         {
             add { AddHandler(PopulatedEvent, value); }
             remove { RemoveHandler(PopulatedEvent, value); }
         }
 #endif
-        
+
 #if SILVERLIGHT
         public event RoutedPropertyChangedEventHandler<bool> DropDownOpened;
 #else
         public static readonly RoutedEvent DropDownOpenedEvent = EventManager.RegisterRoutedEvent("DropDownOpened", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
-        
+
         public event RoutedPropertyChangedEventHandler<bool> DropDownOpened
         {
             add { AddHandler(DropDownOpenedEvent, value); }
             remove { RemoveHandler(DropDownOpenedEvent, value); }
         }
 #endif
-        
+
 #if SILVERLIGHT
         public event RoutedPropertyChangingEventHandler<bool> DropDownClosing;
 #else
         public static readonly RoutedEvent DropDownClosingEvent = EventManager.RegisterRoutedEvent("DropDownClosing", RoutingStrategy.Bubble, typeof(RoutedPropertyChangingEventHandler<bool>), typeof(AutoCompleteBox));
-        
+
         public event RoutedPropertyChangingEventHandler<bool> DropDownClosing
         {
             add { AddHandler(DropDownClosingEvent, value); }
             remove { RemoveHandler(DropDownClosingEvent, value); }
         }
 #endif
-        
+
 #if SILVERLIGHT
         public event RoutedPropertyChangedEventHandler<bool> DropDownClosed;
 #else
         public static readonly RoutedEvent DropDownClosedEvent = EventManager.RegisterRoutedEvent("DropDownClosed", RoutingStrategy.Bubble, typeof(RoutedPropertyChangedEventHandler<bool>), typeof(AutoCompleteBox));
-        
+
         public event RoutedPropertyChangedEventHandler<bool> DropDownClosed
         {
             add { AddHandler(DropDownClosedEvent, value); }
             remove { RemoveHandler(DropDownClosedEvent, value); }
         }
 #endif
-        
+
 #if SILVERLIGHT
         public event SelectionChangedEventHandler SelectionChanged;
 #else
         public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent("SelectionChanged", RoutingStrategy.Bubble, typeof(SelectionChangedEventHandler), typeof(AutoCompleteBox));
-        
+
         public event SelectionChangedEventHandler SelectionChanged
         {
             add { AddHandler(SelectionChangedEvent, value); }
             remove { RemoveHandler(SelectionChangedEvent, value); }
         }
 #endif
-        
+
         public Binding ValueMemberBinding
         {
             get
@@ -808,7 +808,7 @@ namespace System.Windows.Controls
                 _valueBindingEvaluator = new BindingEvaluator<string>(value);
             }
         }
-        
+
         public string ValueMemberPath
         {
             get
@@ -841,30 +841,30 @@ namespace System.Windows.Controls
             IsEnabledChanged += ControlIsEnabledChanged;
 
             Interaction = new InteractionHelper(this);
-            
+
             ClearView();
             if (Application.Current != null)
             {
                 Style = Application.Current.TryFindResource("AutoCompleteBoxStyle") as Style;
             }
         }
-        
-        protected override Size ArrangeOverride(Size finalSize)
+
+        protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            var r = base.ArrangeOverride(finalSize);
+            var r = base.ArrangeOverride(arrangeBounds);
             DropDownPopup?.Arrange();
             return r;
         }
-        
+
         public override void OnApplyTemplate()
         {
 #if !SILVERLIGHT
-            if(TextBox != null)
+            if (TextBox != null)
             {
                 TextBox.PreviewKeyDown -= OnTextBoxPreviewKeyDown;
             }
 #endif
-            if(DropDownPopup != null)
+            if (DropDownPopup != null)
             {
                 DropDownPopup.Closed -= DropDownPopupClosed;
                 DropDownPopup.FocusChanged -= OnDropDownFocusChanged;
@@ -874,7 +874,7 @@ namespace System.Windows.Controls
             }
 
             base.OnApplyTemplate();
-            
+
             if (GetTemplateChild(ElementPopup) is Popup popup)
             {
                 DropDownPopup = new PopupHelper(this, popup) { MaxDropDownHeight = MaxDropDownHeight };
@@ -886,14 +886,14 @@ namespace System.Windows.Controls
             SelectionAdapter = GetSelectionAdapterPart();
             TextBox = GetTemplateChild(ElementTextBox) as TextBox;
 #if !SILVERLIGHT
-            if(TextBox != null)
+            if (TextBox != null)
             {
                 TextBox.PreviewKeyDown += OnTextBoxPreviewKeyDown;
             }
 #endif
             Interaction.OnApplyTemplateBase();
-            
-            if(IsDropDownOpen && DropDownPopup != null && !DropDownPopup.IsOpen)
+
+            if (IsDropDownOpen && DropDownPopup != null && !DropDownPopup.IsOpen)
             {
                 OpeningDropDown(false);
             }
@@ -994,28 +994,17 @@ namespace System.Windows.Controls
 
             if (_popupHasOpened)
             {
-#if SILVERLIGHT
-                OnDropDownClosed(new RoutedPropertyChangedEventArgs<bool>(true, false));
-#else
                 OnDropDownClosed(new RoutedPropertyChangedEventArgs<bool>(true, false, DropDownClosedEvent));
-#endif
             }
         }
 
-        protected override AutomationPeer OnCreateAutomationPeer()
-        {
-            return new AutoCompleteBoxAutomationPeer(this);
-        }
+        protected override AutomationPeer OnCreateAutomationPeer() => new AutoCompleteBoxAutomationPeer(this);
 
         #region Focus
 
         void FocusChanged(bool hasFocus)
         {
-            if (hasFocus)
-            {
-
-            }
-            else
+            if (!hasFocus)
             {
                 IsDropDownOpen = false;
                 _userCalledPopulate = false;
@@ -1025,47 +1014,40 @@ namespace System.Windows.Controls
 
         protected bool HasFocus()
         {
-            var focused =
-#if SILVERLIGHT
-                FocusManager.GetFocusedElement() as DependencyObject;
-#else
-                IsKeyboardFocusWithin ? Keyboard.FocusedElement as DependencyObject : FocusManager.GetFocusedElement(this) as DependencyObject;
-#endif
+            var focused = IsKeyboardFocusWithin ? Keyboard.FocusedElement as DependencyObject : FocusManager.GetFocusedElement(this) as DependencyObject;
             while (focused != null)
             {
-                if(ReferenceEquals(focused, this))
+                if (ReferenceEquals(focused, this))
                 {
                     return true;
                 }
-                
+
                 var parent = VisualTreeHelper.GetParent(focused);
-                if (parent == null)
+                if (parent == null && focused is FrameworkElement element)
                 {
-                    if (focused is FrameworkElement element)
-                    {
-                        parent = element.Parent;
-                    }
+                    parent = element.Parent;
                 }
+
                 focused = parent;
             }
             return false;
         }
-        
+
         protected override void OnGotFocus(RoutedEventArgs e)
         {
             base.OnGotFocus(e);
             FocusChanged(HasFocus());
         }
 
-#if !SILVERLIGHT
-    
         protected override void OnIsKeyboardFocusWithinChanged(DependencyPropertyChangedEventArgs e)
         {
             base.OnIsKeyboardFocusWithinChanged(e);
-            FocusChanged((bool)e.NewValue);
+            if (!IsKeyboardFocusWithin)
+            {
+                IsDropDownOpen = false;
+            }
         }
-#endif
-        
+
         protected override void OnLostFocus(RoutedEventArgs e)
         {
             base.OnLostFocus(e);
@@ -1084,7 +1066,7 @@ namespace System.Windows.Controls
         }
 
         [SuppressMessage("Microsoft.Design", "CA1024:UsePropertiesWhereAppropriate", Justification = "Following the GetTemplateChild pattern for the method.")]
-        
+
         [ExcludeFromCodeCoverage]
         protected virtual ISelectionAdapter GetSelectionAdapterPart()
         {
@@ -1175,7 +1157,7 @@ namespace System.Windows.Controls
             RaiseEvent(e);
 #endif
         }
-        
+
         [ExcludeFromCodeCoverage]
         protected virtual void OnDropDownOpened(RoutedPropertyChangedEventArgs<bool> e)
         {
@@ -1189,7 +1171,7 @@ namespace System.Windows.Controls
             RaiseEvent(e);
 #endif
         }
-        
+
         [ExcludeFromCodeCoverage]
         protected virtual void OnDropDownClosing(RoutedPropertyChangingEventArgs<bool> e)
         {
@@ -1203,7 +1185,7 @@ namespace System.Windows.Controls
             RaiseEvent(e);
 #endif
         }
-        
+
         protected virtual void OnDropDownClosed(RoutedPropertyChangedEventArgs<bool> e)
         {
 #if SILVERLIGHT
@@ -1229,14 +1211,14 @@ namespace System.Windows.Controls
 
         protected virtual string FormatValue(object value)
         {
-            if(_valueBindingEvaluator != null)
+            if (_valueBindingEvaluator != null)
             {
                 return _valueBindingEvaluator.GetDynamicValue(value) ?? string.Empty;
             }
 
             return value?.ToString() ?? string.Empty;
         }
-        
+
         protected virtual void OnTextChanged(RoutedEventArgs e)
         {
 #if SILVERLIGHT
@@ -1327,7 +1309,6 @@ namespace System.Windows.Controls
             var populateReady = newText.Length >= MinimumPrefixLength && MinimumPrefixLength >= 0;
             _userCalledPopulate = populateReady && userInitiated;
 
-            newText = newText.Replace("\r\n", "\n");
             UpdateTextValue(newText, userInitiated);
 
             if (populateReady)
@@ -1361,7 +1342,7 @@ namespace System.Windows.Controls
         public void PopulateComplete()
         {
             RefreshView();
-            
+
 #if SILVERLIGHT
             PopulatedEventArgs populated = new PopulatedEventArgs(new ReadOnlyCollection<object>(_view));
 #else
@@ -1369,8 +1350,8 @@ namespace System.Windows.Controls
 #endif
             OnPopulated(populated);
 
-            
-            if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
+
+            if (SelectionAdapter != null && !SelectionAdapter.ItemsSource.Equals(_view))
             {
                 SelectionAdapter.ItemsSource = _view;
             }
@@ -1381,7 +1362,7 @@ namespace System.Windows.Controls
                 _ignorePropertyChange = true;
                 IsDropDownOpen = isDropDownOpen;
             }
-            if(IsDropDownOpen)
+            if (IsDropDownOpen)
             {
                 OpeningDropDown(false);
                 DropDownPopup?.Arrange();
@@ -1404,24 +1385,7 @@ namespace System.Windows.Controls
                 {
                     var currentLength = TextBox.Text.Length;
                     var selectionStart = TextBox.SelectionStart;
-                    if (selectionStart == text.Length && selectionStart > _textSelectionStart)
-                    {
-                        var top = FilterMode == AutoCompleteFilterMode.StartsWith || FilterMode == AutoCompleteFilterMode.StartsWithCaseSensitive
-                            ? _view[0]
-                            : TryGetMatch(text, _view, AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith));
-                        if (top != null)
-                        {
-                            newSelectedItem = top;
-                            var topString = FormatValue(top, true);
-                            var minLength = Math.Min(topString.Length, Text.Length);
-                            if (AutoCompleteSearch.Equals(Text.Substring(0, minLength), topString.Substring(0, minLength)))
-                            {
-                                UpdateTextValue(topString);
-                                TextBox.SelectionStart = currentLength;
-                                TextBox.SelectionLength = topString.Length - currentLength;
-                            }
-                        }
-                    }
+                    newSelectedItem = UpdateSelection(newSelectedItem, text, currentLength, selectionStart);
                 }
                 else
                 {
@@ -1441,6 +1405,30 @@ namespace System.Windows.Controls
                     _textSelectionStart = TextBox.SelectionStart;
                 }
             }
+        }
+
+        private object UpdateSelection(object newSelectedItem, string text, int currentLength, int selectionStart)
+        {
+            if (selectionStart == text.Length && selectionStart > _textSelectionStart)
+            {
+                var top = FilterMode == AutoCompleteFilterMode.StartsWith || FilterMode == AutoCompleteFilterMode.StartsWithCaseSensitive
+                    ? _view[0]
+                    : TryGetMatch(text, _view, AutoCompleteSearch.GetFilter(AutoCompleteFilterMode.StartsWith));
+                if (top != null)
+                {
+                    newSelectedItem = top;
+                    var topString = FormatValue(top, true);
+                    var minLength = Math.Min(topString.Length, Text.Length);
+                    if (AutoCompleteSearch.Equals(Text.Substring(0, minLength), topString.Substring(0, minLength)))
+                    {
+                        UpdateTextValue(topString);
+                        TextBox.SelectionStart = currentLength;
+                        TextBox.SelectionLength = topString.Length - currentLength;
+                    }
+                }
+            }
+
+            return newSelectedItem;
         }
 
         object TryGetMatch(string searchText, ObservableCollection<object> view, AutoCompleteFilterPredicate<string> predicate)
@@ -1483,45 +1471,51 @@ namespace System.Windows.Controls
             var items = _items;
             foreach (object item in items)
             {
-                var inResults = !(stringFiltering || objectFiltering);
-                if (!inResults)
-                {
-                    inResults = stringFiltering ? TextFilter?.Invoke(text, FormatValue(item)) ?? default(bool) : ItemFilter?.Invoke(text, item) ?? default(bool);
-                }
+                RefreshItem(text, stringFiltering, objectFiltering, item, ref viewIndex, ref viewCount);
+            }
+            _valueBindingEvaluator?.ClearDataContext();
+        }
 
-                if (viewCount > viewIndex && inResults && _view[viewIndex] == item)
+        void RefreshItem(string text, bool stringFiltering, bool objectFiltering, object item, ref int viewIndex, ref int viewCount)
+        {
+            var inResults = !(stringFiltering || objectFiltering);
+            if (!inResults)
+            {
+                inResults = stringFiltering ? TextFilter?.Invoke(text, FormatValue(item)) ?? default(bool) : ItemFilter?.Invoke(text, item) ?? default(bool);
+            }
+
+            if (viewCount > viewIndex && inResults && _view[viewIndex] == item)
+            {
+                viewIndex++;
+            }
+            else if (inResults)
+            {
+                if (viewCount > viewIndex && _view[viewIndex] != item)
                 {
+                    _view.RemoveAt(viewIndex);
+                    _view.Insert(viewIndex, item);
                     viewIndex++;
                 }
-                else if (inResults)
+                else
                 {
-                    if (viewCount > viewIndex && _view[viewIndex] != item)
-                    {
-                        _view.RemoveAt(viewIndex);
-                        _view.Insert(viewIndex, item);
-                        viewIndex++;
-                    }
-                    else
-                    {
-                        if (viewIndex == viewCount)
-                        {
-                            _view.Add(item);
-                        }
-                        else
-                        {
-                            _view.Insert(viewIndex, item);
-                        }
-                        viewIndex++;
-                        viewCount++;
-                    }
+                    AddOrInsertItem(viewIndex, item);
+                    viewIndex++;
+                    viewCount++;
                 }
-                else if (viewCount > viewIndex && _view[viewIndex] == item)
+            }
+            else
+            {
+                if (viewCount > viewIndex && _view[viewIndex] == item)
                 {
                     _view.RemoveAt(viewIndex);
                     viewCount--;
                 }
             }
-            _valueBindingEvaluator?.ClearDataContext();
+        }
+
+        private void AddOrInsertItem(int viewIndex, object item)
+        {
+            _view.Insert(viewIndex, item);
         }
 
         [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "oldValue", Justification = "This makes it easy to add validation or other changes in the future.")]
@@ -1530,7 +1524,7 @@ namespace System.Windows.Controls
         {
             _items = newValue == null ? null : new List<object>(newValue.Cast<object>().ToList());
             ClearView();
-            if (SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
+            if (SelectionAdapter != null && !SelectionAdapter.ItemsSource.Equals(_view))
             {
                 SelectionAdapter.ItemsSource = _view;
             }
@@ -1564,16 +1558,14 @@ namespace System.Windows.Controls
                     _items[e.NewStartingIndex] = t;
                 }
             }
-            if (e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace)
+            if ((e.Action == NotifyCollectionChangedAction.Remove || e.Action == NotifyCollectionChangedAction.Replace) && e.OldItems != null)
             {
-                if (e.OldItems != null)
+                foreach (object t in e.OldItems)
                 {
-                    foreach (object t in e.OldItems)
-                    {
-                        _view.Remove(t);
-                    }
+                    _view.Remove(t);
                 }
             }
+
             if (e.Action == NotifyCollectionChangedAction.Reset)
             {
                 ClearView();
@@ -1653,13 +1645,13 @@ namespace System.Windows.Controls
 
         protected void CloseDropDown(bool oldValue, bool newValue)
         {
-            if(_popupHasOpened)
+            if (_popupHasOpened)
             {
-                if(SelectionAdapter != null)
+                if (SelectionAdapter != null)
                 {
                     SelectionAdapter.SelectedItem = null;
                 }
-                if(DropDownPopup != null)
+                if (DropDownPopup != null)
                 {
                     DropDownPopup.IsOpen = false;
                 }
@@ -1672,36 +1664,29 @@ namespace System.Windows.Controls
         }
 
         #endregion
-        
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
-            if(e == null)
+            if (e == null)
             {
-                
                 throw new ArgumentNullException("e");
             }
 
             base.OnKeyDown(e);
 
-            if(e.Handled || !IsEnabled)
+            if (e.Handled || !IsEnabled)
             {
                 return;
             }
-            if(IsDropDownOpen)
+            if (IsDropDownOpen)
             {
-                if(SelectionAdapter != null)
+                if (SelectionAdapter != null)
                 {
                     SelectionAdapter.HandleKeyDown(e);
-                    if(e.Handled)
+                    if (e.Handled)
                     {
                         return;
                     }
-                }
-
-                if(e.Key == Key.Escape)
-                {
-                    OnAdapterSelectionCanceled(this, new RoutedEventArgs());
-                    e.Handled = true;
                 }
 
                 switch (e.Key)
@@ -1711,6 +1696,7 @@ namespace System.Windows.Controls
                         e.Handled = true;
                         break;
                     case Key.Enter:
+                    case Key.Escape:
                         OnAdapterSelectionComplete(this, new RoutedEventArgs());
                         e.Handled = true;
                         break;
@@ -1719,14 +1705,13 @@ namespace System.Windows.Controls
                         break;
                 }
             }
-
         }
 
         void IUpdateVisualState.UpdateVisualState(bool useTransitions)
         {
             UpdateVisualState(useTransitions);
         }
-        
+
         internal virtual void UpdateVisualState(bool useTransitions)
         {
             VisualStateManager.GoToState(this, IsDropDownOpen ? VisualStates.StatePopupOpened : VisualStates.StatePopupClosed, useTransitions);

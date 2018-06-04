@@ -116,8 +116,8 @@ namespace Dev2.Runtime.Hosting
         {
             var versionFolder = _filePath.Combine(_envVersionFolder, version.ResourceId.ToString());
             var v = _directory.GetFiles(versionFolder)
-                .Where(p=>_filePath.GetFileName(p).StartsWith(version.VersionNumber))
-                .FirstOrDefault();
+                .FirstOrDefault(p => _filePath.GetFileName(p)
+                .StartsWith(version.VersionNumber, StringComparison.Ordinal));
             if (string.IsNullOrEmpty(v))
             {
                 throw new VersionNotFoundException("Version Does not exist");
@@ -126,16 +126,13 @@ namespace Dev2.Runtime.Hosting
             return new StringBuilder(_file.ReadAllText(v));
         }
 
-        IExplorerItem CreateVersionFromFilePath(string path, IResource resource, string resourcePath)
+        static IExplorerItem CreateVersionFromFilePath(string path, IResource resource, string resourcePath) => new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, "Version", new List<IExplorerItem>(), Permissions.View, resourcePath)
         {
-            return new ServerExplorerItem(CreateNameFromPath(path), resource.ResourceID, "Version", new List<IExplorerItem>(), Permissions.View, resourcePath)
-            {
-                VersionInfo = CreateVersionInfoFromFilePath(path, resource.ResourceID),
-                IsResourceVersion = true
-            };
-        }
+            VersionInfo = CreateVersionInfoFromFilePath(path, resource.ResourceID),
+            IsResourceVersion = true
+        };
 
-        IVersionInfo CreateVersionInfoFromFilePath(string path, Guid resourceId)
+        static IVersionInfo CreateVersionInfoFromFilePath(string path, Guid resourceId)
         {
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
@@ -147,7 +144,7 @@ namespace Dev2.Runtime.Hosting
             return new VersionInfo(new DateTime(long.Parse(parts[1])), parts[2], "", parts[0], resourceId, resourceId);
         }
 
-        string CreateNameFromPath(string path)
+        static string CreateNameFromPath(string path)
         {
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
@@ -215,10 +212,14 @@ namespace Dev2.Runtime.Hosting
         {
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
             var versionFolder = GetVersionFolderPath(resource.ResourceID.ToString());
-            var v = _directory.GetFiles(versionFolder)
-                .Where(p => _filePath.GetFileName(p).StartsWith(versionNumber))
-                .FirstOrDefault();
-            _file.Delete(v);
+            var allVersions = _directory.GetFiles(versionFolder);
+            var version = allVersions.FirstOrDefault(p => _filePath.GetFileName(p)
+                .StartsWith(versionNumber, StringComparison.Ordinal));
+            _file.Delete(version);
+            if (_directory.GetFiles(versionFolder).Length < 1)
+            {
+                _directory.Delete(versionFolder, true);
+            }
             return GetVersions(resourceId);
         }
 
@@ -263,10 +264,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        string GetDateString(DateTime dateTimeStamp)
-        {
-            return dateTimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
-        }
+        static string GetDateString(DateTime dateTimeStamp) => dateTimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
 
         public void CleanUpOldVersionControlStructure(IDirectory directory)
         {
@@ -301,7 +299,7 @@ namespace Dev2.Runtime.Hosting
             }
             try
             {
-                var partialName = "VersionControl";
+                const string partialName = "VersionControl";
                 var dirs = directory.GetDirectories(_resourcePath, "*" + partialName + "*");
                 foreach (var item in dirs)
                 {

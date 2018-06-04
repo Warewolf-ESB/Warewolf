@@ -81,13 +81,11 @@ namespace Dev2.Data.Util
             if (cur == charToCheck && prev != charToCheck)
             {
                 var checkIndex = i + 1;
-                if (checkIndex < payload.Length)
+                if (checkIndex < payload.Length && payload[checkIndex] == charToCheck)
                 {
-                    if (payload[checkIndex] == charToCheck)
-                    {
-                        shouldAddToRegion = false;
-                    }
+                    shouldAddToRegion = false;
                 }
+
             }
             return shouldAddToRegion;
         }
@@ -146,6 +144,7 @@ namespace Dev2.Data.Util
                 {
                     if (!string.IsNullOrEmpty(name))
                     {
+#pragma warning disable S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
                         if (Char.IsNumber(name[0]))
                         {
                             return IntellisenseFactory.CreateErrorResult(1, 1, dataListVerifyPart, displayString + " name " + displayName + " begins with a number", enIntellisenseErrorCode.SyntaxError, true);
@@ -166,8 +165,8 @@ namespace Dev2.Data.Util
                         {
                             return intellisenseResult;
                         }
+#pragma warning restore S134 // Control flow statements "if", "switch", "for", "foreach", "while", "do"  and "try" should not be nested too deeply
                         XmlConvert.VerifyName(name);
-
                     }
                 }
                 catch (Exception ex)
@@ -209,14 +208,19 @@ namespace Dev2.Data.Util
                     }
                     else
                     {
-                        if (match == search)
-                        {
-                            emptyOk = true;
-                        }
+                        ShouldUpdateEmptyOk(search, ref emptyOk, match);
                     }
                 }
             }
             return false;
+        }
+
+        private static void ShouldUpdateEmptyOk(string search,ref bool emptyOk, string match)
+        {
+            if (match == search)
+            {
+                emptyOk = true;
+            }
         }
 
         public void ProcessResults(IList<IIntellisenseResult> realResults, IIntellisenseResult intellisenseResult)
@@ -304,7 +308,7 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        public IIntellisenseResult AddErrorToResults(bool isRs, string part, IDev2DataLangaugeParseError e, bool isOpen)
+        public IIntellisenseResult AddErrorToResults(bool isRs, string part, IDev2DataLangaugeParseError dev2DataLanguageParseError, bool isOpen)
         {
             // add error
             IDataListVerifyPart pTo;
@@ -323,7 +327,7 @@ namespace Dev2.Data.Util
                 pTo = IntellisenseFactory.CreateDataListValidationScalarPart(part.Replace("]", ""));
             }
 
-            return IntellisenseFactory.CreateErrorResult(e.StartIndex, e.EndIndex, pTo, e.Message, e.ErrorCode, isOpen);
+            return IntellisenseFactory.CreateErrorResult(dev2DataLanguageParseError.StartIndex, dev2DataLanguageParseError.EndIndex, pTo, dev2DataLanguageParseError.Message, dev2DataLanguageParseError.ErrorCode, isOpen);
         }
 
         #endregion

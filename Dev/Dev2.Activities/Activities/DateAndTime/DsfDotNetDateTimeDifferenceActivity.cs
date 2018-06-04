@@ -85,10 +85,7 @@ namespace Dev2.Activities.DateAndTime
             Result = string.Empty;
         }
 
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
+        public override List<string> GetOutputs() => new List<string> { Result };
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -248,10 +245,7 @@ namespace Dev2.Activities.DateAndTime
         /// <param name="evaledInputFormat">The evaled input format.</param>
         /// <param name="outputType">Type of the output.</param>
         /// <returns></returns>
-        static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType)
-        {
-            return DateTimeConverterFactory.CreateDateTimeDiffTO(input1, input2, evaledInputFormat, outputType);
-        }
+        static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType) => DateTimeConverterFactory.CreateDateTimeDiffTO(input1, input2, evaledInputFormat, outputType);
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
@@ -302,14 +296,28 @@ namespace Dev2.Activities.DateAndTime
             }
         }
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
-            return GetForEachItems(Input1, Input2, InputFormat);
-        }
+        public override IList<DsfForEachItem> GetForEachInputs() => GetForEachItems(Input1, Input2, InputFormat);
 
-        public override IList<DsfForEachItem> GetForEachOutputs()
+        public override IList<DsfForEachItem> GetForEachOutputs() => GetForEachItems(Result);
+        
+        public bool Equals(DsfDotNetDateTimeDifferenceActivity other)
         {
-            return GetForEachItems(Result);
+            var eq = base.Equals(other);
+            eq &= DisplayName.Equals(other.DisplayName);
+            eq &= Input1.Equals(other.Input1);
+            eq &= Input2.Equals(other.Input2);
+            eq &= InputFormat.Equals(other.InputFormat);
+            eq &= OutputType.Equals(other.OutputType);
+            eq &= Result.Equals(other.Result);
+            return eq;
+        }
+        public override bool Equals(object obj)
+        {
+            if (obj is DsfDotNetDateTimeDifferenceActivity instance)
+            {
+                return Equals(instance);
+            }
+            return false;
         }
     }
 }

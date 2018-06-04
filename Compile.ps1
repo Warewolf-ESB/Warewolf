@@ -19,7 +19,7 @@ $KnownSolutionFiles = "$PSScriptRoot\Dev\AcceptanceTesting.sln",
                       "$PSScriptRoot\Dev\Server.sln",
                       "$PSScriptRoot\Dev\Studio.sln",
                       "$PSScriptRoot\Dev\Release.sln",
-                      "$PSScriptRoot\Dev\Web2.sln"
+                      "$PSScriptRoot\Dev\Web.sln"
 $NoSolutionParametersPresent = !($AcceptanceTesting.IsPresent) -and !($UITesting.IsPresent) -and !($Server.IsPresent) -and !($Studio.IsPresent) -and !($Release.IsPresent) -and !($Web.IsPresent) -and !($RegenerateSpecFlowFeatureFiles.IsPresent)
 if ($Target -ne "") {
 	$Target = "/t:" + $Target
@@ -75,6 +75,10 @@ if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
         $NuGet = $NuGetCommand.Path
     }
 }
+if (("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) -and (Test-Path "$env:windir")) {
+    wget "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe" -OutFile "$env:windir\nuget.exe"
+    $NuGetCommand = "$env:windir\nuget.exe"
+}
 if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 	Write-Host NuGet not found. Download from: https://dist.nuget.org/win-x86-commandline/latest/nuget.exe to: c:\windows\nuget.exe. If you do not have permission to create c:\windows\nuget.exe use the -NuGet switch.
     sleep 10
@@ -82,6 +86,7 @@ if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 }
 
 #Version
+$GitCommitID = git -C "$PSScriptRoot" rev-parse HEAD
 if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
     Write-Host Writing C# and F# versioning files...
 
@@ -90,7 +95,6 @@ if ($AutoVersion.IsPresent -or $CustomVersion -ne "") {
 
     # Generate informational version.
     # (from git commit id and time)
-    $GitCommitID = git -C "$PSScriptRoot" rev-parse HEAD
     $GitCommitTimeObject = git -C "$PSScriptRoot" show -s --format="%ct" $GitCommitID
     if (($GitCommitTimeObject[0]).ToString().length -gt 1){
         $GitCommitTimeString = $GitCommitTimeObject[0]
@@ -250,7 +254,12 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
         $SolutionFileName = $GetSolutionFileInfo.Name
         $SolutionFileExtension = $GetSolutionFileInfo.Extension
         $OutputFolderName = $SolutionFileName.TrimEnd("." + $SolutionFileExtension).TrimEnd("2")
-        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent -or $NoSolutionParametersPresent) {
+        if ((Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent.Length -gt 1) {
+            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent[0]
+        } else {
+            $SolutionParameterIsPresent = (Get-Variable "$OutputFolderName*" -ValueOnly).IsPresent
+        }
+        if ($SolutionParameterIsPresent -or $NoSolutionParametersPresent) {
             if ($SolutionWideOutputs.IsPresent) {
                 $OutputProperty = "/property:OutDir=$PSScriptRoot\Bin\$OutputFolderName"
             } else {
@@ -260,7 +269,6 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             &"$MSBuildPath" "$SolutionFile" "/p:Platform=`"Any CPU`";Configuration=`"$Config`"" "/maxcpucount" $OutputProperty $Target "/nodeReuse:false"
             if ($LASTEXITCODE -ne 0) {
 				Write-Host Build failed. Check your pending changes. If you do not have any pending changes then you can try running 'dev\scorched get.bat' before retrying. Compiling Warewolf requires at at least MSBuild 15.0, download from: https://aka.ms/vs/15/release/vs_buildtools.exe and FSharp 4.0, download from http://download.microsoft.com/download/9/1/2/9122D406-F1E3-4880-A66D-D6C65E8B1545/FSharp_Bundle.exe
-                sleep 30
                 exit 1
             }
         }

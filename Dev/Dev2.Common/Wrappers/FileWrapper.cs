@@ -15,29 +15,23 @@ namespace Dev2.Common.Wrappers
 { // not required for code coverage this is simply a pass through required for unit testing
     public class FileWrapper : IFile
     {
-        public string ReadAllText(string fileName)
-        {
-            return File.ReadAllText(fileName);
-        }
+        public string ReadAllText(string fileName) => File.ReadAllText(fileName);
 
         public void Move(string source, string destination)
         {
             File.Move(source, destination);
         }
 
-        public bool Exists(string path)
-        {
-            return File.Exists(path);
-        }
+        public bool Exists(string path) => File.Exists(path);
 
         public void Delete(string tmpFileName)
         {
             File.Delete(tmpFileName);
         }
 
-        public void WriteAllText(string path, string contents)
+        public void WriteAllText(string p1, string p2)
         {
-            File.WriteAllText(path, contents);
+            File.WriteAllText(p1, p2);
         }
 
         public void Copy(string source, string destination)
@@ -55,24 +49,15 @@ namespace Dev2.Common.Wrappers
             File.AppendAllText(path, contents);
         }
 
-        public byte[] ReadAllBytes(string path)
-        {
-            return File.ReadAllBytes(path);
-        }
+        public byte[] ReadAllBytes(string path) => File.ReadAllBytes(path);
 
-        public FileAttributes GetAttributes(string path)
-        {
-            return File.GetAttributes(path);
-        }
+        public FileAttributes GetAttributes(string path) => File.GetAttributes(path);
 
         public void SetAttributes(string path, FileAttributes fileAttributes)
         {
             File.SetAttributes(path, fileAttributes);
         }
 
-        public Stream OpenRead(string path)
-        {
-            return File.OpenRead(path);
-        }
+        public Stream OpenRead(string path) => File.OpenRead(path);
     }
 }

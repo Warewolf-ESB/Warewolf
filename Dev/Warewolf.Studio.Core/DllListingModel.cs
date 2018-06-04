@@ -267,11 +267,7 @@ namespace Warewolf.Studio.Core
 
         #region Equality members
 
-        public bool Equals(DllListingModel other)
-        {
-            
-            return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
-        }
+        public bool Equals(DllListingModel other) => string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) && IsDirectory == other.IsDirectory;
 
 
         /// <summary>
@@ -315,15 +311,9 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        public static bool operator ==(DllListingModel left, DllListingModel right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(DllListingModel left, DllListingModel right) => Equals(left, right);
 
-        public static bool operator !=(DllListingModel left, DllListingModel right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(DllListingModel left, DllListingModel right) => !Equals(left, right);
 
         #endregion
     }

@@ -39,7 +39,8 @@ namespace Dev2.Studio.Interfaces.Enums
         EmailSource,
         ServerSource,
         SqlServerSource,
-        MySqlSource,
+		SqliteSource,
+		MySqlSource,
         PostgreSqlSource,
         OracleSource,
         OdbcSource,
@@ -53,6 +54,7 @@ namespace Dev2.Studio.Interfaces.Enums
         RabbitMQSource,
         WcfSource,
         ServiceTestsViewer,
-        MergeConflicts
+        MergeConflicts,
+        SearchViewer
     }
 }

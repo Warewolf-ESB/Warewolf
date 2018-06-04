@@ -17,10 +17,8 @@ namespace Dev2.Settings.Scheduler
         struct CREDUI_INFO
         {
             public int cbSize;
-            readonly IntPtr hwndParent;
             public string pszMessageText;
             public string pszCaptionText;
-            readonly IntPtr hbmBanner;
         }
 
         [DllImport("credui.dll", CharSet = CharSet.Auto)]
@@ -73,21 +71,19 @@ namespace Dev2.Settings.Scheduler
             var maxUserName = 100;
             var maxDomain = 100;
             var maxPassword = 100;
-            if (result == 0)
+            if (result == 0 && CredUnPackAuthenticationBuffer(0, outCredBuffer, outCredSize, usernameBuf, ref maxUserName,
+    domainBuf, ref maxDomain, passwordBuf, ref maxPassword))
             {
-                if (CredUnPackAuthenticationBuffer(0, outCredBuffer, outCredSize, usernameBuf, ref maxUserName,
-                    domainBuf, ref maxDomain, passwordBuf, ref maxPassword))
+                CoTaskMemFree(outCredBuffer);
+                networkCredential = new NetworkCredential
                 {
-                    CoTaskMemFree(outCredBuffer);
-                    networkCredential = new NetworkCredential
-                    {
-                        UserName = usernameBuf.ToString(),
-                        Password = passwordBuf.ToString(),
-                        Domain = domainBuf.ToString()
-                    };
-                    return;
-                }
+                    UserName = usernameBuf.ToString(),
+                    Password = passwordBuf.ToString(),
+                    Domain = domainBuf.ToString()
+                };
+                return;
             }
+
 
             networkCredential = null;
         }

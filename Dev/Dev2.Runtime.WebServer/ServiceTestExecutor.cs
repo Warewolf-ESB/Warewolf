@@ -33,14 +33,12 @@ namespace Dev2.Runtime.WebServer
                     esbEndpointClone.ExecuteRequest(dataObjectToUse, interTestRequest, workspaceGuid, out ErrorResultTO errs);
                 });
                 var result = serializer.Deserialize<ServiceTestModelTO>(interTestRequest.ExecuteResult);
-                if (result == null)
+                if (result == null && interTestRequest.ExecuteResult != null)
                 {
-                    if (interTestRequest.ExecuteResult != null)
-                    {
-                        var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString()) ?? new TestRunResult { TestName = dataObjectToUse.TestName };
-                        result = new ServiceTestModelTO { Result = r, TestName = r.TestName };
-                    }
+                    var r = serializer.Deserialize<TestRunResult>(interTestRequest.ExecuteResult.ToString()) ?? new TestRunResult { TestName = dataObjectToUse.TestName };
+                    result = new ServiceTestModelTO { Result = r, TestName = r.TestName };
                 }
+
                 Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObjectToUse.DataListID);
                 dataObjectToUse.Environment = null;
                 testResults.Add(result);
@@ -69,7 +67,7 @@ namespace Dev2.Runtime.WebServer
         public static DataListFormat ExecuteTests(string serviceName, IDSFDataObject dataObject, DataListFormat formatter,
             IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, ref string executePayload)
         {
-            if (dataObject.TestsResourceIds?.Any() ?? false && serviceName == "*")
+            if (dataObject.TestsResourceIds?.Any() ?? false)
             {
                 if (dataObject.ReturnType == Web.EmitionTypes.TEST)
                 {

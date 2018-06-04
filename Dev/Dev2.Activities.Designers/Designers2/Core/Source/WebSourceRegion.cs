@@ -155,10 +155,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        public bool CanEditSource()
-        {
-            return SelectedSource != null;
-        }
+        public bool CanEditSource() => SelectedSource != null;
 
         public ICommand EditSourceCommand { get; set; }
 
@@ -194,13 +191,10 @@ namespace Dev2.Activities.Designers2.Core.Source
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
+        public IToolRegion CloneRegion() => new WebSourceRegion
         {
-            return new WebSourceRegion
-            {
-                SelectedSource = SelectedSource
-            };
-        }
+            SelectedSource = SelectedSource
+        };
 
         public void RestoreRegion(IToolRegion toRestore)
         {
@@ -228,13 +222,11 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
             set
             {
-                if (!Equals(value, _selectedSource) && _selectedSource != null)
+                if (!Equals(value, _selectedSource) && _selectedSource != null && !string.IsNullOrEmpty(_selectedSource.HostName))
                 {
-                    if (!string.IsNullOrEmpty(_selectedSource.HostName))
-                    {
-                        StorePreviousValues(_selectedSource.Id);
-                    }
+                    StorePreviousValues(_selectedSource.Id);
                 }
+
                 if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
@@ -245,6 +237,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                         region.ObjectResult = string.Empty;
                         region.IsObject = false;
                         region.ObjectName = string.Empty;
+                        
                     }
                 }
                 RestoreIfPrevious(value);
@@ -297,10 +290,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        bool IsAPreviousValue(IWebServiceSource value)
-        {
-            return _previousRegions.Keys.Any(a => a == value.Id);
-        }
+        bool IsAPreviousValue(IWebServiceSource value) => _previousRegions.Keys.Any(a => a == value.Id);
 
         public ICollection<IWebServiceSource> Sources
         {

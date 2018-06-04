@@ -23,30 +23,18 @@ namespace Dev2.Data.TO
     [Serializable]
     public class ErrorResultTO : IErrorResultTO
     {
-
         readonly IList<StringBuilder> _errorList = new List<StringBuilder>();
-
-        /// <summary>
-        /// Adds the error.
-        /// </summary>
-        /// <param name="msg">The MSG.</param>
-        /// <param name="checkForDuplicates"></param>
+        
         public void AddError(string msg) => AddError(msg, false);
         public void AddError(string msg, bool checkForDuplicates)
         {
-            if(!string.IsNullOrEmpty(msg))
+            if (!string.IsNullOrEmpty(msg) && (checkForDuplicates && !_errorList.Contains(msg.ToStringBuilder()) || !checkForDuplicates))
             {
-                if(checkForDuplicates && !_errorList.Contains(msg.ToStringBuilder()) || !checkForDuplicates)
-                {
-                    _errorList.Add(msg.ToStringBuilder());
-                }
+                _errorList.Add(msg.ToStringBuilder());
             }
-        }
 
-        /// <summary>
-        /// Remove the error from the list
-        /// </summary>
-        /// <param name="msg"></param>
+        }
+        
         public void RemoveError(string msg)
         {
             var found = _errorList.FirstOrDefault(s => s.ToString() == msg);
@@ -55,32 +43,11 @@ namespace Dev2.Data.TO
                 _errorList.Remove(found);
             }
         }
-
-        /// <summary>
-        /// Fetches the errors.
-        /// </summary>
-        /// <returns></returns>
-        public IList<string> FetchErrors()
-        {
-            return _errorList.Select(e=>e.ToString()).ToList();
-        }
-
-        /// <summary>
-        /// Determines whether this instance has errors.>	Dev2.Data.dll!Dev2.DataList.Contract.ErrorResultTO.FetchErrors() Line 59	C#
-
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if this instance has errors; otherwise, <c>false</c>.
-        /// </returns>
-        public bool HasErrors()
-        {
-            return _errorList.Count > 0;
-        }
-
-        /// <summary>
-        /// Merges the errors.
-        /// </summary>
-        /// <param name="toMerge">To merge.</param>
+        
+        public IList<string> FetchErrors() => _errorList.Select(e => e.ToString()).ToList();
+        
+        public bool HasErrors() => _errorList.Count > 0;
+        
         public void MergeErrors(IErrorResultTO toMerge)
         {
             if (toMerge != null && toMerge.HasErrors())
@@ -98,11 +65,7 @@ namespace Dev2.Data.TO
         {
             _errorList.Clear();
         }
-
-        /// <summary>
-        /// Makes the error collection user ready.
-        /// </summary>
-        /// <returns></returns>
+        
         public string MakeDisplayReady()
         {
             var result = new StringBuilder();

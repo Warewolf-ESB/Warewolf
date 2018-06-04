@@ -138,16 +138,21 @@ namespace Dev2.Network
                 var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId).ConfigureAwait(true)).GetAwaiter().GetResult();
                 if (!string.IsNullOrWhiteSpace(result))
                 {
-                    var obj = _serializer.Deserialize<CompileMessageList>(result);
-                    if (obj != null)
-                    {
-                        ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
-                        var shellViewModel = CustomContainer.Get<IShellViewModel>();
-                        if (shellViewModel != null)
-                        {
-                            shellViewModel.ResourceCalled = false;
-                        }
-                    }
+                    FetchResourcesAffectedMemo(result);
+                }
+            }
+        }
+
+        void FetchResourcesAffectedMemo(string result)
+        {
+            var obj = _serializer.Deserialize<CompileMessageList>(result);
+            if (obj != null)
+            {
+                ReceivedResourceAffectedMessage.Invoke(obj.ServiceID, obj);
+                var shellViewModel = CustomContainer.Get<IShellViewModel>();
+                if (shellViewModel != null)
+                {
+                    shellViewModel.ResourceCalled = false;
                 }
             }
         }
@@ -227,24 +232,20 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                if (!IsLocalHost)
+                if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
                 {
-                    if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
-                    {
-                        HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
-                    }
+                    HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
                 }
+
 
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    if (!HubConnection.Start().Wait(GlobalConstants.NetworkTimeOut))
+                    if (!HubConnection.Start().Wait(GlobalConstants.NetworkTimeOut) && !IsLocalHost)
                     {
-                        if (!IsLocalHost)
-                        {
-                            ConnectionRetry();
-                        }
+                        ConnectionRetry();
                     }
+
                 }
             }
             catch (AggregateException aex)
@@ -272,37 +273,31 @@ namespace Dev2.Network
             ID = id;
             try
             {
-                if (!IsLocalHost)
+                if (!IsLocalHost && HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
                 {
-                    if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Reconnecting)
-                    {
-                        HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
-                    }
+                    HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
                 }
+
 
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start();
-                    if (HubConnection.State == ConnectionStateWrapped.Disconnected)
+                    await HubConnection.Start().ConfigureAwait(true);
+                    if (HubConnection.State == ConnectionStateWrapped.Disconnected && !IsLocalHost)
                     {
-                        if (!IsLocalHost)
-                        {
-                            ConnectionRetry();
-                        }
+                        ConnectionRetry();
                     }
+
                 }
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connecting)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    await HubConnection.Start();
-                    if (HubConnection.State == ConnectionStateWrapped.Disconnected)
+                    await HubConnection.Start().ConfigureAwait(true);
+                    if (HubConnection.State == ConnectionStateWrapped.Disconnected && !IsLocalHost)
                     {
-                        if (!IsLocalHost)
-                        {
-                            ConnectionRetry();
-                        }
+                        ConnectionRetry();
                     }
+
                     var popup = CustomContainer.Get<IPopupController>();
                     popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
                         , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
@@ -366,10 +361,7 @@ namespace Dev2.Network
             });
         }
 
-        bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
-        {
-            return true;
-        }
+        bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors) => true;
 
         void HandleConnectError(Exception e)
         {
@@ -379,17 +371,15 @@ namespace Dev2.Network
 
         protected void StartReconnectTimer()
         {
-            if (IsLocalHost)
+            if (IsLocalHost && _reconnectHeartbeat == null)
             {
-                if (_reconnectHeartbeat == null)
-                {
-                    _reconnectHeartbeat = new System.Timers.Timer();
-                    _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
-                    _reconnectHeartbeat.Interval = 1000;
-                    _reconnectHeartbeat.AutoReset = true;
-                    _reconnectHeartbeat.Start();
-                }
+                _reconnectHeartbeat = new System.Timers.Timer();
+                _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
+                _reconnectHeartbeat.Interval = 1000;
+                _reconnectHeartbeat.AutoReset = true;
+                _reconnectHeartbeat.Start();
             }
+
         }
 
         protected void StopReconnectHeartbeat()
@@ -627,32 +617,36 @@ namespace Dev2.Network
             handler?.Invoke(this, e);
         }
 
-        public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId)
+        public StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId)
         {
-            if (payload == null || payload.Length == 0)
+            if (xmlRequest == null || xmlRequest.Length == 0)
             {
-                throw new ArgumentNullException(nameof(payload));
+                throw new ArgumentNullException(nameof(xmlRequest));
             }
-
-            var result = Task.Run(async () => await ExecuteCommandAsync(payload, workspaceId).ConfigureAwait(true)).Result;
-            return result;
+            
+            var executeRequestAsync = Task.Run(async () => await ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true));
+            if (executeRequestAsync.Wait(120000))
+            {
+                return executeRequestAsync.Result;
+            }
+            return null;
         }
 
-        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
+        public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId)
         {
-            if (payload == null || payload.Length == 0)
+            if (xmlRequest == null || xmlRequest.Length == 0)
             {
-                throw new ArgumentNullException(nameof(payload));
+                throw new ArgumentNullException(nameof(xmlRequest));
             }
 
-            Dev2Logger.Debug("Execute Command Payload [ " + payload + " ]", "Warewolf Debug");
+            Dev2Logger.Debug("Execute Command Payload [ " + xmlRequest + " ]", "Warewolf Debug");
 
             var messageId = Guid.NewGuid();
             var envelope = new Envelope
             {
                 PartID = 0,
                 Type = typeof(Envelope),
-                Content = payload.ToString()
+                Content = xmlRequest.ToString()
             };
 
             var result = new StringBuilder();
@@ -665,15 +659,13 @@ namespace Dev2.Network
                 if (result.Length > 0)
                 {
                     var start = result.LastIndexOf("<" + GlobalConstants.ManagementServicePayload + ">", false);
-                    if (start > 0)
+                    var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
+                    if (start > 0 && start < end && end - start > 1)
                     {
-                        var end = result.LastIndexOf("</" + GlobalConstants.ManagementServicePayload + ">", false);
-                        if (start < end && end - start > 1)
-                        {
-                            start += GlobalConstants.ManagementServicePayload.Length + 2;
-                            return new StringBuilder(result.Substring(start, end - start));
-                        }
+                        start += GlobalConstants.ManagementServicePayload.Length + 2;
+                        return new StringBuilder(result.Substring(start, end - start));
                     }
+
                 }
             }
             catch (Exception e)

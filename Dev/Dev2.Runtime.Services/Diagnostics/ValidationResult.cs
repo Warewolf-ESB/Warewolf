@@ -28,9 +28,6 @@ namespace Dev2.Runtime.Diagnostics
         public ArrayList ErrorFields { get; set; }
         public string Result { get; set; }
 
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this);
     }
 }

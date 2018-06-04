@@ -30,6 +30,7 @@ namespace Dev2.Studio.Interfaces
         bool WorkspaceSave { get; }
         Action WorkflowChanged { get; set; }
         bool CanViewWorkflowLink { get; set; }
+        bool CanMerge { get; set; }
 
         void UpdateWorkflowLink(string newLink);
         bool NotifyItemSelected(object primarySelection);
@@ -39,10 +40,16 @@ namespace Dev2.Studio.Interfaces
 
         string GetWorkflowInputs(string field);
         void CreateBlankWorkflow();
-        void RemoveItem(IMergeToolModel model);
-        void AddItem(IMergeToolModel model);
-        void RemoveStartNodeConnection();
-        void LinkTools(string sourceUniqueId, string destionationUniqueId, string key);
         void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);
+    }
+
+    public interface IMergePreviewWorkflowDesignerViewModel : IWorkflowDesignerViewModel
+    {
+        void RemoveItem(IToolConflictItem model);
+        void AddItem(IToolConflictItem model);
+        void RemoveStartNodeConnection();
+        void LinkStartNode(IToolConflictItem model);
+        void LinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key);
+        void DeLinkActivities(Guid sourceUniqueId, Guid destinationUniqueId, string key);
     }
 }

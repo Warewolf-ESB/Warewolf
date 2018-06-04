@@ -105,7 +105,7 @@ namespace Warewolf.Studio.ViewModels
         {
             RaiseCanExecuteDependencies();
             var items = !DestinationConnectControlViewModel.IsConnected ? _source?.SourceLoadedItems?.ToList() : GetItemsToUpdateStats();
-            _stats.Calculate(items);
+            _stats.TryCalculate(items);
         }
 
         List<IExplorerTreeItem> GetItemsToUpdateStats()
@@ -167,7 +167,7 @@ namespace Warewolf.Studio.ViewModels
                 _destination.SelectedEnvironment = environmentViewModel;
             }
             ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
-            _stats.Calculate(Source?.SourceLoadedItems?.ToList());
+            _stats.TryCalculate(Source?.SourceLoadedItems?.ToList());
             OnPropertyChanged(() => CanDeploy);
         }
 
@@ -335,16 +335,13 @@ namespace Warewolf.Studio.ViewModels
             return supportsDirectServerDeploy;
         }
 
-        static Connection CreateNewConnection(IServer destEnv)
+        static Connection CreateNewConnection(IServer destEnv) => new Connection
         {
-            return new Connection
-            {
-                Address = destEnv.Connection.AppServerUri.ToString(),
-                AuthenticationType = destEnv.Connection.AuthenticationType,
-                UserName = destEnv.Connection.UserName,
-                Password = destEnv.Connection.Password
-            };
-        }
+            Address = destEnv.Connection.AppServerUri.ToString(),
+            AuthenticationType = destEnv.Connection.AuthenticationType,
+            UserName = destEnv.Connection.UserName,
+            Password = destEnv.Connection.Password
+        };
 
         List<Guid> GetNotFoldersList()
         {

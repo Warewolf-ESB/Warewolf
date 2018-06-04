@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.UI.Tests</RootNamespace>
     <AssemblyName>Warewolf.UI.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -39,8 +39,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.8.1.0, Culture=neutral, PublicKeyToken=c416bc1b32d97233, processorArchitecture=MSIL">
+      <HintPath>..\packages\TaskScheduler.2.8.1\lib\net452\Microsoft.Win32.TaskScheduler.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -48,6 +52,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="TechTalk.SpecFlow, Version=2.1.0.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
@@ -190,6 +195,21 @@
     <Compile Include="Scheduler\SchedulerUIMap.Designer.cs">
       <DependentUpon>SchedulerUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="Search\TestNameSearchTests.cs" />
+    <Compile Include="Search\InputSearchTests.cs" />
+    <Compile Include="Search\SearchUIMap.cs">
+      <DependentUpon>SearchUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Search\SearchUIMap.Designer.cs">
+      <DependentUpon>SearchUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Search\SearchViewTests.cs" />
+    <Compile Include="Search\ServiceSearchTests.cs" />
+    <Compile Include="Search\ObjectSearchTests.cs" />
+    <Compile Include="Search\ScalarSearchTests.cs" />
+    <Compile Include="Search\TitleSearchTests.cs" />
+    <Compile Include="Search\OutputSearchTests.cs" />
+    <Compile Include="Search\RecordsetSearchTests.cs" />
     <Compile Include="ServerSource\ServerSourceTests.cs" />
     <Compile Include="ServerSource\ServerSourceUIMap.cs">
       <DependentUpon>ServerSourceUIMap.uitest</DependentUpon>
@@ -268,6 +288,7 @@
     <Compile Include="WorkflowTab\Tools\Database\DatabaseToolsUIMap.Designer.cs">
       <DependentUpon>DatabaseToolsUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="WorkflowTab\Tools\Database\AdvancedRecordsetTests.cs" />
     <Compile Include="WorkflowTab\Tools\Database\MySqlTests.cs" />
     <Compile Include="WorkflowTab\Tools\Database\ODBCTests.cs" />
     <Compile Include="WorkflowTab\Tools\Database\OracleDatabaseTests.cs" />
@@ -430,9 +451,12 @@
     <None Include="Explorer\ExplorerUIMap.uitest" />
     <None Include="Merge\MergeDialogUIMap.uitest" />
     <None Include="Merge\MergeConflictsUIMap.uitest" />
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="RabbitMQSource\RabbitMQSourceUIMap.uitest" />
     <None Include="Scheduler\SchedulerUIMap.uitest" />
+    <None Include="Search\SearchUIMap.uitest" />
     <None Include="ServerSource\ServerSourceUIMap.uitest" />
     <None Include="Settings\SettingsUIMap.uitest" />
     <None Include="SharepointSource\SharepointSourceUIMap.uitest" />
@@ -442,7 +466,9 @@
     <None Include="WorkflowServiceTesting\WorkflowServiceTestingUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Control Flow\ControlFlowToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Database\DatabaseToolsUIMap.uitest" />
-    <None Include="WorkflowTab\Tools\Data\DataToolsUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Data\DataToolsUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="WorkflowTab\Tools\Email\EmailToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\File FTP FTPS + SFTP\FileToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\HTTP Web Methods\HTTPToolsUIMap.uitest" />

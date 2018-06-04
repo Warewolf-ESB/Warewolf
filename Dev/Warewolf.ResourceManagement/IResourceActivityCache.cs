@@ -1,5 +1,6 @@
 using System;
 using System.Activities;
+using System.Collections.Concurrent;
 using Dev2;
 
 namespace Warewolf.ResourceManagement
@@ -15,5 +16,7 @@ namespace Warewolf.ResourceManagement
         bool HasActivityInCache(Guid resourceIdGuid);
 
         IDev2Activity GetActivity(Guid resourceIdGuid);
+
+        ConcurrentDictionary<Guid, IDev2Activity> Cache { get; }
     }
 }

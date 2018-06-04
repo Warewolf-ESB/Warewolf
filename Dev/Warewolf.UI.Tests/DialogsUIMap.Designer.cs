@@ -186,6 +186,18 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                 return this.mEditObjectDialog;
             }
         }
+        
+        public ActivityDefaultWindow ActivityDefaultWindow
+        {
+            get
+            {
+                if ((this.mActivityDefaultWindow == null))
+                {
+                    this.mActivityDefaultWindow = new ActivityDefaultWindow();
+                }
+                return this.mActivityDefaultWindow;
+            }
+        }
         #endregion
         
         #region Fields
@@ -214,6 +226,8 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         private SelectFilesWindow mSelectFilesWindow;
         
         private EditObjectDialog mEditObjectDialog;
+        
+        private ActivityDefaultWindow mActivityDefaultWindow;
         #endregion
     }
     
@@ -556,6 +570,41 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                 return this.mUITheTestNamealreadyexText;
             }
         }
+        
+        public WpfText UITosavearesourcepersmText
+        {
+            get
+            {
+                if ((this.mUITosavearesourcepersmText == null))
+                {
+                    this.mUITosavearesourcepersmText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUITosavearesourcepersmText.SearchProperties[WpfText.PropertyNames.Name] = "To save a resource persmission, you must have Resource Name and Windows group ent" +
+                        "ered";
+                    this.mUITosavearesourcepersmText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mUITosavearesourcepersmText;
+            }
+        }
+        
+        public WpfText UIThereareduplicateserText
+        {
+            get
+            {
+                if ((this.mUIThereareduplicateserText == null))
+                {
+                    this.mUIThereareduplicateserText = new WpfText(this);
+                    #region Search Criteria
+                    this.mUIThereareduplicateserText.SearchProperties[WpfText.PropertyNames.Name] = "There are duplicate server permissions, \r\n    i.e. Server permissions have been s" +
+                        "etup up with the same group twice. \r\n    Please clear the duplicates before savi" +
+                        "ng.";
+                    this.mUIThereareduplicateserText.WindowTitles.Add("WarewolfMessageBox");
+                    #endregion
+                }
+                return this.mUIThereareduplicateserText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -600,6 +649,10 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         private WpfButton mUIYesButton;
         
         private WpfText mUITheTestNamealreadyexText;
+        
+        private WpfText mUITosavearesourcepersmText;
+        
+        private WpfText mUIThereareduplicateserText;
         #endregion
     }
     
@@ -1273,6 +1326,110 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
     {
         
         public FirstSubItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("SaveDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit UIItemEdit
+        {
+            get
+            {
+                if ((this.mUIItemEdit == null))
+                {
+                    this.mUIItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIItemEdit.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIItemEdit;
+            }
+        }
+        
+        public FolderC FolderC
+        {
+            get
+            {
+                if ((this.mFolderC == null))
+                {
+                    this.mFolderC = new FolderC(this);
+                }
+                return this.mFolderC;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mUIItemEdit;
+        
+        private FolderC mFolderC;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class FolderC : WpfTreeItem
+    {
+        
+        public FolderC(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Warewolf.Studio.ViewModels.ExplorerItemViewModel";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.SearchConfigurations.Add(SearchConfiguration.DisambiguateChild);
+            this.WindowTitles.Add("SaveDialogView");
+            #endregion
+        }
+        
+        #region Properties
+        public FolderD FolderD
+        {
+            get
+            {
+                if ((this.mFolderD == null))
+                {
+                    this.mFolderD = new FolderD(this);
+                }
+                return this.mFolderD;
+            }
+        }
+        
+        public WpfEdit UIItemEdit
+        {
+            get
+            {
+                if ((this.mUIItemEdit == null))
+                {
+                    this.mUIItemEdit = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mUIItemEdit.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mUIItemEdit.WindowTitles.Add("SaveDialogView");
+                    #endregion
+                }
+                return this.mUIItemEdit;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private FolderD mFolderD;
+        
+        private WpfEdit mUIItemEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class FolderD : WpfTreeItem
+    {
+        
+        public FolderD(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -7453,6 +7610,142 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         private WpfEdit mResponseTextbox;
         
         private WpfButton mCloseButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ActivityDefaultWindow : WpfWindow
+    {
+        
+        public ActivityDefaultWindow()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "ActivityDefaultWindow";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public TextboxHost TextboxHost
+        {
+            get
+            {
+                if ((this.mTextboxHost == null))
+                {
+                    this.mTextboxHost = new TextboxHost(this);
+                }
+                return this.mTextboxHost;
+            }
+        }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mDoneButton.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
+        
+        public WpfButton CancelButton
+        {
+            get
+            {
+                if ((this.mCancelButton == null))
+                {
+                    this.mCancelButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCancelButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "CancelButton";
+                    this.mCancelButton.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mCancelButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TextboxHost mTextboxHost;
+        
+        private WpfButton mDoneButton;
+        
+        private WpfButton mCancelButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class TextboxHost : WpfCustom
+    {
+        
+        public TextboxHost(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConfigureSwitchArm";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public SwitchArmCaseTextbox SwitchArmCaseTextbox
+        {
+            get
+            {
+                if ((this.mSwitchArmCaseTextbox == null))
+                {
+                    this.mSwitchArmCaseTextbox = new SwitchArmCaseTextbox(this);
+                }
+                return this.mSwitchArmCaseTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SwitchArmCaseTextbox mSwitchArmCaseTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class SwitchArmCaseTextbox : WpfComboBox
+    {
+        
+        public SwitchArmCaseTextbox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SwitchArmCaseTextbox";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit TextInput
+        {
+            get
+            {
+                if ((this.mTextInput == null))
+                {
+                    this.mTextInput = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextInput.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextInput.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mTextInput;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextInput;
         #endregion
     }
 }

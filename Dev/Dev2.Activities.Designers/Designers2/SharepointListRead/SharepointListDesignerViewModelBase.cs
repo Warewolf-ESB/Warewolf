@@ -202,7 +202,8 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         public ObservableCollection<SharepointListTo> Lists { get; set; }
         public ObservableCollection<SharepointSource> SharepointServers { get; set; }
 
-        protected void RefreshSharepointSources(bool isInitializing = false)
+        protected void RefreshSharepointSources() => RefreshSharepointSources(false);
+        protected void RefreshSharepointSources(bool isInitializing)
         {
             IsRefreshing = true;
             if (isInitializing)
@@ -227,8 +228,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 });
             });
         }
+        protected void RefreshSharepointSourcesForFileActions() => RefreshSharepointSourcesForFileActions(false);
 
-         protected void RefreshSharepointSourcesForFileActions(bool isInitializing = false)
+         protected void RefreshSharepointSourcesForFileActions(bool isInitializing)
         {
             IsRefreshing = true;
             if (isInitializing)
@@ -346,10 +348,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             IsRefreshing = false;
         }
 
-        static string GetListName(SharepointListTo table)
-        {
-            return table?.FullName;
-        }
+        static string GetListName(SharepointListTo table) => table?.FullName;
 
         protected void OnSharepointServerChanged()
         {
@@ -412,38 +411,43 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
             var selectedSharepointServer = SelectedSharepointServer;
             var selectedList = SelectedList;
-            
+
             _asyncWorker.Start(() => GetListFields(selectedSharepointServer, selectedList), columnList =>
                 
             {
                 if(columnList != null)
                 {
-                    var fieldMappings = columnList.Select(mapping =>
-                    {
-                        var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName.Replace(" ","").Replace(".",""),GetValidVariableName(mapping),"*");
-                        var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
-                        return sharepointReadListTo;
-                    }).ToList();
-                    if (ReadListItems == null || ReadListItems.Count == 0 || isFromListChange)
-                    {
-                        ReadListItems = fieldMappings;
-                    }
-                    else
-                    {
-                        foreach(var sharepointReadListTo in fieldMappings)
-                        {
-                            var listTo = sharepointReadListTo;
-                            var readListTo = ReadListItems.FirstOrDefault(to => to.FieldName == listTo.FieldName);
-                            if(readListTo == null)
-                            {
-                                ReadListItems.Add(sharepointReadListTo);
-                            }
-                        }
-                    }
-                    ListItems = ReadListItems;
+                    LoadColumnListFields(isFromListChange, columnList, selectedList);
                 }
                 continueWith?.Invoke();
             });
+        }
+
+        private void LoadColumnListFields(bool isFromListChange, List<ISharepointFieldTo> columnList, SharepointListTo selectedList)
+        {
+            var fieldMappings = columnList.Select(mapping =>
+            {
+                var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue(selectedList.FullName.Replace(" ", "").Replace(".", ""), GetValidVariableName(mapping), "*");
+                var sharepointReadListTo = new SharepointReadListTo(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), mapping.Name, mapping.InternalName, mapping.Type.ToString()) { IsRequired = mapping.IsRequired };
+                return sharepointReadListTo;
+            }).ToList();
+            if (ReadListItems == null || ReadListItems.Count == 0 || isFromListChange)
+            {
+                ReadListItems = fieldMappings;
+            }
+            else
+            {
+                foreach (var sharepointReadListTo in fieldMappings)
+                {
+                    var listTo = sharepointReadListTo;
+                    var readListTo = ReadListItems.FirstOrDefault(to => to.FieldName == listTo.FieldName);
+                    if (readListTo == null)
+                    {
+                        ReadListItems.Add(sharepointReadListTo);
+                    }
+                }
+            }
+            ListItems = ReadListItems;
         }
 
         static string GetValidVariableName(ISharepointFieldTo mapping)
@@ -502,10 +506,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
         #region Overrides of ActivityCollectionDesignerViewModel<SharepointSearchTo>
 
-        public override bool CanRemoveAt(int indexNumber)
-        {
-            return ModelItemCollection != null && ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count;
-        }
+        public override bool CanRemoveAt(int indexNumber) => ModelItemCollection != null && ModelItemCollection.Count >= 2 && indexNumber < ModelItemCollection.Count;
 
         public override void RemoveAt(int indexNumber)
         {

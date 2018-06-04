@@ -25,10 +25,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
             }
         }
 
-        public ServiceMethodList GetMethods(string clsId, bool is32Bit)
-        {
-            return ComPluginServiceExecutionFactory.GetMethods(clsId,is32Bit);
-        }
+        public ServiceMethodList GetMethods(string clsid, bool is32Bit) => ComPluginServiceExecutionFactory.GetMethods(clsid, is32Bit);
 
         public IOutputDescription TestPlugin(ComPluginService pluginService)
         {

@@ -28,15 +28,15 @@ namespace Dev2.Activities
             DisplayName = "MySQL Database";
         }
 
-        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
+        protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
             var execErrors = new ErrorResultTO();
 
-            errors = new ErrorResultTO();
-            errors.MergeErrors(execErrors);
+            tmpErrors = new ErrorResultTO();
+            tmpErrors.MergeErrors(execErrors);
             if (string.IsNullOrEmpty(ProcedureName))
             {
-                errors.AddError(ErrorResource.NoActionsInSelectedDB);
+                tmpErrors.AddError(ErrorResource.NoActionsInSelectedDB);
                 return;
             }
             if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
@@ -50,7 +50,7 @@ namespace Dev2.Activities
             {
                 dataObject.Environment.Errors.Add(error);
             }
-            errors.MergeErrors(execErrors);
+            tmpErrors.MergeErrors(execErrors);
         }
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
@@ -91,15 +91,20 @@ namespace Dev2.Activities
         }
 
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
         public bool Equals(DsfMySqlDatabaseActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             return base.Equals(other)
                 && string.Equals(SourceId.ToString(),other.SourceId.ToString())
                 && string.Equals(ProcedureName, other.ProcedureName);
@@ -107,9 +112,21 @@ namespace Dev2.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfMySqlDatabaseActivity) obj);
         }
 
@@ -118,8 +135,11 @@ namespace Dev2.Activities
             unchecked
             {
                 var hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (SourceId != null ? SourceId.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (ProcedureName != null ? ProcedureName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SourceId.GetHashCode());
+                if (ProcedureName != null)
+                {
+                    hashCode = (hashCode * 397) ^ (ProcedureName.GetHashCode());
+                }
                 return hashCode;
             }
         }

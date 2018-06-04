@@ -149,11 +149,7 @@ namespace Dev2.Session
                 }
             }
         }
-
-
-        /// <summary>
-        ///     Boot strap the Session
-        /// </summary>
+        
         void InitPersistSettings()
         {
             lock (SettingsLock)
@@ -165,44 +161,52 @@ namespace Dev2.Session
                 }
                 else
                 {
-                    // fetch from disk
-                    var filesToCleanup = new List<string>();
-                    using (Stream s = _debugOptsEndPoint.Get(_debugPath, filesToCleanup))
+                    FetchFromDisk();
+                }
+            }
+        }
+
+        void FetchFromDisk()
+        {
+            var filesToCleanup = new List<string>();
+            using (Stream s = _debugOptsEndPoint.Get(_debugPath, filesToCleanup))
+            {
+                if (s.Length > 0)
+                {
+                    var bf = new XmlSerializer(typeof(List<SaveDebugTO>));
+
+                    try
                     {
-                        if (s.Length > 0)
-                        {
-                            var bf = new XmlSerializer(typeof(List<SaveDebugTO>));
-
-                            try
-                            {
-                                var settings = (List<SaveDebugTO>)bf.Deserialize(s);
-                                _debugPersistSettings.Values.ToList().ForEach(a => a.CleanUp());
-                                _debugPersistSettings.Clear();
-                                // now push back into the Dictionary
-                                foreach (SaveDebugTO dto in settings)
-                                {
-                                    if (!string.IsNullOrEmpty(dto.ServiceName))
-                                    {
-                                        var tmp = new DebugTO();
-                                        tmp.CopyFromSaveDebugTO(dto);
-                                        _debugPersistSettings[dto.WorkflowID] = tmp;
-                                    }
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                            }
-                        }
-                        else
-                        {
-                            Dev2Logger.Error("No debug data stream [ " + _debugPath + " ] ", GlobalConstants.WarewolfError);
-                        }
-
-                        s.Close();
-                        s.Dispose();
-                        filesToCleanup.ForEach(File.Delete);
+                        var settings = (List<SaveDebugTO>)bf.Deserialize(s);
+                        _debugPersistSettings.Values.ToList().ForEach(a => a.CleanUp());
+                        _debugPersistSettings.Clear();
+                        PersistSettings(settings);
                     }
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                    }
+                }
+                else
+                {
+                    Dev2Logger.Error("No debug data stream [ " + _debugPath + " ] ", GlobalConstants.WarewolfError);
+                }
+
+                s.Close();
+                s.Dispose();
+                filesToCleanup.ForEach(File.Delete);
+            }
+        }
+
+        void PersistSettings(List<SaveDebugTO> settings)
+        {
+            foreach (SaveDebugTO dto in settings)
+            {
+                if (!string.IsNullOrEmpty(dto.ServiceName))
+                {
+                    var tmp = new DebugTO();
+                    tmp.CopyFromSaveDebugTO(dto);
+                    _debugPersistSettings[dto.WorkflowID] = tmp;
                 }
             }
         }

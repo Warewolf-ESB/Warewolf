@@ -14,10 +14,7 @@ namespace Dev2.Common
 {
     public static class JPropertyExtensionMethods
     {
-        public static bool IsEnumerable(this JProperty property)
-        {
-            return property.Value is JArray;
-        }
+        public static bool IsEnumerable(this JProperty property) => property.Value is JArray;
 
         public static bool IsEnumerableOfPrimitives(this JProperty property)
         {
@@ -31,9 +28,6 @@ namespace Dev2.Common
             return returnValue;
         }
 
-        public static bool IsPrimitive(this JProperty property)
-        {
-            return property.Value is JValue;
-        }
+        public static bool IsPrimitive(this JProperty property) => property.Value is JValue;
     }
 }

@@ -96,10 +96,10 @@ namespace Warewolf.Studio.ViewModels
                 false, true, false, false, false, false);
         }
 
-        public IServiceTestModel DuplicateTest(IServiceTestModel selectedTest, int testNumber)
+        public IServiceTestModel DuplicateTest(IServiceTestModel selectedTests, int testNumber)
         {
-            var clone = selectedTest.Clone();
-            clone.TestName = selectedTest.TestName + " " + (testNumber == 0 ? 1 : testNumber);
+            var clone = selectedTests.Clone();
+            clone.TestName = selectedTests.TestName + " " + (testNumber == 0 ? 1 : testNumber);
             clone.OldTestName = clone.TestName;
             clone.Enabled = true;
             clone.IsTestSelected = true;
@@ -147,28 +147,7 @@ namespace Warewolf.Studio.ViewModels
                         {
                             foreach (var resTestStep in res.TestSteps)
                             {
-                                var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
-                                foreach (var serviceTestStep in serviceTestSteps)
-                                {
-                                    var resServiceTestStep = serviceTestStep as ServiceTestStep;
-                                    if (resServiceTestStep == null)
-                                    {
-                                        continue;
-                                    }
-
-                                    UpdateTestStepResult(resServiceTestStep, resTestStep);
-
-                                    var serviceTestOutputs = resTestStep.StepOutputs;
-                                    if (serviceTestOutputs.Count > 0)
-                                    {
-                                        resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
-                                    }
-                                    var children = resTestStep.Children;
-                                    if (children.Count > 0)
-                                    {
-                                        SetChildrenTestResult(children, resServiceTestStep.Children);
-                                    }
-                                }
+                                RunTestStep(selectedServiceTest, resTestStep);
                             }
                         }
 
@@ -185,6 +164,32 @@ namespace Warewolf.Studio.ViewModels
                     selectedServiceTest.IsTestRunning = false;
                     selectedServiceTest.IsTestLoading = false;
                 });
+        }
+
+        private void RunTestStep(IServiceTestModel selectedServiceTest, IServiceTestStep resTestStep)
+        {
+            var serviceTestSteps = selectedServiceTest.TestSteps.Where(testStep => testStep.UniqueId == resTestStep.UniqueId).ToList();
+            foreach (var serviceTestStep in serviceTestSteps)
+            {
+                var resServiceTestStep = serviceTestStep as ServiceTestStep;
+                if (resServiceTestStep == null)
+                {
+                    continue;
+                }
+
+                UpdateTestStepResult(resServiceTestStep, resTestStep);
+
+                var serviceTestOutputs = resTestStep.StepOutputs;
+                if (serviceTestOutputs.Count > 0)
+                {
+                    resServiceTestStep.StepOutputs = CreateServiceTestOutputFromResult(resTestStep.StepOutputs, resServiceTestStep);
+                }
+                var children = resTestStep.Children;
+                if (children.Count > 0)
+                {
+                    SetChildrenTestResult(children, resServiceTestStep.Children);
+                }
+            }
         }
 
         static void UpdateTestStepResult(ServiceTestStep resServiceTestStep, IServiceTestStep resTestStep)
@@ -278,14 +283,14 @@ namespace Warewolf.Studio.ViewModels
             processExecutor?.OpenInBrowser(new Uri(runSelectedTestUrl));
         }
 
-        public void RunAllTestsInBrowser(bool isDirty, string runAllUrl, IExternalProcessExecutor processExecutor)
+        public void RunAllTestsInBrowser(bool isDirty, string runAllTestUrl, IExternalProcessExecutor processExecutor)
         {
             if (isDirty)
             {
                 ShowRunAllUnsavedError();
                 return;
             }
-            processExecutor?.OpenInBrowser(new Uri(runAllUrl));
+            processExecutor?.OpenInBrowser(new Uri(runAllTestUrl));
         }
     }
 }

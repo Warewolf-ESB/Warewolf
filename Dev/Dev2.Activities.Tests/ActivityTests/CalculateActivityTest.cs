@@ -51,7 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var res = DateTime.Parse(entry);
 
-            if (res.Second == 0)
+            if (res.Millisecond == 0)
             {
                 Thread.Sleep(10);
                 result = ExecuteProcess();

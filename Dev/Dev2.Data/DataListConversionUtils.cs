@@ -21,10 +21,7 @@ namespace Dev2.Data
 {
     public class DataListConversionUtils
     {
-        public OptomizedObservableCollection<IDataListItem> CreateListToBindTo(IDataListModel dataList)
-        {
-            return GetInputs(dataList);
-        }
+        public OptomizedObservableCollection<IDataListItem> CreateListToBindTo(IDataListModel dataList) => GetInputs(dataList);
 
         OptomizedObservableCollection<IDataListItem> Get(IDataListModel dataList, enDev2ColumnArgumentDirection directionToGet)
         {
@@ -61,15 +58,9 @@ namespace Dev2.Data
             return result;
         }
 
-        public OptomizedObservableCollection<IDataListItem> GetInputs(IDataListModel dataList)
-        {
-            return Get(dataList, enDev2ColumnArgumentDirection.Input);
-        }
+        public OptomizedObservableCollection<IDataListItem> GetInputs(IDataListModel dataList) => Get(dataList, enDev2ColumnArgumentDirection.Input);
 
-        public OptomizedObservableCollection<IDataListItem> GetOutputs(IDataListModel dataList)
-        {
-            return Get(dataList, enDev2ColumnArgumentDirection.Output);
-        }
+        public OptomizedObservableCollection<IDataListItem> GetOutputs(IDataListModel dataList) => Get(dataList, enDev2ColumnArgumentDirection.Output);
 
         IList<IDataListItem> ConvertToIDataListItem(IScalar scalar)
         {

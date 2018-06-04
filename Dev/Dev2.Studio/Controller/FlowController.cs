@@ -9,7 +9,6 @@
 */
 
 
-#region
 
 using System;
 using System.Activities.Presentation.Model;
@@ -35,8 +34,6 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.Views;
 
-#endregion
-
 
 namespace Dev2.Studio.Controller
 
@@ -45,14 +42,17 @@ namespace Dev2.Studio.Controller
     {
     }
 
-    public class FlowController : IHandle<ConfigureDecisionExpressionMessage>, IHandle<ConfigureSwitchExpressionMessage>,
-                                  IHandle<ConfigureCaseExpressionMessage>, IHandle<EditCaseExpressionMessage>, IFlowController
+    public class FlowController : 
+        IHandle<ConfigureSwitchExpressionMessage>,
+        IHandle<ConfigureCaseExpressionMessage>,
+        IHandle<EditCaseExpressionMessage>, 
+        IFlowController
     {
 
         #region Fields
 
         static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
-        static Dev2DecisionCallbackHandler _callBackHandler;
+        static Dev2DecisionCallbackHandler _callBackHandler = new Dev2DecisionCallbackHandler();
 
         #endregion Fields
 
@@ -61,17 +61,12 @@ namespace Dev2.Studio.Controller
         public FlowController()
         {
             EventPublishers.Aggregator.Subscribe(this);
-            _callBackHandler = new Dev2DecisionCallbackHandler();
         }
 
         #endregion ctor
 
         #region Public Methods
 
-        /// <summary>
-        ///     Configures the decision expression.
-        ///     Travis.Frisinger - Developed for new Decision Wizard
-        /// </summary>
         public static string ConfigureDecisionExpression(ConfigureDecisionExpressionMessage args)
         {
             var condition = ConfigureActivity<DsfFlowDecisionActivity>(args.ModelItem, GlobalConstants.ConditionPropertyText, args.IsNew, args.IsPaste);
@@ -167,13 +162,11 @@ namespace Dev2.Studio.Controller
             }
             var parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
-            if (dataContext1 != null)
+            if (dataContext1 != null && dataContext1.GetType().Name == "ServiceTestViewModel")
             {
-                if (dataContext1.GetType().Name == "ServiceTestViewModel")
-                {
-                    window.SetEnableDoneButtonState(false);
-                }
+                window.SetEnableDoneButtonState(false);
             }
+
 
             var showDialog = window.ShowDialog();
             window.SetEnableDoneButtonState(true);
@@ -219,7 +212,6 @@ namespace Dev2.Studio.Controller
             return ShowSwitchArmDialog(switchDesignerViewModel);
         }
 
-        [ExcludeFromCodeCoverage]
         static Dev2DecisionCallbackHandler ShowSwitchArmDialog(SwitchDesignerViewModel dataContext)
         {
             var large = new ConfigureSwitchArm { DataContext = dataContext };
@@ -243,9 +235,8 @@ namespace Dev2.Studio.Controller
             }
             return null;
         }
-
-        // 28.01.2013 - Travis.Frisinger : Added for Case Edits
-        public static void EditSwitchCaseExpression(EditCaseExpressionMessage args)
+        
+        public static void TryEditSwitchCaseExpression(EditCaseExpressionMessage args)
         {
             OldSwitchValue = string.Empty;
             var switchCaseValue = args.ModelItem.Properties["Case"];
@@ -259,32 +250,7 @@ namespace Dev2.Studio.Controller
             {
                 try
                 {
-                    var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
-                    if (ds != null)
-                    {
-                        var validExpression = true;
-                        if (switchVal?.ComputedValue is System.Activities.Statements.FlowSwitch<string> flowSwitch)
-                        {
-                            if (flowSwitch.Cases.Any(flowNode => flowNode.Key == ds.SwitchExpression))
-                            {
-                                validExpression = false;
-                            }
-                        }
-
-                        if (!validExpression)
-                        {
-                            PopupController.Show(Warewolf.Studio.Resources.Languages.Core.SwitchCaseUniqueMessage, Warewolf.Studio.Resources.Languages.Core.SwitchFlowErrorHeader,
-                                MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
-                        }
-                        else
-                        {
-                            OldSwitchValue = switchCaseValue?.ComputedValue.ToString();
-                            if (switchCaseValue?.ComputedValue.ToString() != ds.SwitchExpression)
-                            {
-                                switchCaseValue?.SetValue(ds.SwitchExpression);
-                            }
-                        }
-                    }
+                    EditSwitchCaseExpression(switchCaseValue, switchVal);
                 }
                 catch (Exception ex)
                 {
@@ -295,9 +261,36 @@ namespace Dev2.Studio.Controller
             }
         }
 
+        static void EditSwitchCaseExpression(ModelProperty switchCaseValue, ModelProperty switchVal)
+        {
+            var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
+            if (ds != null)
+            {
+                var validExpression = true;
+                if (switchVal?.ComputedValue is System.Activities.Statements.FlowSwitch<string> flowSwitch && flowSwitch.Cases.Any(flowNode => flowNode.Key == ds.SwitchExpression))
+                {
+                    validExpression = false;
+                }
+
+
+                if (!validExpression)
+                {
+                    PopupController.Show(Warewolf.Studio.Resources.Languages.Core.SwitchCaseUniqueMessage, Warewolf.Studio.Resources.Languages.Core.SwitchFlowErrorHeader,
+                        MessageBoxButton.OK, MessageBoxImage.Error, "", false, true, false, false, false, false);
+                }
+                else
+                {
+                    OldSwitchValue = switchCaseValue?.ComputedValue.ToString();
+                    if (switchCaseValue?.ComputedValue.ToString() != ds.SwitchExpression)
+                    {
+                        switchCaseValue?.SetValue(ds.SwitchExpression);
+                    }
+                }
+            }
+        }
+
         public static string OldSwitchValue { get; private set; }
 
-        [ExcludeFromCodeCoverage]
         static string SwitchExpressionValue(ModelProperty activityExpression)
         {
             var tmpModelItem = activityExpression.Value;
@@ -354,13 +347,11 @@ namespace Dev2.Studio.Controller
             window.SetEnableDoneButtonState(true);
             var parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
-            if (dataContext1 != null)
+            if (dataContext1 != null && dataContext1.GetType().Name == "ServiceTestViewModel")
             {
-                if (dataContext1.GetType().Name == "ServiceTestViewModel")
-                {
-                    window.SetEnableDoneButtonState(false);
-                }
+                window.SetEnableDoneButtonState(false);
             }
+
 
             var showDialog = window.ShowDialog();
             window.SetEnableDoneButtonState(true);
@@ -378,11 +369,6 @@ namespace Dev2.Studio.Controller
 
         #region IHandle
 
-        public void Handle(ConfigureDecisionExpressionMessage message)
-        {
-
-        }
-
         public void Handle(ConfigureSwitchExpressionMessage message)
         {
             ConfigureSwitchExpression(message);
@@ -395,7 +381,7 @@ namespace Dev2.Studio.Controller
 
         public void Handle(EditCaseExpressionMessage message)
         {
-            EditSwitchCaseExpression(message);
+            TryEditSwitchCaseExpression(message);
         }
 
         #endregion IHandle

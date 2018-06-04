@@ -7,12 +7,9 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.CaseConvert"
-                               
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dev2="clr-namespace:Dev2;assembly=Dev2.Core"
-                               xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
@@ -38,17 +35,6 @@
                            MinHeight="56">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
-            <i:Interaction.Behaviors>
-                <behaviors:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors:DataGridWatermarkModifier.WatermarkText>
-                        <system:String>[[Text]]</system:String>
-                    </behaviors:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                        <system:Int32>0</system:Int32>
-                    </behaviors:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors:DataGridWatermarkModifier>
-            </i:Interaction.Behaviors>
-
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=dev2:CaseConvertTO}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
@@ -68,7 +54,7 @@
                                                     TextWrapping="Wrap"
                                                     Padding="3"
                                                     Margin="0,0,1,1"
-                                                    DefaultText="{Binding WatermarkTextVariable}"
+                                                    DefaultText="[[Text]]"
                                                     WrapInBrackets="True"
                                                     Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.CaseConversionToolTipTextInput}"

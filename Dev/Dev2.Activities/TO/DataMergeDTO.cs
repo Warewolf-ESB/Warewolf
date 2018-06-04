@@ -166,18 +166,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return false;
         }
 
-        public bool CanAdd()
-        {
-            var result = true;
-            if (MergeType == MergeTypeIndex || MergeType == MergeTypeChars)
-            {
-                if (string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
-                {
-                    result = false;
-                }
-            }
-            return result;
-        }
+        public bool CanAdd() => !((MergeType == MergeTypeIndex || MergeType == MergeTypeChars) && string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At));
 
         public void ClearRow()
         {
@@ -192,12 +181,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region IsEmpty
 
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeIndex && string.IsNullOrEmpty(At)
+        public bool IsEmpty() => string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeIndex && string.IsNullOrEmpty(At)
                    || string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeChars && string.IsNullOrEmpty(At)
                    || string.IsNullOrEmpty(InputVariable) && MergeType == MergeTypeNone && string.IsNullOrEmpty(At);
-        }
 
         #endregion
 

@@ -500,6 +500,15 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to To save a resource persmission, you must have Resource Name and Windows group entered.
+        /// </summary>
+        public static string SaveSettingsInvalidPermissionEntry {
+            get {
+                return ResourceManager.GetString("SaveSettingsInvalidPermissionEntry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while saving: Server unreachable..
         /// </summary>
         public static string SaveSettingsNotReachableErrorMsg {

@@ -50,14 +50,12 @@ namespace Dev2.Studio.Core
                 if (Content.HasError)
                 {
                     var currentError = new StringBuilder(Content.ErrorMessage);
-                    if (!string.IsNullOrEmpty(errorMessage))
+                    if (!string.IsNullOrEmpty(errorMessage) && !currentError.Contains(errorMessage))
                     {
-                        if (!currentError.Contains(errorMessage))
-                        {
-                            currentError.Append(errorMessage);
-                            Content.ErrorMessage = currentError.ToString();
-                        }
+                        currentError.Append(errorMessage);
+                        Content.ErrorMessage = currentError.ToString();
                     }
+
                 }
                 else
                 {
@@ -73,19 +71,19 @@ namespace Dev2.Studio.Core
         }
 
         
-        protected override void Initialize(IDebugState content)
+        protected override void Initialize(IDebugState value)
         {
-            if (content == null)
+            if (value == null)
             {
                 return;
             }
             SelectionType = ActivitySelectionType.Add;
-            IsSelected = content.ActivityType != ActivityType.Workflow;
+            IsSelected = value.ActivityType != ActivityType.Workflow;
 
-            var isRemote = Guid.TryParse(content.Server, out Guid serverId);
-            if (isRemote || string.IsNullOrEmpty(content.Server))
+            var isRemote = Guid.TryParse(value.Server, out Guid serverId);
+            if (isRemote || string.IsNullOrEmpty(value.Server))
             {
-                var envId = content.EnvironmentID;
+                var envId = value.EnvironmentID;
 
                 var env = _serverRepository.All().FirstOrDefault(e => e.EnvironmentID == envId);
                 if (env == null)
@@ -95,34 +93,34 @@ namespace Dev2.Studio.Core
                 }
                 if (Equals(env, _serverRepository.Source))
                 {
-                    content.Server = "Unknown Remote Server";
+                    value.Server = "Unknown Remote Server";
                 }
                 else
                 {
                     if (env != null)
                     {
-                        content.Server = env.Name;
+                        value.Server = env.Name;
                     }
                 }
             }
-            BuildBindableListFromDebugItems(content.Inputs, _inputs);
-            BuildBindableListFromDebugItems(content.Outputs, _outputs);
-            BuildBindableListFromDebugItems(content.AssertResultList, _assertResultList);
+            BuildBindableListFromDebugItems(value.Inputs, _inputs);
+            BuildBindableListFromDebugItems(value.Outputs, _outputs);
+            BuildBindableListFromDebugItems(value.AssertResultList, _assertResultList);
 
-            if (content.HasError)
+            if (value.HasError)
             {
                 HasError = true;
             }
-            if (content.AssertResultList != null)
+            if (value.AssertResultList != null)
             {
                 var setAllError = false;
                 
-                foreach (var debugItem in content.AssertResultList.Where(debugItem => debugItem.ResultsList.Any(debugItemResult => debugItemResult.HasError)))
+                foreach (var debugItem in value.AssertResultList.Where(debugItem => debugItem.ResultsList.Any(debugItemResult => debugItemResult.HasError)))
                 {
                     setAllError = true;
                 }
 
-                foreach (var debugItemResult in content.AssertResultList.SelectMany(debugItem => debugItem.ResultsList))
+                foreach (var debugItemResult in value.AssertResultList.SelectMany(debugItem => debugItem.ResultsList))
                 {
                     if (setAllError)
                     {
@@ -211,33 +209,38 @@ namespace Dev2.Studio.Core
                 var groups = new Dictionary<string, DebugLineGroup>();
                 foreach (var result in item.FetchResultsList())
                 {
-                    if (string.IsNullOrEmpty(result.GroupName))
-                    {
-                        list.LineItems.Add(new DebugLineItem(result));
-                    }
-                    else
-                    {
-                        if (!groups.TryGetValue(result.GroupName, out DebugLineGroup group))
-                        {
-                            group = new DebugLineGroup(result.GroupName, result.Label)
-                            {
-                                MoreLink = result.MoreLink
-                            };
-
-                            groups.Add(group.GroupName, group);
-                            list.LineItems.Add(group);
-                        }
-
-                        if (!group.Rows.TryGetValue(result.GroupIndex, out DebugLineGroupRow row))
-                        {
-                            row = new DebugLineGroupRow();
-                            group.Rows.Add(result.GroupIndex, row);
-                        }
-                        row.LineItems.Add(new DebugLineItem(result));
-                    }
+                    BuildBindableListFromDebugItems(list, groups, result);
                 }
 
                 destinationList.Add(list);
+            }
+        }
+
+        static void BuildBindableListFromDebugItems(DebugLine list, Dictionary<string, DebugLineGroup> groups, IDebugItemResult result)
+        {
+            if (string.IsNullOrEmpty(result.GroupName))
+            {
+                list.LineItems.Add(new DebugLineItem(result));
+            }
+            else
+            {
+                if (!groups.TryGetValue(result.GroupName, out DebugLineGroup group))
+                {
+                    group = new DebugLineGroup(result.GroupName, result.Label)
+                    {
+                        MoreLink = result.MoreLink
+                    };
+
+                    groups.Add(group.GroupName, group);
+                    list.LineItems.Add(group);
+                }
+
+                if (!group.Rows.TryGetValue(result.GroupIndex, out DebugLineGroupRow row))
+                {
+                    row = new DebugLineGroupRow();
+                    group.Rows.Add(result.GroupIndex, row);
+                }
+                row.LineItems.Add(new DebugLineItem(result));
             }
         }
 
@@ -249,10 +252,7 @@ namespace Dev2.Studio.Core
         /// <returns>
         /// A string that represents the current object.
         /// </returns>
-        public override string ToString()
-        {
-            return Content.DisplayName;
-        }
+        public override string ToString() => Content.DisplayName;
 
         #endregion
     }

@@ -34,13 +34,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region DeserializeService
 
-    
-        protected virtual Service DeserializeService(string args)
-        {
-            return JsonConvert.DeserializeObject<ComPluginService>(args);
-        }
 
-    
+        protected virtual Service DeserializeService(string args) => JsonConvert.DeserializeObject<ComPluginService>(args);
+
         protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
             return xml == null ? new ComPluginService() : new ComPluginService(xml);
@@ -78,16 +74,16 @@ namespace Dev2.Runtime.ServiceModel
         #region Namespaces
 
         // POST: Service/PluginServices/Namespaces
-        public virtual NamespaceList Namespaces(ComPluginSource pluginSource, Guid workspaceId, Guid dataListId)
+        public virtual NamespaceList Namespaces(ComPluginSource args, Guid workspaceId, Guid dataListId)
         {
             var result = new NamespaceList();
             try
             {
 
-                if (pluginSource != null)
+                if (args != null)
                 {
                     var broker = new ComPluginBroker();
-                    return broker.GetNamespaces(pluginSource);
+                    return broker.GetNamespaces(args);
                 }
             }
             catch (BadImageFormatException e)
@@ -111,13 +107,13 @@ namespace Dev2.Runtime.ServiceModel
         #region Methods
 
         // POST: Service/PluginServices/Methods
-        public ServiceMethodList Methods(ComPluginService service, Guid workspaceId, Guid dataListId)
+        public ServiceMethodList Methods(ComPluginService args, Guid workspaceId, Guid dataListId)
         {
             var result = new ServiceMethodList();
             try
             {
                 var broker = new ComPluginBroker();
-                var comPluginSource = (ComPluginSource)service.Source;
+                var comPluginSource = (ComPluginSource)args.Source;
                 result = broker.GetMethods(comPluginSource.ClsId, comPluginSource.Is32Bit);
                 return result;
             }

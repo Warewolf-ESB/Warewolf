@@ -26,15 +26,8 @@ namespace Warewolf.Studio.ViewModels
 
         public IExplorerItemNodeViewModel Self { get; set; }
         public int Weight { get; set; }
-        
-        public ObservableCollection<ExplorerItemNodeViewModel> NodeChildren
-        
-        {
-            get
-            {
-                return new ObservableCollection<ExplorerItemNodeViewModel>(Children.Select(a => a as ExplorerItemNodeViewModel));
-            }
-        }
+
+        public ObservableCollection<ExplorerItemNodeViewModel> NodeChildren => new ObservableCollection<ExplorerItemNodeViewModel>(Children.Select(a => a as ExplorerItemNodeViewModel));
 
         public ICollection<IExplorerItemNodeViewModel> AsNodeList()
         {

@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.DB;
+using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -27,8 +28,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
     public class DsfWebPostActivityTests
     {
 
-        const string userAgent = "user-agent";
-        const string contentType = "Content-Type";
+        const string _userAgent = "user-agent";
+        const string _contentType = "Content-Type";
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfWebPostActivity_Constructed")]
@@ -484,10 +485,10 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual(1, actualHeaderCount);
             //---------------Execute Test ----------------------
 
-            var userAgentHeader = webClient.Headers.AllKeys.Single(header => header == userAgent);
+            var userAgentHeader = webClient.Headers.AllKeys.Single(header => header == _userAgent);
             //---------------Test Result -----------------------
             Assert.IsNotNull(userAgentHeader);
-            Assert.AreEqual(userAgent, userAgentHeader);
+            Assert.AreEqual(_userAgent, userAgentHeader);
         }
 
 
@@ -505,7 +506,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            var userAgentValue = webClient.Headers[userAgent];
+            var userAgentValue = webClient.Headers[_userAgent];
             //---------------Test Result -----------------------
             Assert.AreEqual(userAgentValue, GlobalConstants.UserAgentString);
 
@@ -579,6 +580,40 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var actualHeaderCount = webClient.Headers.Count;
             Assert.AreEqual(2, actualHeaderCount);
             Assert.AreEqual("text/json", webClient.Headers["Content"]);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfWebPostActivity_Execute")]
+        public void DsfWebPostActivity_Execute_ErrorResponse_ShouldSetVariables()
+        {
+            //------------Setup for test--------------------------
+            const string response = "{\"Message\":\"Error\"}";
+            var dsfWebPostActivity = new DsfWebPostActivity();
+            dsfWebPostActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            var mockResourceCatalog = new Mock<IResourceCatalog>();
+            var webSource = new WebSource();
+            webSource.Address = "http://rsaklfsvrtfsbld:9910/api/";
+            webSource.AuthenticationType = AuthenticationType.Anonymous;
+            mockResourceCatalog.Setup(resCat => resCat.GetResource<WebSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(webSource);
+            dsfWebPostActivity.ResourceCatalog = mockResourceCatalog.Object;
+            var serviceOutputs = new List<IServiceOutputMapping> { new ServiceOutputMapping("Message", "[[Message]]", "") };
+            dsfWebPostActivity.Outputs = serviceOutputs;
+            var serviceXml = XmlResource.Fetch("WebService");
+            var service = new WebService(serviceXml) { RequestResponse = response };
+            dsfWebPostActivity.OutputDescription = service.GetOutputDescription();
+
+            dsfWebPostActivity.QueryString = "Error";
+
+            dsfWebPostActivity.SourceId = Guid.Empty;
+            dsfWebPostActivity.Headers = new List<INameValue>();
+            var dataObject = new DsfDataObject("", Guid.NewGuid());
+            dataObject.EsbChannel = new MockEsb();
+            //------------Execute Test---------------------------
+            dsfWebPostActivity.Execute(dataObject, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Error", ExecutionEnvironment.WarewolfEvalResultToString(dataObject.Environment.Eval("[[Message]]", 0)));
         }
 
     }

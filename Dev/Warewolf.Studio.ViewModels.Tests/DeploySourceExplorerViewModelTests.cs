@@ -283,7 +283,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
 
             //act
-            await _target.ConnectControlViewModel.ConnectAsync(serverMock.Object);
+            await _target.ConnectControlViewModel.TryConnectAsync(serverMock.Object);
 
             //assert
             Assert.IsTrue(isEnvironmentChanged);
@@ -308,7 +308,30 @@ namespace Warewolf.Studio.ViewModels.Tests
             env.SelectAll();
 
             //assert
-            _deployStatsViewerViewModel.Verify(it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(list => list.Count == 1 && list.Contains(explorerItemViewModelResourceCheckedMock.Object))));
+            _deployStatsViewerViewModel.Verify(it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(list => list.Count == 1 && list.Contains(explorerItemViewModelResourceCheckedMock.Object))));
+        }
+
+        [TestMethod]
+        public void TestCalculateOnNullExplorerItems()
+        {
+            //arrange
+            var explorerItemViewModelMock = new Mock<IExplorerItemViewModel>();
+            var selectedEnvironmentMock = new Mock<IEnvironmentViewModel>();
+            selectedEnvironmentMock.Setup(it => it.IsConnected).Returns(true);
+            selectedEnvironmentMock.Setup(it => it.AsList()).Returns(new List<IExplorerItemViewModel> { explorerItemViewModelMock.Object });
+
+            var destination = new Mock<IDeployDestinationExplorerViewModel>();
+            destination.Setup(dest => dest.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            destination.Setup(dest => dest.SelectedEnvironment).Returns(selectedEnvironmentMock.Object);
+
+            var deployStatsViewerViewModel = new DeployStatsViewerViewModel(destination.Object);
+            deployStatsViewerViewModel.ReCalculate();
+
+            //assert
+            Assert.AreEqual(0, deployStatsViewerViewModel.Connectors);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Services);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Sources);
+            Assert.AreEqual(0, deployStatsViewerViewModel.Unknown);
         }
 
         [TestMethod]
@@ -328,7 +351,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
 
             _deployStatsViewerViewModel.Verify(
-                it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
+                it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }
 
         [TestMethod]
@@ -350,7 +373,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             axParentMock.VerifySet(it => it.IsFolderChecked = true);
             _deployStatsViewerViewModel.Verify(
-                it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
+                it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }
 
         [TestMethod]
@@ -372,7 +395,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //assert
             axParentMock.VerifySet(it => it.IsFolderChecked = true);
             _deployStatsViewerViewModel.Verify(
-                it => it.Calculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
+                it => it.TryCalculate(It.Is<IList<IExplorerTreeItem>>(match => !match.Any())));
         }        
         #endregion Test methods
     }

@@ -56,18 +56,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public override void FromModel(IDbSource service)
+        public override void FromModel(IDbSource source)
         {
-            ResourceName = service.Name;
-            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(service.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
+            ResourceName = source.Name;
+            ServerName = ComputerNames.FirstOrDefault(name => string.Equals(source.ServerName, name.Name, StringComparison.CurrentCultureIgnoreCase));
             if (ServerName != null)
             {
-                EmptyServerName = ServerName.Name ?? service.ServerName;
+                EmptyServerName = ServerName.Name ?? source.ServerName;
             }
-            AuthenticationType = service.AuthenticationType;
-            Path = service.Path;
+            AuthenticationType = source.AuthenticationType;
+            Path = source.Path;
             TestConnection();
-            DatabaseName = service.DbName;
+            DatabaseName = source.DbName;
         }
 
         public override void UpdateHelpDescriptor(string helpText)
@@ -80,63 +80,54 @@ namespace Warewolf.Studio.ViewModels
 
         #region Overrides of DatabaseSourceViewModelBase
 
-        protected override IDbSource ToNewDbSource()
+        protected override IDbSource ToNewDbSource() => new DbSourceDefinition
         {
-            return new DbSourceDefinition
-            {
-                AuthenticationType = AuthenticationType,
-                ServerName = EmptyServerName,
-                Password = Password,
-                UserName = UserName,
-                Type = enSourceType.ODBC,
-                Name = ResourceName,
-                DbName = DatabaseName,
-                Id = DbSource?.Id ?? Guid.NewGuid()
-            };
-        }
+            AuthenticationType = AuthenticationType,
+            ServerName = EmptyServerName,
+            Password = Password,
+            UserName = UserName,
+            Type = enSourceType.ODBC,
+            Name = ResourceName,
+            DbName = DatabaseName,
+            Id = DbSource?.Id ?? Guid.NewGuid()
+        };
 
-        protected override IDbSource ToDbSource()
+        protected override IDbSource ToDbSource() => DbSource == null ? new DbSourceDefinition
         {
-            return DbSource == null ? new DbSourceDefinition
-            {
-                AuthenticationType = AuthenticationType,
-                ServerName = EmptyServerName,
-                Password = Password,
-                UserName = UserName,
-                Type = enSourceType.ODBC,
-                Path = Path,
-                Name = ResourceName,
-                DbName = DatabaseName,
-                Id = DbSource?.Id ?? SelectedGuid
-            } : new DbSourceDefinition
-            {
-                AuthenticationType = AuthenticationType,
-                ServerName = EmptyServerName,
-                Password = Password,
-                UserName = UserName,
-                Type = enSourceType.ODBC,
-                Path = Path,
-                Name = ResourceName,
-                DbName = DatabaseName,
-                Id = (Guid)DbSource?.Id
-            };
-        }
+            AuthenticationType = AuthenticationType,
+            ServerName = EmptyServerName,
+            Password = Password,
+            UserName = UserName,
+            Type = enSourceType.ODBC,
+            Path = Path,
+            Name = ResourceName,
+            DbName = DatabaseName,
+            Id = DbSource?.Id ?? SelectedGuid
+        } : new DbSourceDefinition
+        {
+            AuthenticationType = AuthenticationType,
+            ServerName = EmptyServerName,
+            Password = Password,
+            UserName = UserName,
+            Type = enSourceType.ODBC,
+            Path = Path,
+            Name = ResourceName,
+            DbName = DatabaseName,
+            Id = (Guid)DbSource?.Id
+        };
 
-        protected override IDbSource ToSourceDefinition()
+        protected override IDbSource ToSourceDefinition() => new DbSourceDefinition
         {
-            return new DbSourceDefinition
-            {
-                AuthenticationType = DbSource.AuthenticationType,
-                DbName = DbSource.DbName,
-                Id = DbSource.Id,
-                Name = DbSource.Name,
-                Password = DbSource.Password,
-                Path = DbSource.Path,
-                ServerName = string.IsNullOrWhiteSpace(EmptyServerName) ? "Localhost" : EmptyServerName,
-                UserName = DbSource.UserName,
-                Type = enSourceType.ODBC
-            };
-        }
+            AuthenticationType = DbSource.AuthenticationType,
+            DbName = DbSource.DbName,
+            Id = DbSource.Id,
+            Name = DbSource.Name,
+            Password = DbSource.Password,
+            Path = DbSource.Path,
+            ServerName = string.IsNullOrWhiteSpace(EmptyServerName) ? "Localhost" : EmptyServerName,
+            UserName = DbSource.UserName,
+            Type = enSourceType.ODBC
+        };
 
         public override IDbSource ToModel()
         {

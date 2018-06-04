@@ -10,6 +10,7 @@
     <Rule Id="S1066" Action="Warning" />
     <Rule Id="S1067" Action="Warning" />
     <Rule Id="S107" Action="Warning" />
+    <Rule Id="S1075" Action="None" />
     <Rule Id="S108" Action="Warning" />
     <Rule Id="S110" Action="None" />
     <Rule Id="S1104" Action="None" />
@@ -19,6 +20,7 @@
     <Rule Id="S1118" Action="Warning" />
     <Rule Id="S112" Action="None" />
     <Rule Id="S1121" Action="Warning" />
+    <Rule Id="S1123" Action="None" />
     <Rule Id="S1125" Action="Warning" />
     <Rule Id="S1134" Action="Warning" />
     <Rule Id="S1135" Action="Warning" />
@@ -26,16 +28,18 @@
     <Rule Id="S1145" Action="Warning" />
     <Rule Id="S1155" Action="Warning" />
     <Rule Id="S1163" Action="Warning" />
+    <Rule Id="S1168" Action="None" />
     <Rule Id="S1172" Action="Warning" />
     <Rule Id="S1185" Action="Warning" />
     <Rule Id="S1186" Action="None" />
+    <Rule Id="S1200" Action="None" />
     <Rule Id="S1206" Action="None" />
     <Rule Id="S121" Action="Warning" />
     <Rule Id="S1210" Action="Warning" />
     <Rule Id="S1215" Action="None" />
     <Rule Id="S122" Action="Warning" />
     <Rule Id="S1226" Action="Warning" />
-    <Rule Id="S1227" Action="Warning" />
+    <Rule Id="S1227" Action="None" />
     <Rule Id="S1244" Action="Warning" />
     <Rule Id="S125" Action="Warning" />
     <Rule Id="S126" Action="Warning" />
@@ -43,7 +47,7 @@
     <Rule Id="S1301" Action="Warning" />
     <Rule Id="S1309" Action="None" />
     <Rule Id="S131" Action="Warning" />
-    <Rule Id="S1313" Action="Warning" />
+    <Rule Id="S1313" Action="None" />
     <Rule Id="S134" Action="Warning" />
     <Rule Id="S1449" Action="Warning" />
     <Rule Id="S1450" Action="Warning" />
@@ -51,10 +55,12 @@
     <Rule Id="S1479" Action="Warning" />
     <Rule Id="S1481" Action="Warning" />
     <Rule Id="S1541" Action="Warning" />
+    <Rule Id="S1607" Action="None" />
     <Rule Id="S1643" Action="Warning" />
     <Rule Id="S1656" Action="Warning" />
     <Rule Id="S1659" Action="Warning" />
     <Rule Id="S1694" Action="Warning" />
+    <Rule Id="S1696" Action="None" />
     <Rule Id="S1697" Action="Warning" />
     <Rule Id="S1698" Action="Warning" />
     <Rule Id="S1699" Action="Warning" />
@@ -70,15 +76,20 @@
     <Rule Id="S1940" Action="Warning" />
     <Rule Id="S1944" Action="Warning" />
     <Rule Id="S1994" Action="Warning" />
+    <Rule Id="S2068" Action="None" />
     <Rule Id="S2070" Action="Warning" />
+    <Rule Id="S2114" Action="None" />
     <Rule Id="S2123" Action="Warning" />
     <Rule Id="S2156" Action="None" />
     <Rule Id="S2178" Action="Warning" />
+    <Rule Id="S2183" Action="None" />
     <Rule Id="S2184" Action="Warning" />
+    <Rule Id="S2187" Action="None" />
     <Rule Id="S2190" Action="Warning" />
     <Rule Id="S2197" Action="Warning" />
     <Rule Id="S2201" Action="Warning" />
     <Rule Id="S2219" Action="Warning" />
+    <Rule Id="S2221" Action="None" />
     <Rule Id="S2223" Action="Warning" />
     <Rule Id="S2225" Action="Warning" />
     <Rule Id="S2228" Action="None" />
@@ -119,6 +130,8 @@
     <Rule Id="S2688" Action="Warning" />
     <Rule Id="S2692" Action="Warning" />
     <Rule Id="S2696" Action="Warning" />
+    <Rule Id="S2699" Action="None" />
+    <Rule Id="S2701" Action="None" />
     <Rule Id="S2737" Action="Warning" />
     <Rule Id="S2743" Action="Warning" />
     <Rule Id="S2757" Action="Warning" />
@@ -153,6 +166,7 @@
     <Rule Id="S3237" Action="Warning" />
     <Rule Id="S3240" Action="Warning" />
     <Rule Id="S3241" Action="Warning" />
+    <Rule Id="S3242" Action="None" />
     <Rule Id="S3244" Action="Warning" />
     <Rule Id="S3246" Action="Warning" />
     <Rule Id="S3247" Action="None" />
@@ -167,9 +181,13 @@
     <Rule Id="S3263" Action="Warning" />
     <Rule Id="S3264" Action="Warning" />
     <Rule Id="S3265" Action="Warning" />
+    <Rule Id="S3346" Action="None" />
     <Rule Id="S3376" Action="Warning" />
     <Rule Id="S3397" Action="Warning" />
+    <Rule Id="S3415" Action="None" />
     <Rule Id="S3427" Action="Warning" />
+    <Rule Id="S3431" Action="None" />
+    <Rule Id="S3433" Action="None" />
     <Rule Id="S3440" Action="Warning" />
     <Rule Id="S3441" Action="Warning" />
     <Rule Id="S3442" Action="Warning" />
@@ -186,7 +204,7 @@
     <Rule Id="S3458" Action="Warning" />
     <Rule Id="S3459" Action="Warning" />
     <Rule Id="S3466" Action="Warning" />
-    <Rule Id="S3532" Action="Warning" />
+    <Rule Id="S3532" Action="None" />
     <Rule Id="S3597" Action="Warning" />
     <Rule Id="S3598" Action="Warning" />
     <Rule Id="S3600" Action="Warning" />
@@ -194,7 +212,10 @@
     <Rule Id="S3604" Action="Warning" />
     <Rule Id="S3610" Action="Warning" />
     <Rule Id="S3626" Action="Warning" />
+    <Rule Id="S3649" Action="None" />
     <Rule Id="S3655" Action="Warning" />
+    <Rule Id="S3693" Action="None" />
+    <Rule Id="S3717" Action="None" />
     <Rule Id="S3776" Action="Warning" />
     <Rule Id="S3869" Action="None" />
     <Rule Id="S3871" Action="None" />
@@ -211,16 +232,24 @@
     <Rule Id="S3889" Action="None" />
     <Rule Id="S3897" Action="None" />
     <Rule Id="S3898" Action="None" />
+    <Rule Id="S3900" Action="None" />
     <Rule Id="S3902" Action="None" />
     <Rule Id="S3903" Action="None" />
     <Rule Id="S3904" Action="None" />
+    <Rule Id="S3906" Action="None" />
+    <Rule Id="S3908" Action="None" />
+    <Rule Id="S3909" Action="None" />
     <Rule Id="S3925" Action="None" />
     <Rule Id="S3926" Action="None" />
+    <Rule Id="S3927" Action="None" />
     <Rule Id="S3928" Action="None" />
+    <Rule Id="S3956" Action="None" />
     <Rule Id="S3962" Action="None" />
     <Rule Id="S3963" Action="None" />
+    <Rule Id="S3966" Action="None" />
     <Rule Id="S3967" Action="None" />
     <Rule Id="S3971" Action="None" />
+    <Rule Id="S3972" Action="None" />
     <Rule Id="S3981" Action="None" />
     <Rule Id="S3984" Action="None" />
     <Rule Id="S3990" Action="None" />
@@ -235,8 +264,121 @@
     <Rule Id="S4002" Action="None" />
     <Rule Id="S4004" Action="None" />
     <Rule Id="S4005" Action="None" />
+    <Rule Id="S4015" Action="None" />
+    <Rule Id="S4016" Action="None" />
+    <Rule Id="S4017" Action="None" />
+    <Rule Id="S4018" Action="None" />
+    <Rule Id="S4019" Action="None" />
+    <Rule Id="S4022" Action="None" />
+    <Rule Id="S4023" Action="None" />
+    <Rule Id="S4025" Action="None" />
+    <Rule Id="S4026" Action="None" />
+    <Rule Id="S4027" Action="None" />
+    <Rule Id="S4035" Action="None" />
+    <Rule Id="S4039" Action="None" />
+    <Rule Id="S4040" Action="None" />
+    <Rule Id="S4041" Action="None" />
+    <Rule Id="S4047" Action="None" />
+    <Rule Id="S4049" Action="None" />
+    <Rule Id="S4050" Action="None" />
+    <Rule Id="S4052" Action="None" />
+    <Rule Id="S4055" Action="None" />
+    <Rule Id="S4056" Action="None" />
+    <Rule Id="S4057" Action="None" />
+    <Rule Id="S4058" Action="None" />
+    <Rule Id="S4059" Action="None" />
+    <Rule Id="S4060" Action="None" />
+    <Rule Id="S4061" Action="None" />
+    <Rule Id="S4069" Action="None" />
+    <Rule Id="S4070" Action="None" />
+    <Rule Id="S4142" Action="None" />
+    <Rule Id="S4144" Action="None" />
+    <Rule Id="S4158" Action="None" />
+    <Rule Id="S4214" Action="None" />
+    <Rule Id="S4220" Action="None" />
+    <Rule Id="S4225" Action="None" />
+    <Rule Id="S4226" Action="None" />
+    <Rule Id="S4260" Action="None" />
     <Rule Id="S818" Action="Warning" />
     <Rule Id="S907" Action="Warning" />
     <Rule Id="S927" Action="Warning" />
+  </Rules>
+  <Rules AnalyzerId="codecracker.CSharp" RuleNamespace="codecracker.CSharp">
+    <Rule Id="CC0001" Action="Warning" />
+    <Rule Id="CC0002" Action="Warning" />
+    <Rule Id="CC0003" Action="None" />
+    <Rule Id="CC0004" Action="None" />
+    <Rule Id="CC0005" Action="Warning" />
+    <Rule Id="CC0006" Action="Warning" />
+    <Rule Id="CC0007" Action="Warning" />
+    <Rule Id="CC0008" Action="Warning" />
+    <Rule Id="CC0009" Action="None" />
+    <Rule Id="CC0010" Action="Warning" />
+    <Rule Id="CC0011" Action="Warning" />
+    <Rule Id="CC0012" Action="Warning" />
+    <Rule Id="CC0013" Action="Warning" />
+    <Rule Id="CC0014" Action="None" />
+    <Rule Id="CC0015" Action="Warning" />
+    <Rule Id="CC0017" Action="None" />
+    <Rule Id="CC0018" Action="Warning" />
+    <Rule Id="CC0019" Action="Warning" />
+    <Rule Id="CC0020" Action="Warning" />
+    <Rule Id="CC0021" Action="None" />
+    <Rule Id="CC0022" Action="None" />
+    <Rule Id="CC0023" Action="None" />
+    <Rule Id="CC0024" Action="Warning" />
+    <Rule Id="CC0025" Action="None" />
+    <Rule Id="CC0026" Action="Warning" />
+    <Rule Id="CC0029" Action="None" />
+    <Rule Id="CC0030" Action="Warning" />
+    <Rule Id="CC0031" Action="Warning" />
+    <Rule Id="CC0032" Action="Warning" />
+    <Rule Id="CC0033" Action="Warning" />
+    <Rule Id="CC0034" Action="None" />
+    <Rule Id="CC0035" Action="None" />
+    <Rule Id="CC0037" Action="None" />
+    <Rule Id="CC0038" Action="None" />
+    <Rule Id="CC0039" Action="None" />
+    <Rule Id="CC0042" Action="None" />
+    <Rule Id="CC0043" Action="None" />
+    <Rule Id="CC0044" Action="Warning" />
+    <Rule Id="CC0045" Action="None" />
+    <Rule Id="CC0046" Action="None" />
+    <Rule Id="CC0047" Action="None" />
+    <Rule Id="CC0048" Action="None" />
+    <Rule Id="CC0049" Action="None" />
+    <Rule Id="CC0052" Action="None" />
+    <Rule Id="CC0054" Action="Warning" />
+    <Rule Id="CC0056" Action="Warning" />
+    <Rule Id="CC0057" Action="None" />
+    <Rule Id="CC0060" Action="Warning" />
+    <Rule Id="CC0061" Action="None" />
+    <Rule Id="CC0062" Action="Warning" />
+    <Rule Id="CC0063" Action="Warning" />
+    <Rule Id="CC0064" Action="Warning" />
+    <Rule Id="CC0065" Action="None" />
+    <Rule Id="CC0067" Action="None" />
+    <Rule Id="CC0068" Action="None" />
+    <Rule Id="CC0070" Action="None" />
+    <Rule Id="CC0071" Action="None" />
+    <Rule Id="CC0072" Action="None" />
+    <Rule Id="CC0073" Action="None" />
+    <Rule Id="CC0074" Action="Warning" />
+    <Rule Id="CC0075" Action="Warning" />
+    <Rule Id="CC0076" Action="None" />
+    <Rule Id="CC0079" Action="None" />
+    <Rule Id="CC0081" Action="None" />
+    <Rule Id="CC0082" Action="Warning" />
+    <Rule Id="CC0084" Action="None" />
+    <Rule Id="CC0088" Action="None" />
+    <Rule Id="CC0089" Action="Warning" />
+    <Rule Id="CC0090" Action="Warning" />
+    <Rule Id="CC0091" Action="Warning" />
+    <Rule Id="CC0092" Action="None" />
+    <Rule Id="CC0095" Action="Warning" />
+    <Rule Id="CC0097" Action="Warning" />
+    <Rule Id="CC0105" Action="None" />
+    <Rule Id="CC0108" Action="None" />
+    <Rule Id="CC0111" Action="Warning" />
   </Rules>
 </RuleSet>

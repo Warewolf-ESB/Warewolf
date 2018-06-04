@@ -48,7 +48,6 @@ namespace Dev2.Activities.Designers2.Service
     {
         readonly IEventAggregator _eventPublisher;
 
-        bool _isDisposed;
         const string DoneText = "Done";
         const string FixText = "Fix";
 
@@ -170,6 +169,10 @@ namespace Dev2.Activities.Designers2.Service
                 AuthorizationServiceOnPermissionsChanged(null, null);
             }
             IsLoading = false;
+            if (ResourceModel == null)
+            {
+                ValidationMemoManager.UpdateLastValidationMemoWithSourceNotFoundError();
+            }
         }
 
         public bool IsLoading
@@ -309,14 +312,12 @@ namespace Dev2.Activities.Designers2.Service
         {
             base.OnToggleCheckedChanged(propertyName, isChecked);
 
-            if (propertyName == ShowLargeProperty.Name)
+            if (propertyName == ShowLargeProperty.Name && !isChecked)
             {
-                if (!isChecked)
-                {
-                    MappingManager.UpdateMappings();
-                    MappingManager.CheckForRequiredMapping();
-                }
+                MappingManager.UpdateMappings();
+                MappingManager.CheckForRequiredMapping();
             }
+
         }
 
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
@@ -325,7 +326,9 @@ namespace Dev2.Activities.Designers2.Service
         public bool IsDeleted
         {
             get => (bool)GetValue(IsDeletedProperty);
-            set { if (!(bool)GetValue(IsDeletedProperty))
+            set
+            {
+                if (!(bool)GetValue(IsDeletedProperty))
                 {
                     SetValue(IsDeletedProperty, value);
                 }
@@ -430,13 +433,21 @@ namespace Dev2.Activities.Designers2.Service
 
         public Guid ResourceID => GetProperty<Guid>();
         public Guid UniqueID => GetProperty<Guid>();
-        public string OutputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
-        public string InputMapping { get { return GetProperty<string>(); } set { SetProperty(value); } }
+        public string OutputMapping
+        {
+            get => GetProperty<string>();
+            set => SetProperty(value);
+        }
+        public string InputMapping
+        {
+            get => GetProperty<string>();
+            set => SetProperty(value);
+        }
 
         public string ButtonDisplayValue
         {
             get => (string)GetValue(ButtonDisplayValueProperty);
-            set { SetValue(ButtonDisplayValueProperty, value); }
+            set => SetValue(ButtonDisplayValueProperty, value);
         }
 
         public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
@@ -527,14 +538,11 @@ namespace Dev2.Activities.Designers2.Service
             {
                 server.Connection.Verify(ValidationMemoManager.UpdateLastValidationMemoWithOfflineError);
             }
-            if (server.IsConnected)
+            if (server.IsConnected && resourceId != Guid.Empty)
             {
-                if (resourceId != Guid.Empty)
-                {
-                    ResourceModel = server.ResourceRepository.LoadContextualResourceModel(resourceId);
-
-                }
+                ResourceModel = server.ResourceRepository.LoadContextualResourceModel(resourceId);
             }
+            
             if (!CheckSourceMissing())
             {
                 return false;
@@ -674,60 +682,23 @@ namespace Dev2.Activities.Designers2.Service
 
         public void Handle(UpdateResourceMessage message)
         {
-            if (message?.ResourceModel != null)
+            if (message?.ResourceModel != null && SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
             {
-                if (SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
+                var sourceNotAvailableMessage = ValidationMemoManager.DesignValidationErrors.FirstOrDefault(info => info.Message == ValidationMemoManager.SourceNotFoundMessage);
+                if (sourceNotAvailableMessage != null)
                 {
-                    var sourceNotAvailableMessage = ValidationMemoManager.DesignValidationErrors.FirstOrDefault(info => info.Message == ValidationMemoManager.SourceNotFoundMessage);
-                    if (sourceNotAvailableMessage != null)
-                    {
-                        ValidationMemoManager.RemoveError(sourceNotAvailableMessage);
-                        ValidationMemoManager.UpdateWorstError();
-                        MappingManager.InitializeMappings();
-                        MappingManager.UpdateMappings();
-                    }
+                    ValidationMemoManager.RemoveError(sourceNotAvailableMessage);
+                    ValidationMemoManager.UpdateWorstError();
+                    MappingManager.InitializeMappings();
+                    MappingManager.UpdateMappings();
                 }
             }
-        }
 
-        ~ServiceDesignerViewModel()
-        {
-            Dispose(false);
-        }
-
-        protected override void OnDispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-            base.OnDispose();
-        }
-
-        void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                if (disposing)
-                {
-                    ValidationMemoManager.ValidationService?.Dispose();
-                    if (_environment != null)
-                    {
-                        _environment.AuthorizationServiceSet -= OnEnvironmentOnAuthorizationServiceSet;
-                    }
-                }
-                _isDisposed = true;
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged(string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-        public override void UpdateHelpDescriptor(string helpText)
-        {
-            var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
-        }
+        protected void OnPropertyChanged() => OnPropertyChanged(null);
+        protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        public override void UpdateHelpDescriptor(string helpText) => CustomContainer.Get<IShellViewModel>()?.HelpViewModel.UpdateHelpText(helpText);
     }
 }

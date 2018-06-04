@@ -108,18 +108,12 @@ namespace Warewolf.Core
             }
         }
 
-        public static bool operator ==(ToolDescriptor left, ToolDescriptor right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(ToolDescriptor left, ToolDescriptor right) => Equals(left, right);
 
-        public static bool operator !=(ToolDescriptor left, ToolDescriptor right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(ToolDescriptor left, ToolDescriptor right) => !Equals(left, right);
 
-            #endregion
-            #endregion
+        #endregion
+        #endregion
 
         #endregion
     }

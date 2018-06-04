@@ -24,9 +24,6 @@ namespace Dev2.Common.DateAndTime
 {
     public abstract class DateTimeParser : IDateTimeParser
     {
-        /// <summary>
-        ///     used to describe the position of the parser relative to escaped regions
-        /// </summary>
         public enum LiteralRegionStates
         {
             OutsideLiteralRegion,
@@ -79,23 +76,9 @@ namespace Dev2.Common.DateAndTime
             _dateTimeFormatPartOptionsForDotNet = dateTimeFormatPartsForDotNet.DateTimeFormatPartOptionsForDotNet;
         }
 
-        /// <summary>
-        ///     Creates a DateTime instance from a specified string and format.
-        /// </summary>
-        public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
-        {
-            var nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
+        public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO parsedDateTime, out string error) => TryParse(dateTime, inputFormat, false, out parsedDateTime, out error);
 
-            return nothingDied;
-        }
-
-        /// <summary>
-        ///     Creates a TimeSpan instance from a specified string and format.
-        /// </summary>
-        public bool TryParseTime(string time, string inputFormat, out IDateTimeResultTO parsedTime, out string error)
-        {
-            return TryParse(time, inputFormat, true, out parsedTime, out error);
-        }
+        public bool TryParseTime(string time, string inputFormat, out IDateTimeResultTO parsedTime, out string error) => TryParse(time, inputFormat, true, out parsedTime, out error);
 
         public string TranslateDotNetToDev2Format(string originalFormat, out string error)
         {
@@ -147,19 +130,10 @@ namespace Dev2.Common.DateAndTime
             return currentPartList;
         }
 
-        /// <summary>
-        ///     Breaks a date time format up into parts
-        /// </summary>
         public bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts,
-            out string error)
-        {
-            return TryGetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions,
+            out string error) => TryGetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions,
                 out formatParts, out error);
-        }
 
-        /// <summary>
-        ///     Breaks a date time format up into parts
-        /// </summary>
         bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
         {
             var nothingDied = true;
@@ -197,6 +171,10 @@ namespace Dev2.Common.DateAndTime
                 {
                     literalRegionState = DateTimeLiteralProcessor.ProcessInsideEscapedLiteral(ref error, currentChar, literalRegionState, ref currentValue, ref nothingDied);
                 }
+                else
+                {
+                    throw new ArgumentOutOfRangeException("Unrecognized literal region state: " + literalRegionState);
+                }
 
                 count++;
                 if (forwardLookupLength > 0)
@@ -213,7 +191,11 @@ namespace Dev2.Common.DateAndTime
             else if (currentValue.Length > 0)
             {
                 nothingDied = false;
-                error = "A \' character defines a start or end of a non date time region, there apears to be a extra \' character.";
+                error = "A \' character defines a start or end of a non date time region, there appears to be a extra \' character.";
+            }
+            else
+            {
+                //valid
             }
 
             return nothingDied;
@@ -258,55 +240,7 @@ namespace Dev2.Common.DateAndTime
                 }
                 if (nothingDied)
                 {
-
-                    var count = 0;
-                    while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
-                    {
-                        var formatPart = formatParts[count];
-
-                        if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
-                            out int resultLength, out error))
-                        {
-                            position += resultLength;
-                        }
-                        else
-                        {
-                            //clear invalid result!
-                            result = new DateTimeResultTO();
-                            nothingDied = false;
-                        }
-
-                        count++;
-                    }
-                    if (!nothingDied)
-                    {
-                        originalInputFormat = MatchInputFormatToCulture(ref error, culturesTried);
-
-                        if (culturesTried >= MaxAttempts)
-                        {
-                            if (!IsBlankResult(result))
-                            {
-                                //Return the result if it isn't blank
-                                nothingDied = true;
-                            }
-                            else
-                            {
-                                //no result, throw error
-                                error = string.Format(ErrorResource.CannorParseInputDateTimeWithGivenFormat, error);
-                            }
-                        }
-                        else
-                        {
-                            nothingDied = true;
-                        }
-
-                        culturesTried++;
-                    }
-                    else
-                    {
-                        //Stop trying different formats
-                        culturesTried = MaxAttempts + 1;
-                    }
+                    TryCulture(parseAsTime, ref result, ref error, ref nothingDied, ref originalInputFormat, ref culturesTried, MaxAttempts, dateTimeArray, ref position, formatParts);
                 }
                 else
                 {
@@ -317,6 +251,57 @@ namespace Dev2.Common.DateAndTime
             return nothingDied;
         }
 
+        private void TryCulture(bool parseAsTime, ref IDateTimeResultTO result, ref string error, ref bool nothingDied, ref string originalInputFormat, ref int culturesTried, int MaxAttempts, char[] dateTimeArray, ref int position, List<IDateTimeFormatPartTO> formatParts)
+        {
+            var count = 0;
+            while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
+            {
+                var formatPart = formatParts[count];
+
+                if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
+                    out int resultLength, out error))
+                {
+                    position += resultLength;
+                }
+                else
+                {
+                    //clear invalid result!
+                    result = new DateTimeResultTO();
+                    nothingDied = false;
+                }
+
+                count++;
+            }
+            if (!nothingDied)
+            {
+                originalInputFormat = MatchInputFormatToCulture(ref error, culturesTried);
+
+                if (culturesTried >= MaxAttempts)
+                {
+                    if (!IsBlankResult(result))
+                    {
+                        //Return the result if it isn't blank
+                        nothingDied = true;
+                    }
+                    else
+                    {
+                        //no result, throw error
+                        error = string.Format(ErrorResource.CannorParseInputDateTimeWithGivenFormat, error);
+                    }
+                }
+                else
+                {
+                    nothingDied = true;
+                }
+
+                culturesTried++;
+            }
+            else
+            {
+                //Stop trying different formats
+                culturesTried = MaxAttempts + 1;
+            }
+        }
 
         string MatchInputFormatToCulture(ref string error, int culturesTried)
         {
@@ -386,9 +371,7 @@ namespace Dev2.Common.DateAndTime
             return inputFormat;
         }
 
-        static bool IsBlankResult(IDateTimeResultTO result)
-        {
-            return result.AmPm == DateTimeAmPm.am &&
+        static bool IsBlankResult(IDateTimeResultTO result) => result.AmPm == DateTimeAmPm.am &&
                    result.Days == 0 &&
                    result.DaysOfWeek == 0 || result.DaysOfWeek == 1 &&
                    result.DaysOfYear == 0 &&
@@ -401,8 +384,6 @@ namespace Dev2.Common.DateAndTime
                    result.Seconds == 0 &&
                    result.Weeks == 0 &&
                    result.Years == 0;
-        }
-
 
         bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
@@ -454,70 +435,7 @@ namespace Dev2.Common.DateAndTime
 
                 if (nothingDied)
                 {
-                    var partOptionsCount = 0;
-
-                    //
-                    // Try get a value for each option
-                    //
-                    while (partOptionsCount < partOptions.Count)
-                    {
-                        var partOption = partOptions[partOptionsCount];
-
-                        string forwardLookupResult;
-                        bool predicateRun;
-
-                        if (partOption.Length != partOption.ResultLength)
-                        {
-                            forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.ResultLength);
-                            predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
-                            if (!predicateRun)
-                            {
-                                forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
-                                predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
-                            }
-                        }
-                        else
-                        {
-                            forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
-
-                            predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
-                        }
-
-                        //
-                        // Check length of forward lookup is correct
-                        //
-                        if ((forwardLookupResult.Length == partOption.Length ||
-                             forwardLookupResult.Length == partOption.ResultLength) &&
-                            (partOption.Predicate == null || predicateRun))
-                        {
-                            //
-                            // Set exit and result length
-                            //
-                            partOptionsCount = partOptions.Count;
-                            resultLength = forwardLookupResult.Length;
-                            dataFound = true;
-
-                            //
-                            // Decide on the correct value to use
-                            //
-                            IConvertible value;
-                            if (partOption.ActualValue != null)
-                            {
-                                value = partOption.ActualValue;
-                            }
-                            else if (partOption.IsNumeric)
-                            {
-                                value = Convert.ToInt32(forwardLookupResult);
-                            }
-                            else
-                            {
-                                value = forwardLookupResult;
-                            }
-                            partOption.AssignAction?.Invoke(result, passAsTime, value);
-                        }
-
-                        partOptionsCount++;
-                    }
+                    TryGetAValueForEachOption(dateTimeArray, startPosition, result, passAsTime, ref resultLength, ref dataFound, partOptions);
 
                     //
                     // If no viable data was found set error
@@ -531,6 +449,74 @@ namespace Dev2.Common.DateAndTime
             }
 
             return nothingDied;
+        }
+
+        private static void TryGetAValueForEachOption(char[] dateTimeArray, int startPosition, IDateTimeResultTO result, bool passAsTime, ref int resultLength, ref bool dataFound, List<IDateTimeFormatPartOptionTO> partOptions)
+        {
+            var partOptionsCount = 0;
+
+            //
+            // Try get a value for each option
+            //
+            while (partOptionsCount < partOptions.Count)
+            {
+                var partOption = partOptions[partOptionsCount];
+
+                string forwardLookupResult;
+                bool predicateRun;
+
+                if (partOption.Length != partOption.ResultLength)
+                {
+                    forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.ResultLength);
+                    predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+                    if (!predicateRun)
+                    {
+                        forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+                        predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+                    }
+                }
+                else
+                {
+                    forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
+
+                    predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
+                }
+
+                //
+                // Check length of forward lookup is correct
+                //
+                if ((forwardLookupResult.Length == partOption.Length ||
+                     forwardLookupResult.Length == partOption.ResultLength) &&
+                    (partOption.Predicate == null || predicateRun))
+                {
+                    //
+                    // Set exit and result length
+                    //
+                    partOptionsCount = partOptions.Count;
+                    resultLength = forwardLookupResult.Length;
+                    dataFound = true;
+
+                    //
+                    // Decide on the correct value to use
+                    //
+                    IConvertible value;
+                    if (partOption.ActualValue != null)
+                    {
+                        value = partOption.ActualValue;
+                    }
+                    else if (partOption.IsNumeric)
+                    {
+                        value = Convert.ToInt32(forwardLookupResult);
+                    }
+                    else
+                    {
+                        value = forwardLookupResult;
+                    }
+                    partOption.AssignAction?.Invoke(result, passAsTime, value);
+                }
+
+                partOptionsCount++;
+            }
         }
 
         /// <summary>

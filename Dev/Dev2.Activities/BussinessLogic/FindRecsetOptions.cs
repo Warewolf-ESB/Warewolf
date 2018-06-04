@@ -39,13 +39,11 @@ namespace Dev2.DataList
 
             foreach (Type t in types)
             {
-                if (!t.IsAbstract && !t.IsInterface)
+                if (!t.IsAbstract && !t.IsInterface && Activator.CreateInstance(t, true) is IFindRecsetOptions item)
                 {
-                    if (Activator.CreateInstance(t, true) is IFindRecsetOptions item)
-                    {
-                        _options.Add(item.HandlesType(), item);
-                    }
+                    _options.Add(item.HandlesType(), item);
                 }
+
             }
             SortRecordsetOptions();
         }
@@ -95,9 +93,6 @@ namespace Dev2.DataList
         /// Find all AbstractRecsetSearchValidation objects
         /// </summary>
         /// <returns></returns>
-        public static IList<IFindRecsetOptions> FindAllDecision()
-        {
-            return _options.Values.ToList();
-        }
+        public static IList<IFindRecsetOptions> FindAllDecision() => _options.Values.ToList();
     }
 }

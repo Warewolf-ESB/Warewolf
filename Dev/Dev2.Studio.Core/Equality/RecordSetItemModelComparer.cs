@@ -7,14 +7,19 @@ namespace Dev2.Studio.Core
     {
         public bool Equals(IRecordSetItemModel x, IRecordSetItemModel y)
         {
-            if (x == null && y == null) return true;
-            if (x == null || y == null) return false;
+            if (x == null && y == null)
+            {
+                return true;
+            }
+
+            if (x == null || y == null)
+            {
+                return false;
+            }
+
             return x.Equals(y);
         }
 
-        public int GetHashCode(IRecordSetItemModel obj)
-        {
-            return 1;
-        }
+        public int GetHashCode(IRecordSetItemModel obj) => 1;
     }
 }

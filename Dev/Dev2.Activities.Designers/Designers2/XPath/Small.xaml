@@ -10,8 +10,6 @@
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
-                               xmlns:behaviors2="clr-namespace:Dev2.Studio.AppResources.Behaviors;assembly=Dev2.CustomControls"
-                               xmlns:sys="clr-namespace:System;assembly=mscorlib"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
@@ -41,9 +39,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock  Text="XML"
-                    Grid.Row="0"
-                    Grid.Column="0" />
+            <TextBlock  Text="XML" Grid.Row="0" Grid.Column="0" />
             <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                     Grid.Column="1"
                                     Grid.Row="0"
@@ -75,38 +71,22 @@
                                ItemsSource="{Binding ModelItem.ResultsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                Style="{StaticResource SpacedActivityDataGridStyle}"
                                MinHeight="56">
-            <i:Interaction.Behaviors>
-                <behaviors2:DataGridWatermarkModifier WatermarkPropertyName="WatermarkTextVariable">
-                    <behaviors2:DataGridWatermarkModifier.WatermarkText>
-                        <sys:String>[[Recset().F1]]</sys:String>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkText>
-                    <behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                        <sys:Int32>0</sys:Int32>
-                    </behaviors2:DataGridWatermarkModifier.WatermarkIndexes>
-                </behaviors2:DataGridWatermarkModifier>
-            </i:Interaction.Behaviors>
-
             <DataGrid.Columns>
-                <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:XPathDTO}"
-                                    IsReadOnly="True">
+                <DataGridTemplateColumn Width="25" d:DataContext="{d:DesignInstance Type=activities:XPathDTO}" IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModelItem, 
-                                              NotifyOnTargetUpdated=True, 
-                                              Converter={converters:RowToIndexConverter}}"/>
+                            <TextBlock Text="{Binding ModelItem, NotifyOnTargetUpdated=True, Converter={converters:RowToIndexConverter}}"/>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
                                                     Padding="3"
                                                     Margin="0,0,2,1"
-                                                    DefaultText="{Binding WatermarkTextVariable}"
+                                                    DefaultText="[[Recordset().F1]]"
                                                     WrapInBrackets="True"
                                                     Text="{Binding OutputVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.XpathToolTipResults}"
@@ -131,8 +111,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
@@ -163,7 +142,6 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-
             </DataGrid.Columns>
         </controls:Dev2DataGrid>
     </Grid>

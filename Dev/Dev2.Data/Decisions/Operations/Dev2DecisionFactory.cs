@@ -27,10 +27,6 @@ namespace Dev2.Data.Decisions.Operations
             return _inst;
         }
 
-        public IDecisionOperation FetchDecisionFunction(enDecisionType typeOf)
-        {
-            return FindMatch(typeOf);
-        }
-
+        public IDecisionOperation FetchDecisionFunction(enDecisionType typeOf) => FindMatch(typeOf);
     }
 }

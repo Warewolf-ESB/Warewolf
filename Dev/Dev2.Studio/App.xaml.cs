@@ -67,31 +67,28 @@ using Dev2.Activities;
 using Microsoft.VisualBasic.ApplicationServices;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core;
-using Dev2.Factory;            
+using Dev2.Factory;
+using System.Text;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Reflection;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Studio
-
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
-    public partial class App : Application, IApp
+    public partial class App : Application, IApp, IDisposable
     {
         ShellViewModel _shellViewModel;
-        //This is ignored because when starting the studio twice the second one crashes without this line
 
-
-
-        private Mutex _processGuard = null;
-
+        private Mutex _processGuard;
 
         private AppExceptionHandler _appExceptionHandler;
         private bool _hasShutdownStarted;
         public App(IMergeFactory mergeFactory)
         {
-            this.mergeFactory = mergeFactory;
+            this._mergeFactory = mergeFactory;
         }
-        public App() : this(new MergeFactory())        
+        public App() : this(new MergeFactory())
         {
             // PrincipalPolicy must be set to WindowsPrincipal to check roles.
             AppDomain.CurrentDomain.SetPrincipalPolicy(PrincipalPolicy.WindowsPrincipal);
@@ -105,7 +102,7 @@ namespace Dev2.Studio
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e.Message, e, "Warewolf Error");
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 AppUsageStats.LocalHost = "http://localhost:3142";
             }
         }
@@ -124,12 +121,13 @@ namespace Dev2.Studio
             //CustomGitOps.SetCustomGitTool(new ExternalProcessExecutor());
             Task.Factory.StartNew(() =>
             {
-                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "Feedback");
-                DirectoryHelper.CleanUp(path);
-                DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug"));
+                var dir = new DirectoryHelper();
+                var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), GlobalConstants.Warewolf, "Feedback");
+                dir.CleanUp(path);
+                dir.CleanUp(Path.Combine(GlobalConstants.TempLocation, GlobalConstants.Warewolf, "Debug"));
             });
 
-            var localprocessGuard = new Mutex(true, "Warewolf Studio", out bool createdNew);
+            var localprocessGuard = new Mutex(true, GlobalConstants.WarewolfStudio, out bool createdNew);
 
             if (createdNew)
             {
@@ -137,12 +135,8 @@ namespace Dev2.Studio
             }
             else
             {
-
                 Environment.Exit(Environment.ExitCode);
             }
-
-
-
 
             InitializeShell(e);
 #if ! (DEBUG)
@@ -159,7 +153,8 @@ namespace Dev2.Studio
 
         ManualResetEvent _resetSplashCreated;
         Thread _splashThread;
-        private readonly IMergeFactory mergeFactory;
+        private bool _hasDotNetFramweworkError;
+        private readonly IMergeFactory _mergeFactory;
         protected void InitializeShell(System.Windows.StartupEventArgs e)
         {
             _resetSplashCreated = new ManualResetEvent(false);
@@ -169,15 +164,23 @@ namespace Dev2.Studio
             _splashThread.IsBackground = true;
             _splashThread.Name = "Splash Screen";
             _splashThread.Start();
+
             _resetSplashCreated.WaitOne();
             new Bootstrapper().Start();
-
+            if (_hasDotNetFramweworkError)
+            {
+                SplashView.CloseSplash(false);
+                var popupController = CustomContainer.Get<IPopupController>();                
+                popupController.ShowInstallationErrorOccurred();
+                Shutdown();
+            }
             base.OnStartup(e);
             _shellViewModel = MainWindow.DataContext as ShellViewModel;
             if (_shellViewModel != null)
             {
                 CreateDummyWorkflowDesignerForCaching();
                 SplashView.CloseSplash(false);
+
                 if (e.Args.Length > 0)
                 {
                     OpenBasedOnArguments(new WarwolfStartupEventArgs(e));
@@ -187,26 +190,37 @@ namespace Dev2.Studio
                     _shellViewModel.ShowStartPageAsync();
                 }
                 CheckForDuplicateResources();
-                var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
-                if (!File.Exists(settingsConfigFile))
-                {
-                    File.WriteAllText(settingsConfigFile, GlobalConstants.DefaultStudioLogFileConfig);
-                }
-                Dev2Logger.AddEventLogging(settingsConfigFile, "Warewolf Studio");
-                XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
                 _appExceptionHandler = new AppExceptionHandler(this, _shellViewModel);
-
                 CustomContainer.Register<IApplicationAdaptor>(new ApplicationAdaptor(Current));
             }
             var toolboxPane = Current.MainWindow.FindName("Toolbox") as ContentPane;
             toolboxPane?.Activate();
+            SetAsStarted();
+        }
+
+        static void SetAsStarted()
+        {
+            try
+            {
+                var studioFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var studioStartedFile = Path.Combine(studioFolder, "StudioStarted");
+                if (File.Exists(studioStartedFile))
+                {
+                    File.Delete(studioStartedFile);
+                }
+                File.WriteAllText(studioStartedFile, DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
+            }
         }
 
         public void OpenBasedOnArguments(WarwolfStartupEventArgs e)
         {
             if (e.Args.Any(p => p.Contains("-merge")))
             {
-                mergeFactory.OpenMergeWindow(_shellViewModel, e);
+                _mergeFactory.OpenMergeWindow(_shellViewModel, e);
             }
             else
             {
@@ -257,7 +271,6 @@ namespace Dev2.Studio
             });
             var activityBuilder = new WorkflowHelper().CreateWorkflow("DummyWF");
             workflowDesigner.Load(activityBuilder);
-            workflowDesigner = null;
         }
 
         async void CheckForDuplicateResources()
@@ -301,6 +314,8 @@ namespace Dev2.Studio
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
 
+            _hasDotNetFramweworkError = ValidateDotNetFramework();
+
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
@@ -309,8 +324,39 @@ namespace Dev2.Studio
             SplashView.Show(false);
 
             _resetSplashCreated?.Set();
-            splashViewModel.ShowServerVersion();
+            splashViewModel.ShowServerStudioVersion();
             Dispatcher.Run();
+        }
+
+        private static bool ValidateDotNetFramework()
+        {
+            var serverLogFile = HelperUtils.GetServerLogSettingsConfigFile();
+            if (!File.Exists(serverLogFile))
+            {
+                return false;
+            }
+            try
+            {
+                var lines = File.ReadAllLines(serverLogFile).Reverse();
+
+                foreach (string line in lines)
+                {
+                    if (line.Contains(@"System.DllNotFoundException: C:\Windows\Microsoft.NET\Framework"))
+                    {
+                        return true;
+                    }
+                    if (line.Contains(@"[Header]"))
+                    {
+                        break;
+                    }
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error("Error loading server log", ex, GlobalConstants.WarewolfError);
+                return false;
+            }
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -362,15 +408,15 @@ namespace Dev2.Studio
             {
                 SplashView.CloseSplash(true);
                 base.Shutdown();
-            }            
-            catch (Exception e) 
+            }
+            catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
             }
             ForceShutdown();
         }
 
-      
+
         public bool ShouldRestart { get; set; }
 
         public bool HasShutdownStarted
@@ -389,7 +435,9 @@ namespace Dev2.Studio
 
         void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-           
+            Dev2Logger.Error("Unhandled Exception", e.Exception, GlobalConstants.WarewolfError);
+
+            Tracker.TrackException(GetType().Name, "OnApplicationDispatcherUnhandledException", e.Exception);
             if (_appExceptionHandler != null)
             {
                 e.Handled = HasShutdownStarted || _appExceptionHandler.Handle(e.Exception);
@@ -403,7 +451,6 @@ namespace Dev2.Studio
         public void Dispose()
         {
             _resetSplashCreated.Dispose();
-
         }
     }
 

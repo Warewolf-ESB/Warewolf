@@ -19,7 +19,7 @@ namespace Dev2.Intellisense.Helper
     [Flags]
     public enum ShareType
     {
-        Disk,
+        None,
         Device,
         IPC,
         Special = -2147483648
@@ -68,23 +68,15 @@ namespace Dev2.Intellisense.Helper
 
         public ShareType ShareType => _shareType;
 
-        public override string ToString()
-        {
-            return $@"\\{(string.IsNullOrEmpty(_shareServer) ? Environment.MachineName : _shareServer)}\{_networkName}";
-        }
+        public override string ToString() => $@"\\{(string.IsNullOrEmpty(_shareServer) ? Environment.MachineName : _shareServer)}\{_networkName}";
     }
 
     public class ShareCollection : ReadOnlyCollectionBase
     {
         const int NoError = 0;
         const int ErrorAccessDenied = 5;
-
-        /// <summary>The name of the server this collection represents</summary>
         readonly string _server;
-
-        /// <summary>
-        ///     Default constructor - local machine
-        /// </summary>
+        
         internal ShareCollection()
         {
             _server = string.Empty;
@@ -102,7 +94,7 @@ namespace Dev2.Intellisense.Helper
             InnerList.AddRange(shares.ToArray());
         }
 
-        static void EnumerateSharesNT(string server, ShareCollection shares)
+        static void TryEnumerateSharesNT(string server, ShareCollection shares)
         {
             var level = 2;
             var hResume = 0;
@@ -110,34 +102,7 @@ namespace Dev2.Intellisense.Helper
 
             try
             {
-                var nRet = NetShareEnum(server, level, out pBuffer, -1, out int entriesRead, out int totalEntries, ref hResume);
-
-                if (ErrorAccessDenied == nRet)
-                {
-                    level = 1;
-                    nRet = NetShareEnum(server, level, out pBuffer, -1, out entriesRead, out totalEntries, ref hResume);
-                }
-
-                if (NoError == nRet && entriesRead > 0)
-                {
-                    var t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
-                    var offset = Marshal.SizeOf(t);
-
-                    for (int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
-                    {
-                        var pItem = new IntPtr(lpItem);
-                        if (1 == level)
-                        {
-                            var si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
-                            shares.Add(si.NetName, si.ShareType);
-                        }
-                        else
-                        {
-                            var si = (ShareInfo2)Marshal.PtrToStructure(pItem, t);
-                            shares.Add(si.NetName, si.ShareType);
-                        }
-                    }
-                }
+                pBuffer = EnumerateSharesNT(server, shares, ref level, ref hResume);
             }
             finally
             {
@@ -148,10 +113,41 @@ namespace Dev2.Intellisense.Helper
             }
         }
 
-        protected static void EnumerateShares(string server, ShareCollection shares)
+        private static IntPtr EnumerateSharesNT(string server, ShareCollection shares, ref int level, ref int hResume)
         {
-            EnumerateSharesNT(server, shares);
+            var nRet = NetShareEnum(server, level, out IntPtr pBuffer, -1, out int entriesRead, out int totalEntries, ref hResume);
+
+            if (ErrorAccessDenied == nRet)
+            {
+                level = 1;
+                nRet = NetShareEnum(server, level, out pBuffer, -1, out entriesRead, out totalEntries, ref hResume);
+            }
+
+            if (NoError == nRet && entriesRead > 0)
+            {
+                var t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
+                var offset = Marshal.SizeOf(t);
+
+                for (int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
+                {
+                    var pItem = new IntPtr(lpItem);
+                    if (1 == level)
+                    {
+                        var si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
+                        shares.Add(si.NetName, si.ShareType);
+                    }
+                    else
+                    {
+                        var si = (ShareInfo2)Marshal.PtrToStructure(pItem, t);
+                        shares.Add(si.NetName, si.ShareType);
+                    }
+                }
+            }
+
+            return pBuffer;
         }
+
+        protected static void EnumerateShares(string server, ShareCollection shares) => TryEnumerateSharesNT(server, shares);
 
         [DllImport("netapi32", CharSet = CharSet.Unicode)]
         protected static extern int NetShareEnum(string lpServerName, int dwLevel,
@@ -161,15 +157,8 @@ namespace Dev2.Intellisense.Helper
         [DllImport("netapi32")]
         protected static extern int NetApiBufferFree(IntPtr lpBuffer);
 
-        protected void Add(string netName, ShareType shareType)
-        {
-            InnerList.Add(new Share(_server, netName, shareType));
-        }
+        protected void Add(string netName, ShareType shareType) => InnerList.Add(new Share(_server, netName, shareType));
 
-        /// <summary>Share information, NT, level 1</summary>
-        /// <remarks>
-        ///     Fallback when no admin rights.
-        /// </remarks>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
         struct ShareInfo1
         {
@@ -179,16 +168,11 @@ namespace Dev2.Intellisense.Helper
             public readonly ShareType ShareType;
         }
 
-        /// <summary>Share information, NT, level 2</summary>
-        /// <remarks>
-        ///     Requires admin rights to work.
-        /// </remarks>
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-        struct ShareInfo2
+        public struct ShareInfo2
         {
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string NetName;
-
             public readonly ShareType ShareType;
 
             [MarshalAs(UnmanagedType.LPWStr)]
@@ -196,6 +180,7 @@ namespace Dev2.Intellisense.Helper
             public int Permissions;
             public int MaxUsers;
             public int CurrentUsers;
+
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Path;
 

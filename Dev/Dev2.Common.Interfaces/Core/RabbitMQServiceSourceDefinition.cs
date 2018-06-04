@@ -6,7 +6,6 @@ namespace Dev2.Common.Interfaces.Core
 {
     public class RabbitMQServiceSourceDefinition : IRabbitMQServiceSourceDefinition, IEquatable<RabbitMQServiceSourceDefinition>
     {
-
         public RabbitMQServiceSourceDefinition(IRabbitMQ source)
         {
             ResourceID = source.ResourceID;
@@ -24,14 +23,7 @@ namespace Dev2.Common.Interfaces.Core
         }
 
         #region Equality members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        
         public bool Equals(RabbitMQServiceSourceDefinition other)
         {
             if (ReferenceEquals(null, other))
@@ -49,16 +41,21 @@ namespace Dev2.Common.Interfaces.Core
                 string.Equals(VirtualHost, other.VirtualHost);
         }
 
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
         public bool Equals(IRabbitMQServiceSourceDefinition other)
         {
-            return Equals(other as RabbitMQServiceSourceDefinition);
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            return string.Equals(HostName, other.HostName) &&
+                string.Equals(Port, other.Port) &&
+                string.Equals(UserName, other.UserName) &&
+                string.Equals(Password, other.Password) &&
+                string.Equals(VirtualHost, other.VirtualHost);
         }
 
         #endregion Equality members

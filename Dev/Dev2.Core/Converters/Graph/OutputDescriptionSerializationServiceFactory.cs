@@ -15,9 +15,6 @@ namespace Unlimited.Framework.Converters.Graph
 {
     public static class OutputDescriptionSerializationServiceFactory
     {
-        public static IOutputDescriptionSerializationService CreateOutputDescriptionSerializationService()
-        {
-            return new OutputDescriptionSerializationService();
-        }
+        public static IOutputDescriptionSerializationService CreateOutputDescriptionSerializationService() => new OutputDescriptionSerializationService();
     }
 }

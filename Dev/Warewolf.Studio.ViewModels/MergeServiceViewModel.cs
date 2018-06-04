@@ -84,6 +84,10 @@ namespace Warewolf.Studio.ViewModels
 
                 if (versionInfos.Count <= 0)
                 {
+                    if (MergeResourceVersions.Count == 1)
+                    {
+                        SelectedMergeItem = MergeResourceVersions[0];
+                    }
                     return;
                 }
             }
@@ -206,10 +210,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Environments);
         }
 
-        static IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
-        {
-            return new EnvironmentViewModel(server, shellViewModel);
-        }
+        static IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel) => new EnvironmentViewModel(server, shellViewModel);
 
         public MessageBoxResult ShowMergeDialog()
         {

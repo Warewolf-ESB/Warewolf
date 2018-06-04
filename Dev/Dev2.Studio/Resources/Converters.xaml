@@ -50,15 +50,16 @@
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
+    <core:ResourceIdToIconConverter x:Key="ResourceIdToIconConverter"/>
     <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
     <converters:ErrorTypeToTooltipConverter x:Key="ErrorTypeToTooltipConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
+    <converters:StringToIntInRangeConverter x:Key="StringToIntInRangeConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />
     <converters1:GridRowNumberConverter x:Key="GridRowNumberConverter"/>
     <converters1:DataGridRowNumberConverter x:Key="DataGridRowNumberConverter"/>
-    <converters2:StringToTimespanConverter x:Key="StringToTimespanConverter"/>
     
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterenRoundingType">
         <converters:EnumToBoolConverter.TrueEnumValues>

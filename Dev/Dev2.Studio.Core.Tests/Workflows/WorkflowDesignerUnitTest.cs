@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -26,7 +26,6 @@ using Dev2.Activities.Designers2.CountRecordsNullHandler;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.Activities.Designers2.MultiAssign;
 using Dev2.Activities.Designers2.Service;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
@@ -57,7 +56,7 @@ using Dev2.Studio.Interfaces.Enums;
 
 namespace Dev2.Core.Tests.Workflows
 {
-  
+
     [TestClass]
     public partial class WorkflowDesignerUnitTest
     {
@@ -85,7 +84,7 @@ namespace Dev2.Core.Tests.Workflows
 
             DataListSingleton.SetDataList(dataListViewModel);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -118,7 +117,7 @@ namespace Dev2.Core.Tests.Workflows
 
             DataListSingleton.SetDataList(dataListViewModel);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
             var dataListItem3 = new ScalarItemModel("scalar8", enDev2ColumnArgumentDirection.Input);
@@ -150,7 +149,7 @@ namespace Dev2.Core.Tests.Workflows
 
             DataListSingleton.SetDataList(dataListViewModel);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
 
@@ -179,7 +178,7 @@ namespace Dev2.Core.Tests.Workflows
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
             DataListSingleton.SetDataList(dataListViewModel);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             var workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, evtAg.Object);
 
             workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -189,7 +188,7 @@ namespace Dev2.Core.Tests.Workflows
         #endregion
 
         #region AddMode Missing DataList Items        
-        
+
         [TestMethod]
         public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedCorrectVariableGottenFromDecision()
         {
@@ -199,7 +198,7 @@ namespace Dev2.Core.Tests.Workflows
             CustomContainer.Register(serverRepo.Object);
             var mockResourceModel = new Mock<IContextualResourceModel>();
             var dataListViewModel = CreateDataListViewModel(mockResourceModel);
-            var actual = WorkflowDesignerViewModel.GetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)", dataListViewModel);
+            var actual = WorkflowDesignerViewModel.TryGetDecisionElements("Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:!]]!,!Col2!:![[scalar]]!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)", dataListViewModel);
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
@@ -223,10 +222,10 @@ namespace Dev2.Core.Tests.Workflows
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
 
             var recsetModel = new RecordSetItemModel("RecSet");
-            dataListViewModel.RecsetCollection.Add(recsetModel);
+            dataListViewModel.Add(recsetModel);
             dataListViewModel.RecsetCollection[2].Children.Add(new RecordSetFieldItemModel("f1", parent: recsetModel));
             const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[RecSet().f1]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
-            var actual = WorkflowDesignerViewModel.GetDecisionElements(expression, dataListViewModel);
+            var actual = WorkflowDesignerViewModel.TryGetDecisionElements(expression, dataListViewModel);
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
@@ -249,14 +248,13 @@ namespace Dev2.Core.Tests.Workflows
 
 
             var recsetModel = new RecordSetItemModel("RecSet");
-            dataListViewModel.RecsetCollection.Add(recsetModel);
+            dataListViewModel.Add(recsetModel);
             dataListViewModel.RecsetCollection[2].Children.Add(new RecordSetFieldItemModel("a", parent: recsetModel));
             const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[a]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
-            var actual = WorkflowDesignerViewModel.GetDecisionElements(expression, dataListViewModel);
+            var actual = WorkflowDesignerViewModel.TryGetDecisionElements(expression, dataListViewModel);
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
-            //var expected = "{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}";
             var expected = "[[a]]";
             var actualResult = actual[0];
             FixBreaks(ref expected, ref actualResult);
@@ -283,14 +281,13 @@ namespace Dev2.Core.Tests.Workflows
 
 
             var recsetModel = new RecordSetItemModel("RecSet");
-            dataListViewModel.RecsetCollection.Add(recsetModel);
+            dataListViewModel.Add(recsetModel);
             dataListViewModel.RecsetCollection[2].Children.Add(new RecordSetFieldItemModel("aasszzz", parent: recsetModel));
             const string expression = "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"{!TheStack!:[{!Col1!:![[a]]!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If ]] Is Equal [[scalar]]!}\",AmbientDataList)";
-            var actual = WorkflowDesignerViewModel.GetDecisionElements(expression, dataListViewModel);
+            var actual = WorkflowDesignerViewModel.TryGetDecisionElements(expression, dataListViewModel);
             model.Dispose();
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
-            //Assert.AreEqual("{!TheStack!:[{!Col1!:!a!,!Col2!:!Is Equal!,!Col3!:!0!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:1,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!True!,!FalseArmText!:!False!,!DisplayText!:!If  Is Equal scalar!}", actual[0], "Find missing found an invalid variable in a decision");
             Assert.AreEqual("[[a]]", actual[0], "Find missing found an invalid variable in a decision");
         }
 
@@ -298,7 +295,7 @@ namespace Dev2.Core.Tests.Workflows
         #endregion
 
         #region Set Unused DataList Items
-        
+
         [TestMethod]
         public void FindUnusedDataListItemsWithUnusedDataListItemsExpectedItemsToBeSetToNotUsed()
         {
@@ -306,7 +303,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowXAMLForTest());
-            var serverRepo=new Mock<IServerRepository>();
+            var serverRepo = new Mock<IServerRepository>();
             CustomContainer.Register(serverRepo.Object);
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
@@ -318,7 +315,7 @@ namespace Dev2.Core.Tests.Workflows
             DataListSingleton.SetDataList(dataListViewModel);
             var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            dataListItems.ToList().ForEach(dataListViewModel.Add);
             dataListViewModel.RecsetCollection.Clear();
             var workflowDesigner = CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
             workflowDesigner.PopUp = mockPopUp.Object;
@@ -1104,9 +1101,9 @@ namespace Dev2.Core.Tests.Workflows
             try
             {
                 workflowDesigner.Handle(new AddStringListToDataListMessage(new List<string> { "[[rec().s*et]]", "[[test**()]]", "[[1scalar]]" }));
-                
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Assert.Fail(e.Message);
             }
@@ -1169,102 +1166,80 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesigner_Initialize")]
         public void WorkflowDesigner_Initialize_WhenWorkflowXamlNullAndFetchFails_ExpectNewWorkflow()
         {
-            var ok = true;
-            var msg = string.Empty;
-            var t = new Thread(() =>
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
+
+            #region Setup viewModel
+
+            var workflow = new ActivityBuilder();
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+            ExecuteMessage exeMsg = null;
+
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
+
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            var envConn = new Mock<IEnvironmentConnection>();
+            var serverEvents = new Mock<IEventPublisher>();
+            envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
+            resourceModel.Setup(r => r.ResourceName).Returns("Test");
+            var xamlBuilder = new StringBuilder("abc");
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+
+            var ok2 = false;
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() =>
             {
-                try
-                {
-                    var serverRepo = new Mock<IServerRepository>();
-                    CustomContainer.Register(serverRepo.Object);
+                ok2 = true;
+                return workflow;
+            });
+            workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
 
-                    #region Setup viewModel
+            #endregion
 
-                    var workflow = new ActivityBuilder();
-                    var resourceRep = new Mock<IResourceRepository>();
-                    resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
 
-                    ExecuteMessage exeMsg = null;
-                    
-                    resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
-                    
+            #region setup Mock ModelItem
 
-                    var resourceModel = new Mock<IContextualResourceModel>();
-                    resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-                    var envConn = new Mock<IEnvironmentConnection>();
-                    var serverEvents = new Mock<IEventPublisher>();
-                    envConn.Setup(m => m.ServerEvents).Returns(serverEvents.Object);
-                    resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
-                    resourceModel.Setup(r => r.ResourceName).Returns("Test");
-                    var xamlBuilder = new StringBuilder("abc");
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
 
-                    var workflowHelper = new Mock<IWorkflowHelper>();
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Action", prop);
 
-                    var ok2 = false;
-                    workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() =>
-                    {
-                        ok2 = true;
-                        return workflow;
-                    });
-                    workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
-                    var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
 
-                    #endregion
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+            source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
 
-                    var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
+            #endregion
 
-                    #region setup Mock ModelItem
+            #region setup mock to change properties
 
-                    var properties = new Dictionary<string, Mock<ModelProperty>>();
-                    var propertyCollection = new Mock<ModelPropertyCollection>();
-                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
-
-                    var prop = new Mock<ModelProperty>();
-                    prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
-                    prop.Setup(p => p.ComputedValue).Returns(testAct);
-                    properties.Add("Action", prop);
-
-                    propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
-
-                    var source = new Mock<ModelItem>();
-                    source.Setup(s => s.Properties).Returns(propertyCollection.Object);
-                    source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
-
-                    #endregion
-
-                    #region setup mock to change properties
-
-                    //mock item adding - this is obsolote functionality but not refactored due to overhead
-                    var args = new Mock<ModelChangedEventArgs>();
+            //mock item adding - this is obsolote functionality but not refactored due to overhead
+            var args = new Mock<ModelChangedEventArgs>();
 #pragma warning disable 618
-                    args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+            args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
 #pragma warning restore 618
 
-                    #endregion
+            #endregion
 
-                    //Execute
-                    viewModel.LoadXaml();
+            //Execute
+            viewModel.LoadXaml();
 
-                    // verify CreateWorkflow called
-                    Assert.IsTrue(ok2);
-                }
-                catch (Exception e)
-                {
-                    ok = false;
-                    msg = e.Message + " -> " + e.StackTrace;
-                }
-            });
-
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
-            t.Join();
-            Assert.IsTrue(ok, msg);
-
+            // verify CreateWorkflow called
+            Assert.IsTrue(ok2);
         }
-
-        // - end
-
-        // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
+        
         [TestMethod]
         public void WorkflowDesignerViewModelInitializeDesignerExpectedInitializesFramework45Properties()
         {
@@ -1343,14 +1318,14 @@ namespace Dev2.Core.Tests.Workflows
         #endregion
 
         #region CTOR
-        
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkflowDesignerViewModel_UnitTest_ConstructorWithNullWorkflowHelper_ThrowsArgumentNullException()
         {
-            
+
             new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object,
-                
+
                 null, null,
                 new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), false);
 
@@ -1359,7 +1334,7 @@ namespace Dev2.Core.Tests.Workflows
         #endregion
 
         #region ServiceDefinition
-        
+
         [TestMethod]
         public void WorkflowDesignerViewModelServiceDefinitionExpectedInvokesWorkflowHelperSerializeWorkflow()
         {
@@ -1439,7 +1414,6 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            // not necessary to invoke:  viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
 
@@ -1502,7 +1476,6 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            // not necessary to invoke:  viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
 
@@ -1541,19 +1514,19 @@ namespace Dev2.Core.Tests.Workflows
         #endregion
 
         #region ModelServiceModelChanged
-        
+
         [TestMethod]
         public void WorkflowDesignerViewModelModelServiceModelChangedWithNextReferencingSelfExpectedClearsNext()
         {
             TestModelServiceModelChangedSelfReference(true);
         }
-        
+
         [TestMethod]
         public void WorkflowDesignerViewModelModelServiceModelChangedWithNextReferencingOtherExpectedDoesNotClearNext()
         {
             TestModelServiceModelChangedSelfReference(false);
         }
-        
+
         [TestMethod]
         public void WorkflowDesignerViewModelTestStartNodeNotDoubleConnect()
         {
@@ -1617,7 +1590,7 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_DragOnToForEach")]
         [Owner("Hagashen Naidu")]
-        
+
         public void WorkflowDesignerViewModel_PerformAddItems_ForEachActivity_DragOnRemoteWorkflow()
 
         {
@@ -1629,9 +1602,9 @@ namespace Dev2.Core.Tests.Workflows
                 {
                     Application.Current.MainWindow = null;
                 }
-                catch (InvalidOperationException)
+                catch (InvalidOperationException e)
                 {
-
+                    Console.WriteLine(e.Message);
                 }
             }
             var repo = new Mock<IResourceRepository>();
@@ -1659,7 +1632,7 @@ namespace Dev2.Core.Tests.Workflows
             #endregion
 
             GetEnvironmentRepository(env); // Set the active environment
-            
+
             #region setup mock ModelChangedEventArgs
 
             var eventArgs = new Mock<ModelChangedEventArgs>();
@@ -1679,7 +1652,7 @@ namespace Dev2.Core.Tests.Workflows
             {
                 setValue = o as DsfActivity;
             });
-            
+
 #pragma warning restore 618
 
             #endregion
@@ -1777,7 +1750,7 @@ namespace Dev2.Core.Tests.Workflows
             unsavedResourceModel.Setup(model => model.WorkflowXaml).Returns(new StringBuilder("workflow xaml"));
             unsavedResourceModel.Setup(r => r.Environment).Returns(env.Object);
             unsavedResourceModel.Setup(a => a.Environment.ResourceRepository.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
-            var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", false, false,"");
+            var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", false, false, "");
             //------------Execute Test---------------------------
             wd.Handle(saveUnsavedWorkflowMessage);
             var workflowLink = wd.DisplayWorkflowLink;
@@ -1868,7 +1841,7 @@ namespace Dev2.Core.Tests.Workflows
             unsavedResourceModel.Setup(model => model.ResourceName).Returns("Unsaved 1");
             unsavedResourceModel.Setup(r => r.Environment).Returns(env.Object);
             unsavedResourceModel.Setup(a => a.Environment.ResourceRepository.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
-            var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", true,false,"");
+            var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", true, false, "");
             //------------Execute Test---------------------------
             wd.Handle(saveUnsavedWorkflowMessage);
             //------------Assert Results-------------------------
@@ -1881,7 +1854,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Description("WorkflowDesigner assigns new unique id on copy paste of an activity/tool")]
         [Owner("Ashley Lewis")]
-        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithUniqueID_NewIDAssigned()
         {
             var notExpected = Guid.NewGuid().ToString();
@@ -1927,7 +1899,7 @@ namespace Dev2.Core.Tests.Workflows
 
             #endregion
 
-            var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object, modelService:modelService.Object);
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object, modelService: modelService.Object);
             // Execute unit
             var actual = wd.TestPerformAddItems(source.Object);
 
@@ -1945,7 +1917,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Description("WorkflowDesigner assigns new unique id on copy paste of an activity/tool")]
         [Owner("Ashley Lewis")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithUniqueID_NotPaste_ShouldKeepID()
         {
             var expectedId = Guid.NewGuid().ToString();
@@ -2010,7 +1981,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Description("WorkflowDesigner assigns new unique id on copy paste of an activity/tool")]
         [Owner("Ashley Lewis")]
-
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithUniqueID_Paste_ShouldNotKeepID()
         {
             var expectedId = Guid.NewGuid().ToString();
@@ -2074,7 +2044,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithDsfDecision_DecisionHandled()
 
         {
@@ -2144,7 +2113,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithDsfSwitch_SwitchHandled()
 
         {
@@ -2212,7 +2180,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithServiceName_FlowStepHandled()
 
         {
@@ -2263,7 +2230,7 @@ namespace Dev2.Core.Tests.Workflows
             #endregion
 
             var wd = new WorkflowDesignerViewModelMock(crm.Object, workflowHelper.Object, new Mock<IEventAggregator>().Object);
-            
+
             // Execute unit
             var actual = wd.TestPerformAddItems(source.Object);
 
@@ -2276,7 +2243,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        
         public void WorkflowDesignerViewModel_PerformAddItems_ModelItemWithFlowStepWithoutServiceName_FlowStepHandled()
 
         {
@@ -2284,9 +2250,9 @@ namespace Dev2.Core.Tests.Workflows
             var resourceId = Guid.NewGuid();
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var repo = new Mock<IResourceRepository>();
-            
+
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
-            
+
 
             var crm = new Mock<IContextualResourceModel>();
             crm.Setup(r => r.Environment).Returns(env.Object);
@@ -2333,7 +2299,7 @@ namespace Dev2.Core.Tests.Workflows
             var explorerItem = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object,
                 a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object);
 
-            
+
             explorerItem.ResourceId = resourceId;
             wd.SetDataObject(explorerItem);
 
@@ -2350,7 +2316,6 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_PerformAddItems")]
         [Owner("Pieter Terblanche")]
-        
         public void WorkflowDesignerViewModel_PerformAddItems_ApplyForDrop_DropNotHandled()
 
         {
@@ -2576,10 +2541,9 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-            //viewModel.InitializeDesigner(new Dictionary<Type, Type>());
 
             #endregion
-            
+
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -2644,11 +2608,11 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x/>"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = new StringBuilder("<x/>") };
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
 
             Assert.AreEqual(viewModel.DesignerText, viewModel.ServiceDefinition);
             #endregion
-            
+
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -2718,10 +2682,10 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
 
             #endregion
-            
+
             #region setup Mock ModelItem
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
@@ -2790,7 +2754,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
 
             #endregion
 
@@ -2861,7 +2825,7 @@ namespace Dev2.Core.Tests.Workflows
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
 
             #endregion
 
@@ -2975,7 +2939,7 @@ namespace Dev2.Core.Tests.Workflows
         #endregion
 
         #endregion
-        
+
         public static IServerRepository SetupEnvironmentRepo(Guid environmentId)
         {
             var mockResourceRepository = new Mock<IResourceRepository>();
@@ -2997,22 +2961,26 @@ namespace Dev2.Core.Tests.Workflows
             return repo;
         }
 
-        public static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel, IEventAggregator eventAggregator = null)
+        public static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel) => CreateDataListViewModel(mockResourceModel, null);
+
+        public static IDataListViewModel CreateDataListViewModel(Mock<IContextualResourceModel> mockResourceModel, IEventAggregator eventAggregator)
         {
             var dataListViewModel = new DataListViewModel(eventAggregator ?? new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(mockResourceModel.Object);
             return dataListViewModel;
         }
 
-        public static WorkflowDesignerViewModel CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(IContextualResourceModel resourceModel, IEventAggregator eventPublisher = null)
+        public static WorkflowDesignerViewModel CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(IContextualResourceModel resourceModel) => CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(resourceModel, null);
+
+        public static WorkflowDesignerViewModel CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(IContextualResourceModel resourceModel, IEventAggregator eventPublisher)
         {
             var wf = CreateWorkflowDesignerViewModel(eventPublisher, resourceModel, new WorkflowHelper(), false);
 
             var designerAttributes = new Dictionary<Type, Type>
             {
                 { typeof(DsfActivity), typeof(ServiceDesigner) },
-                { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) }, 
-                { typeof(DsfForEachActivity), typeof(ForeachDesigner) }, 
+                { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
+                { typeof(DsfForEachActivity), typeof(ForeachDesigner) },
                 { typeof(DsfCountRecordsetNullHandlerActivity), typeof(CountRecordsDesigner) }
             };
 

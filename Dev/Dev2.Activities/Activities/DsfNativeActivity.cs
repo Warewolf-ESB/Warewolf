@@ -44,6 +44,7 @@ using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Activities.Statements;
+using Dev2.Common.Interfaces.Search;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
@@ -92,7 +93,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         IDebugState _debugState;
         bool _isOnDemandSimulation;
         IResourceCatalog _resourceCatalog;
-        ErrorResultTO _tmpErrors = new ErrorResultTO();
 
         protected IDebugState DebugState => _debugState;
 
@@ -141,47 +141,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void Execute(NativeActivityContext context)
         {
-            Dev2Logger.Debug($"Start {GetType().Name}", GlobalConstants.WarewolfDebug);
-            _tmpErrors = new ErrorResultTO();
-            _isOnDemandSimulation = false;
-            var dataObject = context.GetExtension<IDSFDataObject>();
-
-            var errorString = dataObject.Environment.FetchErrors();
-            _tmpErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
-            
-            DataListExecutionID.Set(context, dataObject.DataListID);
-
-
-            _previousParentInstanceID = dataObject.ParentInstanceID;
-            _isOnDemandSimulation = dataObject.IsOnDemandSimulation;
-
-            OnBeforeExecute(context);
-
-            try
-            {              
-                OnExecute(context);                
-            }
-            catch (Exception ex)
-            {
-
-                Dev2Logger.Error("OnExecute", ex, GlobalConstants.WarewolfError);
-                errorString = ex.Message;
-                var errorResultTO = new ErrorResultTO();
-                errorResultTO.AddError(errorString);
-                dataObject.Environment?.AddError(errorResultTO.MakeDataListReady());
-            }
-            finally
-            {
-                if (!_isExecuteAsync || _isOnDemandSimulation)
-                {
-                    OnExecutedCompleted(context);
-                    if (dataObject.Environment != null)
-                    {
-                        DoErrorHandling(dataObject, 0);
-                    }
-                }
-
-            }
         }
 
         protected void DoErrorHandling(IDSFDataObject dataObject, int update)
@@ -235,10 +194,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public virtual string GetDisplayName()
-        {
-            return DisplayName;
-        }
+        public virtual string GetDisplayName() => DisplayName;
+
         void PerformStopWorkflow(IDSFDataObject dataObject)
         {
             dataObject.StopExecution = true;
@@ -307,16 +264,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public abstract void UpdateForEachInputs(IList<Tuple<string, string>> updates);
         public abstract void UpdateForEachOutputs(IList<Tuple<string, string>> updates);
 
-        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
-        {
-            return DebugItem.EmptyList;
-        }
+        public virtual List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
 
-        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
-        {
-            return DebugItem.EmptyList;
-        }
-
+        public virtual List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update) => DebugItem.EmptyList;
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update) => DispatchDebugState(dataObject, stateType, update, null, null, false);
 
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime) => DispatchDebugState(dataObject, stateType, update, startTime, null, false);
@@ -342,13 +292,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                if (dataObject.RemoteServiceType != "Workflow" && !string.IsNullOrWhiteSpace(dataObject.RemoteServiceType))
+                if (dataObject.RemoteServiceType != "Workflow" && !string.IsNullOrWhiteSpace(dataObject.RemoteServiceType) && _debugState != null)
                 {
-                    if (_debugState != null)
-                    {
-                        _debugState.ActivityType = ActivityType.Service;
-                    }
+                    _debugState.ActivityType = ActivityType.Service;
                 }
+
 
                 DebugCleanUp(dataObject, stateType);
             }
@@ -435,23 +383,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 _debugState.ErrorMessage = errorMessage;
                 try
                 {
-                    if (dataObject.RunWorkflowAsync && !_debugState.HasError)
-                    {
-                        var debugItem = new DebugItem();
-                        var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Value = "Asynchronous execution started" };
-                        debugItem.Add(debugItemResult);
-                        _debugState.Outputs.Add(debugItem);
-                        _debugState.NumberOfSteps = 0;
-                    }
-                    else
-                    {
-                        if (_debugState.StateType != StateType.Duration)
-                        {
-                            UpdateDebugWithAssertions(dataObject);
-                        }
-                        var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
-                        Copy(debugOutputs, _debugState.Outputs);
-                    }
+                    TryDispatchDebugOutput(dataObject, update);
                 }
                 catch (Exception e)
                 {
@@ -463,6 +395,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
             return clearErrors;
+        }
+
+        private void TryDispatchDebugOutput(IDSFDataObject dataObject, int update)
+        {
+            if (dataObject.RunWorkflowAsync && !_debugState.HasError)
+            {
+                var debugItem = new DebugItem();
+                var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Value = "Asynchronous execution started" };
+                debugItem.Add(debugItemResult);
+                _debugState.Outputs.Add(debugItem);
+                _debugState.NumberOfSteps = 0;
+            }
+            else
+            {
+                if (_debugState.StateType != StateType.Duration)
+                {
+                    UpdateDebugWithAssertions(dataObject);
+                }
+                var debugOutputs = GetDebugOutputs(dataObject.Environment, update);
+                Copy(debugOutputs, _debugState.Outputs);
+            }
         }
 
         void DispatchForBeforeState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime, Guid remoteID)
@@ -650,25 +603,30 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                              && step.ActivityType != typeof(DsfSequenceActivity).Name) ?? new List<IServiceTestStep>();
                 foreach (var stepToBeAsserted in assertSteps)
                 {
-                    if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
-                    {
-                        if (stepToBeAsserted.Result != null)
-                        {
-                            stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
-                        }
-                        if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
-                        {
-                            UpdateForDecision(dataObject, stepToBeAsserted);
-                        }
-                        else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
-                        {
-                            UpdateForSwitch(dataObject, stepToBeAsserted);
-                        }
-                        else
-                        {
-                            UpdateForRegularActivity(dataObject, stepToBeAsserted);
-                        }
-                    }
+                    UpdateStep(dataObject, stepToBeAsserted);
+                }
+            }
+        }
+
+        private void UpdateStep(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        {
+            if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
+            {
+                if (stepToBeAsserted.Result != null)
+                {
+                    stepToBeAsserted.Result.RunTestResult = RunResult.TestPending;
+                }
+                if (stepToBeAsserted.ActivityType == typeof(DsfDecision).Name)
+                {
+                    UpdateForDecision(dataObject, stepToBeAsserted);
+                }
+                else if (stepToBeAsserted.ActivityType == typeof(DsfSwitch).Name)
+                {
+                    UpdateForSwitch(dataObject, stepToBeAsserted);
+                }
+                else
+                {
+                    UpdateForRegularActivity(dataObject, stepToBeAsserted);
                 }
             }
         }
@@ -910,10 +868,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DispatchDebugState(dataObject, before, update);
         }
 
-        protected string GetServerName()
-        {
-            return _debugState?.Server;
-        }
+        protected string GetServerName() => _debugState?.Server;
 
         protected void InitializeDebugState(StateType stateType, IDSFDataObject dataObject, Guid remoteID, bool hasError, string errorMessage)
         {
@@ -1019,10 +974,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }).ToList();
         }
 
-        public virtual enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.StaticActivity;
-        }
+        public virtual enFindMissingType GetFindMissingType() => enFindMissingType.StaticActivity;
 
         public virtual IDev2Activity Execute(IDSFDataObject data, int update)
         {
@@ -1071,11 +1023,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var flowStep = new FlowStep { Action = this as Activity };
             return flowStep;
         }
-                                     
-        public virtual IEnumerable<IDev2Activity> GetNextNodes()
-        {
-            return NextNodes ?? new List<IDev2Activity>();
-        }
+
+        public virtual IEnumerable<IDev2Activity> GetNextNodes() => NextNodes ?? new List<IDev2Activity>();
 
         public virtual List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
         {
@@ -1126,24 +1075,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
-    
-        public IDebugState GetDebugState()
-        {
-            return _debugState;
-        }
 
-    
-        public Guid GetWorkSurfaceMappingId()
-        {
-            return WorkSurfaceMappingId;
-        }
+        public IDebugState GetDebugState() => _debugState;
 
-    
-        public virtual IList<IActionableErrorInfo> PerformValidation()
-        {
-            return new List<IActionableErrorInfo>();
-        }
-        
+        public Guid GetWorkSurfaceMappingId() => WorkSurfaceMappingId;
+
+
+        public virtual IList<IActionableErrorInfo> PerformValidation() => new List<IActionableErrorInfo>();
+
         public bool Equals(DsfNativeActivity<T> other)
         {
             if (ReferenceEquals(null, other))
@@ -1156,37 +1095,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return string.Equals(UniqueID, other.UniqueID);
         }
-        
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((DsfNativeActivity<T>)obj);
-        }
-        
-        public override int GetHashCode()
-        {
-            return UniqueID?.GetHashCode() ?? 0;
-        }
 
-        public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right)
-        {
-            return Equals(left, right);
-        }
+        public abstract override bool Equals(object obj);
 
-        public static bool operator !=(DsfNativeActivity<T> left, DsfNativeActivity<T> right)
-        {
-            return !Equals(left, right);
-        }
+        public override int GetHashCode() => UniqueID?.GetHashCode() ?? 0;
+
+        public static bool operator ==(DsfNativeActivity<T> left, DsfNativeActivity<T> right) => Equals(left, right);
+
+        public static bool operator !=(DsfNativeActivity<T> left, DsfNativeActivity<T> right) => !Equals(left, right);
     }
 }

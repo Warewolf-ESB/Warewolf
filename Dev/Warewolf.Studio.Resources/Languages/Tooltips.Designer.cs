@@ -79,6 +79,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Set a local variable to be used in the SQL Query..
+        /// </summary>
+        public static string AdvancedRecordsetLocalVariable {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetLocalVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The SQL query.
+        /// </summary>
+        public static string AdvancedRecordsetSqlQuery {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetSqlQuery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Returns the output of the execution if any. Varies depending on what was executed..
+        /// </summary>
+        public static string AdvancedRecordsetSqlQueryExecuteCommand {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetSqlQueryExecuteCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The value of the local variable to be used in SQL Query. Scalar variables can be used as a value..
+        /// </summary>
+        public static string AdvancedRecordsetVariable {
+            get {
+                return ResourceManager.GetString("AdvancedRecordsetVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect using anonymous security credentials.
         /// </summary>
         public static string AnonymousAuthenticationToolTip {
@@ -1218,7 +1254,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Duplicated items will reference each other (checked) or leave the dependancy on the origional item (unchecked).
+        ///   Looks up a localized string similar to Duplicated items will reference each other (checked) or leave the dependancy on the original item (unchecked).
         /// </summary>
         public static string DuplicateCheckBoxTooltip {
             get {
@@ -1501,7 +1537,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Will only return rows where each field specified meets the match criteria if selected..
+        ///   Looks up a localized string similar to Only return rows where each field specified meets a match criteria..
         /// </summary>
         public static string FindToolTipRequireAllFieldsToMatch {
             get {
@@ -1510,7 +1546,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Will only return rows that match all of the criteria if selected..
+        ///   Looks up a localized string similar to Only return rows with a field that matches all of the criteria..
         /// </summary>
         public static string FindToolTipRequireAllMatchesToBeTrue {
             get {
@@ -2707,6 +2743,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search in Warewolf.
+        /// </summary>
+        public static string MenuSearchToolTip {
+            get {
+                return ResourceManager.GetString("MenuSearchToolTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configure settings.
         /// </summary>
         public static string MenuSettingsToolTip {
@@ -2734,11 +2779,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current Tool connection conflict selection not allowed.
+        /// </summary>
+        public static string MergeCurrentArmRBDisabledTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentArmRBDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the current Tool connection conflict.
         /// </summary>
         public static string MergeCurrentArmRBTooltip {
             get {
                 return ResourceManager.GetString("MergeCurrentArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current Tool conflict selection not allowed.
+        /// </summary>
+        public static string MergeCurrentConflictRBDisabledTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentConflictRBDisabledTooltip", resourceCulture);
             }
         }
         
@@ -2770,11 +2833,29 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Difference Tool connection conflict selection not allowed.
+        /// </summary>
+        public static string MergeDifferenceArmRBDisabledTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceArmRBDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select the difference Tool connection conflict.
         /// </summary>
         public static string MergeDifferenceArmRBTooltip {
             get {
                 return ResourceManager.GetString("MergeDifferenceArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Difference Tool conflict selection not allowed.
+        /// </summary>
+        public static string MergeDifferenceConflictRBDisabledTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceConflictRBDisabledTooltip", resourceCulture);
             }
         }
         
@@ -3736,6 +3817,132 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ScriptingToolTipScript {
             get {
                 return ResourceManager.GetString("ScriptingToolTipScript", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search All.
+        /// </summary>
+        public static string SearchAllTooltip {
+            get {
+                return ResourceManager.GetString("SearchAllTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input text to search.
+        /// </summary>
+        public static string SearchInputTooltip {
+            get {
+                return ResourceManager.GetString("SearchInputTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Input Variable.
+        /// </summary>
+        public static string SearchInputVariableTooltip {
+            get {
+                return ResourceManager.GetString("SearchInputVariableTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Match case.
+        /// </summary>
+        public static string SearchMatchCaseTooltip {
+            get {
+                return ResourceManager.GetString("SearchMatchCaseTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Match whole word.
+        /// </summary>
+        public static string SearchMatchWholeWordTooltip {
+            get {
+                return ResourceManager.GetString("SearchMatchWholeWordTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Object.
+        /// </summary>
+        public static string SearchObjectNameTooltip {
+            get {
+                return ResourceManager.GetString("SearchObjectNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Output Variable.
+        /// </summary>
+        public static string SearchOutputVariableTooltip {
+            get {
+                return ResourceManager.GetString("SearchOutputVariableTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Recordset.
+        /// </summary>
+        public static string SearchRecSetNameTooltip {
+            get {
+                return ResourceManager.GetString("SearchRecSetNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Scalar.
+        /// </summary>
+        public static string SearchScalarNameTooltip {
+            get {
+                return ResourceManager.GetString("SearchScalarNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Test Name.
+        /// </summary>
+        public static string SearchTestNameTooltip {
+            get {
+                return ResourceManager.GetString("SearchTestNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Tool Title.
+        /// </summary>
+        public static string SearchToolTitleTooltip {
+            get {
+                return ResourceManager.GetString("SearchToolTitleTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search Workflow Name.
+        /// </summary>
+        public static string SearchWorkflowNameTooltip {
+            get {
+                return ResourceManager.GetString("SearchWorkflowNameTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select Resource access denied.
+        /// </summary>
+        public static string SecurityResourcePermissionsDisabledTooltip {
+            get {
+                return ResourceManager.GetString("SecurityResourcePermissionsDisabledTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Windows group access denied.
+        /// </summary>
+        public static string SecurityWindowsGroupPermissionsDisabledTooltip {
+            get {
+                return ResourceManager.GetString("SecurityWindowsGroupPermissionsDisabledTooltip", resourceCulture);
             }
         }
         
@@ -5422,7 +5629,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web delete.
         /// </summary>
         public static string Tool_WebMethod_Delete {
             get {
@@ -5431,7 +5638,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web get.
         /// </summary>
         public static string Tool_WebMethod_Get {
             get {
@@ -5440,7 +5647,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web post.
         /// </summary>
         public static string Tool_WebMethod_Post {
             get {
@@ -5449,7 +5656,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tags: source connector.
+        ///   Looks up a localized string similar to Tags: source connector web put.
         /// </summary>
         public static string Tool_WebMethod_Put {
             get {

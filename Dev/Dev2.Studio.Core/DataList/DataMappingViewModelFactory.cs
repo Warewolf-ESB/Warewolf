@@ -16,9 +16,6 @@ namespace Dev2.Studio.ViewModels.DataList
     public class DataMappingViewModelFactory:IDataMappingViewModelFactory
     {
         public IDataMappingViewModel CreateModel(IWebActivity activity)=>CreateModel(activity, null);
-        public IDataMappingViewModel CreateModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler)
-        {
-            return  new DataMappingViewModel(activity, mappingCollectionChangedEventHandler);
-        }
+        public IDataMappingViewModel CreateModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler) => new DataMappingViewModel(activity, mappingCollectionChangedEventHandler);
     }
 }

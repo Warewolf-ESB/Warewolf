@@ -1,3 +1,4 @@
+using Dev2.Common.Interfaces;
 using System;
 using System.Collections.Generic;
 
@@ -44,12 +45,33 @@ namespace Dev2.Studio.AppResources.Comparers
                 }
             }
             return res;
-
         }
 
-        public int GetHashCode(WorkSurfaceKey obj)
+        public bool Equals(IWorkSurfaceKey x, IWorkSurfaceKey y)
         {
-            return obj.GetHashCode();
+            var res = false;
+            if (x.EnvironmentID != null && y.EnvironmentID != null)
+            {
+                if (x.ResourceID == y.ResourceID
+                    && x.ServerID == y.ServerID
+                    && x.EnvironmentID == y.EnvironmentID
+                    && x.WorkSurfaceContext == y.WorkSurfaceContext)
+                {
+                    res = true;
+                }
+            }
+            else
+            {
+                if (x.ResourceID == y.ResourceID
+                    && x.ServerID == y.ServerID
+                    && x.WorkSurfaceContext == y.WorkSurfaceContext)
+                {
+                    res = true;
+                }
+            }
+            return res;
         }
+
+        public int GetHashCode(WorkSurfaceKey obj) => obj.GetHashCode();
     }
 }

@@ -50,15 +50,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ConvertCollection = new List<BaseConvertTO>();
         }
 
-        public override List<string> GetOutputs()
-        {
-            return ConvertCollection.Select(to => to.ToExpression).ToList();
-        }
+        public override List<string> GetOutputs() => ConvertCollection.Select(to => to.ToExpression).ToList();
 
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
+        protected override void CacheMetadata(NativeActivityMetadata metadata) => base.CacheMetadata(metadata);
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -74,47 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var env = dataObject.Environment;
             try
             {
-                CleanArgs();
-
-                var inputIndex = 1;
-                var outputIndex = 1;
-
-                foreach (var item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.FromExpression)))
-                {
-                    if (dataObject.IsDebugMode())
-                    {
-                        var debugItem = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugEvalResult(item.FromExpression, "Convert", env, update), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(item.FromType, "From"), debugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(item.ToType, "To"), debugItem);
-                        _debugInputs.Add(debugItem);
-                        inputIndex++;
-                    }
-
-                    try
-                    {
-                        env.ApplyUpdate(item.FromExpression, TryConvertFunc(item, env, update), update);
-                        IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
-                        if (dataObject.IsDebugMode())
-                        {
-                            var debugItem = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                            AddDebugItem(new DebugEvalResult(item.FromExpression, "", env, update), debugItem);
-                            _debugOutputs.Add(debugItem);
-                            outputIndex++;
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Dev2Logger.Error("DSFBaseConvert", e, GlobalConstants.WarewolfError);
-                        allErrors.AddError(e.Message);
-                        if (dataObject.IsDebugMode())
-                        {
-                            outputIndex++;
-                        }
-                    }
-                }
+                TryExecute(dataObject, update, allErrors, env);
             }
             catch (Exception e)
             {
@@ -124,6 +78,51 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 HandleErrors(dataObject, update, allErrors);
+            }
+        }
+
+        private void TryExecute(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, IExecutionEnvironment env)
+        {
+            CleanArgs();
+
+            var inputIndex = 1;
+            var outputIndex = 1;
+
+            foreach (var item in ConvertCollection.Where(a => !String.IsNullOrEmpty(a.FromExpression)))
+            {
+                if (dataObject.IsDebugMode())
+                {
+                    var debugItem = new DebugItem();
+                    AddDebugItem(new DebugItemStaticDataParams("", inputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                    AddDebugItem(new DebugEvalResult(item.FromExpression, "Convert", env, update), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(item.FromType, "From"), debugItem);
+                    AddDebugItem(new DebugItemStaticDataParams(item.ToType, "To"), debugItem);
+                    _debugInputs.Add(debugItem);
+                    inputIndex++;
+                }
+
+                try
+                {
+                    env.ApplyUpdate(item.FromExpression, TryConvertFunc(item, env, update), update);
+                    IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
+                    if (dataObject.IsDebugMode())
+                    {
+                        var debugItem = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", outputIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
+                        AddDebugItem(new DebugEvalResult(item.FromExpression, "", env, update), debugItem);
+                        _debugOutputs.Add(debugItem);
+                        outputIndex++;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Dev2Logger.Error("DSFBaseConvert", e, GlobalConstants.WarewolfError);
+                    allErrors.AddError(e.Message);
+                    if (dataObject.IsDebugMode())
+                    {
+                        outputIndex++;
+                    }
+                }
             }
         }
 
@@ -143,41 +142,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public override enFindMissingType GetFindMissingType()
-        {
-            return enFindMissingType.DataGridActivity;
-        }
+        public override enFindMissingType GetFindMissingType() => enFindMissingType.DataGridActivity;
 
-        Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> TryConvertFunc(BaseConvertTO item, IExecutionEnvironment env, int update)
-        {
-            return a =>
-            {
-                var from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
-                var to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
-                var broker = _fac.CreateBroker(@from, to);
-                var value = a.ToString();
-                if (a.IsNothing)
-                {
-                    throw new Exception(string.Format(ErrorResource.NullScalarValue, item.FromExpression));
-                }
-                if (String.IsNullOrEmpty(value))
-                {
-                    return DataStorage.WarewolfAtom.NewDataString("");
-                }
-                var upper = broker.Convert(value);
-                var evalled = env.Eval(upper, update);
-                if (evalled.IsWarewolfAtomResult)
-                {
-                    if (evalled is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
-                    {
-                        return warewolfAtomResult.Item;
-                    }
-                    return DataStorage.WarewolfAtom.Nothing;
-                }
-                return DataStorage.WarewolfAtom.NewDataString(CommonFunctions.evalResultToString(evalled));
-            };
-        }
-
+        Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> TryConvertFunc(BaseConvertTO item, IExecutionEnvironment env, int update) => a =>
+                                                                                                                                                        {
+                                                                                                                                                            var from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
+                                                                                                                                                            var to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
+                                                                                                                                                            var broker = _fac.CreateBroker(@from, to);
+                                                                                                                                                            var value = a.ToString();
+                                                                                                                                                            if (a.IsNothing)
+                                                                                                                                                            {
+                                                                                                                                                                throw new Exception(string.Format(ErrorResource.NullScalarValue, item.FromExpression));
+                                                                                                                                                            }
+                                                                                                                                                            if (String.IsNullOrEmpty(value))
+                                                                                                                                                            {
+                                                                                                                                                                return DataStorage.WarewolfAtom.NewDataString("");
+                                                                                                                                                            }
+                                                                                                                                                            var upper = broker.Convert(value);
+                                                                                                                                                            var evalled = env.Eval(upper, update);
+                                                                                                                                                            if (evalled.IsWarewolfAtomResult)
+                                                                                                                                                            {
+                                                                                                                                                                if (evalled is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
+                                                                                                                                                                {
+                                                                                                                                                                    return warewolfAtomResult.Item;
+                                                                                                                                                                }
+                                                                                                                                                                return DataStorage.WarewolfAtom.Nothing;
+                                                                                                                                                            }
+                                                                                                                                                            return DataStorage.WarewolfAtom.NewDataString(CommonFunctions.evalResultToString(evalled));
+                                                                                                                                                        };
 
         void CleanArgs()
         {
@@ -367,8 +359,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool Equals(DsfBaseConvertActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
             var collectionEquals = CommonEqualityOps.CollectionEquals(ConvertCollection, other.ConvertCollection, new BaseConvertToComparer());
             return base.Equals(other) 
                 && collectionEquals;
@@ -376,9 +376,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
             return Equals((DsfBaseConvertActivity) obj);
         }
 

@@ -17,10 +17,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class NotBetween : IDecisionOperation
     {
-        public Enum HandlesType()
-        {
-            return enDecisionType.NotBetween;
-        }
+        public Enum HandlesType() => enDecisionType.NotBetween;
 
         public bool Invoke(string[] cols)
         {
@@ -36,17 +33,7 @@ namespace Dev2.Data.Decisions.Operations
                 anyDoubles = anyDoubles || isDouble;
                 if (!anyDoubles)
                 {
-                    try
-                    {
-                        if (DateTime.TryParse(c, out DateTime dt))
-                        {
-                            dtVal[pos] = dt;
-                        }
-                    }
-                    catch(Exception ex)
-                    {
-                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                    }
+                    TryParseColum(dtVal, pos, c);
                 }
 
                 pos++;
@@ -71,6 +58,21 @@ namespace Dev2.Data.Decisions.Operations
             }
 
             return !(left > 0 && right < 0);
+        }
+
+        private static void TryParseColum(DateTime[] dtVal, int pos, string c)
+        {
+            try
+            {
+                if (DateTime.TryParse(c, out DateTime dt))
+                {
+                    dtVal[pos] = dt;
+                }
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+            }
         }
     }
 }

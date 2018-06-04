@@ -21,16 +21,10 @@ namespace Dev2.DataList
 
     public class RsOpNotXML : AbstractRecsetSearchValidation
     {
-        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
-        {
+        public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to, bool all) => a => values.All(x => !a.ToString().IsXml());
 
-            return a => values.All(x =>! a.ToString().IsXml());
+        public override string HandlesType() => "Not XML";
 
-        }
-        public override string HandlesType()
-        {
-            return "Not XML";
-        }
         public override int ArgumentCount => 1;
     }
 }

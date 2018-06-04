@@ -20,11 +20,6 @@ namespace Dev2.Activities.Designers2.WebServiceGet
         {
             InitializeComponent();
         }
-        protected override WebServiceGetViewModel CreateViewModel()
-        {
-       
-            return new WebServiceGetViewModel(ModelItem);
-
-        }
+        protected override WebServiceGetViewModel CreateViewModel() => new WebServiceGetViewModel(ModelItem);
     }
 }

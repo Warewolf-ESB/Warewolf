@@ -61,10 +61,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             GetServiceMethods(EndpointUrl);
         }
 
-        public Dictionary<MethodInfo, ParameterInfo[]> GetServiceMethods(string endpoint)
-        {
-            return ProxyService.GetMethods(endpoint);
-        }
+        public Dictionary<MethodInfo, ParameterInfo[]> GetServiceMethods(string endpoint) => ProxyService.GetMethods(endpoint);
 
         public IList<IWcfAction> GetServiceActions(IWcfServerSource source)
         {
@@ -93,15 +90,9 @@ namespace Dev2.Runtime.ServiceModel.Data
             return actionList;
         }
 
-        public IOutputDescription ExecuteMethod(WcfService src)
-        {
-            return ProxyService.ExecuteWebService(src);
-        }
+        public IOutputDescription ExecuteMethod(WcfService src) => ProxyService.ExecuteWebService(src);
 
-        public object ExecuteMethod(IWcfAction action)
-        {
-            return ProxyService.ExcecuteMethod(action, EndpointUrl);
-        }
+        public object ExecuteMethod(IWcfAction action) => ProxyService.ExcecuteMethod(action, EndpointUrl);
 
         #region ToXml
 
@@ -136,10 +127,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        public bool Equals(IWcfSource other)
-        {
-            return true;
-        }
+        public bool Equals(IWcfSource other) => true;
     }
 
     public class ServiceModel

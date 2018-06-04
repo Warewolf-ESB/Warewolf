@@ -15,15 +15,12 @@ using Dev2.Interfaces;
 namespace Dev2.Factories
 {
     public class Dev2FindMissingStrategyFactory : SpookyAction<IFindMissingStrategy, Enum>
-    {        
+    {
         /// <summary>
         /// Create a find missing strategy
         /// </summary>
         /// <param name="typeOf"></param>
         /// <returns></returns>
-        public IFindMissingStrategy CreateFindMissingStrategy(enFindMissingType typeOf)
-        {
-            return FindMatch(typeOf);
-        }
+        public IFindMissingStrategy CreateFindMissingStrategy(enFindMissingType typeOf) => FindMatch(typeOf);
     }    
 }

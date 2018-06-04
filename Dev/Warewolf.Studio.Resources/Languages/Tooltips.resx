@@ -304,6 +304,12 @@ Use a comma to separate the variables.</value>
   <data name="SchedulesDeleteSelectedScheduleDisabledTooltip" xml:space="preserve">
     <value>Cannot delete an enabled schedule</value>
   </data>
+  <data name="SecurityWindowsGroupPermissionsDisabledTooltip" xml:space="preserve">
+    <value>Windows group access denied</value>
+  </data>
+  <data name="SecurityResourcePermissionsDisabledTooltip" xml:space="preserve">
+    <value>Select Resource access denied</value>
+  </data>
   <data name="TestEditorToolTip" xml:space="preserve">
     <value>View the current tests for this resource</value>
   </data>
@@ -1008,6 +1014,9 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
   <data name="MenuSettingsToolTip" xml:space="preserve">
     <value>Configure settings</value>
   </data>
+  <data name="MenuSearchToolTip" xml:space="preserve">
+    <value>Search in Warewolf</value>
+  </data>
   <data name="MenuSchedulerToolTip" xml:space="preserve">
     <value>Schedule a service to run</value>
   </data>
@@ -1415,10 +1424,10 @@ Using recordset () will add a new record and (*) will assign every record.
 If there are multiple results and a scalar is used, then each result will be separated with a comma.</value>
   </data>
   <data name="FindToolTipRequireAllMatchesToBeTrue" xml:space="preserve">
-    <value>Will only return rows that match all of the criteria if selected.</value>
+    <value>Only return rows with a field that matches all of the criteria.</value>
   </data>
   <data name="FindToolTipRequireAllFieldsToMatch" xml:space="preserve">
-    <value>Will only return rows where each field specified meets the match criteria if selected.</value>
+    <value>Only return rows where each field specified meets a match criteria.</value>
   </data>
   <data name="FindToolTipMatch" xml:space="preserve">
     <value>Match data</value>
@@ -1518,7 +1527,7 @@ If you are on a domain, you still need to provide the email address of the accou
     <value>Duplicate the current resource</value>
   </data>
   <data name="DuplicateCheckBoxTooltip" xml:space="preserve">
-    <value>Duplicated items will reference each other (checked) or leave the dependancy on the origional item (unchecked)</value>
+    <value>Duplicated items will reference each other (checked) or leave the dependancy on the original item (unchecked)</value>
   </data>
   <data name="DuplicateButtonTooltip" xml:space="preserve">
     <value>Duplicate the Resource(s)</value>
@@ -1968,16 +1977,16 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
     <value>Tags: javascript script JSON JS</value>
   </data>
   <data name="Tool_WebMethod_Put" xml:space="preserve">
-    <value>Tags: source connector</value>
+    <value>Tags: source connector web put</value>
   </data>
   <data name="Tool_WebMethod_Post" xml:space="preserve">
-    <value>Tags: source connector</value>
+    <value>Tags: source connector web post</value>
   </data>
   <data name="Tool_WebMethod_Get" xml:space="preserve">
-    <value>Tags: source connector</value>
+    <value>Tags: source connector web get</value>
   </data>
   <data name="Tool_WebMethod_Delete" xml:space="preserve">
-    <value>Tags: source connector</value>
+    <value>Tags: source connector web delete</value>
   </data>
   <data name="Tool_Utility_Xpath" xml:space="preserve">
     <value>Tags: xml</value>
@@ -2213,16 +2222,76 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="MergeCurrentConflictRBTooltip" xml:space="preserve">
     <value>Select the current Tool conflict</value>
   </data>
+  <data name="MergeCurrentConflictRBDisabledTooltip" xml:space="preserve">
+    <value>Current Tool conflict selection not allowed</value>
+  </data>
   <data name="MergeDifferenceConflictRBTooltip" xml:space="preserve">
     <value>Select the difference Tool conflict</value>
+  </data>
+  <data name="MergeDifferenceConflictRBDisabledTooltip" xml:space="preserve">
+    <value>Difference Tool conflict selection not allowed</value>
   </data>
   <data name="MergeCurrentArmRBTooltip" xml:space="preserve">
     <value>Select the current Tool connection conflict</value>
   </data>
+  <data name="MergeCurrentArmRBDisabledTooltip" xml:space="preserve">
+    <value>Current Tool connection conflict selection not allowed</value>
+  </data>
   <data name="MergeDifferenceArmRBTooltip" xml:space="preserve">
     <value>Select the difference Tool connection conflict</value>
   </data>
+  <data name="MergeDifferenceArmRBDisabledTooltip" xml:space="preserve">
+    <value>Difference Tool connection conflict selection not allowed</value>
+  </data>
   <data name="MergeSelectionViewLabelTooltip" xml:space="preserve">
     <value>Select the version you want to merge with</value>
+  </data>
+  <data name="SearchInputTooltip" xml:space="preserve">
+    <value>Input text to search</value>
+  </data>
+  <data name="SearchMatchCaseTooltip" xml:space="preserve">
+    <value>Match case</value>
+  </data>
+  <data name="SearchMatchWholeWordTooltip" xml:space="preserve">
+    <value>Match whole word</value>
+  </data>
+  <data name="SearchAllTooltip" xml:space="preserve">
+    <value>Search All</value>
+  </data>
+  <data name="SearchWorkflowNameTooltip" xml:space="preserve">
+    <value>Search Workflow Name</value>
+  </data>
+  <data name="SearchTestNameTooltip" xml:space="preserve">
+    <value>Search Test Name</value>
+  </data>
+  <data name="SearchToolTitleTooltip" xml:space="preserve">
+    <value>Search Tool Title</value>
+  </data>
+  <data name="SearchInputVariableTooltip" xml:space="preserve">
+    <value>Search Input Variable</value>
+  </data>
+  <data name="SearchScalarNameTooltip" xml:space="preserve">
+    <value>Search Scalar</value>
+  </data>
+  <data name="SearchRecSetNameTooltip" xml:space="preserve">
+    <value>Search Recordset</value>
+  </data>
+  <data name="SearchObjectNameTooltip" xml:space="preserve">
+    <value>Search Object</value>
+  </data>
+  <data name="SearchOutputVariableTooltip" xml:space="preserve">
+    <value>Search Output Variable</value>
+  </data>
+  <data name="AdvancedRecordsetLocalVariable" xml:space="preserve">
+    <value>Set a local variable to be used in the SQL Query.</value>
+  </data>
+  <data name="AdvancedRecordsetVariable" xml:space="preserve">
+    <value>The value of the local variable to be used in SQL Query. Scalar variables can be used as a value.</value>
+  </data>
+  <data name="AdvancedRecordsetSqlQuery" xml:space="preserve">
+    <value>The SQL query</value>
+  </data>
+  <data name="AdvancedRecordsetSqlQueryExecuteCommand" xml:space="preserve">
+    <value>Returns the output of the execution if any. Varies depending on what was executed.</value>
   </data>
 </root>

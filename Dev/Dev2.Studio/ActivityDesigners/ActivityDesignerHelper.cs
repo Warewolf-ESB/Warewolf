@@ -44,7 +44,6 @@ using Dev2.Activities.Designers2.RabbitMQ.Consume;
 using Dev2.Activities.Designers2.RabbitMQ.Publish;
 using Dev2.Activities.Designers2.Random;
 using Dev2.Activities.Designers2.ReadFile;
-using Dev2.Activities.Designers2.ReadFolder;
 using Dev2.Activities.Designers2.Rename;
 using Dev2.Activities.Designers2.Replace;
 using Dev2.Activities.Designers2.Script;
@@ -95,6 +94,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.DateAndTime;
+using Dev2.Activities.Designers2.AdvancedRecordset;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -104,7 +104,7 @@ namespace Dev2.Studio.ActivityDesigners
             {
                 { typeof(DsfDotNetMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfDotNetMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
-                  { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
+                { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
                 { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },
@@ -121,11 +121,12 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDotNetDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesigner) },
                 { typeof(DsfDateTimeActivity),typeof(Activities.Designers2.DateTime.DateTimeDesigner) },
                 { typeof(DsfDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifference.DateTimeDifferenceDesigner) },
+                { typeof(DsfGatherSystemInformationActivity), typeof(GatherSystemInformationDesigner) },
                 { typeof(DsfDotNetGatherSystemInformationActivity),typeof(GatherSystemInformationDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
-                   { typeof(DsfDotNetCalculateActivity), typeof(CalculateDesigner) },
+                { typeof(DsfDotNetCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfDotNetAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
                 { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
                 { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
@@ -135,7 +136,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPathDelete), typeof(DeleteDesigner) },
                 { typeof(DsfFileRead), typeof(ReadFileDesigner) },
                 { typeof(DsfFileWrite), typeof(WriteFileDesigner) },
-                { typeof(DsfFolderRead), typeof(ReadFolderDesigner) },
+                { typeof(DsfFolderRead), typeof(Activities.Designers2.ReadFolder.ReadFolderDesigner) },
+                { typeof(DsfFolderReadActivity), typeof(Activities.Designers2.ReadFolderNew.ReadFolderDesigner) },
                 { typeof(DsfPathRename), typeof(RenameDesigner) },
                 { typeof(DsfUnZip), typeof(UnzipDesigner) },
                 { typeof(DsfZip), typeof(ZipDesigner) },
@@ -159,9 +161,10 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesigner) },
                 { typeof(DsfMySqlDatabaseActivity), typeof(MySqlDatabaseDesigner) },
                 { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesigner) },
-                  { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
-                  { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
-                {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
+                { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
+                { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
+                { typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
+                { typeof(DsfExchangeEmailNewActivity),typeof(Activities.Designers2.ExchangeNewEmail.ExchangeEmailDesigner) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
@@ -170,8 +173,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },
-                 { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteDesigner) },
-                 { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesigner) },
+                { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteDesigner) },
+                { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },
@@ -188,6 +191,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
+                { typeof(AdvancedRecordsetActivity), typeof(AdvancedRecordsetDesigner) }
             };
         static Hashtable _hashTable;
 

@@ -66,7 +66,7 @@
       <Type>String</Type>
       <PropertyCondition>AreEqual</PropertyCondition>
     </AssertAction>
-    <TestStepMarkerAction Comment="" MarkerInformation="AssertMethod1">
+    <TestStepMarkerAction Comment="" MarkerInformation="Open_Workflow_Tab_UI_Map_Designer_To_Flowchart">
       <ParameterName />
       <StepId>-1</StepId>
       <Direction>Start</Direction>
@@ -159,9 +159,10 @@
                                 <WindowTitle>Warewolf</WindowTitle>
                               </WindowTitles>
                               <AndCondition>
-                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                 <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                 <PropertyCondition Name="Name">Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel</PropertyCondition>
+                                <PropertyCondition Name="Instance">1</PropertyCondition>
                               </AndCondition>
                               <SupportLevel>0</SupportLevel>
                               <Descendants>
@@ -323,6 +324,20 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
+                                                            <UIObject ControlType="Custom" Id="StartNode2" FriendlyName="StartNode" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.StartSymbol</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">StartSymbol</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
                                                             <UIObject ControlType="Custom" Id="StartNode" FriendlyName="StartNode" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
@@ -377,7 +392,21 @@
                                                                 <PropertyCondition Name="Instance">3</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
-                                                              <Descendants />
+                                                              <Descendants>
+                                                                <UIObject ControlType="Text" Id="Item1Text" FriendlyName="1" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">labelTextBlock</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                              </Descendants>
                                                             </UIObject>
                                                             <UIObject ControlType="Text" Id="Error1" FriendlyName="Error1" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
@@ -768,6 +797,20 @@
                                                                   <Descendants />
                                                                 </UIObject>
                                                               </Descendants>
+                                                            </UIObject>
+                                                            <UIObject ControlType="Custom" Id="UIItem1b66d61971804317Custom" FriendlyName="1b66d619-7180-4317-805d-4bf5074d91da,300,187.5 300..." SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="ClassName">Uia.ConnectorWithoutStartDot</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId">1b66d619-7180-4317-805d-4bf5074d91da,300,187.5 300,237.5</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
@@ -4013,12 +4056,22 @@
                                                             <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
+                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="Name" Operator="Contains">SQL Error: Error 15700</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                        <UIObject ControlType="Text" Id="UIErrorText" FriendlyName="Error :" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
-                                                            <PropertyCondition Name="Name">SQL Error: Error 15700, severity -1, state 1 was raised, but no message with that error number was found in sys.messages. If error is larger than 50000, make sure the user-defined message is added using sp_addmessage.
-An invalid parameter or option was specified for procedure 'some_procedure'.
-This is an error
-An invalid parameter or option was specified for procedure 'some_procedure'.</PropertyCondition>
+                                                            <PropertyCondition Name="Name">Error :</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -4170,6 +4223,87 @@ An invalid parameter or option was specified for procedure 'some_procedure'.</Pr
                                   <Descendants />
                                 </UIObject>
                               </Descendants>
+                            </UIObject>
+                            <UIObject ControlType="TabList" Id="UIUI_TabManager_AutoIDTabList" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                                <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants>
+                                <UIObject ControlType="TabPage" Id="DragAndDropMergeResource2" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                    <PropertyCondition Name="Name">Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="TabPage" Id="DragAndDropMergeResource1" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                    <PropertyCondition Name="Name">Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="TabPage" Id="ResourceForSaveAllTabs1" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                    <PropertyCondition Name="Name">Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel</PropertyCondition>
+                                    <PropertyCondition Name="Instance">2</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                                <UIObject ControlType="TabPage" Id="ResourceForSaveAllTabs2" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                                  <TechnologyName>UIA</TechnologyName>
+                                  <WindowTitles>
+                                    <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
+                                  </WindowTitles>
+                                  <AndCondition>
+                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                    <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                    <PropertyCondition Name="Name">Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel</PropertyCondition>
+                                  </AndCondition>
+                                  <SupportLevel>0</SupportLevel>
+                                  <Descendants />
+                                </UIObject>
+                              </Descendants>
+                            </UIObject>
+                            <UIObject ControlType="TabPage" Id="Unsaved2" FriendlyName="Dev2.Studio.ViewModels.Workflow.WorkflowDesignerVi..." SpecialControlType="None">
+                              <TechnologyName>UIA</TechnologyName>
+                              <WindowTitles>
+                                <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
+                              </WindowTitles>
+                              <AndCondition>
+                                <PropertyCondition Name="ControlType">TabPage</PropertyCondition>
+                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                <PropertyCondition Name="Name">Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel</PropertyCondition>
+                                <PropertyCondition Name="Instance">2</PropertyCondition>
+                              </AndCondition>
+                              <SupportLevel>0</SupportLevel>
+                              <Descendants />
                             </UIObject>
                           </Descendants>
                         </UIObject>
@@ -4531,102 +4665,44 @@ An invalid parameter or option was specified for procedure 'some_procedure'.</Pr
             </UIObject>
           </Descendants>
         </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UICodedUITestBuilderWindow" FriendlyName="Coded UI Test Builder" SpecialControlType="None" SessionId="32116144">
+        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2CANDICEDWindow" FriendlyName="Warewolf (DEV2\CANDICE.DANIEL)" SpecialControlType="None" SessionId="77793920">
           <TechnologyName>UIA</TechnologyName>
           <WindowTitles>
-            <WindowTitle>Coded UI Test Builder</WindowTitle>
+            <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
           </WindowTitles>
           <AndCondition>
             <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Coded UI Test Builder</PropertyCondition>
+            <PropertyCondition Name="Name">Warewolf (DEV2\CANDICE.DANIEL)</PropertyCondition>
             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
             <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
           </AndCondition>
           <SupportLevel>0</SupportLevel>
           <Descendants>
-            <UIObject ControlType="Window" Id="UIWpfWindow" FriendlyName="Wpf" SpecialControlType="None">
+            <UIObject ControlType="Custom" Id="UIUI_SplitPane_AutoIDCustom" FriendlyName="UI_SplitPane_AutoID" SpecialControlType="None">
               <TechnologyName>UIA</TechnologyName>
               <WindowTitles>
-                <WindowTitle>Coded UI Test Builder</WindowTitle>
-              </WindowTitles>
-              <SearchConfigurations>
-                <SearchConfiguration>Distinct</SearchConfiguration>
-              </SearchConfigurations>
-              <AndCondition>
-                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                <PropertyCondition Name="ControlType">Window</PropertyCondition>
-              </AndCondition>
-              <SupportLevel>0</SupportLevel>
-              <Descendants />
-            </UIObject>
-          </Descendants>
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWpfWindow" FriendlyName="Wpf" SpecialControlType="None" SessionId="10028920">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles />
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants />
-        </TopLevelWindow>
-        <TopLevelWindow ControlType="Window" Id="UIWarewolfDEV2SANELEMTWindow" FriendlyName="Warewolf (DEV2\SANELE.MTHEMBU)" SpecialControlType="None" SessionId="658108">
-          <TechnologyName>UIA</TechnologyName>
-          <WindowTitles>
-            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-          </WindowTitles>
-          <AndCondition>
-            <PropertyCondition Name="ControlType">Window</PropertyCondition>
-            <PropertyCondition Name="Name">Warewolf (DEV2\SANELE.MTHEMBU)</PropertyCondition>
-            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
-          </AndCondition>
-          <SupportLevel>0</SupportLevel>
-          <Descendants>
-            <UIObject ControlType="Custom" Id="UIDebugOutputCustom" FriendlyName="DebugOutput" SpecialControlType="None">
-              <TechnologyName>UIA</TechnologyName>
-              <WindowTitles>
-                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
               </WindowTitles>
               <AndCondition>
                 <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
-                <PropertyCondition Name="ClassName">Uia.DebugOutputView</PropertyCondition>
-                <PropertyCondition Name="AutomationId">DebugOutput</PropertyCondition>
+                <PropertyCondition Name="ClassName">Uia.SplitPane</PropertyCondition>
+                <PropertyCondition Name="AutomationId">UI_SplitPane_AutoID</PropertyCondition>
               </AndCondition>
               <SupportLevel>0</SupportLevel>
               <Descendants>
-                <UIObject ControlType="Tree" Id="UIDebugOutputTreeTree" FriendlyName="DebugOutputTree" SpecialControlType="None">
+                <UIObject ControlType="TabList" Id="UIUI_TabManager_AutoIDTabList" FriendlyName="UI_TabManager_AutoID" SpecialControlType="None">
                   <TechnologyName>UIA</TechnologyName>
                   <WindowTitles>
-                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                    <WindowTitle>Warewolf (DEV2\CANDICE.DANIEL)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                    <PropertyCondition Name="ControlType">Tree</PropertyCondition>
-                    <PropertyCondition Name="AutomationId">DebugOutputTree</PropertyCondition>
+                    <PropertyCondition Name="ControlType">TabList</PropertyCondition>
+                    <PropertyCondition Name="AutomationId">UI_TabManager_AutoID</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
-                  <Descendants>
-                    <UIObject ControlType="TreeItem" Id="UISQLServerDatabaseTreeItem" FriendlyName="SQL Server Database" SpecialControlType="None">
-                      <TechnologyName>UIA</TechnologyName>
-                      <WindowTitles>
-                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
-                      </WindowTitles>
-                      <SearchConfigurations>
-                        <SearchConfiguration>Expand</SearchConfiguration>
-                      </SearchConfigurations>
-                      <AndCondition>
-                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                        <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                        <PropertyCondition Name="AutomationId">Step</PropertyCondition>
-                      </AndCondition>
-                      <SupportLevel>0</SupportLevel>
-                      <Descendants />
-                    </UIObject>
-                  </Descendants>
+                  <Descendants />
                 </UIObject>
               </Descendants>
             </UIObject>

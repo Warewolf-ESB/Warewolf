@@ -83,15 +83,11 @@
         </ui:IntellisenseTextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="Username" Margin="{StaticResource ActivityBorderTop}"/>
-        <ui:IntellisenseTextBox Grid.Column="1"
+        <TextBox Grid.Column="1"
                                 Grid.Row="1"
                                 Margin="{StaticResource ActivityBorderTop}"
-                                DefaultText="[[UserName]]"
-                                AllowUserInsertLine="False"
-                                WrapInBrackets="False"
                                 Text="{Binding Path=ModelItem.Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 ToolTip="{x:Static languages:Tooltips.ReadFileToolTipUsername}"
-                                Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
             <i:Interaction.Behaviors>
@@ -101,7 +97,7 @@
                                      SourcePropertyValue="{Binding  ModelItem.Username, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-        </ui:IntellisenseTextBox>
+        </TextBox>
 
         <TextBlock Grid.Column="0" Grid.Row="2" Text="Password" Margin="{StaticResource ActivityBorderTop}"/>
         <PasswordBox Grid.Column="1"

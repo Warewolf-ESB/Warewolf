@@ -480,8 +480,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentModel_Constructor_NullConnection_ThrowsArgumentNullException()
         {
-            //var wizard = new Mock<IWizardEngine>();
-            
             new Server(Guid.NewGuid(), null);
             
         }
@@ -717,7 +715,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void EnvironmentModel_ForceLoadResources_InvokesForceLoadOnResourceRepository()
         {
             var resourceRepo = new Mock<IResourceRepository>();
-            resourceRepo.Setup(r => r.ForceLoad()).Verifiable();
+            resourceRepo.Setup(r => r.Load(true)).Verifiable();
 
             var connection = CreateConnection();
             connection.Setup(c => c.DisplayName).Returns("Test");
@@ -729,14 +727,14 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             env.ForceLoadResources();
 
-            resourceRepo.Verify(r => r.ForceLoad(), Times.Once());
+            resourceRepo.Verify(r => r.Load(true), Times.Once());
         }
 
         [TestMethod]
         public void EnvironmentModel_LoadResources_ShouldLoadTrue_InvokesLoadOnResourceRepository()
         {
             var resourceRepo = new Mock<IResourceRepository>();
-            resourceRepo.Setup(r => r.Load()).Verifiable();
+            resourceRepo.Setup(r => r.Load(false)).Verifiable();
 
             var connection = CreateConnection();
             connection.Setup(c => c.DisplayName).Returns("Test");
@@ -755,7 +753,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void EnvironmentModel_LoadResources_ShouldLoadFalse_NotInvokeLoadOnResourceRepository()
         {
             var resourceRepo = new Mock<IResourceRepository>();
-            resourceRepo.Setup(r => r.Load()).Verifiable();
+            resourceRepo.Setup(r => r.Load(false)).Verifiable();
 
             var connection = CreateConnection();
             connection.Setup(c => c.DisplayName).Returns("Test");
@@ -765,7 +763,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             env.LoadResources();
 
-            resourceRepo.Verify(r => r.Load(), Times.Never());
+            resourceRepo.Verify(r => r.Load(false), Times.Never());
         }
 
         [TestMethod]
@@ -774,7 +772,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void EnvironmentModel_Load_Loads_SetsLoaded()
         {
             var resourceRepo = new Mock<IResourceRepository>();
-            resourceRepo.Setup(r => r.Load()).Verifiable();
+            resourceRepo.Setup(r => r.Load(false)).Verifiable();
 
             var connection = CreateConnection();
             connection.Setup(c => c.DisplayName).Returns("Test");
@@ -794,7 +792,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void EnvironmentModel_Load_DoesNotLoads_SetsLoaded()
         {
             var resourceRepo = new Mock<IResourceRepository>();
-            resourceRepo.Setup(r => r.Load()).Verifiable();
+            resourceRepo.Setup(r => r.Load(false)).Verifiable();
 
             var connection = CreateConnection();
             connection.Setup(c => c.DisplayName).Returns("Test");
@@ -813,7 +811,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void EnvironmentModel_Load_CallsLoadedEvent()
         {
             var resourceRepo = new Mock<IResourceRepository>();
-            resourceRepo.Setup(r => r.Load()).Verifiable();
+            resourceRepo.Setup(r => r.Load(false)).Verifiable();
 
             var connection = CreateConnection();
             connection.Setup(c => c.DisplayName).Returns("Test");
@@ -1080,7 +1078,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            //var connectionServerId = Guid.NewGuid();
             var memoServerID = Guid.NewGuid();
 
             var pubMemo = new PermissionsModifiedMemo { ServerID = memoServerID };

@@ -11,9 +11,9 @@
 using System;
 using System.Runtime.Serialization;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Messages;
 using Dev2.Security;
-using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
@@ -23,9 +23,9 @@ using Dev2.Studio.ViewModels.Diagnostics;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
-    public interface IWorkSurfaceContextViewModel : IDisposable
+    public interface IWorkSurfaceContextViewModel : IDisposable, IScreen
     {
-        WorkSurfaceKey WorkSurfaceKey { get; }
+        IWorkSurfaceKey WorkSurfaceKey { get; }
         IServer Environment { get; }
         DebugOutputViewModel DebugOutputViewModel { get; set; }
         bool DeleteRequested { get; set; }
@@ -45,8 +45,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         object Parent { get; set; }
         string DisplayName { get; set; }
         bool IsNotifying { get; set; }
-
-        void Handle(ExecuteResourceMessage message);
 
         void Handle(SaveResourceMessage message);
 
@@ -68,6 +66,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager);
 
+        bool Save();
         bool Save(bool isLocalSave, bool isStudioShutdown);
 
         bool IsEnvironmentConnected();
@@ -75,17 +74,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         void FindMissing();
 
         void Debug();
-
-        /// <summary>
-        /// Requests tha the view bound to this view model closes
-        /// </summary>
+        
         void RequestClose();
-
-        /// <summary>
-        /// Requests tha the view bound to this view model closes
-        /// </summary>
+        
         void RequestClose(ViewModelDialogResults dialogResult);
 
+        bool CanSave();
         void CanClose(Action<bool> callback);
 
         void TryClose();

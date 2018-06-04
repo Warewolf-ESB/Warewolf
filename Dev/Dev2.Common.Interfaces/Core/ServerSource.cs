@@ -25,15 +25,8 @@ namespace Dev2.Common.Interfaces.Core
 
         #endregion
 
-        #region Implementation of IEquatable<IServerSource>
-        
-        public bool Equals(IServerSource other)
-        {
-            return Equals(other as ServerSource);
-        }
-
-        #endregion
-
         public bool Equals(ServerSource other) => string.Equals(Address, other.Address, StringComparison.InvariantCultureIgnoreCase) && AuthenticationType == other.AuthenticationType && string.Equals(UserName, other.UserName, StringComparison.InvariantCultureIgnoreCase) && string.Equals(Password, other.Password) && string.Equals(Name, other.Name, StringComparison.InvariantCultureIgnoreCase);
+
+        public bool Equals(IServerSource other) => string.Equals(Address, other.Address, StringComparison.InvariantCultureIgnoreCase) && AuthenticationType == other.AuthenticationType && string.Equals(UserName, other.UserName, StringComparison.InvariantCultureIgnoreCase) && string.Equals(Password, other.Password) && string.Equals(Name, other.Name, StringComparison.InvariantCultureIgnoreCase);
     }
 }

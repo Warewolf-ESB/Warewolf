@@ -15,14 +15,8 @@ namespace Dev2.Activities
 {
     public class GetSystemInformationStandardHelper: GetSystemInformationHelper
     {
-        public override string GetFullDateTimeInformation()
-        {
-            return DateTime.Now.ToString(GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat);
-        }
+        public override string GetFullDateTimeInformation() => DateTime.Now.ToString(GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat);
 
-        public override string GetDateTimeFormatInformation()
-        {
-            return GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
-        }
+        public override string GetDateTimeFormatInformation() => GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
     }
 }

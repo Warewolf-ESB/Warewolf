@@ -13,7 +13,7 @@ using System;
 namespace Dev2.Data.Interfaces.Enums{
     [Flags]
     public enum DataListMergeFrequency {
-        Never = 0,
+        None = 0,
         OnBookmark = 1,
         OnResumption = 2,
         OnCompletion = 4,

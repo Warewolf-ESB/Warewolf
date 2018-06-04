@@ -213,8 +213,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         IErrorInfo WorstDesignError
         {
-            
-            get { return _worstDesignError; }
             set
             {
                 if (_worstDesignError != value)
@@ -224,6 +222,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     WorstError = value?.ErrorType ?? ErrorType.None;
                 }
             }
+            get => _worstDesignError;
         }
 
         public int LabelWidth { get; set; }
@@ -343,13 +342,11 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     }
 
                     var dotNetNamespaceRegion = sender as DotNetNamespaceRegion;
-                    if (dotNetNamespaceRegion?.Dependants.Single(region => region is OutputsRegion) is OutputsRegion outputsRegion)
+                    if (dotNetNamespaceRegion?.Dependants.Single(region => region is OutputsRegion) is OutputsRegion outputsRegion && dotNetNamespaceRegion.SelectedNamespace != null)
                     {
-                        if (dotNetNamespaceRegion.SelectedNamespace != null)
-                        {
-                            outputsRegion.ObjectResult = dotNetNamespaceRegion.SelectedNamespace.JsonObject;
-                        }
+                        outputsRegion.ObjectResult = dotNetNamespaceRegion.SelectedNamespace.JsonObject;
                     }
+
                     OnPropertyChanged("IsActionsVisible");
                 };
                 regions.Add(NamespaceRegion);
@@ -363,8 +360,6 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                             OutputsRegion.IsObject = true;
                             OutputsRegion.IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(OutputsRegion.ObjectResult);
                         }
-
-                        //ClearToolRegionErrors();
                     }
                 };
                 ConstructorRegion.SomethingChanged += (sender, args) =>
@@ -564,13 +559,8 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        public bool IsConstructorVisible
-        {
-            get
-            {
-                return ConstructorRegion?.Constructors?.Count > 0;
-            }
-        }
+        public bool IsConstructorVisible => ConstructorRegion?.Constructors?.Count > 0;
+
         public bool IsActionsVisible => NamespaceRegion?.SelectedNamespace != null;
 
         public ObservableCollection<IMethodToolRegion<IPluginAction>> MethodsToRunList
@@ -720,7 +710,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        public void SetDisplayName(string outputFieldName)
+        public void SetDisplayName(string displayName)
         {
             var index = DisplayName.IndexOf(" -", StringComparison.Ordinal);
 
@@ -729,15 +719,15 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                 DisplayName = DisplayName.Remove(index);
             }
 
-            var displayName = DisplayName;
+            var displayName2 = DisplayName;
 
-            if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+            if (!string.IsNullOrEmpty(displayName2) && displayName2.Contains("Dsf"))
             {
-                DisplayName = displayName;
+                DisplayName = displayName2;
             }
-            if (!string.IsNullOrWhiteSpace(outputFieldName))
+            if (!string.IsNullOrWhiteSpace(displayName))
             {
-                DisplayName = displayName + outputFieldName;
+                DisplayName = displayName2 + displayName;
             }
         }
 

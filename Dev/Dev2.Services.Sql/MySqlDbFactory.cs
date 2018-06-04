@@ -23,21 +23,13 @@ namespace Dev2.Services.Sql
             return new MySqlConnection(connectionString);
         }
 
-        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText)
+        public IDbCommand CreateCommand(IDbConnection connection, CommandType commandType, string commandText) => new MySqlCommand(commandText, connection as MySqlConnection)
         {
-            return new MySqlCommand(commandText, connection as MySqlConnection)
-            {
-                CommandType = commandType,
-                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
-            };
-        }
+            CommandType = commandType,
+            CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
+        };
 
-        public DataTable GetSchema(IDbConnection connection, string collectionName)
-        {
-
-            return GetMySqlServerSchema(connection);
-
-        }
+        public DataTable GetSchema(IDbConnection connection, string collectionName) => GetMySqlServerSchema(connection);
 
         DataTable GetMySqlServerSchema(IDbConnection connection)
         {
@@ -58,21 +50,41 @@ namespace Dev2.Services.Sql
 
         public DataSet FetchDataSet(IDbCommand command)
         {
-            if (!(command is SqlCommand))
+            if (!(command is MySqlCommand))
             {
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBComman"));
             }
 
-            using (var dataSet = new DataSet())
+            var dataSet = new DataSet();
+            using (var adapter = new MySqlDataAdapter(command as MySqlCommand))
             {
-                using (var adapter = new SqlDataAdapter(command as SqlCommand))
-                {
-                    adapter.Fill(dataSet);
-                }
-                return dataSet;
+                adapter.Fill(dataSet);
             }
+            return dataSet;
         }
+		public int ExecuteNonQuery(IDbCommand command)
+		{
+			if (!(command is SqlCommand))
+			{
+				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+			}
 
-        #endregion
-    }
+			int retValue = 0;
+			retValue = command.ExecuteNonQuery();
+			return retValue;
+		}
+
+		public int ExecuteScalar(IDbCommand command)
+		{
+			if (!(command is SqlCommand))
+			{
+				throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBCommand"));
+			}
+
+			int retValue = 0;
+			retValue = Convert.ToInt32(command.ExecuteScalar());
+			return retValue;
+		}
+		#endregion
+	}
 }

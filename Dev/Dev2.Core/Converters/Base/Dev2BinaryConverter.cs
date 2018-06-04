@@ -57,14 +57,8 @@ namespace Dev2.Converters
             throw new ArgumentException(Resources.Dev2BinaryConverterPayloadToSmallException);
         }
 
-        public bool IsType(string payload)
-        {
-            return Regex.IsMatch(payload, "^[01]+$");
-        }
+        public bool IsType(string payload) => Regex.IsMatch(payload, "^[01]+$");
 
-        public Enum HandlesType()
-        {
-            return enDev2BaseConvertType.Binary;
-        }
+        public Enum HandlesType() => enDev2BaseConvertType.Binary;
     }
 }

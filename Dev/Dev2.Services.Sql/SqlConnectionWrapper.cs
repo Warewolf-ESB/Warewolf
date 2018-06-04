@@ -5,66 +5,120 @@ namespace Dev2.Services.Sql
 {
     public class SqlConnectionWrapper : ISqlConnection
     {
-        readonly SqlConnection _connection;
-        public SqlConnectionWrapper(string connString)
+        private string _actualConnectionString;
+        SqlConnection _connection;
+        public SqlConnectionWrapper()
+        {
+        }
+
+        public string CreateConnectionString(string connString)
         {
             var conStrBuilder = new SqlConnectionStringBuilder(connString)
             {
-                ConnectTimeout = 20,
+                ConnectTimeout = 30,
                 MaxPoolSize = 100,
-                MultipleActiveResultSets = true,
                 Pooling = true,
                 ApplicationName = "Warewolf Service"
             };
+            _actualConnectionString = conStrBuilder.ConnectionString;
+            return _actualConnectionString;
+        }
 
-            var cString = conStrBuilder.ConnectionString;
+        public SqlConnectionWrapper(string connString)
+        {
+            CreateConnectionString(connString);
+            CreateConnection();
+        }
 
-            _connection = new SqlConnection(cString);
+        private void CreateConnection()
+        {
+            _connection = new SqlConnection(_actualConnectionString);
         }
 
         public bool FireInfoMessageEventOnUserErrors
         {
-            get => _connection.FireInfoMessageEventOnUserErrors;
-            set => _connection.FireInfoMessageEventOnUserErrors = value;
+            get
+            {
+
+                EnsureOpen();
+                return _connection.FireInfoMessageEventOnUserErrors;
+            }
+            set
+            {
+                EnsureOpen();
+                _connection.FireInfoMessageEventOnUserErrors = value;
+            }
         }
 
         public bool StatisticsEnabled
         {
-            get => _connection.StatisticsEnabled;
-            set => _connection.StatisticsEnabled = value;
+            get
+            {
+                EnsureOpen();
+                return _connection.StatisticsEnabled;
+            }
+            set
+            {
+                EnsureOpen();
+                _connection.StatisticsEnabled = value;
+            }
         }
         public event SqlInfoMessageEventHandler InfoMessage;
 
-        public ConnectionState State => _connection.State;
+        public ConnectionState State
+        {
+            get
+            {
+                EnsureOpen();
+                return _connection.State;
+            }
+        }
+
+        public string ActualConnectionString => _actualConnectionString;
 
         public IDbTransaction BeginTransaction()
         {
+            EnsureOpen();
             return _connection.BeginTransaction();
         }
 
-        public void Open()
+        public void EnsureOpen()
         {
-            _connection.Open();
+            if (_connection == null)
+            {
+                CreateConnection();
+            }
+            if (_connection.State != ConnectionState.Open)
+            {
+                _connection.Open();
+            }
         }
 
         public DataTable GetSchema(string table)
         {
+            EnsureOpen();
             return _connection.GetSchema(table);
         }
 
         public IDbCommand CreateCommand()
         {
+            EnsureOpen();
             return _connection.CreateCommand();
         }
 
         public void SetInfoMessage(SqlInfoMessageEventHandler a)
         {
+            EnsureOpen();
             _connection.InfoMessage += a;
         }
 
         public void Dispose()
         {
-            _connection.Dispose();
+            if (_connection != null)
+            {
+                _connection.Dispose();
+                _connection = null;
+            }
         }
     }
 }

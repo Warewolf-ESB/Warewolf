@@ -5,6 +5,7 @@ using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UI.Tests
 {
@@ -136,6 +137,17 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.Exists);
         }
 
+        [TestMethod]
+        [TestCategory("Deploy from Remote")]
+        public void Deploy_From_RemoteConnection_CreateNewWorkflow()
+        {
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            DeployUIMap.WhenResourcesIsVisibleOnTheTree();
+            Mouse.Click(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName);
+            UIMap.Click_NewWorkflow_RibbonButton();
+            Assert.AreEqual("Unsaved 1", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.TabDescription.DisplayText, "Workflow created on different server than expected.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
@@ -235,6 +247,21 @@ namespace Warewolf.UI.Tests
         }
 
         private ServerSourceUIMap _ServerSourceUIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         #endregion
     }

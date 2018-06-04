@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public abstract void InsertAt(int indexNumber);
 
-        protected abstract void AddToCollection(IEnumerable<string> source, bool overWrite);
+        protected abstract void AddToCollection(IEnumerable<string> sources, bool overwrite);
 
         public QuickVariableInputViewModel QuickVariableInputViewModel
         {
@@ -108,14 +108,12 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 else
                 {
-                    if (propertyName == ShowQuickVariableInputProperty.Name)
+                    if (propertyName == ShowQuickVariableInputProperty.Name && PreviousView == ShowLargeProperty.Name)
                     {
-                        if (PreviousView == ShowLargeProperty.Name)
-                        {
-                            _isToggleCheckedChanged = true;
-                            ShowLarge = false;
-                        }
+                        _isToggleCheckedChanged = true;
+                        ShowLarge = false;
                     }
+
                 }
                 _isToggleCheckedChanged = false;
 

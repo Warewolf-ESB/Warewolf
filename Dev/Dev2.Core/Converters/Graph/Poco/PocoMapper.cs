@@ -46,22 +46,20 @@ namespace Unlimited.Framework.Converters.Graph.Poco
         {
             var paths = new List<IPath>();
 
-            if (propertyStack.Count == 0 && data.GetType().IsEnumerable())
+            if (propertyStack.Count == 0 && data.GetType().IsEnumerable() && data is IEnumerable enumerableData)
             {
-                if (data is IEnumerable enumerableData)
+                var enumerator = enumerableData.GetEnumerator();
+                enumerator.Reset();
+                if (enumerator.MoveNext())
                 {
-                    var enumerator = enumerableData.GetEnumerator();
-                    enumerator.Reset();
-                    if (enumerator.MoveNext())
-                    {
-                        propertyStack.Push(new Tuple<string, bool, bool, object>("UnnamedArray", true, true, enumerableData));
-                        MapData(enumerator.Current, propertyStack, root, paths);
-                        propertyStack.Pop();
+                    propertyStack.Push(new Tuple<string, bool, bool, object>("UnnamedArray", true, true, enumerableData));
+                    MapData(enumerator.Current, propertyStack, root, paths);
+                    propertyStack.Pop();
 
 
-                    }
                 }
             }
+
 
             if (propertyStack.Count == 0 && data.GetType().IsPrimitive())
             {
@@ -119,23 +117,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 {
                     if (propertyInfo.PropertyType.IsEnumerable())
                     {
-                        if (propertyData is IEnumerable enumerableData)
-                        {
-                            propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
-                            paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                            propertyStack.Pop();
-
-                            var enumerator = enumerableData.GetEnumerator();
-                            enumerator.Reset();
-                            if (enumerator.MoveNext())
-                            {
-                                propertyData = enumerator.Current;
-
-                                propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
-                                paths.AddRange(BuildPaths(propertyData, propertyStack, root));
-                                propertyStack.Pop();
-                            }
-                        }
+                        MapEnumarableData(data, propertyStack, root, paths, propertyInfo, propertyData);
                     }
                     else
                     {
@@ -143,6 +125,27 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                         paths.AddRange(BuildPaths(propertyData, propertyStack, root));
                         propertyStack.Pop();
                     }
+                }
+            }
+        }
+
+        void MapEnumarableData(object data, Stack<Tuple<string, bool, bool, object>> propertyStack, object root, List<IPath> paths, PropertyInfo propertyInfo, object propertyData)
+        {
+            if (propertyData is IEnumerable enumerableData)
+            {
+                propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), false, data));
+                paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                propertyStack.Pop();
+
+                var enumerator = enumerableData.GetEnumerator();
+                enumerator.Reset();
+                if (enumerator.MoveNext())
+                {
+                    propertyData = enumerator.Current;
+
+                    propertyStack.Push(new Tuple<string, bool, bool, object>(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable(), true, data));
+                    paths.AddRange(BuildPaths(propertyData, propertyStack, root));
+                    propertyStack.Pop();
                 }
             }
         }
