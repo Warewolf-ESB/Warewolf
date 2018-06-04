@@ -114,7 +114,7 @@ namespace Dev2.Studio.ViewModels
         IContextualResourceModel _contextualResourceModel;
         bool _canDebug = true;
         bool _menuExpanded;
-        IApplicationTracker _applicationTracker;
+        readonly IApplicationTracker _applicationTracker;
         public IPopupController PopupProvider { get; set; }
         IServerRepository ServerRepository { get; }
         public bool CloseCurrent { get; private set; }

@@ -52,7 +52,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _canDebug;
         readonly IPopupController _popupController;
         RelayCommand _cancelCommand;
-        IApplicationTracker _applicationTracker;
+        readonly IApplicationTracker _applicationTracker;
         #endregion Fields
 
         public event Action DebugExecutionStart;

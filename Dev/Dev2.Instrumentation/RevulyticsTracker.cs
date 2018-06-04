@@ -111,11 +111,11 @@ namespace Dev2.Instrumentation
             }
         }
 
-        public void TrackCustomEvent(string eventCategory, string eventName, string customValues)
+        public void TrackCustomEvent(string category, string eventName, string customValues)
         {
             if (AppUsageStats.CollectUsageStats && RuiSdk != null)
             {
-                var result = RuiSdk.TrackEventText(eventCategory, eventName, customValues, Username);
+                var result = RuiSdk.TrackEventText(category, eventName, customValues, Username);
                 LogErrorResult(result);
             }
 

@@ -118,7 +118,7 @@ namespace Dev2.Studio
                 applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
             }            
             ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
-            //CustomGitOps.SetCustomGitTool(new ExternalProcessExecutor());
+            
             Task.Factory.StartNew(() =>
             {
                 var dir = new DirectoryHelper();

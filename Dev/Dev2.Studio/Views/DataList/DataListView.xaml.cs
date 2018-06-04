@@ -73,22 +73,16 @@ namespace Dev2.Studio.Views.DataList
 
         void DoDataListValidation(object sender)
         {
-            if (DataContext is IDataListViewModel vm)
+            if (DataContext is IDataListViewModel vm && sender is TextBox txtbox)
             {
-                if (sender is TextBox txtbox)
-                {
-                    var itemThatChanged = txtbox.DataContext as IDataListItemModel;
-                    vm.RemoveBlankRows(itemThatChanged);
-                    vm.ValidateNames(itemThatChanged);
+                var itemThatChanged = txtbox.DataContext as IDataListItemModel;
+                vm.RemoveBlankRows(itemThatChanged);
+                vm.ValidateNames(itemThatChanged);
 
-                    if (vm.HasErrors && vm.DataListErrorMessage.Length != 0)
-                    {
-                        var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                        if (applicationTracker != null)
-                        {
-                            applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventVariables.RedBracketsSyntax, vm.DataListErrorMessage);
-                        }
-                    }
+                if (vm.HasErrors && vm.DataListErrorMessage.Length != 0)
+                {
+                    var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+                    applicationTracker?.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory, Warewolf.Studio.Resources.Languages.TrackEventVariables.RedBracketsSyntax, vm.DataListErrorMessage);
                 }
             }
         }

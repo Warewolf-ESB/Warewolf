@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         string _searchTerm;
         ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
         bool _isVisible;
-        IApplicationTracker _applicationTracker;
+        readonly IApplicationTracker _applicationTracker;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
