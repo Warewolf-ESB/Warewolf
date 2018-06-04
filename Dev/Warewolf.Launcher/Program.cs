@@ -286,7 +286,7 @@ namespace Warewolf.Launcher
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
                 {
-                    MergeDotCoverSnapshots(build);
+                    build.MergeDotCoverSnapshots();
                 }
             }
 
@@ -324,7 +324,7 @@ namespace Warewolf.Launcher
 
             if (build.MergeDotCoverSnapshotsInDirectory != null)
             {
-                MergeDotCoverSnapshots(build);
+                build.MergeDotCoverSnapshots();
             }
 
             if (!string.IsNullOrEmpty(build.Cleanup))
@@ -364,18 +364,6 @@ namespace Warewolf.Launcher
                     }
                 }
             }
-        }
-
-        private static void MergeDotCoverSnapshots(TestLauncher build)
-        {
-            var DotCoverSnapshots = Directory.GetFiles(build.MergeDotCoverSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
-            if (string.IsNullOrEmpty(build.JobName))
-            {
-                build.JobName = "DotCover";
-            }
-            var MergedSnapshotFileName = build.JobName.Split(',')[0];
-            MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
-            build.MergeDotCoverSnapshots(DotCoverSnapshots, build.MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, build.MergeDotCoverSnapshotsInDirectory + "\\DotCover");
         }
     }
 }

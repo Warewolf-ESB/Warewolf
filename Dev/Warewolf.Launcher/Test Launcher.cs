@@ -1368,5 +1368,17 @@ namespace Warewolf.Launcher
             process.WaitForExit();
             return process;
         }
+
+        public void MergeDotCoverSnapshots()
+        {
+            var DotCoverSnapshots = Directory.GetFiles(MergeDotCoverSnapshotsInDirectory, "*.dcvr", SearchOption.AllDirectories).ToList();
+            if (string.IsNullOrEmpty(JobName))
+            {
+                JobName = "DotCover";
+            }
+            var MergedSnapshotFileName = JobName.Split(',')[0];
+            MergedSnapshotFileName = "Merged " + MergedSnapshotFileName + " Snapshots";
+            MergeDotCoverSnapshots(DotCoverSnapshots, MergeDotCoverSnapshotsInDirectory + "\\" + MergedSnapshotFileName, MergeDotCoverSnapshotsInDirectory + "\\DotCover");
+        }
     }
 }
