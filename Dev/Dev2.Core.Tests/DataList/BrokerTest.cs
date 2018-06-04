@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Session;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -31,12 +32,14 @@ namespace Dev2.Tests.DataList
         public TestContext TestContext { get; set; }
 
         #region Additional test attribute
-
+       
         void DeleteDir(string rootFolder)
         {
+
             if (Directory.Exists(rootFolder + @"\Dev2\"))
             {
-                DirectoryHelper.CleanUp(rootFolder + @"\Dev2\");
+                var dir = new DirectoryHelper();
+                dir.CleanUp(rootFolder + @"\Dev2\");
             }
         }
 
