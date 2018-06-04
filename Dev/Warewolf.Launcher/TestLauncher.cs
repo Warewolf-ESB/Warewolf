@@ -587,14 +587,14 @@ namespace Warewolf.Launcher
                         {
                             if (OriginalTestResult.Attributes["testName"] != null && TestResult.Attributes["testName"] != null && OriginalTestResult.Attributes["testName"].InnerXml == TestResult.Attributes["testName"].InnerXml)
                             {
-                                XmlNode originalOutputNode = OriginalTestResult.SelectSingleNode("/a:Output", originalNamespaceManager);
-                                XmlNode newOutputNode = TestResult.SelectSingleNode("/a:Output", newNamespaceManager);
+                                XmlNode originalOutputNode = OriginalTestResult.SelectSingleNode("//a:Output", originalNamespaceManager);
+                                XmlNode newOutputNode = TestResult.SelectSingleNode("//a:Output", newNamespaceManager);
                                 if (newOutputNode != null)
                                 {
                                     if (originalOutputNode != null)
                                     {
-                                        XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("/a:StdErr", originalNamespaceManager);
-                                        XmlNode newStdErrNode = newOutputNode.SelectSingleNode("/a:StdErr", newNamespaceManager);
+                                        XmlNode originalStdErrNode = originalOutputNode.SelectSingleNode("//a:StdErr", originalNamespaceManager);
+                                        XmlNode newStdErrNode = newOutputNode.SelectSingleNode("//a:StdErr", newNamespaceManager);
                                         if (newStdErrNode != null)
                                         {
                                             if (originalStdErrNode != null)
@@ -606,19 +606,18 @@ namespace Warewolf.Launcher
                                                 originalOutputNode.AppendChild(newStdErrNode);
                                             }
                                         }
-                                        XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("/a:ErrorInfo", originalNamespaceManager);
-                                        XmlNode newErrorInfoNode = newOutputNode.SelectSingleNode("/a:ErrorInfo", newNamespaceManager);
+                                        XmlNode originalErrorInfoNode = originalOutputNode.SelectSingleNode("//a:ErrorInfo", originalNamespaceManager);
+                                        XmlNode newErrorInfoNode = newOutputNode.SelectSingleNode("//a:ErrorInfo", newNamespaceManager);
                                         if (newErrorInfoNode != null)
                                         {
                                             if (originalErrorInfoNode != null)
                                             {
-                                                XmlNode originalMessageNode = originalErrorInfoNode.SelectSingleNode("/a:Message", originalNamespaceManager);
-                                                XmlNode newMessageNode = newErrorInfoNode.SelectSingleNode("/a:Message", newNamespaceManager);
+                                                XmlNode originalMessageNode = originalErrorInfoNode.SelectSingleNode("//a:Message", originalNamespaceManager);
+                                                XmlNode newMessageNode = newErrorInfoNode.SelectSingleNode("//a:Message", newNamespaceManager);
                                                 if (newErrorInfoNode != null)
                                                 {
                                                     if (originalMessageNode != null)
                                                     {
-
                                                         originalMessageNode.InnerText += "\n" + newErrorInfoNode.InnerText;
                                                     }
                                                     else
@@ -626,13 +625,12 @@ namespace Warewolf.Launcher
                                                         originalMessageNode.AppendChild(newErrorInfoNode);
                                                     }
                                                 }
-                                                XmlNode originalStackTraceNode = originalErrorInfoNode.SelectSingleNode("/a:StackTrace", originalNamespaceManager);
-                                                XmlNode newStackTraceNode = newErrorInfoNode.SelectSingleNode("/a:StackTrace", newNamespaceManager);
+                                                XmlNode originalStackTraceNode = originalErrorInfoNode.SelectSingleNode("//a:StackTrace", originalNamespaceManager);
+                                                XmlNode newStackTraceNode = newErrorInfoNode.SelectSingleNode("//a:StackTrace", newNamespaceManager);
                                                 if (newStackTraceNode != null)
                                                 {
                                                     if (originalStackTraceNode != null)
                                                     {
-
                                                         originalStackTraceNode.InnerText += "\n" + newStackTraceNode.InnerText;
                                                     }
                                                     else
@@ -675,16 +673,24 @@ namespace Warewolf.Launcher
                                 testChildElement.IsEmpty = true;
                             }
                         }
-                        var countersNode = originalTrxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary/a:Counters");
-                        var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
-                        if (--failuresBefore <= 0)
+                        var countersNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary/a:Counters");
+                        if (countersNodes.Count > 0)
                         {
-                            var resultsSummaryNode = originalTrxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:ResultSummary");
-                            resultsSummaryNode.Attributes["outcome"].InnerText = "Completed";
+                            var countersNode = countersNodes.Item(0);
+                            var failuresBefore = int.Parse(countersNode.Attributes["failed"].InnerText);
+                            if (--failuresBefore <= 0)
+                            {
+                                var resultsSummaryNodes = originalTrxContent.DocumentElement.SelectNodes("/a:TestRun/a:ResultSummary");
+                                if (resultsSummaryNodes.Count > 0)
+                                {
+                                    var resultsSummaryNode = resultsSummaryNodes.Item(0);
+                                    resultsSummaryNode.Attributes["outcome"].InnerText = "Completed";
+                                }
+                            }
+                            countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
+                            var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
+                            countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
                         }
-                        countersNode.Attributes["failed"].InnerText = failuresBefore.ToString();
-                        var passesBefore = int.Parse(countersNode.Attributes["passed"].InnerText);
-                        countersNode.Attributes["passed"].InnerText = (++passesBefore).ToString();
                     }
                 }
                 originalTrxContent.Save(originalResults);
