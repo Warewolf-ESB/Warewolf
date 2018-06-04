@@ -143,7 +143,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
 #line 22
-   testRunner.Given("I have a workflow \"Testing - mySql For Xml MULTIPLE OUTPUT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+   testRunner.Given("I have a workflow \"For Xml multiple rows output\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
@@ -151,10 +151,10 @@ this.FeatureBackground();
                         "Output from Service",
                         "To Variable"});
 #line 23
-   testRunner.And("\"Testing - mySql For Xml MULTIPLE OUTPUT\" contains \"TestmySqlReturningMultipleOut" +
-                    "putXml\" from server \"localhost\" with mapping as", ((string)(null)), table3, "And ");
+   testRunner.And("\"For Xml multiple rows output\" contains \"TestmySqlReturningMultipleOutputXml\" fro" +
+                    "m server \"localhost\" with mapping as", ((string)(null)), table3, "And ");
 #line 25
-   testRunner.When("\"Testing - mySql For Xml MULTIPLE OUTPUT\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.When("\"For Xml multiple rows output\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
