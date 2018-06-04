@@ -370,19 +370,21 @@ namespace Warewolf.Launcher
                 {
                     XmlDocument trxContent = new XmlDocument();
                     trxContent.Load(FullTRXFilePath);
-                    if (trxContent.DocumentElement.ChildNodes.Count > 0 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Count > 2 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Count > 0)
+                    var namespaceManager = new XmlNamespaceManager(trxContent.NameTable);
+                    namespaceManager.AddNamespace("a", "http://microsoft.com/schemas/VisualStudio/TeamTest/2010");
+                    if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult").Count > 0)
                     {
-                        foreach (XmlNode TestResult in trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes)
+                        foreach (XmlNode TestResult in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:Results/a:UnitTestResult"))
                         {
                             if (TestResult.Attributes["outcome"].InnerText == "Failed")
                             {
-                                if (trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(3).ChildNodes.Count > 0)
+                                if (trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod").Count > 0)
                                 {
-                                    foreach (XmlNode TestDefinition in trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(3).ChildNodes)
+                                    foreach (XmlNode TestDefinition in trxContent.DocumentElement.SelectNodes("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod"))
                                     {
-                                        if (TestDefinition.ChildNodes.Count > 2 && TestDefinition.ChildNodes.Item(2).Name == TestResult.Attributes["TestName"].InnerText)
+                                        if (TestDefinition.Name == TestResult.Attributes["TestName"].InnerText)
                                         {
-                                            PlayList += "<Add Test=\"" + TestDefinition.ChildNodes.Item(2).Attributes["ClassName"] + "." + TestDefinition.ChildNodes.Item(2).Name + "\" />";
+                                            PlayList += "<Add Test=\"" + TestDefinition.Attributes["ClassName"] + "." + TestDefinition.Name + "\" />";
                                         }
                                     }
                                 }
@@ -396,13 +398,16 @@ namespace Warewolf.Launcher
                     }
                     else
                     {
-                        if (trxContent.DocumentElement.ChildNodes.Count > 0 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Count > 2 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Count > 0 && trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Attributes["outcome"].InnerText == "Failed")
+                        if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult").Attributes["outcome"].InnerText == "Failed")
                         {
-                            PlayList += "<Add Test=\"" + trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Attributes["className"].InnerText + "." + trxContent.DocumentElement.ChildNodes.Item(0).ChildNodes.Item(2).ChildNodes.Item(0).Name + "\" />";
+                            PlayList += "<Add Test=\"" + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod").Attributes["className"].InnerText + "." + trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:TestDefinitions/a:UnitTest/a:TestMethod").Name + "\" />";
                         }
                         else
                         {
-                            Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
+                            if (trxContent.DocumentElement.SelectSingleNode("/a:TestRun/a:Results/a:UnitTestResult") == null)
+                            {
+                                Console.WriteLine("Error parsing /TestRun/Results/UnitTestResult from trx file at " + FullTRXFilePath);
+                            }
                         }
                     }
                 }
