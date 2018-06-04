@@ -99,10 +99,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Container Launcher.cs" />
-    <Compile Include="Job Definitions.cs" />
+    <Compile Include="JobDefinitions.cs" />
     <Compile Include="Options.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Test Launcher.cs" />
+    <Compile Include="TestLauncher.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
