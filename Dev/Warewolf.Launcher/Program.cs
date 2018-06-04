@@ -281,7 +281,7 @@ namespace Warewolf.Launcher
                     //Re-try Failures
                     for (var count = 0; count < build.RetryCount; count++)
                     {
-                        build.RetryOnTestError(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
+                        build.RetryTestFailures(build, JobName, TestAssembliesList, TestAssembliesDirectories, TestSettingsFile, TrxFile);
                     }
                 }
                 if (build.ApplyDotCover && TotalNumberOfJobsToRun > 1)
