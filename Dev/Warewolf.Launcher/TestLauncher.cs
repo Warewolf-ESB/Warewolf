@@ -275,7 +275,7 @@ namespace Warewolf.Launcher
                 }
                 if (Directory.Exists(ActualPath))
                 {
-                    Directory.Delete(ActualPath);
+                    Directory.Delete(ActualPath, true);
                 }
                 if ((File.Exists(FileOrFolder) || Directory.Exists(FileOrFolder)))
                 {
