@@ -10,6 +10,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -19,7 +20,6 @@ namespace Dev2.Infrastructure.Tests
     [TestClass]
     public class VerifyArgumentsTest
     {
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VerifyArgumentsTest_AreNotNull")]
@@ -47,7 +47,6 @@ namespace Dev2.Infrastructure.Tests
                 Assert.AreEqual(expected, message);
                 throw;
             }
-
         }
 
         void FixBreaks(ref string expected, ref string actual)
@@ -61,7 +60,6 @@ namespace Dev2.Infrastructure.Tests
         [TestCategory("VerifyArgumentsTest_AreNotNull")]
         public void VerifyArgumentsTest_AreNotNull_DoesNotThrows()
         {
-
             VerifyArgument.AreNotNull(new Dictionary<string, object>
                 {
                     {"a", new object()},
@@ -71,9 +69,6 @@ namespace Dev2.Infrastructure.Tests
                     {"e", ""},
                     {"f", ""}
                 });
-
-
-
         }
     }
 }
